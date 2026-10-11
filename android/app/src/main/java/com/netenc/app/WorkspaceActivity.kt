@@ -69,7 +69,7 @@ class WorkspaceActivity : AppCompatActivity() {
             val rows = withContext(Dispatchers.IO) {
                 when (mode) {
                     "notes" -> db.workspaceDao().allNotes().map {
-                        val tags = it.tags.split(",").map(String::trim).filter(String::isNotBlank)
+                        val tags = it.tags.split(",").map { tag -> tag.trim() }.filter { tag -> tag.isNotBlank() }
                         Triple(it.uid, it.title, (if (tags.isEmpty()) "" else tags.joinToString(" · ", prefix = "برچسب: ") + "\n") + it.body)
                     }
                     "vault" -> db.workspaceDao().allVault().map { Triple(it.uid, it.title, it.username) }
@@ -93,16 +93,23 @@ class WorkspaceActivity : AppCompatActivity() {
                     setTextColor(Color.parseColor("#1E293B"))
                     setOnClickListener { if (mode == "vault") showVaultItem(uid) else editItem(uid) }
                     setOnLongClickListener {
-                        lifecycleScope.launch {
-                            withContext(Dispatchers.IO) {
-                                when (mode) {
-                                    "notes" -> db.workspaceDao().deleteNote(uid)
-                                    "vault" -> db.workspaceDao().deleteVault(uid)
-                                    else -> db.workspaceDao().deleteTask(uid)
+                        AlertDialog.Builder(this@WorkspaceActivity)
+                            .setTitle("حذف مورد")
+                            .setMessage("این مورد حذف شود؟ این کار قابل بازگشت نیست.")
+                            .setNegativeButton("لغو", null)
+                            .setPositiveButton("حذف") { _, _ ->
+                                lifecycleScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        when (mode) {
+                                            "notes" -> db.workspaceDao().deleteNote(uid)
+                                            "vault" -> db.workspaceDao().deleteVault(uid)
+                                            else -> db.workspaceDao().deleteTask(uid)
+                                        }
+                                    }
+                                    refresh()
                                 }
                             }
-                            refresh()
-                        }
+                            .show()
                         true
                     }
                 })
