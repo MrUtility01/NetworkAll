@@ -113,19 +113,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun forceReseed() {
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                val dao = AppDatabase.get(this@MainActivity).lessonDao()
-                dao.putMeta(com.netenc.app.data.SyncMetaEntity("offline_seeded_v11", "0"))
-            }
-            seedAll(force = true)
-        }
+        // Force is passed to the current seeder version; resetting an obsolete v11 marker
+        // did not invalidate the v13 marker and therefore did not actually force a reseed.
+        lifecycleScope.launch { seedAll(force = true) }
     }
 
     private suspend fun seedAll(force: Boolean) {
         log(if (force) "بازسازی…" else "بارگذاری…")
         try {
-            val n = withContext(Dispatchers.IO) { OfflineSeeder.ensureSeeded(this@MainActivity) }
+            val n = withContext(Dispatchers.IO) { OfflineSeeder.ensureSeeded(this@MainActivity, force = force) }
             val sc = withContext(Dispatchers.IO) { ScenarioSeeder.ensure(this@MainActivity) }
             val st = withContext(Dispatchers.IO) { StudyRepository(this@MainActivity).stats() }
             log("✓ درس=$n سناریو=$sc")
