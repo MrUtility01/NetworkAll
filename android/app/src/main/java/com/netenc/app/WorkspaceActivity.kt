@@ -195,7 +195,7 @@ class WorkspaceActivity : AppCompatActivity() {
 
     private fun decryptVaultSecret(blob: String): String {
         if (!blob.startsWith("v2:")) {
-            throw IllegalStateException("این رکورد از نسخه قدیمی است؛ رمز آن با روش امن جدید ذخیره نشده است. آن را بازسازی کنید.")
+            throw IllegalStateException("این رکورد از نسخه قدیمی است؛ در حال مهاجرت امن آن هستیم.")
         }
         val payload = Base64.decode(blob.removePrefix("v2:"), Base64.NO_WRAP)
         if (payload.size <= 12) throw IllegalArgumentException("داده رمزگذاری‌شده ناقص است.")
@@ -206,13 +206,38 @@ class WorkspaceActivity : AppCompatActivity() {
         return String(cipher.doFinal(encrypted), Charsets.UTF_8)
     }
 
+    /** Decrypt older static-key AES/ECB values so they can be re-sealed. */
+    private fun decryptLegacyVaultSecret(blob: String): String {
+        return try {
+            val key = javax.crypto.spec.SecretKeySpec("NetEncJokarKey16".toByteArray(Charsets.UTF_8), "AES")
+            val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+            cipher.init(Cipher.DECRYPT_MODE, key)
+            String(cipher.doFinal(Base64.decode(blob, Base64.DEFAULT)), Charsets.UTF_8)
+        } catch (_: Exception) {
+            // Previous versions could fall back to plaintext when encryption failed.
+            blob
+        }
+    }
+
     private fun showVaultItem(uid: String) {
         lifecycleScope.launch {
             val item = withContext(Dispatchers.IO) {
                 db.workspaceDao().allVault().find { it.uid == uid }
             } ?: return@launch
             try {
-                val secret = withContext(Dispatchers.IO) { decryptVaultSecret(item.secretEnc) }
+                val secret = withContext(Dispatchers.IO) {
+                    val value = if (item.secretEnc.startsWith("v2:")) {
+                        decryptVaultSecret(item.secretEnc)
+                    } else {
+                        decryptLegacyVaultSecret(item.secretEnc)
+                    }
+                    if (!item.secretEnc.startsWith("v2:")) {
+                        db.workspaceDao().upsertVault(
+                            item.copy(secretEnc = encryptVaultSecret(value), lastUpdated = now())
+                        )
+                    }
+                    value
+                }
                 AlertDialog.Builder(this@WorkspaceActivity)
                     .setTitle(item.title)
                     .setMessage("نام کاربری: " + item.username + "\n\nرمز: " + secret)
@@ -226,5 +251,4 @@ class WorkspaceActivity : AppCompatActivity() {
                     .show()
             }
         }
-    }
-}
+    }}
