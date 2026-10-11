@@ -70,13 +70,15 @@ except Exception as _e:
     register_study_routes = None
     _MODULE_STATUS["study_error"] = str(_e)
 
-DEFAULT_DEV_TOKEN = "09136555866"
-SYNC_TOKEN = os.environ.get("NETENC_TOKEN", DEFAULT_DEV_TOKEN)
+# No built-in credential: all protected APIs fail closed until the owner configures a token.
+SYNC_TOKEN = os.environ.get("NETENC_TOKEN", "").strip()
 DEVICE_ID = os.environ.get("NETENC_DEVICE", socket.gethostname() or "windows-host")
+# 0.0.0.0 is needed for a phone to reach the host over the trusted home LAN.
+# Set NETENC_HOST=127.0.0.1 when this instance must be host-only.
 BIND_HOST = os.environ.get("NETENC_HOST", "0.0.0.0")
 
-if SYNC_TOKEN == DEFAULT_DEV_TOKEN:
-    print("WARNING: using default NETENC_TOKEN — set env NETENC_TOKEN for LAN use")
+if not SYNC_TOKEN:
+    print("WARNING: NETENC_TOKEN is not configured; protected API and workspace access are locked.")
 
 _db = None
 
@@ -99,20 +101,24 @@ def extract_token() -> str:
     t = request.headers.get("X-NetEnc-Token", "") or ""
     if t:
         return t.strip()
-    t = request.cookies.get("netenc_token") or request.args.get("token") or ""
+    # Never accept credentials in URLs: URLs may be retained in browser history and logs.
+    t = request.cookies.get("netenc_token") or ""
     return (t or "").strip()
 
 
 def check_token() -> bool:
     if not SYNC_TOKEN:
-        return True
-    return extract_token() == SYNC_TOKEN
+        return False
+    candidate = extract_token()
+    return bool(candidate) and __import__("hmac").compare_digest(candidate, SYNC_TOKEN)
 
 
 def require_token():
+    if not SYNC_TOKEN:
+        return jsonify({"ok": False, "error": "server_not_configured", "hint": "Set NETENC_TOKEN before using protected APIs."}), 503
     if check_token():
         return None
-    return jsonify({"ok": False, "error": "unauthorized", "hint": "Authorization: Bearer <NETENC_TOKEN>"}), 401
+    return jsonify({"ok": False, "error": "unauthorized", "hint": "Use Authorization: Bearer <NETENC_TOKEN>"}), 401
 
 
 if _MODULE_STATUS["workspace"]:
@@ -129,25 +135,13 @@ def index():
 
 @app.get("/api/health")
 def health():
-    st = {}
-    try:
-        st = db().stats()
-    except Exception as e:
-        st = {"error": str(e)}
+    # Keep this endpoint useful for local diagnostics without exposing counts,
+    # exception text, device identifiers, or module internals to unauthenticated clients.
     return jsonify({
         "ok": True,
-        "device": DEVICE_ID,
+        "service": "NetworkEncyclopedia",
         "schema_version": SCHEMA_VERSION,
-        "sync_protocol": "v1-aligned",
-        "token_required": bool(SYNC_TOKEN),
-        "default_token_in_use": SYNC_TOKEN == DEFAULT_DEV_TOKEN,
-        "modules": {
-            "workspace": _MODULE_STATUS["workspace"],
-            "study": bool(register_study_routes),
-            "workspace_error": _MODULE_STATUS.get("workspace_error") or None,
-            "study_error": _MODULE_STATUS.get("study_error") or None,
-        },
-        "stats": st,
+        "token_configured": bool(SYNC_TOKEN),
     })
 
 
@@ -295,7 +289,7 @@ def main():
     db()
     if register_study_routes:
         try:
-            register_study_routes(app, db)
+            register_study_routes(app, db, require_token)
             _MODULE_STATUS["study"] = True
         except Exception as e:
             _MODULE_STATUS["study_error"] = str(e)
