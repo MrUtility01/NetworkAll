@@ -326,6 +326,16 @@ def _parse_jalali_datetime(value: str) -> str:
     return local_dt.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def _timestamp_key(value: str):
+    try:
+        parsed = datetime.fromisoformat(str(value or "").replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return (1, parsed.timestamp(), "")
+    except (ValueError, TypeError, OverflowError):
+        return (0, 0.0, str(value or ""))
+
+
 def _cookie_ok() -> bool:
     # An unset server token must never turn the workspace into a public endpoint.
     if not _sync_token:
@@ -446,7 +456,7 @@ def workspace_page():
             username = request.form.get("username") or ""
             if title:
                 uid = str(uuid.uuid4())
-                now = datetime.now(timezone.utc).isoformat()
+                now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
                 if tab == "notes":
                     c.execute("INSERT INTO ws_notes VALUES(?,?,?,?)", (uid, title, body, now))
                 elif tab == "vault":
@@ -562,7 +572,7 @@ def api_workspace_tasks_sync():
                 continue
             old_updated = str(old["last_updated"] or "")
             old_device = str(old["device_id"] or "windows")
-            wins = updated > old_updated or (updated == old_updated and device_id > old_device)
+            wins = _timestamp_key(updated) > _timestamp_key(old_updated) or (_timestamp_key(updated) == _timestamp_key(old_updated) and device_id > old_device)
             # Reminder state is operational metadata and merges independently from task edits.
             merged_notified = max(str(old["last_notified_at"] or ""), last_notified)
             if wins:
