@@ -166,6 +166,8 @@ class PlannerActivity : AppCompatActivity() {
             set(Calendar.DAY_OF_MONTH, day.get(Calendar.DAY_OF_MONTH))
         }
 
+    private fun dateKey(time: Long): String = isoDate.format(Date(time))
+
     private fun dayLabel(day: Calendar): String {
         val m = day.get(Calendar.MONTH).coerceIn(0, 11)
         return day.get(Calendar.DAY_OF_MONTH).toString() + " " + monthNames[m] + " " + day.get(Calendar.YEAR)
