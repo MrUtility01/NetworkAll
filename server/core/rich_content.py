@@ -23,7 +23,7 @@ def build_rich_lesson(title_fa: str, title_en: str = "", level: str | None = Non
         if is_git_title(title_fa or ""):
             c = build_git_lesson(title_fa, title_en)
             if c:
-                return c
+                return _ensure_dense(title_fa, title_en, level, c)
     except Exception:
         pass
     try:
@@ -162,7 +162,18 @@ def _ensure_dense(title_fa: str, title_en: str, level: str | None, candidate: Di
     if not candidate:
         return dense
     if _content_len(candidate) >= 4000:
-        return candidate
+        out = dict(candidate)
+        # Keep specialist prose, but do not let a long lesson bypass structured
+        # assessment, objectives, prerequisites or honest review status.
+        if not isinstance(out.get("assessment"), dict) or not out["assessment"].get("questions") or not out["assessment"].get("answer_key"):
+            out["assessment"] = dense.get("assessment") or {}
+        if not out.get("learning_objectives"):
+            out["learning_objectives"] = dense.get("learning_objectives") or []
+        if not out.get("prerequisites"):
+            out["prerequisites"] = dense.get("prerequisites") or []
+        if not out.get("source_status"):
+            out["source_status"] = "review_required"
+        return out
     out = dict(dense)
     for k in ("commands", "examples", "notes", "lab"):
         cv = str(candidate.get(k) or "")
@@ -177,4 +188,12 @@ def _ensure_dense(title_fa: str, title_en: str, level: str | None, candidate: Di
     out["level"] = candidate.get("level") or out.get("level")
     out["topic"] = candidate.get("topic") or out.get("topic")
     out["category"] = candidate.get("category") or out.get("category")
+    if not isinstance(out.get("assessment"), dict) or not out["assessment"].get("questions") or not out["assessment"].get("answer_key"):
+        out["assessment"] = dense.get("assessment") or {}
+    if not out.get("learning_objectives"):
+        out["learning_objectives"] = dense.get("learning_objectives") or []
+    if not out.get("prerequisites"):
+        out["prerequisites"] = dense.get("prerequisites") or []
+    if not out.get("source_status"):
+        out["source_status"] = "review_required"
     return out
