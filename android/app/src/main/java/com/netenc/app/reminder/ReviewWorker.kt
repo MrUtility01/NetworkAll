@@ -79,6 +79,11 @@ class ReviewWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx
             .setAutoCancel(true)
             .build()
         nm.notify(1001, notif)
+        if (dueTasks.isNotEmpty()) {
+            val notifiedAt = Instant.now().toString()
+            val taskDao = AppDatabase.get(applicationContext).workspaceDao()
+            dueTasks.forEach { taskDao.markTaskNotified(it.uid, notifiedAt) }
+        }
         if (notifyReview) prefs.edit().putLong("last_review_notification", nowMillis).apply()
         if (notifyGoal) prefs.edit().putString("goal_notification_day", todayKey).apply()
         return Result.success()
