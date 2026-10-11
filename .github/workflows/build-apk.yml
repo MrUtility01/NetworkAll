@@ -111,6 +111,30 @@ jobs:
           print(f"merged index valid: chapters={len(orders)} lessons={total}")
           PY
 
+      - name: Audit final active curriculum after merge
+        run: |
+          set -e
+          python3 tools/audit_content_packs.py --json /tmp/active-curriculum-audit.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("/tmp/active-curriculum-audit.json").read_text(encoding="utf-8"))
+          active = report.get("active_curriculum", {})
+          print("Active curriculum records:", active.get("records"))
+          print("Active curriculum warnings:", active.get("warnings"))
+          print("Pack records scanned:", report.get("records_scanned"))
+          print("Duplicate UIDs:", len(report.get("duplicate_ids", [])))
+          PY
+
+      - name: Upload active curriculum audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: active-curriculum-audit
+          path: /tmp/active-curriculum-audit.json
+          if-no-files-found: ignore
+          retention-days: 30
+
       - name: Gradle wrapper + local.properties
         working-directory: android
         run: |
