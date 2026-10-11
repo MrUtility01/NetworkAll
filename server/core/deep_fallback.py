@@ -17,6 +17,15 @@ _LEVEL_FA = {
 }
 
 _CATS: List[Tuple[str, List[str]]] = [
+    ("powershell", ["powershell", "cmdlet", "psremoting", "winrm", "execution policy", "پاورشل"]),
+    ("firmware", ["bios", "uefi", "secure boot", "tpm", "boot order", "grub", "pxe"]),
+    ("hardware", ["cpu", "processor", "ram", "memory", "motherboard", "chipset", "esd", "post", "no power", "server hardware", "پردازنده", "مادربرد", "حافظه", "اسمبل", "سخت‌افزار", "خمیر حرارتی"]),
+    ("git", ["git ", "github", "گیت", "repository", "rebase", "pull request", "merge request"]),
+    ("cloud", ["azure", "aws", "cloud", "security group", "vpc", "vnet", "ابر"]),
+    ("backup", ["backup", "restore", "recovery", "بکاپ", "پشتیبان‌گیری", "بازیابی"]),
+    ("monitoring", ["monitoring", "zabbix", "prometheus", "grafana", "alert", "مانیتورینگ"]),
+    ("voip", ["voip", "sip", "rtp", "تماس یک‌طرفه", "کیفیت تماس"]),
+    ("soc", ["siem", "soc", "edr", "incident response", "همبستگی لاگ"]),
     ("vlan", ["vlan", "trunk", "access", "802.1q", "native vlan", "svi"]),
     ("stp", ["stp", "spanning", "rstp", "bpdu", "root bridge", "portfast", "loop"]),
     ("ospf", ["ospf", "area", "lsa", "neighbor", "dr", "bdr", "cost"]),
@@ -118,6 +127,83 @@ def _frame_steps(cat: str) -> str:
 
 
 def _lab_concrete(topic: str, cat: str, level: str) -> str:
+    if cat == "hardware":
+        return f"""# آزمایشگاه سخت‌افزار — {topic}
+
+- فقط از سیستم آزمایشی استفاده کن؛ قطعات را هنگام روشن‌بودن جابه‌جا نکن و ESD را رعایت کن.
+- مشخصات CPU، RAM، دیسک، BIOS/UEFI و دمای idle را ثبت کن.
+- در Windows اجرا کن:
+  Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors
+  Get-CimInstance Win32_PhysicalMemory | Select-Object Capacity,Speed,Manufacturer
+  Get-PhysicalDisk | Select-Object FriendlyName,HealthStatus,OperationalStatus,Size
+- یک تغییر واحد انجام بده و پیش/پس از تغییر را مقایسه کن.
+- معیار قبولی: سخت‌افزار شناسایی شود، خطای جدید ثبت نشود و سلامت در محدوده سازنده باشد.
+"""
+    if cat == "firmware":
+        return f"""# آزمایشگاه BIOS/UEFI — {topic}
+
+- روی VM یا سیستم آزمایشی، Boot Order، Secure Boot، TPM و وضعیت BitLocker را ثبت کن.
+- از msinfo32، Confirm-SecureBootUEFI، Get-Tpm و bcdedit /enum برای مشاهده استفاده کن.
+- قبل از تغییر boot/TPM، Recovery Key را در محل امن و آفلاین نگه دار.
+- فقط یک گزینه را تغییر بده و بوت سرد/گرم را آزمایش کن؛ در صورت شکست به مقدار ثبت‌شده برگرد.
+"""
+    if cat == "powershell":
+        return f"""# PowerShell Lab — {topic}
+
+- در VM یا محیط غیرتولیدی اجرا کن.
+- ابتدا Get-Help Get-NetIPConfiguration -Examples و Get-Command *NetAdapter را بررسی کن.
+- اجرا کن: Get-NetIPConfiguration; Get-NetAdapter; Get-Service; Test-NetConnection localhost -Port 135
+- خروجی و خطاها را ثبت کن؛ معیار قبولی این است که دستورها فقط وضعیت را مشاهده کنند و تغییر ناخواسته ندهند.
+"""
+    if cat == "git":
+        return f"""# Git Lab — {topic}
+
+- یک پوشه آزمایشی خالی بساز؛ secrets یا فایل خصوصی را وارد مخزن نکن.
+- git init، git status و git switch -c lab-topic را اجرا کن.
+- یک فایل متنی بساز، git diff --check را بررسی و یک commit ثبت کن.
+- تغییر بعدی را در branch جدا انجام بده و diff را قبل از merge بازبینی کن.
+- برای undo از git restore یا git revert در Lab استفاده کن؛ reset --hard را روی کار واقعی اجرا نکن.
+"""
+    if cat == "cloud":
+        return f"""# Cloud Lab — {topic}
+
+- فقط از Sandbox/Free Tier استفاده کن؛ subscription سازمانی را تغییر نده.
+- region، IAM role، network rule و هزینه مورد انتظار را قبل از ساخت ثبت کن.
+- یک policy حداقلی بساز و دسترسی مجاز/غیرمجاز را آزمایش کن.
+- audit log و flow log را بررسی و evidence ثبت کن؛ منابع آزمایش را در پایان پاک کن.
+"""
+    if cat == "backup":
+        return f"""# Backup/Restore Lab — {topic}
+
+- یک فایل یا دیتابیس آزمایشی با checksum اولیه بساز.
+- backup را در مسیری جدا ذخیره و نسخه/زمان/اندازه را ثبت کن.
+- به مسیر جداگانه restore کن؛ نسخه اصلی را overwrite نکن.
+- checksum و قابلیت بازشدن داده را بررسی کن و زمان بازیابی را اندازه بگیر.
+"""
+    if cat == "monitoring":
+        return f"""# Monitoring Lab — {topic}
+
+- یک سرویس آزمایشی و baseline متریک‌ها را ثبت کن.
+- threshold هشدار را تنظیم و دریافت notification را آزمایش کن.
+- failure کنترل‌شده ایجاد و زمان detection و alert را اندازه بگیر.
+- از alert به log/metric مربوط برو و Runbook رفع بنویس.
+"""
+    if cat == "voip":
+        return f"""# VoIP Lab — {topic}
+
+- دو endpoint آزمایشی در VLAN تست و یک تماس مشخص کن.
+- SIP signaling و RTP media را جدا بررسی کن؛ capture تماس واقعی را ذخیره نکن.
+- codec، packet loss، jitter، latency و NAT traversal را ثبت کن.
+- یک ACL یا مسیر RTP آزمایشی را تغییر بده و با log/capture علت را ثابت کن.
+"""
+    if cat == "soc":
+        return f"""# SOC / Incident Response Lab — {topic}
+
+- فقط از logهای synthetic یا ماشین آزمایشی استفاده کن.
+- timeline، منبع، زمان UTC، host/user و سطح اطمینان را ثبت کن.
+- query جستجو را با رویداد مثبت و negative control آزمایش کن.
+- alert را به evidence خام وصل کن؛ فرضیه را از واقعیت جدا نگه دار.
+"""
     base = f"""# آزمایشگاه عملی — {topic}
 
 ## توپولوژی پیشنهادی Lab
@@ -215,6 +301,51 @@ def _level_guidance(level: str) -> str:
     }.get(level, "")
 
 
+def _base_commands(cat: str):
+    network_cats = {"vlan","stp","ospf","bgp","acl","nat","vpn","dhcp","dns","wireless","firewall","ha","qos","security","tcpip","mpls","multicast","vxlan"}
+    if cat in network_cats:
+        return COMMON[:8]
+    return BANKS.get(cat, BANKS.get("general", []))[:8]
+
+
+def _backup_commands(cat: str):
+    commands = {
+        "hardware": [("Get-CimInstance Win32_Processor", "مشخصات CPU"), ("Get-CimInstance Win32_PhysicalMemory", "مشخصات RAM"), ("Get-PhysicalDisk", "سلامت دیسک")],
+        "firmware": [("msinfo32", "BIOS Mode / Secure Boot"), ("Confirm-SecureBootUEFI", "وضعیت Secure Boot"), ("Get-Tpm", "وضعیت TPM")],
+        "powershell": [("Start-Transcript -Path lab-transcript.txt", "ثبت transcript"), ("Get-History", "تاریخچه نشست"), ("Get-Error | Select-Object -First 5", "خطاهای اخیر")],
+        "windows": [("Get-NetIPConfiguration", "وضعیت شبکه"), ("Get-WinEvent -LogName System -MaxEvents 50", "رویدادهای سیستم")],
+        "linux": [("ip -br a", "رابط‌ها"), ("journalctl -p warning -n 50", "هشدارها"), ("df -h", "فضای دیسک")],
+        "git": [("git status --short", "وضعیت working tree"), ("git diff --check", "بررسی diff"), ("git log -5 --oneline", "تاریخچه")],
+        "cloud": [("terraform plan", "بازبینی قبل از apply"), ("terraform state list", "فهرست منابع")],
+        "backup": [("Get-FileHash backup.bin -Algorithm SHA256", "checksum"), ("robocopy source restore-test /E /L", "dry-run کپی")],
+        "monitoring": [("Get-Counter CPU", "baseline CPU"), ("Get-WinEvent -LogName System -MaxEvents 30", "رویدادها")],
+        "voip": [("Wireshark filter: sip || rtp", "مشاهده signaling/media"), ("ping -n 20 peer", "baseline loss/latency")],
+        "soc": [("Get-WinEvent -LogName Security -MaxEvents 50", "رویدادهای احراز هویت"), ("Get-FileHash evidence.log -Algorithm SHA256", "integrity شواهد")],
+        "sql": [("PRAGMA integrity_check;", "سلامت SQLite"), ("EXPLAIN QUERY PLAN SELECT ...", "طرح query")],
+        "python": [("python --version", "نسخه runtime"), ("python -m compileall .", "بررسی syntax"), ("python -m unittest discover -s tests", "تست‌ها")],
+    }
+    return commands.get(cat, [("record baseline", "ثبت وضعیت اولیه"), ("verify expected result", "تأیید نتیجه"), ("review logs", "بررسی لاگ")])
+
+
+def _rollback_block(cat: str) -> str:
+    blocks = {
+        "hardware": "قطعه/تنظیم را به وضعیت ثبت‌شده برگردان؛ firmware downgrade فقط طبق دستورالعمل سازنده.",
+        "firmware": "مقادیر BIOS/UEFI را به مقدار ثبت‌شده برگردان و Recovery Key را در اختیار داشته باش.",
+        "powershell": "از VM snapshot یا پیکربندی قبلی استفاده کن؛ تغییرات را با transcript ثبت کن.",
+        "git": "در Lab از git revert برای commit ثبت‌شده استفاده کن؛ reset --hard را روی کار واقعی اجرا نکن.",
+        "cloud": "از plan/diff و state استفاده کن؛ منابع ایجادشده را طبق change plan حذف یا restore کن.",
+        "backup": "restore را در مسیر جدا انجام بده؛ منبع را تا تأیید سلامت overwrite نکن.",
+        "monitoring": "rule/threshold قبلی را restore کن و alert آزمایشی را پاک کن.",
+        "voip": "ACL/QoS/NAT را به snapshot قبلی برگردان و تماس دوطرفه را تست کن.",
+        "soc": "شواهد را حفظ کن؛ containment را طبق playbook مجاز و ثبت‌شده بازگردان.",
+    }
+    if cat in blocks:
+        return blocks[cat]
+    if cat in {"vlan","stp","ospf","bgp","acl","nat","vpn","dhcp","dns","wireless","firewall","ha","qos","security","tcpip","mpls","multicast","vxlan"}:
+        return "configure terminal; apply the documented reverse commands; verify"
+    return "تغییر را از backup/snapshot برگردان، سپس نتیجه را با آزمون تکرارپذیر Verify کن."
+
+
 def build_deep_fallback(
     title_fa: str, title_en: str = "", level: str | None = None
 ) -> Dict[str, Any]:
@@ -236,21 +367,13 @@ def build_deep_fallback(
             f"# بانک دستورات عملی — {topic} | {level} | دسته: {cat}",
             "",
             "## پایه و Verify (همیشه اول این‌ها)",
-            _fmt(COMMON[:8]),
+            _fmt(_base_commands(cat)),
             f"## تخصصی دسته «{cat}»",
             _fmt(bank[:18] if len(bank) > 18 else bank),
-            "## Backup و Capture",
-            _fmt(
-                [
-                    ("show running-config | redirect flash:pre-change.cfg", "بک‌آپ قبل تغییر"),
-                    ("copy running-config startup-config", "ذخیره بعد از موفقیت Verify"),
-                    ("tcpdump -i any -nn -c 100 -w /tmp/cap.pcap", "نمونه پکت (لینوکس)"),
-                    ("show logging | include %LINK|%LINEPROTO|%OSPF|%BGP|%SYS", "رویدادهای کلیدی"),
-                    ("terminal length 0", "خروجی کامل بدون صفحه‌بندی"),
-                ]
-            ),
-            "## Rollback سریع",
-            "```\nconfigure terminal\n! دستورات معکوس Runbook را اینجا بگذار\nend\n```\n",
+            "## Backup / Evidence",
+            _fmt(_backup_commands(cat)),
+            "## Rollback / Recovery",
+            _rollback_block(cat),
         ]
     )
 
