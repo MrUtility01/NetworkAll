@@ -15,12 +15,15 @@ async function loadLanAndSync() {
     const hello = await r.json();
     if (!r.ok) throw new Error(hello.hint || hello.error || `HTTP ${r.status}`);
     const ip = hello.lan_ip || "127.0.0.1";
-    lanEl.textContent = ip;
-    if (hintEl) hintEl.textContent = "http://" + ip + ":5050";
+    const lanEnabled = hello.lan_enabled === true;
+    lanEl.textContent = lanEnabled ? ip : "LAN غیرفعال";
+    if (hintEl) hintEl.textContent = lanEnabled
+      ? ("http://" + ip + ":5050")
+      : "http://127.0.0.1:5050 · فقط همین رایانه";
     if (statusEl) {
       const s = hello.stats || {};
       statusEl.textContent =
-        "دستگاه: " + (hello.device_id || "—") +
+        (lanEnabled ? "Sync شبکه فعال" : "حالت امن محلی؛ برای اتصال گوشی LAN را صریحاً فعال کنید") +
         " · فصل " + (s.chapters || 0) +
         " · درس " + (s.lessons || 0) +
         " · schema " + (hello.schema_version || 1);
@@ -34,6 +37,7 @@ async function loadLanAndSync() {
 document.getElementById("btnCopyIp")?.addEventListener("click", async () => {
   const ip = document.getElementById("lanIp")?.textContent || "";
   if (ip === "—") return;
+  if (!ip || ip === "—" || ip === "LAN غیرفعال") return;
   const url = "http://" + ip + ":5050";
   try {
     await navigator.clipboard.writeText(url);
