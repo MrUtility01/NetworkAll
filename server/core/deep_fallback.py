@@ -19,7 +19,7 @@ _LEVEL_FA = {
 _CATS: List[Tuple[str, List[str]]] = [
     ("powershell", ["powershell", "cmdlet", "psremoting", "winrm", "execution policy", "پاورشل"]),
     ("firmware", ["bios", "uefi", "secure boot", "tpm", "boot order", "boot manager", "csm", "mbr", "gpt", "esp", "firmware", "grub", "pxe", "فریمور", "بوت"]),
-    ("hardware", ["cpu", "processor", "alu", "control unit", "register", "pipeline", "clock", "frequency", "core", "thread", "hyper-thread", "cache", "instruction set", "x86", "x64", "arm", "risc", "cisc", "ram", "memory", "ddr", "ecc", "motherboard", "chipset", "socket", "expansion slot", "usb", "nic", "form factor", "dual quad", "timing", "xmp", "u.2", "tbw", "dwpd", "pcie", "m.2", "sata", "nvme", "hdd", "ssd", "psu", "power supply", "80plus", "ups", "pdu", "beep code", "q-code", "no post", "no power", "proliant", "ilo", "smart array", "esd", "post", "server hardware", "پردازنده", "مادربرد", "حافظه", "اسمبل", "سخت‌افزار", "خمیر حرارتی", "فرکانس", "پردازشگر", "رجیستر", "کش", "سوکت", "اسلات توسعه", "هدرها", "تغذیه", "سرمایش"]),
+    ("hardware", ["cpu", "processor", "alu", "control unit", "register", "pipeline", "clock", "frequency", "core", "thread", "hyper-thread", "cache", "instruction set", "x86", "x64", "arm", "risc", "cisc", "ram", "memory", "ddr", "ecc", "motherboard", "chipset", "socket", "expansion slot", "usb", "nic", "form factor", "dual quad", "timing", "xmp", "u.2", "tbw", "dwpd", "pcie", "m.2", "sata", "nvme", "hdd", "ssd", "psu", "power supply", "80plus", "ups", "pdu", "beep code", "q-code", "no post", "no power", "proliant", "ilo", "smart array", "oneview", "cooling", "thermal", "restart", "server hardware", "esd", "post", "پردازنده", "مادربرد", "حافظه", "اسمبل", "سخت‌افزار", "خمیر حرارتی", "فرکانس", "پردازشگر", "رجیستر", "کش", "سوکت", "اسلات توسعه", "هدرها", "تغذیه", "سرمایش", "فرم‌فاکتور", "ظرفیت سازمانی", "ریل‌های برق", "توزیع برق", "نصب خنک‌کننده", "نصب کارت توسعه", "اولین روشن شدن", "ریستارت مکرر", "گرمای بیش از حد", "تمیزکاری سیستم", "تعویض خمیر", "برنامه نگهداری پیشگیرانه", "نسل‌های gen", "hpe oneview", "خانواده proliant", "ilo نصب", "smart array کنترلر"]),
     ("git", ["git ", "github", "گیت", "repository", "rebase", "pull request", "merge request"]),
     ("cloud", ["azure", "aws", "cloud", "security group", "vpc", "vnet", "ابر"]),
     ("backup", ["backup", "restore", "recovery", "بکاپ", "پشتیبان‌گیری", "بازیابی"]),
@@ -42,7 +42,7 @@ _CATS: List[Tuple[str, List[str]]] = [
     ("linux", ["linux", "kernel", "user space", "syscall", "system call", "scheduler", "daemon", "process", "filesystem", "file system", "ext4", "xfs", "zfs", "lvm", "mount", "fstab", "fdisk", "parted", "chmod", "chown", "bash", "shell script", "apt ", "dnf ", "rpm", "grub", "iptables", "nftables", "ss "]),
     ("windows", ["windows", "registry", "services.msc", "event viewer", "task manager", "resource monitor", "safe mode", "task scheduler", "gpo", "active directory", "kerberos", "ntfs", "winlogon"]),
     ("storage", ["raid", "nvme", "ssd", "san", "iscsi", "latency", "iops", "disk io", "fat32", "exfat", "efs", "refs", "partition", "diskpart", "storage", "ذخیره‌سازی", "دیسک"]),
-    ("virtualization", ["vmware", "esxi", "kubernetes", "docker", "pod", "hypervisor", "virtual machine", "virtualization", "container", "vcenter"]),
+    ("virtualization", ["vmware", "esxi", "kubernetes", "docker", "pod", "hypervisor", "virtual machine", "virtualization", "vt-x", "amd-v", "container", "vcenter", "virtual switch"]),
     ("security", ["aaa", "radius", "tacacs", "tls", "snmp", "802.1x", "port security"]),
     ("tcpip", ["tcp", "udp", "icmp", "handshake", "window", "retransmission"]),
     ("mpls", ["mpls", "ldp", "label", "vrf", "l3vpn", "pe ", "ce "]),
@@ -770,7 +770,7 @@ Symptom → Scope (کجا؟) → Evidence (دستور) → Hypothesis → Test �
 
 ---
 
-## ۱۰) منابع و مراجع رسمی
+## ۱۰) منابع رسمی و مراجع
 
 منابع زیر برای بررسی نسخه، تفاوت‌های پیاده‌سازی و راستی‌آزمایی آزمایش‌ها هستند؛ قبل از اجرای تغییر روی محیط واقعی، مستندات همان نسخه و سازنده را بررسی کن.
 
