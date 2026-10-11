@@ -10,11 +10,16 @@ import java.util.zip.GZIPInputStream
 object OfflineSeeder {
     private const val META_SEEDED = "offline_seeded_v13"
 
-    suspend fun ensureSeeded(context: Context): Int = withContext(Dispatchers.IO) {
+    suspend fun ensureSeeded(context: Context, force: Boolean = false): Int = withContext(Dispatchers.IO) {
         val dao = AppDatabase.get(context).lessonDao()
         val existing = dao.countActive()
         val filled = if (existing > 0) dao.countFilled() else 0
-        if (dao.getMeta(META_SEEDED) == "1" && existing > 5000 && filled > 2000) {
+        val treeReady = if (existing > 0) dao.countTreeReady() else 0
+        // Older builds could mark a large database as seeded even when its rows had no
+        // chapter/subchapter metadata. Never skip seeding while the tree hierarchy is missing.
+        val hierarchyHealthy = existing > 0 && treeReady >= (existing * 0.90).toInt()
+        if (!force && dao.getMeta(META_SEEDED) == "1" &&
+            existing > 5000 && filled > 2000 && hierarchyHealthy) {
             return@withContext existing
         }
         val json = readCurriculumAsset(context) ?: return@withContext existing
