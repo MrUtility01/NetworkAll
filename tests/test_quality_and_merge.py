@@ -14,7 +14,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "shared"))
 
-from merge_content_packs_into_android import append_unmatched_as_extra, commands_to_lessons, git_markdown_to_lessons
+from merge_content_packs_into_android import append_unmatched_as_extra, apply_fields, commands_to_lessons, git_markdown_to_lessons
 from sync_engine import compare_lww, content_hash, merge_push
 from audit_content import _item_quality
 from core.db import WebDB
@@ -69,6 +69,25 @@ class DeepFallbackTests(unittest.TestCase):
 
 
 class ContentMergeTests(unittest.TestCase):
+    def test_pack_merge_does_not_overwrite_longer_base_lesson(self):
+        base = {
+            "full_content": "BASE_DEEP_CONTENT " * 400,
+            "examples": "Baseline lab and expected result.",
+            "commands": "show baseline",
+        }
+        incoming = {
+            "full_content": "## Lab تخصصی\nScenario: یک رخداد واقعی\nExpected result: سرویس سالم بماند.",
+            "examples": "Scenario-specific lab steps.",
+            "commands": "show topic-specific-status",
+        }
+        apply_fields(base, incoming)
+        self.assertIn("BASE_DEEP_CONTENT", base["full_content"])
+        self.assertIn("Scenario: یک رخداد واقعی", base["full_content"])
+        self.assertIn("Baseline lab", base["examples"])
+        self.assertIn("Scenario-specific lab steps", base["examples"])
+        self.assertIn("show baseline", base["commands"])
+        self.assertIn("show topic-specific-status", base["commands"])
+
     def test_append_preserves_base_chapter_and_existing_lesson(self):
         data = {
             "chapters": [{
