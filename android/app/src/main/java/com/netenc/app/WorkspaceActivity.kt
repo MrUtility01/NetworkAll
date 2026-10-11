@@ -27,9 +27,14 @@ import java.time.ZoneId
 import java.util.UUID
 import java.util.Calendar
 import com.netenc.app.util.JalaliDate
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
 import android.util.Base64
+import java.security.KeyStore
 import javax.crypto.Cipher
-import javax.crypto.spec.SecretKeySpec
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+import javax.crypto.spec.GCMParameterSpec
 
 class WorkspaceActivity : AppCompatActivity() {
     private val db by lazy { AppDatabase.get(this) }
@@ -226,15 +231,34 @@ class WorkspaceActivity : AppCompatActivity() {
         }
     }
 
-    /** ساده برای ذخیره محلی؛ برای امنیت سازمانی از Keystore استفاده کنید */
+    /** Authenticated AES-GCM encryption with a non-exportable Android Keystore key. */
     private fun simpleEnc(plain: String): String {
+        if (plain.isEmpty()) return ""
         return try {
-            val key = SecretKeySpec("NetEncJokarKey16".toByteArray(), "AES")
-            val c = Cipher.getInstance("AES/ECB/PKCS5Padding")
-            c.init(Cipher.ENCRYPT_MODE, key)
-            Base64.encodeToString(c.doFinal(plain.toByteArray()), Base64.NO_WRAP)
-        } catch (_: Exception) {
-            plain
+            val alias = "networkall-vault-aes-gcm"
+            val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
+            val key = (store.getKey(alias, null) as? SecretKey) ?: run {
+                val generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
+                generator.init(
+                    KeyGenParameterSpec.Builder(
+                        alias,
+                        KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+                    )
+                        .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                        .setRandomizedEncryptionRequired(true)
+                        .build()
+                )
+                generator.generateKey()
+            }
+            val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+            cipher.init(Cipher.ENCRYPT_MODE, key)
+            val encrypted = cipher.doFinal(plain.toByteArray(Charsets.UTF_8))
+            val combined = cipher.iv + encrypted
+            "gcm1:" + Base64.encodeToString(combined, Base64.NO_WRAP)
+        } catch (e: Exception) {
+            // Never fall back to plaintext if encryption fails.
+            "enc-error"
         }
     }
 }
