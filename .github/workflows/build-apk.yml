@@ -22,6 +22,42 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Python syntax and regression tests
+        run: |
+          set -e
+          python3 -m compileall -q server shared scripts tools tests
+          python3 -m unittest discover -s tests -v
+
+      - name: Content quality audit (read-only)
+        run: |
+          set -e
+          python3 tools/audit_content.py --packs-only --json /tmp/content-audit.json > /tmp/content-audit-console.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = json.loads(Path("/tmp/content-audit-console.json").read_text(encoding="utf-8"))
+          audit = p.get("packs", {})
+          errors = audit.get("parse_errors", [])
+          if errors:
+              print(json.dumps(errors[:50], ensure_ascii=False, indent=2))
+              raise SystemExit(f"Invalid JSON content packs: {len(errors)}")
+          print("JSON packs parsed:", audit.get("json_files_parsed"))
+          print("Instructional records:", audit.get("instructional_records"))
+          print("Content bands:", audit.get("bands"))
+          print("Missing lab:", audit.get("missing_lab"))
+          print("Missing examples:", audit.get("missing_examples"))
+          print("Missing assessments:", audit.get("missing_questions"))
+          PY
+
+      - name: Upload content audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-quality-audit
+          path: /tmp/content-audit.json
+          if-no-files-found: ignore
+          retention-days: 30
+
       - name: Android SDK licenses + platform
         run: |
           set -e
@@ -52,12 +88,26 @@ jobs:
           assert 1 in orders and 68 in orders
           PY
 
-      - name: Merge packs (best effort)
+      - name: Merge content packs
         run: |
-          set +e
+          set -e
           python3 scripts/merge_content_packs_into_android.py
-          echo "merge_exit=$?"
-          exit 0
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          p = Path("android/app/src/main/assets/curriculum_index.json.gz")
+          data = json.loads(gzip.open(p, "rt", encoding="utf-8").read())
+          orders = [int(c["order"]) for c in data.get("chapters", [])]
+          if len(orders) != len(set(orders)):
+              raise SystemExit("duplicate chapter order after pack merge")
+          missing = sorted(set(range(1, 69)) - set(orders))
+          if missing:
+              raise SystemExit(f"missing chapter orders after pack merge: {missing}")
+          total = sum(len(s.get("lessons", [])) for ch in data["chapters"] for s in ch.get("subchapters", []))
+          if total != data.get("lesson_count"):
+              raise SystemExit(f"lesson_count mismatch: meta={data.get('lesson_count')} actual={total}")
+          print(f"merged index valid: chapters={len(orders)} lessons={total}")
+          PY
 
       - name: Gradle wrapper + local.properties
         working-directory: android
