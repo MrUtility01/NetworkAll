@@ -103,9 +103,9 @@ def mark_template_heavy(rows, records):
     for item in records:
         raw = text(item.get("full_content") or item.get("content") or item.get("explanation"))
         paragraphs = [
-            re.sub(r"\\s+", " ", p).strip().lower()
-            for p in re.split(r"\\n\\s*\\n", raw)
-            if len(re.sub(r"\\s+", " ", p).strip()) >= 70
+            re.sub(r"\s+", " ", p).strip().lower()
+            for p in re.split(r"\n\s*\n", raw)
+            if len(re.sub(r"\s+", " ", p).strip()) >= 70
         ]
         paragraphs_by_record.append((paragraphs, len(raw)))
         frequency.update(set(paragraphs))
