@@ -10,6 +10,9 @@ interface WorkspaceDao {
     @Query("SELECT * FROM tasks ORDER BY done ASC, priority DESC, lastUpdated DESC")
     suspend fun allTasks(): List<TaskEntity>
 
+    @Query("SELECT * FROM tasks WHERE uid = :uid LIMIT 1")
+    suspend fun taskByUid(uid: String): TaskEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertTask(item: TaskEntity)
 
