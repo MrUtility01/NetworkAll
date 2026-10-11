@@ -8,6 +8,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "server"))
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "shared"))
@@ -15,6 +16,7 @@ sys.path.insert(0, str(ROOT / "shared"))
 from merge_content_packs_into_android import append_unmatched_as_extra, commands_to_lessons, git_markdown_to_lessons
 from sync_engine import compare_lww, content_hash, merge_push
 from audit_content import _item_quality
+from core.db import WebDB
 
 
 class ContentMergeTests(unittest.TestCase):
@@ -106,6 +108,27 @@ class ContentMergeTests(unittest.TestCase):
         applied, _, _ = merge_push({}, [incoming])
         self.assertNotIn("content_hash", incoming)
         self.assertIn("content_hash", applied[0])
+
+    def test_fts_search_finds_english_terms_and_falls_back_cleanly(self):
+        with tempfile.TemporaryDirectory() as td:
+            db = WebDB(Path(td) / "search.sqlite")
+            chapter_id = db.conn.execute(
+                "INSERT INTO chapters(order_index, title_fa, title_en) VALUES(1, ?, ?)",
+                ("مسیریابی", "Routing"),
+            ).lastrowid
+            level_id = db.conn.execute(
+                "INSERT INTO levels(chapter_id, order_index, title_fa, title_en) VALUES(?, 1, ?, ?)",
+                (chapter_id, "مبتدی", "Beginner"),
+            ).lastrowid
+            db.conn.execute(
+                """INSERT INTO lessons(level_id, order_index, title_fa, title_en, tags, summary, full_content, commands, examples)
+                   VALUES(?, 1, ?, ?, ?, ?, ?, ?, ?)""",
+                (level_id, "مسیریابی BGP", "BGP routing", "BGP", "neighbor", "BGP establishes routing adjacencies.", "show ip bgp summary", "Verify neighbor state."),
+            )
+            db.conn.commit()
+            rows = db.search("BGP")
+            self.assertTrue(any("BGP" in str(row.get("title_en", "")) for row in rows))
+            db.conn.close()
 
     def test_assessment_requires_matching_separate_answer_key(self):
         result = _item_quality({
