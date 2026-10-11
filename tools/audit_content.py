@@ -141,6 +141,8 @@ def audit_packs(pack_root: Path) -> dict:
     candidates = []
     parse_errors = []
     hashes: dict[str, list[str]] = defaultdict(list)
+    processed_hashes: set[str] = set()
+    parsed_files = 0
     for path in sorted(pack_root.rglob("*.json")):
         if any(part in SKIP_PARTS for part in path.parts):
             continue
@@ -150,8 +152,14 @@ def audit_packs(pack_root: Path) -> dict:
                 continue
             digest = hashlib.sha256(path.read_bytes()).hexdigest()
             hashes[digest].append(str(path.relative_to(ROOT)))
+            # Exact byte-identical legacy copies are reported but parsed once, avoiding
+            # false duplicate-UID alarms while old content locations are being migrated.
+            if digest in processed_hashes:
+                continue
+            processed_hashes.add(digest)
             with path.open("r", encoding="utf-8-sig") as f:
                 payload = json.load(f)
+            parsed_files += 1
         except Exception as exc:
             parse_errors.append({"path": str(path.relative_to(ROOT)), "error": str(exc)})
             continue
@@ -200,7 +208,7 @@ def audit_packs(pack_root: Path) -> dict:
 
     return {
         "root": str(pack_root),
-        "json_files_parsed": len({x["path"] for x in candidates}),
+        "json_files_parsed": parsed_files,
         "instructional_records": len(candidates),
         "parse_errors": parse_errors,
         "duplicate_file_contents": [paths for paths in hashes.values() if len(paths) > 1],
