@@ -27,7 +27,7 @@ LAB_RE = re.compile(r"\b(lab|laboratory|verify|verification|expected output|clea
 SCENARIO_RE = re.compile(r"scenario|incident|root cause|symptom|سناریو|علائم|علت ریشه.?ای", re.I)
 ANSWER_RE = re.compile(r"answer[_ -]?key|correct[_ -]?answer|پاسخ.?نامه|کلید پاسخ", re.I)
 SOURCE_RE = re.compile(r"official source|references?|rfc\s*\d|منابع رسمی|منبع:", re.I)
-NETWORK_TERMS = re.compile(r"\b(vlan|trunk|stp|ospf|bgp|router|switch|subnet|routing|ethernet|tcp/ip)\b|سوئیچ|روتر|مسیریابی", re.I)
+NETWORK_TERMS = re.compile(r"\b(vlan|trunk|stp|ospf|bgp|router|switch|subnet|routing|ethernet|tcp/ip|network|networking|ipv4|ipv6|ip address|addressing)\b|سوئیچ|روتر|مسیریابی|شبکه|آی.?پی|آدرس", re.I)
 
 
 def text(value):
