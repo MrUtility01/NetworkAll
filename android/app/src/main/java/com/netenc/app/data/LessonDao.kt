@@ -29,6 +29,9 @@ interface LessonDao {
     @Query("SELECT * FROM lessons WHERE deleted = 0")
     suspend fun allForPush(): List<LessonEntity>
 
+    @Query("SELECT * FROM lessons")
+    suspend fun allIncludingDeleted(): List<LessonEntity>
+
     @Query(
         """SELECT * FROM lessons WHERE deleted = 0 AND (
             titleFa LIKE '%' || :q || '%' OR
