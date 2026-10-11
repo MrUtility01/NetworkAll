@@ -653,9 +653,9 @@ def _source_block(cat: str) -> str:
         ],
     }
     selected = sources.get(cat, [
-        ("Cisco Documentation", "https://www.cisco.com/c/en/us/support/index.html"),
-        ("RFC Editor / IETF Standards", "https://www.rfc-editor.org/"),
+        ("NIST Computer Security Resource Center", "https://csrc.nist.gov/"),
         ("Microsoft Learn", "https://learn.microsoft.com/"),
+        ("OWASP Cheat Sheet Series", "https://cheatsheetseries.owasp.org/"),
     ])
     return "\n".join(f"- [{title}]({url})" for title, url in selected)
 
