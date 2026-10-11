@@ -2,6 +2,7 @@
 """Regression tests for content merging and assessment checks."""
 from __future__ import annotations
 
+import sqlite3
 import sys
 import tempfile
 import unittest
@@ -128,6 +129,21 @@ class ContentMergeTests(unittest.TestCase):
             db.conn.commit()
             rows = db.search("BGP")
             self.assertTrue(any("BGP" in str(row.get("title_en", "")) for row in rows))
+            db.conn.close()
+
+    def test_database_backup_is_consistent_and_readable(self):
+        with tempfile.TemporaryDirectory() as td:
+            db = WebDB(Path(td) / "source.sqlite")
+            db.conn.execute(
+                "INSERT INTO chapters(order_index, title_fa, title_en) VALUES(1, ?, ?)",
+                ("فصل آزمایشی", "Test chapter"),
+            )
+            db.conn.commit()
+            backup = db.backup(Path(td) / "backups")
+            self.assertTrue(backup.is_file())
+            with sqlite3.connect(str(backup)) as copied:
+                count = copied.execute("SELECT COUNT(*) FROM chapters").fetchone()[0]
+            self.assertEqual(count, 1)
             db.conn.close()
 
     def test_assessment_requires_matching_separate_answer_key(self):
