@@ -220,10 +220,12 @@ def _conn():
 
 
 def _cookie_ok() -> bool:
+    # When no shared token is configured, defer to the server's local-only
+    # auth policy. Never let an empty token bypass auth on a remote bind.
     if not _sync_token:
-        return True
-    c = request.cookies.get("netenc_token") or ""
-    return hmac.compare_digest(c, _sync_token)
+        return bool(_check_token and _check_token())
+    cookie = request.cookies.get("netenc_token") or ""
+    return hmac.compare_digest(cookie, _sync_token)
 
 
 @bp.route("/workspace/login", methods=["GET", "POST"])
@@ -285,13 +287,32 @@ def workspace_page():
         migrated_any = False
         for r in rows:
             secret_blob = r["secret"] or ""
-            secret_show = _unseal(secret_blob) if (_authorized() or _cookie_ok()) else "••••"
-            if secret_blob.startswith("enc1:") and not str(secret_show).startswith("••••"):
-                try:
-                    c.execute("UPDATE ws_vault SET secret=? WHERE uid=?", (_seal(secret_show), r["uid"]))
-                    migrated_any = True
-                except Exception as exc:
-                    print("vault migration skipped for", r["uid"], exc)
+            if _authorized() or _cookie_ok():
+                if secret_blob.startswith("enc1:"):
+                    secret_show = _unseal(secret_blob)
+                    if not str(secret_show).startswith("••••"):
+                        try:
+                            secret_blob = _seal(secret_show)
+                            c.execute("UPDATE ws_vault SET secret=? WHERE uid=?", (secret_blob, r["uid"]))
+                            migrated_any = True
+                        except Exception as exc:
+                            print("legacy sealed vault migration skipped for", r["uid"], exc)
+                elif secret_blob.startswith("enc2:"):
+                    secret_show = _unseal(secret_blob)
+                else:
+                    # Older versions could persist plaintext when encryption failed.
+                    # On an authenticated local Vault view, show once and immediately re-seal.
+                    secret_show = secret_blob
+                    if secret_blob:
+                        try:
+                            secret_blob = _seal(secret_blob)
+                            c.execute("UPDATE ws_vault SET secret=? WHERE uid=?", (secret_blob, r["uid"]))
+                            migrated_any = True
+                        except Exception as exc:
+                            secret_show = "•••• (رمز قدیمی؛ مهاجرت امن ناموفق بود)"
+                            print("legacy plaintext vault migration failed for", r["uid"], exc)
+            else:
+                secret_show = "••••"
             items.append({"uid": r["uid"], "title": r["title"], "body": f"{r['username']}\n{secret_show}"})
         if migrated_any:
             c.commit()
