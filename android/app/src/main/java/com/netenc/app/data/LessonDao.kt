@@ -22,6 +22,10 @@ interface LessonDao {
     @Query("SELECT COUNT(*) FROM lessons WHERE deleted = 0 AND length(fullContent) > 80")
     suspend fun countFilled(): Int
 
+    /** Rows with enough hierarchy metadata to appear in the chapter tree. */
+    @Query("SELECT COUNT(*) FROM lessons WHERE deleted = 0 AND chapterOrder > 0 AND length(trim(chapterTitle)) > 0 AND length(trim(subTitle)) > 0")
+    suspend fun countTreeReady(): Int
+
     @Query("SELECT * FROM lessons WHERE deleted = 0")
     suspend fun allForPush(): List<LessonEntity>
 
