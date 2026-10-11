@@ -36,8 +36,12 @@ class MainActivity : AppCompatActivity() {
         logView = findViewById(R.id.logView)
 
         val prefs = getSharedPreferences("netenc", MODE_PRIVATE)
+        // Remove an older hard-coded numeric token from previous builds.
+        if (prefs.getString("token", "")?.matches(Regex("[0-9]{11}")) == true) {
+            prefs.edit().putString("token", "").apply()
+        }
         hostInput.setText(prefs.getString("host", ""))
-        tokenInput.setText(prefs.getString("token", SettingsActivity.DEFAULT_TOKEN) ?: SettingsActivity.DEFAULT_TOKEN)
+        tokenInput.setText(prefs.getString("token", SettingsActivity.DEFAULT_TOKEN) ?: "")
 
         ReminderScheduler.scheduleHourly(this)
 
@@ -91,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnAbout).setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Engineer Jokar")
-                .setMessage("یادگیری عمیق + کارها + یادداشت + رمز\nتوکن: 09136555866")
+                .setMessage("یادگیری عمیق + کارها + یادداشت + رمز")
                 .setPositiveButton("باشه", null)
                 .show()
         }
