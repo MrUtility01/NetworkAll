@@ -230,8 +230,8 @@ def merge_by_title(data, lessons):
 
 def _title_key(value):
     """Stable enough for duplicate detection across generated lesson packs."""
-    value = re.sub(r"^\\[L[0-4]\\]\\s*", "", str(value or "")).strip()
-    return re.sub(r"\\s+", " ", value).casefold()
+    value = re.sub(r"^\[L[0-4]\]\s*", "", str(value or "")).strip()
+    return re.sub(r"\s+", " ", value).casefold()
 
 
 def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
@@ -282,7 +282,7 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
             notes = as_text(src.get("notes"))
             assessment = (src.get("meta") or {}).get("assessment")
             if assessment and "EJ_ASSESSMENT" not in notes:
-                notes += "\\n\\n<!-- EJ_ASSESSMENT\\n" + json.dumps(assessment, ensure_ascii=False) + "\\n-->\\n"
+                notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n-->\n"
             uid = src.get("uid") or f"lesson:ch{int(order):02d}:extra:{int(group):03d}:{len(les_out):04d}"
             les_out.append({
                 "uid": uid,
