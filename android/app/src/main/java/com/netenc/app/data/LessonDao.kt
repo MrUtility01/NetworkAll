@@ -29,8 +29,8 @@ interface LessonDao {
     @Query("SELECT * FROM lessons WHERE deleted = 0")
     suspend fun allForPush(): List<LessonEntity>
 
-    @Query("SELECT * FROM lessons")
-    suspend fun allIncludingDeleted(): List<LessonEntity>
+    @Query("SELECT uid, deleted FROM lessons")
+    suspend fun allDeletionStates(): List<LessonDeletionState>
 
     @Query(
         """SELECT * FROM lessons WHERE deleted = 0 AND (
@@ -59,4 +59,10 @@ interface LessonDao {
 data class ChapterRow(
     val chapterOrder: Int,
     val chapterTitle: String
+)
+
+
+data class LessonDeletionState(
+    val uid: String,
+    val deleted: Boolean
 )
