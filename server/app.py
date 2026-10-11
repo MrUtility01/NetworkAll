@@ -56,9 +56,10 @@ app = Flask(__name__, template_folder=str(BASE / "templates"), static_folder=str
 app.config["JSON_AS_ASCII"] = False
 
 _MODULE_STATUS = {"workspace": False, "study": False, "workspace_error": "", "study_error": ""}
+start_reminder_loop = None
 
 try:
-    from workspace_routes import bp as workspace_bp, set_auth_checker
+    from workspace_routes import bp as workspace_bp, set_auth_checker, start_reminder_loop
     app.register_blueprint(workspace_bp)
     _MODULE_STATUS["workspace"] = True
 except Exception as _e:
@@ -288,6 +289,8 @@ def main():
     host = BIND_HOST
     port = int(os.environ.get("NETENC_PORT", "5050"))
     db()
+    if start_reminder_loop:
+        start_reminder_loop()
     if register_study_routes:
         try:
             register_study_routes(app, db, require_token)
