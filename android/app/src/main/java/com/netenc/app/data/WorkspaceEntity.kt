@@ -1,5 +1,6 @@
 package com.netenc.app.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,6 +12,7 @@ data class TaskEntity(
     val done: Boolean = false,
     val dueAt: String = "",
     val priority: Int = 1,
+    @ColumnInfo(defaultValue = "'none'") val recurrence: String = "none",
     val lastUpdated: String = "",
     val deviceId: String = "android"
 )
