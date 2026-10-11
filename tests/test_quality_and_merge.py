@@ -7,6 +7,7 @@ import sqlite3
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,6 +21,7 @@ from sync_engine import compare_lww, content_hash, merge_push
 from audit_content import _item_quality
 from core.db import WebDB
 from core.deep_fallback import build_deep_fallback
+import app as server_app
 
 
 class DeepFallbackTests(unittest.TestCase):
@@ -308,6 +310,28 @@ class ContentMergeTests(unittest.TestCase):
         self.assertTrue(result["has_questions"])
         self.assertTrue(result["has_answer_key"])
         self.assertFalse(result["answer_key_ids_match"])
+
+
+class SyncApiContractTests(unittest.TestCase):
+    def test_push_does_not_claim_unsupported_entities_or_missing_lessons(self):
+        with tempfile.TemporaryDirectory() as td:
+            db = WebDB(Path(td) / "sync-api.sqlite")
+            payload = {
+                "records": [
+                    {"uid": "task-1", "entity": "task", "title": "LAN sync test"},
+                    {"uid": "lesson:missing", "entity": "lesson", "title_fa": "درس ناشناخته"},
+                ]
+            }
+            with patch.object(server_app, "db", return_value=db), patch.object(server_app, "require_token", return_value=None):
+                response = server_app.app.test_client().post("/api/sync/push", json=payload)
+            self.assertEqual(response.status_code, 200)
+            body = response.get_json()
+            self.assertEqual(body["accepted"], 0)
+            self.assertEqual(body["unsupported"], 1)
+            self.assertEqual(body["unsupported_uids"], ["task-1"])
+            self.assertEqual(body["missing_targets"], 1)
+            self.assertEqual(body["missing_target_uids"], ["lesson:missing"])
+            db.conn.close()
 
 
 if __name__ == "__main__":
