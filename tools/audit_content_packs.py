@@ -9,6 +9,7 @@ quarantined with a backup rather than removed blindly.
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import re
 import sys
@@ -58,6 +59,13 @@ def extract_items(obj, path):
         items.extend(x for x in obj["lessons"] if isinstance(x, dict))
     if isinstance(obj.get("commands"), list):
         items.extend(x for x in obj["commands"] if isinstance(x, dict))
+    if isinstance(obj.get("chapters"), list):
+        for chapter in obj["chapters"]:
+            if not isinstance(chapter, dict):
+                continue
+            for sub in chapter.get("subchapters") or []:
+                if isinstance(sub, dict):
+                    items.extend(x for x in (sub.get("lessons") or []) if isinstance(x, dict))
     curriculum = obj.get("curriculum")
     if isinstance(curriculum, dict):
         for chapter in curriculum.get("chapters") or []:
@@ -90,12 +98,19 @@ def record_blob(item):
 def inspect_record(path, item, index, min_chars):
     title = text(item.get("title_fa") or item.get("title_en") or item.get("title") or item.get("command") or f"item-{index}")
     blob = record_blob(item)
+    is_network_topic = bool(NETWORK_TERMS.search(title))
+    generic_network_boilerplate = (
+        "رانندگی در شهر شلوغ" in blob
+        and "VLAN, trunk, STP" in blob
+        and not is_network_topic
+    )
     checks = {
         "shallow": len(blob.strip()) < min_chars,
         "missing_lab_marker": not LAB_RE.search(blob),
         "missing_scenario_marker": not SCENARIO_RE.search(blob),
         "missing_answer_key_marker": not ANSWER_RE.search(blob),
         "missing_source_marker": not SOURCE_RE.search(blob),
+        "generic_network_boilerplate": generic_network_boilerplate,
         "missing_title": not any(item.get(k) for k in ("title_fa", "title_en", "title", "command")),
     }
     uid = text(item.get("uid") or item.get("id") or item.get("code")).strip()
@@ -126,6 +141,7 @@ def main():
     args = ap.parse_args()
 
     files = pack_files()
+    active_asset = ROOT / "android/app/src/main/assets/curriculum_index.json.gz"
     report = {
         "tool": "audit_content_packs",
         "heuristic_only": True,
@@ -146,7 +162,11 @@ def main():
     id_locations = {}
     for path in files:
         try:
-            data = json.loads(path.read_text(encoding="utf-8-sig"))
+            if path.suffix.lower() == ".gz":
+                with gzip.open(path, "rt", encoding="utf-8-sig") as handle:
+                    data = json.load(handle)
+            else:
+                data = json.loads(path.read_text(encoding="utf-8-sig"))
         except Exception as exc:
             report["parse_errors"].append({"file": str(path.relative_to(ROOT)), "error": str(exc)})
             continue
@@ -165,6 +185,25 @@ def main():
             "missing_lab_marker": sum("missing_lab_marker" in x["checks"] for x in file_items),
             "missing_answer_key_marker": sum("missing_answer_key_marker" in x["checks"] for x in file_items),
         })
+
+    # Audit the actual Android curriculum asset separately; pack and output IDs may
+    # intentionally overlap, so output records are not mixed into duplicate-ID checks.
+    report["active_curriculum"] = {"file": str(active_asset.relative_to(ROOT)), "records": 0, "warnings": {}}
+    if active_asset.is_file():
+        try:
+            with gzip.open(active_asset, "rt", encoding="utf-8-sig") as handle:
+                active_data = json.load(handle)
+            active_records = extract_items(active_data, active_asset)
+            active_rows = [inspect_record(active_asset, item, i, args.min_chars) for i, item in enumerate(active_records, 1)]
+            report["active_curriculum"]["records"] = len(active_rows)
+            active_counts = Counter(check for item in active_rows for check in item["checks"])
+            report["active_curriculum"]["warnings"] = dict(sorted(active_counts.items()))
+            report["active_curriculum"]["review_samples"] = [
+                {"uid": item["uid"], "title": item["title"], "checks": item["checks"], "content_chars": item["content_chars"]}
+                for item in active_rows if item["checks"][:]
+            ][:500]
+        except Exception as exc:
+            report["active_curriculum"]["error"] = str(exc)
 
     report["duplicate_ids"] = [
         {"uid": uid, "locations": locations}
@@ -200,7 +239,7 @@ def main():
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
         print("\nJSON report:", out)
-    warnings = bool(report["parse_errors"] or report["duplicate_ids"] or report["warning_counts"])
+    warnings = bool(report["parse_errors"] or report["duplicate_ids"] or report["warning_counts"] or report.get("active_curriculum", {}).get("warnings"))
     return 1 if args.fail_on_warnings and warnings else 0
 
 
