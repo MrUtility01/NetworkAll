@@ -100,10 +100,14 @@ def inspect_record(path, item, index, min_chars):
     title = text(item.get("title_fa") or item.get("title_en") or item.get("title") or item.get("command") or f"item-{index}")
     blob = record_blob(item)
     is_network_topic = bool(NETWORK_TERMS.search(title))
+    generic_terms = (
+        "vlan", "trunk", "stp", "show running-config", "configure terminal",
+        "show ip interface brief", "vrf", "router", "switch", "gateway",
+        "uplink", "spanning tree",
+    )
     generic_network_boilerplate = (
-        "رانندگی در شهر شلوغ" in blob
-        and "VLAN, trunk, STP" in blob
-        and not is_network_topic
+        not is_network_topic
+        and sum(term in blob.lower() for term in generic_terms) >= 4
     )
     checks = {
         "shallow": len(blob.strip()) < min_chars,
