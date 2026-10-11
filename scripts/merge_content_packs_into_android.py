@@ -504,18 +504,26 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
     def identity(lesson):
         title = str(lesson.get("title_fa") or "").strip().casefold()
         return title
-    existing_identities = {
-        identity(les)
-        for sub in chapter.get("subchapters", [])
-        for les in (sub.get("lessons") or [])
-    }
+    existing_by_identity = {}
+    for sub in chapter.get("subchapters", []):
+        for lesson in (sub.get("lessons") or []):
+            key = identity(lesson)
+            if key:
+                existing_by_identity.setdefault(key, lesson)
+    existing_identities = set(existing_by_identity)
     added = 0
     for si in sorted(subs):
         incoming = []
+        pending_by_identity = {}
         for src in sorted(subs[si], key=lambda x: (x.get("lesson_order") or 0)):
             uid = src.get("uid") or f"lesson:ch{order:02d}:s{int(si):03d}:l{len(incoming):04d}"
             identity_key = identity(src)
             if identity_key in existing_identities:
+                # Same title from another pack is a merge candidate, not a reason to
+                # discard the later source. Preserve deeper content and its assessment.
+                matched = existing_by_identity.get(identity_key) or pending_by_identity.get(identity_key)
+                if matched is not None:
+                    apply_fields(matched, src)
                 continue
             if uid in existing_uids:
                 # Same source UID but a different title means an upstream collision,
@@ -530,7 +538,7 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
             if ass and "EJ_ASSESSMENT" not in notes:
                 notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(ass, ensure_ascii=False) + "\n-->\n"
             objectives = src.get("learning_objectives") or meta.get("learning_objectives") or []
-            incoming.append({
+            lesson_record = {
                 "uid": uid,
                 "title_fa": src.get("title_fa") or "",
                 "title_en": src.get("title_en") or "",
@@ -543,7 +551,10 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
                 "meta_json": json.dumps(meta, ensure_ascii=False, separators=(",", ":")) if meta else "{}",
                 "learning_objectives": _objectives_text(objectives),
                 "source_status": src.get("source_status") or "review_required",
-            })
+            }
+            incoming.append(lesson_record)
+            if identity_key:
+                pending_by_identity[identity_key] = lesson_record
             existing_uids.add(uid)
             existing_identities.add(identity_key)
             added += 1
