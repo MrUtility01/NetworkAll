@@ -1,6 +1,9 @@
 package com.netenc.app
 
 import android.content.Intent
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
@@ -39,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         hostInput.setText(prefs.getString("host", ""))
         tokenInput.setText(prefs.getString("token", "") ?: "")
 
-        ReminderScheduler.scheduleHourly(this)
+        if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {\n            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1001)\n        }\n        ReminderScheduler.scheduleMinutes(this, 15)
 
         findViewById<Button>(R.id.btnStudyHub).setOnClickListener {
             startActivity(Intent(this, StudyHubActivity::class.java))
