@@ -24,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import android.icu.util.Calendar
-import android.icu.util.PersianCalendar
+import android.icu.util.ULocale
 import com.netenc.app.data.AppDatabase
 import com.netenc.app.data.TaskEntity
 import com.netenc.app.reminder.TaskReminderScheduler
@@ -45,13 +45,7 @@ class PlannerActivity : AppCompatActivity() {
     private lateinit var selectedTitle: TextView
     private lateinit var taskList: LinearLayout
     private var tasks: List<TaskEntity> = emptyList()
-    private var selectedDay = PersianCalendar().apply {
-        timeInMillis = System.currentTimeMillis()
-        set(Calendar.HOUR_OF_DAY, 12)
-        set(Calendar.MINUTE, 0)
-        set(Calendar.SECOND, 0)
-        set(Calendar.MILLISECOND, 0)
-    }
+    private var selectedDay = persianAt(System.currentTimeMillis())
 
     private val monthNames = arrayOf(
         "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور",
@@ -157,7 +151,7 @@ class PlannerActivity : AppCompatActivity() {
         setOnClickListener { action() }
     }
 
-    private fun persianAt(time: Long): PersianCalendar = PersianCalendar().apply {
+    private fun persianAt(time: Long): Calendar = Calendar.getInstance(ULocale("fa_IR@calendar=persian")).apply {
         timeInMillis = time
         set(Calendar.HOUR_OF_DAY, 12)
         set(Calendar.MINUTE, 0)
@@ -165,15 +159,14 @@ class PlannerActivity : AppCompatActivity() {
         set(Calendar.MILLISECOND, 0)
     }
 
-    private fun cloneDay(day: PersianCalendar): PersianCalendar =
+    private fun cloneDay(day: Calendar): Calendar =
         persianAt(day.timeInMillis).apply {
             set(Calendar.YEAR, day.get(Calendar.YEAR))
             set(Calendar.MONTH, day.get(Calendar.MONTH))
             set(Calendar.DAY_OF_MONTH, day.get(Calendar.DAY_OF_MONTH))
         }
 
-    private fun dateKey(time: Long): String = isoDate.format(Date(time))
-    private fun dayLabel(day: PersianCalendar): String {
+    private fun dayLabel(day: Calendar): String {
         val m = day.get(Calendar.MONTH).coerceIn(0, 11)
         return day.get(Calendar.DAY_OF_MONTH).toString() + " " + monthNames[m] + " " + day.get(Calendar.YEAR)
     }
