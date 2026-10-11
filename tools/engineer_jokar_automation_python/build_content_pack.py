@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from datetime import date
 
-OUT = Path(__file__).with_name('automation_python_curriculum_pack.json')
+OUT = Path(__file__).resolve().parents[1] / 'packs' / 'automation_python' / 'automation_python_curriculum_pack.json'
 LEVELS = [
     ('L0', 'آشنایی', 'Intro', 'درک شهودی و واژگان پایه'),
     ('L1', 'مقدماتی', 'Junior', 'اجرای کار پایه در محیط کنترل‌شده'),
