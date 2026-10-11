@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """ادغام بسته‌های tools؛ فصل ۶۴=Git؛ امنیت→۶۵؛ OSPF/VPN→۶۶/۶۷؛ دستورات→۶۸."""
 from __future__ import annotations
-import gzip, json, sys, re
+import gzip, json, sys, re, hashlib
 from pathlib import Path
 from collections import defaultdict
 
@@ -231,11 +231,12 @@ def git_markdown_to_lessons(path: Path) -> list:
                 break
         summary_match = re.search(r"(?m)^\\*\\*خلاصه(?: فصل)?:?\\*\\*\\s*(.+)$", body)
         summary = summary_match.group(1).strip() if summary_match else body[:240].replace("\\n", " ").strip()
-        scenario_match = re.search(r"(?ms)^##\\s+4[.、 ]*سناریوی عملی.*?(?=^##\\s+5[.、 ]|\\Z)", body)
+        scenario_match = re.search(r"(?ms)^##\\s+(?:4|۴)[.、 ]*سناریوی عملی.*?(?=^##\\s+(?:5|۵)[.、 ]|\\Z)", body)
         examples = scenario_match.group(0).strip() if scenario_match else ""
         code_blocks = re.findall(re.escape(fence) + r"[^\\n]*\\n(.*?)" + re.escape(fence), body, flags=re.S)
         commands = "\\n".join(code_blocks).strip()
-        uid = f"lesson:ch64:git:s{current_sub:02d}:l{idx + 1:04d}"
+        uid_hash = hashlib.sha1(f"{current_sub}|{bare_title}|{level}".encode("utf-8")).hexdigest()[:12]
+        uid = f"lesson:ch64:git:s{current_sub:02d}:{uid_hash}"
         lessons.append({
             "uid": uid,
             "chapter_order": 64,
@@ -297,6 +298,73 @@ def merge_by_title(data, lessons):
                     apply_fields(les, src)
                     n += 1
     return n
+
+
+def prune_placeholder_lessons(data):
+    """Remove only obvious generated placeholders from the active curriculum."""
+    marker = re.compile(r"seed.{0,40}ایجاد|place to develop|placeholder|coming soon|TODO|محل توسعه محتوای تأییدشده", re.I)
+    removed = 0
+    for chapter in data.get("chapters", []):
+        for sub in chapter.get("subchapters", []):
+            kept = []
+            for lesson in sub.get("lessons", []):
+                content = "\\n".join(str(lesson.get(k) or "") for k in ("title_fa", "summary", "full_content", "examples", "notes"))
+                if len(str(lesson.get("full_content") or "")) < 1800 and marker.search(content):
+                    removed += 1
+                    continue
+                kept.append(lesson)
+            sub["lessons"] = kept
+        chapter["subchapters"] = [s for s in chapter.get("subchapters", []) if s.get("lessons")]
+    return removed
+
+
+def prune_legacy_command_uids(data):
+    """Drop only command IDs produced by the old colliding index-only UID scheme."""
+    removed = 0
+    for chapter in data.get("chapters", []):
+        if int(chapter.get("order") or 0) != 68:
+            continue
+        for sub in chapter.get("subchapters", []):
+            before = sub.get("lessons", [])
+            sub["lessons"] = [x for x in before if not re.fullmatch(r"lesson:ch68:cmd:\\d{4}", str(x.get("uid") or ""))]
+            removed += len(before) - len(sub["lessons"])
+        chapter["subchapters"] = [s for s in chapter.get("subchapters", []) if s.get("lessons")]
+    return removed
+
+
+def prune_legacy_security_uids(data):
+    """Remove old chapter-64 security pack IDs misplaced under chapter 65."""
+    removed = 0
+    for chapter in data.get("chapters", []):
+        if int(chapter.get("order") or 0) != 65:
+            continue
+        for sub in chapter.get("subchapters", []):
+            before = sub.get("lessons", [])
+            sub["lessons"] = [
+                x for x in before
+                if not str(x.get("uid") or "").startswith("lesson:ch64:lv")
+                and not str(x.get("uid") or "").startswith("lesson:ch64:wireless:")
+            ]
+            removed += len(before) - len(sub["lessons"])
+        chapter["subchapters"] = [s for s in chapter.get("subchapters", []) if s.get("lessons")]
+    return removed
+
+
+def remap_lessons_to_chapter(lessons, target_chapter):
+    out = []
+    for source in lessons:
+        item = dict(source)
+        item["chapter_order"] = target_chapter
+        uid = str(item.get("uid") or "")
+        if uid.startswith("lesson:ch"):
+            uid = re.sub(r"^lesson:ch\\d{2}:", f"lesson:ch{target_chapter:02d}:", uid)
+        item["uid"] = uid
+        if not item.get("subchapter_order"):
+            m = re.search(r":lv(\\d+):", uid)
+            if m:
+                item["subchapter_order"] = int(m.group(1))
+        out.append(item)
+    return out
 
 
 def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
