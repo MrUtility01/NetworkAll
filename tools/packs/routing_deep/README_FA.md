@@ -1,11 +1,12 @@
-# بسته A — مسیریابی عمیق (OSPF + BGP + Redistribution)
+# بستهٔ مسیریابی عمیق — OSPF، BGP و Redistribution
 
-- منبع خام: `tools/ENGINEER_JOKAR_OSPF_BGP_Redistribution_deep_v1.json`
-- بسته استاندارد برنامه: `routing_deep_pack.json`
-- ادغام در فصل‌های مرتبط (عمدتاً فصل ۱۴ مسیریابی)
+- مسیر JSON رسمی: tools/packs/routing_deep/ospf_bgp_redistribution_deep_pack.json
+- مرجع دستورات Cisco: tools/packs/routing_deep/chapter_68_cisco_routing_1600.json
+- فصل‌های هدف: مسیرهای مرتبط در curriculum و افزونهٔ Routing عمیق
+- وضعیت: review_required؛ پیش از اتکا در محیط واقعی، نسخهٔ IOS/IOS-XE، topology، خروجی لابراتوار و منابع باید بررسی شوند.
 
-## ویندوز
+اعتبارسنجی شکل و ساختار:
 
-```bash
-python tools/apply_any_pack.py --db server/data/encyclopedia.db --pack tools/packs/routing_deep/routing_deep_pack.json --apply
-```
+    python tools/audit_content.py --packs-only --json docs/audits/content-audit.json
+
+واردسازی مستقیم در دیتابیس فقط پس از تطبیق schema، preview و backup مجاز است. از replace کردن کامل فصل به‌جای merge بر اساس UID یا عنوان خودداری کنید.
