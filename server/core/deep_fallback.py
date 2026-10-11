@@ -94,6 +94,12 @@ def _story(topic: str, cat: str) -> str:
         "monitoring": f"هشدارهای زیاد باعث شده تیم NOC هشدار مهم را از دست بدهد. باید baseline، threshold، correlation و runbook سنجیده شود.",
         "voip": f"کاربر صدا را می‌شنود اما صدایش به طرف مقابل نمی‌رسد. signaling، مسیر RTP، NAT و ACL باید جداگانه با شواهد بررسی شوند.",
         "soc": f"چند رخداد امنیتی نزدیک به هم دیده شده‌اند. تحلیل‌گر باید timeline و evidence را حفظ کند و فرضیه را از واقعیت جدا کند.",
+        "windows": f"یک سرویس Windows پس از تغییر GPO برای بخشی از کاربران از کار افتاده است. باید policy مؤثر، service state و Event Log را با یک میزبان سالم مقایسه کرد.",
+        "linux": f"یک سرویس Linux بعد از به‌روزرسانی شروع نمی‌شود. مهندس باید dependency، systemd unit، journal و permission را بررسی کند و پیش از تغییر وضعیت اولیه را ثبت کند.",
+        "python": f"یک اسکریپت مدیریتی در برخی ورودی‌ها شکست می‌خورد. باید خطا بازتولید، ورودی اعتبارسنجی، exception ثبت و رفتار با unit test اثبات شود.",
+        "sql": f"گزارش پایگاه داده کند شده یا نتیجهٔ غیرمنتظره دارد. باید correctness، query plan، index و transaction جداگانه بررسی شوند.",
+        "storage": f"سامانه با افزایش latency دیسک روبه‌رو شده است. فضای آزاد، سلامت رسانه، controller، queue و latency باید مستقل اندازه‌گیری شوند.",
+        "virtualization": f"یک ماشین مجازی کند شده است. باید host contention، virtual switch، storage latency و وضعیت guest با هم مقایسه شوند.",
     }
     if cat in specific:
         return specific[cat]
@@ -101,9 +107,9 @@ def _story(topic: str, cat: str) -> str:
     if hooks:
         return hooks[0]
     return (
-        f"سازمانی با چند سایت و حدود ۸۰۰ کاربر. تیم NOC گزارش می‌دهد که "
-        f"«{topic}» باعث کندی یا قطع سرویس حیاتی شده. شما به عنوان مهندس شبکه "
-        f"باید از لایه ۱ تا ۷ ایزوله کنید، شواهد جمع کنید و با حداقل قطعی رفع کنید."
+        f"یک تیم IT با مشکل مرتبط با «{topic}» روبه‌رو شده است. پیش از تغییر، "
+        f"باید محدودهٔ اثر، زمان شروع، تغییرات اخیر و شواهد قابل تکرار را ثبت کند؛ "
+        f"سپس فرضیه را در محیط آزمایشی بیازماید و معیار موفقیت و rollback داشته باشد."
     )
 
 
@@ -118,6 +124,12 @@ def _arch_table(cat: str) -> str:
         "monitoring": "| جزء | نقش |\n|---|---|\n| Metric | عدد زمان‌مند |\n| Log | رخداد جزئی |\n| Trace | مسیر یک درخواست |\n| Threshold | شرط هشدار |\n| Runbook | اقدام استاندارد |",
         "voip": "| جزء | نقش |\n|---|---|\n| SIP | signaling تماس |\n| RTP/SRTP | media |\n| Codec | فشرده‌سازی صدا |\n| SBC/NAT | مرز و عبور رسانه |\n| QoS | اولویت‌دادن به voice |",
         "soc": "| جزء | نقش |\n|---|---|\n| SIEM | همبستگی رخدادها |\n| EDR | telemetry endpoint |\n| IOC | نشانه قابل جستجو |\n| Timeline | ترتیب شواهد |\n| Playbook | اقدام کنترل‌شده |",
+        "windows": "| جزء | نقش |\\n|---|---|\\n| Service Control Manager | مدیریت سرویس‌ها |\\n| Event Log | شواهد رخداد |\\n| GPO | سیاست پیکربندی |\\n| Identity/ACL | هویت و مجوز |\\n| PowerShell | مشاهده و اتوماسیون |",
+        "linux": "| جزء | نقش |\\n|---|---|\\n| Kernel | منابع و syscallها |\\n| systemd | مدیریت سرویس |\\n| journal | شواهد رخداد |\\n| filesystem/permissions | داده و مجوز |\\n| package manager | چرخهٔ نصب/به‌روزرسانی |",
+        "python": "| جزء | نقش |\\n|---|---|\\n| Input contract | شکل ورودی |\\n| Function/module | منطق قابل آزمون |\\n| Exception | مدیریت شکست |\\n| Test suite | قرارداد رفتاری |\\n| Packaging/venv | محیط تکرارپذیر |",
+        "sql": "| جزء | نقش |\\n|---|---|\\n| Schema/constraints | ساختار و صحت داده |\\n| Query planner | انتخاب مسیر اجرا |\\n| Index | مسیر دسترسی |\\n| Transaction | اتمی‌بودن تغییر |\\n| Backup/restore | بازیابی داده |",
+        "storage": "| جزء | نقش |\\n|---|---|\\n| Media | نگهداری داده |\\n| Controller/path | مسیر I/O |\\n| Filesystem/volume | سازمان‌دهی داده |\\n| Queue/latency | عملکرد I/O |\\n| Backup/checksum | صحت و بازیابی |",
+        "virtualization": "| جزء | نقش |\\n|---|---|\\n| Host/hypervisor | تخصیص منابع |\\n| Guest VM | سیستم‌عامل مهمان |\\n| vSwitch | شبکهٔ مجازی |\\n| Datastore | ذخیره‌سازی VM |\\n| Snapshot/backup | بازگشت و بازیابی |",
     }
     if cat in specific:
         return specific[cat]
@@ -148,6 +160,12 @@ def _frame_steps(cat: str) -> str:
         "monitoring": "1. baseline جمع کن\n2. metric/log/trace مناسب انتخاب کن\n3. threshold و suppression را تنظیم کن\n4. failure کنترل‌شده بساز\n5. alert، evidence و runbook را تأیید کن",
         "voip": "1. endpoint و مسیر تماس را مشخص کن\n2. SIP registration و call setup را بررسی کن\n3. مسیر RTP و NAT را اندازه بگیر\n4. jitter/loss/latency را ثبت کن\n5. تماس دوطرفه و کیفیت را تأیید کن",
         "soc": "1. زمان‌ها را به UTC نرمال کن\n2. شواهد خام را حفظ و hash کن\n3. timeline و query correlation بساز\n4. hypothesis را با negative control تست کن\n5. containment و معیار خاتمه را مستند کن",
+        "windows": "1. Service state و وابستگی‌ها را بخوان\\n2. Event Log را در بازهٔ زمانی رخداد بررسی کن\\n3. GPO مؤثر و دسترسی حساب را مقایسه کن\\n4. تغییر را روی میزبان آزمایشی اعمال کن\\n5. سرویس و سناریوی کاربر را دوباره تأیید کن",
+        "linux": "1. systemctl status را بخوان\\n2. journalctl را برای همان بازه بررسی کن\\n3. dependency، permission و فضای دیسک را بررسی کن\\n4. یک تغییر کنترل‌شده اعمال کن\\n5. health check و log را پس از تغییر مقایسه کن",
+        "python": "1. نسخه و dependencyها را ثبت کن\\n2. خطا را با ورودی حداقلی بازتولید کن\\n3. تابع و exception را بررسی کن\\n4. unit test برای حالت عادی/مرزی/نامعتبر اضافه کن\\n5. کل suite و compileall را اجرا کن",
+        "sql": "1. query و پارامتر را ثبت کن\\n2. نتیجه و constraint را تأیید کن\\n3. EXPLAIN / query plan را بررسی کن\\n4. index یا migration را روی کپی بسنج\\n5. transaction rollback و integrity check را اجرا کن",
+        "storage": "1. health status و فضای آزاد را بخوان\\n2. latency و queue را اندازه بگیر\\n3. controller/path و event log را بررسی کن\\n4. تست را فقط روی volume آزمایشی اجرا کن\\n5. checksum و سلامت داده را پس از restore تأیید کن",
+        "virtualization": "1. host resource contention را بررسی کن\\n2. guest CPU/RAM و driverها را مقایسه کن\\n3. vSwitch و datastore latency را بررسی کن\\n4. یک تغییر در VM آزمایشی اعمال کن\\n5. workload و log را پیش/پس مقایسه کن",
     }
     if cat in specific:
         return specific[cat]
@@ -575,9 +593,9 @@ def build_deep_fallback(
     story = _story(topic, cat)
 
     summary = (
-        f"«{topic}» — سطح {level_fa}. "
-        f"داستان سازمانی واقعی + معماری + فریم‌به‌فریم + دستورات چندوندر + "
-        f"Lab عملی + جدول RCA + امنیت + چک‌لیست Production."
+        f"«{topic}» — سطح {level_fa}. شامل مدل مفهومی، معماری، مراحل اجرا، "
+        f"مثال قابل تکرار، لابراتوار، راهنمای عیب‌یابی، معیار Verify، rollback، "
+        f"چک‌لیست عملیاتی و آزمون با پاسخ‌نامه."
     )
 
     commands = "\n".join(
@@ -614,12 +632,7 @@ def build_deep_fallback(
 
 ## ۱) تشبیه ساده (برای ماندن در ذهن)
 
-رانندگی در شهر شلوغ:
-- قوانین ترافیک = پروتکل/استاندارد
-- رانندگی در خیابان خلوت = Lab
-- رانندگی در بزرگراه ساعت اوج = Production با چک‌لیست و Rollback
-
-«{topic}» همان قطعه‌ای است که اگر اشتباه تنظیم شود، یا ترافیک گیر می‌کند یا تصادف (loop / blackhole / outage) رخ می‌دهد.
+{_analogy(cat, topic)}
 
 ---
 
@@ -664,12 +677,7 @@ Symptom → Scope (کجا؟) → Evidence (دستور) → Hypothesis → Test �
 
 ## ۷) چک‌لیست Production (قبل از Apply در سازمان)
 
-- [ ] Backup گرفته شده و قابل restore است
-- [ ] Rollback نوشته و تست شده (حداقل روی کاغذ)
-- [ ] دامنه تغییر مشخص است (کدام دستگاه / VLAN / VRF)
-- [ ] پنجره Change و اطلاع‌رسانی انجام شده
-- [ ] Monitoring بعد از change فعال است
-- [ ] Runbook یک‌صفحه‌ای آماده است
+{_production_checklist(cat)}
 
 ---
 
@@ -681,6 +689,12 @@ Symptom → Scope (کجا؟) → Evidence (دستور) → Hypothesis → Test �
 3. **نقطه Rollback** قبل از هر change
 
 «{topic}» را وقتی بلدی که بتوانی ساعت ۲ شب، با لاگ و یک کلاینت واقعی، سرویس را برگردانی.
+
+---
+
+## ۹) خودآزمایی و پاسخ‌نامه
+
+{_assessment_block(cat, topic)}
 """
 
     lab = _lab_concrete(topic, cat, level)
@@ -689,12 +703,8 @@ Symptom → Scope (کجا؟) → Evidence (دستور) → Hypothesis → Test �
 
 {_rca_table(cat)}
 
-### ترتیب ایزوله‌سازی پیشنهادی
-1. لایه فیزیکی / لینک (up/down, errors, duplex)
-2. لایه ۲ (VLAN, trunk, STP state)
-3. لایه ۳ (gateway, route, ACL/NAT)
-4. سرویس (DNS, DHCP, app)
-5. کلاینت در برابر زیرساخت (مقایسه خوب/بد)
+### ترتیب عیب‌یابی پیشنهادی
+{_troubleshooting(cat)}
 
 ### یادداشت سطح {level}
 {_level_guidance(level)}
