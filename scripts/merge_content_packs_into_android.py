@@ -512,9 +512,9 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
                 existing_by_identity.setdefault(key, lesson)
     existing_identities = set(existing_by_identity)
     added = 0
+    pending_by_identity = {}
     for si in sorted(subs):
         incoming = []
-        pending_by_identity = {}
         for src in sorted(subs[si], key=lambda x: (x.get("lesson_order") or 0)):
             uid = src.get("uid") or f"lesson:ch{order:02d}:s{int(si):03d}:l{len(incoming):04d}"
             identity_key = identity(src)
@@ -571,6 +571,7 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
             target_sub = {"order": si, "title_fa": f"زیرفصل {si}", "lessons": []}
             chapter["subchapters"].append(target_sub)
         target_sub.setdefault("lessons", []).extend(incoming)
+        existing_by_identity.update(pending_by_identity)
 
     chapter["subchapters"].sort(
         key=lambda sub: int(sub.get("order", sub.get("order_index", 10**9)) or 10**9)
