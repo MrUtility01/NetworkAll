@@ -51,6 +51,22 @@ class DeepFallbackTests(unittest.TestCase):
         self.assertNotIn("VLAN / VRF", combined)
         self.assertNotIn("کابل uplink", combined)
 
+    def test_fallback_assessment_has_separate_matching_answer_key(self):
+        lesson = build_deep_fallback("[L2] Git merge conflict", "Git merge conflict")
+        assessment = lesson["assessment"]
+        question_ids = {q["id"] for q in assessment["questions"]}
+        answer_ids = {a["id"] for a in assessment["answer_key"]}
+        self.assertGreaterEqual(len(assessment["questions"]), 2)
+        self.assertEqual(question_ids, answer_ids)
+        quality = _item_quality({
+            "title_fa": "[L2] Git merge conflict",
+            "full_content": lesson["full_content"],
+            "assessment": assessment,
+        })
+        self.assertTrue(quality["has_questions"])
+        self.assertTrue(quality["has_answer_key"])
+        self.assertTrue(quality["answer_key_ids_match"])
+
 
 class ContentMergeTests(unittest.TestCase):
     def test_append_preserves_base_chapter_and_existing_lesson(self):
