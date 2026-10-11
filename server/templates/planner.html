@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>تقویم و برنامه‌ریز روزانه | NetworkEncyclopedia</title>
+  <style>
+    :root{font-family:Tahoma,"Segoe UI",sans-serif;color:#0f172a;background:#f1f5f9}
+    *{box-sizing:border-box} body{margin:0;padding:16px} button,input,select,textarea{font:inherit}
+    button{cursor:pointer;border:0;border-radius:9px;padding:10px 13px;background:#0369a1;color:white}
+    button.ghost{background:#e2e8f0;color:#0f172a} button.danger{background:#b91c1c;color:white}
+    .top{max-width:1250px;margin:0 auto 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .top h1{font-size:21px;margin:0 auto 0 0}.layout{max-width:1250px;margin:auto;display:grid;grid-template-columns:minmax(280px,1fr) minmax(320px,1fr);gap:14px}
+    .card{background:white;border-radius:15px;padding:16px;box-shadow:0 4px 18px #0f172a0c;border:1px solid #e2e8f0;min-width:0}
+    .monthbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}.monthbar h2{font-size:17px;margin:0}
+    .calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.weekday{text-align:center;color:#64748b;font-size:12px;padding:7px 0}
+    .day{min-height:54px;background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0;padding:6px 2px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px}
+    .day .num{font-weight:700}.day .count{font-size:10px;color:#0369a1}.day.selected{background:#dbeafe;border-color:#2563eb}.day.today{outline:2px solid #94a3b8;outline-offset:-3px}
+    .selected-label{font-weight:700;margin:14px 0 4px}.muted{color:#64748b;font-size:12px;line-height:1.8}
+    form{display:grid;gap:9px;margin:12px 0}.field{display:grid;gap:5px}.field label{font-size:12px;color:#475569}
+    input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px;background:white;color:#0f172a}
+    textarea{min-height:65px;resize:vertical}.formrow{display:grid;grid-template-columns:1fr 1fr;gap:9px}.checkbox{display:flex;align-items:center;gap:8px}.checkbox input{width:auto}
+    .task{border:1px solid #e2e8f0;border-radius:11px;padding:11px;margin:8px 0;display:grid;grid-template-columns:auto 1fr;gap:9px}
+    .task input[type=checkbox]{width:19px;height:19px;margin-top:2px}.task.done .task-title{text-decoration:line-through;color:#64748b}
+    .task-title{font-weight:700;word-break:break-word}.task-body{font-size:13px;color:#475569;white-space:pre-wrap;margin-top:5px;word-break:break-word}
+    .meta{font-size:11px;color:#64748b;margin-top:7px;display:flex;gap:7px;flex-wrap:wrap}.priority{color:#b45309;font-weight:700}
+    .empty{padding:15px;text-align:center;color:#64748b;background:#f8fafc;border-radius:10px}
+    .error{color:#b91c1c;white-space:pre-wrap}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.status{font-size:12px;color:#64748b;flex:1}
+    @media(max-width:760px){body{padding:9px}.layout{grid-template-columns:1fr}.top h1{width:100%;margin:0}.card{padding:12px}.day{min-height:48px}}
+  </style>
+</head>
+<body>
+  <header class="top">
+    <h1>تقویم شمسی و برنامه‌ریز روزانه</h1>
+    <button type="button" class="ghost" onclick="location.href='/'">بازگشت به دانشنامه</button>
+    <button type="button" class="ghost" onclick="location.href='/workspace?tab=tasks'">فهرست کارهای قدیمی</button>
+  </header>
+  <main class="layout">
+    <section class="card">
+      <div class="monthbar">
+        <button type="button" id="prevMonth" class="ghost" aria-label="ماه قبل">ماه قبل ←</button>
+        <h2 id="monthTitle">تقویم</h2>
+        <button type="button" id="nextMonth" class="ghost" aria-label="ماه بعد">→ ماه بعد</button>
+      </div>
+      <div class="calendar" id="calendar" aria-label="تقویم شمسی"></div>
+      <p class="muted">تاریخ‌ها شمسی نمایش داده می‌شوند. برای سررسید، روز را از تقویم انتخاب کنید و ساعت را در فرم سمت چپ/پایین وارد کنید. زمان‌ها بر اساس ساعت محلی همین رایانه ذخیره می‌شوند.</p>
+    </section>
+    <section class="card">
+      <div class="toolbar">
+        <h2 style="font-size:18px;margin:0">کارهای روز</h2>
+        <span id="selectedLabel" class="status"></span>
+        <button type="button" class="ghost" id="todayBtn">امروز</button>
+      </div>
+      <div id="tasks"><div class="empty">در حال بارگذاری…</div></div>
+      <hr style="border:0;border-top:1px solid #e2e8f0;margin:18px 0">
+      <h3 style="margin:0;font-size:16px">ثبت کار جدید</h3>
+      <form id="taskForm">
+        <div class="field"><label for="title">عنوان کار</label><input id="title" name="title" maxlength="200" required placeholder="مثلاً تمرین Subnetting"></div>
+        <div class="field"><label for="body">توضیحات / سناریو (اختیاری)</label><textarea id="body" name="body" maxlength="5000" placeholder="خروجی مورد انتظار، پیش‌نیاز، یا نکته یادگیری…"></textarea></div>
+        <div class="formrow">
+          <div class="field"><label for="dueTime">ساعت سررسید (اختیاری)</label><input id="dueTime" name="dueTime" type="time"></div>
+          <div class="field"><label for="priority">اولویت</label><select id="priority" name="priority"><option value="3">زیاد</option><option value="2" selected>معمولی</option><option value="1">کم</option></select></div>
+        </div>
+        <label class="checkbox"><input id="reminder" type="checkbox" checked> یادآوری ویندوز در زمان سررسید</label>
+        <button type="submit">ذخیره کار</button>
+        <div id="formMessage" class="muted" role="status"></div>
+      </form>
+    </section>
+  </main>
+  <script src="/static/planner.js"></script>
+</body>
+</html>
