@@ -500,36 +500,73 @@ def main():
         print("ERROR missing", GZ)
         sys.exit(1)
     data = json.loads(gzip.open(GZ, "rt", encoding="utf-8").read())
+    pruned_stubs = prune_placeholder_lessons(data)
+    pruned_cmd_uids = prune_legacy_command_uids(data)
+    pruned_sec_uids = prune_legacy_security_uids(data)
+    print("pruned obvious placeholders", pruned_stubs, "legacy command IDs", pruned_cmd_uids, "misplaced security IDs", pruned_sec_uids)
+
     packs = find_pack_files()
     print("packs", len(packs))
-    sec, wireless = [], []
-    routing_extra, vpn_extra, cmd_extra = [], [], []
+    wireless = []
+    routing_extra, vpn_extra, cmd_extra, git_extra = [], [], [], []
+    general_extra = defaultdict(list)
     for p in packs:
         try:
-            d = load_json(p)
+            d = {} if p.suffix.lower() == ".md" else load_json(p)
+            lessons = normalize_pack(p, d)
         except Exception as e:
             print(" skip", p.name, e)
             continue
         name = str(p).replace("\\", "/").lower()
-        lessons = normalize_pack(p, d)
         print(" ", p.name, "lessons", len(lessons))
         if not lessons:
             continue
+
+        # This pack is a generated template, not a chapter-ready security textbook.
+        # Keep the source file for future rewriting, but do not publish its repeated
+        # generic lessons into the active Android curriculum.
         if "security_ethical" in name:
-            sec.extend(lessons)
+            print("   quarantine: template-heavy pack remains source-only pending deep rewrite")
             continue
+
         if "wireless" in name and "vpn" not in name:
-            wireless.extend(lessons)
+            for source in lessons:
+                item = dict(source)
+                item["chapter_order"] = 65
+                item["uid"] = re.sub(r"^lesson:ch64:", "lesson:ch65:", str(item.get("uid") or ""))
+                m = re.search(r":lv(\\d+):", str(item.get("uid") or ""))
+                sub = int(item.get("subchapter_order") or (m.group(1) if m else 1))
+                item["subchapter_order"] = 100 + sub
+                wireless.append(item)
             continue
+
+        if "git_chapter64" in name:
+            n = merge_by_title(data, lessons)
+            print("   git title-merge", n)
+            git_extra.extend(lessons)
+            continue
+
         if d.get("commands") or "commands_encyclopedia" in name:
+            n = merge_by_title(data, lessons)
+            print("   command title-merge", n)
             cmd_extra.extend(lessons)
             continue
+
         n = merge_by_title(data, lessons)
         print("   title-merge", n)
         if "ospf" in name or "bgp" in name or "redistribution" in name or "routing_deep" in name:
-            routing_extra.extend(lessons)
+            routing_extra.extend(remap_lessons_to_chapter(lessons, 66))
+            continue
         if "vpn" in name or "ipsec" in name:
-            vpn_extra.extend(lessons)
+            vpn_extra.extend(remap_lessons_to_chapter(lessons, 67))
+            continue
+
+        for source in lessons:
+            try:
+                chapter_order = int(source.get("chapter_order") or 1)
+            except (TypeError, ValueError):
+                chapter_order = 1
+            general_extra[chapter_order].append(source)
 
     if routing_extra:
         n = append_unmatched_as_extra(
@@ -552,32 +589,44 @@ def main():
             "Ch68 Commands Encyclopedia",
         )
         print("ch68 commands", n)
-
-    extra = list(sec)
-    for w in wireless:
-        w = dict(w)
-        w["subchapter_order"] = 100 + int(w.get("subchapter_order") or 8)
-        extra.append(w)
-    if extra:
-        n_added = append_unmatched_as_extra(
-            data, extra, 65,
-            "فصل ۶۵: امنیت سایبری و هک اخلاقی (دفاعی) + بی‌سیم",
-            "Ch65 Security Ethical Hacking Wireless",
+    if git_extra:
+        n = append_unmatched_as_extra(
+            data, git_extra, 64,
+            "فصل ۶۴: Git و GitHub از صفر تا مهندسی حرفه‌ای",
+            "Ch64 Git and GitHub",
         )
-        ch65 = next((c for c in data["chapters"] if c.get("order") == 65), {})
-        total65 = sum(len(s.get("lessons", [])) for s in ch65.get("subchapters", []))
-        print("ch65 added", n_added, "total", total65)
+        print("ch64 Git", n)
 
-    data["chapters"].sort(key=lambda c: int(c.get("order") or 0))
-    n = sum(len(s.get("lessons", [])) for c in data["chapters"] for s in c.get("subchapters", []))
-    data["lesson_count"] = n
+    if wireless:
+        n_added = append_unmatched_as_extra(
+            data, wireless, 65,
+            "فصل ۶۵: امنیت بی‌سیم و دفاع شبکه",
+            "Ch65 Wireless Security",
+        )
+        ch65 = next((ch for ch in data["chapters"] if ch.get("order") == 65), {})
+        total65 = sum(len(sub.get("lessons", [])) for sub in ch65.get("subchapters", []))
+        print("ch65 wireless added", n_added, "total", total65)
+
+    for chapter_order in sorted(general_extra):
+        chapter = next((ch for ch in data["chapters"] if int(ch.get("order") or 0) == chapter_order), None)
+        title_fa = chapter.get("title_fa") if chapter else f"فصل {chapter_order}: محتوای تکمیلی"
+        title_en = chapter.get("title_en") if chapter else f"Chapter {chapter_order} supplementary content"
+        added = append_unmatched_as_extra(data, general_extra[chapter_order], chapter_order, title_fa, title_en)
+        if added:
+            print("chapter", chapter_order, "supplementary lessons added", added)
+
+    data["chapters"].sort(key=lambda ch: int(ch.get("order") or 0))
+    total = sum(len(sub.get("lessons", [])) for ch in data["chapters"] for sub in ch.get("subchapters", []))
+    data["lesson_count"] = total
     data["version"] = int(data.get("version") or 7) + 1
     GZ.write_bytes(
         gzip.compress(json.dumps(data, ensure_ascii=False, separators=(",", ":")).encode("utf-8"), 9)
     )
-    print("FINAL chapters", len(data["chapters"]), "lessons", n, "version", data["version"])
-    for c in data["chapters"][-6:]:
-        print(" ", c["order"], c["title_fa"][:52], sum(len(s["lessons"]) for s in c["subchapters"]))
+    print("FINAL chapters", len(data["chapters"]), "lessons", total, "version", data["version"])
+    for ch in data["chapters"][-8:]:
+        print(" ", ch["order"], ch["title_fa"][:52], sum(len(sub["lessons"]) for sub in ch["subchapters"]))
+
+
 
 
 if __name__ == "__main__":
