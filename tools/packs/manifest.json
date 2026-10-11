@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "purpose": "Single source-of-truth catalog for content sources consumed by scripts/merge_content_packs_into_android.py.",
+  "active_sources": [
+    {
+      "path": "tools/packs/git_chapter64/Git_Chapter_64_Full.md",
+      "domain": "git-github",
+      "target_chapter": 64,
+      "format": "markdown-lessons",
+      "status": "review_required",
+      "notes": "300 level-tagged lesson sections; importer splits and deduplicates by title."
+    },
+    {
+      "path": "tools/engineer_jokar_wireless_security/wireless_security_pack.json",
+      "domain": "wireless-security",
+      "target_chapter": 65,
+      "format": "lessons-json",
+      "status": "review_required",
+      "notes": "Imported under chapter 65 with remapped stable UIDs."
+    },
+    {
+      "path": "tools/packs/switching_routing/switching_routing_curriculum_pack.json",
+      "domain": "switching-routing",
+      "target_chapter": "per-record chapter_order",
+      "format": "lessons-json",
+      "status": "review_required",
+      "notes": "Title-merge first; unmatched lessons appended only if they do not duplicate an existing title."
+    },
+    {
+      "path": "tools/packs/windows_server/windows_server_complete_curriculum_pack.json",
+      "domain": "windows-server",
+      "target_chapter": "per-record chapter_order",
+      "format": "lessons-json",
+      "status": "review_required",
+      "notes": "Title-merge first; unmatched lessons appended by chapter_order."
+    },
+    {
+      "path": "tools/engineer_jokar_automation_python/automation_python_curriculum_pack.json",
+      "domain": "automation",
+      "target_chapter": "per-record chapter_order",
+      "format": "lessons-json",
+      "status": "review_required",
+      "notes": "Title-merge first; unmatched lessons appended by chapter_order."
+    },
+    {
+      "path": "tools/packs/commands_encyclopedia/cisco_switching.json",
+      "domain": "cisco-switching-commands",
+      "target_chapter": 68,
+      "format": "commands-json",
+      "status": "review_required",
+      "notes": "Command UIDs are namespaced by source pack to prevent collisions."
+    },
+    {
+      "path": "tools/packs/commands_encyclopedia/mikrotik.json",
+      "domain": "mikrotik-commands",
+      "target_chapter": 68,
+      "format": "commands-json",
+      "status": "review_required",
+      "notes": "Canonical Mikrotik source; duplicate legacy copy is skipped."
+    },
+    {
+      "path": "tools/packs/routing_deep/chapter_68_cisco_routing_1600.json",
+      "domain": "cisco-routing-commands",
+      "target_chapter": 68,
+      "format": "commands-json",
+      "status": "review_required",
+      "notes": "1,600 records; command examples and metadata require technical review."
+    }
+  ],
+  "quarantined_sources": [
+    {
+      "path": "tools/ENGINEER_JOKAR_OSPF_BGP_Redistribution_deep_v1.json",
+      "status": "quarantined",
+      "reason": "Its nested blueprint is largely a duplicated computer-hardware curriculum and does not match OSPF/BGP; not merged into active lessons."
+    },
+    {
+      "path": "tools/ENGINEER_JOKAR_VPN_Enterprise_IPsec_SSL_Troubleshooting_deep_v1.json",
+      "status": "quarantined",
+      "reason": "Its nested blueprint duplicates the hardware curriculum and does not match VPN/IPsec; not merged into active lessons."
+    },
+    {
+      "path": "tools/engineer_jokar_security_ethical_hacking/security_ethical_hacking_pack.json",
+      "status": "quarantined",
+      "reason": "110 template-heavy lessons are not sufficiently topic-specific for the active expert curriculum; source retained for rewrite."
+    },
+    {
+      "path": "tools/commands_encyclopedia/mikrotik.json",
+      "status": "duplicate_alias",
+      "reason": "Legacy duplicate; canonical source is tools/packs/commands_encyclopedia/mikrotik.json."
+    }
+  ],
+  "known_gaps": [
+    {
+      "domain": "vpn-ipsec-ssl",
+      "target_chapter": 67,
+      "status": "needs_new_curated_pack",
+      "reason": "No validated VPN-specific JSON pack is available; the mislabeled hardware blueprint is quarantined."
+    },
+    {
+      "domain": "ospf-bgp-redistribution",
+      "target_chapter": 66,
+      "status": "needs_new_curated_pack",
+      "reason": "No validated OSPF/BGP-specific deep pack is available; the mislabeled hardware blueprint is quarantined."
+    },
+    {
+      "domain": "ethical-hacking-security",
+      "target_chapter": 65,
+      "status": "needs_deep_rewrite",
+      "reason": "Template-heavy source is retained but not published as final lessons."
+    }
+  ]
+}
