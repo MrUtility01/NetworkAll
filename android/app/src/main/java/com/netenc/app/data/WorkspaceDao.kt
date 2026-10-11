@@ -10,7 +10,7 @@ interface WorkspaceDao {
     @Query("SELECT * FROM tasks ORDER BY done ASC, priority DESC, lastUpdated DESC")
     suspend fun allTasks(): List<TaskEntity>
 
-    @Query("SELECT * FROM tasks WHERE done = 0 AND dueAt != '' AND dueAt <= :now ORDER BY dueAt ASC LIMIT 50")
+    @Query("SELECT * FROM tasks WHERE done = 0 AND dueAt != '' AND dueAt <= :now AND (lastUpdated = '' OR lastUpdated < dueAt) ORDER BY dueAt ASC LIMIT 50")
     suspend fun dueTasks(now: String): List<TaskEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
