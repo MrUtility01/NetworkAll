@@ -8,6 +8,8 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +22,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.util.UUID
+import java.util.Calendar
+import com.netenc.app.util.JalaliDate
 import android.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
@@ -66,7 +70,9 @@ class WorkspaceActivity : AppCompatActivity() {
                     "notes" -> db.workspaceDao().allNotes().map { Triple(it.uid, it.title, it.body) }
                     "vault" -> db.workspaceDao().allVault().map { Triple(it.uid, it.title, it.username) }
                     else -> db.workspaceDao().allTasks().map {
-                        Triple(it.uid, (if (it.done) "✓ " else "○ ") + it.title, it.body)
+                        val dueLabel = if (it.dueAt.isBlank()) "" else "\nموعد شمسی: " + JalaliDate.formatIso(it.dueAt)
+                        val priorityLabel = "\nاولویت: " + it.priority
+                        Triple(it.uid, (if (it.done) "✓ " else "○ ") + it.title, it.body + dueLabel + priorityLabel)
                     }
                 }
             }
@@ -106,9 +112,46 @@ class WorkspaceActivity : AppCompatActivity() {
         val title = EditText(this).apply { hint = "عنوان" }
         val body = EditText(this).apply { hint = if (mode == "vault") "رمز / توضیحات" else "متن" }
         val user = EditText(this).apply { hint = "نام کاربری (اختیاری)" }
+        var dueAt = ""
+        lateinit var dueButton: Button
+        dueButton = Button(this).apply {
+            text = "انتخاب موعد (نمایش شمسی)"
+            setOnClickListener {
+                val nowCal = Calendar.getInstance()
+                DatePickerDialog(
+                    this@WorkspaceActivity,
+                    { _, year, month, day ->
+                        val timeCal = Calendar.getInstance()
+                        TimePickerDialog(
+                            this@WorkspaceActivity,
+                            { _, hour, minute ->
+                                val selected = Calendar.getInstance().apply {
+                                    set(Calendar.YEAR, year)
+                                    set(Calendar.MONTH, month)
+                                    set(Calendar.DAY_OF_MONTH, day)
+                                    set(Calendar.HOUR_OF_DAY, hour)
+                                    set(Calendar.MINUTE, minute)
+                                    set(Calendar.SECOND, 0)
+                                    set(Calendar.MILLISECOND, 0)
+                                }
+                                dueAt = Instant.ofEpochMilli(selected.timeInMillis).toString()
+                                dueButton.text = "موعد شمسی: " + JalaliDate.formatIso(dueAt)
+                            },
+                            timeCal.get(Calendar.HOUR_OF_DAY),
+                            timeCal.get(Calendar.MINUTE),
+                            true
+                        ).show()
+                    },
+                    nowCal.get(Calendar.YEAR),
+                    nowCal.get(Calendar.MONTH),
+                    nowCal.get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }
+        }
         val box = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             addView(title); addView(body)
+            if (mode == "tasks") addView(dueButton)
             if (mode == "vault") addView(user)
         }
         AlertDialog.Builder(this)
@@ -132,7 +175,7 @@ class WorkspaceActivity : AppCompatActivity() {
                                 )
                             )
                             else -> db.workspaceDao().upsertTask(
-                                TaskEntity(id, t, body.text.toString(), lastUpdated = now())
+                                TaskEntity(id, t, body.text.toString(), dueAt = dueAt, lastUpdated = now())
                             )
                         }
                     }
