@@ -776,5 +776,6 @@ for _t in TOPICS:
 
 if __name__ == '__main__':
     pack = build_pack()
+    OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(pack, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(f'Wrote {OUT} with {len(pack["lessons"])} lessons and {len(TOPICS)} topics.')
