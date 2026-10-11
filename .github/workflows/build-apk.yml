@@ -7,6 +7,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
     steps:
       - uses: actions/checkout@v4
 
@@ -19,7 +22,19 @@ jobs:
         with:
           python-version: "3.11"
 
-      - uses: android-actions/setup-android@v3
+      - name: Android SDK licenses + platform
+        run: |
+          set -e
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          ls -la "$ANDROID_HOME" || true
+          mkdir -p "$ANDROID_HOME/licenses"
+          printf '%s\n' \
+            "24333f8a63b6825ea9c5514f83c2829b004d1fee" \
+            "d56f51874764545162ea396f5d536e251650e41b" \
+            "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_HOME/licenses/android-sdk-license"
+          yes | sdkmanager --licenses >/tmp/sdk-lic.txt 2>&1 || true
+          sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools" >/tmp/sdk-install.txt 2>&1 || true
+          tail -20 /tmp/sdk-install.txt || true
 
       - name: Icons
         run: python3 scripts/install_android_icon.py
@@ -29,28 +44,21 @@ jobs:
           set -e
           python3 scripts/export_android_index.py
           python3 - <<'PY'
-          import gzip, json, sys
+          import gzip, json
           from pathlib import Path
           p = Path("android/app/src/main/assets/curriculum_index.json.gz")
           d = json.loads(gzip.open(p, "rt", encoding="utf-8").read())
           orders = [int(c["order"]) for c in d["chapters"]]
           print("export chapters", len(orders), "lessons", d["lesson_count"])
           print("last", orders[-6:])
-          assert 68 in orders and 1 in orders, orders[-10:]
+          assert 1 in orders and 68 in orders
           PY
 
-      - name: Merge packs into 65-68 (best effort)
+      - name: Merge packs (best effort)
         run: |
           set +e
           python3 scripts/merge_content_packs_into_android.py
           echo "merge_exit=$?"
-          python3 - <<'PY'
-          import gzip, json
-          from pathlib import Path
-          p = Path("android/app/src/main/assets/curriculum_index.json.gz")
-          d = json.loads(gzip.open(p, "rt", encoding="utf-8").read())
-          print("after merge chapters", len(d["chapters"]), "lessons", d["lesson_count"])
-          PY
           exit 0
 
       - name: Gradle wrapper
