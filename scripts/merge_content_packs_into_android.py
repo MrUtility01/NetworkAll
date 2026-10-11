@@ -26,13 +26,18 @@ def find_pack_files():
     """فقط مسیرهای مجاز — prompts/ اسکن نمی‌شود (سرعت/پایداری)."""
     files = []
     files += list(ROOT.glob("tools/packs/**/*.json"))
+    files += list(ROOT.glob("tools/packs/git_chapter64/Git_Chapter_64_Full.md"))
     files += list(ROOT.glob("tools/engineer_jokar_*/*pack*.json"))
     files += list(ROOT.glob("tools/engineer_jokar_*/*curriculum*.json"))
     files += list(ROOT.glob("tools/ENGINEER_JOKAR_*.json"))
     uniq, seen = [], set()
     for f in files:
         name = f.name.lower()
-        if name.endswith(".md") or name in ("readme.md", "readme_fa.md"):
+        if (name.endswith(".md") and f.name != "Git_Chapter_64_Full.md") or name in ("readme.md", "readme_fa.md"):
+            continue
+        rel = f.relative_to(ROOT).as_posix()
+        if rel == "tools/commands_encyclopedia/mikrotik.json" and (ROOT / "tools/packs/commands_encyclopedia/mikrotik.json").exists():
+            print(" skip legacy duplicate pack:", rel)
             continue
         if " " in f.name:
             print(" skip spaced name:", f)
@@ -49,8 +54,10 @@ def find_pack_files():
     return sorted(uniq)
 
 
-def commands_to_lessons(data: dict) -> list:
+def commands_to_lessons(data: dict, source_path: Path | None = None) -> list:
     ch = int(data.get("chapter_order") or 68)
+    source_name = source_path.relative_to(ROOT).with_suffix("").as_posix() if source_path else "legacy"
+    source_slug = re.sub(r"[^a-z0-9]+", "-", source_name.lower()).strip("-")[:42].rstrip("-") or "pack"
     out = []
     sub_map = {
         "basics": 1, "interface": 2, "vlan": 3, "trunk": 3, "stp": 4, "spanning-tree": 4,
@@ -124,7 +131,7 @@ def commands_to_lessons(data: dict) -> list:
             meta["flashcards"] = flash
             notes += "\n\n<!-- EJ_FLASHCARDS\n" + json.dumps(flash, ensure_ascii=False) + "\n-->\n"
 
-        lesson_uid = f"lesson:ch{ch:02d}:cmd:{i:04d}"
+        lesson_uid = f"lesson:ch{ch:02d}:cmd:{source_slug}:{i:04d}"
         out.append({
             "uid": lesson_uid,
             "chapter_order": ch,
@@ -185,9 +192,73 @@ def blueprint_to_lessons(d, focus_keywords, default_ch):
     return out
 
 
+def _ascii_digits(value: str) -> str:
+    trans = str.maketrans("۰۱۲۳۴۵۶۷۸۹٠١٢٣٤٥٦٧٨٩", "01234567890123456789")
+    return value.translate(trans)
+
+
+def git_markdown_to_lessons(path: Path) -> list:
+    """Parse the chapter-64 Markdown book into stable lesson records."""
+    text = path.read_text(encoding="utf-8-sig")
+    matches = list(re.finditer(r"(?m)^###\\s+(.+?\\s+[—-]\\s*L[0-4])\\s*$", text))
+    if not matches:
+        return []
+    lessons = []
+    current_sub = 1
+    sub_titles = {}
+    for line in text[:matches[0].start()].splitlines():
+        m = re.match(r"^##\\s+۶۴[.．](\\d+)\\s+(.+)$", line.strip())
+        if m:
+            current_sub = int(_ascii_digits(m.group(1)))
+            sub_titles[current_sub] = m.group(2).strip()
+    fence = chr(96) * 3
+    for idx, match in enumerate(matches):
+        heading = match.group(1).strip()
+        level_match = re.search(r"[—-]\\s*L([0-4])\\s*$", heading)
+        if not level_match:
+            continue
+        level = "L" + level_match.group(1)
+        bare_title = re.sub(r"\\s*[—-]\\s*L[0-4]\\s*$", "", heading).strip()
+        body_start = match.start()
+        body_end = matches[idx + 1].start() if idx + 1 < len(matches) else len(text)
+        body = text[body_start:body_end].strip()
+        preceding = text[:body_start].splitlines()
+        for line in reversed(preceding):
+            m = re.match(r"^##\\s+۶۴[.．](\\d+)\\s+(.+)$", line.strip())
+            if m:
+                current_sub = int(_ascii_digits(m.group(1)))
+                sub_titles[current_sub] = m.group(2).strip()
+                break
+        summary_match = re.search(r"(?m)^\\*\\*خلاصه(?: فصل)?:?\\*\\*\\s*(.+)$", body)
+        summary = summary_match.group(1).strip() if summary_match else body[:240].replace("\\n", " ").strip()
+        scenario_match = re.search(r"(?ms)^##\\s+4[.、 ]*سناریوی عملی.*?(?=^##\\s+5[.、 ]|\\Z)", body)
+        examples = scenario_match.group(0).strip() if scenario_match else ""
+        code_blocks = re.findall(re.escape(fence) + r"[^\\n]*\\n(.*?)" + re.escape(fence), body, flags=re.S)
+        commands = "\\n".join(code_blocks).strip()
+        uid = f"lesson:ch64:git:s{current_sub:02d}:l{idx + 1:04d}"
+        lessons.append({
+            "uid": uid,
+            "chapter_order": 64,
+            "subchapter_order": current_sub,
+            "lesson_order": idx + 1,
+            "level": level,
+            "title_fa": f"[{level}] {bare_title}",
+            "title_en": "",
+            "summary": summary[:500],
+            "full_content": body,
+            "commands": commands,
+            "examples": examples,
+            "notes": f"source=tools/packs/git_chapter64/Git_Chapter_64_Full.md; subchapter={sub_titles.get(current_sub, '')}; status=review_required",
+            "source_status": "review_required",
+        })
+    return lessons
+
+
 def normalize_pack(path: Path, data: dict):
+    if path.suffix.lower() == ".md":
+        return git_markdown_to_lessons(path)
     if data.get("commands"):
-        return commands_to_lessons(data)
+        return commands_to_lessons(data, path)
     if data.get("lessons"):
         return data.get("lessons") or []
     name = path.name.upper()
