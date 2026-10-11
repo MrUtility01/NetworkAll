@@ -90,6 +90,21 @@ class SyncClient(
         }
     }
 
+    fun getTasks(): JSONArray {
+        client.newCall(req("/api/workspace/tasks").get().build()).execute().use { r ->
+            val body = ensureOk(r, r.body?.string() ?: "{}")
+            return JSONObject(body).optJSONArray("items") ?: JSONArray()
+        }
+    }
+
+    fun syncTasks(items: JSONArray): String {
+        val json = JSONObject().put("items", items)
+        val body = json.toString().toRequestBody("application/json".toMediaType())
+        client.newCall(req("/api/workspace/tasks/sync").post(body).build()).execute().use { r ->
+            return ensureOk(r, r.body?.string() ?: "{}")
+        }
+    }
+
     fun push(recordsJsonArray: JSONArray): String {
         val json = JSONObject().put("records", recordsJsonArray)
         val body = json.toString().toRequestBody("application/json".toMediaType())
