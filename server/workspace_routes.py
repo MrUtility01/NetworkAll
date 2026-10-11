@@ -282,10 +282,20 @@ def workspace_page():
     elif tab == "vault":
         rows = c.execute("SELECT uid,title,username,secret FROM ws_vault ORDER BY title").fetchall()
         items = []
+        migrated_any = False
         for r in rows:
-            secret_show = _unseal(r["secret"]) if (_authorized() or _cookie_ok()) else "••••"
+            secret_blob = r["secret"] or ""
+            secret_show = _unseal(secret_blob) if (_authorized() or _cookie_ok()) else "••••"
+            if secret_blob.startswith("enc1:") and not str(secret_show).startswith("••••"):
+                try:
+                    c.execute("UPDATE ws_vault SET secret=? WHERE uid=?", (_seal(secret_show), r["uid"]))
+                    migrated_any = True
+                except Exception as exc:
+                    print("vault migration skipped for", r["uid"], exc)
             items.append({"uid": r["uid"], "title": r["title"], "body": f"{r['username']}\n{secret_show}"})
-        title = "مدیریت رمز ورود (sealed)"
+        if migrated_any:
+            c.commit()
+        title = "مدیریت رمز ورود (AES-GCM)"
     else:
         items = c.execute("SELECT uid,title,body FROM ws_tasks ORDER BY last_updated DESC").fetchall()
         title = "مدیریت کارها"
