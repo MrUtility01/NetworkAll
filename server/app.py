@@ -364,19 +364,27 @@ def sync_push():
     records = body.get("records") or body.get("items") or []
     if not isinstance(records, list) or len(records) > 1000:
         return jsonify({"error": "records must be a list with at most 1000 items"}), 400
-    accepted = kept = conflicts = 0
+    accepted = kept = conflicts = unsupported = missing_targets = 0
     conflict_uids = []
+    unsupported_uids = []
+    missing_target_uids = []
     index = {r["uid"]: r for r in db().sync_index()}
     to_apply = []
-    allowed_entities = {"lesson", "scenario", "task", "note", "vault"}
+    # This endpoint currently persists curriculum records only. Do not report
+    # task/note/vault as accepted: sync_apply does not yet store those entities.
+    allowed_entities = {"lesson", "scenario"}
     for item in records:
         if not isinstance(item, dict):
             kept += 1
             continue
         uid = str(item.get("uid") or "").strip()
         entity = str(item.get("entity") or "lesson")
-        if not uid or len(uid) > 128 or entity not in allowed_entities:
+        if not uid or len(uid) > 128:
             kept += 1
+            continue
+        if entity not in allowed_entities:
+            unsupported += 1
+            unsupported_uids.append(uid)
             continue
         try:
             if len(json.dumps(item, ensure_ascii=False)) > 2_000_000:
@@ -387,8 +395,10 @@ def sync_push():
             continue
         server = index.get(uid)
         if not server:
-            to_apply.append(item)
-            accepted += 1
+            # Current sync_apply only updates existing curriculum rows; it does
+            # not create rows because chapter/level relations must be resolved.
+            missing_targets += 1
+            missing_target_uids.append(uid)
             continue
         decision = compare_lww(server, item)
         if decision == "accept_client":
@@ -407,6 +417,10 @@ def sync_push():
         "kept": kept,
         "conflicts": conflicts,
         "conflict_uids": conflict_uids,
+        "unsupported": unsupported,
+        "unsupported_uids": unsupported_uids,
+        "missing_targets": missing_targets,
+        "missing_target_uids": missing_target_uids,
         "server_time": utc_now(),
     })
 
