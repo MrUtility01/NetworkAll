@@ -130,6 +130,7 @@ nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
 <nav>
 <a href="/">خانه</a>
 <a href="/workspace?tab=tasks">کارها</a>
+<a href="/workspace/calendar">تقویم شمسی</a>
 <a href="/workspace?tab=notes">یادداشت</a>
 <a href="/workspace?tab=vault">رمزها</a>
 <a href="/workspace/logout">خروج</a>
@@ -141,7 +142,7 @@ nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
 <textarea name=body rows=4 placeholder="{{ 'رمز (ذخیره sealed)' if tab=='vault' else 'متن' }}"></textarea>
 {% if tab=='tasks' %}
 <label>موعد (در رابط به تقویم شمسی نمایش داده می‌شود)</label>
-<input type=datetime-local name=due_at>
+<input type=text name=due_jalali placeholder="۱۴۰۵/۰۷/۱۹ ۲۱:۳۰">
 <label>اولویت</label>
 <select name=priority><option value=1>عادی</option><option value=2>مهم</option><option value=3>بالا</option><option value=4>فوری</option></select>
 <label>تکرار</label>
@@ -162,6 +163,30 @@ nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
 <button type=submit style="background:#ef4444">حذف</button></form>
 </div>
 {% else %}<p>موردی نیست.</p>{% endfor %}
+</body></html>
+"""
+
+
+CALENDAR_PAGE = """
+<!doctype html><html lang=fa dir=rtl><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>تقویم شمسی NetworkAll</title>
+<style>
+body{font-family:Tahoma,sans-serif;background:#f7f8fa;color:#0f172a;margin:0;padding:14px}
+nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
+table{width:100%;table-layout:fixed;border-collapse:collapse;background:#fff}
+th,td{border:1px solid #e2e8f0;vertical-align:top;padding:5px;height:90px;overflow-wrap:anywhere}
+th{background:#e2e8f0;font-size:12px}
+.day{font-weight:bold;color:#1d4ed8}
+.task{font-size:11px;background:#dbeafe;border-radius:5px;padding:3px;margin-top:4px}
+nav{margin-bottom:12px}
+</style></head><body>
+<nav><a href="/workspace?tab=tasks">کارها</a><a href="/workspace/calendar?year={{ prev_year }}&month={{ prev_month }}">ماه قبل</a><a href="/workspace/calendar?year={{ next_year }}&month={{ next_month }}">ماه بعد</a></nav>
+<h2>{{ month_name }} {{ year }}</h2>
+<p>نمای ماهانه شمسی · موعدها بر اساس ساعت محلی نمایش داده می‌شوند.</p>
+<table><thead><tr>{% for name in weekdays %}<th>{{ name }}</th>{% endfor %}</tr></thead><tbody>
+{% for week in weeks %}<tr>{% for cell in week %}<td>{% if cell %}<div class=day>{{ cell.day }}</div>{% for task in cell.tasks %}<div class=task>{{ task.title }}{% if task.priority %} · P{{ task.priority }}{% endif %}</div>{% endfor %}{% endif %}</td>{% endfor %}</tr>{% endfor %}
+</tbody></table>
 </body></html>
 """
 
@@ -234,6 +259,72 @@ def _jalali_label(value: str) -> str:
         return value
 
 
+def _ascii_digits(value: str) -> str:
+    out = []
+    for ch in value:
+        if "۰" <= ch <= "۹":
+            out.append(chr(ord("0") + ord(ch) - ord("۰")))
+        elif "٠" <= ch <= "٩":
+            out.append(chr(ord("0") + ord(ch) - ord("٠")))
+        else:
+            out.append(ch)
+    return "".join(out)
+
+
+def _jalali_to_gregorian(jy: int, jm: int, jd: int):
+    from datetime import date
+    if jm not in range(1, 13) or jd < 1 or jd > (31 if jm <= 6 else 30):
+        raise ValueError("invalid Jalali date")
+    j_year = jy - 979
+    j_day_no = 365 * j_year + (j_year // 33) * 8 + ((j_year % 33) + 3) // 4
+    j_day_no += (jm - 1) * 31 if jm <= 6 else 186 + (jm - 7) * 30
+    j_day_no += jd - 1
+    g_day_no = j_day_no + 79
+    gy = 1600 + 400 * (g_day_no // 146097)
+    g_day_no %= 146097
+    leap = True
+    if g_day_no >= 36525:
+        g_day_no -= 1
+        gy += 100 * (g_day_no // 36524)
+        g_day_no %= 36524
+        if g_day_no >= 365:
+            g_day_no += 1
+        else:
+            leap = False
+    gy += 4 * (g_day_no // 1461)
+    g_day_no %= 1461
+    if g_day_no >= 366:
+        leap = False
+        g_day_no -= 1
+        gy += g_day_no // 365
+        g_day_no %= 365
+    month_days = [31, 29 if leap else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    gm = 0
+    while gm < 12 and g_day_no >= month_days[gm]:
+        g_day_no -= month_days[gm]
+        gm += 1
+    return date(gy, gm + 1, g_day_no + 1)
+
+
+def _parse_jalali_datetime(value: str) -> str:
+    import re
+    raw = _ascii_digits((value or "").strip()).replace("-", "/")
+    match = re.fullmatch(r"(\d{4})/(\d{1,2})/(\d{1,2})(?:\s+(\d{1,2}):(\d{2}))?", raw)
+    if not match:
+        raise ValueError("date must be YYYY/MM/DD HH:MM in Jalali calendar")
+    jy, jm, jd = (int(match.group(i)) for i in (1, 2, 3))
+    hour, minute = int(match.group(4) or 0), int(match.group(5) or 0)
+    if hour not in range(24) or minute not in range(60):
+        raise ValueError("invalid time")
+    day = _jalali_to_gregorian(jy, jm, jd)
+    # Round-trip check rejects invalid Esfand days rather than silently normalizing them.
+    rendered = _jalali_label(day.isoformat() + f"T{hour:02d}:{minute:02d}:00")
+    if not rendered.startswith(f"{jy:04d}/{jm:02d}/{jd:02d}"):
+        raise ValueError("invalid Jalali day for this year")
+    local_dt = datetime(day.year, day.month, day.day, hour, minute).astimezone()
+    return local_dt.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
 def _cookie_ok() -> bool:
     # An unset server token must never turn the workspace into a public endpoint.
     if not _sync_token:
@@ -256,6 +347,53 @@ def workspace_login():
         else:
             err = "توکن نادرست"
     return render_template_string(LOGIN_PAGE, error=err)
+
+
+@bp.route("/workspace/calendar")
+def workspace_calendar():
+    if not _authorized() and not _cookie_ok():
+        return redirect("/workspace/login")
+    now_parts = _jalali_label(datetime.now().astimezone().isoformat()).split(" ")[0].split("/")
+    try:
+        year = int(_ascii_digits(request.args.get("year") or now_parts[0]))
+        month = int(_ascii_digits(request.args.get("month") or now_parts[1]))
+        if month not in range(1, 13):
+            raise ValueError
+    except ValueError:
+        year, month = int(now_parts[0]), int(now_parts[1])
+    prev_year, prev_month = (year - 1, 12) if month == 1 else (year, month - 1)
+    next_year, next_month = (year + 1, 1) if month == 12 else (year, month + 1)
+    first = _jalali_to_gregorian(year, month, 1)
+    next_first = _jalali_to_gregorian(next_year, next_month, 1)
+    length = (next_first - first).days
+    offset = (first.weekday() + 2) % 7  # Saturday first
+    conn = _conn()
+    try:
+        rows = conn.execute("SELECT title,body,due_at,priority FROM ws_tasks WHERE COALESCE(due_at,'')!=''").fetchall()
+    finally:
+        conn.close()
+    by_day = {}
+    for row in rows:
+        label = _jalali_label(row["due_at"] or "").split(" ")[0]
+        try:
+            y, m, d = (int(x) for x in label.split("/"))
+        except Exception:
+            continue
+        if y == year and m == month:
+            by_day.setdefault(d, []).append({"title": row["title"], "body": row["body"], "priority": row["priority"]})
+    weeks, cells = [], [None] * offset
+    for day in range(1, length + 1):
+        cells.append({"day": day, "tasks": by_day.get(day, [])})
+        if len(cells) == 7:
+            weeks.append(cells)
+            cells = []
+    if cells:
+        weeks.append(cells + [None] * (7 - len(cells)))
+    return render_template_string(
+        CALENDAR_PAGE, year=year, month_name=["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"][month-1],
+        prev_year=prev_year, prev_month=prev_month, next_year=next_year, next_month=next_month,
+        weekdays=["شنبه","یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه"], weeks=weeks,
+    )
 
 
 @bp.route("/workspace/logout")
@@ -313,9 +451,15 @@ def workspace_page():
                 elif tab == "vault":
                     c.execute("INSERT INTO ws_vault VALUES(?,?,?,?,?)", (uid, title, username, _seal(body), now))
                 else:
+                    due_jalali = (request.form.get("due_jalali") or "").strip()
                     due_raw = (request.form.get("due_at") or "").strip()
                     due_at = ""
-                    if due_raw:
+                    if due_jalali:
+                        try:
+                            due_at = _parse_jalali_datetime(due_jalali)
+                        except ValueError:
+                            due_at = ""
+                    elif due_raw:
                         try:
                             parsed = datetime.fromisoformat(due_raw)
                             due_at = parsed.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
