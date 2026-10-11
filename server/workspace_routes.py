@@ -207,7 +207,7 @@ def _conn():
     c.execute("""CREATE TABLE IF NOT EXISTS ws_tasks(
         uid TEXT PRIMARY KEY, title TEXT, body TEXT, done INT DEFAULT 0,
         due_at TEXT DEFAULT '', priority INTEGER DEFAULT 1,
-        reminder_at TEXT DEFAULT '', recurrence TEXT DEFAULT 'none', last_notified_at TEXT DEFAULT '', last_updated TEXT
+        reminder_at TEXT DEFAULT '', recurrence TEXT DEFAULT 'none', last_notified_at TEXT DEFAULT '', device_id TEXT DEFAULT 'windows', last_updated TEXT
     )""")
     # Safe additive migration for databases created by older app versions.
     columns = {row["name"] for row in c.execute("PRAGMA table_info(ws_tasks)").fetchall()}
@@ -217,6 +217,7 @@ def _conn():
         ("reminder_at", "TEXT DEFAULT ''"),
         ("recurrence", "TEXT DEFAULT 'none'"),
         ("last_notified_at", "TEXT DEFAULT ''"),
+        ("device_id", "TEXT DEFAULT 'windows'"),
     ):
         if name not in columns:
             c.execute(f"ALTER TABLE ws_tasks ADD COLUMN {name} {definition}")
@@ -498,6 +499,92 @@ def workspace_page():
             items.append(item)
         title = "مدیریت کارها و زمان‌بندی"
     return render_template_string(PAGE, items=items, title=title, tab=tab)
+
+
+@bp.route("/api/workspace/tasks", methods=["GET"])
+def api_workspace_tasks():
+    if not _authorized():
+        return jsonify({"error": "unauthorized"}), 401
+    conn = _conn()
+    try:
+        rows = conn.execute(
+            """SELECT uid,title,body,done,due_at,priority,recurrence,last_notified_at,
+                      device_id,last_updated FROM ws_tasks ORDER BY due_at, title LIMIT 5000"""
+        ).fetchall()
+        return jsonify({"items": [dict(row) for row in rows]})
+    finally:
+        conn.close()
+
+
+@bp.route("/api/workspace/tasks/sync", methods=["POST"])
+def api_workspace_tasks_sync():
+    if not _authorized():
+        return jsonify({"error": "unauthorized"}), 401
+    body = request.get_json(silent=True) or {}
+    items = body.get("items") or []
+    if not isinstance(items, list) or len(items) > 2000:
+        return jsonify({"error": "items must be a list with at most 2000 records"}), 400
+    conn = _conn()
+    accepted = kept = invalid = 0
+    try:
+        conn.execute("BEGIN IMMEDIATE")
+        for item in items:
+            if not isinstance(item, dict):
+                invalid += 1
+                continue
+            uid = str(item.get("uid") or "").strip()
+            title = str(item.get("title") or "").strip()
+            if not uid or len(uid) > 128 or not title or len(title) > 500:
+                invalid += 1
+                continue
+            body_text = str(item.get("body") or "")[:100000]
+            due_at = str(item.get("due_at") or "")[:64]
+            recurrence = str(item.get("recurrence") or "none")
+            if recurrence not in ("none", "daily", "weekly"):
+                recurrence = "none"
+            try:
+                priority = max(1, min(4, int(item.get("priority") or 1)))
+            except (TypeError, ValueError):
+                priority = 1
+            done = 1 if item.get("done") else 0
+            device_id = str(item.get("device_id") or "android")[:128]
+            updated = str(item.get("last_updated") or "")
+            last_notified = str(item.get("last_notified_at") or "")
+            old = conn.execute("SELECT * FROM ws_tasks WHERE uid=?", (uid,)).fetchone()
+            if old is None:
+                conn.execute(
+                    """INSERT INTO ws_tasks(uid,title,body,done,due_at,priority,reminder_at,
+                       recurrence,last_notified_at,device_id,last_updated)
+                       VALUES(?,?,?,?,?,?,?,?,?,?,?)""",
+                    (uid,title,body_text,done,due_at,priority,due_at,recurrence,last_notified,device_id,updated),
+                )
+                accepted += 1
+                continue
+            old_updated = str(old["last_updated"] or "")
+            old_device = str(old["device_id"] or "windows")
+            wins = updated > old_updated or (updated == old_updated and device_id > old_device)
+            # Reminder state is operational metadata and merges independently from task edits.
+            merged_notified = max(str(old["last_notified_at"] or ""), last_notified)
+            if wins:
+                reset_notice = due_at != str(old["due_at"] or "")
+                conn.execute(
+                    """UPDATE ws_tasks SET title=?,body=?,done=?,due_at=?,priority=?,reminder_at=?,
+                       recurrence=?,last_notified_at=?,device_id=?,last_updated=? WHERE uid=?""",
+                    (title,body_text,done,due_at,priority,due_at,recurrence,
+                     "" if reset_notice else merged_notified,device_id,updated,uid),
+                )
+                accepted += 1
+            else:
+                if merged_notified != str(old["last_notified_at"] or ""):
+                    conn.execute("UPDATE ws_tasks SET last_notified_at=? WHERE uid=?", (merged_notified,uid))
+                kept += 1
+        conn.commit()
+        return jsonify({"accepted": accepted, "kept": kept, "invalid": invalid})
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
 
 
 @bp.route("/api/workspace/export")
