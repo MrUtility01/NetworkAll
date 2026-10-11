@@ -144,7 +144,7 @@ def _conn():
     c.execute("""CREATE TABLE IF NOT EXISTS ws_tasks(
         uid TEXT PRIMARY KEY, title TEXT, body TEXT, done INT DEFAULT 0,
         due_at TEXT DEFAULT '', priority INTEGER DEFAULT 1,
-        reminder_at TEXT DEFAULT '', recurrence TEXT DEFAULT 'none', last_updated TEXT
+        reminder_at TEXT DEFAULT '', recurrence TEXT DEFAULT 'none', last_notified_at TEXT DEFAULT '', last_updated TEXT
     )""")
     # Safe additive migration for databases created by older app versions.
     columns = {row["name"] for row in c.execute("PRAGMA table_info(ws_tasks)").fetchall()}
@@ -153,6 +153,7 @@ def _conn():
         ("priority", "INTEGER DEFAULT 1"),
         ("reminder_at", "TEXT DEFAULT ''"),
         ("recurrence", "TEXT DEFAULT 'none'"),
+        ("last_notified_at", "TEXT DEFAULT ''"),
     ):
         if name not in columns:
             c.execute(f"ALTER TABLE ws_tasks ADD COLUMN {name} {definition}")
@@ -269,9 +270,9 @@ def workspace_page():
                     except ValueError:
                         priority = 1
                     c.execute(
-                        """INSERT INTO ws_tasks(uid,title,body,done,due_at,priority,reminder_at,recurrence,last_updated)
-                           VALUES(?,?,?,?,?,?,?,?,?)""",
-                        (uid, title, body, 0, due_at, priority, due_at, "none", now),
+                        """INSERT INTO ws_tasks(uid,title,body,done,due_at,priority,reminder_at,recurrence,last_notified_at,last_updated)
+                           VALUES(?,?,?,?,?,?,?,?,?,?)""",
+                        (uid, title, body, 0, due_at, priority, due_at, "none", "", now),
                     )
                 c.commit()
     if tab == "notes":
