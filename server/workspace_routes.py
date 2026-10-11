@@ -103,13 +103,23 @@ nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
 <form method=post>
 <input name=title placeholder="عنوان" required>
 <textarea name=body rows=4 placeholder="{{ 'رمز (ذخیره sealed)' if tab=='vault' else 'متن' }}"></textarea>
+{% if tab=='tasks' %}
+<label>موعد (در رابط به تقویم شمسی نمایش داده می‌شود)</label>
+<input type=datetime-local name=due_at>
+<label>اولویت</label>
+<select name=priority><option value=1>عادی</option><option value=2>مهم</option><option value=3>بالا</option><option value=4>فوری</option></select>
+{% endif %}
 {% if tab=='vault' %}<input name=username placeholder="نام کاربری">{% endif %}
 <button type=submit>ذخیره</button>
 </form>
 {% for it in items %}
 <div class=card>
-<b>{{ it.title }}</b>
+<b>{{ '✓ ' if tab=='tasks' and it.done else '' }}{{ it.title }}</b>
 <pre style="white-space:pre-wrap;margin:8px 0">{{ it.body }}</pre>
+{% if tab=='tasks' %}
+<form method=post><input type=hidden name=toggle value="{{ it.uid }}">
+<button type=submit>{{ 'بازگرداندن به کارهای باز' if it.done else 'علامت‌گذاری به‌عنوان انجام‌شده' }}</button></form>
+{% endif %}
 <form method=post><input type=hidden name=delete value="{{ it.uid }}">
 <button type=submit style="background:#ef4444">حذف</button></form>
 </div>
@@ -131,11 +141,58 @@ def _db_path():
 def _conn():
     c = sqlite3.connect(str(_db_path()))
     c.row_factory = sqlite3.Row
-    c.execute("CREATE TABLE IF NOT EXISTS ws_tasks(uid TEXT PRIMARY KEY, title TEXT, body TEXT, done INT, last_updated TEXT)")
+    c.execute("""CREATE TABLE IF NOT EXISTS ws_tasks(
+        uid TEXT PRIMARY KEY, title TEXT, body TEXT, done INT DEFAULT 0,
+        due_at TEXT DEFAULT '', priority INTEGER DEFAULT 1,
+        reminder_at TEXT DEFAULT '', recurrence TEXT DEFAULT 'none', last_updated TEXT
+    )""")
+    # Safe additive migration for databases created by older app versions.
+    columns = {row["name"] for row in c.execute("PRAGMA table_info(ws_tasks)").fetchall()}
+    for name, definition in (
+        ("due_at", "TEXT DEFAULT ''"),
+        ("priority", "INTEGER DEFAULT 1"),
+        ("reminder_at", "TEXT DEFAULT ''"),
+        ("recurrence", "TEXT DEFAULT 'none'"),
+    ):
+        if name not in columns:
+            c.execute(f"ALTER TABLE ws_tasks ADD COLUMN {name} {definition}")
     c.execute("CREATE TABLE IF NOT EXISTS ws_notes(uid TEXT PRIMARY KEY, title TEXT, body TEXT, last_updated TEXT)")
     c.execute("CREATE TABLE IF NOT EXISTS ws_vault(uid TEXT PRIMARY KEY, title TEXT, username TEXT, secret TEXT, last_updated TEXT)")
     c.commit()
     return c
+
+
+def _jalali_label(value: str) -> str:
+    """Format an ISO timestamp as Jalali date/time without another dependency."""
+    if not value:
+        return "بدون موعد"
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if parsed.tzinfo is not None:
+            parsed = parsed.astimezone()
+        gy, gm, gd = parsed.year, parsed.month, parsed.day
+        gdm = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        gy0, gm0, gd0 = gy - 1600, gm - 1, gd - 1
+        day_no = 365 * gy0 + (gy0 + 3) // 4 - (gy0 + 99) // 100 + (gy0 + 399) // 400
+        day_no += sum(gdm[:gm0])
+        if gm0 > 1 and (gy % 4 == 0 and gy % 100 != 0 or gy % 400 == 0):
+            day_no += 1
+        day_no += gd0
+        j_day_no = day_no - 79
+        j_np = j_day_no // 12053
+        j_day_no %= 12053
+        jy = 979 + 33 * j_np + 4 * (j_day_no // 1461)
+        j_day_no %= 1461
+        if j_day_no >= 366:
+            jy += (j_day_no - 1) // 365
+            j_day_no = (j_day_no - 1) % 365
+        if j_day_no < 186:
+            jm, jd = 1 + j_day_no // 31, 1 + j_day_no % 31
+        else:
+            jm, jd = 7 + (j_day_no - 186) // 30, 1 + (j_day_no - 186) % 30
+        return f"{jy:04d}/{jm:02d}/{jd:02d} {parsed.hour:02d}:{parsed.minute:02d}"
+    except (ValueError, TypeError, OverflowError):
+        return value
 
 
 def _cookie_ok() -> bool:
@@ -183,6 +240,10 @@ def workspace_page():
             table = {"notes": "ws_notes", "vault": "ws_vault"}.get(tab, "ws_tasks")
             c.execute(f"DELETE FROM {table} WHERE uid=?", (uid,))
             c.commit()
+        elif tab == "tasks" and request.form.get("toggle"):
+            c.execute("UPDATE ws_tasks SET done=CASE WHEN done=1 THEN 0 ELSE 1 END, last_updated=? WHERE uid=?",
+                      (datetime.now(timezone.utc).isoformat(), request.form["toggle"]))
+            c.commit()
         else:
             title = (request.form.get("title") or "").strip()
             body = request.form.get("body") or ""
@@ -195,7 +256,23 @@ def workspace_page():
                 elif tab == "vault":
                     c.execute("INSERT INTO ws_vault VALUES(?,?,?,?,?)", (uid, title, username, _seal(body), now))
                 else:
-                    c.execute("INSERT INTO ws_tasks VALUES(?,?,?,?,?)", (uid, title, body, 0, now))
+                    due_raw = (request.form.get("due_at") or "").strip()
+                    due_at = ""
+                    if due_raw:
+                        try:
+                            parsed = datetime.fromisoformat(due_raw)
+                            due_at = parsed.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+                        except ValueError:
+                            due_at = ""
+                    try:
+                        priority = max(1, min(4, int(request.form.get("priority") or 1)))
+                    except ValueError:
+                        priority = 1
+                    c.execute(
+                        """INSERT INTO ws_tasks(uid,title,body,done,due_at,priority,reminder_at,recurrence,last_updated)
+                           VALUES(?,?,?,?,?,?,?,?,?)""",
+                        (uid, title, body, 0, due_at, priority, due_at, "none", now),
+                    )
                 c.commit()
     if tab == "notes":
         items = c.execute("SELECT uid,title,body FROM ws_notes ORDER BY last_updated DESC").fetchall()
@@ -208,8 +285,14 @@ def workspace_page():
             items.append({"uid": r["uid"], "title": r["title"], "body": f"{r['username']}\n{secret_show}"})
         title = "مدیریت رمز ورود (sealed)"
     else:
-        items = c.execute("SELECT uid,title,body FROM ws_tasks ORDER BY last_updated DESC").fetchall()
-        title = "مدیریت کارها"
+        rows = c.execute("SELECT uid,title,body,done,due_at,priority FROM ws_tasks ORDER BY done ASC, CASE WHEN due_at='' THEN 1 ELSE 0 END, due_at ASC, priority DESC, last_updated DESC").fetchall()
+        items = []
+        for row in rows:
+            item = dict(row)
+            due_label = _jalali_label(item.get("due_at") or "")
+            item["body"] = (item.get("body") or "") + ("\nموعد شمسی: " + due_label if item.get("due_at") else "\nبدون موعد") + "\nاولویت: " + str(item.get("priority") or 1)
+            items.append(item)
+        title = "مدیریت کارها و زمان‌بندی"
     return render_template_string(PAGE, items=items, title=title, tab=tab)
 
 
