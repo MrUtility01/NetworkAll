@@ -180,10 +180,25 @@ def _frame_steps(cat: str) -> str:
         "dns": "1. کلاینت به Resolver محلی\n2. اگر cache نبود → Recursive به Root/TLD/Authoritative\n3. پاسخ + TTL\n4. ذخیره در cache\n5. در Split-Horizon: پاسخ بر اساس منبع پرسش",
         "vpn": "1. IKE Phase1 (Main/Aggressive) → ISAKMP SA\n2. IKE Phase2 → IPsec SA\n3. ترافیک جفت می‌شود (interesting traffic)\n4. رمزنگاری و ارسال\n5. Keepalive / DPD برای تشخیص قطع",
     }
-    return steps.get(
-        cat,
-        "1. Backup پیکربندی فعلی\n2. تعیین دامنه تغییر (دستگاه / VLAN / VRF)\n3. پیکربندی حداقلی\n4. Verify محلی\n5. Verify End-to-End\n6. بررسی لاگ\n7. Rollback اگر شکست",
+    network_cats = {"vlan", "stp", "ospf", "bgp", "acl", "nat", "vpn", "dhcp", "dns", "wireless", "firewall", "ha", "qos", "security", "tcpip", "mpls", "multicast", "vxlan", "network"}
+    default_steps = (
+        "1. ورودی، نسخه و وضعیت اولیه را ثبت کن\n"
+        "2. خروجی مورد انتظار و معیار قبولی را مشخص کن\n"
+        "3. وابستگی‌ها، مجوزها و لاگ‌های مرتبط را بررسی کن\n"
+        "4. یک تغییر کنترل‌شده در محیط آزمایشی انجام بده\n"
+        "5. نتیجه را با حالت عادی و حالت مرزی مقایسه کن\n"
+        "6. تغییر را rollback کن و تکرارپذیری نتیجه را بسنج"
     )
+    if cat in network_cats:
+        default_steps = (
+            "1. وضعیت اولیه و backup پیکربندی را ثبت کن\n"
+            "2. دامنه تغییر (دستگاه / VLAN / VRF) را تعیین کن\n"
+            "3. پیکربندی حداقلی را در Lab اعمال کن\n"
+            "4. Verify محلی و End-to-End انجام بده\n"
+            "5. لاگ‌ها و مسیر برگشت را بررسی کن\n"
+            "6. در صورت شکست rollback کن"
+        )
+    return steps.get(cat, default_steps)
 
 
 def _lab_concrete(topic: str, cat: str, level: str) -> str:
@@ -304,58 +319,54 @@ def _lab_concrete(topic: str, cat: str, level: str) -> str:
 - یک فایل تست بساز، checksum بگیر، copy/restore را آزمایش کن و checksum را مقایسه کن.
 - معیار قبولی: داده با checksum یکسان بازیابی شود و هیچ volume واقعی تغییر نکند.
 """
-    base = f"""# آزمایشگاه عملی — {topic}
+    network_cats = {"vlan", "stp", "ospf", "bgp", "acl", "nat", "vpn", "dhcp", "dns", "wireless", "firewall", "ha", "qos", "security", "tcpip", "mpls", "multicast", "vxlan", "network"}
+    if cat not in network_cats:
+        base = f"""# آزمایشگاه عملی — {topic}
 
-## توپولوژی پیشنهادی Lab
-- ۲ سوییچ / ۱ روتر / ۲ کلاینت (یا GNS3/EVE-NG/Packet Tracer)
-- یک لینک uplink و یک لینک backup (برای تست failover)
+## هدف و محیط
+- هدف آزمون و نتیجه مورد انتظار را پیش از شروع بنویس.
+- از پوشه، ماشین مجازی، مخزن یا پایگاه داده آزمایشی استفاده کن؛ داده واقعی را تغییر نده.
+- نسخه ابزار، وابستگی‌ها، ورودی‌ها و وضعیت اولیه را ثبت کن.
 
 ## مراحل اجرا
+1. **Baseline:** یک نمونه ورودی معتبر بساز و خروجی را ذخیره کن.
+2. **حالت مرزی:** ورودی خالی، حدی یا غیرمعمول را امتحان کن.
+3. **حالت خطا:** ورودی نامعتبر یا وابستگی قطع‌شده را در محیط آزمایشی شبیه‌سازی کن.
+4. **Evidence:** پیام خطا، لاگ و تفاوت خروجی قبل/بعد را ثبت کن.
+5. **Rollback:** محیط را به وضعیت اولیه برگردان و اجرای دوباره را تکرار کن.
 
-### مرحله ۱ — وضعیت پایه (قبل از تغییر)
-| مورد | مقدار قبل | دستور مشاهده |
-|------|-----------|--------------|
-| وضعیت اینترفیس | | `show ip interface brief` / `ip -br a` |
-| جدول مرتبط | | دستور تخصصی دسته |
-| لاگ اخیر | | `show logging` / `journalctl -n 50` |
+## معیار قبولی
+- نتیجه با انتظار از پیش تعریف‌شده منطبق باشد.
+- خطاها قابل تشخیص باشند و داده ناخواسته تغییر نکند.
+- آزمایش با همان ورودی و نسخه، قابل تکرار باشد.
+"""
+        if level in ("L3", "L4"):
+            base += f"""
+## سطح سازمانی ({level})
+- وابستگی‌ها، مالک تغییر و پنجره نگهداری را مستند کن.
+- آزمون منفی، روش بازیابی و معیار توقف را تعریف کن.
+- خروجی قابل تحویل شامل شواهد، نتیجه و محدودیت‌ها باشد.
+"""
+        return base
 
-### مرحله ۲ — تغییر برگشت‌پذیر
-1. **Backup اجباری** قبل از هر change:
-```
-copy running-config startup-config
-! یا
-show running-config | redirect flash:pre-lab.cfg
-```
-2. پیکربندی حداقلی مرتبط با «{topic}»
-3. ذخیره موقت (نه لزوماً startup تا verify کامل نشود)
+    base = f"""# آزمایشگاه شبکه — {topic}
 
-### مرحله ۳ — Verify
-- [ ] Verify محلی (روی همان دستگاه)
-- [ ] Verify از کلاینت واقعی (پینگ / curl / nslookup)
-- [ ] لاگ بدون خطای جدید
+## توپولوژی پیشنهادی Lab
+- دو سوییچ، یک روتر و دو کلاینت در محیط ایزوله (GNS3/EVE-NG/Packet Tracer)
+- یک uplink و یک مسیر backup برای آزمون failover
 
-### مرحله ۴ — شکست عمدی (Failure Injection)
-عمداً یکی از این‌ها را بشکن و با جدول RCA پیدا کن:
-- کابل uplink را بکش
-- VLAN اشتباه روی access بگذار
-- ACL deny اشتباه اعمال کن
-- تایمر/اولویت را خراب کن
-
-### مرحله ۵ — Rollback
-```
-configure terminal
-! دستورات معکوس
-end
-copy startup-config running-config   ! اگر نیاز
-```
+## مراحل اجرا
+1. وضعیت پایه، interfaceها و پیکربندی را ثبت کن.
+2. پیش از تغییر backup بگیر؛ فقط یک متغیر را تغییر بده.
+3. فرمان‌های مشاهده‌ای را اجرا و خروجی را با نتیجه مورد انتظار مقایسه کن.
+4. یک failure کنترل‌شده ایجاد کن و شواهد RCA را ثبت کن.
+5. تغییر معکوس را اعمال کن و دسترسی end-to-end را دوباره تأیید کن.
 """
     if level in ("L3", "L4"):
         base += f"""
-### مرحله ۶ — سطح سازمانی ({level})
-- پنجره Change را تعریف کن (مثلاً ۲۲:۰۰–۲۳:۰۰)
-- Runbook یک‌صفحه‌ای بنویس
-- Monitoring بعد از change (حداقل ۳۰ دقیقه)
-- Document: چه تغییری، چرا، نتیجه، درس‌آموخته
+## سطح سازمانی ({level})
+- پنجره Change، مالک تغییر و Runbook را تعریف کن.
+- بعد از تغییر، monitoring و معیار rollback را مستند کن.
 """
     return base
 
@@ -408,13 +419,23 @@ def _rca_table(cat: str) -> str:
             ("false positive", "rule/context ناکافی", "negative controls و entity context"),
         ],
     }
-    rows = custom.get(cat, ERRORS.get(cat, [
-        ("سرویس قطع کامل", "لایه فیزیکی یا gateway", "show interface / ping gateway"),
-        ("فقط بعضی کلاینت‌ها", "VLAN / ACL / DNS خاص", "مقایسه کلاینت خوب و بد"),
-        ("بعد از reboot برگشت", "startup ≠ running", "show startup-config"),
-        ("کندی نه قطعی", "QoS / congestion / duplex", "show interface counters / perf"),
-        ("قطع متناوب", "flapping / STP reconvergence", "log | include UPDOWN|SPANTREE"),
-    ]))
+    generic_rows = [
+        ("خروجی با انتظار فرق دارد", "ورودی، نسخه یا قرارداد داده متفاوت است", "ثبت ورودی/خروجی و نسخه"),
+        ("خطا پس از تغییر", "وابستگی یا تنظیم جانبی تغییر کرده است", "مقایسه قبل/بعد و لاگ"),
+        ("مشکل فقط در یک محیط", "تفاوت مجوز، وابستگی یا پیکربندی", "مقایسه محیط سالم و معیوب"),
+        ("عملکرد افت کرده", "فشار منابع یا مسیر اجرای نامناسب", "اندازه‌گیری baseline و مصرف منابع"),
+        ("خطا قابل تکرار نیست", "شرایط آزمون یا داده ورودی ناپایدار است", "ثبت دقیق شرایط و تکرار کنترل‌شده"),
+    ]
+    network_cats = {"vlan", "stp", "ospf", "bgp", "acl", "nat", "vpn", "dhcp", "dns", "wireless", "firewall", "ha", "qos", "security", "tcpip", "mpls", "multicast", "vxlan", "network"}
+    if cat in network_cats:
+        generic_rows = [
+            ("سرویس قطع کامل", "لایه فیزیکی یا gateway", "show interface / ping gateway"),
+            ("فقط بعضی کلاینت‌ها", "VLAN / ACL / DNS خاص", "مقایسه کلاینت خوب و بد"),
+            ("بعد از reboot برگشت", "startup ≠ running", "show startup-config"),
+            ("کندی نه قطعی", "QoS / congestion / duplex", "show interface counters / perf"),
+            ("قطع متناوب", "flapping / STP reconvergence", "log | include UPDOWN|SPANTREE"),
+        ]
+    rows = custom.get(cat, ERRORS.get(cat, generic_rows))
     header = "| علامت (Symptom) | علت محتمل | دستور شواهد | اقدام اول |\n|---|---|---|---|"
     body = "\n".join(
         f"| {a} | {b} | `{c}` | ایزوله + backup |" for a, b, c in rows
