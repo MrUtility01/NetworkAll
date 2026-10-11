@@ -29,15 +29,27 @@ def scenario_uid(code: str) -> str:
     return f"scenario:{code}"
 
 
+def _timestamp_key(value: Any):
+    """Compare ISO timestamps by instant, not by their textual timezone suffix."""
+    raw = str(value or "")
+    try:
+        dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return (1, dt.timestamp(), "")
+    except (ValueError, TypeError, OverflowError):
+        return (0, 0.0, raw)
+
+
 def compare_lww(server: Dict[str, Any], client: Dict[str, Any]) -> str:
     """برمی‌گرداند: accept_client | keep_server | equal | conflict"""
     su = server.get("last_updated") or ""
     cu = client.get("last_updated") or ""
     sh = server.get("content_hash") or ""
     ch = client.get("content_hash") or content_hash(client)
-    if cu > su:
+    if _timestamp_key(cu) > _timestamp_key(su):
         return "accept_client"
-    if cu < su:
+    if _timestamp_key(cu) < _timestamp_key(su):
         return "keep_server"
     if sh == ch:
         return "equal"
@@ -47,7 +59,7 @@ def compare_lww(server: Dict[str, Any], client: Dict[str, Any]) -> str:
 def build_manifest(records: List[Dict[str, Any]], since: Optional[str] = None) -> Dict[str, Any]:
     items = []
     for r in records:
-        if since and (r.get("last_updated") or "") <= since:
+        if since and _timestamp_key(r.get("last_updated")) <= _timestamp_key(since):
             continue
         items.append(
             {
@@ -67,7 +79,10 @@ def merge_push(
 ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], List[Dict[str, Any]]]:
     """(applied, rejected_keep_server, conflicts)"""
     applied, rejected, conflicts = [], [], []
-    for c in client_records:
+    for incoming in client_records:
+        if not isinstance(incoming, dict):
+            continue
+        c = dict(incoming)
         uid = c.get("uid")
         if not uid:
             continue
