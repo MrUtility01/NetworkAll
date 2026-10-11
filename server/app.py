@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import os
 import socket
@@ -70,24 +71,31 @@ except Exception as _e:
     register_study_routes = None
     _MODULE_STATUS["study_error"] = str(_e)
 
-DEFAULT_DEV_TOKEN = "09136555866"
-SYNC_TOKEN = os.environ.get("NETENC_TOKEN", DEFAULT_DEV_TOKEN)
+DEFAULT_DEV_TOKEN = ""
+SYNC_TOKEN = os.environ.get("NETENC_TOKEN", DEFAULT_DEV_TOKEN).strip()
 DEVICE_ID = os.environ.get("NETENC_DEVICE", socket.gethostname() or "windows-host")
-BIND_HOST = os.environ.get("NETENC_HOST", "0.0.0.0")
+# Safer by default: personal use on this PC only. Set NETENC_HOST=0.0.0.0 explicitly for LAN sync.
+BIND_HOST = os.environ.get("NETENC_HOST", "127.0.0.1").strip()
+LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
+REMOTE_BIND = BIND_HOST not in LOCAL_HOSTS
 
-if SYNC_TOKEN == DEFAULT_DEV_TOKEN:
-    print("WARNING: using default NETENC_TOKEN — set env NETENC_TOKEN for LAN use")
+if REMOTE_BIND and len(SYNC_TOKEN) < 24:
+    print("ERROR: LAN bind requires NETENC_TOKEN with at least 24 characters.")
 
 _db = None
 
 
 def db() -> WebDB:
+    """Open local DB; never erase a non-empty DB as an automatic recovery step."""
     global _db
     if _db is None:
         _db = WebDB()
-        if not _db.is_seeded():
+        count = _db.chapter_count()
+        if count == 0:
             print("seed curriculum...")
-            print(_db.seed_full(force=True))
+            print(_db.seed_full(force=False))
+        elif not _db.is_seeded():
+            print(f"WARNING: partial curriculum detected ({count} chapters); data preserved, no automatic destructive reseed.")
         _db.ensure_sync_columns()
     return _db
 
@@ -99,20 +107,24 @@ def extract_token() -> str:
     t = request.headers.get("X-NetEnc-Token", "") or ""
     if t:
         return t.strip()
-    t = request.cookies.get("netenc_token") or request.args.get("token") or ""
+    t = request.cookies.get("netenc_token") or ""
     return (t or "").strip()
 
 
 def check_token() -> bool:
-    if not SYNC_TOKEN:
-        return True
-    return extract_token() == SYNC_TOKEN
+    candidate = extract_token()
+    if SYNC_TOKEN:
+        return hmac.compare_digest(candidate, SYNC_TOKEN)
+    # No token is permitted only when listening on loopback for personal use.
+    return not REMOTE_BIND
 
 
 def require_token():
+    if not SYNC_TOKEN and REMOTE_BIND:
+        return jsonify({"ok": False, "error": "server_not_secured", "hint": "Set a strong NETENC_TOKEN before enabling LAN access."}), 503
     if check_token():
         return None
-    return jsonify({"ok": False, "error": "unauthorized", "hint": "Authorization: Bearer <NETENC_TOKEN>"}), 401
+    return jsonify({"ok": False, "error": "unauthorized", "hint": "Enter NETENC_TOKEN in the web app or send Authorization: Bearer <token>."}), 401
 
 
 if _MODULE_STATUS["workspace"]:
@@ -149,6 +161,94 @@ def health():
         },
         "stats": st,
     })
+
+
+
+@app.get("/api/stats")
+def api_stats():
+    denied = require_token()
+    if denied:
+        return denied
+    return jsonify(db().stats())
+
+
+@app.get("/api/chapters/<int:chapter_id>/levels")
+def api_chapter_levels(chapter_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    chapter = db().get_chapter(chapter_id)
+    if not chapter:
+        return jsonify({"error": "chapter_not_found"}), 404
+    return jsonify({"levels": db().list_levels(chapter_id)})
+
+
+@app.get("/api/levels/<int:level_id>/lessons")
+def api_level_lessons(level_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    return jsonify({"lessons": db().list_lessons(level_id)})
+
+
+@app.get("/api/lessons/<int:lesson_id>")
+def api_lesson_by_id(lesson_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    row = db().get_lesson(lesson_id)
+    return jsonify(row) if row else (jsonify({"error": "lesson_not_found"}), 404)
+
+
+@app.get("/api/scenarios")
+def api_scenarios():
+    denied = require_token()
+    if denied:
+        return denied
+    return jsonify(db().list_scenarios())
+
+
+@app.get("/api/scenarios/<int:scenario_id>")
+def api_scenario(scenario_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    row = db().get_scenario(scenario_id)
+    return jsonify(row) if row else (jsonify({"error": "scenario_not_found"}), 404)
+
+
+@app.get("/api/search")
+def api_search():
+    denied = require_token()
+    if denied:
+        return denied
+    query = (request.args.get("q") or "").strip()
+    if len(query) > 200:
+        return jsonify({"error": "query_too_long"}), 400
+    try:
+        limit = max(1, min(100, int(request.args.get("limit", "50"))))
+    except ValueError:
+        return jsonify({"error": "invalid_limit"}), 400
+    return jsonify(db().search(query, limit=limit))
+
+
+@app.post("/api/reseed")
+def api_safe_reseed():
+    """Safe repair endpoint: never force-deletes user progress or a non-empty DB."""
+    denied = require_token()
+    if denied:
+        return denied
+    d = db()
+    count = d.chapter_count()
+    if count:
+        return jsonify({
+            "ok": True,
+            "skipped": True,
+            "chapters": count,
+            "stats": d.stats(),
+            "message": "پایگاه داده غیرخالی است؛ برای محافظت از پیشرفت و یادداشت‌ها، بازسازی مخرب خودکار انجام نشد."
+        })
+    return jsonify(d.seed_full(force=False))
 
 
 @app.get("/api/chapters")
@@ -291,6 +391,8 @@ def sync_push():
 
 def main():
     host = BIND_HOST
+    if REMOTE_BIND and len(SYNC_TOKEN) < 24:
+        raise SystemExit("برای دسترسی LAN، NETENC_TOKEN تصادفی با حداقل ۲۴ نویسه تعیین کنید؛ در غیر این صورت NETENC_HOST را روی 127.0.0.1 نگه دارید.")
     port = int(os.environ.get("NETENC_PORT", "5050"))
     db()
     if register_study_routes:
