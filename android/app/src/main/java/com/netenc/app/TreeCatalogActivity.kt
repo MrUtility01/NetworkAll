@@ -128,7 +128,7 @@ class TreeCatalogActivity : AppCompatActivity() {
                     textSize = 14f
                     typeface = Ui.persianTypeface()
                 })
-                sub.lessons.take(80).forEach { les ->
+                sub.lessons.forEach { les ->
                     box.addView(TextView(this@TreeCatalogActivity).apply {
                         text = "  · ${les.titleFa}"
                         setTextColor(Ui.TEXT)
