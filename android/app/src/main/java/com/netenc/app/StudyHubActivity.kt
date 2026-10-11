@@ -121,10 +121,15 @@ class StudyHubActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val st = withContext(Dispatchers.IO) { study.stats() }
             statsRow.removeAllViews()
-            statsRow.addView(card("امروز", "${st[\"today\"]}/${st[\"goal\"]}", Color.parseColor("#1D4ED8")))
-            statsRow.addView(card("Due", "${st[\"due\"]}", Color.parseColor("#C2410C")))
-            statsRow.addView(card("زنجیره", "${st[\"streak\"]}", Color.parseColor("#0F766E")))
-            statsRow.addView(card("بلد", "${st[\"known\"]}", Color.parseColor("#166534")))
+            val today = st["today"]
+            val goal = st["goal"]
+            val due = st["due"]
+            val streak = st["streak"]
+            val known = st["known"]
+            statsRow.addView(card("امروز", "$today/$goal", Color.parseColor("#1D4ED8")))
+            statsRow.addView(card("Due", "$due", Color.parseColor("#C2410C")))
+            statsRow.addView(card("زنجیره", "$streak", Color.parseColor("#0F766E")))
+            statsRow.addView(card("بلد", "$known", Color.parseColor("#166534")))
         }
     }
 
