@@ -200,41 +200,41 @@ def _ascii_digits(value: str) -> str:
 def git_markdown_to_lessons(path: Path) -> list:
     """Parse the chapter-64 Markdown book into stable lesson records."""
     text = path.read_text(encoding="utf-8-sig")
-    matches = list(re.finditer(r"(?m)^###\\s+(.+?\\s+[—-]\\s*L[0-4])\\s*$", text))
+    matches = list(re.finditer(r"(?m)^###\s+(.+?\s+[—-]\s*L[0-4])\s*$", text))
     if not matches:
         return []
     lessons = []
     current_sub = 1
     sub_titles = {}
     for line in text[:matches[0].start()].splitlines():
-        m = re.match(r"^##\\s+۶۴[.．](\\d+)\\s+(.+)$", line.strip())
+        m = re.match(r"^##\s+۶۴[.．](\d+)\s+(.+)$", line.strip())
         if m:
             current_sub = int(_ascii_digits(m.group(1)))
             sub_titles[current_sub] = m.group(2).strip()
     fence = chr(96) * 3
     for idx, match in enumerate(matches):
         heading = match.group(1).strip()
-        level_match = re.search(r"[—-]\\s*L([0-4])\\s*$", heading)
+        level_match = re.search(r"[—-]\s*L([0-4])\s*$", heading)
         if not level_match:
             continue
         level = "L" + level_match.group(1)
-        bare_title = re.sub(r"\\s*[—-]\\s*L[0-4]\\s*$", "", heading).strip()
+        bare_title = re.sub(r"\s*[—-]\s*L[0-4]\s*$", "", heading).strip()
         body_start = match.start()
         body_end = matches[idx + 1].start() if idx + 1 < len(matches) else len(text)
         body = text[body_start:body_end].strip()
         preceding = text[:body_start].splitlines()
         for line in reversed(preceding):
-            m = re.match(r"^##\\s+۶۴[.．](\\d+)\\s+(.+)$", line.strip())
+            m = re.match(r"^##\s+۶۴[.．](\d+)\s+(.+)$", line.strip())
             if m:
                 current_sub = int(_ascii_digits(m.group(1)))
                 sub_titles[current_sub] = m.group(2).strip()
                 break
-        summary_match = re.search(r"(?m)^\\*\\*خلاصه(?: فصل)?:?\\*\\*\\s*(.+)$", body)
-        summary = summary_match.group(1).strip() if summary_match else body[:240].replace("\\n", " ").strip()
-        scenario_match = re.search(r"(?ms)^##\\s+(?:4|۴)[.、 ]*سناریوی عملی.*?(?=^##\\s+(?:5|۵)[.、 ]|\\Z)", body)
+        summary_match = re.search(r"(?m)^\*\*خلاصه(?: فصل)?:?\*\*\s*(.+)$", body)
+        summary = summary_match.group(1).strip() if summary_match else body[:240].replace("\n", " ").strip()
+        scenario_match = re.search(r"(?ms)^##\s+(?:4|۴)[.、 ]*سناریوی عملی.*?(?=^##\s+(?:5|۵)[.、 ]|\Z)", body)
         examples = scenario_match.group(0).strip() if scenario_match else ""
-        code_blocks = re.findall(re.escape(fence) + r"[^\\n]*\\n(.*?)" + re.escape(fence), body, flags=re.S)
-        commands = "\\n".join(code_blocks).strip()
+        code_blocks = re.findall(re.escape(fence) + r"[^\n]*\n(.*?)" + re.escape(fence), body, flags=re.S)
+        commands = "\n".join(code_blocks).strip()
         uid_hash = hashlib.sha1(f"{current_sub}|{bare_title}|{level}".encode("utf-8")).hexdigest()[:12]
         uid = f"lesson:ch64:git:s{current_sub:02d}:{uid_hash}"
         lessons.append({
@@ -308,7 +308,7 @@ def prune_placeholder_lessons(data):
         for sub in chapter.get("subchapters", []):
             kept = []
             for lesson in sub.get("lessons", []):
-                content = "\\n".join(str(lesson.get(k) or "") for k in ("title_fa", "summary", "full_content", "examples", "notes"))
+                content = "\n".join(str(lesson.get(k) or "") for k in ("title_fa", "summary", "full_content", "examples", "notes"))
                 if len(str(lesson.get("full_content") or "")) < 1800 and marker.search(content):
                     removed += 1
                     continue
@@ -326,7 +326,7 @@ def prune_legacy_command_uids(data):
             continue
         for sub in chapter.get("subchapters", []):
             before = sub.get("lessons", [])
-            sub["lessons"] = [x for x in before if not re.fullmatch(r"lesson:ch68:cmd:\\d{4}", str(x.get("uid") or ""))]
+            sub["lessons"] = [x for x in before if not re.fullmatch(r"lesson:ch68:cmd:\d{4}", str(x.get("uid") or ""))]
             removed += len(before) - len(sub["lessons"])
         chapter["subchapters"] = [s for s in chapter.get("subchapters", []) if s.get("lessons")]
     return removed
@@ -357,10 +357,10 @@ def remap_lessons_to_chapter(lessons, target_chapter):
         item["chapter_order"] = target_chapter
         uid = str(item.get("uid") or "")
         if uid.startswith("lesson:ch"):
-            uid = re.sub(r"^lesson:ch\\d{2}:", f"lesson:ch{target_chapter:02d}:", uid)
+            uid = re.sub(r"^lesson:ch\d{2}:", f"lesson:ch{target_chapter:02d}:", uid)
         item["uid"] = uid
         if not item.get("subchapter_order"):
-            m = re.search(r":lv(\\d+):", uid)
+            m = re.search(r":lv(\d+):", uid)
             if m:
                 item["subchapter_order"] = int(m.group(1))
         out.append(item)
@@ -566,7 +566,7 @@ def main():
             except (TypeError, ValueError):
                 chapter_order = 1
             if not source.get("subchapter_order"):
-                m = re.search(r":lv(\\d+):", str(source.get("uid") or ""))
+                m = re.search(r":lv(\d+):", str(source.get("uid") or ""))
                 if m:
                     source["subchapter_order"] = int(m.group(1))
             general_extra[chapter_order].append(source)
