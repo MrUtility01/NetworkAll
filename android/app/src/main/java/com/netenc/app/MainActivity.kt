@@ -42,7 +42,15 @@ class MainActivity : AppCompatActivity() {
         hostInput.setText(prefs.getString("host", ""))
         tokenInput.setText(prefs.getString("token", "") ?: "")
 
-        if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {\n            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1001)\n        }\n        ReminderScheduler.scheduleMinutes(this, 15)
+        if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1001)
+        }
+        // Remove the legacy hard-coded default token from existing installs.
+        if (prefs.getString("token", "") == "09136555866") {
+            prefs.edit().remove("token").apply()
+            tokenInput.setText("")
+        }
+        ReminderScheduler.scheduleMinutes(this, 15)
 
         findViewById<Button>(R.id.btnStudyHub).setOnClickListener {
             startActivity(Intent(this, StudyHubActivity::class.java))
