@@ -96,6 +96,27 @@ def record_blob(item):
     return "\n".join(text(item.get(k)) for k in keys if k in item)
 
 
+def mark_template_heavy(rows, records):
+    """Flag records dominated by long paragraphs repeated across many lessons."""
+    paragraphs_by_record = []
+    frequency = Counter()
+    for item in records:
+        raw = text(item.get("full_content") or item.get("content") or item.get("explanation"))
+        paragraphs = [
+            re.sub(r"\\s+", " ", p).strip().lower()
+            for p in re.split(r"\\n\\s*\\n", raw)
+            if len(re.sub(r"\\s+", " ", p).strip()) >= 70
+        ]
+        paragraphs_by_record.append((paragraphs, len(raw)))
+        frequency.update(set(paragraphs))
+    threshold = max(5, (len(records) + 3) // 4)
+    repeated = {p for p, count in frequency.items() if count >= threshold}
+    for row, (paragraphs, total) in zip(rows, paragraphs_by_record):
+        repeated_chars = sum(len(p) for p in paragraphs if p in repeated)
+        if total >= 1000 and repeated_chars / max(1, total) >= 0.5:
+            row["checks"].append("template_heavy")
+
+
 def inspect_record(path, item, index, min_chars):
     title = text(item.get("title_fa") or item.get("title_en") or item.get("title") or item.get("command") or f"item-{index}")
     blob = record_blob(item)
@@ -109,7 +130,9 @@ def inspect_record(path, item, index, min_chars):
         not is_network_topic
         and sum(term in blob.lower() for term in generic_terms) >= 4
     )
+    status = text(item.get("source_status") or item.get("status") or (item.get("meta") or {}).get("status")).lower()
     checks = {
+        "needs_human_review": any(flag in status for flag in ("review_required", "draft", "seeded", "todo")),
         "shallow": len(blob.strip()) < min_chars,
         "missing_lab_marker": not LAB_RE.search(blob),
         "missing_scenario_marker": not SCENARIO_RE.search(blob),
@@ -178,6 +201,7 @@ def main():
         records = extract_items(data, path)
         report["files_scanned"] += 1
         file_items = [inspect_record(path, item, i, args.min_chars) for i, item in enumerate(records, 1)]
+        mark_template_heavy(file_items, records)
         report["records_scanned"] += len(file_items)
         for row in file_items:
             if row["uid"]:
@@ -200,6 +224,7 @@ def main():
                 active_data = json.load(handle)
             active_records = extract_items(active_data, active_asset)
             active_rows = [inspect_record(active_asset, item, i, args.min_chars) for i, item in enumerate(active_records, 1)]
+            mark_template_heavy(active_rows, active_records)
             report["active_curriculum"]["records"] = len(active_rows)
             active_counts = Counter(check for item in active_rows for check in item["checks"])
             report["active_curriculum"]["warnings"] = dict(sorted(active_counts.items()))
