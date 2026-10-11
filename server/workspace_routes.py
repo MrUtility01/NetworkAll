@@ -5,10 +5,14 @@ from __future__ import annotations
 import base64
 import hashlib
 import hmac
+import os
+import secrets
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 import sqlite3
+
+from cryptography.fernet import Fernet, InvalidToken
 
 from flask import Blueprint, request, jsonify, render_template_string, make_response, redirect
 
@@ -32,29 +36,61 @@ def _authorized() -> bool:
     return bool(_check_token())
 
 
+def _vault_key() -> bytes:
+    """Stable per-install key; keep vault.key with encrypted DB backups."""
+    configured = os.environ.get("NETENC_VAULT_KEY", "").strip()
+    if configured:
+        return base64.urlsafe_b64encode(hashlib.sha256(configured.encode("utf-8")).digest())
+    data_dir = Path(__file__).resolve().parent / "data"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    key_path = data_dir / "vault.key"
+    try:
+        raw = key_path.read_bytes()
+    except FileNotFoundError:
+        raw = secrets.token_bytes(32)
+        try:
+            with key_path.open("xb") as handle:
+                handle.write(raw)
+            try:
+                os.chmod(key_path, 0o600)
+            except OSError:
+                pass
+        except FileExistsError:
+            raw = key_path.read_bytes()
+    return base64.urlsafe_b64encode(hashlib.sha256(raw).digest())
+
+
 def _seal(plain: str) -> str:
     if not plain:
         return ""
-    if plain.startswith("enc1:"):
+    if plain.startswith("enc2:"):
         return plain
-    key = hashlib.sha256((_sync_token or "dev").encode("utf-8")).digest()
-    raw = plain.encode("utf-8")
-    out = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
-    return "enc1:" + base64.urlsafe_b64encode(out).decode("ascii")
+    token = Fernet(_vault_key()).encrypt(plain.encode("utf-8")).decode("ascii")
+    return "enc2:" + token
 
 
 def _unseal(blob: str) -> str:
     if not blob:
         return ""
-    if not blob.startswith("enc1:"):
-        return "•••• (legacy — edit to re-seal)"
     try:
-        key = hashlib.sha256((_sync_token or "dev").encode("utf-8")).digest()
-        raw = base64.urlsafe_b64decode(blob[5:].encode("ascii"))
-        out = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
-        return out.decode("utf-8")
-    except Exception:
-        return "••••"
+        if blob.startswith("enc2:"):
+            return Fernet(_vault_key()).decrypt(blob[5:].encode("ascii")).decode("utf-8")
+        if blob.startswith("enc1:"):
+            # Backward-compatible reader for old XOR data. New writes always use Fernet.
+            raw = base64.urlsafe_b64decode(blob[5:].encode("ascii"))
+            candidates = [_sync_token, "09136555866", "dev"]
+            for candidate in candidates:
+                if not candidate:
+                    continue
+                key = hashlib.sha256(candidate.encode("utf-8")).digest()
+                out = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
+                try:
+                    return out.decode("utf-8")
+                except UnicodeDecodeError:
+                    continue
+        return "•••• (legacy/unreadable — edit to re-seal)"
+    except (InvalidToken, ValueError, UnicodeDecodeError):
+        return "•••• (decryption failed)"
 
 
 LOGIN_PAGE = """
