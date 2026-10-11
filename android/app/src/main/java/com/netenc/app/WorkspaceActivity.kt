@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
+import java.time.ZoneId
 import java.util.UUID
 import java.util.Calendar
 import com.netenc.app.util.JalaliDate
@@ -197,11 +198,31 @@ class WorkspaceActivity : AppCompatActivity() {
             val task = withContext(Dispatchers.IO) {
                 db.workspaceDao().allTasks().find { it.uid == uid }
             } ?: return@launch
+            var rescheduled = false
             withContext(Dispatchers.IO) {
-                db.workspaceDao().upsertTask(task.copy(done = !task.done, lastUpdated = now()))
+                val updated = if (!task.done && task.recurrence in setOf("daily", "weekly") && task.dueAt.isNotBlank()) {
+                    val parsed = runCatching { Instant.parse(task.dueAt) }.getOrNull()
+                    if (parsed != null) {
+                        val base = if (parsed.isBefore(Instant.now())) Instant.now() else parsed
+                        val local = base.atZone(ZoneId.systemDefault())
+                        val next = if (task.recurrence == "daily") local.plusDays(1) else local.plusWeeks(1)
+                        rescheduled = true
+                        task.copy(done = false, dueAt = next.toInstant().toString(), lastUpdated = now())
+                    } else {
+                        task.copy(done = true, lastUpdated = now())
+                    }
+                } else {
+                    task.copy(done = !task.done, lastUpdated = now())
+                }
+                db.workspaceDao().upsertTask(updated)
             }
             refresh()
-            Toast.makeText(this@WorkspaceActivity, if (!task.done) "انجام شد" else "باز شد", Toast.LENGTH_SHORT).show()
+            val message = when {
+                rescheduled -> "موعد بعدی تنظیم شد"
+                !task.done -> "انجام شد"
+                else -> "باز شد"
+            }
+            Toast.makeText(this@WorkspaceActivity, message, Toast.LENGTH_SHORT).show()
         }
     }
 
