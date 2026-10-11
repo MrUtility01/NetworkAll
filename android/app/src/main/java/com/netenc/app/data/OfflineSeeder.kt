@@ -16,7 +16,7 @@ object OfflineSeeder {
     suspend fun ensureSeeded(context: Context, force: Boolean = false): Int = seedMutex.withLock {
         withContext(Dispatchers.IO) {
         val dao = AppDatabase.get(context).lessonDao()
-        val existingRows = dao.allIncludingDeleted().associateBy { it.uid }
+        val existingRows = dao.allDeletionStates().associateBy { it.uid }
         val existing = dao.countActive()
         val filled = if (existing > 0) dao.countFilled() else 0
         val treeReady = if (existing > 0) dao.countTreeReady() else 0
