@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT / "shared"))
 from core.db import WebDB
 from merge_content_packs_into_android import append_unmatched_as_extra
 from sync_engine import compare_lww, content_hash, merge_push
+from workspace_routes import _jalali_to_gregorian, _jalali_label
 
 
 class ContentMergeTests(unittest.TestCase):
@@ -72,6 +73,12 @@ class SyncEngineTests(unittest.TestCase):
         applied, _, _ = merge_push({}, [incoming])
         self.assertNotIn("content_hash", incoming)
         self.assertIn("content_hash", applied[0])
+
+
+class JalaliCalendarTests(unittest.TestCase):
+    def test_known_jalali_date_round_trip(self):
+        self.assertEqual(str(_jalali_to_gregorian(1405, 7, 19)), "2026-10-11")
+        self.assertTrue(_jalali_label("2026-10-11T12:00:00").startswith("1405/07/19"))
 
 
 class SearchTests(unittest.TestCase):
