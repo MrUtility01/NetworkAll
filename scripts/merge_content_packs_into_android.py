@@ -394,6 +394,11 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
         chapter.setdefault("title_en", title_en)
         chapter.setdefault("subchapters", [])
 
+    # Give legacy unnumbered subchapters stable positional order before merging.
+    for position, sub in enumerate(chapter.get("subchapters", []), 1):
+        if not sub.get("order") and not sub.get("order_index"):
+            sub["order"] = position
+
     subs = defaultdict(list)
     for src in lessons:
         subs[src.get("subchapter_order") or 1].append(src)
