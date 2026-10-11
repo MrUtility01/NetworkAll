@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnAbout).setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Engineer Jokar")
-                .setMessage("یادگیری عمیق + کارها + یادداشت + رمز\nتوکن: 09136555866")
+                .setMessage("یادگیری عمیق + کارها + یادداشت + رمز\nتوکن دسترسی را فقط در تنظیمات خصوصی وارد کنید")
                 .setPositiveButton("باشه", null)
                 .show()
         }
