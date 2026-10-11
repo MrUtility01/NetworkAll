@@ -30,11 +30,10 @@ jobs:
           mkdir -p "$ANDROID_HOME/licenses"
           printf '%s\n' \
             "24333f8a63b6825ea9c5514f83c2829b004d1fee" \
-            "d56f51874764545162ea396f5d536e251650e41b" \
-            "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_HOME/licenses/android-sdk-license"
+            "d56f51874764545162ea396f5d536e251650e41b" > "$ANDROID_HOME/licenses/android-sdk-license"
           yes | sdkmanager --licenses >/tmp/sdk-lic.txt 2>&1 || true
           sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools" >/tmp/sdk-install.txt 2>&1 || true
-          tail -20 /tmp/sdk-install.txt || true
+          tail -30 /tmp/sdk-install.txt || true
 
       - name: Icons
         run: python3 scripts/install_android_icon.py
@@ -50,7 +49,6 @@ jobs:
           d = json.loads(gzip.open(p, "rt", encoding="utf-8").read())
           orders = [int(c["order"]) for c in d["chapters"]]
           print("export chapters", len(orders), "lessons", d["lesson_count"])
-          print("last", orders[-6:])
           assert 1 in orders and 68 in orders
           PY
 
@@ -61,10 +59,12 @@ jobs:
           echo "merge_exit=$?"
           exit 0
 
-      - name: Gradle wrapper
+      - name: Gradle wrapper + local.properties
         working-directory: android
         run: |
           set -e
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          cat local.properties
           curl -fsSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.2-bin.zip
           sudo unzip -qo /tmp/gradle.zip -d /opt
           /opt/gradle-8.2/bin/gradle wrapper --gradle-version 8.2
@@ -72,8 +72,32 @@ jobs:
           test -f gradle/wrapper/gradle-wrapper.jar
 
       - name: Assemble APK
+        id: assemble
         working-directory: android
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+        run: |
+          set -o pipefail
+          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee /tmp/gradle-assemble.log
+        continue-on-error: true
+
+      - name: Upload gradle log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-assemble-log
+          path: /tmp/gradle-assemble.log
+          if-no-files-found: ignore
+
+      - name: Upload APK or fail
+        run: |
+          set -e
+          APK=$(find android -name "*.apk" -path "*/outputs/*" | head -n 1 || true)
+          if [ -z "$APK" ]; then
+            echo "APK missing — see artifact gradle-assemble-log"
+            tail -80 /tmp/gradle-assemble.log || true
+            exit 1
+          fi
+          echo "APK=$APK"
+          ls -lh "$APK"
 
       - uses: actions/upload-artifact@v4
         with:
