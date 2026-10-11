@@ -456,7 +456,7 @@ def workspace_page():
             username = request.form.get("username") or ""
             if title:
                 uid = str(uuid.uuid4())
-                now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+                now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z").replace("+00:00", "Z")
                 if tab == "notes":
                     c.execute("INSERT INTO ws_notes VALUES(?,?,?,?)", (uid, title, body, now))
                 elif tab == "vault":
