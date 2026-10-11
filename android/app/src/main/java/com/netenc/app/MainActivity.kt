@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences("netenc", MODE_PRIVATE)
         hostInput.setText(prefs.getString("host", ""))
-        tokenInput.setText(prefs.getString("token", SettingsActivity.DEFAULT_TOKEN) ?: SettingsActivity.DEFAULT_TOKEN)
+        tokenInput.setText(prefs.getString("token", SettingsActivity.DEFAULT_TOKEN).orEmpty())
 
         ReminderScheduler.scheduleHourly(this)
 
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnAbout).setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Engineer Jokar")
-                .setMessage("یادگیری عمیق + کارها + یادداشت + رمز\nتوکن: 09136555866")
+                .setMessage("یادگیری عمیق + کارها + یادداشت + رمز\nتوکن همگام‌سازی را از کنسول سرور ویندوز وارد کنید")
                 .setPositiveButton("باشه", null)
                 .show()
         }
