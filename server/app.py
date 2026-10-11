@@ -54,6 +54,7 @@ except Exception:
 BASE = Path(__file__).resolve().parent
 app = Flask(__name__, template_folder=str(BASE / "templates"), static_folder=str(BASE / "static"))
 app.config["JSON_AS_ASCII"] = False
+app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024
 
 _MODULE_STATUS = {"workspace": False, "study": False, "workspace_error": "", "study_error": ""}
 
@@ -144,27 +145,12 @@ def health():
     denied = require_token()
     if denied:
         return denied
-    st = {}
-    try:
-        st = db().stats()
-    except Exception as e:
-        st = {"error": str(e)}
     return jsonify({
         "ok": True,
-        "device": DEVICE_ID,
         "schema_version": SCHEMA_VERSION,
         "sync_protocol": "v1-aligned",
-        "token_required": bool(SYNC_TOKEN),
-        "default_token_in_use": SYNC_TOKEN == DEFAULT_DEV_TOKEN,
-        "modules": {
-            "workspace": _MODULE_STATUS["workspace"],
-            "study": bool(register_study_routes),
-            "workspace_error": _MODULE_STATUS.get("workspace_error") or None,
-            "study_error": _MODULE_STATUS.get("study_error") or None,
-        },
-        "stats": st,
+        "token_configured": bool(SYNC_TOKEN),
     })
-
 
 
 @app.get("/api/stats")
@@ -357,15 +343,27 @@ def sync_push():
         return denied
     body = request.get_json(force=True, silent=True) or {}
     records = body.get("records") or body.get("items") or []
-    if not isinstance(records, list):
-        return jsonify({"error": "records must be a list"}), 400
+    if not isinstance(records, list) or len(records) > 1000:
+        return jsonify({"error": "records must be a list with at most 1000 items"}), 400
     accepted = kept = conflicts = 0
     conflict_uids = []
     index = {r["uid"]: r for r in db().sync_index()}
     to_apply = []
+    allowed_entities = {"lesson", "scenario", "task", "note", "vault"}
     for item in records:
-        uid = (item or {}).get("uid") or ""
-        if not uid:
+        if not isinstance(item, dict):
+            kept += 1
+            continue
+        uid = str(item.get("uid") or "").strip()
+        entity = str(item.get("entity") or "lesson")
+        if not uid or len(uid) > 128 or entity not in allowed_entities:
+            kept += 1
+            continue
+        try:
+            if len(json.dumps(item, ensure_ascii=False)) > 2_000_000:
+                kept += 1
+                continue
+        except (TypeError, ValueError):
             kept += 1
             continue
         server = index.get(uid)
