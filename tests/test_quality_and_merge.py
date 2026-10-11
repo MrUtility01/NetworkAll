@@ -113,6 +113,43 @@ class ContentMergeTests(unittest.TestCase):
         self.assertEqual(sum(x["uid"] == "base-1" for x in all_lessons), 1)
         self.assertEqual(sum(x["uid"] == "route-1" for x in all_lessons), 1)
 
+    def test_assessment_and_learning_objectives_survive_pack_append(self):
+        assessment = {
+            "questions": [{"id": "q1", "prompt": "سؤال", "options": ["الف", "ب"]}],
+            "answer_key": [{"id": "q1", "correct_index": 1, "explanation": "دلیل"}],
+        }
+        data = {"chapters": []}
+        append_unmatched_as_extra(data, [{
+            "uid": "pack-lesson",
+            "title_fa": "[L1] درس بسته",
+            "subchapter_order": 1,
+            "meta": {"assessment": assessment, "keywords": ["lab"]},
+            "learning_objectives": ["اجرای آزمایش", "تحلیل خروجی"],
+            "source_status": "review_required",
+        }], 66, "فصل ۶۶", "Routing")
+        lesson = data["chapters"][0]["subchapters"][0]["lessons"][0]
+        metadata = json.loads(lesson["meta_json"])
+        self.assertEqual(metadata["assessment"], assessment)
+        self.assertIn("lab", metadata["keywords"])
+        self.assertIn("اجرای آزمایش", lesson["learning_objectives"])
+        self.assertEqual(lesson["source_status"], "review_required")
+
+    def test_title_merge_preserves_structured_assessment_metadata(self):
+        assessment = {
+            "questions": [{"id": "q1", "prompt": "سؤال", "options": ["الف", "ب"]}],
+            "answer_key": [{"id": "q1", "correct_index": 0, "explanation": "دلیل"}],
+        }
+        base = {"full_content": "محتوای پایه"}
+        apply_fields(base, {
+            "full_content": "شرح تکمیلی",
+            "meta": {"assessment": assessment},
+            "learning_objectives": ["هدف اول"],
+            "source_status": "verified",
+        })
+        self.assertEqual(json.loads(base["meta_json"])["assessment"], assessment)
+        self.assertEqual(base["learning_objectives"], "هدف اول")
+        self.assertEqual(base["source_status"], "verified")
+
     def test_creates_chapter_if_missing(self):
         data = {"chapters": []}
         appended = append_unmatched_as_extra(
