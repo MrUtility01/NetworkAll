@@ -75,8 +75,16 @@ def _topic(title: str) -> str:
 def _cat(topic: str) -> str:
     t = topic.lower()
     for c, keys in _CATS:
-        if any(k in t for k in keys):
-            return c
+        for key in keys:
+            k = key.lower()
+            # Short ASCII tokens (e.g. nic, ram, man, pan) must be whole words;
+            # substring matching misclassified "technical" as NIC/hardware and
+            # "management" as MAN/network.
+            if k.isascii() and re.fullmatch(r"[a-z0-9.+-]+", k) and len(k) <= 3:
+                if re.search(rf"(?<![a-z0-9]){re.escape(k)}(?![a-z0-9])", t):
+                    return c
+            elif k in t:
+                return c
     return "general"
 
 
