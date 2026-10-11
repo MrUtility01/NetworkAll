@@ -29,7 +29,9 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "netenc.db"
                 )
-                    .fallbackToDestructiveMigration()
+                    // Never wipe notes, tasks, study history, or Vault on an unknown upgrade.
+                    // Add explicit Room migrations before increasing the database version.
+                    .fallbackToDestructiveMigrationOnDowngrade()
                     .build()
                     .also { INSTANCE = it }
             }
