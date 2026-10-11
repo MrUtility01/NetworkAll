@@ -10,12 +10,13 @@ import java.io.BufferedInputStream
 import java.util.zip.GZIPInputStream
 
 object OfflineSeeder {
-    private const val META_SEEDED = "offline_seeded_v13"
+    private const val META_SEEDED = "offline_seeded_v14"
     private val seedMutex = Mutex()
 
     suspend fun ensureSeeded(context: Context, force: Boolean = false): Int = seedMutex.withLock {
         withContext(Dispatchers.IO) {
         val dao = AppDatabase.get(context).lessonDao()
+        val existingRows = dao.allIncludingDeleted().associateBy { it.uid }
         val existing = dao.countActive()
         val filled = if (existing > 0) dao.countFilled() else 0
         val treeReady = if (existing > 0) dao.countTreeReady() else 0
@@ -62,8 +63,10 @@ object OfflineSeeder {
                             learningObjectives = les.optString("learning_objectives", ""),
                             sourceStatus = les.optString("source_status", "review_required"),
                             lastUpdated = "2026-10-11T12:00:00Z",
-                            contentHash = "offline-v13-ch68",
+                            contentHash = "offline-v14-ch68",
                             deviceId = "android-offline",
+                            // Preserve user soft-deletions when refreshing the bundled curriculum.
+                            deleted = existingRows[uid]?.deleted ?: false,
                             chapterOrder = chOrder,
                             chapterTitle = chTitle,
                             subTitle = subTitle,
