@@ -320,7 +320,7 @@ def prune_placeholder_lessons(data):
             kept = []
             for lesson in sub.get("lessons", []):
                 content = "\n".join(str(lesson.get(k) or "") for k in ("title_fa", "summary", "full_content", "examples", "notes"))
-                if len(str(lesson.get("full_content") or "")) < 1800 and marker.search(content):
+                if len(str(lesson.get("full_content") or "")) < 3500 and marker.search(content):
                     removed += 1
                     continue
                 kept.append(lesson)
