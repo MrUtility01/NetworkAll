@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+import re
 from pathlib import Path
 from datetime import datetime
 
@@ -20,6 +21,42 @@ class WebDB:
         self.conn.execute("PRAGMA foreign_keys = ON")
         self.conn.execute("PRAGMA journal_mode = WAL")
         self._create()
+        self._ensure_search_index()
+
+    def _ensure_search_index(self):
+        """Create a maintained FTS5 index when SQLite supports it; LIKE remains fallback."""
+        try:
+            self.conn.executescript(
+                """
+                CREATE VIRTUAL TABLE IF NOT EXISTS lessons_fts USING fts5(
+                    title_fa, title_en, tags, summary, full_content, commands, examples,
+                    content='lessons', content_rowid='id', tokenize='unicode61'
+                );
+                CREATE TRIGGER IF NOT EXISTS lessons_fts_ai AFTER INSERT ON lessons BEGIN
+                    INSERT INTO lessons_fts(rowid, title_fa, title_en, tags, summary, full_content, commands, examples)
+                    VALUES (new.id, new.title_fa, new.title_en, new.tags, new.summary, new.full_content, new.commands, new.examples);
+                END;
+                CREATE TRIGGER IF NOT EXISTS lessons_fts_ad AFTER DELETE ON lessons BEGIN
+                    INSERT INTO lessons_fts(lessons_fts, rowid, title_fa, title_en, tags, summary, full_content, commands, examples)
+                    VALUES ('delete', old.id, old.title_fa, old.title_en, old.tags, old.summary, old.full_content, old.commands, old.examples);
+                END;
+                CREATE TRIGGER IF NOT EXISTS lessons_fts_au AFTER UPDATE ON lessons BEGIN
+                    INSERT INTO lessons_fts(lessons_fts, rowid, title_fa, title_en, tags, summary, full_content, commands, examples)
+                    VALUES ('delete', old.id, old.title_fa, old.title_en, old.tags, old.summary, old.full_content, old.commands, old.examples);
+                    INSERT INTO lessons_fts(rowid, title_fa, title_en, tags, summary, full_content, commands, examples)
+                    VALUES (new.id, new.title_fa, new.title_en, new.tags, new.summary, new.full_content, new.commands, new.examples);
+                END;
+                """
+            )
+            if self.get_meta("search_fts_ready") != "1":
+                self.conn.execute("INSERT INTO lessons_fts(lessons_fts) VALUES ('rebuild')")
+                self.set_meta("search_fts_ready", "1")
+            self._fts_available = True
+        except sqlite3.OperationalError as exc:
+            # Some bundled SQLite builds may omit FTS5; the app remains functional.
+            self._fts_available = False
+            print("FTS5 unavailable; using LIKE search fallback:", exc)
+
 
     def _create(self):
         self.conn.executescript(
@@ -230,17 +267,48 @@ class WebDB:
         q = (q or "").strip()
         if not q:
             return []
+        try:
+            limit = max(1, min(int(limit), 100))
+        except (TypeError, ValueError):
+            limit = 50
+
+        # FTS5 is much faster than scanning every long lesson body with LIKE.
+        # Tokenize conservatively and quote each token to avoid interpreting user
+        # input as FTS operators. Prefix matching supports partial English words.
+        tokens = re.findall(r"[\w\u0600-\u06FF]+", q, flags=re.UNICODE)
+        if self._fts_available and tokens:
+            match_query = " AND ".join('"' + t.replace('"', '""') + '"*' for t in tokens)
+            try:
+                rows = self.conn.execute(
+                    """SELECT l.id, l.title_fa, l.tags, lv.title_fa AS level_title,
+                              c.title_fa AS chapter_title, c.id AS chapter_id
+                       FROM lessons_fts
+                       JOIN lessons l ON l.id=lessons_fts.rowid
+                       JOIN levels lv ON lv.id=l.level_id
+                       JOIN chapters c ON c.id=lv.chapter_id
+                       WHERE lessons_fts MATCH ?
+                       ORDER BY bm25(lessons_fts), c.order_index, lv.order_index, l.order_index
+                       LIMIT ?""",
+                    (match_query, limit),
+                ).fetchall()
+                return [dict(r) for r in rows]
+            except sqlite3.OperationalError:
+                pass
+
         like = f"%{q}%"
         rows = self.conn.execute(
-            """SELECT l.id, l.title_fa, l.tags, lv.title_fa AS level_title, c.title_fa AS chapter_title, c.id AS chapter_id
+            """SELECT l.id, l.title_fa, l.tags, lv.title_fa AS level_title,
+                      c.title_fa AS chapter_title, c.id AS chapter_id
                FROM lessons l
                JOIN levels lv ON lv.id=l.level_id
                JOIN chapters c ON c.id=lv.chapter_id
-               WHERE l.title_fa LIKE ? OR l.summary LIKE ? OR l.full_content LIKE ?
+               WHERE l.title_fa LIKE ? OR l.title_en LIKE ? OR l.tags LIKE ?
+                  OR l.summary LIKE ? OR l.full_content LIKE ? OR l.commands LIKE ?
                ORDER BY c.order_index, lv.order_index, l.order_index LIMIT ?""",
-            (like, like, like, limit),
+            (like, like, like, like, like, like, limit),
         ).fetchall()
         return [dict(r) for r in rows]
+
 
     def stats(self):
         return {
