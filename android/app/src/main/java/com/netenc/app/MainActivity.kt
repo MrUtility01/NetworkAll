@@ -144,7 +144,9 @@ class MainActivity : AppCompatActivity() {
             val st = withContext(Dispatchers.IO) { StudyRepository(this@MainActivity).stats() }
             AlertDialog.Builder(this@MainActivity)
                 .setTitle("آمار")
-                .setMessage("درس: $lessons\nمتن‌دار: $filled\nسناریو: $sc\nامروز: ${st[\"today\"]}/${st[\"goal\"]}")
+            val today = st["today"]
+            val goal = st["goal"]
+                .setMessage("درس: $lessons\nمتن‌دار: $filled\nسناریو: $sc\nامروز: $today/$goal")
                 .setPositiveButton("باشه", null)
                 .show()
         }
