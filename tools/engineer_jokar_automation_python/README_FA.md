@@ -4,7 +4,7 @@
 
 ## محتویات بسته
 
-- `automation_python_curriculum_pack.json` — محتوای قابل‌ورود؛ ۱۳۵ درس برای ۲۷ موضوع در پنج زیرفصل.
+- `tools/packs/automation_python/automation_python_curriculum_pack.json` — محتوای قابل‌ورود؛ ۱۳۵ درس برای ۲۷ موضوع در پنج زیرفصل.
 - `build_content_pack.py` — بازتولید بستهٔ JSON از تعریف موضوع‌ها.
 - `validate_pack.py` — اعتبارسنجی JSON، پوشش فصل‌ها، UIDها، بخش‌های آموزشی و جدایی پاسخ‌ها.
 - `apply_content_pack.py` — پیش‌نمایش و اعمال امن محتوا به دیتابیس SQLite.
@@ -27,7 +27,9 @@
 ۱. از مخزن یک نسخهٔ محلی تهیه کنید. فایل‌های این بسته را در مسیر زیر قرار دهید:
 
 ```text
-tools/engineer_jokar_automation_python/
+tools/packs/automation_python/ را برای JSON نهایی به‌کار ببرید؛ اسکریپت‌ها در tools/engineer_jokar_automation_python/ باقی می‌مانند.
+
+مسیر اجرای اسکریپت‌ها: tools/engineer_jokar_automation_python/
 ```
 
 ۲. از ریشهٔ مخزن، اعتبارسنجی محتوای JSON را اجرا کنید:
