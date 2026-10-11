@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences("netenc", MODE_PRIVATE)
         hostInput.setText(prefs.getString("host", ""))
-        tokenInput.setText(prefs.getString("token", SettingsActivity.DEFAULT_TOKEN) ?: SettingsActivity.DEFAULT_TOKEN)
+        tokenInput.setText(prefs.getString("token", "") ?: "")
 
         ReminderScheduler.scheduleHourly(this)
 
