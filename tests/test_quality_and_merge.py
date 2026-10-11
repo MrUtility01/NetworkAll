@@ -30,6 +30,8 @@ class DeepFallbackTests(unittest.TestCase):
         self.assertIn("Answer Key", content)
         self.assertNotIn("VLAN / VRF", content)
         self.assertIn("SMART", content)
+        self.assertIn("منابع و مراجع رسمی", content)
+        self.assertIn("Intel Product Support", content)
 
     def test_python_fallback_has_python_specific_troubleshooting(self):
         lesson = build_deep_fallback("[L2] Python exception handling", "Python exception handling")
@@ -38,6 +40,7 @@ class DeepFallbackTests(unittest.TestCase):
         self.assertIn("Answer Key", content)
         self.assertIn("ورودی نامعتبر", content)
         self.assertNotIn("لایه ۲ (VLAN", content)
+        self.assertIn("Python official documentation", content)
 
 
 class ContentMergeTests(unittest.TestCase):
