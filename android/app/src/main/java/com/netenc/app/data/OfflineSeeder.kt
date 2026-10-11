@@ -16,7 +16,6 @@ object OfflineSeeder {
     suspend fun ensureSeeded(context: Context, force: Boolean = false): Int = seedMutex.withLock {
         withContext(Dispatchers.IO) {
         val dao = AppDatabase.get(context).lessonDao()
-        val existingRows = dao.allDeletionStates().associateBy { it.uid }
         val existing = dao.countActive()
         val filled = if (existing > 0) dao.countFilled() else 0
         val treeReady = if (existing > 0) dao.countTreeReady() else 0
@@ -27,6 +26,8 @@ object OfflineSeeder {
             existing > 5000 && filled > 2000 && hierarchyHealthy) {
             return@withContext existing
         }
+        // Read only UID/deleted projections, and only when a seed/repair is actually needed.
+        val existingRows = dao.allDeletionStates().associateBy { it.uid }
         val json = readCurriculumAsset(context) ?: return@withContext existing
         val root = JSONObject(json)
         val chapters = root.optJSONArray("chapters") ?: return@withContext existing
