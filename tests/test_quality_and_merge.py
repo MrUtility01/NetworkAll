@@ -114,6 +114,22 @@ class ContentMergeTests(unittest.TestCase):
         self.assertEqual(sum(x["uid"] == "base-1" for x in all_lessons), 1)
         self.assertEqual(sum(x["uid"] == "route-1" for x in all_lessons), 1)
 
+    def test_duplicate_titles_merge_richer_later_pack_instead_of_dropping_it(self):
+        data = {"chapters": []}
+        short = "محتوای کوتاه " * 400
+        detailed = "# Windows Server Remoting\n\n## Lab\n" + "جزئیات تخصصی قابل راستی‌آزمایی " * 500
+        added = append_unmatched_as_extra(data, [
+            {"uid": "automation-remoting", "title_fa": "[L2] Remoting", "subchapter_order": 3,
+             "lesson_order": 1, "full_content": short, "summary": "نسخه کوتاه"},
+            {"uid": "windows-remoting", "title_fa": "[L2] Remoting", "subchapter_order": 3,
+             "lesson_order": 2, "full_content": detailed, "summary": "نسخه تخصصی ویندوز"},
+        ], 35, "فصل ۳۵", "Windows Server")
+        lessons = [lesson for sub in data["chapters"][0]["subchapters"] for lesson in sub["lessons"]]
+        self.assertEqual(added, 1)
+        self.assertEqual(len(lessons), 1)
+        self.assertIn("Windows Server Remoting", lessons[0]["full_content"])
+        self.assertIn("نسخه تخصصی ویندوز", lessons[0]["summary"])
+
     def test_assessment_and_learning_objectives_survive_pack_append(self):
         assessment = {
             "questions": [{"id": "q1", "prompt": "سؤال", "options": ["الف", "ب"]}],
