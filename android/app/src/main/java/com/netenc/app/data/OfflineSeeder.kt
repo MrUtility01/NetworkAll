@@ -3,14 +3,18 @@ package com.netenc.app.data
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.json.JSONObject
 import java.io.BufferedInputStream
 import java.util.zip.GZIPInputStream
 
 object OfflineSeeder {
     private const val META_SEEDED = "offline_seeded_v13"
+    private val seedMutex = Mutex()
 
-    suspend fun ensureSeeded(context: Context, force: Boolean = false): Int = withContext(Dispatchers.IO) {
+    suspend fun ensureSeeded(context: Context, force: Boolean = false): Int = seedMutex.withLock {
+        withContext(Dispatchers.IO) {
         val dao = AppDatabase.get(context).lessonDao()
         val existing = dao.countActive()
         val filled = if (existing > 0) dao.countFilled() else 0
@@ -76,6 +80,7 @@ object OfflineSeeder {
         if (batch.isNotEmpty()) dao.upsertAll(batch)
         dao.putMeta(SyncMetaEntity(META_SEEDED, "1"))
         dao.countActive()
+        }
     }
 
     private fun readCurriculumAsset(context: Context): String? {
