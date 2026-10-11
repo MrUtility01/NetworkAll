@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 import sqlite3
 
-from flask import Blueprint, request, jsonify, render_template_string, make_response, redirect
+from flask import Blueprint, request, jsonify, render_template, render_template_string, make_response, redirect
 
 bp = Blueprint("workspace", __name__)
 
@@ -129,11 +129,28 @@ def _db_path():
 
 
 def _conn():
-    c = sqlite3.connect(str(_db_path()))
+    c = sqlite3.connect(str(_db_path()), timeout=10)
     c.row_factory = sqlite3.Row
-    c.execute("CREATE TABLE IF NOT EXISTS ws_tasks(uid TEXT PRIMARY KEY, title TEXT, body TEXT, done INT, last_updated TEXT)")
+    c.execute("PRAGMA busy_timeout = 10000")
+    c.execute("""CREATE TABLE IF NOT EXISTS ws_tasks(
+        uid TEXT PRIMARY KEY, title TEXT NOT NULL, body TEXT DEFAULT '', done INT DEFAULT 0,
+        last_updated TEXT, due_at TEXT NOT NULL DEFAULT '', priority INTEGER NOT NULL DEFAULT 1,
+        remind_at TEXT NOT NULL DEFAULT '', reminded_at TEXT NOT NULL DEFAULT ''
+    )""")
     c.execute("CREATE TABLE IF NOT EXISTS ws_notes(uid TEXT PRIMARY KEY, title TEXT, body TEXT, last_updated TEXT)")
     c.execute("CREATE TABLE IF NOT EXISTS ws_vault(uid TEXT PRIMARY KEY, title TEXT, username TEXT, secret TEXT, last_updated TEXT)")
+    # Non-destructive migration for databases made by older versions.
+    task_columns = {row["name"] for row in c.execute("PRAGMA table_info(ws_tasks)").fetchall()}
+    for name, declaration in (
+        ("due_at", "TEXT NOT NULL DEFAULT ''"),
+        ("priority", "INTEGER NOT NULL DEFAULT 1"),
+        ("remind_at", "TEXT NOT NULL DEFAULT ''"),
+        ("reminded_at", "TEXT NOT NULL DEFAULT ''"),
+    ):
+        if name not in task_columns:
+            c.execute(f"ALTER TABLE ws_tasks ADD COLUMN {name} {declaration}")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_ws_tasks_due ON ws_tasks(due_at, done)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_ws_tasks_reminder ON ws_tasks(remind_at, reminded_at, done)")
     c.commit()
     return c
 
@@ -193,7 +210,7 @@ def workspace_page():
                 elif tab == "vault":
                     c.execute("INSERT INTO ws_vault VALUES(?,?,?,?,?)", (uid, title, username, _seal(body), now))
                 else:
-                    c.execute("INSERT INTO ws_tasks VALUES(?,?,?,?,?)", (uid, title, body, 0, now))
+                    c.execute("INSERT INTO ws_tasks(uid,title,body,done,last_updated) VALUES(?,?,?,?,?)", (uid, title, body, 0, now))
                 c.commit()
     if tab == "notes":
         items = c.execute("SELECT uid,title,body FROM ws_notes ORDER BY last_updated DESC").fetchall()
@@ -209,6 +226,121 @@ def workspace_page():
         items = c.execute("SELECT uid,title,body FROM ws_tasks ORDER BY last_updated DESC").fetchall()
         title = "مدیریت کارها"
     return render_template_string(PAGE, items=items, title=title, tab=tab)
+
+
+
+def _planner_auth_error():
+    if _authorized() or _cookie_ok():
+        return None
+    return jsonify({"ok": False, "error": "unauthorized"}), 401
+
+
+def _valid_local_datetime(value):
+    value = str(value or "").strip()
+    if not value:
+        return ""
+    try:
+        # Browser provides local wall time. Windows scheduler compares in that same local zone.
+        datetime.strptime(value, "%Y-%m-%dT%H:%M")
+    except ValueError:
+        return None
+    return value
+
+
+@bp.route("/planner")
+def planner_page():
+    if not _authorized() and not _cookie_ok():
+        return redirect("/workspace/login")
+    return render_template("planner.html")
+
+
+@bp.route("/api/planner/tasks", methods=["GET", "POST"])
+def planner_tasks():
+    denied = _planner_auth_error()
+    if denied:
+        return denied
+    c = _conn()
+    if request.method == "GET":
+        try:
+            limit = max(1, min(1000, int(request.args.get("limit", "1000"))))
+        except ValueError:
+            c.close()
+            return jsonify({"ok": False, "error": "invalid_limit"}), 400
+        rows = c.execute(
+            """SELECT uid,title,body,done,last_updated,due_at,priority,remind_at
+               FROM ws_tasks ORDER BY
+                 CASE WHEN due_at='' THEN 1 ELSE 0 END, due_at ASC, priority DESC, last_updated DESC
+               LIMIT ?""", (limit,)
+        ).fetchall()
+        c.close()
+        return jsonify({"ok": True, "items": [dict(row) for row in rows]})
+
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        c.close()
+        return jsonify({"ok": False, "error": "JSON object required"}), 400
+    title = str(payload.get("title") or "").strip()
+    body = str(payload.get("body") or "").strip()
+    due_at = _valid_local_datetime(payload.get("due_at"))
+    try:
+        priority = int(payload.get("priority", 2))
+    except (TypeError, ValueError):
+        priority = 0
+    if not title or len(title) > 200 or len(body) > 5000:
+        c.close()
+        return jsonify({"ok": False, "error": "title is required (max 200) and body max is 5000"}), 400
+    if due_at is None:
+        c.close()
+        return jsonify({"ok": False, "error": "due_at must be YYYY-MM-DDTHH:MM"}), 400
+    if priority not in (1, 2, 3):
+        c.close()
+        return jsonify({"ok": False, "error": "priority must be 1, 2, or 3"}), 400
+    remind_at = due_at if payload.get("reminder") and due_at else ""
+    uid = uuid.uuid4().hex
+    now = datetime.now(timezone.utc).isoformat()
+    c.execute(
+        """INSERT INTO ws_tasks(uid,title,body,done,last_updated,due_at,priority,remind_at,reminded_at)
+           VALUES(?,?,?,?,?,?,?,?,?)""",
+        (uid, title, body, 0, now, due_at, priority, remind_at, ""),
+    )
+    c.commit()
+    row = c.execute(
+        "SELECT uid,title,body,done,last_updated,due_at,priority,remind_at FROM ws_tasks WHERE uid=?",
+        (uid,)
+    ).fetchone()
+    c.close()
+    return jsonify({"ok": True, "item": dict(row)}), 201
+
+
+@bp.route("/api/planner/tasks/<uid>", methods=["PATCH", "DELETE"])
+def planner_task_item(uid):
+    denied = _planner_auth_error()
+    if denied:
+        return denied
+    if len(uid) > 80:
+        return jsonify({"ok": False, "error": "invalid uid"}), 400
+    c = _conn()
+    existing = c.execute("SELECT uid FROM ws_tasks WHERE uid=?", (uid,)).fetchone()
+    if not existing:
+        c.close()
+        return jsonify({"ok": False, "error": "not_found"}), 404
+    if request.method == "DELETE":
+        c.execute("DELETE FROM ws_tasks WHERE uid=?", (uid,))
+        c.commit()
+        c.close()
+        return jsonify({"ok": True, "deleted": uid})
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict) or not isinstance(payload.get("done"), bool):
+        c.close()
+        return jsonify({"ok": False, "error": "JSON boolean field 'done' required"}), 400
+    c.execute(
+        "UPDATE ws_tasks SET done=?,last_updated=?,reminded_at=CASE WHEN ?=0 THEN '' ELSE reminded_at END WHERE uid=?",
+        (1 if payload["done"] else 0, datetime.now(timezone.utc).isoformat(),
+         1 if payload["done"] else 0, uid),
+    )
+    c.commit()
+    c.close()
+    return jsonify({"ok": True, "uid": uid, "done": payload["done"]})
 
 
 @bp.route("/api/workspace/export")
