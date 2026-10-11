@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""SQLite سبک برای نسخه وب — ۶۳ فصل با محتوای غنی."""
+"""SQLite سبک برای نسخه وب — فصل‌های ۱–۶۸ با محتوای غنی."""
 from __future__ import annotations
 
 import json
@@ -110,10 +110,10 @@ class WebDB:
         return self.conn.execute("SELECT COUNT(*) c FROM chapters").fetchone()["c"]
 
     def is_seeded(self):
-        return self.chapter_count() >= 60
+        return self.chapter_count() >= 64
 
     def seed_full(self, force=False):
-        """ساخت کامل ۶۳ فصل با محتوای غنی."""
+        """ساخت کامل فصل‌های ۱–۶۸ با محتوای غنی."""
         if self.is_seeded() and not force:
             return {"ok": True, "skipped": True, "chapters": self.chapter_count()}
 
@@ -128,6 +128,11 @@ class WebDB:
             )
 
         curriculum = get_full_curriculum()
+        try:
+            from core.extra_chapters import ensure_chapters_1_to_68
+            curriculum = ensure_chapters_1_to_68(list(curriculum))
+        except Exception as e:
+            print("extra_chapters", e)
         n_ch = n_lv = n_les = 0
         now = datetime.now().isoformat()
 
@@ -170,7 +175,7 @@ class WebDB:
             )
 
         self.conn.commit()
-        self.set_meta("seeded_version", "web-v2-rich")
+        self.set_meta("seeded_version", "web-v3-ch68")
         self.set_meta("seeded_at", now)
         return {"ok": True, "chapters": n_ch, "levels": n_lv, "lessons": n_les, "scenarios": len(CAPSTONE_SCENARIOS)}
 
