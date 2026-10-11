@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import hmac
+import os
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -32,29 +33,92 @@ def _authorized() -> bool:
     return bool(_check_token())
 
 
+def _vault_key() -> bytes:
+    """Get a per-user AES key. Windows keys are protected with DPAPI."""
+    override = os.environ.get("NETENC_VAULT_KEY", "").strip()
+    if override:
+        return hashlib.sha256(b"NetworkEncyclopedia-vault-v2:" + override.encode("utf-8")).digest()
+
+    key_path = _db_path().parent / "vault.key"
+    if key_path.exists():
+        stored = key_path.read_bytes()
+        if stored.startswith(b"dpapi1:"):
+            try:
+                import win32crypt
+                result = win32crypt.CryptUnprotectData(base64.b64decode(stored[7:]), None, None, None, 0)
+                key = result[-1] if isinstance(result, tuple) else result
+                if len(key) != 32:
+                    raise ValueError("invalid DPAPI key length")
+                return bytes(key)
+            except Exception as exc:
+                raise RuntimeError("کلید Vault ویندوز با حساب فعلی باز نشد؛ فایل vault.key را حذف نکنید.") from exc
+        if stored.startswith(b"key1:"):
+            key = base64.b64decode(stored[5:])
+            if len(key) == 32:
+                return key
+        raise RuntimeError("قالب فایل کلید Vault ناشناخته است؛ داده‌ها تغییر داده نشدند.")
+
+    key = os.urandom(32)
+    key_path.parent.mkdir(parents=True, exist_ok=True)
+    if os.name == "nt":
+        try:
+            import win32crypt
+            protected = win32crypt.CryptProtectData(key, "NetworkEncyclopedia Vault", None, None, None, 0)
+            if isinstance(protected, tuple):
+                protected = protected[-1]
+            key_path.write_bytes(b"dpapi1:" + base64.b64encode(protected))
+        except Exception as exc:
+            raise RuntimeError("ساخت کلید امن ویندوز ناموفق بود؛ بسته pywin32 را نصب کنید.") from exc
+    else:
+        key_path.write_bytes(b"key1:" + base64.b64encode(key))
+        try:
+            os.chmod(key_path, 0o600)
+        except OSError:
+            pass
+    return key
+
+
 def _seal(plain: str) -> str:
+    """Authenticated AES-GCM encryption; never falls back to storing plaintext."""
     if not plain:
         return ""
-    if plain.startswith("enc1:"):
+    if plain.startswith("enc2:"):
         return plain
-    key = hashlib.sha256((_sync_token or "dev").encode("utf-8")).digest()
-    raw = plain.encode("utf-8")
-    out = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
-    return "enc1:" + base64.urlsafe_b64encode(out).decode("ascii")
+    try:
+        from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        nonce = os.urandom(12)
+        aad = b"NetworkEncyclopedia-Workspace-Vault-v2"
+        encrypted = AESGCM(_vault_key()).encrypt(nonce, plain.encode("utf-8"), aad)
+        return "enc2:" + base64.urlsafe_b64encode(nonce + encrypted).decode("ascii")
+    except Exception as exc:
+        raise RuntimeError("ذخیره‌سازی امن رمز ناموفق بود؛ مقدار به متن ساده تبدیل نشد.") from exc
 
 
 def _unseal(blob: str) -> str:
     if not blob:
         return ""
-    if not blob.startswith("enc1:"):
-        return "•••• (legacy — edit to re-seal)"
-    try:
-        key = hashlib.sha256((_sync_token or "dev").encode("utf-8")).digest()
-        raw = base64.urlsafe_b64decode(blob[5:].encode("ascii"))
-        out = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
-        return out.decode("utf-8")
-    except Exception:
-        return "••••"
+    if blob.startswith("enc2:"):
+        try:
+            from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+            payload = base64.urlsafe_b64decode(blob[5:].encode("ascii"))
+            if len(payload) < 29:
+                raise ValueError("encrypted data is too short")
+            nonce, ciphertext = payload[:12], payload[12:]
+            aad = b"NetworkEncyclopedia-Workspace-Vault-v2"
+            return AESGCM(_vault_key()).decrypt(nonce, ciphertext, aad).decode("utf-8")
+        except Exception:
+            return "•••• (رمز قابل رمزگشایی نیست؛ کلید را بررسی کنید)"
+    if blob.startswith("enc1:"):
+        # One-way migration path for the legacy XOR envelope. Re-seal immediately
+        # in workspace_page when this legacy value can be decrypted.
+        try:
+            key = hashlib.sha256((_sync_token or "dev").encode("utf-8")).digest()
+            raw = base64.urlsafe_b64decode(blob[5:].encode("ascii"))
+            plain = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
+            return plain.decode("utf-8")
+        except Exception:
+            return "•••• (legacy vault record cannot be decrypted)"
+    return "•••• (legacy plaintext record is intentionally masked)"
 
 
 LOGIN_PAGE = """
