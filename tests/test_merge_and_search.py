@@ -10,9 +10,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "server"))
 sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "shared"))
 
 from core.db import WebDB
 from merge_content_packs_into_android import append_unmatched_as_extra
+from sync_engine import compare_lww, content_hash, merge_push
 
 
 class ContentMergeTests(unittest.TestCase):
@@ -55,6 +57,21 @@ class ContentMergeTests(unittest.TestCase):
         self.assertEqual(added, 0)
         chapter = data["chapters"][0]
         self.assertEqual(sum(len(s["lessons"]) for s in chapter["subchapters"]), 1)
+
+
+class SyncEngineTests(unittest.TestCase):
+    def test_timestamps_compare_by_instant_not_timezone_text(self):
+        server_record = {"uid": "x", "last_updated": "2026-10-11T12:00:00Z", "title": "same"}
+        client_record = {"uid": "x", "last_updated": "2026-10-11T15:30:00+03:30", "title": "same"}
+        server_record["content_hash"] = content_hash(server_record)
+        client_record["content_hash"] = content_hash(client_record)
+        self.assertEqual(compare_lww(server_record, client_record), "equal")
+
+    def test_merge_does_not_mutate_input_record(self):
+        incoming = {"uid": "new", "last_updated": "2026-10-11T12:00:00Z", "title": "lesson"}
+        applied, _, _ = merge_push({}, [incoming])
+        self.assertNotIn("content_hash", incoming)
+        self.assertIn("content_hash", applied[0])
 
 
 class SearchTests(unittest.TestCase):
