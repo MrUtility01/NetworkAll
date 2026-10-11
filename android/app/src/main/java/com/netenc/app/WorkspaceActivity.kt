@@ -1,6 +1,7 @@
 package com.netenc.app
 
 import android.graphics.Color
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -59,6 +60,12 @@ class WorkspaceActivity : AppCompatActivity() {
             textSize = 20f
             setTextColor(Color.parseColor("#0F172A"))
         })
+        if (mode == "tasks") {
+            root.addView(Button(this).apply {
+                text = "تقویم شمسی"
+                setOnClickListener { startActivity(Intent(this@WorkspaceActivity, JalaliCalendarActivity::class.java)) }
+            })
+        }
         root.addView(Button(this).apply {
             text = "+ جدید"
             setOnClickListener { addItem() }
