@@ -2,6 +2,7 @@
 """Regression tests for content merging and assessment checks."""
 from __future__ import annotations
 
+import json
 import sqlite3
 import sys
 import tempfile
