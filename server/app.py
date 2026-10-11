@@ -54,6 +54,7 @@ except Exception:
 BASE = Path(__file__).resolve().parent
 app = Flask(__name__, template_folder=str(BASE / "templates"), static_folder=str(BASE / "static"))
 app.config["JSON_AS_ASCII"] = False
+app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024
 
 _MODULE_STATUS = {"workspace": False, "study": False, "workspace_error": "", "study_error": ""}
 start_reminder_loop = None
@@ -248,15 +249,27 @@ def sync_push():
         return denied
     body = request.get_json(force=True, silent=True) or {}
     records = body.get("records") or body.get("items") or []
-    if not isinstance(records, list):
-        return jsonify({"error": "records must be a list"}), 400
+    if not isinstance(records, list) or len(records) > 1000:
+        return jsonify({"error": "records must be a list with at most 1000 items"}), 400
     accepted = kept = conflicts = 0
     conflict_uids = []
     index = {r["uid"]: r for r in db().sync_index()}
     to_apply = []
+    allowed_entities = {"lesson", "scenario", "task", "note", "vault"}
     for item in records:
-        uid = (item or {}).get("uid") or ""
-        if not uid:
+        if not isinstance(item, dict):
+            kept += 1
+            continue
+        uid = str(item.get("uid") or "").strip()
+        entity = str(item.get("entity") or "lesson")
+        if not uid or len(uid) > 128 or entity not in allowed_entities:
+            kept += 1
+            continue
+        try:
+            if len(json.dumps(item, ensure_ascii=False)) > 2_000_000:
+                kept += 1
+                continue
+        except (TypeError, ValueError):
             kept += 1
             continue
         server = index.get(uid)
