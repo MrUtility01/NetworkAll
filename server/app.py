@@ -128,6 +128,8 @@ def extract_token() -> str:
 
 
 def check_token() -> bool:
+    if REMOTE_BIND and len(SYNC_TOKEN) < 24:
+        return False
     candidate = extract_token()
     if SYNC_TOKEN:
         return hmac.compare_digest(candidate, SYNC_TOKEN)
@@ -136,8 +138,8 @@ def check_token() -> bool:
 
 
 def require_token():
-    if not SYNC_TOKEN and REMOTE_BIND:
-        return jsonify({"ok": False, "error": "server_not_secured", "hint": "Set a strong NETENC_TOKEN before enabling LAN access."}), 503
+    if REMOTE_BIND and len(SYNC_TOKEN) < 24:
+        return jsonify({"ok": False, "error": "server_not_secured", "hint": "Set a strong NETENC_TOKEN of at least 24 characters before enabling LAN access."}), 503
     if check_token():
         return None
     return jsonify({"ok": False, "error": "unauthorized", "hint": "Enter NETENC_TOKEN in the web app or send Authorization: Bearer <token>."}), 401
