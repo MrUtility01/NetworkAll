@@ -1,5 +1,5 @@
-import json, sys
-p=sys.argv[1] if len(sys.argv)>1 else 'security_ethical_hacking_pack.json'
+import json, sys\nfrom pathlib import Path
+p=sys.argv[1] if len(sys.argv)>1 else str(Path(__file__).resolve().parents[1] / 'packs' / 'security_ethical_hacking' / 'security_ethical_hacking_pack.json')
 d=json.load(open(p,encoding='utf-8'))
 ls=d['lessons']; u=[x['uid'] for x in ls]
 assert len(ls)==110, len(ls)
