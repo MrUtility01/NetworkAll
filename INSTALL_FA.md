@@ -1,36 +1,60 @@
-# نصب و همگام‌سازی
+# نصب و اجرای NetworkAll در Windows و Android
 
-## ویندوز (میزبان)
+## ۱) Windows
 
-```bat
-git clone https://github.com/MrUtility01/NetworkEncyclopedia.git
-cd NetworkEncyclopedia
-```
+در PowerShell:
 
-### هسته ۶۳ فصل
-فایل‌های `server/core/db.py`، `phase_a.py`، `full_curriculum.py` را از بسته محلی
-`NetworkEncyclopediaWeb` یا `NetworkEncyclopedia_full_core_for_github.zip` داخل `server/core/` کپی کنید.
-
-همچنین `server/static/app.css` و `app.js` را از همان بسته کپی کنید.
-
-```bat
+```powershell
+git clone https://github.com/MrUtility01/NetworkAll.git
+cd NetworkAll
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r server/requirements.txt
+python -c "import secrets; print(secrets.token_urlsafe(32))"
+$env:NETENC_TOKEN = "توکن تصادفی تولیدشده را اینجا قرار بده"
 cd server
-python -m pip install -r requirements.txt
 python app.py
 ```
 
-LAN IP در کنسول چاپ می‌شود. اندروید همان IP را می‌زند.
+توکن فقط در محیط همان PowerShell فعال است. اگر پنجره بسته شد، در پنجره جدید دوباره آن را تنظیم کن. از توکن ساده، شماره تلفن یا عبارت قابل حدس استفاده نکن.
 
-## اندروید
+برای اتصال Android:
+1. هر دو دستگاه را به یک شبکه Wi-Fi/LAN خصوصی و مورداعتماد وصل کن.
+2. در Windows دستور `ipconfig` را اجرا و IPv4 آداپتور همان شبکه را پیدا کن.
+3. در Firewall فقط برای شبکه Private و پورت 5050 اجازه ورودی بده.
+4. IP و توکن را در تنظیمات اتصال اپ Android وارد کن.
+5. هیچ port forwarding روی روتر ایجاد نکن.
 
-Android Studio → Open → `android/` → Run  
-دکمه **اتصال** سپس **همگام‌سازی** (دوطرفه + ذخیره آفلاین JSON)
+برای اجرای صرفاً محلی روی Windows، قبل از `python app.py` بنویس:
 
-## Sync
+```powershell
+$env:NETENC_HOST = "127.0.0.1"
+```
 
-- GET `/api/sync/hello`
-- GET `/api/sync/manifest?since=`
-- POST `/api/sync/pull`
-- POST `/api/sync/push`
+## ۲) Android
 
-تعارض: Last-Write-Wins
+- پوشه `android/` را در Android Studio باز کن.
+- Gradle Sync را اجرا کن.
+- ابتدا روی شبیه‌ساز/گوشی آزمایش کن؛ برای APK از workflow موجود **Build Android APK** یا Gradle استفاده کن.
+- برای همگام‌سازی LAN، IP میزبان و توکن را در تنظیمات اپ وارد کن.
+- پیش از حذف داده‌های اپ یا نصب نسخه‌ای که ممکن است داده را بازنشانی کند، از پیشرفت مطالعه و تنظیمات نسخه پشتیبان تهیه کن.
+
+## ۳) ممیزی محتوا
+
+برای گزارش ساختار و نشانه‌های نقص در پک‌ها:
+
+```powershell
+python tools/audit_content_packs.py --json reports/content-audit.json
+```
+
+این ابزار غیرمخرب است و محتوایی را حذف نمی‌کند. موارد کم‌عمق یا فاقد نشانه‌های آزمایش/پاسخ‌نامه باید از نظر فنی بازبینی شوند.
+
+## ۴) مسیرهای مرجع
+
+- ساختار مخزن: [docs/REPO_LAYOUT_FA.md](docs/REPO_LAYOUT_FA.md)
+- ممیزی و نقشه راه: [docs/QUALITY_AND_ROADMAP_FA.md](docs/QUALITY_AND_ROADMAP_FA.md)
+- پروتکل همگام‌سازی: [docs/SYNC_PROTOCOL.md](docs/SYNC_PROTOCOL.md)
+
+## نکته امنیتی
+
+بدون تنظیم `NETENC_TOKEN`، APIهای محافظت‌شده و فضای کاری قفل هستند. این برنامه برای استفاده شخصی در شبکه محلی طراحی شده؛ آن را مستقیماً روی اینترنت عمومی منتشر نکن.
