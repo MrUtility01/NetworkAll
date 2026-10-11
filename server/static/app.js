@@ -13,10 +13,28 @@ const state = {
   lessonsCache: {}, // levelId -> lessons[]
 };
 
-async function api(path, opts) {
-  const r = await fetch(path, opts);
-  if (!r.ok) throw new Error(await r.text());
-  return r.json();
+const TOKEN_KEY = "netenc_api_token";
+
+async function api(path, opts = {}) {
+  let token = localStorage.getItem(TOKEN_KEY) || "";
+  let prompted = false;
+  while (true) {
+    const headers = new Headers(opts.headers || {});
+    if (token) headers.set("X-NetEnc-Token", token);
+    const r = await fetch(path, { ...opts, headers });
+    if (r.status === 401 && !prompted) {
+      prompted = true;
+      const entered = window.prompt("این سرور توکن می‌خواهد. مقدار NETENC_TOKEN را وارد کنید:");
+      if (entered === null) throw new Error("ورود توکن لغو شد.");
+      token = entered.trim();
+      if (token) localStorage.setItem(TOKEN_KEY, token);
+      else localStorage.removeItem(TOKEN_KEY);
+      window.dispatchEvent(new Event("netenc-token-set"));
+      continue;
+    }
+    if (!r.ok) throw new Error(await r.text());
+    return r.json();
+  }
 }
 
 async function loadStats() {
