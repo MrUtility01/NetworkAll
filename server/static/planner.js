@@ -149,7 +149,7 @@
   $("#taskForm").addEventListener("submit",function(ev){
     ev.preventDefault(); message.textContent="در حال ذخیره…"; message.className="muted";
     var title=$("#title").value.trim(), body=$("#body").value.trim(), time=$("#dueTime").value;
-    var due=time ? key(selectedDate)+"T"+time : "";
+    var due=time ? key(selectedDate)+"T"+time : key(selectedDate);
     var reminder=$("#reminder").checked && Boolean(due);
     api("/api/planner/tasks",{method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({title:title,body:body,due_at:due,priority:Number($("#priority").value),reminder:reminder})})
