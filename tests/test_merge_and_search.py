@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "shared"))
 
 from core.db import WebDB
-from merge_content_packs_into_android import append_unmatched_as_extra
+from merge_content_packs_into_android import append_unmatched_as_extra, commands_to_lessons, git_markdown_to_lessons
 from sync_engine import compare_lww, content_hash, merge_push
 from workspace_routes import _jalali_to_gregorian, _jalali_label
 
@@ -42,6 +42,51 @@ class ContentMergeTests(unittest.TestCase):
         self.assertIn("old-uid", all_uids)
         self.assertIn("new-uid", all_uids)
         self.assertEqual(len([c for c in data["chapters"] if c["order"] == 66]), 1)
+
+    def test_duplicate_title_is_not_added_under_a_new_uid(self):
+        data = {
+            "chapters": [{
+                "order": 64,
+                "title_fa": "Git",
+                "subchapters": [{"title_fa": "زیرفصل 1", "lessons": [{"uid": "old", "title_fa": "[L0] Git basics", "full_content": "rich"}]}],
+            }]
+        }
+        added = append_unmatched_as_extra(
+            data, [{"uid": "new", "title_fa": "[L0] Git basics", "full_content": "other"}],
+            64, "Git", "Git",
+        )
+        self.assertEqual(added, 0)
+
+    def test_command_uid_is_namespaced_by_source_pack(self):
+        data = {"chapter_order": 68, "commands": [{"command": "show version", "title_fa": "نمایش نسخه", "level": "L1"}]}
+        a = commands_to_lessons(data, ROOT / "tools/packs/commands_encyclopedia/cisco_switching.json")
+        b = commands_to_lessons(data, ROOT / "tools/packs/routing_deep/chapter_68_cisco_routing_1600.json")
+        self.assertNotEqual(a[0]["uid"], b[0]["uid"])
+
+    def test_git_markdown_is_split_into_lesson_records(self):
+        markdown = """# فصل ۶۴
+## ۶۴.۱ مبانی و راه‌اندازی
+### Git و GitHub — L0
+## ۱. تعریف و مدل ذهنی
+مفهوم Git.
+## ۴. سناریوی عملی
+تمرین مجاز.
+## ۶. آزمایشگاه
+آزمایش محلی.
+### Git و GitHub — L1
+## ۱. تعریف و مدل ذهنی
+مفهوم پیشرفته‌تر.
+## ۴. سناریوی عملی
+تمرین دوم.
+"""
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "Git_Chapter_64_Full.md"
+            path.write_text(markdown, encoding="utf-8")
+            lessons = git_markdown_to_lessons(path)
+        self.assertEqual(len(lessons), 2)
+        self.assertEqual(lessons[0]["chapter_order"], 64)
+        self.assertEqual(lessons[0]["subchapter_order"], 1)
+        self.assertIn("سناریوی عملی", lessons[0]["examples"])
 
     def test_duplicate_uid_is_not_added_twice(self):
         data = {
