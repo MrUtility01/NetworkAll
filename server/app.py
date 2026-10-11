@@ -5,6 +5,8 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import secrets
+import hmac
 import socket
 from datetime import datetime, timezone
 from pathlib import Path
@@ -70,13 +72,45 @@ except Exception as _e:
     register_study_routes = None
     _MODULE_STATUS["study_error"] = str(_e)
 
-DEFAULT_DEV_TOKEN = "09136555866"
-SYNC_TOKEN = os.environ.get("NETENC_TOKEN", DEFAULT_DEV_TOKEN)
-DEVICE_ID = os.environ.get("NETENC_DEVICE", socket.gethostname() or "windows-host")
-BIND_HOST = os.environ.get("NETENC_HOST", "0.0.0.0")
+TOKEN_FILE = BASE / "data" / ".netenc-token"
 
-if SYNC_TOKEN == DEFAULT_DEV_TOKEN:
-    print("WARNING: using default NETENC_TOKEN — set env NETENC_TOKEN for LAN use")
+
+def _load_sync_token() -> str:
+    """Use an explicit token or create a private, persistent random token on first run."""
+    configured = (os.environ.get("NETENC_TOKEN") or "").strip()
+    if configured:
+        if len(configured) < 24:
+            print("WARNING: NETENC_TOKEN is short; use a random token with at least 24 characters")
+        return configured
+
+    TOKEN_FILE.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        stored = TOKEN_FILE.read_text(encoding="utf-8").strip()
+        if len(stored) >= 32:
+            return stored
+    except OSError:
+        pass
+
+    token = secrets.token_urlsafe(32)
+    try:
+        TOKEN_FILE.write_text(token + "\n", encoding="utf-8")
+        try:
+            TOKEN_FILE.chmod(0o600)
+        except OSError:
+            pass
+    except OSError as exc:
+        raise RuntimeError(
+            "NETENC_TOKEN is not configured and the private token file cannot be created; "
+            "set NETENC_TOKEN explicitly and restart."
+        ) from exc
+    print(f"Created a random API token in {TOKEN_FILE}; configure the same token on Android.")
+    return token
+
+
+SYNC_TOKEN = _load_sync_token()
+DEVICE_ID = os.environ.get("NETENC_DEVICE", socket.gethostname() or "windows-host")
+# The server is local-only by default. windows/start.bat explicitly enables LAN access.
+BIND_HOST = os.environ.get("NETENC_HOST", "127.0.0.1")
 
 _db = None
 
@@ -99,14 +133,16 @@ def extract_token() -> str:
     t = request.headers.get("X-NetEnc-Token", "") or ""
     if t:
         return t.strip()
-    t = request.cookies.get("netenc_token") or request.args.get("token") or ""
-    return (t or "").strip()
+    # Never accept credentials in query strings; URLs are often written to access logs.
+    t = request.cookies.get("netenc_token") or ""
+    return t.strip()
 
 
 def check_token() -> bool:
-    if not SYNC_TOKEN:
-        return True
-    return extract_token() == SYNC_TOKEN
+    supplied = extract_token()
+    if not SYNC_TOKEN or not supplied:
+        return False
+    return hmac.compare_digest(supplied, SYNC_TOKEN)
 
 
 def require_token():
@@ -129,23 +165,23 @@ def index():
 
 @app.get("/api/health")
 def health():
+    # Public health checks reveal no host name, usage statistics, or module error details.
+    if not check_token():
+        return jsonify({"ok": True, "authentication_required": True, "schema_version": SCHEMA_VERSION})
     st = {}
     try:
         st = db().stats()
-    except Exception as e:
-        st = {"error": str(e)}
+    except Exception:
+        st = {"available": False}
     return jsonify({
         "ok": True,
         "device": DEVICE_ID,
         "schema_version": SCHEMA_VERSION,
         "sync_protocol": "v1-aligned",
-        "token_required": bool(SYNC_TOKEN),
-        "default_token_in_use": SYNC_TOKEN == DEFAULT_DEV_TOKEN,
+        "token_required": True,
         "modules": {
             "workspace": _MODULE_STATUS["workspace"],
             "study": bool(register_study_routes),
-            "workspace_error": _MODULE_STATUS.get("workspace_error") or None,
-            "study_error": _MODULE_STATUS.get("study_error") or None,
         },
         "stats": st,
     })
