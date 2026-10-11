@@ -313,7 +313,7 @@ def main():
             print("study routes", e)
     print(f"NetEnc listening on http://{host}:{port}")
     print("  sync: /api/sync/hello | manifest | pull | push")
-    print(f"  token_required={bool(SYNC_TOKEN)} default_token={SYNC_TOKEN == DEFAULT_DEV_TOKEN}")
+    print(f"  token_configured={bool(SYNC_TOKEN)}")
     app.run(host=host, port=port, debug=False)
 
 
