@@ -243,6 +243,46 @@ def _lab_concrete(topic: str, cat: str, level: str) -> str:
 - query جستجو را با رویداد مثبت و negative control آزمایش کن.
 - alert را به evidence خام وصل کن؛ فرضیه را از واقعیت جدا نگه دار.
 """
+    if cat == "windows":
+        return f"""# Windows Administration Lab — {topic}
+
+- در VM ویندوز آزمایش کن و پیش از تغییر snapshot بگیر.
+- Get-Service، Get-WinEvent -LogName System -MaxEvents 50 و Get-NetIPConfiguration را اجرا کن.
+- یک سرویس آزمایشی را restart کن، وضعیت و event log را قبل/بعد مقایسه کن.
+- معیار قبولی: تغییر فقط روی سرویس هدف اثر بگذارد و روش rollback ثبت شده باشد.
+"""
+    if cat == "linux":
+        return f"""# Linux Administration Lab — {topic}
+
+- در VM لینوکس اجرا کن و از محیط production استفاده نکن.
+- ip -br a، systemctl --failed، journalctl -p warning -n 50، df -h و free -h را بررسی کن.
+- یک سرویس آزمایشی را stop/start و لاگ و وضعیت را مقایسه کن.
+- تغییرات را با systemctl status و journalctl verify کن و snapshot را آماده نگه دار.
+"""
+    if cat == "python":
+        return f"""# Python Lab — {topic}
+
+- در یک virtual environment تازه کار کن.
+- یک تابع کوچک با ورودی معتبر، ورودی مرزی و ورودی نامعتبر بنویس.
+- برای هر سه حالت unit test بنویس؛ سپس python -m unittest و python -m compileall را اجرا کن.
+- معیار قبولی: تست‌ها قابل تکرار باشند، exceptionها مشخص باشند و هیچ secret در خروجی/log نباشد.
+"""
+    if cat == "sql":
+        return f"""# SQL Lab — {topic}
+
+- یک SQLite database آزمایشی بساز و داده synthetic وارد کن.
+- SELECT، JOIN، GROUP BY و یک transaction را اجرا کن.
+- EXPLAIN QUERY PLAN را قبل/بعد از index بررسی و PRAGMA integrity_check را اجرا کن.
+- معیار قبولی: خروجی درست باشد، transaction rollback قابل اثبات باشد و داده واقعی دستکاری نشود.
+"""
+    if cat == "storage":
+        return f"""# Storage Lab — {topic}
+
+- فقط از دیسک/فایل آزمایشی استفاده کن؛ عملیات format یا حذف روی دیسک واقعی ممنوع است.
+- فضای آزاد، filesystem، SMART/HealthStatus و latency I/O را ثبت کن.
+- یک فایل تست بساز، checksum بگیر، copy/restore را آزمایش کن و checksum را مقایسه کن.
+- معیار قبولی: داده با checksum یکسان بازیابی شود و هیچ volume واقعی تغییر نکند.
+"""
     base = f"""# آزمایشگاه عملی — {topic}
 
 ## توپولوژی پیشنهادی Lab
