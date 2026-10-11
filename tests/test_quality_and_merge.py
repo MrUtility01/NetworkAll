@@ -128,7 +128,7 @@ class ContentMergeTests(unittest.TestCase):
             )
             db.conn.commit()
             rows = db.search("BGP")
-            self.assertTrue(any("BGP" in str(row.get("title_en", "")) for row in rows))
+            self.assertTrue(any("BGP" in str(row.get("title_fa", "")) for row in rows))
             db.conn.close()
 
     def test_database_backup_is_consistent_and_readable(self):
