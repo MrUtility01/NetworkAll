@@ -51,3 +51,8 @@ jobs:
           gradle-version: "8.2"
       - name: Build Android debug APK
         run: gradle -p android assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: networkall-android-debug-apk
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
