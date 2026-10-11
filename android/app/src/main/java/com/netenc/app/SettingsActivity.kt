@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class SettingsActivity : AppCompatActivity() {
-    companion object { const val DEFAULT_TOKEN = "09136555866" }
+    companion object { const val DEFAULT_TOKEN = "" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,7 @@ class SettingsActivity : AppCompatActivity() {
                 textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_START
             }
         val host = field("API ویندوز http://IP:5050", "host")
-        val token = field("توکن API", "token", true, DEFAULT_TOKEN)
+        val token = field("توکن API", "token", true, "")
         val autoSync = Switch(this).apply { text = "همگام خودکار"; isChecked = prefs.getBoolean("auto_sync", false) }
         val aiProvider = field("AI: openai | grok | openai-compat", "ai_provider", def = "openai")
         val aiBase = field("Base URL", "ai_base", def = "https://api.openai.com/v1")
