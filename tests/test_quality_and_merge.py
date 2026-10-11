@@ -42,6 +42,15 @@ class DeepFallbackTests(unittest.TestCase):
         self.assertNotIn("لایه ۲ (VLAN", content)
         self.assertIn("Python official documentation", content)
 
+    def test_general_fallback_does_not_inject_network_only_lab(self):
+        lesson = build_deep_fallback("[L2] Technical documentation workflow", "Documentation workflow")
+        combined = "\\n".join(str(lesson.get(key) or "") for key in ("full_content", "commands", "examples", "notes"))
+        self.assertIn("معیار قبولی", combined)
+        self.assertIn("حالت مرزی", combined)
+        self.assertNotIn("show ip interface brief", combined)
+        self.assertNotIn("VLAN / VRF", combined)
+        self.assertNotIn("کابل uplink", combined)
+
 
 class ContentMergeTests(unittest.TestCase):
     def test_append_preserves_base_chapter_and_existing_lesson(self):
