@@ -149,6 +149,16 @@ class WebDB:
     def is_seeded(self):
         return self.chapter_count() >= 64
 
+    def backup(self, backup_dir=None):
+        """Create a consistent SQLite backup before destructive maintenance."""
+        directory = Path(backup_dir) if backup_dir else self.path.parent / "backups"
+        directory.mkdir(parents=True, exist_ok=True)
+        stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        target = directory / f"{self.path.stem}_{stamp}.db"
+        with sqlite3.connect(str(target)) as destination:
+            self.conn.backup(destination)
+        return target
+
     def seed_full(self, force=False):
         """ساخت کامل فصل‌های ۱–۶۸ با محتوای غنی."""
         if self.is_seeded() and not force:
@@ -158,8 +168,10 @@ class WebDB:
         from core.phase_a import CAPSTONE_SCENARIOS, default_meta
         from core.seed_helpers import insert_rich_lesson
 
+        backup_path = None
         cur = self.conn.cursor()
         if force:
+            backup_path = self.backup()
             cur.executescript(
                 "DELETE FROM lessons; DELETE FROM levels; DELETE FROM chapters; DELETE FROM scenarios;"
             )
@@ -214,7 +226,7 @@ class WebDB:
         self.conn.commit()
         self.set_meta("seeded_version", "web-v3-ch68")
         self.set_meta("seeded_at", now)
-        return {"ok": True, "chapters": n_ch, "levels": n_lv, "lessons": n_les, "scenarios": len(CAPSTONE_SCENARIOS)}
+        return {"ok": True, "chapters": n_ch, "levels": n_lv, "lessons": n_les, "scenarios": len(CAPSTONE_SCENARIOS), "backup": str(backup_path) if backup_path else None}
 
     def list_chapters(self):
         rows = self.conn.execute(
