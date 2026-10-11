@@ -108,6 +108,8 @@ nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
 <input type=datetime-local name=due_at>
 <label>اولویت</label>
 <select name=priority><option value=1>عادی</option><option value=2>مهم</option><option value=3>بالا</option><option value=4>فوری</option></select>
+<label>تکرار</label>
+<select name=recurrence><option value=none>یک‌باره</option><option value=daily>روزانه</option><option value=weekly>هفتگی</option></select>
 {% endif %}
 {% if tab=='vault' %}<input name=username placeholder="نام کاربری">{% endif %}
 <button type=submit>ذخیره</button>
@@ -242,8 +244,26 @@ def workspace_page():
             c.execute(f"DELETE FROM {table} WHERE uid=?", (uid,))
             c.commit()
         elif tab == "tasks" and request.form.get("toggle"):
-            c.execute("UPDATE ws_tasks SET done=CASE WHEN done=1 THEN 0 ELSE 1 END, last_updated=? WHERE uid=?",
-                      (datetime.now(timezone.utc).isoformat(), request.form["toggle"]))
+            uid = request.form["toggle"]
+            row = c.execute("SELECT done, recurrence, due_at FROM ws_tasks WHERE uid=?", (uid,)).fetchone()
+            now_dt = datetime.now(timezone.utc)
+            now = now_dt.isoformat().replace("+00:00", "Z")
+            if row and not row["done"] and row["recurrence"] in ("daily", "weekly") and row["due_at"]:
+                try:
+                    due = datetime.fromisoformat(row["due_at"].replace("Z", "+00:00"))
+                    if due.tzinfo is None:
+                        due = due.replace(tzinfo=timezone.utc)
+                    base = max(due, now_dt)
+                    from datetime import timedelta
+                    next_due = base + (timedelta(days=1) if row["recurrence"] == "daily" else timedelta(days=7))
+                    next_iso = next_due.isoformat().replace("+00:00", "Z")
+                    c.execute("UPDATE ws_tasks SET done=0,due_at=?,reminder_at=?,last_notified_at='',last_updated=? WHERE uid=?",
+                              (next_iso, next_iso, now, uid))
+                except (ValueError, TypeError):
+                    c.execute("UPDATE ws_tasks SET done=1,last_updated=? WHERE uid=?", (now, uid))
+            else:
+                c.execute("UPDATE ws_tasks SET done=CASE WHEN done=1 THEN 0 ELSE 1 END, last_updated=? WHERE uid=?",
+                          (now, uid))
             c.commit()
         else:
             title = (request.form.get("title") or "").strip()
@@ -265,6 +285,9 @@ def workspace_page():
                             due_at = parsed.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
                         except ValueError:
                             due_at = ""
+                    recurrence = request.form.get("recurrence") or "none"
+                    if recurrence not in ("none", "daily", "weekly"):
+                        recurrence = "none"
                     try:
                         priority = max(1, min(4, int(request.form.get("priority") or 1)))
                     except ValueError:
@@ -272,7 +295,7 @@ def workspace_page():
                     c.execute(
                         """INSERT INTO ws_tasks(uid,title,body,done,due_at,priority,reminder_at,recurrence,last_notified_at,last_updated)
                            VALUES(?,?,?,?,?,?,?,?,?,?)""",
-                        (uid, title, body, 0, due_at, priority, due_at, "none", "", now),
+                        (uid, title, body, 0, due_at, priority, due_at, recurrence, "", now),
                     )
                 c.commit()
     if tab == "notes":
