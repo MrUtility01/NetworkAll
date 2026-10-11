@@ -21,8 +21,13 @@ import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.util.UUID
 import android.util.Base64
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
+import java.security.KeyStore
 import javax.crypto.Cipher
-import javax.crypto.spec.SecretKeySpec
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+import javax.crypto.spec.GCMParameterSpec
 
 class WorkspaceActivity : AppCompatActivity() {
     private val db by lazy { AppDatabase.get(this) }
@@ -83,7 +88,7 @@ class WorkspaceActivity : AppCompatActivity() {
                     textSize = 15f
                     setPadding(8, 16, 8, 16)
                     setTextColor(Color.parseColor("#1E293B"))
-                    setOnClickListener { editItem(uid) }
+                    setOnClickListener { if (mode == "vault") showVaultItem(uid) else editItem(uid) }
                     setOnLongClickListener {
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO) {
@@ -118,25 +123,29 @@ class WorkspaceActivity : AppCompatActivity() {
                 val t = title.text.toString().trim()
                 if (t.isEmpty()) return@setPositiveButton
                 lifecycleScope.launch {
-                    withContext(Dispatchers.IO) {
-                        val id = UUID.randomUUID().toString()
-                        when (mode) {
-                            "notes" -> db.workspaceDao().upsertNote(
-                                NoteEntity(id, t, body.text.toString(), lastUpdated = now())
-                            )
-                            "vault" -> db.workspaceDao().upsertVault(
-                                VaultEntity(
-                                    id, t, user.text.toString(),
-                                    secretEnc = simpleEnc(body.text.toString()),
-                                    lastUpdated = now()
+                    try {
+                        withContext(Dispatchers.IO) {
+                            val id = UUID.randomUUID().toString()
+                            when (mode) {
+                                "notes" -> db.workspaceDao().upsertNote(
+                                    NoteEntity(id, t, body.text.toString(), lastUpdated = now())
                                 )
-                            )
-                            else -> db.workspaceDao().upsertTask(
-                                TaskEntity(id, t, body.text.toString(), lastUpdated = now())
-                            )
+                                "vault" -> db.workspaceDao().upsertVault(
+                                    VaultEntity(
+                                        id, t, user.text.toString(),
+                                        secretEnc = encryptVaultSecret(body.text.toString()),
+                                        lastUpdated = now()
+                                    )
+                                )
+                                else -> db.workspaceDao().upsertTask(
+                                    TaskEntity(id, t, body.text.toString(), lastUpdated = now())
+                                )
+                            }
                         }
+                        refresh()
+                    } catch (e: Exception) {
+                        Toast.makeText(this@WorkspaceActivity, "ذخیره امن انجام نشد: " + (e.message ?: "خطای رمزنگاری"), Toast.LENGTH_LONG).show()
                     }
-                    refresh()
                 }
             }
             .setNegativeButton("لغو", null)
@@ -157,15 +166,65 @@ class WorkspaceActivity : AppCompatActivity() {
         }
     }
 
-    /** ساده برای ذخیره محلی؛ برای امنیت سازمانی از Keystore استفاده کنید */
-    private fun simpleEnc(plain: String): String {
-        return try {
-            val key = SecretKeySpec("NetEncJokarKey16".toByteArray(), "AES")
-            val c = Cipher.getInstance("AES/ECB/PKCS5Padding")
-            c.init(Cipher.ENCRYPT_MODE, key)
-            Base64.encodeToString(c.doFinal(plain.toByteArray()), Base64.NO_WRAP)
-        } catch (_: Exception) {
-            plain
+    private fun vaultKey(): SecretKey {
+        val alias = "netenc.vault.aesgcm.v1"
+        val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
+        if (store.containsAlias(alias)) return store.getKey(alias, null) as SecretKey
+        val generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
+        generator.init(
+            KeyGenParameterSpec.Builder(
+                alias,
+                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+            )
+                .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                .setRandomizedEncryptionRequired(true)
+                .build()
+        )
+        return generator.generateKey()
+    }
+
+    /** New secrets use authenticated AES-GCM and a device-bound Android Keystore key. */
+    private fun encryptVaultSecret(plain: String): String {
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        cipher.init(Cipher.ENCRYPT_MODE, vaultKey())
+        val encrypted = cipher.doFinal(plain.toByteArray(Charsets.UTF_8))
+        val payload = cipher.iv + encrypted
+        return "v2:" + Base64.encodeToString(payload, Base64.NO_WRAP)
+    }
+
+    private fun decryptVaultSecret(blob: String): String {
+        if (!blob.startsWith("v2:")) {
+            throw IllegalStateException("این رکورد از نسخه قدیمی است؛ رمز آن با روش امن جدید ذخیره نشده است. آن را بازسازی کنید.")
+        }
+        val payload = Base64.decode(blob.removePrefix("v2:"), Base64.NO_WRAP)
+        if (payload.size <= 12) throw IllegalArgumentException("داده رمزگذاری‌شده ناقص است.")
+        val iv = payload.copyOfRange(0, 12)
+        val encrypted = payload.copyOfRange(12, payload.size)
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        cipher.init(Cipher.DECRYPT_MODE, vaultKey(), GCMParameterSpec(128, iv))
+        return String(cipher.doFinal(encrypted), Charsets.UTF_8)
+    }
+
+    private fun showVaultItem(uid: String) {
+        lifecycleScope.launch {
+            val item = withContext(Dispatchers.IO) {
+                db.workspaceDao().allVault().find { it.uid == uid }
+            } ?: return@launch
+            try {
+                val secret = withContext(Dispatchers.IO) { decryptVaultSecret(item.secretEnc) }
+                AlertDialog.Builder(this@WorkspaceActivity)
+                    .setTitle(item.title)
+                    .setMessage("نام کاربری: " + item.username + "\\n\\nرمز: " + secret)
+                    .setPositiveButton("باشه", null)
+                    .show()
+            } catch (e: Exception) {
+                AlertDialog.Builder(this@WorkspaceActivity)
+                    .setTitle("رمز قابل نمایش نیست")
+                    .setMessage(e.message ?: "داده رمز شده قابل خواندن نیست.")
+                    .setPositiveButton("باشه", null)
+                    .show()
+            }
         }
     }
 }
