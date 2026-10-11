@@ -13,6 +13,7 @@ data class TaskEntity(
     val dueAt: String = "",
     val priority: Int = 1,
     @ColumnInfo(defaultValue = "'none'") val recurrence: String = "none",
+    @ColumnInfo(defaultValue = "''") val lastNotifiedAt: String = "",
     val lastUpdated: String = "",
     val deviceId: String = "android"
 )
