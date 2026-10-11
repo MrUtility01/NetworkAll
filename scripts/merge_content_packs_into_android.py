@@ -229,22 +229,53 @@ def merge_by_title(data, lessons):
 
 
 def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
+    """Merge pack lessons into a chapter without ever deleting existing chapter content.
+
+    Older versions removed the whole chapter before appending pack lessons. That made
+    a pack containing only *new/unmatched* lessons capable of erasing the existing
+    curriculum chapter. Merge by stable UID and preserve all existing subchapters.
+    """
     if not lessons:
         return 0
-    data["chapters"] = [c for c in data["chapters"] if c.get("order") != order]
+
+    chapter = next((c for c in data["chapters"] if c.get("order") == order), None)
+    if chapter is None:
+        chapter = {
+            "order": order,
+            "title_fa": title_fa,
+            "title_en": title_en,
+            "subchapters": [],
+        }
+        data["chapters"].append(chapter)
+    else:
+        # Keep established chapter metadata; only fill missing values.
+        chapter.setdefault("title_fa", title_fa)
+        chapter.setdefault("title_en", title_en)
+        chapter.setdefault("subchapters", [])
+
     subs = defaultdict(list)
     for src in lessons:
         subs[src.get("subchapter_order") or 1].append(src)
-    out_subs = []
+
+    existing_uids = {
+        str(les.get("uid"))
+        for sub in chapter.get("subchapters", [])
+        for les in (sub.get("lessons") or [])
+        if les.get("uid")
+    }
+    added = 0
     for si in sorted(subs):
-        les_out = []
+        incoming = []
         for src in sorted(subs[si], key=lambda x: (x.get("lesson_order") or 0)):
+            uid = src.get("uid") or f"lesson:ch{order:02d}:s{int(si):03d}:l{len(incoming):04d}"
+            if uid in existing_uids:
+                continue
             notes = as_text(src.get("notes"))
             ass = (src.get("meta") or {}).get("assessment")
             if ass and "EJ_ASSESSMENT" not in notes:
                 notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(ass, ensure_ascii=False) + "\n-->\n"
-            les_out.append({
-                "uid": src.get("uid") or f"lesson:ch{order:02d}:s{int(si):03d}:l{len(les_out):04d}",
+            incoming.append({
+                "uid": uid,
                 "title_fa": src.get("title_fa") or "",
                 "title_en": src.get("title_en") or "",
                 "level": src.get("level") or "L0",
@@ -254,14 +285,26 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
                 "examples": as_text(src.get("examples")),
                 "notes": notes,
             })
-        out_subs.append({"title_fa": f"زیرفصل {si}", "lessons": les_out})
-    data["chapters"].append({
-        "order": order,
-        "title_fa": title_fa,
-        "title_en": title_en,
-        "subchapters": out_subs,
-    })
-    return sum(len(s["lessons"]) for s in out_subs)
+            existing_uids.add(uid)
+            added += 1
+
+        if not incoming:
+            continue
+        target_sub = next(
+            (sub for sub in chapter["subchapters"]
+             if sub.get("order") == si or sub.get("order_index") == si
+             or sub.get("title_fa") == f"زیرفصل {si}"),
+            None,
+        )
+        if target_sub is None:
+            target_sub = {"order": si, "title_fa": f"زیرفصل {si}", "lessons": []}
+            chapter["subchapters"].append(target_sub)
+        target_sub.setdefault("lessons", []).extend(incoming)
+
+    chapter["subchapters"].sort(
+        key=lambda sub: int(sub.get("order", sub.get("order_index", 10**9)) or 10**9)
+    )
+    return added
 
 
 def build_ch65(lessons):
@@ -359,15 +402,20 @@ def main():
         )
         print("ch68 commands", n)
 
-    data["chapters"] = [c for c in data["chapters"] if c.get("order") != 65]
     extra = list(sec)
     for w in wireless:
         w = dict(w)
         w["subchapter_order"] = 100 + int(w.get("subchapter_order") or 8)
         extra.append(w)
     if extra:
-        data["chapters"].append(build_ch65(extra))
-        print("ch65", sum(len(s["lessons"]) for s in data["chapters"][-1]["subchapters"]))
+        n_added = append_unmatched_as_extra(
+            data, extra, 65,
+            "فصل ۶۵: امنیت سایبری و هک اخلاقی (دفاعی) + بی‌سیم",
+            "Ch65 Security Ethical Hacking Wireless",
+        )
+        ch65 = next((c for c in data["chapters"] if c.get("order") == 65), {})
+        total65 = sum(len(s.get("lessons", [])) for s in ch65.get("subchapters", []))
+        print("ch65 added", n_added, "total", total65)
 
     data["chapters"].sort(key=lambda c: int(c.get("order") or 0))
     n = sum(len(s.get("lessons", [])) for c in data["chapters"] for s in c.get("subchapters", []))
