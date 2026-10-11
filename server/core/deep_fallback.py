@@ -18,8 +18,8 @@ _LEVEL_FA = {
 
 _CATS: List[Tuple[str, List[str]]] = [
     ("powershell", ["powershell", "cmdlet", "psremoting", "winrm", "execution policy", "پاورشل"]),
-    ("firmware", ["bios", "uefi", "secure boot", "tpm", "boot order", "grub", "pxe"]),
-    ("hardware", ["cpu", "processor", "alu", "control unit", "register", "pipeline", "clock", "frequency", "core", "thread", "hyper-thread", "cache", "instruction set", "x86", "x64", "arm", "risc", "cisc", "ram", "memory", "ddr", "ecc", "motherboard", "chipset", "socket", "pcie", "m.2", "sata", "nvme", "hdd", "ssd", "psu", "power supply", "esd", "post", "no power", "server hardware", "پردازنده", "مادربرد", "حافظه", "اسمبل", "سخت‌افزار", "خمیر حرارتی", "فرکانس", "پردازشگر", "رجیستر", "کش"]),
+    ("firmware", ["bios", "uefi", "secure boot", "tpm", "boot order", "boot manager", "csm", "mbr", "gpt", "esp", "firmware", "grub", "pxe", "فریمور", "بوت"]),
+    ("hardware", ["cpu", "processor", "alu", "control unit", "register", "pipeline", "clock", "frequency", "core", "thread", "hyper-thread", "cache", "instruction set", "x86", "x64", "arm", "risc", "cisc", "ram", "memory", "ddr", "ecc", "motherboard", "chipset", "socket", "expansion slot", "usb", "nic", "form factor", "dual quad", "timing", "xmp", "u.2", "tbw", "dwpd", "pcie", "m.2", "sata", "nvme", "hdd", "ssd", "psu", "power supply", "80plus", "ups", "pdu", "beep code", "q-code", "no post", "no power", "proliant", "ilo", "smart array", "esd", "post", "server hardware", "پردازنده", "مادربرد", "حافظه", "اسمبل", "سخت‌افزار", "خمیر حرارتی", "فرکانس", "پردازشگر", "رجیستر", "کش", "سوکت", "اسلات توسعه", "هدرها", "تغذیه", "سرمایش"]),
     ("git", ["git ", "github", "گیت", "repository", "rebase", "pull request", "merge request"]),
     ("cloud", ["azure", "aws", "cloud", "security group", "vpc", "vnet", "ابر"]),
     ("backup", ["backup", "restore", "recovery", "بکاپ", "پشتیبان‌گیری", "بازیابی"]),
@@ -39,9 +39,9 @@ _CATS: List[Tuple[str, List[str]]] = [
     ("firewall", ["firewall", "fortigate", "asa", "policy", "zone"]),
     ("ha", ["hsrp", "vrrp", "glbp", "failover", "active-standby"]),
     ("qos", ["qos", "dscp", "policing", "shaping", "priority"]),
-    ("linux", ["linux", "syscall", "system call", "scheduler", "daemon", "systemd", "journalctl", "filesystem", "file system", "chmod", "chown", "bash", "shell script", "apt ", "dnf ", "rpm", "grub", "iptables", "nftables", "ss "]),
+    ("linux", ["linux", "kernel", "user space", "syscall", "system call", "scheduler", "daemon", "process", "filesystem", "file system", "ext4", "xfs", "zfs", "lvm", "mount", "fstab", "fdisk", "parted", "chmod", "chown", "bash", "shell script", "apt ", "dnf ", "rpm", "grub", "iptables", "nftables", "ss "]),
     ("windows", ["windows", "registry", "services.msc", "event viewer", "task manager", "resource monitor", "safe mode", "task scheduler", "gpo", "active directory", "kerberos", "ntfs", "winlogon"]),
-    ("storage", ["raid", "nvme", "ssd", "san", "iscsi", "latency", "iops"]),
+    ("storage", ["raid", "nvme", "ssd", "san", "iscsi", "latency", "iops", "disk io", "fat32", "exfat", "efs", "refs", "partition", "diskpart", "storage", "ذخیره‌سازی", "دیسک"]),
     ("virtualization", ["vmware", "esxi", "kubernetes", "docker", "pod", "hypervisor", "virtual machine", "virtualization", "container", "vcenter"]),
     ("security", ["aaa", "radius", "tacacs", "tls", "snmp", "802.1x", "port security"]),
     ("tcpip", ["tcp", "udp", "icmp", "handshake", "window", "retransmission"]),
@@ -52,6 +52,7 @@ _CATS: List[Tuple[str, List[str]]] = [
     ("python", ["python", "paramiko", "netmiko", "scrapli"]),
     ("ansible", ["ansible", "playbook", "inventory"]),
     ("terraform", ["terraform", "iac", "provider"]),
+    ("network", ["lan", "wan", "man", "pan", "internet", "intranet", "extranet", "sdn", "لایه فیزیکی", "لایه پیوند داده", "لایه شبکه", "لایه انتقال", "لایه نشست", "لایه ارائه", "لایه کاربرد", "pdu", "ipv4", "ipv6", "unicast", "broadcast", "anycast", "ethernet frame", "ethertype", "fcs", "learning", "aging", "forwarding", "flooding", "cam overflow", "collision domain", "broadcast domain", "speed duplex", "auto negotiation", "network address", "subnet mask", "vlsm", "flsm", "summarization", "global unicast", "link-local", "ula", "slaac", "ndp", "arp", "proxy arp", "gratuitous arp", "traceroute", "ttl exceeded", "ipam", "cat5", "t568", "fiber", "sfp", "qsfp", "rack unit", "cabling", "کابل", "زیرشبکه", "آدرس‌دهی", "مدل osi", "مدل tcp", "اینترنت", "اینترانت"]),
 ]
 
 
@@ -101,6 +102,8 @@ def _story(topic: str, cat: str) -> str:
         "storage": f"سامانه با افزایش latency دیسک روبه‌رو شده است. فضای آزاد، سلامت رسانه، controller، queue و latency باید مستقل اندازه‌گیری شوند.",
         "virtualization": f"یک ماشین مجازی کند شده است. باید host contention، virtual switch، storage latency و وضعیت guest با هم مقایسه شوند.",
     }
+    if cat == "network":
+        return f"در یک شبکهٔ سازمانی، بخشی از کاربران به سرویس دسترسی ندارند. باید لینک، آدرس‌دهی، gateway، DNS و policy را با شواهد مرحله‌به‌مرحله بررسی کرد و از تغییر هم‌زمان چند متغیر پرهیز کرد."
     if cat in specific:
         return specific[cat]
     hooks = SCENARIO_HOOKS.get(cat, SCENARIO_HOOKS.get("general", []))
@@ -455,7 +458,7 @@ def _level_guidance(level: str) -> str:
 
 
 def _base_commands(cat: str):
-    network_cats = {"vlan","stp","ospf","bgp","acl","nat","vpn","dhcp","dns","wireless","firewall","ha","qos","security","tcpip","mpls","multicast","vxlan"}
+    network_cats = {"vlan","stp","ospf","bgp","acl","nat","vpn","dhcp","dns","wireless","firewall","ha","qos","security","tcpip","mpls","multicast","vxlan","network"}
     if cat in network_cats:
         return COMMON[:8]
     if cat in BANKS and cat != "general":
@@ -496,7 +499,7 @@ def _rollback_block(cat: str) -> str:
     }
     if cat in blocks:
         return blocks[cat]
-    if cat in {"vlan","stp","ospf","bgp","acl","nat","vpn","dhcp","dns","wireless","firewall","ha","qos","security","tcpip","mpls","multicast","vxlan"}:
+    if cat in {"vlan","stp","ospf","bgp","acl","nat","vpn","dhcp","dns","wireless","firewall","ha","qos","security","tcpip","mpls","multicast","vxlan","network"}:
         return "configure terminal; apply the documented reverse commands; verify"
     return "تغییر را از backup/snapshot برگردان، سپس نتیجه را با آزمون تکرارپذیر Verify کن."
 
@@ -518,6 +521,7 @@ def _analogy(cat: str, topic: str) -> str:
         "storage": "Storage را با سه معیار جدا بررسی کن: سلامت رسانه، مسیر I/O و تأخیر. فضای آزاد زیاد به‌تنهایی سلامت یا کارایی را ثابت نمی‌کند.",
         "virtualization": "در مجازی‌سازی، host، hypervisor، virtual switch، guest و storage وابستگی‌های متفاوت دارند. مشکل ماشین مجازی را با مقایسهٔ host و guest محدود کن.",
         "voip": "تماس VoIP دو مسیر دارد: signaling برای برقرارشدن تماس و media برای صدا. موفقیت SIP لزوماً به معنی سالم‌بودن RTP نیست.",
+        "network": "شبکه را مثل سامانهٔ حمل‌ونقل ببین: لینک‌ها جاده‌اند، آدرس‌دهی مقصد را مشخص می‌کند، routing مسیر را انتخاب می‌کند و ACLها قوانین عبورند. عیب‌یابی باید مرحله‌به‌مرحله پیش برود.",
     }
     return analogies.get(cat, f"برای «{topic}» از مدل مشاهده → فرضیه → آزمایش کنترل‌شده → راستی‌آزمایی استفاده کن. هر نتیجه باید به شواهد قابل تکرار وصل باشد؛ تغییر بدون baseline و rollback قابل اتکا نیست.")
 
@@ -537,6 +541,7 @@ def _troubleshooting(cat: str) -> str:
         "soc": "1. شواهد خام را حفظ و hash کن\n2. زمان‌ها را به UTC نرمال کن\n3. timeline و ارتباط هویت/میزبان بساز\n4. فرضیه را با شواهد مخالف و negative control بیازمای\n5. containment و معیار پایان را ثبت کن",
         "storage": "1. فضای آزاد و سلامت device را بخوان\n2. latency و I/O queue را اندازه بگیر\n3. کابل/controller/path را بررسی کن\n4. تست فقط روی volume آزمایشی اجرا کن\n5. checksum داده و سلامت بعد از بازیابی را تأیید کن",
         "voip": "1. زمان، دو endpoint و مسیر تماس را ثبت کن\n2. SIP registration و response code را بررسی کن\n3. مسیر RTP، NAT و ACL را جدا بررسی کن\n4. loss، jitter و latency را اندازه بگیر\n5. صدای دوطرفه و کیفیت را از هر دو سمت تأیید کن",
+        "network": "1. لینک، کابل و interface counters را بررسی کن\n2. IP، mask، gateway و ARP را تأیید کن\n3. route و مسیر برگشت را بررسی کن\n4. DNS، ACL/NAT و سرویس مقصد را جدا تست کن\n5. با کلاینت سالم مقایسه و نتیجه را ثبت کن",
     }
     return paths.get(cat, "1. دامنه و زمان رخداد را مشخص کن\n2. baseline و شواهد خام را جمع کن\n3. فرضیهٔ قابل آزمون بساز\n4. یک تغییر حداقلی در محیط آزمایشی انجام بده\n5. نتیجه را verify کن و rollback را مستند کن")
 
