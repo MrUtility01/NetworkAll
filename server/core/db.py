@@ -113,16 +113,37 @@ class WebDB:
         return self.chapter_count() >= 64
 
     def seed_full(self, force=False):
-        """ساخت کامل فصل‌های ۱–۶۸ با محتوای غنی."""
+        """ساخت اولیهٔ curriculum؛ از پاک‌کردن دیتابیس ناقص/کاربر بدون بکاپ جلوگیری می‌کند."""
+        current_chapters = self.chapter_count()
         if self.is_seeded() and not force:
-            return {"ok": True, "skipped": True, "chapters": self.chapter_count()}
+            return {"ok": True, "skipped": True, "chapters": current_chapters}
+        if current_chapters and not force:
+            # A partially populated database may contain user progress. Never append a
+            # second copy of the curriculum or silently overwrite it on normal startup.
+            return {
+                "ok": False,
+                "skipped": True,
+                "reason": "partial_curriculum_preserved",
+                "chapters": current_chapters,
+                "hint": "Existing data was preserved; run an explicit migration/repair after taking a backup.",
+            }
 
         from core.full_curriculum import get_full_curriculum
         from core.phase_a import CAPSTONE_SCENARIOS, default_meta
         from core.seed_helpers import insert_rich_lesson
 
         cur = self.conn.cursor()
-        if force:
+        if force and current_chapters:
+            # Force reseed is destructive to curriculum tables, so snapshot the full
+            # SQLite database first. The user can recover progress if the seed is bad.
+            stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+            backup_path = self.path.with_name(self.path.name + f".preseed-{stamp}.bak")
+            backup_conn = sqlite3.connect(str(backup_path))
+            try:
+                self.conn.commit()
+                self.conn.backup(backup_conn)
+            finally:
+                backup_conn.close()
             cur.executescript(
                 "DELETE FROM lessons; DELETE FROM levels; DELETE FROM chapters; DELETE FROM scenarios;"
             )
