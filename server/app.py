@@ -141,6 +141,9 @@ def index():
 
 @app.get("/api/health")
 def health():
+    denied = require_token()
+    if denied:
+        return denied
     st = {}
     try:
         st = db().stats()
@@ -311,6 +314,8 @@ def sync_hello():
         "schema_version": SCHEMA_VERSION,
         "device_id": DEVICE_ID,
         "lan_ip": lan,
+        "lan_enabled": REMOTE_BIND,
+        "bind_host": BIND_HOST,
         "stats": st,
         "protocol": {
             "hello": "GET /api/sync/hello",
