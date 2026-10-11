@@ -556,7 +556,7 @@ def _production_checklist(cat: str) -> str:
         "storage": ["backup پیش از عملیات مخرب تأیید شده", "دیسک و volume هدف دقیق شناسایی شده", "format/delete فقط در Lab مجاز است", "checksum و سلامت پس از تغییر بررسی می‌شود", "مسیر بازگشت مستند است"],
     }
     items = checks.get(cat, ["Backup/snapshot قابل بازیابی است", "دامنهٔ تغییر و owner مشخص است", "تغییر در Lab یا canary تأیید شده", "معیار موفقیت و monitoring تعریف شده", "Rollback و مستندسازی آماده است"])
-    return "\\n".join(f"- [ ] {item}" for item in items)
+    return "\n".join(f"- [ ] {item}" for item in items)
 
 
 def _assessment_block(cat: str, topic: str) -> str:
@@ -576,8 +576,8 @@ def _assessment_block(cat: str, topic: str) -> str:
         (f"برای «{topic}» چه شواهدی را پیش از تغییر ثبت می‌کنی؟", "وضعیت اولیه، لاگ/خروجی قابل تکرار، دامنهٔ اثر و زمان رخداد."),
         (f"چطور نتیجهٔ تغییر «{topic}» را اثبات می‌کنی؟", "با معیار موفقیت از پیش تعریف‌شده، آزمون مثبت/منفی و مقایسهٔ قبل/بعد."),
     ])
-    body = "\\n".join(f"{i}. **پرسش:** {q}\\n   **پاسخ:** {a}" for i, (q, a) in enumerate(rows, 1))
-    return f"### پرسش و پاسخ / Answer Key\\n{body}"
+    body = "\n".join(f"{i}. **پرسش:** {q}\n   **پاسخ:** {a}" for i, (q, a) in enumerate(rows, 1))
+    return f"### پرسش و پاسخ / Answer Key\n{body}"
 
 
 def build_deep_fallback(
