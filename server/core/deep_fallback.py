@@ -19,7 +19,7 @@ _LEVEL_FA = {
 _CATS: List[Tuple[str, List[str]]] = [
     ("powershell", ["powershell", "cmdlet", "psremoting", "winrm", "execution policy", "پاورشل"]),
     ("firmware", ["bios", "uefi", "secure boot", "tpm", "boot order", "grub", "pxe"]),
-    ("hardware", ["cpu", "processor", "ram", "memory", "motherboard", "chipset", "esd", "post", "no power", "server hardware", "پردازنده", "مادربرد", "حافظه", "اسمبل", "سخت‌افزار", "خمیر حرارتی"]),
+    ("hardware", ["cpu", "processor", "alu", "control unit", "register", "pipeline", "clock", "frequency", "core", "thread", "hyper-thread", "cache", "instruction set", "x86", "x64", "arm", "risc", "cisc", "ram", "memory", "ddr", "ecc", "motherboard", "chipset", "socket", "pcie", "m.2", "sata", "nvme", "hdd", "ssd", "psu", "power supply", "esd", "post", "no power", "server hardware", "پردازنده", "مادربرد", "حافظه", "اسمبل", "سخت‌افزار", "خمیر حرارتی", "فرکانس", "پردازشگر", "رجیستر", "کش"]),
     ("git", ["git ", "github", "گیت", "repository", "rebase", "pull request", "merge request"]),
     ("cloud", ["azure", "aws", "cloud", "security group", "vpc", "vnet", "ابر"]),
     ("backup", ["backup", "restore", "recovery", "بکاپ", "پشتیبان‌گیری", "بازیابی"]),
@@ -39,10 +39,10 @@ _CATS: List[Tuple[str, List[str]]] = [
     ("firewall", ["firewall", "fortigate", "asa", "policy", "zone"]),
     ("ha", ["hsrp", "vrrp", "glbp", "failover", "active-standby"]),
     ("qos", ["qos", "dscp", "policing", "shaping", "priority"]),
-    ("linux", ["linux", "iptables", "nftables", "systemd", "journalctl", "ss "]),
-    ("windows", ["windows", "powershell", "gpo", "active directory", "kerberos"]),
+    ("linux", ["linux", "syscall", "system call", "scheduler", "daemon", "systemd", "journalctl", "filesystem", "file system", "chmod", "chown", "bash", "shell script", "apt ", "dnf ", "rpm", "grub", "iptables", "nftables", "ss "]),
+    ("windows", ["windows", "registry", "services.msc", "event viewer", "task manager", "resource monitor", "safe mode", "task scheduler", "gpo", "active directory", "kerberos", "ntfs", "winlogon"]),
     ("storage", ["raid", "nvme", "ssd", "san", "iscsi", "latency", "iops"]),
-    ("virtualization", ["vmware", "esxi", "kubernetes", "docker", "pod", "hypervisor"]),
+    ("virtualization", ["vmware", "esxi", "kubernetes", "docker", "pod", "hypervisor", "virtual machine", "virtualization", "container", "vcenter"]),
     ("security", ["aaa", "radius", "tacacs", "tls", "snmp", "802.1x", "port security"]),
     ("tcpip", ["tcp", "udp", "icmp", "handshake", "window", "retransmission"]),
     ("mpls", ["mpls", "ldp", "label", "vrf", "l3vpn", "pe ", "ce "]),
@@ -559,6 +559,73 @@ def _production_checklist(cat: str) -> str:
     return "\n".join(f"- [ ] {item}" for item in items)
 
 
+def _source_block(cat: str) -> str:
+    sources = {
+        "hardware": [
+            ("Intel Product Support", "https://www.intel.com/content/www/us/en/support.html"),
+            ("Microsoft Windows Hardware Documentation", "https://learn.microsoft.com/en-us/windows-hardware/"),
+        ],
+        "firmware": [
+            ("UEFI Specifications", "https://uefi.org/specifications"),
+            ("Microsoft Learn — Windows security", "https://learn.microsoft.com/en-us/windows/security/"),
+        ],
+        "powershell": [
+            ("Microsoft Learn — PowerShell", "https://learn.microsoft.com/powershell/"),
+            ("PowerShell Reference", "https://learn.microsoft.com/powershell/module/"),
+        ],
+        "windows": [
+            ("Microsoft Learn — Windows Server", "https://learn.microsoft.com/windows-server/"),
+            ("Microsoft Learn — Windows security", "https://learn.microsoft.com/en-us/windows/security/"),
+        ],
+        "linux": [
+            ("Linux man-pages", "https://man7.org/linux/man-pages/"),
+            ("Linux kernel documentation", "https://docs.kernel.org/"),
+        ],
+        "python": [
+            ("Python official documentation", "https://docs.python.org/3/"),
+            ("Python unittest documentation", "https://docs.python.org/3/library/unittest.html"),
+        ],
+        "sql": [
+            ("SQLite Documentation", "https://www.sqlite.org/docs.html"),
+            ("PostgreSQL Documentation", "https://www.postgresql.org/docs/"),
+        ],
+        "git": [
+            ("Git Reference Manual", "https://git-scm.com/docs"),
+            ("Pro Git Book", "https://git-scm.com/book/en/v2"),
+        ],
+        "cloud": [
+            ("AWS Documentation", "https://docs.aws.amazon.com/"),
+            ("Microsoft Azure Documentation", "https://learn.microsoft.com/azure/"),
+        ],
+        "backup": [
+            ("NIST SP 800-34 — Contingency Planning", "https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final"),
+            ("NIST Computer Security Resource Center", "https://csrc.nist.gov/"),
+        ],
+        "monitoring": [
+            ("Prometheus Documentation", "https://prometheus.io/docs/"),
+            ("Zabbix Documentation", "https://www.zabbix.com/documentation/current/en/manual"),
+        ],
+        "soc": [
+            ("NIST SP 800-61 — Incident Handling", "https://csrc.nist.gov/pubs/sp/800/61/r3/final"),
+            ("MITRE ATT&CK", "https://attack.mitre.org/"),
+        ],
+        "storage": [
+            ("smartmontools Documentation", "https://www.smartmontools.org/"),
+            ("NVM Express Specifications", "https://nvmexpress.org/specifications/"),
+        ],
+        "voip": [
+            ("RFC Editor", "https://www.rfc-editor.org/"),
+            ("Wireshark Wiki", "https://wiki.wireshark.org/"),
+        ],
+    }
+    selected = sources.get(cat, [
+        ("Cisco Documentation", "https://www.cisco.com/c/en/us/support/index.html"),
+        ("RFC Editor / IETF Standards", "https://www.rfc-editor.org/"),
+        ("Microsoft Learn", "https://learn.microsoft.com/"),
+    ])
+    return "\n".join(f"- [{title}]({url})" for title, url in selected)
+
+
 def _assessment_block(cat: str, topic: str) -> str:
     assessments = {
         "hardware": [("برای reboot تصادفی چه شواهدی را پیش از تعویض قطعه جمع می‌کنی؟", "Event Log، دما، SMART، RAM و منبع تغذیه؛ با ثبت زمان و baseline."), ("چرا تعویض هم‌زمان چند قطعه تشخیص را دشوار می‌کند؟", "چون رابطهٔ علت و معلول و امکان مقایسهٔ قبل/بعد از بین می‌رود.")],
@@ -695,6 +762,14 @@ Symptom → Scope (کجا؟) → Evidence (دستور) → Hypothesis → Test �
 ## ۹) خودآزمایی و پاسخ‌نامه
 
 {_assessment_block(cat, topic)}
+
+---
+
+## ۱۰) منابع و مراجع رسمی
+
+منابع زیر برای بررسی نسخه، تفاوت‌های پیاده‌سازی و راستی‌آزمایی آزمایش‌ها هستند؛ قبل از اجرای تغییر روی محیط واقعی، مستندات همان نسخه و سازنده را بررسی کن.
+
+{_source_block(cat)}
 """
 
     lab = _lab_concrete(topic, cat, level)
