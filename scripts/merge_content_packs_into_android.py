@@ -544,7 +544,7 @@ def main():
                 item = dict(source)
                 item["chapter_order"] = 65
                 item["uid"] = re.sub(r"^lesson:ch64:", "lesson:ch65:", str(item.get("uid") or ""))
-                m = re.search(r":lv(\\d+):", str(item.get("uid") or ""))
+                m = re.search(r":lv(\d+):", str(item.get("uid") or ""))
                 sub = int(item.get("subchapter_order") or (m.group(1) if m else 1))
                 item["subchapter_order"] = 100 + sub
                 wireless.append(item)
