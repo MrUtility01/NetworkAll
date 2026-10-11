@@ -18,6 +18,26 @@ from merge_content_packs_into_android import append_unmatched_as_extra, commands
 from sync_engine import compare_lww, content_hash, merge_push
 from audit_content import _item_quality
 from core.db import WebDB
+from core.deep_fallback import build_deep_fallback
+
+
+class DeepFallbackTests(unittest.TestCase):
+    def test_hardware_fallback_uses_hardware_specific_lab_and_answer_key(self):
+        lesson = build_deep_fallback("[L1] CPU چیست و چگونه کار می‌کند", "CPU fundamentals")
+        content = lesson["full_content"]
+        self.assertIn("RAM میز کار است", content)
+        self.assertIn("خودآزمایی و پاسخ‌نامه", content)
+        self.assertIn("Answer Key", content)
+        self.assertNotIn("VLAN / VRF", content)
+        self.assertIn("SMART", content)
+
+    def test_python_fallback_has_python_specific_troubleshooting(self):
+        lesson = build_deep_fallback("[L2] Python exception handling", "Python exception handling")
+        content = lesson["full_content"]
+        self.assertIn("unit test", content)
+        self.assertIn("Answer Key", content)
+        self.assertIn("ورودی نامعتبر", content)
+        self.assertNotIn("لایه ۲ (VLAN", content)
 
 
 class ContentMergeTests(unittest.TestCase):
