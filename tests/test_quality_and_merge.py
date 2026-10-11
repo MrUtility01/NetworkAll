@@ -195,6 +195,16 @@ class ContentMergeTests(unittest.TestCase):
         second = commands_to_lessons(pack, ROOT / "tools/packs/routing_deep/chapter_68_cisco_routing_1600.json")
         self.assertNotEqual(first[0]["uid"], second[0]["uid"])
 
+    def test_automation_python_and_windows_packs_have_distinct_uid_namespaces(self):
+        auto_path = ROOT / "tools/packs/automation_python/automation_python_curriculum_pack.json"
+        windows_path = ROOT / "tools/packs/windows_server/windows_server_complete_curriculum_pack.json"
+        auto = json.loads(auto_path.read_text(encoding="utf-8"))
+        windows = json.loads(windows_path.read_text(encoding="utf-8"))
+        auto_uids = {item.get("uid") for item in auto.get("lessons", []) if item.get("uid")}
+        windows_uids = {item.get("uid") for item in windows.get("lessons", []) if item.get("uid")}
+        self.assertFalse(auto_uids & windows_uids, f"duplicate lesson UIDs: {sorted(auto_uids & windows_uids)}")
+        self.assertTrue(any("اتوماسیون PowerShell" in item.get("title_fa", "") for item in auto.get("lessons", [])))
+
     def test_command_pack_assessment_is_preserved_as_structured_metadata(self):
         assessment = {
             "questions": [{"id": "q1", "prompt": "کدام دستور؟", "options": ["الف", "ب"]}],
