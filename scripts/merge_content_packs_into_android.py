@@ -228,23 +228,64 @@ def merge_by_title(data, lessons):
     return n
 
 
+def _title_key(value):
+    """Stable enough for duplicate detection across generated lesson packs."""
+    value = re.sub(r"^\\[L[0-4]\\]\\s*", "", str(value or "")).strip()
+    return re.sub(r"\\s+", " ", value).casefold()
+
+
 def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
+    """Append pack-only lessons without deleting/replacing the base chapter.
+
+    Previous implementation removed the entire chapter after merge_by_title(),
+    unintentionally discarding matching updates and original lessons.
+    """
     if not lessons:
         return 0
-    data["chapters"] = [c for c in data["chapters"] if c.get("order") != order]
-    subs = defaultdict(list)
+    chapters = data.setdefault("chapters", [])
+    chapter = next((c for c in chapters if int(c.get("order") or 0) == int(order)), None)
+    if chapter is None:
+        chapter = {"order": int(order), "title_fa": title_fa, "title_en": title_en, "subchapters": []}
+        chapters.append(chapter)
+    chapter.setdefault("title_fa", title_fa)
+    chapter.setdefault("title_en", title_en)
+    subs_existing = chapter.setdefault("subchapters", [])
+
+    existing_titles = set()
+    existing_uids = set()
+    for sub in subs_existing:
+        for les in sub.get("lessons", []):
+            if les.get("title_fa"):
+                existing_titles.add(_title_key(les.get("title_fa")))
+            if les.get("uid"):
+                existing_uids.add(str(les["uid"]))
+
+    groups = defaultdict(list)
     for src in lessons:
-        subs[src.get("subchapter_order") or 1].append(src)
-    out_subs = []
-    for si in sorted(subs):
+        uid = str(src.get("uid") or "")
+        title = str(src.get("title_fa") or "").strip()
+        if not title:
+            continue
+        if (uid and uid in existing_uids) or _title_key(title) in existing_titles:
+            continue
+        group = int(src.get("subchapter_order") or 1)
+        groups[group].append(src)
+        existing_titles.add(_title_key(title))
+        if uid:
+            existing_uids.add(uid)
+
+    appended = 0
+    base_index = len(subs_existing)
+    for offset, group in enumerate(sorted(groups), 1):
         les_out = []
-        for src in sorted(subs[si], key=lambda x: (x.get("lesson_order") or 0)):
+        for src in sorted(groups[group], key=lambda x: (int(x.get("lesson_order") or 0), str(x.get("title_fa") or ""))):
             notes = as_text(src.get("notes"))
-            ass = (src.get("meta") or {}).get("assessment")
-            if ass and "EJ_ASSESSMENT" not in notes:
-                notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(ass, ensure_ascii=False) + "\n-->\n"
+            assessment = (src.get("meta") or {}).get("assessment")
+            if assessment and "EJ_ASSESSMENT" not in notes:
+                notes += "\\n\\n<!-- EJ_ASSESSMENT\\n" + json.dumps(assessment, ensure_ascii=False) + "\\n-->\\n"
+            uid = src.get("uid") or f"lesson:ch{int(order):02d}:extra:{int(group):03d}:{len(les_out):04d}"
             les_out.append({
-                "uid": src.get("uid") or f"lesson:ch{order:02d}:s{int(si):03d}:l{len(les_out):04d}",
+                "uid": uid,
                 "title_fa": src.get("title_fa") or "",
                 "title_en": src.get("title_en") or "",
                 "level": src.get("level") or "L0",
@@ -254,14 +295,13 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
                 "examples": as_text(src.get("examples")),
                 "notes": notes,
             })
-        out_subs.append({"title_fa": f"زیرفصل {si}", "lessons": les_out})
-    data["chapters"].append({
-        "order": order,
-        "title_fa": title_fa,
-        "title_en": title_en,
-        "subchapters": out_subs,
-    })
-    return sum(len(s["lessons"]) for s in out_subs)
+        if les_out:
+            subs_existing.append({
+                "title_fa": f"محتوای تکمیلی {base_index + offset} · گروه {group}",
+                "lessons": les_out,
+            })
+            appended += len(les_out)
+    return appended
 
 
 def build_ch65(lessons):
@@ -359,15 +399,18 @@ def main():
         )
         print("ch68 commands", n)
 
-    data["chapters"] = [c for c in data["chapters"] if c.get("order") != 65]
     extra = list(sec)
     for w in wireless:
         w = dict(w)
         w["subchapter_order"] = 100 + int(w.get("subchapter_order") or 8)
         extra.append(w)
     if extra:
+        # Replace only the generated chapter 65 when actual replacement content exists.
+        data["chapters"] = [c for c in data["chapters"] if int(c.get("order") or 0) != 65]
         data["chapters"].append(build_ch65(extra))
         print("ch65", sum(len(s["lessons"]) for s in data["chapters"][-1]["subchapters"]))
+    else:
+        print("ch65: no security/wireless replacement packs; preserved exported baseline chapter")
 
     data["chapters"].sort(key=lambda c: int(c.get("order") or 0))
     n = sum(len(s.get("lessons", [])) for c in data["chapters"] for s in c.get("subchapters", []))
