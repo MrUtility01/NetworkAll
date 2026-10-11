@@ -179,6 +179,25 @@ class ContentMergeTests(unittest.TestCase):
         second = commands_to_lessons(pack, ROOT / "tools/packs/routing_deep/chapter_68_cisco_routing_1600.json")
         self.assertNotEqual(first[0]["uid"], second[0]["uid"])
 
+    def test_command_pack_assessment_is_preserved_as_structured_metadata(self):
+        assessment = {
+            "questions": [{"id": "q1", "prompt": "کدام دستور؟", "options": ["الف", "ب"]}],
+            "answer_key": [{"id": "q1", "correct_index": 0, "explanation": "دلیل"}],
+        }
+        pack = {
+            "chapter_order": 68,
+            "commands": [{
+                "command": "show version",
+                "title_fa": "نمایش نسخه",
+                "level": "L1",
+                "assessment": assessment,
+                "learning_objectives": ["تفسیر خروجی"],
+            }],
+        }
+        lesson = commands_to_lessons(pack, ROOT / "tools/packs/commands_encyclopedia/cisco_switching.json")[0]
+        self.assertEqual(lesson["meta"]["assessment"], assessment)
+        self.assertIn("EJ_ASSESSMENT", lesson["notes"])
+
     def test_git_markdown_book_splits_into_level_lessons(self):
         markdown = """# فصل ۶۴
 ## ۶۴.۱ مبانی و راه‌اندازی
