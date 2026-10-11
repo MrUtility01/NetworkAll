@@ -7,8 +7,13 @@ import hmac
 import json
 import os
 import socket
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from flask import Flask, jsonify, render_template, request
 
@@ -27,12 +32,22 @@ except Exception:
         blob = json.dumps({k: payload[k] for k in keys}, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
         return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
+    def _timestamp_key(value):
+        raw = str(value or "")
+        try:
+            dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return (1, dt.timestamp(), "")
+        except (ValueError, TypeError, OverflowError):
+            return (0, 0.0, raw)
+
     def compare_lww(server, client):
         su, cu = server.get("last_updated") or "", client.get("last_updated") or ""
         sh, ch = server.get("content_hash") or "", client.get("content_hash") or content_hash(client)
-        if cu > su:
+        if _timestamp_key(cu) > _timestamp_key(su):
             return "accept_client"
-        if cu < su:
+        if _timestamp_key(cu) < _timestamp_key(su):
             return "keep_server"
         if sh == ch:
             return "equal"
@@ -41,7 +56,7 @@ except Exception:
     def build_manifest(records, since=None):
         items = []
         for r in records:
-            if since and (r.get("last_updated") or "") <= since:
+            if since and _timestamp_key(r.get("last_updated")) <= _timestamp_key(since):
                 continue
             items.append({
                 "uid": r["uid"], "entity": r.get("entity", "lesson"),
