@@ -68,7 +68,10 @@ class WorkspaceActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val rows = withContext(Dispatchers.IO) {
                 when (mode) {
-                    "notes" -> db.workspaceDao().allNotes().map { Triple(it.uid, it.title, it.body) }
+                    "notes" -> db.workspaceDao().allNotes().map {
+                        val tags = it.tags.split(",").map { tag -> tag.trim() }.filter { tag -> tag.isNotBlank() }
+                        Triple(it.uid, it.title, (if (tags.isEmpty()) "" else tags.joinToString(" · ", prefix = "برچسب: ") + "\n") + it.body)
+                    }
                     "vault" -> db.workspaceDao().allVault().map { Triple(it.uid, it.title, it.username) }
                     else -> db.workspaceDao().allTasks().map {
                         Triple(it.uid, (if (it.done) "✓ " else "○ ") + it.title, it.body)
@@ -90,16 +93,23 @@ class WorkspaceActivity : AppCompatActivity() {
                     setTextColor(Color.parseColor("#1E293B"))
                     setOnClickListener { if (mode == "vault") showVaultItem(uid) else editItem(uid) }
                     setOnLongClickListener {
-                        lifecycleScope.launch {
-                            withContext(Dispatchers.IO) {
-                                when (mode) {
-                                    "notes" -> db.workspaceDao().deleteNote(uid)
-                                    "vault" -> db.workspaceDao().deleteVault(uid)
-                                    else -> db.workspaceDao().deleteTask(uid)
+                        AlertDialog.Builder(this@WorkspaceActivity)
+                            .setTitle("حذف مورد")
+                            .setMessage("این مورد حذف شود؟ این کار قابل بازگشت نیست.")
+                            .setNegativeButton("لغو", null)
+                            .setPositiveButton("حذف") { _, _ ->
+                                lifecycleScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        when (mode) {
+                                            "notes" -> db.workspaceDao().deleteNote(uid)
+                                            "vault" -> db.workspaceDao().deleteVault(uid)
+                                            else -> db.workspaceDao().deleteTask(uid)
+                                        }
+                                    }
+                                    refresh()
                                 }
                             }
-                            refresh()
-                        }
+                            .show()
                         true
                     }
                 })
@@ -109,11 +119,20 @@ class WorkspaceActivity : AppCompatActivity() {
 
     private fun addItem() {
         val title = EditText(this).apply { hint = "عنوان" }
-        val body = EditText(this).apply { hint = if (mode == "vault") "رمز / توضیحات" else "متن" }
+        val body = EditText(this).apply {
+            hint = if (mode == "vault") "رمز / توضیحات" else "متن کامل"
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or
+                android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+            minLines = if (mode == "notes") 6 else 2
+            gravity = android.view.Gravity.TOP or android.view.Gravity.START
+        }
+        val tags = EditText(this).apply { hint = "برچسب‌ها با ویرگول (مثلاً شبکه، ایده، کار)" }
         val user = EditText(this).apply { hint = "نام کاربری (اختیاری)" }
         val box = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             addView(title); addView(body)
+            if (mode == "notes") addView(tags)
             if (mode == "vault") addView(user)
         }
         AlertDialog.Builder(this)
@@ -128,7 +147,7 @@ class WorkspaceActivity : AppCompatActivity() {
                             val id = UUID.randomUUID().toString()
                             when (mode) {
                                 "notes" -> db.workspaceDao().upsertNote(
-                                    NoteEntity(id, t, body.text.toString(), lastUpdated = now())
+                                    NoteEntity(id, t, body.text.toString(), tags = tags.text.toString().trim(), lastUpdated = now())
                                 )
                                 "vault" -> db.workspaceDao().upsertVault(
                                     VaultEntity(
@@ -153,6 +172,40 @@ class WorkspaceActivity : AppCompatActivity() {
     }
 
     private fun editItem(uid: String) {
+        if (mode == "notes") {
+            lifecycleScope.launch {
+                val note = withContext(Dispatchers.IO) {
+                    db.workspaceDao().allNotes().find { it.uid == uid }
+                } ?: return@launch
+                val title = EditText(this@WorkspaceActivity).apply { setText(note.title); hint = "عنوان یادداشت" }
+                val body = EditText(this@WorkspaceActivity).apply {
+                    setText(note.body); hint = "متن کامل یادداشت"; minLines = 7
+                    inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE or android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+                    gravity = android.view.Gravity.TOP or android.view.Gravity.START
+                }
+                val tags = EditText(this@WorkspaceActivity).apply { setText(note.tags); hint = "برچسب‌ها با ویرگول" }
+                val box = LinearLayout(this@WorkspaceActivity).apply {
+                    orientation = LinearLayout.VERTICAL; setPadding(12, 4, 12, 4)
+                    addView(title); addView(tags); addView(body)
+                }
+                AlertDialog.Builder(this@WorkspaceActivity)
+                    .setTitle("ویرایش یادداشت")
+                    .setView(box)
+                    .setPositiveButton("ذخیره تغییرات") { _, _ ->
+                        val t = title.text.toString().trim()
+                        if (t.isBlank()) { Toast.makeText(this@WorkspaceActivity, "عنوان الزامی است", Toast.LENGTH_SHORT).show(); return@setPositiveButton }
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO) {
+                                db.workspaceDao().upsertNote(note.copy(title = t, body = body.text.toString(), tags = tags.text.toString().trim(), lastUpdated = now()))
+                            }
+                            refresh()
+                        }
+                    }
+                    .setNegativeButton("لغو", null)
+                    .show()
+            }
+            return
+        }
         if (mode != "tasks") return
         lifecycleScope.launch {
             val task = withContext(Dispatchers.IO) {
@@ -165,7 +218,6 @@ class WorkspaceActivity : AppCompatActivity() {
             Toast.makeText(this@WorkspaceActivity, if (!task.done) "انجام شد" else "باز شد", Toast.LENGTH_SHORT).show()
         }
     }
-
     private fun vaultKey(): SecretKey {
         val alias = "netenc.vault.aesgcm.v1"
         val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
