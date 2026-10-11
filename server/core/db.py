@@ -155,7 +155,7 @@ class WebDB:
         """Create a consistent SQLite backup before destructive maintenance."""
         directory = Path(backup_dir) if backup_dir else self.path.parent / "backups"
         directory.mkdir(parents=True, exist_ok=True)
-        stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        stamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
         target = directory / f"{self.path.stem}_{stamp}.db"
         with sqlite3.connect(str(target)) as destination:
             self.conn.backup(destination)
