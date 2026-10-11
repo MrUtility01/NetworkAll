@@ -90,7 +90,7 @@ def db() -> WebDB:
         _db = WebDB()
         if not _db.is_seeded():
             print("seed curriculum...")
-            print(_db.seed_full(force=True))
+            print(_db.seed_full(force=False))
         _db.ensure_sync_columns()
     return _db
 
