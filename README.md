@@ -1,48 +1,38 @@
-# NetworkEncyclopedia
+# NetworkEncyclopedia / ENGINEER JOKAR
 
-دایرةالمعارف جامع شبکه و زیرساخت IT — **۶۳ فصل** · L0–L4 · Capstone سازمانی
+دانشنامه آموزشی شبکه و زیرساخت IT — ویندوز (Flask) + اندروید (Kotlin) + همگام‌سازی LAN.
 
-## معماری
+## شروع سریع
 
-```
-shared/          هسته مشترک (پروتکل Sync + Schema)
-server/          سرور وب + API همگام‌سازی (ویندوز/میزبان LAN)
-windows/         لانچر ویندوز (اتصال به server محلی)
-android/         کلاینت اندروید (Sync روی Wi‑Fi)
-docs/            مستندات پروتکل
-```
-
-## همگام‌سازی حرفه‌ای (LAN)
-
-- هر رکورد: `uid` + `last_updated` + `content_hash`
-- فقط **دلتا** رد و بدل می‌شود
-- قانون تعارض: **Last-Write-Wins** (با نمایش conflict برای ویرایش همزمان)
-- کشف peer: IP دستی یا mDNS (`_netenc._tcp`)
-
-جزئیات: [`docs/SYNC_PROTOCOL.md`](docs/SYNC_PROTOCOL.md)
-
-## اجرای سریع (میزبان ویندوز)
-
-```bat
-cd server
+**ویندوز**
+```bash
+git clone https://github.com/MrUtility01/NetworkEncyclopedia.git
+cd NetworkEncyclopedia/server
 python -m pip install -r requirements.txt
+set NETENC_TOKEN=change-me
 python app.py
 ```
 
-باز کردن: `http://127.0.0.1:5050`  
-از اندروید روی همان Wi‑Fi: `http://IP-ویندوز:5050` و دکمه **همگام‌سازی**
+**اندروید:** Actions → Build Android APK → نصب → در صورت نیاز Clear data.
 
-## اندروید
+## ساختار
 
-پروژه Kotlin در `android/` — Android Studio → Open → Sync Gradle → Run.
+جزئیات کامل: [docs/REPO_LAYOUT_FA.md](docs/REPO_LAYOUT_FA.md)
 
-## وضعیت
+| مسیر | نقش |
+|------|-----|
+| `server/` | API + SQLite + وب |
+| `android/` | اپ آفلاین |
+| `tools/packs/` | JSON محتوای نهایی |
+| `scripts/merge_content_packs_into_android.py` | ادغام پک‌ها در asset |
+| `docs/` | معماری، Sync، وضعیت |
 
-| بخش | وضعیت |
-|-----|--------|
-| ساختار ۶۳ فصل | ✅ |
-| وب RTL + بارگذاری تنبل | ✅ |
-| API Sync حرفه‌ای | ✅ |
-| لانچر ویندوز | ✅ |
-| اسکلت اندروید + Sync Client | ✅ |
-| محتواى عمیق AI | 🔜 |
+## محتوای جدید
+
+1. JSON را در `tools/packs/<موضوع>/` بگذار  
+2. `python scripts/merge_content_packs_into_android.py`  
+3. commit + push + Actions  
+
+## امنیت
+
+توکن پیش‌فرض را عوض کن: `NETENC_TOKEN`. مستند Sync: `docs/SYNC_PROTOCOL.md`.
