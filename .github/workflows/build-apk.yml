@@ -31,11 +31,11 @@ jobs:
       - name: Content quality audit (read-only)
         run: |
           set -e
-          python3 tools/audit_content.py --packs-only --json /tmp/content-audit.json > /tmp/content-audit-console.json
+          python3 tools/audit_content.py --packs-only --json /tmp/content-audit.json
           python3 - <<'PY'
           import json
           from pathlib import Path
-          p = json.loads(Path("/tmp/content-audit-console.json").read_text(encoding="utf-8"))
+          p = json.loads(Path("/tmp/content-audit.json").read_text(encoding="utf-8"))
           audit = p.get("packs", {})
           errors = audit.get("parse_errors", [])
           if errors:
