@@ -6,21 +6,22 @@ cd /d "%~dp0..\server"
 REM ساخت توکن تصادفی پایدار؛ توکن ثابت داخل سورس استفاده نمی‌شود.
 if not exist "data" mkdir "data"
 set "TOKEN_FILE=%CD%\data\.netenc-token"
-if not defined NETENC_TOKEN (
-  if not exist "%TOKEN_FILE%" goto create_token
-  for %%F in ("%TOKEN_FILE%") do if %%~zF LSS 32 goto create_token
-  goto read_token
+if defined NETENC_TOKEN goto token_ready
+if not exist "%TOKEN_FILE%" goto create_token
+for %%F in ("%TOKEN_FILE%") do if %%~zF LSS 32 goto create_token
+goto read_token
 
-  :create_token
-  powershell -NoProfile -Command "$rng=[Security.Cryptography.RandomNumberGenerator]::Create();$b=New-Object byte[] 32;$rng.GetBytes($b);[Console]::Write([Convert]::ToBase64String($b))" > "%TOKEN_FILE%"
-  if errorlevel 1 (
-    echo [ERROR] توکن امن ساخته نشد؛ NETENC_TOKEN را قبل از اجرا تنظيم کنيد.
-    pause
-    exit /b 1
-  )
-  :read_token
-  set /p NETENC_TOKEN=<"%TOKEN_FILE%"
+:create_token
+powershell -NoProfile -Command "$rng=[Security.Cryptography.RandomNumberGenerator]::Create();$b=New-Object byte[] 32;$rng.GetBytes($b);[Console]::Write([Convert]::ToBase64String($b))" > "%TOKEN_FILE%"
+if errorlevel 1 (
+  echo [ERROR] توکن امن ساخته نشد؛ NETENC_TOKEN را قبل از اجرا تنظيم کنيد.
+  pause
+  exit /b 1
 )
+:read_token
+set /p NETENC_TOKEN=<"%TOKEN_FILE%"
+
+:token_ready
 if not defined NETENC_TOKEN (
   echo [ERROR] توکن خالي است؛ فايل %TOKEN_FILE% را بررسي کنيد.
   pause
