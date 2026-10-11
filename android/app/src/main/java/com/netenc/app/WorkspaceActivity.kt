@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Spinner
+import android.widget.ArrayAdapter
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -113,6 +115,9 @@ class WorkspaceActivity : AppCompatActivity() {
         val body = EditText(this).apply { hint = if (mode == "vault") "رمز / توضیحات" else "متن" }
         val user = EditText(this).apply { hint = "نام کاربری (اختیاری)" }
         var dueAt = ""
+        val recurrenceSpinner = Spinner(this).apply {
+            adapter = ArrayAdapter(this@WorkspaceActivity, android.R.layout.simple_spinner_dropdown_item, listOf("یک‌باره", "روزانه", "هفتگی"))
+        }
         lateinit var dueButton: Button
         dueButton = Button(this).apply {
             text = "انتخاب موعد (نمایش شمسی)"
@@ -151,7 +156,7 @@ class WorkspaceActivity : AppCompatActivity() {
         val box = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             addView(title); addView(body)
-            if (mode == "tasks") addView(dueButton)
+            if (mode == "tasks") { addView(dueButton); addView(recurrenceSpinner) }
             if (mode == "vault") addView(user)
         }
         AlertDialog.Builder(this)
@@ -175,7 +180,7 @@ class WorkspaceActivity : AppCompatActivity() {
                                 )
                             )
                             else -> db.workspaceDao().upsertTask(
-                                TaskEntity(id, t, body.text.toString(), dueAt = dueAt, lastUpdated = now())
+                                TaskEntity(id, t, body.text.toString(), dueAt = dueAt, recurrence = when (recurrenceSpinner.selectedItemPosition) { 1 -> "daily"; 2 -> "weekly"; else -> "none" }, lastUpdated = now())
                             )
                         }
                     }
