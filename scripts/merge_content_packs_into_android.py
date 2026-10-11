@@ -247,7 +247,7 @@ def git_markdown_to_lessons(path: Path) -> list:
             "title_en": "",
             "summary": summary[:500],
             "full_content": body,
-            "commands": commands,
+            "commands": "",
             "examples": examples,
             "notes": f"source=tools/packs/git_chapter64/Git_Chapter_64_Full.md; subchapter={sub_titles.get(current_sub, '')}; status=review_required",
             "source_status": "review_required",
@@ -404,8 +404,7 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
     }
     def identity(lesson):
         title = str(lesson.get("title_fa") or "").strip().casefold()
-        command = as_text(lesson.get("commands") or "").strip().casefold()
-        return (title, command if command else "")
+        return title
     existing_identities = {
         identity(les)
         for sub in chapter.get("subchapters", [])
@@ -566,6 +565,10 @@ def main():
                 chapter_order = int(source.get("chapter_order") or 1)
             except (TypeError, ValueError):
                 chapter_order = 1
+            if not source.get("subchapter_order"):
+                m = re.search(r":lv(\\d+):", str(source.get("uid") or ""))
+                if m:
+                    source["subchapter_order"] = int(m.group(1))
             general_extra[chapter_order].append(source)
 
     if routing_extra:
