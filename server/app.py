@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import os
 import socket
@@ -110,7 +111,7 @@ def check_token() -> bool:
     if not SYNC_TOKEN:
         return False
     candidate = extract_token()
-    return bool(candidate) and __import__("hmac").compare_digest(candidate, SYNC_TOKEN)
+    return bool(candidate) and hmac.compare_digest(candidate, SYNC_TOKEN)
 
 
 def require_token():
