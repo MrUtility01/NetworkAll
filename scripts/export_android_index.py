@@ -38,6 +38,9 @@ def main() -> None:
                     "commands": rich.get("commands") or "",
                     "examples": rich.get("examples") or "",
                     "notes": rich.get("notes") or "",
+                    "meta_json": json.dumps({"assessment": rich.get("assessment") or {}}, ensure_ascii=False, separators=(",", ":")),
+                    "learning_objectives": "；".join(str(x) for x in (rich.get("learning_objectives") or [])),
+                    "source_status": rich.get("source_status") or "review_required",
                 })
             sub_out.append({"title_fa": sname, "lessons": les_out})
         chapters.append({"order": int(order), "title_fa": tfa, "title_en": ten, "subchapters": sub_out})
