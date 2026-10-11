@@ -331,7 +331,7 @@ def main():
     db()
     if register_study_routes:
         try:
-            register_study_routes(app, db)
+            register_study_routes(app, db, require_token)
             _MODULE_STATUS["study"] = True
         except Exception as e:
             _MODULE_STATUS["study_error"] = str(e)
