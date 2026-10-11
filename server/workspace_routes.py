@@ -139,10 +139,11 @@ def _conn():
 
 
 def _cookie_ok() -> bool:
+    # An unset server token must never turn the workspace into a public endpoint.
     if not _sync_token:
-        return True
+        return False
     c = request.cookies.get("netenc_token") or ""
-    return hmac.compare_digest(c, _sync_token)
+    return bool(c) and hmac.compare_digest(c, _sync_token)
 
 
 @bp.route("/workspace/login", methods=["GET", "POST"])
@@ -150,13 +151,14 @@ def workspace_login():
     err = ""
     if request.method == "POST":
         tok = (request.form.get("token") or "").strip()
-        if _sync_token and tok == _sync_token:
+        if _sync_token and tok and hmac.compare_digest(tok, _sync_token):
             resp = make_response(redirect("/workspace"))
             resp.set_cookie("netenc_token", tok, httponly=True, samesite="Lax", max_age=60 * 60 * 12)
             return resp
         if not _sync_token:
-            return redirect("/workspace")
-        err = "توکن نادرست"
+            err = "دسترسی قفل است؛ ابتدا NETENC_TOKEN را در محیط سرور تنظیم کنید."
+        else:
+            err = "توکن نادرست"
     return render_template_string(LOGIN_PAGE, error=err)
 
 
