@@ -402,12 +402,22 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
         for les in (sub.get("lessons") or [])
         if les.get("uid")
     }
+    def identity(lesson):
+        title = str(lesson.get("title_fa") or "").strip().casefold()
+        command = as_text(lesson.get("commands") or "").strip().casefold()
+        return (title, command if command else "")
+    existing_identities = {
+        identity(les)
+        for sub in chapter.get("subchapters", [])
+        for les in (sub.get("lessons") or [])
+    }
     added = 0
     for si in sorted(subs):
         incoming = []
         for src in sorted(subs[si], key=lambda x: (x.get("lesson_order") or 0)):
             uid = src.get("uid") or f"lesson:ch{order:02d}:s{int(si):03d}:l{len(incoming):04d}"
-            if uid in existing_uids:
+            identity_key = identity(src)
+            if uid in existing_uids or identity_key in existing_identities:
                 continue
             notes = as_text(src.get("notes"))
             ass = (src.get("meta") or {}).get("assessment")
@@ -423,8 +433,10 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
                 "commands": as_text(src.get("commands")),
                 "examples": as_text(src.get("examples")),
                 "notes": notes,
+                "source_status": src.get("source_status") or "review_required",
             })
             existing_uids.add(uid)
+            existing_identities.add(identity_key)
             added += 1
 
         if not incoming:
