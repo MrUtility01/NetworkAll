@@ -14,6 +14,8 @@ import com.netenc.app.StudyHubActivity
 import com.netenc.app.WorkspaceActivity
 import com.netenc.app.data.AppDatabase
 import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
 import com.netenc.app.data.StudyRepository
 
 class ReviewWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, params) {
@@ -24,8 +26,16 @@ class ReviewWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx
         val today = study.todayCount()
         val goal = study.dailyGoal()
         val streak = study.currentStreak()
+        val prefs = applicationContext.getSharedPreferences("netenc_reminders", Context.MODE_PRIVATE)
+        val nowMillis = System.currentTimeMillis()
+        val lastReview = prefs.getLong("last_review_notification", 0L)
+        val notifyReview = due.isNotEmpty() && nowMillis - lastReview >= 4L * 60L * 60L * 1000L
+        val todayKey = LocalDate.now().toString()
+        val notifyGoal = today < goal && LocalDateTime.now().hour >= 20 &&
+            prefs.getString("goal_notification_day", "") != todayKey
+        val dueToShow = if (notifyReview) due else emptyList()
 
-        if (due.isEmpty() && dueTasks.isEmpty() && today >= goal) return Result.success()
+        if (dueTasks.isEmpty() && dueToShow.isEmpty() && !notifyGoal) return Result.success()
 
         val nm = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = "netenc_review"
@@ -36,7 +46,7 @@ class ReviewWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx
         }
         val target = when {
             dueTasks.isNotEmpty() -> WorkspaceActivity::class.java
-            due.isNotEmpty() -> FlashcardActivity::class.java
+            dueToShow.isNotEmpty() -> FlashcardActivity::class.java
             else -> StudyHubActivity::class.java
         }
         val open = Intent(applicationContext, target).apply {
@@ -48,7 +58,7 @@ class ReviewWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx
         )
         val title = when {
             dueTasks.isNotEmpty() -> "موعد کار: ${dueTasks.size} کار سررسیدشده"
-            due.isNotEmpty() -> "Engineer Jokar — ${due.size} کارت due"
+            dueToShow.isNotEmpty() -> "Engineer Jokar — ${dueToShow.size} کارت due"
             else -> "هدف روزانه ناقص ($today/$goal)"
         }
         val body = buildString {
@@ -57,7 +67,7 @@ class ReviewWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx
                 append(dueTasks.take(3).joinToString("، ") { it.title })
                 append(". ")
             }
-            if (due.isNotEmpty()) append("${due.size} کارت برای مرور فاصله‌دار. ")
+            if (dueToShow.isNotEmpty()) append("${dueToShow.size} کارت برای مرور فاصله‌دار. ")
             append("امروز $today/$goal · زنجیره $streak روز")
         }
         val notif = NotificationCompat.Builder(applicationContext, channelId)
@@ -69,6 +79,8 @@ class ReviewWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx
             .setAutoCancel(true)
             .build()
         nm.notify(1001, notif)
+        if (notifyReview) prefs.edit().putLong("last_review_notification", nowMillis).apply()
+        if (notifyGoal) prefs.edit().putString("goal_notification_day", todayKey).apply()
         return Result.success()
     }
 }
