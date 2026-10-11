@@ -427,8 +427,15 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
         for src in sorted(subs[si], key=lambda x: (x.get("lesson_order") or 0)):
             uid = src.get("uid") or f"lesson:ch{order:02d}:s{int(si):03d}:l{len(incoming):04d}"
             identity_key = identity(src)
-            if uid in existing_uids or identity_key in existing_identities:
+            if identity_key in existing_identities:
                 continue
+            if uid in existing_uids:
+                # Same source UID but a different title means an upstream collision,
+                # not the same lesson. Mint a deterministic extra UID rather than drop it.
+                digest = hashlib.sha1(f"{order}|{uid}|{identity_key}".encode("utf-8")).hexdigest()[:12]
+                uid = f"lesson:ch{order:02d}:extra:{digest}"
+                if uid in existing_uids:
+                    continue
             notes = as_text(src.get("notes"))
             ass = (src.get("meta") or {}).get("assessment")
             if ass and "EJ_ASSESSMENT" not in notes:
