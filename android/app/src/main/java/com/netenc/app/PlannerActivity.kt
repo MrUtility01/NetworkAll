@@ -365,8 +365,7 @@ class PlannerActivity : AppCompatActivity() {
                     chosenMinute = minute
                     timeLabel.text = "تاریخ: " + dayLabel(selectedDay) + " · ساعت " +
                         String.format(Locale.US, "%02d:%02d", hour, minute)
-                    text = "تغییر ساعت"
-                }, now.get(java.util.Calendar.HOUR_OF_DAY), now.get(java.util.Calendar.MINUTE), true).show()
+                        }, now.get(java.util.Calendar.HOUR_OF_DAY), now.get(java.util.Calendar.MINUTE), true).show()
             }
         }
         val clearTime = Button(this).apply {
