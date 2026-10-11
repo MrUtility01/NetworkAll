@@ -27,30 +27,19 @@ def find_pack_files():
     files = []
     files += list(ROOT.glob("tools/packs/**/*.json"))
     files += list(ROOT.glob("tools/packs/git_chapter64/Git_Chapter_64_Full.md"))
-    files += list(ROOT.glob("tools/engineer_jokar_*/*pack*.json"))
     files += list(ROOT.glob("tools/engineer_jokar_*/*curriculum*.json"))
-    files += list(ROOT.glob("tools/ENGINEER_JOKAR_*.json"))
     uniq, seen = [], set()
     for f in files:
         name = f.name.lower()
-        if (name.endswith(".md") and f.name != "Git_Chapter_64_Full.md") or name in ("readme.md", "readme_fa.md", "manifest.json"):
+        if (name.endswith(".md") and f.name != "Git_Chapter_64_Full.md") or name in ("readme.md", "readme_fa.md", "manifest.json", "pack_catalog.json"):
             continue
         rel = f.relative_to(ROOT).as_posix()
         quarantined = {
-            "tools/ENGINEER_JOKAR_OSPF_BGP_Redistribution_deep_v1.json":
-                "wrong-topic duplicate hardware blueprint; not OSPF/BGP content",
-            "tools/ENGINEER_JOKAR_VPN_Enterprise_IPsec_SSL_Troubleshooting_deep_v1.json":
-                "wrong-topic duplicate hardware blueprint; not VPN content",
-            "tools/engineer_jokar_security_ethical_hacking/security_ethical_hacking_pack.json":
-                "template-heavy security lessons pending deep rewrite",
             "tools/packs/security_ethical_hacking/security_ethical_hacking_pack.json":
                 "template-heavy security lessons pending deep rewrite",
         }
         if rel in quarantined:
             print(" quarantine source-only:", rel, "—", quarantined[rel])
-            continue
-        if rel == "tools/commands_encyclopedia/mikrotik.json" and (ROOT / "tools/packs/commands_encyclopedia/mikrotik.json").exists():
-            print(" skip legacy duplicate pack:", rel)
             continue
         if " " in f.name:
             print(" skip spaced name:", f)
