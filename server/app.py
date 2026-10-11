@@ -60,7 +60,8 @@ _MODULE_STATUS = {"workspace": False, "study": False, "workspace_error": "", "st
 start_reminder_loop = None
 
 try:
-    from workspace_routes import bp as workspace_bp, set_auth_checker, start_reminder_loop
+    from workspace_routes import bp as workspace_bp, set_auth_checker
+    from reminders import start_reminder_loop
     app.register_blueprint(workspace_bp)
     _MODULE_STATUS["workspace"] = True
 except Exception as _e:
