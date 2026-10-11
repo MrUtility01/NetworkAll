@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.netenc.app.data.AppDatabase
 import com.netenc.app.data.LessonEntity
+import com.netenc.app.data.OfflineSeeder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -66,11 +67,28 @@ class TreeCatalogActivity : AppCompatActivity() {
     }
 
     private suspend fun loadTree() {
-        val lessons = withContext(Dispatchers.IO) {
-            AppDatabase.get(this@TreeCatalogActivity).lessonDao().allActive()
+        val lessons = try {
+            withContext(Dispatchers.IO) {
+                // Do not depend on MainActivity's background seeding having finished before
+                // the user opens the tree. This also repairs old databases missing hierarchy.
+                OfflineSeeder.ensureSeeded(this@TreeCatalogActivity)
+                AppDatabase.get(this@TreeCatalogActivity).lessonDao().allActive()
+            }
+        } catch (e: Exception) {
+            header.text = "خطا در بارگذاری محتوا: " + (e.message ?: "خطای نامشخص")
+            return
         }
-        val byChapter = lessons.groupBy { it.chapterOrder to it.chapterTitle }
-            .toSortedMap(compareBy({ it.first }, { it.second }))
+        if (lessons.isEmpty()) {
+            header.text = "محتوایی بارگذاری نشد. به صفحه اصلی برگردید و وضعیت بارگذاری را بررسی کنید."
+            return
+        }
+        val byChapter = lessons.groupBy {
+            val order = it.chapterOrder
+            val title = it.chapterTitle.ifBlank {
+                if (order > 0) "فصل $order" else "بدون فصل‌بندی (نیازمند بازسازی)"
+            }
+            order to title
+        }.toSortedMap(compareBy({ it.first }, { it.second }))
         tree = byChapter.map { (key, listL) ->
             val subs = listL.groupBy { it.subTitle.ifBlank { "عمومی" } }
                 .map { (st, ls) -> SubNode(st, ls.sortedBy { it.lessonOrder }) }
