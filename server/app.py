@@ -359,6 +359,8 @@ def sync_push():
     if denied:
         return denied
     body = request.get_json(force=True, silent=True) or {}
+    if not isinstance(body, dict):
+        return jsonify({"error": "JSON body must be an object"}), 400
     records = body.get("records") or body.get("items") or []
     if not isinstance(records, list) or len(records) > 1000:
         return jsonify({"error": "records must be a list with at most 1000 items"}), 400
