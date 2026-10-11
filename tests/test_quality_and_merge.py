@@ -30,7 +30,7 @@ class DeepFallbackTests(unittest.TestCase):
         self.assertIn("Answer Key", content)
         self.assertNotIn("VLAN / VRF", content)
         self.assertIn("SMART", content)
-        self.assertIn("منابع و مراجع رسمی", content)
+        self.assertIn("منابع رسمی و مراجع", content)
         self.assertIn("Intel Product Support", content)
 
     def test_python_fallback_has_python_specific_troubleshooting(self):
