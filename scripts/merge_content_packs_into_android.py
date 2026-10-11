@@ -274,10 +274,50 @@ def normalize_pack(path: Path, data: dict):
     return []
 
 
+def _merge_content(existing, incoming, field):
+    """Merge pack content without silently replacing a deeper lesson with a shorter stub."""
+    old = as_text(existing).strip()
+    new = as_text(incoming).strip()
+    if not new:
+        return old
+    if not old:
+        return new
+    if new in old:
+        return old
+    if old in new:
+        return new
+
+    if field == "full_content":
+        markers = (
+            "lab", "آزمایشگاه", "expected result", "خروجی مورد انتظار",
+            "troubleshoot", "عیب‌یابی", "scenario", "سناریو",
+            "answer key", "پاسخ‌نامه", "rollback", "verify", "راستی‌آزمایی",
+            "references", "منابع رسمی", "prerequisite", "پیش‌نیاز",
+        )
+        def score(value):
+            lower = value.casefold()
+            return sum(marker.casefold() in lower for marker in markers) * 2 + min(len(value) // 1200, 8)
+        if score(new) > score(old) + 2:
+            return new
+        # Preserve both: a shorter vendor/pack lesson may add specific details that
+        # are absent from the generated fallback even when its total length is lower.
+        return old + "\n\n---\n\n## تکمیل تخصصی از بسته مرجع\n\n" + new
+
+    if field in ("commands", "examples", "notes"):
+        # These are additive fields: preserve unique lab steps, commands, and provenance.
+        if len(new) > len(old) * 1.4:
+            return new + "\n\n---\n\n## محتوای پایه حفظ‌شده\n\n" + old
+        return old + "\n\n" + new
+
+    # Prefer the more informative summary, but never erase an existing summary with
+    # an empty or shorter generated placeholder.
+    return new if len(new) > len(old) else old
+
+
 def apply_fields(les, src):
     for k in ("summary", "full_content", "commands", "examples", "notes"):
         if src.get(k):
-            les[k] = as_text(src.get(k)) if k != "full_content" else (src.get(k) or "")
+            les[k] = _merge_content(les.get(k), src.get(k), k)
 
 
 def merge_by_title(data, lessons):
