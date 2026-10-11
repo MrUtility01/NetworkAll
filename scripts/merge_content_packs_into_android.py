@@ -314,10 +314,62 @@ def _merge_content(existing, incoming, field):
     return new if len(new) > len(old) else old
 
 
+def _source_meta(src):
+    """Read structured lesson metadata regardless of the source pack's representation."""
+    meta = src.get("meta")
+    if isinstance(meta, str):
+        try:
+            meta = json.loads(meta)
+        except (TypeError, ValueError):
+            meta = {}
+    meta = dict(meta) if isinstance(meta, dict) else {}
+    raw = src.get("meta_json")
+    if isinstance(raw, str) and raw.strip():
+        try:
+            parsed = json.loads(raw)
+            if isinstance(parsed, dict):
+                meta = {**parsed, **meta}
+        except (TypeError, ValueError):
+            pass
+    assessment = src.get("assessment")
+    if isinstance(assessment, dict) and assessment:
+        meta["assessment"] = assessment
+    objectives = src.get("learning_objectives")
+    if objectives:
+        meta["learning_objectives"] = objectives
+    prerequisites = src.get("prerequisites")
+    if prerequisites:
+        meta["prerequisites"] = prerequisites
+    return meta
+
+
+def _objectives_text(value):
+    if isinstance(value, (list, tuple)):
+        return "؛".join(str(item) for item in value if str(item).strip())
+    return str(value or "").strip()
+
+
+def _merge_lesson_metadata(target, src):
+    incoming = _source_meta(src)
+    if incoming:
+        existing = _source_meta(target)
+        # Source-pack assessment is more specific than a generated fallback.
+        merged = {**existing, **incoming}
+        if incoming.get("assessment"):
+            merged["assessment"] = incoming["assessment"]
+        target["meta_json"] = json.dumps(merged, ensure_ascii=False, separators=(",", ":"))
+    objectives = src.get("learning_objectives") or incoming.get("learning_objectives")
+    if objectives:
+        target["learning_objectives"] = _objectives_text(objectives)
+    if src.get("source_status"):
+        target["source_status"] = src["source_status"]
+
+
 def apply_fields(les, src):
     for k in ("summary", "full_content", "commands", "examples", "notes"):
         if src.get(k):
             les[k] = _merge_content(les.get(k), src.get(k), k)
+    _merge_lesson_metadata(les, src)
 
 
 def merge_by_title(data, lessons):
@@ -473,9 +525,11 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
                 if uid in existing_uids:
                     continue
             notes = as_text(src.get("notes"))
-            ass = (src.get("meta") or {}).get("assessment")
+            meta = _source_meta(src)
+            ass = meta.get("assessment")
             if ass and "EJ_ASSESSMENT" not in notes:
                 notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(ass, ensure_ascii=False) + "\n-->\n"
+            objectives = src.get("learning_objectives") or meta.get("learning_objectives") or []
             incoming.append({
                 "uid": uid,
                 "title_fa": src.get("title_fa") or "",
@@ -486,6 +540,8 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
                 "commands": as_text(src.get("commands")),
                 "examples": as_text(src.get("examples")),
                 "notes": notes,
+                "meta_json": json.dumps(meta, ensure_ascii=False, separators=(",", ":")) if meta else "{}",
+                "learning_objectives": _objectives_text(objectives),
                 "source_status": src.get("source_status") or "review_required",
             })
             existing_uids.add(uid)
@@ -525,9 +581,11 @@ def build_ch65(lessons):
                 continue
             seen.add(uid)
             notes = as_text(src.get("notes"))
-            ass = (src.get("meta") or {}).get("assessment")
+            meta = _source_meta(src)
+            ass = meta.get("assessment")
             if ass and "EJ_ASSESSMENT" not in notes:
                 notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(ass, ensure_ascii=False) + "\n-->\n"
+            objectives = src.get("learning_objectives") or meta.get("learning_objectives") or []
             les_out.append({
                 "uid": uid,
                 "title_fa": src.get("title_fa") or "",
@@ -538,6 +596,9 @@ def build_ch65(lessons):
                 "commands": as_text(src.get("commands")),
                 "examples": as_text(src.get("examples")),
                 "notes": notes,
+                "meta_json": json.dumps(meta, ensure_ascii=False, separators=(",", ":")) if meta else "{}",
+                "learning_objectives": _objectives_text(objectives),
+                "source_status": src.get("source_status") or "review_required",
             })
         out.append({"title_fa": f"زیرفصل {si}", "lessons": les_out})
     return {
