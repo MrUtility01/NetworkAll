@@ -218,6 +218,7 @@ def main() -> int:
     ap.add_argument("--json-out", type=Path)
     ap.add_argument("--markdown-out", type=Path)
     ap.add_argument("--strict", action="store_true", help="fail on invalid JSON, missing content/UID, or duplicate UIDs in a pack")
+    ap.add_argument("--strict-json", action="store_true", help="fail only when a source JSON file cannot be parsed")
     args = ap.parse_args()
     root = args.root.resolve()
     report = run(root)
@@ -237,6 +238,8 @@ def main() -> int:
         args.markdown_out.parent.mkdir(parents=True, exist_ok=True)
         args.markdown_out.write_text(markdown(report), encoding="utf-8")
     if args.strict and any(p.get("error") or p.get("structural_errors") for p in report["packs"]):
+        return 1
+    if args.strict_json and any(p.get("error") for p in report["packs"]):
         return 1
     return 0
 
