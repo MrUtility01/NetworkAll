@@ -22,6 +22,35 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Audit content packs
+        id: content_audit
+        continue-on-error: true
+        run: |
+          mkdir -p artifacts
+          set -o pipefail
+          python3 tools/audit_packs.py --json-out artifacts/content-audit.json --markdown-out artifacts/content-audit.md --strict-json 2>&1 | tee /tmp/content-audit.log
+
+      - name: Upload content audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-audit-report
+          path: |
+            artifacts/content-audit.json
+            artifacts/content-audit.md
+            /tmp/content-audit.log
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Unit tests
+        run: python3 -m unittest discover -s tests -p "test_*.py"
+
+      - name: Stop on invalid source JSON
+        if: steps.content_audit.outcome == 'failure'
+        run: |
+          echo "Content source JSON is invalid; inspect content-audit-report artifact."
+          exit 1
+
       - name: Android SDK licenses + platform
         run: |
           set -e
@@ -52,12 +81,8 @@ jobs:
           assert 1 in orders and 68 in orders
           PY
 
-      - name: Merge packs (best effort)
-        run: |
-          set +e
-          python3 scripts/merge_content_packs_into_android.py
-          echo "merge_exit=$?"
-          exit 0
+      - name: Merge content packs (required)
+        run: python3 scripts/merge_content_packs_into_android.py
 
       - name: Gradle wrapper + local.properties
         working-directory: android
