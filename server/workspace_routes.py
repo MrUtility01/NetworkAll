@@ -240,8 +240,12 @@ def _valid_local_datetime(value):
     if not value:
         return ""
     try:
-        # Browser provides local wall time. Windows scheduler compares in that same local zone.
-        datetime.strptime(value, "%Y-%m-%dT%H:%M")
+        # Accept an all-day Jalali-calendar selection (stored as ISO Gregorian date)
+        # or a local wall time. Windows compares the latter in the same local zone.
+        if len(value) == 10:
+            datetime.strptime(value, "%Y-%m-%d")
+        else:
+            datetime.strptime(value, "%Y-%m-%dT%H:%M")
     except ValueError:
         return None
     return value
@@ -295,7 +299,7 @@ def planner_tasks():
     if priority not in (1, 2, 3):
         c.close()
         return jsonify({"ok": False, "error": "priority must be 1, 2, or 3"}), 400
-    remind_at = due_at if payload.get("reminder") and due_at else ""
+    remind_at = due_at if payload.get("reminder") and "T" in due_at else ""
     uid = uuid.uuid4().hex
     now = datetime.now(timezone.utc).isoformat()
     c.execute(
