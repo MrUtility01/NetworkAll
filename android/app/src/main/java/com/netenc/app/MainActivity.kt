@@ -142,10 +142,10 @@ class MainActivity : AppCompatActivity() {
             val filled = withContext(Dispatchers.IO) { db.lessonDao().countFilled() }
             val sc = withContext(Dispatchers.IO) { db.scenarioDao().count() }
             val st = withContext(Dispatchers.IO) { StudyRepository(this@MainActivity).stats() }
-            AlertDialog.Builder(this@MainActivity)
-                .setTitle("آمار")
             val today = st["today"]
             val goal = st["goal"]
+            AlertDialog.Builder(this@MainActivity)
+                .setTitle("آمار")
                 .setMessage("درس: $lessons\nمتن‌دار: $filled\nسناریو: $sc\nامروز: $today/$goal")
                 .setPositiveButton("باشه", null)
                 .show()
