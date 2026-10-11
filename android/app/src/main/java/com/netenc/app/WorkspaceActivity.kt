@@ -215,7 +215,7 @@ class WorkspaceActivity : AppCompatActivity() {
                 val secret = withContext(Dispatchers.IO) { decryptVaultSecret(item.secretEnc) }
                 AlertDialog.Builder(this@WorkspaceActivity)
                     .setTitle(item.title)
-                    .setMessage("نام کاربری: " + item.username + "\\n\\nرمز: " + secret)
+                    .setMessage("نام کاربری: " + item.username + "\n\nرمز: " + secret)
                     .setPositiveButton("باشه", null)
                     .show()
             } catch (e: Exception) {
