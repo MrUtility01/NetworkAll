@@ -202,9 +202,23 @@ class MainActivity : AppCompatActivity() {
                     pulled += withContext(Dispatchers.IO) { repo.upsertFromPullJson(body) }
                 }
                 val pushArr = withContext(Dispatchers.IO) { repo.buildPushArray() }
-                if (pushArr.length() > 0) withContext(Dispatchers.IO) { c.push(pushArr) }
+                var pushSummary = "push=0"
+                if (pushArr.length() > 0) {
+                    val pushBody = withContext(Dispatchers.IO) { c.push(pushArr) }
+                    val result = org.json.JSONObject(pushBody)
+                    val unsupported = result.optInt("unsupported", 0)
+                    val missing = result.optInt("missing_targets", 0)
+                    val conflicts = result.optInt("conflicts", 0)
+                    pushSummary = "push accepted=${result.optInt("accepted", 0)} kept=${result.optInt("kept", 0)} conflicts=$conflicts unsupported=$unsupported missing=$missing"
+                    // Do not advance the incremental cursor when the server rejected or
+                    // could not safely apply records; otherwise a partial sync looks complete.
+                    if (unsupported > 0 || missing > 0 || conflicts > 0) {
+                        log("⚠ sync ناقص: pull=$pulled $pushSummary")
+                        return@launch
+                    }
+                }
                 withContext(Dispatchers.IO) { repo.setLastSync(Instant.now().toString()) }
-                log("✓ sync pull=$pulled")
+                log("✓ sync pull=$pulled $pushSummary")
             } catch (e: Exception) { log("sync: ${e.message}") }
         }
     }
