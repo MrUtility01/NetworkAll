@@ -115,7 +115,13 @@ def _item_quality(item: dict) -> dict:
     if not isinstance(answers, list):
         answers = item.get("answer_key") if isinstance(item.get("answer_key"), list) else []
     qids = {str(q.get("id")) for q in questions if isinstance(q, dict) and q.get("id") is not None}
-    aids = {str(a.get("id")) for a in answers if isinstance(a, dict) and a.get("id") is not None}
+    if isinstance(answers, dict):
+        aids = {str(key) for key in answers}
+    else:
+        aids = {
+            str(a.get("question_id", a.get("id")))
+            for a in answers if isinstance(a, dict) and a.get("question_id", a.get("id")) is not None
+        }
     markers = {
         "lab": any(m in low for m in LAB_MARKERS),
         "troubleshooting": any(m in low for m in TROUBLESHOOT_MARKERS),
