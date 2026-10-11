@@ -1,12 +1,17 @@
-name: Build APK
+name: Build APK v1
 
 on:
   workflow_dispatch:
+    inputs:
+      note:
+        description: "یادداشت"
+        required: false
+        default: "all-chapters"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
@@ -21,10 +26,37 @@ jobs:
 
       - uses: android-actions/setup-android@v3
 
-      - name: Make launcher icons
+      - name: Launcher icon
         run: python3 scripts/install_android_icon.py
 
-      - name: Make Gradle wrapper
+      - name: Export all chapters + merge all packs
+        run: |
+          set -e
+          echo "=== export curriculum (chapters 1-64+) ==="
+          python3 scripts/export_android_index.py
+          echo "=== merge tools/packs + engineer packs ==="
+          python3 scripts/merge_content_packs_into_android.py
+          python3 - <<'PY'
+          import gzip, json, sys
+          from pathlib import Path
+          p = Path("android/app/src/main/assets/curriculum_index.json.gz")
+          if not p.is_file():
+              print("ERROR: curriculum_index.json.gz missing")
+              sys.exit(1)
+          d = json.loads(gzip.open(p, "rt", encoding="utf-8").read())
+          orders = sorted(int(c.get("order") or 0) for c in d.get("chapters") or [])
+          nch = len(orders)
+          nles = int(d.get("lesson_count") or 0)
+          print("FINAL chapters", nch, "lessons", nles)
+          print("orders", orders[:5], "...", orders[-8:])
+          # حداقل هسته باید باشد
+          if nch < 60 or nles < 4000:
+              print("ERROR: content too small")
+              sys.exit(1)
+          print("OK all-chapters content ready")
+          PY
+
+      - name: Gradle wrapper
         working-directory: android
         run: |
           set -e
@@ -32,7 +64,7 @@ jobs:
           sudo unzip -qo /tmp/gradle.zip -d /opt
           /opt/gradle-8.2/bin/gradle wrapper --gradle-version 8.2
           chmod +x gradlew
-          ls -la gradlew gradle/wrapper/
+          test -f gradle/wrapper/gradle-wrapper.jar
 
       - name: Assemble debug APK
         working-directory: android
@@ -40,7 +72,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: EngineerJokar-APK
+          name: EngineerJokar-APK-v1
           path: android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 30
