@@ -88,6 +88,24 @@ class ContentMergeTests(unittest.TestCase):
         self.assertEqual(lessons[0]["subchapter_order"], 1)
         self.assertIn("سناریوی عملی", lessons[0]["examples"])
 
+    def test_unrelated_record_with_colliding_uid_is_preserved(self):
+        data = {
+            "chapters": [{
+                "order": 68,
+                "title_fa": "دستورات",
+                "subchapters": [{"title_fa": "زیرفصل 1", "lessons": [{"uid": "collision", "title_fa": "دستور اول"}]}],
+            }]
+        }
+        added = append_unmatched_as_extra(
+            data, [{"uid": "collision", "title_fa": "دستور دوم", "subchapter_order": 1, "full_content": "محتوا"}],
+            68, "دستورات", "Commands",
+        )
+        self.assertEqual(added, 1)
+        lessons = [l for s in data["chapters"][0]["subchapters"] for l in s["lessons"]]
+        self.assertEqual(len(lessons), 2)
+        self.assertNotEqual(lessons[0]["uid"], lessons[1]["uid"])
+
+
     def test_duplicate_uid_is_not_added_twice(self):
         data = {
             "chapters": [{
@@ -97,7 +115,7 @@ class ContentMergeTests(unittest.TestCase):
             }]
         }
         added = append_unmatched_as_extra(
-            data, [{"uid": "same", "title_fa": "تکراری", "subchapter_order": 1}],
+            data, [{"uid": "same", "title_fa": "اصل", "subchapter_order": 1}],
             68, "دستورات", "Commands",
         )
         self.assertEqual(added, 0)
