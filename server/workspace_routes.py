@@ -140,9 +140,9 @@ def _conn():
 
 def _cookie_ok() -> bool:
     if not _sync_token:
-        return True
-    c = request.cookies.get("netenc_token") or ""
-    return hmac.compare_digest(c, _sync_token)
+        return False
+    supplied = request.cookies.get("netenc_token") or ""
+    return bool(supplied) and hmac.compare_digest(supplied, _sync_token)
 
 
 @bp.route("/workspace/login", methods=["GET", "POST"])
@@ -150,9 +150,12 @@ def workspace_login():
     err = ""
     if request.method == "POST":
         tok = (request.form.get("token") or "").strip()
-        if _sync_token and tok == _sync_token:
+        if _sync_token and tok and hmac.compare_digest(tok, _sync_token):
             resp = make_response(redirect("/workspace"))
-            resp.set_cookie("netenc_token", tok, httponly=True, samesite="Lax", max_age=60 * 60 * 12)
+            resp.set_cookie(
+                "netenc_token", tok, httponly=True, samesite="Lax",
+                secure=request.is_secure, max_age=60 * 60 * 12,
+            )
             return resp
         if not _sync_token:
             return redirect("/workspace")
