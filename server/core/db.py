@@ -296,7 +296,7 @@ class WebDB:
         # FTS5 is much faster than scanning every long lesson body with LIKE.
         # Tokenize conservatively and quote each token to avoid interpreting user
         # input as FTS operators. Prefix matching supports partial English words.
-        tokens = re.findall(r"[\\w\\u0600-\\u06FF]+", q, flags=re.UNICODE)
+        tokens = re.findall(r"[\w\u0600-\u06FF]+", q, flags=re.UNICODE)
         if self._fts_available and tokens:
             match_query = " AND ".join('"' + t.replace('"', '""') + '"*' for t in tokens)
             try:
