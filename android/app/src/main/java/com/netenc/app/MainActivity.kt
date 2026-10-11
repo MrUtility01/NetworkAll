@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         }
         // Workspace
         safeBtn(R.id.btnTasks) {
-            startActivity(Intent(this, WorkspaceActivity::class.java).putExtra("mode", "tasks"))
+            startActivity(Intent(this, PlannerActivity::class.java))
         }
         safeBtn(R.id.btnNotes) {
             startActivity(Intent(this, WorkspaceActivity::class.java).putExtra("mode", "notes"))
