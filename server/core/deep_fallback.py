@@ -305,7 +305,9 @@ def _base_commands(cat: str):
     network_cats = {"vlan","stp","ospf","bgp","acl","nat","vpn","dhcp","dns","wireless","firewall","ha","qos","security","tcpip","mpls","multicast","vxlan"}
     if cat in network_cats:
         return COMMON[:8]
-    return BANKS.get(cat, BANKS.get("general", []))[:8]
+    if cat in BANKS and cat != "general":
+        return BANKS[cat][:8]
+    return [("record baseline", "ثبت وضعیت اولیه"), ("verify expected result", "تأیید نتیجه"), ("review logs", "بررسی لاگ")]
 
 
 def _backup_commands(cat: str):
@@ -353,7 +355,9 @@ def build_deep_fallback(
     topic = _topic(title_fa)
     cat = _cat(topic)
     level_fa = _LEVEL_FA.get(level, level)
-    bank = BANKS.get(cat, BANKS.get("general", COMMON))
+    bank = BANKS.get(cat)
+    if not bank or cat == "general":
+        bank = [("record baseline", "ثبت وضعیت اولیه"), ("verify expected result", "تأیید نتیجه"), ("review logs", "بررسی لاگ")]
     story = _story(topic, cat)
 
     summary = (
