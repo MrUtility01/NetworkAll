@@ -23,12 +23,24 @@ def load_json(p: Path):
 
 
 def find_pack_files():
-    files = list(ROOT.glob("tools/**/*_pack.json")) + list(ROOT.glob("tools/**/*curriculum*.json"))
-    files += list(ROOT.glob("tools/ENGINEER_JOKAR_*.json"))
+    """فقط مسیرهای مجاز — prompts/ اسکن نمی‌شود (سرعت/پایداری)."""
+    files = []
     files += list(ROOT.glob("tools/packs/**/*.json"))
+    files += list(ROOT.glob("tools/engineer_jokar_*/*pack*.json"))
+    files += list(ROOT.glob("tools/engineer_jokar_*/*curriculum*.json"))
+    files += list(ROOT.glob("tools/ENGINEER_JOKAR_*.json"))
     uniq, seen = [], set()
     for f in files:
-        if f.name.lower() in ("readme.md", "readme_fa.md"):
+        name = f.name.lower()
+        if name.endswith(".md") or name in ("readme.md", "readme_fa.md"):
+            continue
+        if " " in f.name:
+            print(" skip spaced name:", f)
+            continue
+        if name.endswith(".json.json"):
+            print(" skip double ext:", f)
+            continue
+        if "/prompts/" in str(f).replace("\\", "/").lower():
             continue
         k = str(f.resolve())
         if k not in seen and f.stat().st_size > 500:
