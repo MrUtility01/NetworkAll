@@ -23,6 +23,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
+import org.json.JSONArray
+import org.json.JSONObject
+import com.netenc.app.data.TaskEntity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var hostInput: EditText
@@ -212,8 +215,53 @@ class MainActivity : AppCompatActivity() {
                 }
                 val pushArr = withContext(Dispatchers.IO) { repo.buildPushArray() }
                 if (pushArr.length() > 0) withContext(Dispatchers.IO) { c.push(pushArr) }
+
+                // Merge local task planner with Windows using stable UID + lastUpdated.
+                val taskDao = AppDatabase.get(this@MainActivity).workspaceDao()
+                val remoteTasks = withContext(Dispatchers.IO) { c.getTasks() }
+                val localBefore = withContext(Dispatchers.IO) { taskDao.allTasks() }.associateBy { it.uid }
+                withContext(Dispatchers.IO) {
+                    for (i in 0 until remoteTasks.length()) {
+                        val o = remoteTasks.optJSONObject(i) ?: continue
+                        val uid = o.optString("uid")
+                        if (uid.isBlank()) continue
+                        val remote = TaskEntity(
+                            uid = uid,
+                            title = o.optString("title"),
+                            body = o.optString("body"),
+                            done = o.optInt("done", 0) != 0,
+                            dueAt = o.optString("due_at"),
+                            priority = o.optInt("priority", 1),
+                            recurrence = o.optString("recurrence", "none"),
+                            lastNotifiedAt = o.optString("last_notified_at"),
+                            lastUpdated = o.optString("last_updated"),
+                            deviceId = o.optString("device_id", "windows")
+                        )
+                        val local = localBefore[uid]
+                        if (local == null || remote.lastUpdated > local.lastUpdated ||
+                            (remote.lastUpdated == local.lastUpdated && remote.deviceId > local.deviceId)) {
+                            taskDao.upsertTask(remote)
+                        }
+                    }
+                }
+                val mergedTasks = withContext(Dispatchers.IO) { taskDao.allTasks() }
+                val taskItems = JSONArray()
+                mergedTasks.forEach { task ->
+                    taskItems.put(JSONObject()
+                        .put("uid", task.uid)
+                        .put("title", task.title)
+                        .put("body", task.body)
+                        .put("done", task.done)
+                        .put("due_at", task.dueAt)
+                        .put("priority", task.priority)
+                        .put("recurrence", task.recurrence)
+                        .put("last_notified_at", task.lastNotifiedAt)
+                        .put("last_updated", task.lastUpdated)
+                        .put("device_id", task.deviceId))
+                }
+                val taskSyncResult = withContext(Dispatchers.IO) { c.syncTasks(taskItems) }
                 withContext(Dispatchers.IO) { repo.setLastSync(Instant.now().toString()) }
-                log("✓ sync pull=$pulled")
+                log("✓ sync pull=$pulled · tasks=" + mergedTasks.size + " · " + taskSyncResult)
             } catch (e: Exception) { log("sync: ${e.message}") }
         }
     }
