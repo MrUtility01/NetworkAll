@@ -402,6 +402,12 @@ def main():
         except Exception as e:
             _MODULE_STATUS["study_error"] = str(e)
             print("study routes", e)
+    if os.name == "nt":
+        try:
+            from core.windows_reminders import start_windows_reminder_service
+            start_windows_reminder_service()
+        except Exception as e:
+            print("Windows reminder service skipped:", e)
     print(f"NetEnc listening on http://{host}:{port}")
     print("  sync: /api/sync/hello | manifest | pull | push")
     print(f"  token_required={bool(SYNC_TOKEN)} default_token={SYNC_TOKEN == DEFAULT_DEV_TOKEN}")
