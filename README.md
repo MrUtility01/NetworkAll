@@ -1,38 +1,84 @@
-# NetworkEncyclopedia / ENGINEER JOKAR
+# NetworkEncyclopedia / ENGINEER JOKAR — نسخهٔ کاری NetworkAll
 
-دانشنامه آموزشی شبکه و زیرساخت IT — ویندوز (Flask) + اندروید (Kotlin) + همگام‌سازی LAN.
+دانشنامهٔ شخصی آموزش شبکه و زیرساخت IT، با نسخهٔ ویندوز (Flask + SQLite) و اندروید (Kotlin + Room). مخزن NetworkAll نسخهٔ کاری و آزمایشگاهی است؛ شاخهٔ main این مخزن تا زمان بازبینی تغییرات به‌عنوان مبنا دست‌نخورده می‌ماند.
 
-## شروع سریع
+## اجرای محلی ویندوز
 
-**ویندوز**
-```bash
-git clone https://github.com/MrUtility01/NetworkEncyclopedia.git
-cd NetworkEncyclopedia/server
-python -m pip install -r requirements.txt
-set NETENC_TOKEN=change-me
-python app.py
-```
+PowerShell را در ریشهٔ پروژه باز کنید و اجرا کنید:
 
-**اندروید:** Actions → Build Android APK → نصب → در صورت نیاز Clear data.
+    cd server
+    py -m venv .venv
+    .\.venv\Scripts\Activate.ps1
+    python -m pip install -r requirements.txt
+    $env:NETENC_HOST = "127.0.0.1"
+    Remove-Item Env:NETENC_TOKEN -ErrorAction SilentlyContinue
+    python app.py
 
-## ساختار
+سپس این آدرس‌ها در همان رایانه در دسترس‌اند:
 
-جزئیات کامل: [docs/REPO_LAYOUT_FA.md](docs/REPO_LAYOUT_FA.md)
+- برنامه: http://127.0.0.1:5050/
+- تقویم شمسی و برنامه‌ریز: http://127.0.0.1:5050/planner
+- فضای کاری: http://127.0.0.1:5050/workspace
 
-| مسیر | نقش |
-|------|-----|
-| `server/` | API + SQLite + وب |
-| `android/` | اپ آفلاین |
-| `tools/packs/` | JSON محتوای نهایی |
-| `scripts/merge_content_packs_into_android.py` | ادغام پک‌ها در asset |
-| `docs/` | معماری، Sync، وضعیت |
+در حالت پیش‌فرض، سرور فقط روی loopback گوش می‌دهد؛ از دستگاه دیگر قابل دسترسی نیست. دادهٔ SQLite و کلید Vault داخل server/data ساخته می‌شوند و در Git قرار نمی‌گیرند.
 
-## محتوای جدید
+## فعال‌سازی اختیاری همگام‌سازی گوشی روی LAN
 
-1. JSON را در `tools/packs/<موضوع>/` بگذار  
-2. `python scripts/merge_content_packs_into_android.py`  
-3. commit + push + Actions  
+تنها وقتی کامپیوتر و گوشی به یک شبکهٔ خصوصی مورد اعتماد وصل‌اند، PowerShell را با مقادیر زیر راه‌اندازی کنید:
 
-## امنیت
+    $env:NETENC_TOKEN = ([guid]::NewGuid().ToString("N") + [guid]::NewGuid().ToString("N"))
+    $env:NETENC_HOST = "0.0.0.0"
+    python app.py
 
-توکن پیش‌فرض را عوض کن: `NETENC_TOKEN`. مستند Sync: `docs/SYNC_PROTOCOL.md`.
+توکن باید حداقل ۲۴ نویسه باشد. در تنظیمات Firewall ویندوز فقط پورت TCP 5050 را برای پروفایل Private و شبکهٔ خودتان مجاز کنید. آدرس IPv4 کامپیوتر را با ipconfig ببینید و در تنظیمات Sync اندروید به شکل http://IP:5050 وارد کنید. توکن را در فیلد token همان تنظیمات بگذارید.
+
+هشدار: Sync فعلی روی HTTP محلی است و برای شبکهٔ عمومی یا اینترنت طراحی نشده. Port forwarding روتر، NAT ورودی یا دسترسی Public برای این برنامه ایجاد نکنید. برای استفاده از LAN از Wi-Fi مورد اعتماد و Firewall محدود استفاده کنید. اگر نیازی به Sync گوشی ندارید، همان حالت پیش‌فرض 127.0.0.1 امن‌تر است.
+
+## تقویم و یادآوری
+
+- ویندوز: تقویم شمسی، انتخاب روز، سررسید، اولویت و Windows toast reminder. یادآوری به اجرای برنامهٔ سرور و نصب وابستگی‌های requirements نیاز دارد.
+- اندروید: تقویم شمسی محلی، کارهای روزانه، اولویت و یادآوری زمان‌دار با WorkManager؛ برای نمایش اعلان، اجازهٔ Notifications را فعال کنید.
+- نمایش تقویم شمسی بر اساس قابلیت Persian calendar در مرورگر است؛ مرورگر به‌روز پیشنهاد می‌شود.
+- وظایف، یادداشت‌ها و پیشرفت آفلاین برنامه در دیتابیس هر دستگاه ذخیره می‌شوند. این تغییرات هنوز تضمین نمی‌کند که همهٔ وظایف/یادداشت‌ها بین ویندوز و اندروید همگام شوند؛ Sync محتوا و پیشرفت درس از دامنهٔ جداگانه است.
+
+## ساختار پروژه
+
+| مسیر | وظیفه |
+|---|---|
+| server/ | API، وب، SQLite، فضای کاری و برنامه‌ریز ویندوز |
+| android/ | اپ آفلاین Kotlin، Room و WorkManager |
+| shared/ | منطق همگام‌سازی مشترک |
+| scripts/ | export و merge محتوای اندروید |
+| tools/packs/ | تنها مسیر مرجع JSONهای محتوایی |
+| tools/engineer_jokar_*/ | اسکریپت‌های تولید/اعتبارسنجی موضوعی |
+| docs/ | معماری، پروتکل و سیاست محتوا |
+
+راهنمای ساختار: [docs/REPO_LAYOUT_FA.md](docs/REPO_LAYOUT_FA.md)
+
+استاندارد آموزش و سیاست ممیزی: [docs/CONTENT_GOVERNANCE_FA.md](docs/CONTENT_GOVERNANCE_FA.md)
+
+فهرست رسمی بسته‌ها: [tools/packs/pack_catalog.json](tools/packs/pack_catalog.json)
+
+## بررسی عمق و صحت محتوا
+
+برای ساخت گزارش فقط‌خواندنی از JSONهای محتوایی:
+
+    python tools/audit_content.py --packs-only --json docs/audits/content-audit.json
+
+گزارش طول توضیح، ساختار آموزشی، لابراتوار/مثال/امنیت/راستی‌آزمایی، وجود سؤال و کلید پاسخ، UID تکراری و JSON نامعتبر را ثبت می‌کند. آستانهٔ طول جایگزین بازبینی علمی نیست؛ تا تکمیل ممیزی، وضعیت هر بسته در pack_catalog.json شفاف باقی می‌ماند.
+
+هرگز صرفاً به‌دلیل کوتاه بودن یک درس را پاک نکنید. شکاف آن را ثبت و درس را با UID پایدار و محتوای جایگزین کامل کنید. import انبوه باید ابتدا dry-run، backup و سپس گزارش تغییرات داشته باشد.
+
+## آزمون‌ها و ساخت APK
+
+- Python syntax + آزمون‌های رگرسیون: python -m compileall -q server shared scripts tools tests و python -m unittest discover -s tests -v
+- Workflow ساخت APK: [.github/workflows/build-apk.yml](.github/workflows/build-apk.yml)
+- فایل APK در Artifact اجرای موفق GitHub Actions قرار می‌گیرد. APK تولیدشده برای نصب مستقیم/آزمایش است، نه انتشار فروشگاهی.
+
+## امنیت و داده‌ها
+
+- توکن پیش‌فرض مشترک دیگر وجود ندارد.
+- برای سرور محلی از 127.0.0.1 استفاده کنید؛ برای LAN توکن تصادفی طولانی اجباری است.
+- Vault ویندوز از AES-GCM و در ویندوز از حفاظت کلید DPAPI استفاده می‌کند؛ اندروید از AES-GCM با Android Keystore استفاده می‌کند.
+- فایل‌های DB، vault.key، پشتیبان‌ها و APK را commit نکنید. اگر رمزگشایی Vault خطا داد، فایل کلید را حذف نکنید.
+- اسکریپت seed اکنون دیتابیس غیرخالی را خودکار پاک نمی‌کند. برای تعمیرات دستی همیشه backup بگیرید.
