@@ -353,7 +353,7 @@ def _rca_table(cat: str) -> str:
         ("بعد از reboot برگشت", "startup ≠ running", "show startup-config"),
         ("کندی نه قطعی", "QoS / congestion / duplex", "show interface counters / perf"),
         ("قطع متناوب", "flapping / STP reconvergence", "log | include UPDOWN|SPANTREE"),
-    ])
+    ]))
     header = "| علامت (Symptom) | علت محتمل | دستور شواهد | اقدام اول |\n|---|---|---|---|"
     body = "\n".join(
         f"| {a} | {b} | `{c}` | ایزوله + backup |" for a, b, c in rows
