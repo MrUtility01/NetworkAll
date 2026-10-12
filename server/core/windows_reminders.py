@@ -49,7 +49,7 @@ def _run() -> None:
             conn = _conn()
             rows = conn.execute(
                 """SELECT uid,title,body,due_at FROM ws_tasks
-                   WHERE done=0 AND remind_at<>'' AND remind_at<=?
+                   WHERE done=0 AND deleted=0 AND remind_at<>'' AND remind_at<=?
                      AND (reminded_at IS NULL OR reminded_at='')
                    ORDER BY remind_at LIMIT 30""",
                 (now,),
