@@ -7,8 +7,12 @@ import androidx.room.Query
 
 @Dao
 interface WorkspaceDao {
-    @Query("SELECT * FROM tasks ORDER BY done ASC, priority DESC, lastUpdated DESC")
+    @Query("SELECT * FROM tasks WHERE deleted = 0 ORDER BY done ASC, priority DESC, lastUpdated DESC")
     suspend fun allTasks(): List<TaskEntity>
+
+    /** Includes soft-deleted rows so tombstones are not lost during sync. */
+    @Query("SELECT * FROM tasks ORDER BY lastUpdated DESC")
+    suspend fun allTasksForSync(): List<TaskEntity>
 
     @Query("SELECT * FROM tasks WHERE uid = :uid LIMIT 1")
     suspend fun taskByUid(uid: String): TaskEntity?
@@ -16,16 +20,20 @@ interface WorkspaceDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertTask(item: TaskEntity)
 
-    @Query("DELETE FROM tasks WHERE uid = :uid")
+    @Query("UPDATE tasks SET deleted = 1, lastUpdated = strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE uid = :uid")
     suspend fun deleteTask(uid: String)
 
-    @Query("SELECT * FROM notes ORDER BY lastUpdated DESC")
+    @Query("SELECT * FROM notes WHERE deleted = 0 ORDER BY lastUpdated DESC")
     suspend fun allNotes(): List<NoteEntity>
+
+    /** Includes soft-deleted rows so tombstones are not lost during sync. */
+    @Query("SELECT * FROM notes ORDER BY lastUpdated DESC")
+    suspend fun allNotesForSync(): List<NoteEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertNote(item: NoteEntity)
 
-    @Query("DELETE FROM notes WHERE uid = :uid")
+    @Query("UPDATE notes SET deleted = 1, lastUpdated = strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE uid = :uid")
     suspend fun deleteNote(uid: String)
 
     @Query("SELECT * FROM vault_items ORDER BY title ASC")
