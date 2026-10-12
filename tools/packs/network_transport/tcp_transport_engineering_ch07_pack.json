@@ -4,7 +4,7 @@
   "generated_on": "2026-10-12",
   "purpose": "Progressive L0-L4 TCP transport engineering course: stream semantics, handshake, retransmission, state machine, capacity and measurement.",
   "scope": {
-    "chapter_order": 7,
+    "chapter_order": 9,
     "levels": [
       "L0",
       "L1",
@@ -15,7 +15,7 @@
     "lesson_count": 5,
     "topics": [
       {
-        "id": "tcp-transport",
+        "id": "tcp-transport-engineering-ch09",
         "title_fa": "انتقال TCP",
         "title_en": "TCP Transport Engineering"
       }
@@ -47,10 +47,10 @@
   },
   "lessons": [
     {
-      "uid": "lesson:ch07:tcp:l0",
+      "uid": "lesson:ch09:tcp-engineering:l0",
       "entity": "lesson",
-      "chapter_order": 7,
-      "subchapter_order": 1,
+      "chapter_order": 9,
+      "subchapter_order": 5,
       "lesson_order": 1,
       "topic": "tcp-transport",
       "domain": "network-transport",
@@ -76,7 +76,7 @@
       ],
       "prerequisites": [],
       "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"tcp-l0-1\",\"prompt\":\"در TCP «اتصال‌گرا» دقیقاً به چه معناست؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"tcp-l0-2\",\"prompt\":\"اگر ACK برابر 501 باشد، تفسیر معمول آن چیست؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"tcp-l0-3\",\"prompt\":\"چرا یک write در فرستنده الزاماً یک read در گیرنده نمی‌سازد؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"tcp-l0-4\",\"prompt\":\"موفقیت handshake چه چیزی را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"tcp-l0-5\",\"prompt\":\"چرا UDP برای برخی کاربردهای بلادرنگ مناسب است؟\",\"type\":\"short_answer\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"tcp-l0-1\",\"answer\":\"دو endpoint پیش از تبادل عادی داده وضعیت پروتکل را هماهنگ می‌کنند؛ اتصال مدار فیزیکی اختصاصی نیست.\",\"rationale\":\"اتصال TCP وضعیت منطقی در دو پشتهٔ پروتکل است و بسته‌ها همچنان توسط IP مسیریابی می‌شوند.\"},{\"id\":\"tcp-l0-2\",\"answer\":\"بایت 501 بعدی است که گیرنده انتظار دارد؛ بایت‌های پیش از آن در جریان پیوسته تأیید شده‌اند.\",\"rationale\":\"ACK تجمعی معمولاً مرز بایت بعدی مورد انتظار را نشان می‌دهد، نه شمارهٔ segment بعدی.\"},{\"id\":\"tcp-l0-3\",\"answer\":\"TCP جریان بایت است و مرز فراخوانی‌های write را حفظ نمی‌کند؛ framing باید در پروتکل کاربردی تعریف شود.\",\"rationale\":\"تقسیم‌بندی به اندازهٔ بافرها، زمان‌بندی، segmentation و رفتار پشته بستگی دارد.\"},{\"id\":\"tcp-l0-4\",\"answer\":\"سلامت منطق برنامه، موفقیت TLS/HTTP، پردازش درخواست یا ذخیرهٔ پایدار داده را ثابت نمی‌کند.\",\"rationale\":\"handshake فقط ایجاد وضعیت TCP و مذاکرهٔ گزینه‌های اولیه را نشان می‌دهد.\"},{\"id\":\"tcp-l0-5\",\"answer\":\"چون برنامه می‌تواند از انتظار برای ارسال مجدد دادهٔ دیررس پرهیز کند و سیاست تأخیر/قابلیت اطمینان را خودش تعیین کند.\",\"rationale\":\"UDP دیتاگرام‌محور است و تضمین ترتیب و ارسال مجدد TCP را ارائه نمی‌کند؛ این مزیت یا عیب وابسته به نیاز است.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
-      "subchapter_title_fa": "۷.۱ مدل TCP",
+      "subchapter_title_fa": "۹.۵ مهندسی TCP — مدل تا ظرفیت",
       "official_sources": [
         {
           "title": "RFC 9293 — TCP",
@@ -98,10 +98,10 @@
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch07:tcp:l1",
+      "uid": "lesson:ch09:tcp-engineering:l1",
       "entity": "lesson",
-      "chapter_order": 7,
-      "subchapter_order": 1,
+      "chapter_order": 9,
+      "subchapter_order": 5,
       "lesson_order": 2,
       "topic": "tcp-transport",
       "domain": "network-transport",
@@ -129,7 +129,7 @@
         "lesson:ch07:tcp:l0"
       ],
       "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"tcp-l1-1\",\"prompt\":\"در Windows چگونه پورت و PID یک اتصال را به فرایند نسبت می‌دهید؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"tcp-l1-2\",\"prompt\":\"وجود LISTEN چه چیزی را ثابت می‌کند و چه چیزی را نه؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"tcp-l1-3\",\"prompt\":\"اگر SYN ارسال شود اما SYN-ACK دیده نشود، سه فرضیهٔ مجزا چیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"tcp-l1-4\",\"prompt\":\"چرا capture در یک سمت برای نتیجه‌گیری دربارهٔ packet loss کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"tcp-l1-5\",\"prompt\":\"چه تفاوتی بین اتصال ESTABLISHED و پاسخ‌گویی سرویس وجود دارد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"tcp-l1-6\",\"prompt\":\"چرا باید از capture دادهٔ حساس محافظت کرد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"tcp-l1-7\",\"prompt\":\"چه زمانی استفاده از netstat -ano مفید است؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"tcp-l1-8\",\"prompt\":\"چرا تست loopback جای تست LAN را نمی‌گیرد؟\",\"type\":\"short_answer\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"tcp-l1-1\",\"answer\":\"با Get-NetTCPConnection ستون OwningProcess را می‌خوانیم و PID را با Get-Process -Id تطبیق می‌دهیم.\",\"rationale\":\"تطبیق endpoint، وضعیت و PID از حدس بر اساس شمارهٔ پورت دقیق‌تر است.\"},{\"id\":\"tcp-l1-2\",\"answer\":\"socket محلی در انتظار اتصال است؛ دسترسی از شبکه، عبور فایروال یا سلامت منطق برنامه هنوز ثابت نیست.\",\"rationale\":\"باید bind address، مسیر، ACL فایروال و تست اتصال از کلاینت بررسی شود.\"},{\"id\":\"tcp-l1-3\",\"answer\":\"سرویس/مسیر مقصد در دسترس نیست، فایروال بسته را حذف می‌کند، یا پاسخ در مسیر برگشت/نقطهٔ capture دیده نمی‌شود.\",\"rationale\":\"یک capture یک‌طرفه نمی‌تواند به‌تنهایی بین drop مقصد، مسیر برگشت و محدودیت مشاهده تمایز قطعی بدهد.\"},{\"id\":\"tcp-l1-4\",\"answer\":\"بسته ممکن است پیش از نقطهٔ capture یا پس از آن حذف شود؛ محل ثبت و مسیر برگشت دید ناقص ایجاد می‌کنند.\",\"rationale\":\"مقایسهٔ capture دو endpoint با timestamp و tuple یکسان دامنهٔ عدم قطعیت را کاهش می‌دهد.\"},{\"id\":\"tcp-l1-5\",\"answer\":\"ESTABLISHED وضعیت TCP است؛ برنامه ممکن است داده را نخواند، deadlock داشته باشد یا درخواست را رد کند.\",\"rationale\":\"باید TCP sequence/ACK را با لاگ و زمان‌بندی لایهٔ برنامه هم‌بسته کرد.\"},{\"id\":\"tcp-l1-6\",\"answer\":\"payload ممکن است اعتبارنامه، توکن یا اطلاعات شخصی داشته باشد؛ دسترسی، نگهداری و حذف باید محدود شود.\",\"rationale\":\"capture حتی وقتی هدف صرفاً عیب‌یابی است می‌تواند دادهٔ محرمانه افشا کند.\"},{\"id\":\"tcp-l1-7\",\"answer\":\"برای مشاهدهٔ socketها و PID در ویندوز، سپس تطبیق PID با فرایند واقعی.\",\"rationale\":\"این خروجی نقطهٔ شروع است، نه اثبات کامل علت خطا.\"},{\"id\":\"tcp-l1-8\",\"answer\":\"loopback مسیر فیزیکی، Wi-Fi، VLAN، روتر و فایروال بین دو دستگاه را نمی‌آزماید.\",\"rationale\":\"آزمون باید از کلاینت واقعی روی شبکهٔ هدف انجام شود.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
-      "subchapter_title_fa": "۷.۲ اتصال و handshake",
+      "subchapter_title_fa": "۹.۵ مهندسی TCP — مدل تا ظرفیت",
       "official_sources": [
         {
           "title": "RFC 9293 — TCP",
@@ -151,10 +151,10 @@
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch07:tcp:l2",
+      "uid": "lesson:ch09:tcp-engineering:l2",
       "entity": "lesson",
-      "chapter_order": 7,
-      "subchapter_order": 1,
+      "chapter_order": 9,
+      "subchapter_order": 5,
       "lesson_order": 3,
       "topic": "tcp-transport",
       "domain": "network-transport",
@@ -182,7 +182,7 @@
         "lesson:ch07:tcp:l0"
       ],
       "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"tcp-l2-1\",\"prompt\":\"برای RTT=40ms و ظرفیت 100Mbps، BDP تقریبی چند بایت است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"tcp-l2-2\",\"prompt\":\"چرا افزایش receive window به‌تنهایی تضمین throughput بالاتر نیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"tcp-l2-3\",\"prompt\":\"چه تفاوتی میان flow control و congestion control وجود دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"tcp-l2-4\",\"prompt\":\"اگر retransmission زیاد شود، چه شواهدی را باید هم‌زمان جمع کرد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"tcp-l2-5\",\"prompt\":\"چرا ACK تکراری لزوماً اثبات قطعی packet loss نیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"tcp-l2-6\",\"prompt\":\"MSS چه تفاوتی با MTU دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"tcp-l2-7\",\"prompt\":\"چرا نتیجهٔ iperf3 با برنامهٔ واقعی یکسان نیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"tcp-l2-8\",\"prompt\":\"در یک تحلیل RCA، چرا زمان‌ها باید همگام باشند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"tcp-l2-9\",\"prompt\":\"چرا بافرهای بزرگ می‌توانند latency را بالا ببرند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"tcp-l2-10\",\"prompt\":\"برای مقایسهٔ دو تغییر TCP چه روشی معتبرتر است؟\",\"type\":\"short_answer\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"tcp-l2-1\",\"answer\":\"100,000,000 bit/s × 0.040 s ÷ 8 = 500,000 bytes، حدود 500 kB ده‌دهی.\",\"rationale\":\"BDP حجم داده‌ای است که برای پر کردن مسیر در یک RTT می‌تواند در پرواز باشد؛ سربار و محدودیت پنجره باید جدا بررسی شوند.\"},{\"id\":\"tcp-l2-2\",\"answer\":\"ممکن است congestion window، loss، CPU، برنامه، مسیر یا نرخ تولید داده محدودکننده باشد.\",\"rationale\":\"پنجرهٔ دریافت فقط یکی از سقف‌هاست؛ throughput واقعی تابع کوچک‌ترین محدودیت مؤثر است.\"},{\"id\":\"tcp-l2-3\",\"answer\":\"flow control از سرریز گیرنده جلوگیری می‌کند؛ congestion control بار واردشده به شبکه را مدیریت می‌کند.\",\"rationale\":\"rwnd ظرفیت گیرنده و cwnd محدودیت فرستنده برای ازدحام را بازتاب می‌دهند.\"},{\"id\":\"tcp-l2-4\",\"answer\":\"capture هر دو سمت، RTT، duplicate ACK/SACK، شمارنده‌های رابط، افت/خطای لینک و بار endpoint.\",\"rationale\":\"ارسال مجدد نشانهٔ فقدان ACK یا timeout است؛ علت می‌تواند loss، reorder یا مشاهدهٔ ناقص باشد.\"},{\"id\":\"tcp-l2-5\",\"answer\":\"ممکن است بازمرتب‌سازی بسته‌ها یا capture ناقص رخ داده باشد؛ باید توالی و SACK و دو سمت بررسی شود.\",\"rationale\":\"duplicate ACK محرک الگوریتم‌های بازیابی است، اما تفسیر ریشه‌ای به شواهد زمینه نیاز دارد.\"},{\"id\":\"tcp-l2-6\",\"answer\":\"MTU اندازهٔ بیشینهٔ بستهٔ لایهٔ پیوند/IP در مسیر/رابط است؛ MSS سقف payload TCP در segment است.\",\"rationale\":\"هدر IP/TCP از MTU کسر می‌شود و گزینه‌ها و تونل‌ها می‌توانند مقدار عملی را تغییر دهند.\"},{\"id\":\"tcp-l2-7\",\"answer\":\"iperf3 الگوی بار کنترل‌شده دارد؛ برنامه ممکن است محدودیت CPU، TLS، دیسک، درخواست‌های کوچک یا تعداد اتصال متفاوت داشته باشد.\",\"rationale\":\"benchmark ابزار، ظرفیت انتقال در شرایط مشخص را می‌سنجد، نه کل تجربهٔ کاربردی را.\"},{\"id\":\"tcp-l2-8\",\"answer\":\"بدون هم‌ترازی ساعت‌ها، ترتیب رخداد و تأخیر یک‌طرفه ممکن است اشتباه برداشت شود.\",\"rationale\":\"از NTP/منبع زمانی مشخص و ثبت اختلاف ساعت استفاده کنید؛ برای RTT یک capture نقطه‌ای هم مفید است.\"},{\"id\":\"tcp-l2-9\",\"answer\":\"صف‌های طولانی داده را نگه می‌دارند و زمان انتظار افزایش می‌یابد؛ این پدیده می‌تواند bufferbloat ایجاد کند.\",\"rationale\":\"throughput بالا به‌تنهایی معیار کیفیت نیست؛ latency تحت بار نیز باید اندازه‌گیری شود.\"},{\"id\":\"tcp-l2-10\",\"answer\":\"خط پایه، یک متغیر در هر نوبت، تکرار چندباره، کنترل مسیر/بار، ثبت median و پراکندگی و rollback.\",\"rationale\":\"بدون کنترل متغیرهای مخدوش‌کننده، نسبت دادن تغییر نتیجه به تنظیم TCP معتبر نیست.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
-      "subchapter_title_fa": "۷.۳ retransmission",
+      "subchapter_title_fa": "۹.۵ مهندسی TCP — مدل تا ظرفیت",
       "official_sources": [
         {
           "title": "RFC 9293 — TCP",
@@ -204,10 +204,10 @@
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch07:tcp:l3",
+      "uid": "lesson:ch09:tcp-engineering:l3",
       "entity": "lesson",
-      "chapter_order": 7,
-      "subchapter_order": 1,
+      "chapter_order": 9,
+      "subchapter_order": 5,
       "lesson_order": 4,
       "topic": "tcp-transport",
       "domain": "network-transport",
@@ -235,7 +235,7 @@
         "lesson:ch07:tcp:l0"
       ],
       "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"tcp-l3-1\",\"prompt\":\"یک capture در کلاینت retransmission نشان می‌دهد ولی capture سرور segment را نشان نمی‌دهد؛ چه نتیجه‌ای می‌گیرید؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"tcp-l3-2\",\"prompt\":\"RST پس از ارسال داده دیده می‌شود؛ چگونه میان برنامه، فایروال و capture اشتباه تمایز می‌دهید؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"tcp-l3-3\",\"prompt\":\"چرا TIME-WAIT وجود دارد و چه خطر عملی با حذف شتاب‌زدهٔ آن هست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"tcp-l3-4\",\"prompt\":\"در طراحی آزمایش loss، چگونه از آسیب به شبکهٔ واقعی جلوگیری می‌کنید؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"tcp-l3-5\",\"prompt\":\"چرا window scaling باید در handshake دیده شود تا درست تفسیر شود؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"tcp-l3-6\",\"prompt\":\"اگر throughput در یک جریان کم و در چند جریان زیاد باشد، چه فرضیه‌هایی مطرح می‌شود؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"tcp-l3-7\",\"prompt\":\"چرا مشاهدهٔ checksum اشتباه در capture میزبان الزاماً خرابی روی سیم نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"tcp-l3-8\",\"prompt\":\"برای اثبات افت مسیر چه مجموعه شواهدی از حداقل قابل‌قبول قوی‌تر است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"tcp-l3-9\",\"prompt\":\"چرا keepalive راهکار عمومی برای تشخیص سریع خرابی برنامه نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"tcp-l3-10\",\"prompt\":\"در تحلیل SACK، چه نکته‌ای را باید از ACK تجمعی جدا کرد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"tcp-l3-11\",\"prompt\":\"چرا packet reordering می‌تواند شبیه loss به نظر برسد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"tcp-l3-12\",\"prompt\":\"چه معیارهایی برای پذیرش یک آزمایش RCA لازم‌اند؟\",\"type\":\"short_answer\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"tcp-l3-1\",\"answer\":\"هنوز نتیجهٔ قطعی نمی‌گیریم؛ باید capture point، فیلتر، offload، ساعت، جهت جریان و افت خود ابزار بررسی شود.\",\"rationale\":\"نبود بسته در capture با نبود آن در شبکه یکسان نیست. هم‌ترازی دو capture و شمارنده‌های رابط لازم است.\"},{\"id\":\"tcp-l3-2\",\"answer\":\"tuple و sequence را بررسی، capture دوطرفه جمع، لاگ socket/برنامه و رخدادهای فایروال را هم‌بسته و تکرار کنترل‌شده انجام می‌دهیم.\",\"rationale\":\"RST می‌تواند از endpoint یا تجهیز میانی ناشی شود؛ یک بسته بدون محل و زمینهٔ مشاهده انتساب قطعی نمی‌دهد.\"},{\"id\":\"tcp-l3-3\",\"answer\":\"برای تحمل segmentهای دیررس اتصال قبلی و تضمین ایمنی reuse فضای اتصال باقی می‌ماند؛ حذف شتاب‌زده می‌تواند اتصال‌های قدیمی را با جدید اشتباه‌پذیر کند.\",\"rationale\":\"چرخهٔ عمر TCP و خطر تداخل tuple/segment دیررس دلیل TIME-WAIT است؛ ابتدا نرخ اتصال و پورت‌های موقت را اندازه بگیرید.\"},{\"id\":\"tcp-l3-4\",\"answer\":\"از namespace/VM ایزوله، نرخ محدود، مقصد تحت کنترل، زمان کوتاه، معیار توقف و بازگردانی خودکار استفاده می‌کنیم.\",\"rationale\":\"اعمال loss روی رابط مشترک یا شبکهٔ تولیدی می‌تواند کاربران دیگر را مختل کند.\"},{\"id\":\"tcp-l3-5\",\"answer\":\"گزینه در SYNها مذاکره می‌شود و مقیاس پنجرهٔ 16بیتی در اتصال را تعیین می‌کند؛ تفسیر بدون گزینه‌ها می‌تواند مقدار مؤثر را غلط نشان دهد.\",\"rationale\":\"RFC 7323 رفتار مقیاس پنجره را مشخص می‌کند؛ گزینهٔ توافق‌شده و جهت جریان را بررسی کنید.\"},{\"id\":\"tcp-l3-6\",\"answer\":\"محدودیت per-flow در congestion window، RTT، CPU، صف‌بندی یا برنامه محتمل است؛ چند جریان ممکن است ظرفیت را جمع کنند ولی نتیجه باید کنترل شود.\",\"rationale\":\"افزایش aggregate throughput لزوماً مشکل هر جریان را حل نمی‌کند و ممکن است عدالت بین جریان‌ها را تغییر دهد.\"},{\"id\":\"tcp-l3-7\",\"answer\":\"checksum offload ممکن است محاسبه را به NIC موکول کند و capture پیش از تکمیل checksum انجام شود.\",\"rationale\":\"برای تأیید، capture خارج از میزبان یا بررسی offload و capture point لازم است.\"},{\"id\":\"tcp-l3-8\",\"answer\":\"آمار دو endpoint، captureهای هم‌تراز، شمارنده‌های NIC/روتر، آزمون تکرارپذیر و بررسی بار و تغییر مسیر.\",\"rationale\":\"هیچ شاخص منفردی کافی نیست؛ شواهد مستقل باید با یک فرضیهٔ زمانی مشترک سازگار باشند.\"},{\"id\":\"tcp-l3-9\",\"answer\":\"فاصلهٔ زمانی آن ممکن است طولانی باشد و زنده بودن TCP را از سلامت منطق کاربرد جدا نمی‌کند.\",\"rationale\":\"health check لایهٔ کاربرد با timeout و semantics مشخص برای سلامت سرویس دقیق‌تر است.\"},{\"id\":\"tcp-l3-10\",\"answer\":\"ACK تجمعی نخستین بایت پیوستهٔ مورد انتظار را می‌گوید؛ SACK بلوک‌های دادهٔ رسیده خارج از شکاف پیوسته را گزارش می‌کند.\",\"rationale\":\"SACK به فرستنده دید بیشتری برای بازیابی چند شکاف می‌دهد، اما تأیید برنامه‌ای نیست.\"},{\"id\":\"tcp-l3-11\",\"answer\":\"دادهٔ جدیدتر پیش از دادهٔ قبلی می‌رسد و ACK تکراری تولید می‌شود؛ بستهٔ دیررس ممکن است بعداً شکاف را پر کند.\",\"rationale\":\"باید توالی زمان و SACK و شواهد هر دو endpoint بررسی شود.\"},{\"id\":\"tcp-l3-12\",\"answer\":\"فرضیهٔ روشن، محیط قابل بازتولید، خط پایه، دادهٔ خام، معیار پذیرش، نتیجهٔ تکراری و محدودیت‌های صریح.\",\"rationale\":\"صرف نوشتن یک توضیح پس از مشاهده، آزمایش کنترل‌شده محسوب نمی‌شود.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
-      "subchapter_title_fa": "۷.۴ ماشین حالت",
+      "subchapter_title_fa": "۹.۵ مهندسی TCP — مدل تا ظرفیت",
       "official_sources": [
         {
           "title": "RFC 9293 — TCP",
@@ -257,10 +257,10 @@
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch07:tcp:l4",
+      "uid": "lesson:ch09:tcp-engineering:l4",
       "entity": "lesson",
-      "chapter_order": 7,
-      "subchapter_order": 1,
+      "chapter_order": 9,
+      "subchapter_order": 5,
       "lesson_order": 5,
       "topic": "tcp-transport",
       "domain": "network-transport",
@@ -288,7 +288,7 @@
         "lesson:ch07:tcp:l0"
       ],
       "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"tcp-l4-1\",\"prompt\":\"برای BDP=12.5MB، پنجرهٔ مؤثر 4MB و loss قابل‌توجه، کدام محدودیت‌ها را ابتدا جدا می‌کنید؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-2\",\"prompt\":\"چگونه اثر GRO/LRO/TSO را در benchmark کنترل می‌کنید؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-3\",\"prompt\":\"برای مقایسهٔ دو الگوریتم congestion control چه متغیرهایی باید ثابت یا ثبت شوند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-4\",\"prompt\":\"چرا میانگین throughput به‌تنهایی معیار مناسبی نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-5\",\"prompt\":\"چطور تفاوت packet loss واقعی از drop در capture را ارزیابی می‌کنید؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-6\",\"prompt\":\"چرا تغییر TCP sysctl یا رجیستری بدون baseline و rollback نامعتبر است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-7\",\"prompt\":\"در طراحی ظرفیت WAN، BDP چه چیزی را محاسبه نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-8\",\"prompt\":\"چگونه retransmission timeout را از تأخیر برنامه تشخیص می‌دهید؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-9\",\"prompt\":\"چرا تعداد زیاد اتصال کوتاه می‌تواند مسئلهٔ متفاوتی از یک جریان بلند باشد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-10\",\"prompt\":\"برای تحلیل fairness بین چند جریان چه داده‌ای ثبت می‌کنید؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-11\",\"prompt\":\"چه زمانی packet capture به‌تنهایی برای RCA ناکافی است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-12\",\"prompt\":\"چه معیار توقفی برای آزمایش بار تعریف می‌کنید؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-13\",\"prompt\":\"چگونه صحت نتیجه را از هم‌بستگی زمانی به رابطهٔ علّی نزدیک می‌کنید؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-14\",\"prompt\":\"چه محدودیت‌هایی باید در گزارش benchmark درج شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"tcp-l4-15\",\"prompt\":\"چرا پاسخ موفق TCP به معنی commit شدن داده در دیتابیس نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"tcp-l4-1\",\"answer\":\"پنجرهٔ دریافت/ارسال، congestion window، loss/RTT، برنامه و CPU را جدا اندازه می‌گیریم؛ افزایش پنجره بدون شناخت loss راهکار قطعی نیست.\",\"rationale\":\"حد نظری ناشی از پنجره و RTT با سقف ناشی از ازدحام و ظرفیت endpoint متفاوت است.\"},{\"id\":\"tcp-l4-2\",\"answer\":\"وضعیت offload و محل capture را ثبت می‌کنیم، آزمون را با تنظیم ثابت تکرار و در صورت نیاز capture بیرونی را با شمارنده‌ها مقایسه می‌کنیم.\",\"rationale\":\"offload شکل بسته‌های دیده‌شده در میزبان را تغییر می‌دهد؛ خاموش‌کردن آن نیز می‌تواند بار CPU را عوض کند.\"},{\"id\":\"tcp-l4-3\",\"answer\":\"Kernel/OS، الگوریتم و پارامترها، RTT/loss، مسیر، ظرفیت، تعداد جریان‌ها، اندازهٔ داده، CPU، مدت گرم‌شدن و معیارهای latency/throughput.\",\"rationale\":\"مقایسهٔ منصفانه باید تکرارپذیر باشد و نسخه و وضعیت واقعی الگوریتم را ثبت کند.\"},{\"id\":\"tcp-l4-4\",\"answer\":\"نوسان، tail latency، fairness، loss، مصرف CPU و زمان بازیابی را پنهان می‌کند.\",\"rationale\":\"میانه و صدک‌های latency، پراکندگی، نرخ ارسال مجدد و نتیجهٔ هر تکرار را هم ثبت کنید.\"},{\"id\":\"tcp-l4-5\",\"answer\":\"آمار dropped packets خود ابزار، نرخ دریافت، capture هم‌زمان در نقطهٔ دیگر و شمارنده‌های NIC را بررسی و آزمون را تکرار می‌کنیم.\",\"rationale\":\"ابزار capture خودش ممکن است زیر بار بسته از دست بدهد؛ این فقدان نباید به شبکه نسبت داده شود.\"},{\"id\":\"tcp-l4-6\",\"answer\":\"اثر جانبی روی همهٔ جریان‌ها، حافظه و latency ممکن است رخ دهد؛ بدون خط پایه نمی‌توان اثر را انتساب داد یا امن بازگشت.\",\"rationale\":\"تنظیم باید محدود، مستند، قابل برگشت و پس از آزمون کنترل‌شده باشد.\"},{\"id\":\"tcp-l4-7\",\"answer\":\"BDP ظرفیت دادهٔ در پرواز در یک RTT را تخمین می‌زند، اما loss، fairness، پردازش endpoint، صف‌ها و پروتکل برنامه را مدل نمی‌کند.\",\"rationale\":\"BDP نقطهٔ شروع sizing پنجره است نه پیش‌بینی کامل throughput.\"},{\"id\":\"tcp-l4-8\",\"answer\":\"در capture زمان ارسال، ACK، RTO و retransmission را با trace برنامه و زمان خواندن/نوشتن socket هم‌بسته می‌کنیم.\",\"rationale\":\"اگر TCP منتظر ACK باشد یک مسیر؛ اگر ACK رسیده اما برنامه پاسخ نمی‌دهد مسیر دیگری برای بررسی است.\"},{\"id\":\"tcp-l4-9\",\"answer\":\"هزینهٔ handshake/teardown، ephemeral ports، TIME-WAIT، TLS و بار پذیرش اتصال سهم بیشتری می‌گیرند.\",\"rationale\":\"بار اتصال‌سازی و throughput داده دو workload متفاوت‌اند و باید جدا benchmark شوند.\"},{\"id\":\"tcp-l4-10\",\"answer\":\"throughput هر جریان، RTT، زمان شروع، تعداد جریان‌ها، loss، الگوریتم کنترل ازدحام و صف‌بندی را ثبت می‌کنیم.\",\"rationale\":\"aggregate throughput ممکن است افزایش یابد درحالی‌که یک جریان سهم نامتناسبی می‌گیرد.\"},{\"id\":\"tcp-l4-11\",\"answer\":\"وقتی endpoint processing، صف سخت‌افزار، مسیرهای نامتقارن، offload یا رویدادهای برنامه خارج از نقطهٔ capture هستند.\",\"rationale\":\"RCA باید capture را با لاگ برنامه، telemetry سیستم و آمار شبکه ترکیب کند.\"},{\"id\":\"tcp-l4-12\",\"answer\":\"حد latency، CPU، loss، خطای سرویس، مدت آزمایش و شرط بازگردانی را پیش از اجرا تعیین می‌کنیم.\",\"rationale\":\"معیار توقف از گسترش اثر آزمایش و تغییرات ناخواسته در محیط جلوگیری می‌کند.\"},{\"id\":\"tcp-l4-13\",\"answer\":\"یک عامل را کنترل‌شده تغییر می‌دهیم، خط پایه و تکرار A/B داریم، بازگشت به حالت قبلی را می‌آزماییم و شواهد مستقل جمع می‌کنیم.\",\"rationale\":\"هم‌زمانی تغییر با بهبود به‌تنهایی علیت را ثابت نمی‌کند.\"},{\"id\":\"tcp-l4-14\",\"answer\":\"مدل سخت‌افزار، OS/kernel، ابزار و نسخه، توپولوژی، RTT/loss، حجم داده، تعداد جریان‌ها، offload، مدت، تکرار و خام‌داده.\",\"rationale\":\"بدون زمینهٔ اجرایی نتیجه قابل مقایسه و بازتولید نیست.\"},{\"id\":\"tcp-l4-15\",\"answer\":\"ACK شبکه دریافت بایت را تأیید می‌کند؛ commit نیازمند تأیید برنامه/پایگاه داده و سیاست durability است.\",\"rationale\":\"برای عملیات حساس باید پاسخ سطح کاربردی و شناسهٔ idempotency یا سازوکار بازیابی تعریف شود.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
-      "subchapter_title_fa": "۷.۵ ظرفیت و ازدحام",
+      "subchapter_title_fa": "۹.۵ مهندسی TCP — مدل تا ظرفیت",
       "official_sources": [
         {
           "title": "RFC 9293 — TCP",

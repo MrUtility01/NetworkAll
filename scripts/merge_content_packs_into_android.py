@@ -824,7 +824,7 @@ def main():
             continue
         # The chapter-scoped MPLS/VRF/L3VPN pack is intentionally authored
         # for chapter 15; legacy VPN packs still remap to chapter 67.
-        if ("vpn" in name or "ipsec" in name) and "/chapter15/" not in name:
+        if ("vpn" in name or "ipsec" in name) and "/chapter15/" not in name and not ("tools/packs/mikrotik/" in name and "routeros_qos_vpn_ha" in name):
             vpn_extra.extend(remap_lessons_to_chapter(lessons, 67))
             continue
 
