@@ -1,0 +1,2850 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkEncyclopedia",
+  "generated_on": "2026-10-12",
+  "purpose": "commands encyclopedia - fortigate",
+  "vendor_pack": "fortigate",
+  "chapter_order": 68,
+  "chapter_title_fa": "دانشنامه جامع دستورات",
+  "vendor": "fortigate",
+  "platform": "FortiOS 7.x CLI",
+  "scope": [
+    {
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "title": "FortiGate CLI برای Firewall، Routing، VPN و عیب‌یابی",
+      "topics": [
+        "System",
+        "Routing",
+        "OSPF",
+        "BGP",
+        "Firewall Policy",
+        "Debug Flow",
+        "Packet Capture",
+        "IPsec",
+        "SSL VPN",
+        "HA",
+        "DHCP",
+        "DNS"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "content_quality": {
+    "status": "review_required",
+    "lab_status": "designed_not_executed",
+    "note_fa": "ساختار JSON و مسیر آموزشی تولید شده؛ آزمایش دستورات باید روی نسخه/مدل هدف و با شواهد اجرا تکمیل شود."
+  },
+  "commands": [
+    {
+      "uid": "cmd:fortigate:system:get-system-status",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "monitor",
+      "subcategory": "system",
+      "level": "L0",
+      "title_fa": "وضعیت سیستم FortiGate",
+      "title_en": "get system status",
+      "command": "get system status",
+      "aliases": [],
+      "syntax": "get system status",
+      "arguments": [],
+      "when_to_use_fa": "ثبت مدل، نسخه FortiOS، uptime، serial و حالت operation",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: ثبت مدل، نسخه FortiOS، uptime، serial و حالت operation",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: get system status",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: قبل از بررسی فرمان‌های version-specific، نسخه دقیق را ثبت و دستورات را با Command Reference همان branch تطبیق بده."
+      ],
+      "sample_output": "Version: FortiGate-VM64 v7.4.x\nSerial-Number: FGVM...\nCurrent HA mode: standalone",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get system performance status",
+        "get system ha status"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "قبل از بررسی فرمان‌های version-specific، نسخه دقیق را ثبت و دستورات را با Command Reference همان branch تطبیق بده.",
+      "security_notes_fa": "Serial و build جزئیات تجهیز را آشکار می‌کنند؛ در گزارش عمومی mask کن.",
+      "search_keywords": [
+        "get system status",
+        "get system status",
+        "وضعیت سیستم FortiGate",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "monitor",
+        "system"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `get system status` چه هدفی دارد؟",
+          "back": "ثبت مدل، نسخه FortiOS، uptime، serial و حالت operation"
+        },
+        {
+          "front": "قبل از استفاده عملی از «وضعیت سیستم FortiGate» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Serial و build جزئیات تجهیز را آشکار می‌کنند؛ در گزارش عمومی mask کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q001",
+            "prompt": "برای این هدف، «ثبت مدل، نسخه FortiOS، uptime، serial و حالت operation»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "get system status",
+              "get system performance status",
+              "get system ha status",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q001",
+            "correct_index": 0,
+            "explain_fa": "`get system status` برای ثبت مدل، نسخه FortiOS، uptime، serial و حالت operation. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** قبل از بررسی فرمان‌های version-specific، نسخه دقیق را ثبت و دستورات را با Command Reference همان branch تطبیق بده.\n**هدف:** ثبت مدل، نسخه FortiOS، uptime، serial و حالت operation\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# وضعیت سیستم FortiGate\n\n**دستور:** `get system status`\n\n**هدف عملیاتی:** ثبت مدل، نسخه FortiOS، uptime، serial و حالت operation\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. قبل از بررسی فرمان‌های version-specific، نسخه دقیق را ثبت و دستورات را با Command Reference همان branch تطبیق بده.\n\n## نمونه خروجی\n\n```text\n\nVersion: FortiGate-VM64 v7.4.x\nSerial-Number: FGVM...\nCurrent HA mode: standalone\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nSerial و build جزئیات تجهیز را آشکار می‌کنند؛ در گزارش عمومی mask کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get system performance status`، `get system ha status`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:performance:get-system-performance-status",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "monitor",
+      "subcategory": "performance",
+      "level": "L1",
+      "title_fa": "آمار عملکرد سیستم",
+      "title_en": "get system performance status",
+      "command": "get system performance status",
+      "aliases": [],
+      "syntax": "get system performance status",
+      "arguments": [],
+      "when_to_use_fa": "مشاهده CPU، memory، session count و load در لحظه",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهده CPU، memory، session count و load در لحظه",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: get system performance status",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: نمونه‌های زمان‌دار بگیر و با peak traffic و policy change همبسته کن؛ یک نمونه معیار ظرفیت نیست."
+      ],
+      "sample_output": "CPU states: 2% user 1% system\nMemory: 48%\nAverage network usage: ...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "diagnose sys top 1 20",
+        "diagnose sys session stat"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "نمونه‌های زمان‌دار بگیر و با peak traffic و policy change همبسته کن؛ یک نمونه معیار ظرفیت نیست.",
+      "security_notes_fa": "خروجی performance را بدون نام دستگاه و زمان بررسی منتشر نکن.",
+      "search_keywords": [
+        "get system performance status",
+        "get system performance status",
+        "آمار عملکرد سیستم",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "monitor",
+        "performance"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `get system performance status` چه هدفی دارد؟",
+          "back": "مشاهده CPU، memory، session count و load در لحظه"
+        },
+        {
+          "front": "قبل از استفاده عملی از «آمار عملکرد سیستم» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خروجی performance را بدون نام دستگاه و زمان بررسی منتشر نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q002",
+            "prompt": "برای این هدف، «مشاهده CPU، memory، session count و load در لحظه»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "get system performance status",
+              "diagnose sys top 1 20",
+              "diagnose sys session stat",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q002",
+            "correct_index": 0,
+            "explain_fa": "`get system performance status` برای مشاهده CPU، memory، session count و load در لحظه. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** نمونه‌های زمان‌دار بگیر و با peak traffic و policy change همبسته کن؛ یک نمونه معیار ظرفیت نیست.\n**هدف:** مشاهده CPU، memory، session count و load در لحظه\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# آمار عملکرد سیستم\n\n**دستور:** `get system performance status`\n\n**هدف عملیاتی:** مشاهده CPU، memory، session count و load در لحظه\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. نمونه‌های زمان‌دار بگیر و با peak traffic و policy change همبسته کن؛ یک نمونه معیار ظرفیت نیست.\n\n## نمونه خروجی\n\n```text\n\nCPU states: 2% user 1% system\nMemory: 48%\nAverage network usage: ...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخروجی performance را بدون نام دستگاه و زمان بررسی منتشر نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`diagnose sys top 1 20`، `diagnose sys session stat`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:processes:diagnose-sys-top",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "monitor",
+      "subcategory": "processes",
+      "level": "L2",
+      "title_fa": "نمایش Processهای پرمصرف",
+      "title_en": "diagnose sys top",
+      "command": "diagnose sys top 1 20",
+      "aliases": [],
+      "syntax": "diagnose sys top 1 20",
+      "arguments": [],
+      "when_to_use_fa": "پایش process table و مصرف CPU/RAM در interval کوتاه",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: پایش process table و مصرف CPU/RAM در interval کوتاه",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose sys top 1 20",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: در پنجرهٔ کوتاه مشاهده کن؛ قبل از restart process، نقش آن را در مستندات Fortinet شناسایی کن."
+      ],
+      "sample_output": "Run Time: 00:00:01\nCPU% MEM% PID NAME\n... httpsd / wad / ipsengine",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get system performance status",
+        "diagnose sys session stat"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "در پنجرهٔ کوتاه مشاهده کن؛ قبل از restart process، نقش آن را در مستندات Fortinet شناسایی کن.",
+      "security_notes_fa": "تشخیص با stop کردن processهای security بدون راهنمای vendor می‌تواند ترافیک را تحت تأثیر قرار دهد.",
+      "search_keywords": [
+        "diagnose sys top",
+        "diagnose sys top 1 20",
+        "نمایش Processهای پرمصرف",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "monitor",
+        "processes"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose sys top 1 20` چه هدفی دارد؟",
+          "back": "پایش process table و مصرف CPU/RAM در interval کوتاه"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش Processهای پرمصرف» چه نکته‌ای را کنترل کنیم؟",
+          "back": "تشخیص با stop کردن processهای security بدون راهنمای vendor می‌تواند ترافیک را تحت تأثیر قرار دهد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q003",
+            "prompt": "برای این هدف، «پایش process table و مصرف CPU/RAM در interval کوتاه»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose sys top 1 20",
+              "get system performance status",
+              "diagnose sys session stat",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q003",
+            "correct_index": 0,
+            "explain_fa": "`diagnose sys top 1 20` برای پایش process table و مصرف CPU/RAM در interval کوتاه. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** در پنجرهٔ کوتاه مشاهده کن؛ قبل از restart process، نقش آن را در مستندات Fortinet شناسایی کن.\n**هدف:** پایش process table و مصرف CPU/RAM در interval کوتاه\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش Processهای پرمصرف\n\n**دستور:** `diagnose sys top 1 20`\n\n**هدف عملیاتی:** پایش process table و مصرف CPU/RAM در interval کوتاه\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. در پنجرهٔ کوتاه مشاهده کن؛ قبل از restart process، نقش آن را در مستندات Fortinet شناسایی کن.\n\n## نمونه خروجی\n\n```text\n\nRun Time: 00:00:01\nCPU% MEM% PID NAME\n... httpsd / wad / ipsengine\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nتشخیص با stop کردن processهای security بدون راهنمای vendor می‌تواند ترافیک را تحت تأثیر قرار دهد. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get system performance status`، `diagnose sys session stat`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:sessions:diagnose-sys-session-stat",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "monitor",
+      "subcategory": "sessions",
+      "level": "L2",
+      "title_fa": "آمار نشست‌های فایروال",
+      "title_en": "diagnose sys session stat",
+      "command": "diagnose sys session stat",
+      "aliases": [],
+      "syntax": "diagnose sys session stat",
+      "arguments": [],
+      "when_to_use_fa": "بررسی تعداد نشست‌های فعال و وضعیت session table",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی تعداد نشست‌های فعال و وضعیت session table",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose sys session stat",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: مقدار را با session usage، traffic spike و timeoutهای گزارش‌شده تطبیق بده."
+      ],
+      "sample_output": "session_count=... setup_rate=...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get system performance status",
+        "diagnose sys session list"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "مقدار را با session usage، traffic spike و timeoutهای گزارش‌شده تطبیق بده.",
+      "security_notes_fa": "از حذف گستردهٔ نشست‌ها برای عیب‌یابی اولیه اجتناب کن؛ کاربران قطع می‌شوند.",
+      "search_keywords": [
+        "diagnose sys session stat",
+        "diagnose sys session stat",
+        "آمار نشست‌های فایروال",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "monitor",
+        "sessions"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose sys session stat` چه هدفی دارد؟",
+          "back": "بررسی تعداد نشست‌های فعال و وضعیت session table"
+        },
+        {
+          "front": "قبل از استفاده عملی از «آمار نشست‌های فایروال» چه نکته‌ای را کنترل کنیم؟",
+          "back": "از حذف گستردهٔ نشست‌ها برای عیب‌یابی اولیه اجتناب کن؛ کاربران قطع می‌شوند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q004",
+            "prompt": "برای این هدف، «بررسی تعداد نشست‌های فعال و وضعیت session table»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose sys session stat",
+              "get system performance status",
+              "diagnose sys session list",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q004",
+            "correct_index": 0,
+            "explain_fa": "`diagnose sys session stat` برای بررسی تعداد نشست‌های فعال و وضعیت session table. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** مقدار را با session usage، traffic spike و timeoutهای گزارش‌شده تطبیق بده.\n**هدف:** بررسی تعداد نشست‌های فعال و وضعیت session table\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# آمار نشست‌های فایروال\n\n**دستور:** `diagnose sys session stat`\n\n**هدف عملیاتی:** بررسی تعداد نشست‌های فعال و وضعیت session table\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. مقدار را با session usage، traffic spike و timeoutهای گزارش‌شده تطبیق بده.\n\n## نمونه خروجی\n\n```text\n\nsession_count=... setup_rate=...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاز حذف گستردهٔ نشست‌ها برای عیب‌یابی اولیه اجتناب کن؛ کاربران قطع می‌شوند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get system performance status`، `diagnose sys session list`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:routing-table:get-router-info-routing-table-all",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "routing",
+      "subcategory": "routing-table",
+      "level": "L1",
+      "title_fa": "جدول Route کامل",
+      "title_en": "get router info routing-table all",
+      "command": "get router info routing-table all",
+      "aliases": [],
+      "syntax": "get router info routing-table all",
+      "arguments": [],
+      "when_to_use_fa": "بازبینی مسیرهای connected/static/dynamic نصب‌شده",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بازبینی مسیرهای connected/static/dynamic نصب‌شده",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: get router info routing-table all",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: route منتخب را با policy route، VRF/VDOM و مسیر برگشت تطبیق بده؛ وجود route در جدول، match شدن firewall policy را ثابت نمی‌کند."
+      ],
+      "sample_output": "S* 0.0.0.0/0 [10/0] via 10.20.30.1, port1\nC 10.20.30.0/24 is directly connected, port2",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get router info routing-table details",
+        "get router info ospf neighbor"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "route منتخب را با policy route، VRF/VDOM و مسیر برگشت تطبیق بده؛ وجود route در جدول، match شدن firewall policy را ثابت نمی‌کند.",
+      "security_notes_fa": "جدول route توپولوژی داخلی را فاش می‌کند؛ قبل از انتشار IPها را mask کن.",
+      "search_keywords": [
+        "get router info routing-table all",
+        "get router info routing-table all",
+        "جدول Route کامل",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "routing",
+        "routing-table"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `get router info routing-table all` چه هدفی دارد؟",
+          "back": "بازبینی مسیرهای connected/static/dynamic نصب‌شده"
+        },
+        {
+          "front": "قبل از استفاده عملی از «جدول Route کامل» چه نکته‌ای را کنترل کنیم؟",
+          "back": "جدول route توپولوژی داخلی را فاش می‌کند؛ قبل از انتشار IPها را mask کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q005",
+            "prompt": "برای این هدف، «بازبینی مسیرهای connected/static/dynamic نصب‌شده»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "get router info routing-table all",
+              "get router info routing-table details",
+              "get router info ospf neighbor",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q005",
+            "correct_index": 0,
+            "explain_fa": "`get router info routing-table all` برای بازبینی مسیرهای connected/static/dynamic نصب‌شده. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** route منتخب را با policy route، VRF/VDOM و مسیر برگشت تطبیق بده؛ وجود route در جدول، match شدن firewall policy را ثابت نمی‌کند.\n**هدف:** بازبینی مسیرهای connected/static/dynamic نصب‌شده\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# جدول Route کامل\n\n**دستور:** `get router info routing-table all`\n\n**هدف عملیاتی:** بازبینی مسیرهای connected/static/dynamic نصب‌شده\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. route منتخب را با policy route، VRF/VDOM و مسیر برگشت تطبیق بده؛ وجود route در جدول، match شدن firewall policy را ثابت نمی‌کند.\n\n## نمونه خروجی\n\n```text\n\nS* 0.0.0.0/0 [10/0] via 10.20.30.1, port1\nC 10.20.30.0/24 is directly connected, port2\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nجدول route توپولوژی داخلی را فاش می‌کند؛ قبل از انتشار IPها را mask کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get router info routing-table details`، `get router info ospf neighbor`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:route-detail:get-router-info-routing-table-details",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "routing",
+      "subcategory": "route-detail",
+      "level": "L2",
+      "title_fa": "جزئیات مسیر یک Prefix",
+      "title_en": "get router info routing-table details",
+      "command": "get router info routing-table details 10.50.0.0/16",
+      "aliases": [],
+      "syntax": "get router info routing-table details 10.50.0.0/16",
+      "arguments": [],
+      "when_to_use_fa": "بررسی منبع route، distance/metric و next-hop یک مقصد مشخص",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی منبع route، distance/metric و next-hop یک مقصد مشخص",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: get router info routing-table details 10.50.0.0/16",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: یک prefix lab را انتخاب کن و routeهای جایگزین، administrative distance و مسیر برگشت را ثبت کن."
+      ],
+      "sample_output": "Routing table for VRF=0\nRouting entry for 10.50.0.0/16\nKnown via 'ospf', distance 110, metric 20",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get router info routing-table all",
+        "get router info ospf neighbor"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "یک prefix lab را انتخاب کن و routeهای جایگزین، administrative distance و مسیر برگشت را ثبت کن.",
+      "security_notes_fa": "از تغییر route فقط پس از backup و کنترل impact استفاده کن.",
+      "search_keywords": [
+        "get router info routing-table details",
+        "get router info routing-table details 10.50.0.0/16",
+        "جزئیات مسیر یک Prefix",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "routing",
+        "route-detail"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `get router info routing-table details 10.50.0.0/16` چه هدفی دارد؟",
+          "back": "بررسی منبع route، distance/metric و next-hop یک مقصد مشخص"
+        },
+        {
+          "front": "قبل از استفاده عملی از «جزئیات مسیر یک Prefix» چه نکته‌ای را کنترل کنیم؟",
+          "back": "از تغییر route فقط پس از backup و کنترل impact استفاده کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q006",
+            "prompt": "برای این هدف، «بررسی منبع route، distance/metric و next-hop یک مقصد مشخص»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "get router info routing-table details 10.50.0.0/16",
+              "get router info routing-table all",
+              "get router info ospf neighbor",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q006",
+            "correct_index": 0,
+            "explain_fa": "`get router info routing-table details 10.50.0.0/16` برای بررسی منبع route، distance/metric و next-hop یک مقصد مشخص. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** یک prefix lab را انتخاب کن و routeهای جایگزین، administrative distance و مسیر برگشت را ثبت کن.\n**هدف:** بررسی منبع route، distance/metric و next-hop یک مقصد مشخص\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# جزئیات مسیر یک Prefix\n\n**دستور:** `get router info routing-table details 10.50.0.0/16`\n\n**هدف عملیاتی:** بررسی منبع route، distance/metric و next-hop یک مقصد مشخص\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. یک prefix lab را انتخاب کن و routeهای جایگزین، administrative distance و مسیر برگشت را ثبت کن.\n\n## نمونه خروجی\n\n```text\n\nRouting table for VRF=0\nRouting entry for 10.50.0.0/16\nKnown via 'ospf', distance 110, metric 20\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاز تغییر route فقط پس از backup و کنترل impact استفاده کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get router info routing-table all`، `get router info ospf neighbor`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:ospf:get-router-info-ospf-neighbor",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "routing",
+      "subcategory": "ospf",
+      "level": "L2",
+      "title_fa": "وضعیت همسایه‌های OSPF",
+      "title_en": "get router info ospf neighbor",
+      "command": "get router info ospf neighbor",
+      "aliases": [],
+      "syntax": "get router info ospf neighbor",
+      "arguments": [],
+      "when_to_use_fa": "بررسی Router ID، state و interface همسایه OSPF",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی Router ID، state و interface همسایه OSPF",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: get router info ospf neighbor",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: اگر state کامل نیست، area, timers, network type, authentication, MTU و adjacency log را جدا بررسی کن."
+      ],
+      "sample_output": "Neighbor ID Pri State Dead Time Address Interface\n2.2.2.2 1 FULL/DR 00:00:34 10.20.30.2 port2",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get router info routing-table all",
+        "get router info ospf status"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "اگر state کامل نیست، area, timers, network type, authentication, MTU و adjacency log را جدا بررسی کن.",
+      "security_notes_fa": "اطلاعات routing داخلی را redacted کن؛ از debug گسترده روی روتر پرترافیک بدون plan خودداری کن.",
+      "search_keywords": [
+        "get router info ospf neighbor",
+        "get router info ospf neighbor",
+        "وضعیت همسایه‌های OSPF",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "routing",
+        "ospf"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `get router info ospf neighbor` چه هدفی دارد؟",
+          "back": "بررسی Router ID، state و interface همسایه OSPF"
+        },
+        {
+          "front": "قبل از استفاده عملی از «وضعیت همسایه‌های OSPF» چه نکته‌ای را کنترل کنیم؟",
+          "back": "اطلاعات routing داخلی را redacted کن؛ از debug گسترده روی روتر پرترافیک بدون plan خودداری کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q007",
+            "prompt": "برای این هدف، «بررسی Router ID، state و interface همسایه OSPF»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "get router info ospf neighbor",
+              "get router info routing-table all",
+              "get router info ospf status",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q007",
+            "correct_index": 0,
+            "explain_fa": "`get router info ospf neighbor` برای بررسی Router ID، state و interface همسایه OSPF. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** اگر state کامل نیست، area, timers, network type, authentication, MTU و adjacency log را جدا بررسی کن.\n**هدف:** بررسی Router ID، state و interface همسایه OSPF\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# وضعیت همسایه‌های OSPF\n\n**دستور:** `get router info ospf neighbor`\n\n**هدف عملیاتی:** بررسی Router ID، state و interface همسایه OSPF\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. اگر state کامل نیست، area, timers, network type, authentication, MTU و adjacency log را جدا بررسی کن.\n\n## نمونه خروجی\n\n```text\n\nNeighbor ID Pri State Dead Time Address Interface\n2.2.2.2 1 FULL/DR 00:00:34 10.20.30.2 port2\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاطلاعات routing داخلی را redacted کن؛ از debug گسترده روی روتر پرترافیک بدون plan خودداری کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get router info routing-table all`، `get router info ospf status`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:bgp:get-router-info-bgp-summary",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "routing",
+      "subcategory": "bgp",
+      "level": "L2",
+      "title_fa": "خلاصه همسایه‌های BGP",
+      "title_en": "get router info bgp summary",
+      "command": "get router info bgp summary",
+      "aliases": [],
+      "syntax": "get router info bgp summary",
+      "arguments": [],
+      "when_to_use_fa": "بررسی AS, peer, state/prefix count و وضعیت session BGP",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی AS, peer, state/prefix count و وضعیت session BGP",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: get router info bgp summary",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: State/PfxRcd را با policy و prefix limit تطبیق بده؛ Established با تعداد prefix صفر هم ممکن است نیازمند بررسی باشد."
+      ],
+      "sample_output": "Neighbor V AS MsgRcvd MsgSent Up/Down State/PfxRcd\n192.0.2.2 4 65002 ... 00:12:00 120",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get router info bgp neighbors",
+        "get router info routing-table all"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "State/PfxRcd را با policy و prefix limit تطبیق بده؛ Established با تعداد prefix صفر هم ممکن است نیازمند بررسی باشد.",
+      "security_notes_fa": "BGP route خروجی می‌تواند اطلاعات peering را افشا کند؛ از debug updates گسترده پرهیز کن.",
+      "search_keywords": [
+        "get router info bgp summary",
+        "get router info bgp summary",
+        "خلاصه همسایه‌های BGP",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "routing",
+        "bgp"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `get router info bgp summary` چه هدفی دارد؟",
+          "back": "بررسی AS, peer, state/prefix count و وضعیت session BGP"
+        },
+        {
+          "front": "قبل از استفاده عملی از «خلاصه همسایه‌های BGP» چه نکته‌ای را کنترل کنیم؟",
+          "back": "BGP route خروجی می‌تواند اطلاعات peering را افشا کند؛ از debug updates گسترده پرهیز کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q008",
+            "prompt": "برای این هدف، «بررسی AS, peer, state/prefix count و وضعیت session BGP»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "get router info bgp summary",
+              "get router info bgp neighbors",
+              "get router info routing-table all",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q008",
+            "correct_index": 0,
+            "explain_fa": "`get router info bgp summary` برای بررسی AS, peer, state/prefix count و وضعیت session BGP. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** State/PfxRcd را با policy و prefix limit تطبیق بده؛ Established با تعداد prefix صفر هم ممکن است نیازمند بررسی باشد.\n**هدف:** بررسی AS, peer, state/prefix count و وضعیت session BGP\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# خلاصه همسایه‌های BGP\n\n**دستور:** `get router info bgp summary`\n\n**هدف عملیاتی:** بررسی AS, peer, state/prefix count و وضعیت session BGP\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. State/PfxRcd را با policy و prefix limit تطبیق بده؛ Established با تعداد prefix صفر هم ممکن است نیازمند بررسی باشد.\n\n## نمونه خروجی\n\n```text\n\nNeighbor V AS MsgRcvd MsgSent Up/Down State/PfxRcd\n192.0.2.2 4 65002 ... 00:12:00 120\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nBGP route خروجی می‌تواند اطلاعات peering را افشا کند؛ از debug updates گسترده پرهیز کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get router info bgp neighbors`، `get router info routing-table all`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:static-route:show-router-static",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "routing",
+      "subcategory": "static-route",
+      "level": "L1",
+      "title_fa": "نمایش پیکربندی Static Route",
+      "title_en": "show router static",
+      "command": "show router static",
+      "aliases": [],
+      "syntax": "show router static",
+      "arguments": [],
+      "when_to_use_fa": "بازبینی config source برای مسیرهای static و interface/target",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بازبینی config source برای مسیرهای static و interface/target",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: show router static",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: config را با جدول route نصب‌شده مقایسه کن؛ static route نامعتبر یا disabled ممکن است در RIB فعال نباشد."
+      ],
+      "sample_output": "config router static\n edit 1\n  set dst 0.0.0.0 0.0.0.0\n  set gateway 10.20.30.1\n next\nend",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get router info routing-table all",
+        "show system interface"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "config را با جدول route نصب‌شده مقایسه کن؛ static route نامعتبر یا disabled ممکن است در RIB فعال نباشد.",
+      "security_notes_fa": "پیش از ارسال config، gatewayها و شبکه‌های داخلی را پوشانده و backup امن نگه دار.",
+      "search_keywords": [
+        "show router static",
+        "show router static",
+        "نمایش پیکربندی Static Route",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "routing",
+        "static-route"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `show router static` چه هدفی دارد؟",
+          "back": "بازبینی config source برای مسیرهای static و interface/target"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش پیکربندی Static Route» چه نکته‌ای را کنترل کنیم؟",
+          "back": "پیش از ارسال config، gatewayها و شبکه‌های داخلی را پوشانده و backup امن نگه دار."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q009",
+            "prompt": "برای این هدف، «بازبینی config source برای مسیرهای static و interface/target»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "show router static",
+              "get router info routing-table all",
+              "show system interface",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q009",
+            "correct_index": 0,
+            "explain_fa": "`show router static` برای بازبینی config source برای مسیرهای static و interface/target. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** config را با جدول route نصب‌شده مقایسه کن؛ static route نامعتبر یا disabled ممکن است در RIB فعال نباشد.\n**هدف:** بازبینی config source برای مسیرهای static و interface/target\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش پیکربندی Static Route\n\n**دستور:** `show router static`\n\n**هدف عملیاتی:** بازبینی config source برای مسیرهای static و interface/target\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. config را با جدول route نصب‌شده مقایسه کن؛ static route نامعتبر یا disabled ممکن است در RIB فعال نباشد.\n\n## نمونه خروجی\n\n```text\n\nconfig router static\n edit 1\n  set dst 0.0.0.0 0.0.0.0\n  set gateway 10.20.30.1\n next\nend\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nپیش از ارسال config، gatewayها و شبکه‌های داخلی را پوشانده و backup امن نگه دار. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get router info routing-table all`، `show system interface`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:policy:show-firewall-policy",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "firewall",
+      "subcategory": "policy",
+      "level": "L2",
+      "title_fa": "بررسی Firewall Policyها",
+      "title_en": "show firewall policy",
+      "command": "show firewall policy",
+      "aliases": [],
+      "syntax": "show firewall policy",
+      "arguments": [],
+      "when_to_use_fa": "مرور policy ID، source/destination، service، action و NAT",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مرور policy ID، source/destination، service، action و NAT",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: show firewall policy",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: policy match را به‌صورت بالا به پایین و همراه interface pair/VDOM بررسی کن؛ log hit و session را با traffic واقعی تطبیق بده."
+      ],
+      "sample_output": "config firewall policy\n edit 10\n  set name \"LAN-to-DNS-Lab\"\n  set action accept\n  set service \"DNS\"\n next\nend",
+      "output_fields_fa": [],
+      "related_commands": [
+        "diagnose firewall iprope lookup",
+        "diagnose sys session stat"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "policy match را به‌صورت بالا به پایین و همراه interface pair/VDOM بررسی کن؛ log hit و session را با traffic واقعی تطبیق بده.",
+      "security_notes_fa": "Policy allow-any-any ریسک بالایی دارد؛ پیکربندی را بی‌اجازه تغییر نده.",
+      "search_keywords": [
+        "show firewall policy",
+        "show firewall policy",
+        "بررسی Firewall Policyها",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "firewall",
+        "policy"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `show firewall policy` چه هدفی دارد؟",
+          "back": "مرور policy ID، source/destination، service، action و NAT"
+        },
+        {
+          "front": "قبل از استفاده عملی از «بررسی Firewall Policyها» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Policy allow-any-any ریسک بالایی دارد؛ پیکربندی را بی‌اجازه تغییر نده."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q010",
+            "prompt": "برای این هدف، «مرور policy ID، source/destination، service، action و NAT»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "show firewall policy",
+              "diagnose firewall iprope lookup",
+              "diagnose sys session stat",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q010",
+            "correct_index": 0,
+            "explain_fa": "`show firewall policy` برای مرور policy ID، source/destination، service، action و NAT. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** policy match را به‌صورت بالا به پایین و همراه interface pair/VDOM بررسی کن؛ log hit و session را با traffic واقعی تطبیق بده.\n**هدف:** مرور policy ID، source/destination، service، action و NAT\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# بررسی Firewall Policyها\n\n**دستور:** `show firewall policy`\n\n**هدف عملیاتی:** مرور policy ID، source/destination، service، action و NAT\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. policy match را به‌صورت بالا به پایین و همراه interface pair/VDOM بررسی کن؛ log hit و session را با traffic واقعی تطبیق بده.\n\n## نمونه خروجی\n\n```text\n\nconfig firewall policy\n edit 10\n  set name \"LAN-to-DNS-Lab\"\n  set action accept\n  set service \"DNS\"\n next\nend\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nPolicy allow-any-any ریسک بالایی دارد؛ پیکربندی را بی‌اجازه تغییر نده. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`diagnose firewall iprope lookup`، `diagnose sys session stat`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:policy-match:diagnose-firewall-iprope-lookup",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "firewall",
+      "subcategory": "policy-match",
+      "level": "L3",
+      "title_fa": "جستجوی policy match با iprope",
+      "title_en": "diagnose firewall iprope lookup",
+      "command": "diagnose firewall iprope lookup 10.20.30.25 53000 10.20.30.10 53 17 port2",
+      "aliases": [],
+      "syntax": "diagnose firewall iprope lookup 10.20.30.25 53000 10.20.30.10 53 17 port2",
+      "arguments": [],
+      "when_to_use_fa": "بررسی این‌که tuple آزمایشی به کدام policy/route match می‌شود",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی این‌که tuple آزمایشی به کدام policy/route match می‌شود",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose firewall iprope lookup 10.20.30.25 53000 10.20.30.10 53 17 port2",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: tuple را دقیقاً از packet واقعی/لابراتوار بگیر و protocol number را صحیح انتخاب کن؛ نتیجه را با log session مقایسه کن."
+      ],
+      "sample_output": "policy index=10, matched (خروجی دقیق به FortiOS و VDOM وابسته است)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "show firewall policy",
+        "get router info routing-table all"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "tuple را دقیقاً از packet واقعی/لابراتوار بگیر و protocol number را صحیح انتخاب کن؛ نتیجه را با log session مقایسه کن.",
+      "security_notes_fa": "فرمان تشخیصی فقط برای تحلیل مجاز؛ IP و پورت را از ترافیک کاربر بدون مجوز جمع‌آوری نکن.",
+      "search_keywords": [
+        "diagnose firewall iprope lookup",
+        "diagnose firewall iprope lookup 10.20.30.25 53000 10.20.30.10 53 17 port2",
+        "جستجوی policy match با iprope",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "firewall",
+        "policy-match"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose firewall iprope lookup 10.20.30.25 53000 10.20.30.10 53 17 port2` چه هدفی دارد؟",
+          "back": "بررسی این‌که tuple آزمایشی به کدام policy/route match می‌شود"
+        },
+        {
+          "front": "قبل از استفاده عملی از «جستجوی policy match با iprope» چه نکته‌ای را کنترل کنیم؟",
+          "back": "فرمان تشخیصی فقط برای تحلیل مجاز؛ IP و پورت را از ترافیک کاربر بدون مجوز جمع‌آوری نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q011",
+            "prompt": "برای این هدف، «بررسی این‌که tuple آزمایشی به کدام policy/route match می‌شود»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose firewall iprope lookup 10.20.30.25 53000 10.20.30.10 53 17 port2",
+              "show firewall policy",
+              "get router info routing-table all",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q011",
+            "correct_index": 0,
+            "explain_fa": "`diagnose firewall iprope lookup 10.20.30.25 53000 10.20.30.10 53 17 port2` برای بررسی این‌که tuple آزمایشی به کدام policy/route match می‌شود. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** tuple را دقیقاً از packet واقعی/لابراتوار بگیر و protocol number را صحیح انتخاب کن؛ نتیجه را با log session مقایسه کن.\n**هدف:** بررسی این‌که tuple آزمایشی به کدام policy/route match می‌شود\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# جستجوی policy match با iprope\n\n**دستور:** `diagnose firewall iprope lookup 10.20.30.25 53000 10.20.30.10 53 17 port2`\n\n**هدف عملیاتی:** بررسی این‌که tuple آزمایشی به کدام policy/route match می‌شود\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. tuple را دقیقاً از packet واقعی/لابراتوار بگیر و protocol number را صحیح انتخاب کن؛ نتیجه را با log session مقایسه کن.\n\n## نمونه خروجی\n\n```text\n\npolicy index=10, matched (خروجی دقیق به FortiOS و VDOM وابسته است)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nفرمان تشخیصی فقط برای تحلیل مجاز؛ IP و پورت را از ترافیک کاربر بدون مجوز جمع‌آوری نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`show firewall policy`، `get router info routing-table all`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:debug-flow:diagnose-debug-flow",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "troubleshoot",
+      "subcategory": "debug-flow",
+      "level": "L3",
+      "title_fa": "راه‌اندازی Debug Flow محدود",
+      "title_en": "diagnose debug flow",
+      "command": "diagnose debug flow filter addr 10.20.30.25\ndiagnose debug flow show function-name enable\ndiagnose debug flow trace start 20",
+      "aliases": [],
+      "syntax": "diagnose debug flow filter addr 10.20.30.25\ndiagnose debug flow show function-name enable\ndiagnose debug flow trace start 20",
+      "arguments": [],
+      "when_to_use_fa": "ثبت تعداد محدودی packet trace با filter میزبان آزمایشی",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: ثبت تعداد محدودی packet trace با filter میزبان آزمایشی",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose debug flow filter addr 10.20.30.25\ndiagnose debug flow show function-name enable\ndiagnose debug flow trace start 20",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: فقط در لابراتوار/پنجرهٔ مصوب، filter محدود کن؛ پس از 20 packet فوراً با `diagnose debug flow trace stop` و `diagnose debug disable` خاتمه بده."
+      ],
+      "sample_output": "id=... trace_id=... func=... msg=\"received a packet\"",
+      "output_fields_fa": [],
+      "related_commands": [
+        "diagnose debug flow trace stop",
+        "diagnose debug disable",
+        "diagnose sniffer packet"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "فقط در لابراتوار/پنجرهٔ مصوب، filter محدود کن؛ پس از 20 packet فوراً با `diagnose debug flow trace stop` و `diagnose debug disable` خاتمه بده.",
+      "security_notes_fa": "Debug flow می‌تواند بار CPU و حجم لاگ ایجاد کند؛ فرمان‌های stop/disable را از ابتدا آماده کن.",
+      "search_keywords": [
+        "diagnose debug flow",
+        "diagnose debug flow filter addr 10.20.30.25\ndiagnose debug flow show function-name enable\ndiagnose debug flow trace start 20",
+        "راه‌اندازی Debug Flow محدود",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "troubleshoot",
+        "debug-flow"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose debug flow filter addr 10.20.30.25\ndiagnose debug flow show function-name enable\ndiagnose debug flow trace start 20` چه هدفی دارد؟",
+          "back": "ثبت تعداد محدودی packet trace با filter میزبان آزمایشی"
+        },
+        {
+          "front": "قبل از استفاده عملی از «راه‌اندازی Debug Flow محدود» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Debug flow می‌تواند بار CPU و حجم لاگ ایجاد کند؛ فرمان‌های stop/disable را از ابتدا آماده کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q012",
+            "prompt": "برای این هدف، «ثبت تعداد محدودی packet trace با filter میزبان آزمایشی»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose debug flow filter addr 10.20.30.25\ndiagnose debug flow show function-name enable\ndiagnose debug flow trace start 20",
+              "diagnose debug flow trace stop",
+              "diagnose debug disable",
+              "diagnose sniffer packet"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q012",
+            "correct_index": 0,
+            "explain_fa": "`diagnose debug flow filter addr 10.20.30.25\ndiagnose debug flow show function-name enable\ndiagnose debug flow trace start 20` برای ثبت تعداد محدودی packet trace با filter میزبان آزمایشی. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** فقط در لابراتوار/پنجرهٔ مصوب، filter محدود کن؛ پس از 20 packet فوراً با `diagnose debug flow trace stop` و `diagnose debug disable` خاتمه بده.\n**هدف:** ثبت تعداد محدودی packet trace با filter میزبان آزمایشی\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# راه‌اندازی Debug Flow محدود\n\n**دستور:** `diagnose debug flow filter addr 10.20.30.25\ndiagnose debug flow show function-name enable\ndiagnose debug flow trace start 20`\n\n**هدف عملیاتی:** ثبت تعداد محدودی packet trace با filter میزبان آزمایشی\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. فقط در لابراتوار/پنجرهٔ مصوب، filter محدود کن؛ پس از 20 packet فوراً با `diagnose debug flow trace stop` و `diagnose debug disable` خاتمه بده.\n\n## نمونه خروجی\n\n```text\n\nid=... trace_id=... func=... msg=\"received a packet\"\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nDebug flow می‌تواند بار CPU و حجم لاگ ایجاد کند؛ فرمان‌های stop/disable را از ابتدا آماده کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`diagnose debug flow trace stop`، `diagnose debug disable`، `diagnose sniffer packet`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:debug-flow:diagnose-debug-flow-trace-stop",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "troubleshoot",
+      "subcategory": "debug-flow",
+      "level": "L2",
+      "title_fa": "توقف Debug Flow",
+      "title_en": "diagnose debug flow trace stop",
+      "command": "diagnose debug flow trace stop\ndiagnose debug disable",
+      "aliases": [],
+      "syntax": "diagnose debug flow trace stop\ndiagnose debug disable",
+      "arguments": [],
+      "when_to_use_fa": "پایان‌دادن capture diagnostic برای جلوگیری از ادامه خروجی/مصرف منابع",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: پایان‌دادن capture diagnostic برای جلوگیری از ادامه خروجی/مصرف منابع",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose debug flow trace stop\ndiagnose debug disable",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: بعد از آزمایش بررسی کن debug فعال نمانده باشد؛ در change log زمان شروع/پایان را ثبت کن."
+      ],
+      "sample_output": "(debug flow tracing stopped; prompt returns)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "diagnose debug flow trace start",
+        "diagnose debug disable"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "بعد از آزمایش بررسی کن debug فعال نمانده باشد؛ در change log زمان شروع/پایان را ثبت کن.",
+      "security_notes_fa": "جاگذاشتن debug روی تجهیزات پرترافیک می‌تواند منابع یا کنسول را اشغال کند.",
+      "search_keywords": [
+        "diagnose debug flow trace stop",
+        "diagnose debug flow trace stop\ndiagnose debug disable",
+        "توقف Debug Flow",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "troubleshoot",
+        "debug-flow"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose debug flow trace stop\ndiagnose debug disable` چه هدفی دارد؟",
+          "back": "پایان‌دادن capture diagnostic برای جلوگیری از ادامه خروجی/مصرف منابع"
+        },
+        {
+          "front": "قبل از استفاده عملی از «توقف Debug Flow» چه نکته‌ای را کنترل کنیم؟",
+          "back": "جاگذاشتن debug روی تجهیزات پرترافیک می‌تواند منابع یا کنسول را اشغال کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q013",
+            "prompt": "برای این هدف، «پایان‌دادن capture diagnostic برای جلوگیری از ادامه خروجی/مصرف منابع»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose debug flow trace stop\ndiagnose debug disable",
+              "diagnose debug flow trace start",
+              "diagnose debug disable",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q013",
+            "correct_index": 0,
+            "explain_fa": "`diagnose debug flow trace stop\ndiagnose debug disable` برای پایان‌دادن capture diagnostic برای جلوگیری از ادامه خروجی/مصرف منابع. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** بعد از آزمایش بررسی کن debug فعال نمانده باشد؛ در change log زمان شروع/پایان را ثبت کن.\n**هدف:** پایان‌دادن capture diagnostic برای جلوگیری از ادامه خروجی/مصرف منابع\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# توقف Debug Flow\n\n**دستور:** `diagnose debug flow trace stop\ndiagnose debug disable`\n\n**هدف عملیاتی:** پایان‌دادن capture diagnostic برای جلوگیری از ادامه خروجی/مصرف منابع\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. بعد از آزمایش بررسی کن debug فعال نمانده باشد؛ در change log زمان شروع/پایان را ثبت کن.\n\n## نمونه خروجی\n\n```text\n\n(debug flow tracing stopped; prompt returns)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nجاگذاشتن debug روی تجهیزات پرترافیک می‌تواند منابع یا کنسول را اشغال کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`diagnose debug flow trace start`، `diagnose debug disable`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:packet-capture:diagnose-sniffer-packet",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "troubleshoot",
+      "subcategory": "packet-capture",
+      "level": "L2",
+      "title_fa": "Packet Sniffer محدود",
+      "title_en": "diagnose sniffer packet",
+      "command": "diagnose sniffer packet any 'host 10.20.30.25 and port 53' 4 20 l",
+      "aliases": [],
+      "syntax": "diagnose sniffer packet any 'host 10.20.30.25 and port 53' 4 20 l",
+      "arguments": [],
+      "when_to_use_fa": "مشاهده packetهای DNS محدودشده در interfaceهای انتخابی",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهده packetهای DNS محدودشده در interfaceهای انتخابی",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose sniffer packet any 'host 10.20.30.25 and port 53' 4 20 l",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: محدودهٔ capture، verbosity، packet count و زمان اجرا را محدود کن؛ در پایان با Ctrl+C توقف بده."
+      ],
+      "sample_output": "port2 in 10.20.30.25.53000 -> 10.20.30.10.53: udp 42",
+      "output_fields_fa": [],
+      "related_commands": [
+        "diagnose debug flow",
+        "get system interface"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "محدودهٔ capture، verbosity، packet count و زمان اجرا را محدود کن؛ در پایان با Ctrl+C توقف بده.",
+      "security_notes_fa": "PCAP/sniffer ممکن است دادهٔ شخصی و محتوا را آشکار کند؛ capture را محلی و کوتاه نگه دار.",
+      "search_keywords": [
+        "diagnose sniffer packet",
+        "diagnose sniffer packet any 'host 10.20.30.25 and port 53' 4 20 l",
+        "Packet Sniffer محدود",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "troubleshoot",
+        "packet-capture"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose sniffer packet any 'host 10.20.30.25 and port 53' 4 20 l` چه هدفی دارد؟",
+          "back": "مشاهده packetهای DNS محدودشده در interfaceهای انتخابی"
+        },
+        {
+          "front": "قبل از استفاده عملی از «Packet Sniffer محدود» چه نکته‌ای را کنترل کنیم؟",
+          "back": "PCAP/sniffer ممکن است دادهٔ شخصی و محتوا را آشکار کند؛ capture را محلی و کوتاه نگه دار."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q014",
+            "prompt": "برای این هدف، «مشاهده packetهای DNS محدودشده در interfaceهای انتخابی»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose sniffer packet any 'host 10.20.30.25 and port 53' 4 20 l",
+              "diagnose debug flow",
+              "get system interface",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q014",
+            "correct_index": 0,
+            "explain_fa": "`diagnose sniffer packet any 'host 10.20.30.25 and port 53' 4 20 l` برای مشاهده packetهای DNS محدودشده در interfaceهای انتخابی. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** محدودهٔ capture، verbosity، packet count و زمان اجرا را محدود کن؛ در پایان با Ctrl+C توقف بده.\n**هدف:** مشاهده packetهای DNS محدودشده در interfaceهای انتخابی\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# Packet Sniffer محدود\n\n**دستور:** `diagnose sniffer packet any 'host 10.20.30.25 and port 53' 4 20 l`\n\n**هدف عملیاتی:** مشاهده packetهای DNS محدودشده در interfaceهای انتخابی\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. محدودهٔ capture، verbosity، packet count و زمان اجرا را محدود کن؛ در پایان با Ctrl+C توقف بده.\n\n## نمونه خروجی\n\n```text\n\nport2 in 10.20.30.25.53000 -> 10.20.30.10.53: udp 42\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nPCAP/sniffer ممکن است دادهٔ شخصی و محتوا را آشکار کند؛ capture را محلی و کوتاه نگه دار. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`diagnose debug flow`، `get system interface`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:interfaces:get-system-interface-physical",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "monitor",
+      "subcategory": "interfaces",
+      "level": "L1",
+      "title_fa": "نمایش رابط‌ها",
+      "title_en": "get system interface physical",
+      "command": "get system interface physical",
+      "aliases": [],
+      "syntax": "get system interface physical",
+      "arguments": [],
+      "when_to_use_fa": "بازبینی link/interface state و مشخصات پورت‌های فیزیکی",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بازبینی link/interface state و مشخصات پورت‌های فیزیکی",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: get system interface physical",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: status را با switch neighbor و کابل بررسی کن؛ interface منطقی VLAN و physical را اشتباه نگیر."
+      ],
+      "sample_output": "name: port1\nstatus: up\nspeed: 1000Mbps\nduplex: full",
+      "output_fields_fa": [],
+      "related_commands": [
+        "diagnose hardware deviceinfo nic",
+        "show system interface"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "status را با switch neighbor و کابل بررسی کن؛ interface منطقی VLAN و physical را اشتباه نگیر.",
+      "security_notes_fa": "پورت‌های مدیریت و نام interface بخشی از نقشه شبکه هستند.",
+      "search_keywords": [
+        "get system interface physical",
+        "get system interface physical",
+        "نمایش رابط‌ها",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "monitor",
+        "interfaces"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `get system interface physical` چه هدفی دارد؟",
+          "back": "بازبینی link/interface state و مشخصات پورت‌های فیزیکی"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش رابط‌ها» چه نکته‌ای را کنترل کنیم؟",
+          "back": "پورت‌های مدیریت و نام interface بخشی از نقشه شبکه هستند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q015",
+            "prompt": "برای این هدف، «بازبینی link/interface state و مشخصات پورت‌های فیزیکی»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "get system interface physical",
+              "diagnose hardware deviceinfo nic",
+              "show system interface",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q015",
+            "correct_index": 0,
+            "explain_fa": "`get system interface physical` برای بازبینی link/interface state و مشخصات پورت‌های فیزیکی. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** status را با switch neighbor و کابل بررسی کن؛ interface منطقی VLAN و physical را اشتباه نگیر.\n**هدف:** بازبینی link/interface state و مشخصات پورت‌های فیزیکی\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش رابط‌ها\n\n**دستور:** `get system interface physical`\n\n**هدف عملیاتی:** بازبینی link/interface state و مشخصات پورت‌های فیزیکی\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. status را با switch neighbor و کابل بررسی کن؛ interface منطقی VLAN و physical را اشتباه نگیر.\n\n## نمونه خروجی\n\n```text\n\nname: port1\nstatus: up\nspeed: 1000Mbps\nduplex: full\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nپورت‌های مدیریت و نام interface بخشی از نقشه شبکه هستند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`diagnose hardware deviceinfo nic`، `show system interface`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:nic:diagnose-hardware-deviceinfo-nic",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "troubleshoot",
+      "subcategory": "nic",
+      "level": "L2",
+      "title_fa": "جزئیات NIC سخت‌افزاری",
+      "title_en": "diagnose hardware deviceinfo nic",
+      "command": "diagnose hardware deviceinfo nic port1",
+      "aliases": [],
+      "syntax": "diagnose hardware deviceinfo nic port1",
+      "arguments": [],
+      "when_to_use_fa": "بررسی link, driver counters و جزئیات adapter برای پورت معین",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی link, driver counters و جزئیات adapter برای پورت معین",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose hardware deviceinfo nic port1",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: خروجی پورت را با NIC سوئیچ و interface counters دو طرف تطبیق بده؛ بررسی فیزیکی را هم انجام بده."
+      ],
+      "sample_output": "Description: ...\nLink: up\nSpeed: 1000\nDuplex: full",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get system interface physical",
+        "diagnose netlink interface list"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "خروجی پورت را با NIC سوئیچ و interface counters دو طرف تطبیق بده؛ بررسی فیزیکی را هم انجام بده.",
+      "security_notes_fa": "خروجی مدل و سخت‌افزار ممکن است برای inventory حساس باشد.",
+      "search_keywords": [
+        "diagnose hardware deviceinfo nic",
+        "diagnose hardware deviceinfo nic port1",
+        "جزئیات NIC سخت‌افزاری",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "troubleshoot",
+        "nic"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose hardware deviceinfo nic port1` چه هدفی دارد؟",
+          "back": "بررسی link, driver counters و جزئیات adapter برای پورت معین"
+        },
+        {
+          "front": "قبل از استفاده عملی از «جزئیات NIC سخت‌افزاری» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خروجی مدل و سخت‌افزار ممکن است برای inventory حساس باشد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q016",
+            "prompt": "برای این هدف، «بررسی link, driver counters و جزئیات adapter برای پورت معین»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose hardware deviceinfo nic port1",
+              "get system interface physical",
+              "diagnose netlink interface list",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q016",
+            "correct_index": 0,
+            "explain_fa": "`diagnose hardware deviceinfo nic port1` برای بررسی link, driver counters و جزئیات adapter برای پورت معین. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** خروجی پورت را با NIC سوئیچ و interface counters دو طرف تطبیق بده؛ بررسی فیزیکی را هم انجام بده.\n**هدف:** بررسی link, driver counters و جزئیات adapter برای پورت معین\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# جزئیات NIC سخت‌افزاری\n\n**دستور:** `diagnose hardware deviceinfo nic port1`\n\n**هدف عملیاتی:** بررسی link, driver counters و جزئیات adapter برای پورت معین\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. خروجی پورت را با NIC سوئیچ و interface counters دو طرف تطبیق بده؛ بررسی فیزیکی را هم انجام بده.\n\n## نمونه خروجی\n\n```text\n\nDescription: ...\nLink: up\nSpeed: 1000\nDuplex: full\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخروجی مدل و سخت‌افزار ممکن است برای inventory حساس باشد. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get system interface physical`، `diagnose netlink interface list`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:ipsec-ike:diagnose-vpn-ike-gateway-list",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "vpn",
+      "subcategory": "ipsec-ike",
+      "level": "L2",
+      "title_fa": "وضعیت VPN IKE gateway",
+      "title_en": "diagnose vpn ike gateway list",
+      "command": "diagnose vpn ike gateway list",
+      "aliases": [],
+      "syntax": "diagnose vpn ike gateway list",
+      "arguments": [],
+      "when_to_use_fa": "مشاهده IKE SA و peer state برای tunnelهای IPsec",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهده IKE SA و peer state برای tunnelهای IPsec",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose vpn ike gateway list",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: IKE state را با child SA, phase2 selectors و packet counters تطبیق بده؛ اگر down است، pre-shared secret را چاپ نکن."
+      ],
+      "sample_output": "name: S2S-LAB\nstate: established\nremote: 198.51.100.10",
+      "output_fields_fa": [],
+      "related_commands": [
+        "diagnose vpn tunnel list",
+        "get vpn ipsec tunnel summary"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "IKE state را با child SA, phase2 selectors و packet counters تطبیق بده؛ اگر down است، pre-shared secret را چاپ نکن.",
+      "security_notes_fa": "خروجی peer address را محدود کن؛ هرگز PSK را در log یا ticket ثبت نکن.",
+      "search_keywords": [
+        "diagnose vpn ike gateway list",
+        "diagnose vpn ike gateway list",
+        "وضعیت VPN IKE gateway",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "vpn",
+        "ipsec-ike"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose vpn ike gateway list` چه هدفی دارد؟",
+          "back": "مشاهده IKE SA و peer state برای tunnelهای IPsec"
+        },
+        {
+          "front": "قبل از استفاده عملی از «وضعیت VPN IKE gateway» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خروجی peer address را محدود کن؛ هرگز PSK را در log یا ticket ثبت نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q017",
+            "prompt": "برای این هدف، «مشاهده IKE SA و peer state برای tunnelهای IPsec»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose vpn ike gateway list",
+              "diagnose vpn tunnel list",
+              "get vpn ipsec tunnel summary",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q017",
+            "correct_index": 0,
+            "explain_fa": "`diagnose vpn ike gateway list` برای مشاهده IKE SA و peer state برای tunnelهای IPsec. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** IKE state را با child SA, phase2 selectors و packet counters تطبیق بده؛ اگر down است، pre-shared secret را چاپ نکن.\n**هدف:** مشاهده IKE SA و peer state برای tunnelهای IPsec\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# وضعیت VPN IKE gateway\n\n**دستور:** `diagnose vpn ike gateway list`\n\n**هدف عملیاتی:** مشاهده IKE SA و peer state برای tunnelهای IPsec\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. IKE state را با child SA, phase2 selectors و packet counters تطبیق بده؛ اگر down است، pre-shared secret را چاپ نکن.\n\n## نمونه خروجی\n\n```text\n\nname: S2S-LAB\nstate: established\nremote: 198.51.100.10\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخروجی peer address را محدود کن؛ هرگز PSK را در log یا ticket ثبت نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`diagnose vpn tunnel list`، `get vpn ipsec tunnel summary`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:ipsec-tunnel:diagnose-vpn-tunnel-list",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "vpn",
+      "subcategory": "ipsec-tunnel",
+      "level": "L2",
+      "title_fa": "وضعیت Tunnelهای IPsec",
+      "title_en": "diagnose vpn tunnel list",
+      "command": "diagnose vpn tunnel list",
+      "aliases": [],
+      "syntax": "diagnose vpn tunnel list",
+      "arguments": [],
+      "when_to_use_fa": "بررسی selectorها، SA، encaps/decaps و tunnel status",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی selectorها، SA، encaps/decaps و tunnel status",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose vpn tunnel list",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: در دو سمت، subnet selectors و route/policy را تطبیق بده؛ tunnel up ولی traffic صفر ممکن است selectors/route باشند."
+      ],
+      "sample_output": "name=S2S-LAB\nproxyid=LAN-to-DC\nstatus=up\nrx/tx packets=...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "diagnose vpn ike gateway list",
+        "get vpn ipsec tunnel summary"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "در دو سمت، subnet selectors و route/policy را تطبیق بده؛ tunnel up ولی traffic صفر ممکن است selectors/route باشند.",
+      "security_notes_fa": "آدرس و selector داخلی را mask کن؛ reset tunnel موجب قطع سرویس می‌شود.",
+      "search_keywords": [
+        "diagnose vpn tunnel list",
+        "diagnose vpn tunnel list",
+        "وضعیت Tunnelهای IPsec",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "vpn",
+        "ipsec-tunnel"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose vpn tunnel list` چه هدفی دارد؟",
+          "back": "بررسی selectorها، SA، encaps/decaps و tunnel status"
+        },
+        {
+          "front": "قبل از استفاده عملی از «وضعیت Tunnelهای IPsec» چه نکته‌ای را کنترل کنیم؟",
+          "back": "آدرس و selector داخلی را mask کن؛ reset tunnel موجب قطع سرویس می‌شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q018",
+            "prompt": "برای این هدف، «بررسی selectorها، SA، encaps/decaps و tunnel status»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose vpn tunnel list",
+              "diagnose vpn ike gateway list",
+              "get vpn ipsec tunnel summary",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q018",
+            "correct_index": 0,
+            "explain_fa": "`diagnose vpn tunnel list` برای بررسی selectorها، SA، encaps/decaps و tunnel status. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** در دو سمت، subnet selectors و route/policy را تطبیق بده؛ tunnel up ولی traffic صفر ممکن است selectors/route باشند.\n**هدف:** بررسی selectorها، SA، encaps/decaps و tunnel status\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# وضعیت Tunnelهای IPsec\n\n**دستور:** `diagnose vpn tunnel list`\n\n**هدف عملیاتی:** بررسی selectorها، SA، encaps/decaps و tunnel status\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. در دو سمت، subnet selectors و route/policy را تطبیق بده؛ tunnel up ولی traffic صفر ممکن است selectors/route باشند.\n\n## نمونه خروجی\n\n```text\n\nname=S2S-LAB\nproxyid=LAN-to-DC\nstatus=up\nrx/tx packets=...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nآدرس و selector داخلی را mask کن؛ reset tunnel موجب قطع سرویس می‌شود. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`diagnose vpn ike gateway list`، `get vpn ipsec tunnel summary`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:ipsec-summary:get-vpn-ipsec-tunnel-summary",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "vpn",
+      "subcategory": "ipsec-summary",
+      "level": "L1",
+      "title_fa": "خلاصه وضعیت IPsec",
+      "title_en": "get vpn ipsec tunnel summary",
+      "command": "get vpn ipsec tunnel summary",
+      "aliases": [],
+      "syntax": "get vpn ipsec tunnel summary",
+      "arguments": [],
+      "when_to_use_fa": "دید سریع از تعداد و وضعیت tunnelهای IPsec",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: دید سریع از تعداد و وضعیت tunnelهای IPsec",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: get vpn ipsec tunnel summary",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: خلاصه را با جزئیات IKE SA و traffic counter هر tunnel مقایسه کن."
+      ],
+      "sample_output": "IPsec tunnel: 1 up, 0 down (خروجی بسته به نسخه متفاوت است)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "diagnose vpn tunnel list",
+        "diagnose vpn ike gateway list"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "خلاصه را با جزئیات IKE SA و traffic counter هر tunnel مقایسه کن.",
+      "security_notes_fa": "وضعیت up به تنهایی عبور traffic کاربردی را ثابت نمی‌کند.",
+      "search_keywords": [
+        "get vpn ipsec tunnel summary",
+        "get vpn ipsec tunnel summary",
+        "خلاصه وضعیت IPsec",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "vpn",
+        "ipsec-summary"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `get vpn ipsec tunnel summary` چه هدفی دارد؟",
+          "back": "دید سریع از تعداد و وضعیت tunnelهای IPsec"
+        },
+        {
+          "front": "قبل از استفاده عملی از «خلاصه وضعیت IPsec» چه نکته‌ای را کنترل کنیم؟",
+          "back": "وضعیت up به تنهایی عبور traffic کاربردی را ثابت نمی‌کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q019",
+            "prompt": "برای این هدف، «دید سریع از تعداد و وضعیت tunnelهای IPsec»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "get vpn ipsec tunnel summary",
+              "diagnose vpn tunnel list",
+              "diagnose vpn ike gateway list",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q019",
+            "correct_index": 0,
+            "explain_fa": "`get vpn ipsec tunnel summary` برای دید سریع از تعداد و وضعیت tunnelهای IPsec. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** خلاصه را با جزئیات IKE SA و traffic counter هر tunnel مقایسه کن.\n**هدف:** دید سریع از تعداد و وضعیت tunnelهای IPsec\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# خلاصه وضعیت IPsec\n\n**دستور:** `get vpn ipsec tunnel summary`\n\n**هدف عملیاتی:** دید سریع از تعداد و وضعیت tunnelهای IPsec\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. خلاصه را با جزئیات IKE SA و traffic counter هر tunnel مقایسه کن.\n\n## نمونه خروجی\n\n```text\n\nIPsec tunnel: 1 up, 0 down (خروجی بسته به نسخه متفاوت است)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nوضعیت up به تنهایی عبور traffic کاربردی را ثابت نمی‌کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`diagnose vpn tunnel list`، `diagnose vpn ike gateway list`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:ssl-vpn:diagnose-vpn-ssl-monitor",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "vpn",
+      "subcategory": "ssl-vpn",
+      "level": "L2",
+      "title_fa": "نمایش SSL-VPN sessionها",
+      "title_en": "diagnose vpn ssl monitor",
+      "command": "diagnose vpn ssl monitor",
+      "aliases": [],
+      "syntax": "diagnose vpn ssl monitor",
+      "arguments": [],
+      "when_to_use_fa": "بازبینی کاربران متصل، tunnel IP و مدت session SSL-VPN",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بازبینی کاربران متصل، tunnel IP و مدت session SSL-VPN",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose vpn ssl monitor",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: نشست را با log احراز هویت، group mapping و policy دسترسی مقایسه کن؛ IP pool را نیز کنترل کن."
+      ],
+      "sample_output": "Index User Group Tunnel IP Duration\n1 jdoe remote-access 10.212.134.2 ...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get vpn ipsec tunnel summary",
+        "get system status"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "نشست را با log احراز هویت، group mapping و policy دسترسی مقایسه کن؛ IP pool را نیز کنترل کن.",
+      "security_notes_fa": "نام کاربران و آدرس VPN اطلاعات حساس است؛ session را بدون تایید کاربر terminate نکن.",
+      "search_keywords": [
+        "diagnose vpn ssl monitor",
+        "diagnose vpn ssl monitor",
+        "نمایش SSL-VPN sessionها",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "vpn",
+        "ssl-vpn"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose vpn ssl monitor` چه هدفی دارد؟",
+          "back": "بازبینی کاربران متصل، tunnel IP و مدت session SSL-VPN"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش SSL-VPN sessionها» چه نکته‌ای را کنترل کنیم؟",
+          "back": "نام کاربران و آدرس VPN اطلاعات حساس است؛ session را بدون تایید کاربر terminate نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q020",
+            "prompt": "برای این هدف، «بازبینی کاربران متصل، tunnel IP و مدت session SSL-VPN»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose vpn ssl monitor",
+              "get vpn ipsec tunnel summary",
+              "get system status",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q020",
+            "correct_index": 0,
+            "explain_fa": "`diagnose vpn ssl monitor` برای بازبینی کاربران متصل، tunnel IP و مدت session SSL-VPN. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** نشست را با log احراز هویت، group mapping و policy دسترسی مقایسه کن؛ IP pool را نیز کنترل کن.\n**هدف:** بازبینی کاربران متصل، tunnel IP و مدت session SSL-VPN\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش SSL-VPN sessionها\n\n**دستور:** `diagnose vpn ssl monitor`\n\n**هدف عملیاتی:** بازبینی کاربران متصل، tunnel IP و مدت session SSL-VPN\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. نشست را با log احراز هویت، group mapping و policy دسترسی مقایسه کن؛ IP pool را نیز کنترل کن.\n\n## نمونه خروجی\n\n```text\n\nIndex User Group Tunnel IP Duration\n1 jdoe remote-access 10.212.134.2 ...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nنام کاربران و آدرس VPN اطلاعات حساس است؛ session را بدون تایید کاربر terminate نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get vpn ipsec tunnel summary`، `get system status`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:high-availability:get-system-ha-status",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "monitor",
+      "subcategory": "high-availability",
+      "level": "L2",
+      "title_fa": "وضعیت HA Cluster",
+      "title_en": "get system ha status",
+      "command": "get system ha status",
+      "aliases": [],
+      "syntax": "get system ha status",
+      "arguments": [],
+      "when_to_use_fa": "بررسی primary/secondary، checksum و state اعضای HA",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی primary/secondary، checksum و state اعضای HA",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: get system ha status",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: خروجی هر دو عضو را مقایسه کن؛ اختلاف checksum را با تغییرات مجاز و sync status تحلیل کن."
+      ],
+      "sample_output": "Mode: a-p\nPrimary: FG-LAB-A\nSecondary: FG-LAB-B\nConfiguration Status: in-sync",
+      "output_fields_fa": [],
+      "related_commands": [
+        "diagnose sys ha checksum cluster",
+        "get system performance status"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "خروجی هر دو عضو را مقایسه کن؛ اختلاف checksum را با تغییرات مجاز و sync status تحلیل کن.",
+      "security_notes_fa": "Failover آزمایشی می‌تواند session را reset کند؛ بدون پنجره نگهداری trigger نکن.",
+      "search_keywords": [
+        "get system ha status",
+        "get system ha status",
+        "وضعیت HA Cluster",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "monitor",
+        "high-availability"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `get system ha status` چه هدفی دارد؟",
+          "back": "بررسی primary/secondary، checksum و state اعضای HA"
+        },
+        {
+          "front": "قبل از استفاده عملی از «وضعیت HA Cluster» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Failover آزمایشی می‌تواند session را reset کند؛ بدون پنجره نگهداری trigger نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q021",
+            "prompt": "برای این هدف، «بررسی primary/secondary، checksum و state اعضای HA»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "get system ha status",
+              "diagnose sys ha checksum cluster",
+              "get system performance status",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q021",
+            "correct_index": 0,
+            "explain_fa": "`get system ha status` برای بررسی primary/secondary، checksum و state اعضای HA. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** خروجی هر دو عضو را مقایسه کن؛ اختلاف checksum را با تغییرات مجاز و sync status تحلیل کن.\n**هدف:** بررسی primary/secondary، checksum و state اعضای HA\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# وضعیت HA Cluster\n\n**دستور:** `get system ha status`\n\n**هدف عملیاتی:** بررسی primary/secondary، checksum و state اعضای HA\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. خروجی هر دو عضو را مقایسه کن؛ اختلاف checksum را با تغییرات مجاز و sync status تحلیل کن.\n\n## نمونه خروجی\n\n```text\n\nMode: a-p\nPrimary: FG-LAB-A\nSecondary: FG-LAB-B\nConfiguration Status: in-sync\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nFailover آزمایشی می‌تواند session را reset کند؛ بدون پنجره نگهداری trigger نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`diagnose sys ha checksum cluster`، `get system performance status`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:ha-config:diagnose-sys-ha-checksum-cluster",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "troubleshoot",
+      "subcategory": "ha-config",
+      "level": "L3",
+      "title_fa": "مقایسه Checksum تنظیمات HA",
+      "title_en": "diagnose sys ha checksum cluster",
+      "command": "diagnose sys ha checksum cluster",
+      "aliases": [],
+      "syntax": "diagnose sys ha checksum cluster",
+      "arguments": [],
+      "when_to_use_fa": "کشف اختلاف در checksumهای بخش‌های config بین اعضای cluster",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: کشف اختلاف در checksumهای بخش‌های config بین اعضای cluster",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose sys ha checksum cluster",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: بخش mismatched را با config revision و زمان تغییرات مقایسه کن؛ اصلاح را از روش مستند Fortinet انجام بده."
+      ],
+      "sample_output": "global: match\nroot: match\nsystem.interface: mismatch (نمونهٔ نمایشی)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get system ha status",
+        "show system interface"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "بخش mismatched را با config revision و زمان تغییرات مقایسه کن؛ اصلاح را از روش مستند Fortinet انجام بده.",
+      "security_notes_fa": "از synchronize/override کورکورانه پرهیز کن؛ ممکن است پیکربندی معتبر عضو دیگر بازنویسی شود.",
+      "search_keywords": [
+        "diagnose sys ha checksum cluster",
+        "diagnose sys ha checksum cluster",
+        "مقایسه Checksum تنظیمات HA",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "troubleshoot",
+        "ha-config"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose sys ha checksum cluster` چه هدفی دارد؟",
+          "back": "کشف اختلاف در checksumهای بخش‌های config بین اعضای cluster"
+        },
+        {
+          "front": "قبل از استفاده عملی از «مقایسه Checksum تنظیمات HA» چه نکته‌ای را کنترل کنیم؟",
+          "back": "از synchronize/override کورکورانه پرهیز کن؛ ممکن است پیکربندی معتبر عضو دیگر بازنویسی شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q022",
+            "prompt": "برای این هدف، «کشف اختلاف در checksumهای بخش‌های config بین اعضای cluster»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose sys ha checksum cluster",
+              "get system ha status",
+              "show system interface",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q022",
+            "correct_index": 0,
+            "explain_fa": "`diagnose sys ha checksum cluster` برای کشف اختلاف در checksumهای بخش‌های config بین اعضای cluster. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** بخش mismatched را با config revision و زمان تغییرات مقایسه کن؛ اصلاح را از روش مستند Fortinet انجام بده.\n**هدف:** کشف اختلاف در checksumهای بخش‌های config بین اعضای cluster\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# مقایسه Checksum تنظیمات HA\n\n**دستور:** `diagnose sys ha checksum cluster`\n\n**هدف عملیاتی:** کشف اختلاف در checksumهای بخش‌های config بین اعضای cluster\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. بخش mismatched را با config revision و زمان تغییرات مقایسه کن؛ اصلاح را از روش مستند Fortinet انجام بده.\n\n## نمونه خروجی\n\n```text\n\nglobal: match\nroot: match\nsystem.interface: mismatch (نمونهٔ نمایشی)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاز synchronize/override کورکورانه پرهیز کن؛ ممکن است پیکربندی معتبر عضو دیگر بازنویسی شود. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get system ha status`، `show system interface`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:icmp:execute-ping",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "troubleshoot",
+      "subcategory": "icmp",
+      "level": "L0",
+      "title_fa": "آزمون Ping با FortiGate",
+      "title_en": "execute ping",
+      "command": "execute ping 10.20.30.1",
+      "aliases": [],
+      "syntax": "execute ping 10.20.30.1",
+      "arguments": [],
+      "when_to_use_fa": "آزمون ICMP از context و route فعلی FortiGate",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: آزمون ICMP از context و route فعلی FortiGate",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: execute ping 10.20.30.1",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: مبدأ و VDOM را کنترل کن؛ اگر لازم شد source را طبق مستندات نسخه در لابراتوار تنظیم کن و مسیر برگشت را بررسی کن."
+      ],
+      "sample_output": "PING 10.20.30.1: 56 data bytes\n64 bytes from 10.20.30.1: icmp_seq=1 ttl=64 time=0.4 ms",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get router info routing-table all",
+        "execute traceroute"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "مبدأ و VDOM را کنترل کن؛ اگر لازم شد source را طبق مستندات نسخه در لابراتوار تنظیم کن و مسیر برگشت را بررسی کن.",
+      "security_notes_fa": "از مقصد ناشناس flood نکن؛ ping موفق به معنی باز بودن TCP port نیست.",
+      "search_keywords": [
+        "execute ping",
+        "execute ping 10.20.30.1",
+        "آزمون Ping با FortiGate",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "troubleshoot",
+        "icmp"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `execute ping 10.20.30.1` چه هدفی دارد؟",
+          "back": "آزمون ICMP از context و route فعلی FortiGate"
+        },
+        {
+          "front": "قبل از استفاده عملی از «آزمون Ping با FortiGate» چه نکته‌ای را کنترل کنیم؟",
+          "back": "از مقصد ناشناس flood نکن؛ ping موفق به معنی باز بودن TCP port نیست."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q023",
+            "prompt": "برای این هدف، «آزمون ICMP از context و route فعلی FortiGate»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "execute ping 10.20.30.1",
+              "get router info routing-table all",
+              "execute traceroute",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q023",
+            "correct_index": 0,
+            "explain_fa": "`execute ping 10.20.30.1` برای آزمون ICMP از context و route فعلی FortiGate. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** مبدأ و VDOM را کنترل کن؛ اگر لازم شد source را طبق مستندات نسخه در لابراتوار تنظیم کن و مسیر برگشت را بررسی کن.\n**هدف:** آزمون ICMP از context و route فعلی FortiGate\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# آزمون Ping با FortiGate\n\n**دستور:** `execute ping 10.20.30.1`\n\n**هدف عملیاتی:** آزمون ICMP از context و route فعلی FortiGate\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. مبدأ و VDOM را کنترل کن؛ اگر لازم شد source را طبق مستندات نسخه در لابراتوار تنظیم کن و مسیر برگشت را بررسی کن.\n\n## نمونه خروجی\n\n```text\n\nPING 10.20.30.1: 56 data bytes\n64 bytes from 10.20.30.1: icmp_seq=1 ttl=64 time=0.4 ms\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاز مقصد ناشناس flood نکن؛ ping موفق به معنی باز بودن TCP port نیست. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get router info routing-table all`، `execute traceroute`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:path-tracing:execute-traceroute",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "troubleshoot",
+      "subcategory": "path-tracing",
+      "level": "L1",
+      "title_fa": "Traceroute از فایروال",
+      "title_en": "execute traceroute",
+      "command": "execute traceroute 1.1.1.1",
+      "aliases": [],
+      "syntax": "execute traceroute 1.1.1.1",
+      "arguments": [],
+      "when_to_use_fa": "ردیابی hopها از context مسیریابی FortiGate",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: ردیابی hopها از context مسیریابی FortiGate",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: execute traceroute 1.1.1.1",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: نتیجه را با source interface، policy route و traceroute کلاینت مقایسه کن؛ timeoutهای میانی را قطعی ندان."
+      ],
+      "sample_output": "traceroute to 1.1.1.1, 30 hops max\n1 10.20.30.1 0.5 ms",
+      "output_fields_fa": [],
+      "related_commands": [
+        "execute ping",
+        "get router info routing-table all"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "نتیجه را با source interface، policy route و traceroute کلاینت مقایسه کن؛ timeoutهای میانی را قطعی ندان.",
+      "security_notes_fa": "مسیر ترافیک را فقط برای مقصدهای مجاز بررسی کن و topology را محرمانه نگه دار.",
+      "search_keywords": [
+        "execute traceroute",
+        "execute traceroute 1.1.1.1",
+        "Traceroute از فایروال",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "troubleshoot",
+        "path-tracing"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `execute traceroute 1.1.1.1` چه هدفی دارد؟",
+          "back": "ردیابی hopها از context مسیریابی FortiGate"
+        },
+        {
+          "front": "قبل از استفاده عملی از «Traceroute از فایروال» چه نکته‌ای را کنترل کنیم؟",
+          "back": "مسیر ترافیک را فقط برای مقصدهای مجاز بررسی کن و topology را محرمانه نگه دار."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q024",
+            "prompt": "برای این هدف، «ردیابی hopها از context مسیریابی FortiGate»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "execute traceroute 1.1.1.1",
+              "execute ping",
+              "get router info routing-table all",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q024",
+            "correct_index": 0,
+            "explain_fa": "`execute traceroute 1.1.1.1` برای ردیابی hopها از context مسیریابی FortiGate. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** نتیجه را با source interface، policy route و traceroute کلاینت مقایسه کن؛ timeoutهای میانی را قطعی ندان.\n**هدف:** ردیابی hopها از context مسیریابی FortiGate\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# Traceroute از فایروال\n\n**دستور:** `execute traceroute 1.1.1.1`\n\n**هدف عملیاتی:** ردیابی hopها از context مسیریابی FortiGate\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. نتیجه را با source interface، policy route و traceroute کلاینت مقایسه کن؛ timeoutهای میانی را قطعی ندان.\n\n## نمونه خروجی\n\n```text\n\ntraceroute to 1.1.1.1, 30 hops max\n1 10.20.30.1 0.5 ms\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nمسیر ترافیک را فقط برای مقصدهای مجاز بررسی کن و topology را محرمانه نگه دار. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`execute ping`، `get router info routing-table all`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:arp:get-system-arp",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "troubleshoot",
+      "subcategory": "arp",
+      "level": "L1",
+      "title_fa": "نمایش جدول ARP",
+      "title_en": "get system arp",
+      "command": "get system arp",
+      "aliases": [],
+      "syntax": "get system arp",
+      "arguments": [],
+      "when_to_use_fa": "بررسی IP/MAC/interface برای neighbor resolution",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی IP/MAC/interface برای neighbor resolution",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: get system arp",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: IP problem را با interface VLAN، switch MAC table و ARP کلاینت تطبیق بده."
+      ],
+      "sample_output": "Address: 10.20.30.25\nMAC: 00:11:22:33:44:55\nInterface: port2",
+      "output_fields_fa": [],
+      "related_commands": [
+        "diagnose ip arp list",
+        "get system interface"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "IP problem را با interface VLAN، switch MAC table و ARP کلاینت تطبیق بده.",
+      "security_notes_fa": "مدخل ARP stale را بدون بررسی duplicate IP یا security incident پاک نکن.",
+      "search_keywords": [
+        "get system arp",
+        "get system arp",
+        "نمایش جدول ARP",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "troubleshoot",
+        "arp"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `get system arp` چه هدفی دارد؟",
+          "back": "بررسی IP/MAC/interface برای neighbor resolution"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش جدول ARP» چه نکته‌ای را کنترل کنیم؟",
+          "back": "مدخل ARP stale را بدون بررسی duplicate IP یا security incident پاک نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q025",
+            "prompt": "برای این هدف، «بررسی IP/MAC/interface برای neighbor resolution»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "get system arp",
+              "diagnose ip arp list",
+              "get system interface",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q025",
+            "correct_index": 0,
+            "explain_fa": "`get system arp` برای بررسی IP/MAC/interface برای neighbor resolution. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** IP problem را با interface VLAN، switch MAC table و ARP کلاینت تطبیق بده.\n**هدف:** بررسی IP/MAC/interface برای neighbor resolution\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش جدول ARP\n\n**دستور:** `get system arp`\n\n**هدف عملیاتی:** بررسی IP/MAC/interface برای neighbor resolution\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. IP problem را با interface VLAN، switch MAC table و ARP کلاینت تطبیق بده.\n\n## نمونه خروجی\n\n```text\n\nAddress: 10.20.30.25\nMAC: 00:11:22:33:44:55\nInterface: port2\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nمدخل ARP stale را بدون بررسی duplicate IP یا security incident پاک نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`diagnose ip arp list`، `get system interface`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:dhcp:execute-dhcp-lease-list",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "monitor",
+      "subcategory": "dhcp",
+      "level": "L2",
+      "title_fa": "بررسی Leaseهای DHCP",
+      "title_en": "execute dhcp lease-list",
+      "command": "execute dhcp lease-list",
+      "aliases": [],
+      "syntax": "execute dhcp lease-list",
+      "arguments": [],
+      "when_to_use_fa": "مشاهده Leaseهای صادرشده توسط FortiGate DHCP server (اگر نسخه/نقش پشتیبانی کند)",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهده Leaseهای صادرشده توسط FortiGate DHCP server (اگر نسخه/نقش پشتیبانی کند)",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: execute dhcp lease-list",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: با DHCP scope واقعی و کلاینت آزمایشی مقایسه کن؛ اگر دستگاه DHCP server دیگری دارد، منبع Lease را مشخص کن."
+      ],
+      "sample_output": "IP Address: 10.20.30.25\nMAC Address: 00:11:22:33:44:55\nHostname: LAB-WS01",
+      "output_fields_fa": [],
+      "related_commands": [
+        "show system dhcp server",
+        "get system arp"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "با DHCP scope واقعی و کلاینت آزمایشی مقایسه کن؛ اگر دستگاه DHCP server دیگری دارد، منبع Lease را مشخص کن.",
+      "security_notes_fa": "فرمان‌ها در نسخه و مدل تفاوت دارند؛ پیش از استفاده دستور را در CLI help همان FortiOS تأیید کن.",
+      "search_keywords": [
+        "execute dhcp lease-list",
+        "execute dhcp lease-list",
+        "بررسی Leaseهای DHCP",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "monitor",
+        "dhcp"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `execute dhcp lease-list` چه هدفی دارد؟",
+          "back": "مشاهده Leaseهای صادرشده توسط FortiGate DHCP server (اگر نسخه/نقش پشتیبانی کند)"
+        },
+        {
+          "front": "قبل از استفاده عملی از «بررسی Leaseهای DHCP» چه نکته‌ای را کنترل کنیم؟",
+          "back": "فرمان‌ها در نسخه و مدل تفاوت دارند؛ پیش از استفاده دستور را در CLI help همان FortiOS تأیید کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q026",
+            "prompt": "برای این هدف، «مشاهده Leaseهای صادرشده توسط FortiGate DHCP server (اگر نسخه/نقش پشتیبانی کند)»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "execute dhcp lease-list",
+              "show system dhcp server",
+              "get system arp",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q026",
+            "correct_index": 0,
+            "explain_fa": "`execute dhcp lease-list` برای مشاهده Leaseهای صادرشده توسط FortiGate DHCP server (اگر نسخه/نقش پشتیبانی کند). گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** با DHCP scope واقعی و کلاینت آزمایشی مقایسه کن؛ اگر دستگاه DHCP server دیگری دارد، منبع Lease را مشخص کن.\n**هدف:** مشاهده Leaseهای صادرشده توسط FortiGate DHCP server (اگر نسخه/نقش پشتیبانی کند)\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# بررسی Leaseهای DHCP\n\n**دستور:** `execute dhcp lease-list`\n\n**هدف عملیاتی:** مشاهده Leaseهای صادرشده توسط FortiGate DHCP server (اگر نسخه/نقش پشتیبانی کند)\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. با DHCP scope واقعی و کلاینت آزمایشی مقایسه کن؛ اگر دستگاه DHCP server دیگری دارد، منبع Lease را مشخص کن.\n\n## نمونه خروجی\n\n```text\n\nIP Address: 10.20.30.25\nMAC Address: 00:11:22:33:44:55\nHostname: LAB-WS01\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nفرمان‌ها در نسخه و مدل تفاوت دارند؛ پیش از استفاده دستور را در CLI help همان FortiOS تأیید کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`show system dhcp server`، `get system arp`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:dns:get-system-dns",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "monitor",
+      "subcategory": "dns",
+      "level": "L1",
+      "title_fa": "بازبینی DNS پیکربندی‌شده",
+      "title_en": "get system dns",
+      "command": "get system dns",
+      "aliases": [],
+      "syntax": "get system dns",
+      "arguments": [],
+      "when_to_use_fa": "مشاهده resolverهای سیستمی FortiGate برای سرویس‌هایی که به DNS وابسته‌اند",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهده resolverهای سیستمی FortiGate برای سرویس‌هایی که به DNS وابسته‌اند",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: get system dns",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: پیکربندی DNS را با queryهای کنترل‌شده، route و policy خروجی از VDOM مربوط مقایسه کن."
+      ],
+      "sample_output": "Primary: 10.20.30.10\nSecondary: 10.20.30.11",
+      "output_fields_fa": [],
+      "related_commands": [
+        "show system dns",
+        "execute ping"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "پیکربندی DNS را با queryهای کنترل‌شده، route و policy خروجی از VDOM مربوط مقایسه کن.",
+      "security_notes_fa": "DNS تغییرکرده می‌تواند FortiGuard و سرویس‌های مدیریتی را مختل کند؛ از تغییر بدون plan بپرهیز.",
+      "search_keywords": [
+        "get system dns",
+        "get system dns",
+        "بازبینی DNS پیکربندی‌شده",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "monitor",
+        "dns"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `get system dns` چه هدفی دارد؟",
+          "back": "مشاهده resolverهای سیستمی FortiGate برای سرویس‌هایی که به DNS وابسته‌اند"
+        },
+        {
+          "front": "قبل از استفاده عملی از «بازبینی DNS پیکربندی‌شده» چه نکته‌ای را کنترل کنیم؟",
+          "back": "DNS تغییرکرده می‌تواند FortiGuard و سرویس‌های مدیریتی را مختل کند؛ از تغییر بدون plan بپرهیز."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q027",
+            "prompt": "برای این هدف، «مشاهده resolverهای سیستمی FortiGate برای سرویس‌هایی که به DNS وابسته‌اند»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "get system dns",
+              "show system dns",
+              "execute ping",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q027",
+            "correct_index": 0,
+            "explain_fa": "`get system dns` برای مشاهده resolverهای سیستمی FortiGate برای سرویس‌هایی که به DNS وابسته‌اند. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** پیکربندی DNS را با queryهای کنترل‌شده، route و policy خروجی از VDOM مربوط مقایسه کن.\n**هدف:** مشاهده resolverهای سیستمی FortiGate برای سرویس‌هایی که به DNS وابسته‌اند\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# بازبینی DNS پیکربندی‌شده\n\n**دستور:** `get system dns`\n\n**هدف عملیاتی:** مشاهده resolverهای سیستمی FortiGate برای سرویس‌هایی که به DNS وابسته‌اند\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. پیکربندی DNS را با queryهای کنترل‌شده، route و policy خروجی از VDOM مربوط مقایسه کن.\n\n## نمونه خروجی\n\n```text\n\nPrimary: 10.20.30.10\nSecondary: 10.20.30.11\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nDNS تغییرکرده می‌تواند FortiGuard و سرویس‌های مدیریتی را مختل کند؛ از تغییر بدون plan بپرهیز. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`show system dns`، `execute ping`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:admin-accounts:get-system-admin-list",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "identity",
+      "subcategory": "admin-accounts",
+      "level": "L2",
+      "title_fa": "لیست Administratorها",
+      "title_en": "get system admin list",
+      "command": "get system admin list",
+      "aliases": [],
+      "syntax": "get system admin list",
+      "arguments": [],
+      "when_to_use_fa": "بازبینی حساب‌های مدیریتی و status پیکربندی‌شده",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بازبینی حساب‌های مدیریتی و status پیکربندی‌شده",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: get system admin list",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: حساب‌ها و profileها را با baseline دسترسی مقایسه کن؛ اکانت emergency را به‌صورت جداگانه مستند کن."
+      ],
+      "sample_output": "name: lab-audit\naccprofile: read_only\nvdom: root",
+      "output_fields_fa": [],
+      "related_commands": [
+        "show system admin",
+        "get system status"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "حساب‌ها و profileها را با baseline دسترسی مقایسه کن؛ اکانت emergency را به‌صورت جداگانه مستند کن.",
+      "security_notes_fa": "نام administratorها و مجوزها اطلاعات حساس امنیتی هستند؛ حساب ناشناس را بدون change plan حذف نکن.",
+      "search_keywords": [
+        "get system admin list",
+        "get system admin list",
+        "لیست Administratorها",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "identity",
+        "admin-accounts"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `get system admin list` چه هدفی دارد؟",
+          "back": "بازبینی حساب‌های مدیریتی و status پیکربندی‌شده"
+        },
+        {
+          "front": "قبل از استفاده عملی از «لیست Administratorها» چه نکته‌ای را کنترل کنیم؟",
+          "back": "نام administratorها و مجوزها اطلاعات حساس امنیتی هستند؛ حساب ناشناس را بدون change plan حذف نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q028",
+            "prompt": "برای این هدف، «بازبینی حساب‌های مدیریتی و status پیکربندی‌شده»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "get system admin list",
+              "show system admin",
+              "get system status",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q028",
+            "correct_index": 0,
+            "explain_fa": "`get system admin list` برای بازبینی حساب‌های مدیریتی و status پیکربندی‌شده. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** حساب‌ها و profileها را با baseline دسترسی مقایسه کن؛ اکانت emergency را به‌صورت جداگانه مستند کن.\n**هدف:** بازبینی حساب‌های مدیریتی و status پیکربندی‌شده\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# لیست Administratorها\n\n**دستور:** `get system admin list`\n\n**هدف عملیاتی:** بازبینی حساب‌های مدیریتی و status پیکربندی‌شده\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. حساب‌ها و profileها را با baseline دسترسی مقایسه کن؛ اکانت emergency را به‌صورت جداگانه مستند کن.\n\n## نمونه خروجی\n\n```text\n\nname: lab-audit\naccprofile: read_only\nvdom: root\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nنام administratorها و مجوزها اطلاعات حساس امنیتی هستند؛ حساب ناشناس را بدون change plan حذف نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`show system admin`، `get system status`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:dhcp:show-system-dhcp-server",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "monitor",
+      "subcategory": "dhcp",
+      "level": "L2",
+      "title_fa": "نمایش DHCP server configuration",
+      "title_en": "show system dhcp server",
+      "command": "show system dhcp server",
+      "aliases": [],
+      "syntax": "show system dhcp server",
+      "arguments": [],
+      "when_to_use_fa": "مرور scope range، gateway، DNS، interface و lease time",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مرور scope range، gateway، DNS، interface و lease time",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: show system dhcp server",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: پیکربندی را با VLAN/subnet واقعی و DHCP relay تطبیق بده؛ روی gateway و DNS دقیق شو."
+      ],
+      "sample_output": "config system dhcp server\n edit 1\n  set interface \"port2\"\n  set default-gateway 10.20.30.1\n next\nend",
+      "output_fields_fa": [],
+      "related_commands": [
+        "execute dhcp lease-list",
+        "get system interface"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "پیکربندی را با VLAN/subnet واقعی و DHCP relay تطبیق بده؛ روی gateway و DNS دقیق شو.",
+      "security_notes_fa": "خطا در scope یا interface می‌تواند به کاربران subnet اشتباه IP بدهد.",
+      "search_keywords": [
+        "show system dhcp server",
+        "show system dhcp server",
+        "نمایش DHCP server configuration",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "monitor",
+        "dhcp"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `show system dhcp server` چه هدفی دارد؟",
+          "back": "مرور scope range، gateway، DNS، interface و lease time"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش DHCP server configuration» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خطا در scope یا interface می‌تواند به کاربران subnet اشتباه IP بدهد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q029",
+            "prompt": "برای این هدف، «مرور scope range، gateway، DNS، interface و lease time»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "show system dhcp server",
+              "execute dhcp lease-list",
+              "get system interface",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q029",
+            "correct_index": 0,
+            "explain_fa": "`show system dhcp server` برای مرور scope range، gateway، DNS، interface و lease time. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** پیکربندی را با VLAN/subnet واقعی و DHCP relay تطبیق بده؛ روی gateway و DNS دقیق شو.\n**هدف:** مرور scope range، gateway، DNS، interface و lease time\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش DHCP server configuration\n\n**دستور:** `show system dhcp server`\n\n**هدف عملیاتی:** مرور scope range، gateway، DNS، interface و lease time\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. پیکربندی را با VLAN/subnet واقعی و DHCP relay تطبیق بده؛ روی gateway و DNS دقیق شو.\n\n## نمونه خروجی\n\n```text\n\nconfig system dhcp server\n edit 1\n  set interface \"port2\"\n  set default-gateway 10.20.30.1\n next\nend\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخطا در scope یا interface می‌تواند به کاربران subnet اشتباه IP بدهد. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`execute dhcp lease-list`، `get system interface`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:static-route:show-router-static",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "routing",
+      "subcategory": "static-route",
+      "level": "L1",
+      "title_fa": "نمایش Static Route config",
+      "title_en": "show router static",
+      "command": "show router static",
+      "aliases": [],
+      "syntax": "show router static",
+      "arguments": [],
+      "when_to_use_fa": "بازبینی تمام static routeها و next hopها در CLI config",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بازبینی تمام static routeها و next hopها در CLI config",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: show router static",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: با RIB و policy routes مقایسه کن تا تفاوت config با route فعال مشخص شود."
+      ],
+      "sample_output": "set dst 0.0.0.0 0.0.0.0\nset gateway 10.20.30.1\nset device \"port1\"",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get router info routing-table all",
+        "show router policy"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "با RIB و policy routes مقایسه کن تا تفاوت config با route فعال مشخص شود.",
+      "security_notes_fa": "پیش از تغییر مسیر، backup و آزمون مسیر برگشت داشته باش.",
+      "search_keywords": [
+        "show router static",
+        "show router static",
+        "نمایش Static Route config",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "routing",
+        "static-route"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `show router static` چه هدفی دارد؟",
+          "back": "بازبینی تمام static routeها و next hopها در CLI config"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش Static Route config» چه نکته‌ای را کنترل کنیم؟",
+          "back": "پیش از تغییر مسیر، backup و آزمون مسیر برگشت داشته باش."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q030",
+            "prompt": "برای این هدف، «بازبینی تمام static routeها و next hopها در CLI config»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "show router static",
+              "get router info routing-table all",
+              "show router policy",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q030",
+            "correct_index": 0,
+            "explain_fa": "`show router static` برای بازبینی تمام static routeها و next hopها در CLI config. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** با RIB و policy routes مقایسه کن تا تفاوت config با route فعال مشخص شود.\n**هدف:** بازبینی تمام static routeها و next hopها در CLI config\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش Static Route config\n\n**دستور:** `show router static`\n\n**هدف عملیاتی:** بازبینی تمام static routeها و next hopها در CLI config\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. با RIB و policy routes مقایسه کن تا تفاوت config با route فعال مشخص شود.\n\n## نمونه خروجی\n\n```text\n\nset dst 0.0.0.0 0.0.0.0\nset gateway 10.20.30.1\nset device \"port1\"\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nپیش از تغییر مسیر، backup و آزمون مسیر برگشت داشته باش. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get router info routing-table all`، `show router policy`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:policy-route:show-router-policy",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "routing",
+      "subcategory": "policy-route",
+      "level": "L2",
+      "title_fa": "بررسی route policyها",
+      "title_en": "show router policy",
+      "command": "show router policy",
+      "aliases": [],
+      "syntax": "show router policy",
+      "arguments": [],
+      "when_to_use_fa": "بازبینی Policy Route که ممکن است بر خروجی بر routing table عادی اولویت داشته باشد",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بازبینی Policy Route که ممکن است بر خروجی بر routing table عادی اولویت داشته باشد",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: show router policy",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: برای flow مشخص، source, destination, input interface و match ترتیب policy را به route منتخب متصل کن."
+      ],
+      "sample_output": "config router policy\n edit 1\n  set input-device \"port2\"\n  set src 10.20.30.0 255.255.255.0\n next\nend",
+      "output_fields_fa": [],
+      "related_commands": [
+        "show router static",
+        "get router info routing-table all"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "برای flow مشخص، source, destination, input interface و match ترتیب policy را به route منتخب متصل کن.",
+      "security_notes_fa": "policy routing اشتباه می‌تواند asymmetric routing ایجاد کند؛ بدون packet capture/flow debug اصلاح نکن.",
+      "search_keywords": [
+        "show router policy",
+        "show router policy",
+        "بررسی route policyها",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "routing",
+        "policy-route"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `show router policy` چه هدفی دارد؟",
+          "back": "بازبینی Policy Route که ممکن است بر خروجی بر routing table عادی اولویت داشته باشد"
+        },
+        {
+          "front": "قبل از استفاده عملی از «بررسی route policyها» چه نکته‌ای را کنترل کنیم؟",
+          "back": "policy routing اشتباه می‌تواند asymmetric routing ایجاد کند؛ بدون packet capture/flow debug اصلاح نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q031",
+            "prompt": "برای این هدف، «بازبینی Policy Route که ممکن است بر خروجی بر routing table عادی اولویت داشته باشد»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "show router policy",
+              "show router static",
+              "get router info routing-table all",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q031",
+            "correct_index": 0,
+            "explain_fa": "`show router policy` برای بازبینی Policy Route که ممکن است بر خروجی بر routing table عادی اولویت داشته باشد. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** برای flow مشخص، source, destination, input interface و match ترتیب policy را به route منتخب متصل کن.\n**هدف:** بازبینی Policy Route که ممکن است بر خروجی بر routing table عادی اولویت داشته باشد\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# بررسی route policyها\n\n**دستور:** `show router policy`\n\n**هدف عملیاتی:** بازبینی Policy Route که ممکن است بر خروجی بر routing table عادی اولویت داشته باشد\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. برای flow مشخص، source, destination, input interface و match ترتیب policy را به route منتخب متصل کن.\n\n## نمونه خروجی\n\n```text\n\nconfig router policy\n edit 1\n  set input-device \"port2\"\n  set src 10.20.30.0 255.255.255.0\n next\nend\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\npolicy routing اشتباه می‌تواند asymmetric routing ایجاد کند؛ بدون packet capture/flow debug اصلاح نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`show router static`، `get router info routing-table all`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:interface-kernel:diagnose-netlink-interface-list",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "troubleshoot",
+      "subcategory": "interface-kernel",
+      "level": "L3",
+      "title_fa": "وضعیت Health Check فیزیکی",
+      "title_en": "diagnose netlink interface list",
+      "command": "diagnose netlink interface list",
+      "aliases": [],
+      "syntax": "diagnose netlink interface list",
+      "arguments": [],
+      "when_to_use_fa": "بررسی حالت kernel interface و counters برای اختلاف با config CLI",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی حالت kernel interface و counters برای اختلاف با config CLI",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose netlink interface list",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: یک interface مشخص را بررسی کن و counters را با `get system interface physical` و switch port برابر مقایسه کن."
+      ],
+      "sample_output": "if=port2 status=up mtu=1500 (نمونهٔ نمایشی)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "get system interface physical",
+        "diagnose hardware deviceinfo nic"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "یک interface مشخص را بررسی کن و counters را با `get system interface physical` و switch port برابر مقایسه کن.",
+      "security_notes_fa": "خروجی kernel-level به نسخه وابسته است؛ از فرمان‌های غیرمستند روی production خودداری کن.",
+      "search_keywords": [
+        "diagnose netlink interface list",
+        "diagnose netlink interface list",
+        "وضعیت Health Check فیزیکی",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "troubleshoot",
+        "interface-kernel"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose netlink interface list` چه هدفی دارد؟",
+          "back": "بررسی حالت kernel interface و counters برای اختلاف با config CLI"
+        },
+        {
+          "front": "قبل از استفاده عملی از «وضعیت Health Check فیزیکی» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خروجی kernel-level به نسخه وابسته است؛ از فرمان‌های غیرمستند روی production خودداری کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q032",
+            "prompt": "برای این هدف، «بررسی حالت kernel interface و counters برای اختلاف با config CLI»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose netlink interface list",
+              "get system interface physical",
+              "diagnose hardware deviceinfo nic",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q032",
+            "correct_index": 0,
+            "explain_fa": "`diagnose netlink interface list` برای بررسی حالت kernel interface و counters برای اختلاف با config CLI. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** یک interface مشخص را بررسی کن و counters را با `get system interface physical` و switch port برابر مقایسه کن.\n**هدف:** بررسی حالت kernel interface و counters برای اختلاف با config CLI\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# وضعیت Health Check فیزیکی\n\n**دستور:** `diagnose netlink interface list`\n\n**هدف عملیاتی:** بررسی حالت kernel interface و counters برای اختلاف با config CLI\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. یک interface مشخص را بررسی کن و counters را با `get system interface physical` و switch port برابر مقایسه کن.\n\n## نمونه خروجی\n\n```text\n\nif=port2 status=up mtu=1500 (نمونهٔ نمایشی)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخروجی kernel-level به نسخه وابسته است؛ از فرمان‌های غیرمستند روی production خودداری کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get system interface physical`، `diagnose hardware deviceinfo nic`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:policy-diagnostics:diagnose-firewall-iprope-list",
+      "vendor": "fortigate",
+      "platform": "FortiOS 7.x CLI",
+      "category": "firewall",
+      "subcategory": "policy-diagnostics",
+      "level": "L3",
+      "title_fa": "نمایش Debug policy lookup",
+      "title_en": "diagnose firewall iprope list",
+      "command": "diagnose firewall iprope list",
+      "aliases": [],
+      "syntax": "diagnose firewall iprope list",
+      "arguments": [],
+      "when_to_use_fa": "کاوش ساختار policy lookup برای عیب‌یابی پیشرفته با نسخهٔ سازگار",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: کاوش ساختار policy lookup برای عیب‌یابی پیشرفته با نسخهٔ سازگار",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: diagnose firewall iprope list",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: فقط با راهنمایی نسخهٔ FortiOS و در lab بررسی کن؛ برای جریان واحد ترجیحاً iprope lookup با tuple دقیق را به کار ببر."
+      ],
+      "sample_output": "(خروجی rule index و entryها متناسب با FortiOS است)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "diagnose firewall iprope lookup",
+        "show firewall policy"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "فقط با راهنمایی نسخهٔ FortiOS و در lab بررسی کن؛ برای جریان واحد ترجیحاً iprope lookup با tuple دقیق را به کار ببر.",
+      "security_notes_fa": "diagnose سطح پایین می‌تواند خروجی بزرگ تولید کند؛ از اجرای بی‌حد و ثبت کل خروجی روی production بپرهیز.",
+      "search_keywords": [
+        "diagnose firewall iprope list",
+        "diagnose firewall iprope list",
+        "نمایش Debug policy lookup",
+        "fortigate",
+        "FortiOS 7.x CLI",
+        "firewall",
+        "policy-diagnostics"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `diagnose firewall iprope list` چه هدفی دارد؟",
+          "back": "کاوش ساختار policy lookup برای عیب‌یابی پیشرفته با نسخهٔ سازگار"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش Debug policy lookup» چه نکته‌ای را کنترل کنیم؟",
+          "back": "diagnose سطح پایین می‌تواند خروجی بزرگ تولید کند؛ از اجرای بی‌حد و ثبت کل خروجی روی production بپرهیز."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q033",
+            "prompt": "برای این هدف، «کاوش ساختار policy lookup برای عیب‌یابی پیشرفته با نسخهٔ سازگار»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "diagnose firewall iprope list",
+              "diagnose firewall iprope lookup",
+              "show firewall policy",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q033",
+            "correct_index": 0,
+            "explain_fa": "`diagnose firewall iprope list` برای کاوش ساختار policy lookup برای عیب‌یابی پیشرفته با نسخهٔ سازگار. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** فقط با راهنمایی نسخهٔ FortiOS و در lab بررسی کن؛ برای جریان واحد ترجیحاً iprope lookup با tuple دقیق را به کار ببر.\n**هدف:** کاوش ساختار policy lookup برای عیب‌یابی پیشرفته با نسخهٔ سازگار\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش Debug policy lookup\n\n**دستور:** `diagnose firewall iprope list`\n\n**هدف عملیاتی:** کاوش ساختار policy lookup برای عیب‌یابی پیشرفته با نسخهٔ سازگار\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. فقط با راهنمایی نسخهٔ FortiOS و در lab بررسی کن؛ برای جریان واحد ترجیحاً iprope lookup با tuple دقیق را به کار ببر.\n\n## نمونه خروجی\n\n```text\n\n(خروجی rule index و entryها متناسب با FortiOS است)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\ndiagnose سطح پایین می‌تواند خروجی بزرگ تولید کند؛ از اجرای بی‌حد و ثبت کل خروجی روی production بپرهیز. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`diagnose firewall iprope lookup`، `show firewall policy`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "official_sources": [
+        {
+          "title": "Fortinet Documentation — FortiOS",
+          "url": "https://docs.fortinet.com/product/fortigate/7.4"
+        }
+      ],
+      "source_status": "review_required"
+    }
+  ]
+}
