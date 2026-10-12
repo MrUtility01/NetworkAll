@@ -206,7 +206,8 @@ class MainActivity : AppCompatActivity() {
                 val since = withContext(Dispatchers.IO) { repo.getLastSync() }.ifBlank { null }
                 val m = withContext(Dispatchers.IO) { c.manifest(since) }
                 var pulled = 0
-                for (chunk in m.items.map { it.uid }.chunked(80)) {
+                // Lesson and study records intentionally share a lesson UID; pull each UID once and let entity routing split the returned records.
+                for (chunk in m.items.map { it.uid }.distinct().chunked(80)) {
                     val body = withContext(Dispatchers.IO) { c.pull(chunk) }
                     pulled += withContext(Dispatchers.IO) { repo.upsertFromPullJson(body) }
                     pulled += withContext(Dispatchers.IO) { workspaceSyncRepo.upsertFromPullJson(body) }
