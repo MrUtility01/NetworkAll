@@ -1,7 +1,7 @@
 {
   "package_schema_version": 1,
   "project": "ENGINEER JOKAR / NetworkEncyclopedia",
-  "generated_on": "2026-10-12",
+  "generated_on": "2026-10-13",
   "purpose": "commands encyclopedia - issabel asterisk",
   "vendor_pack": "issabel",
   "chapter_order": 68,
@@ -34,7 +34,11 @@
   "content_quality": {
     "status": "review_required",
     "lab_status": "designed_not_executed",
-    "note_fa": "ساختار JSON و مسیر آموزشی تولید شده؛ آزمایش دستورات باید روی نسخه/مدل هدف و با شواهد اجرا تکمیل شود."
+    "note_fa": "ساختار JSON و مسیر آموزشی تولید شده؛ آزمایش دستورات باید روی نسخه/مدل هدف و با شواهد اجرا تکمیل شود.",
+    "last_enrichment": "2026-10-13",
+    "gaps_fa": [
+      "معیار اعتبارسنجی، سطح ریسک، کنترل نسخه و راهنمای rollback به رکوردها افزوده شد؛ تأیید نهایی باید روی نسخهٔ واقعی هدف انجام شود."
+    ]
   },
   "commands": [
     {
@@ -72,7 +76,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "با یک کاربر ادمین مجاز و پنجرهٔ نگهداری وصل شو؛ ابتدا version و uptime را ثبت کن.",
-      "security_notes_fa": "دسترسی CLI می‌تواند کنترل کامل تماس‌ها و سرویس VoIP بدهد؛ فقط حساب مدیریتی مجاز استفاده کند.",
+      "security_notes_fa": [
+        "دسترسی CLI می‌تواند کنترل کامل تماس‌ها و سرویس VoIP بدهد؛ فقط حساب مدیریتی مجاز استفاده کند."
+      ],
       "search_keywords": [
         "asterisk -rvvv",
         "asterisk -rvvv",
@@ -122,7 +128,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:version:core-show-version",
@@ -157,7 +175,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "نسخه را با Issabel release و package manager تطبیق بده؛ syntax قدیمی chan_sip ممکن است در نسخه جدید نباشد.",
-      "security_notes_fa": "نام build و نسخه برای inventory؛ secret را در این خروجی ثبت نکن.",
+      "security_notes_fa": [
+        "نام build و نسخه برای inventory؛ secret را در این خروجی ثبت نکن."
+      ],
       "search_keywords": [
         "core show version",
         "core show version",
@@ -207,7 +227,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:runtime:core-show-uptime",
@@ -242,7 +274,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "uptime را با زمان قطعی گزارش‌شده و service journal مقایسه کن.",
-      "security_notes_fa": "restart شدن Asterisk ممکن است تمام تماس‌ها را قطع کند؛ این فرمان مشاهده‌ای است.",
+      "security_notes_fa": [
+        "restart شدن Asterisk ممکن است تمام تماس‌ها را قطع کند؛ این فرمان مشاهده‌ای است."
+      ],
       "search_keywords": [
         "core show uptime",
         "core show uptime",
@@ -292,7 +326,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:channels:core-show-channels",
@@ -327,7 +373,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "تعداد تماس‌ها را با CDR و SIP/PJSIP channel count مقایسه کن؛ channel orphan را با لاگ تحلیل کن.",
-      "security_notes_fa": "شماره داخلی، trunk و مقصد تماس دادهٔ حساس هستند؛ خروجی را ناشناس‌سازی کن.",
+      "security_notes_fa": [
+        "شماره داخلی، trunk و مقصد تماس دادهٔ حساس هستند؛ خروجی را ناشناس‌سازی کن."
+      ],
       "search_keywords": [
         "core show channels",
         "core show channels",
@@ -377,7 +425,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:channels:core-show-channels-concise",
@@ -412,7 +472,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "در لابراتوار، یک تماس تست بساز و کانال را قبل/حین/بعد از پایان مقایسه کن.",
-      "security_notes_fa": "خروجی شامل شماره داخلی و مسیر تماس است؛ دسترسی محدود داشته باشد.",
+      "security_notes_fa": [
+        "خروجی شامل شماره داخلی و مسیر تماس است؛ دسترسی محدود داشته باشد."
+      ],
       "search_keywords": [
         "core show channels concise",
         "core show channels concise",
@@ -462,7 +524,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:channel-detail:core-show-channel",
@@ -497,7 +571,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط channel جاری آزمایش را بررسی کن؛ نام channel بعد از پایان تماس دیگر معتبر نیست.",
-      "security_notes_fa": "اطلاعات تماس و caller ID محرمانه است.",
+      "security_notes_fa": [
+        "اطلاعات تماس و caller ID محرمانه است."
+      ],
       "search_keywords": [
         "core show channel",
         "core show channel PJSIP/1001-00000001",
@@ -547,7 +623,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:pjsip-endpoints:pjsip-show-endpoints",
@@ -582,7 +670,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "endpoint configuration، AOR contact و registration را جدا بررسی کن؛ Not in use لزوماً خطا نیست.",
-      "security_notes_fa": "نام endpoint و داخلی‌ها را در public log mask کن.",
+      "security_notes_fa": [
+        "نام endpoint و داخلی‌ها را در public log mask کن."
+      ],
       "search_keywords": [
         "pjsip show endpoints",
         "pjsip show endpoints",
@@ -632,7 +722,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:pjsip-endpoints:pjsip-show-endpoint",
@@ -668,7 +770,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "context, auth, aor و codecهای negotiated را با پروفایل extension و لاگ REGISTER تطبیق بده.",
-      "security_notes_fa": "خروجی می‌تواند context داخلی و codec policy را افشا کند؛ auth secret نباید چاپ یا share شود.",
+      "security_notes_fa": [
+        "خروجی می‌تواند context داخلی و codec policy را افشا کند؛ auth secret نباید چاپ یا share شود."
+      ],
       "search_keywords": [
         "pjsip show endpoint",
         "pjsip show endpoint 1001",
@@ -718,7 +822,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:pjsip-registration:pjsip-show-contacts",
@@ -753,7 +869,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "Contact را با IP تلفن، VLAN Voice و DHCP lease تطبیق بده؛ در صورت Unavail packet capture محدود بگیر.",
-      "security_notes_fa": "آدرس تلفن و داخلی اطلاعات حساس‌اند؛ در خروجی عمومی mask کن.",
+      "security_notes_fa": [
+        "آدرس تلفن و داخلی اطلاعات حساس‌اند؛ در خروجی عمومی mask کن."
+      ],
       "search_keywords": [
         "pjsip show contacts",
         "pjsip show contacts",
@@ -803,7 +921,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:sip-trunk:pjsip-show-registrations",
@@ -838,7 +968,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "در fail شدن registration، DNS، NTP، credential reference و SIP response code را مرحله‌ای بررسی کن.",
-      "security_notes_fa": "secret trunk را در CLI debug یا گزارش ticket چاپ نکن.",
+      "security_notes_fa": [
+        "secret trunk را در CLI debug یا گزارش ticket چاپ نکن."
+      ],
       "search_keywords": [
         "pjsip show registrations",
         "pjsip show registrations",
@@ -888,7 +1020,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:pjsip-transport:pjsip-show-transports",
@@ -923,7 +1067,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "bind address، firewall و SIP ALG در مسیر را با تنظیمات شبکه مقایسه کن؛ برای TLS certificate details را جدا بررسی کن.",
-      "security_notes_fa": "Bind به همه interfaceها می‌تواند exposure ایجاد کند؛ طراحی و ACL را بررسی کن.",
+      "security_notes_fa": [
+        "Bind به همه interfaceها می‌تواند exposure ایجاد کند؛ طراحی و ACL را بررسی کن."
+      ],
       "search_keywords": [
         "pjsip show transports",
         "pjsip show transports",
@@ -973,7 +1119,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:sip-debug:pjsip-set-logger-on",
@@ -1008,7 +1166,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط روی lab یا در پنجرهٔ مصوب فعال کن؛ چند پیام را capture و سپس با `pjsip set logger off` خاموش کن.",
-      "security_notes_fa": "SIP log می‌تواند شماره‌ها، headerها و گاهی دادهٔ حساس session را آشکار کند؛ همیشه خاموش‌کردن را در checklist قرار بده.",
+      "security_notes_fa": [
+        "SIP log می‌تواند شماره‌ها، headerها و گاهی دادهٔ حساس session را آشکار کند؛ همیشه خاموش‌کردن را در checklist قرار بده."
+      ],
       "search_keywords": [
         "pjsip set logger on",
         "pjsip set logger on",
@@ -1058,7 +1218,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:sip-debug:pjsip-set-logger-off",
@@ -1093,7 +1265,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "پس از capture تست اجرا و با یک تماس آزمایشی بررسی کن که SIP پیام‌ها دیگر dump نشوند.",
-      "security_notes_fa": "جاگذاشتن logger فعال در PBX پرترافیک risk اطلاعاتی و performance دارد.",
+      "security_notes_fa": [
+        "جاگذاشتن logger فعال در PBX پرترافیک risk اطلاعاتی و performance دارد."
+      ],
       "search_keywords": [
         "pjsip set logger off",
         "pjsip set logger off",
@@ -1143,7 +1317,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:dialplan:dialplan-show",
@@ -1178,7 +1364,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "dialplan فعال را با تنظیمات Issabel GUI و context ورودی trunk تطبیق بده.",
-      "security_notes_fa": "Dialplan شامل شماره داخلی و مقصدهای تماس است؛ export را محدود کن.",
+      "security_notes_fa": [
+        "Dialplan شامل شماره داخلی و مقصدهای تماس است؛ export را محدود کن."
+      ],
       "search_keywords": [
         "dialplan show",
         "dialplan show",
@@ -1228,7 +1416,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:dialplan:dialplan-show-from-internal",
@@ -1263,7 +1463,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "با داخلی آزمایشگاهی و شماره تست، مسیر انتخاب‌شده را از context تا application دنبال کن؛ از تماس اضطراری واقعی استفاده نکن.",
-      "security_notes_fa": "تغییر Dialplan می‌تواند تماس اضطراری، billing یا دسترسی بین‌شعبه را مختل کند.",
+      "security_notes_fa": [
+        "تغییر Dialplan می‌تواند تماس اضطراری، billing یا دسترسی بین‌شعبه را مختل کند."
+      ],
       "search_keywords": [
         "dialplan show from-internal",
         "dialplan show from-internal",
@@ -1313,7 +1515,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:modules:module-show",
@@ -1348,7 +1562,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "وضعیت module را با version و package dependencies تطبیق بده؛ قبل از load/unload تأثیر تماس فعال را بررسی کن.",
-      "security_notes_fa": "unload ماژول روی PBX فعال می‌تواند signaling و تماس‌ها را مختل کند.",
+      "security_notes_fa": [
+        "unload ماژول روی PBX فعال می‌تواند signaling و تماس‌ها را مختل کند."
+      ],
       "search_keywords": [
         "module show",
         "module show like res_pjsip",
@@ -1398,7 +1614,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:queues:queue-show",
@@ -1433,7 +1661,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک تماس تست در queue ایجاد کن؛ تعداد انتظار و member penalty را با گزارش صف مقایسه کن.",
-      "security_notes_fa": "اطلاعات تماس و agent performance دادهٔ عملیاتی حساس است.",
+      "security_notes_fa": [
+        "اطلاعات تماس و agent performance دادهٔ عملیاتی حساس است."
+      ],
       "search_keywords": [
         "queue show",
         "queue show",
@@ -1483,7 +1713,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:queues:queue-show-sales",
@@ -1518,7 +1760,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "اگر agent در دسترس دیده نمی‌شود، device state، pause reason، SIP registration و penalty را جدا کن.",
-      "security_notes_fa": "قبل از تغییر عضو یا penalty، اثر روی تماس‌های انتظار را بسنج.",
+      "security_notes_fa": [
+        "قبل از تغییر عضو یا penalty، اثر روی تماس‌های انتظار را بسنج."
+      ],
       "search_keywords": [
         "queue show sales",
         "queue show sales",
@@ -1568,7 +1812,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:settings:core-show-settings",
@@ -1603,7 +1859,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "مسیرهای config/log را با service unit و مجوز فایل تطبیق بده؛ خروجی را در audit record ثبت کن.",
-      "security_notes_fa": "مسیر configها را عمومی نکن؛ فایل‌ها می‌توانند auth و trunk settings داشته باشند.",
+      "security_notes_fa": [
+        "مسیر configها را عمومی نکن؛ فایل‌ها می‌توانند auth و trunk settings داشته باشند."
+      ],
       "search_keywords": [
         "core show settings",
         "core show settings",
@@ -1653,7 +1911,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:logging:logger-show-channels",
@@ -1688,7 +1958,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "سطح log مناسب برای عیب‌یابی و retention را با policy و فضای دیسک مقایسه کن.",
-      "security_notes_fa": "Debug logging سطح بالا ممکن است حجم فایل و sensitive data را زیاد کند.",
+      "security_notes_fa": [
+        "Debug logging سطح بالا ممکن است حجم فایل و sensitive data را زیاد کند."
+      ],
       "search_keywords": [
         "logger show channels",
         "logger show channels",
@@ -1738,7 +2010,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:logging:logger-rotate",
@@ -1773,7 +2057,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "قبل از rotate بررسی کن logging فعال است و logrotate سیستم هم با Asterisk هماهنگ باشد؛ پس از آن فایل جدید را verify کن.",
-      "security_notes_fa": "rotate دستی نباید جایگزین retention و disk monitoring شود.",
+      "security_notes_fa": [
+        "rotate دستی نباید جایگزین retention و disk monitoring شود."
+      ],
       "search_keywords": [
         "logger rotate",
         "logger rotate",
@@ -1823,7 +2109,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:cdr:cdr-show-status",
@@ -1858,7 +2156,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک تماس آزمایشی کوتاه بساز و پس از پایان، وجود رکورد CDR را با زمان و uniqueid کنترل کن.",
-      "security_notes_fa": "CDR حاوی شماره تماس، زمان و اطلاعات billing است؛ دسترسی و retention را محدود کن.",
+      "security_notes_fa": [
+        "CDR حاوی شماره تماس، زمان و اطلاعات billing است؛ دسترسی و retention را محدود کن."
+      ],
       "search_keywords": [
         "cdr show status",
         "cdr show status",
@@ -1908,7 +2208,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:cdr:cdr-show-active",
@@ -1943,7 +2255,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "اگر فرمان در نسخه نصب‌شده پشتیبانی نشد، `core show help cdr` و تنظیمات CDR backend را بررسی کن.",
-      "security_notes_fa": "CLI commands تغییرپذیرند؛ پیش از اتکا روی production، در CLI help نسخه تأیید کن.",
+      "security_notes_fa": [
+        "CLI commands تغییرپذیرند؛ پیش از اتکا روی production، در CLI help نسخه تأیید کن."
+      ],
       "search_keywords": [
         "cdr show active",
         "cdr show active",
@@ -1993,7 +2307,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:pri-telephony:pri-show-spans",
@@ -2028,7 +2354,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط در نصب دارای کارت/درایور PRI اجرا کن؛ status را با alarmهای مخابراتی و log DAHDI تطبیق بده.",
-      "security_notes_fa": "در همهٔ VMها یا سیستم‌های بدون PRI این فرمان قابل اجرا نیست؛ absence فرمان به معنی خطای کل PBX نیست.",
+      "security_notes_fa": [
+        "در همهٔ VMها یا سیستم‌های بدون PRI این فرمان قابل اجرا نیست؛ absence فرمان به معنی خطای کل PBX نیست."
+      ],
       "search_keywords": [
         "pri show spans",
         "pri show spans",
@@ -2078,7 +2406,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:runtime:core-show-settings",
@@ -2113,7 +2453,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک تماس test را در CDR، system journal و client log مقایسه کن؛ timezone هر سیستم را ثبت کن.",
-      "security_notes_fa": "timezone اشتباه correlation رخداد و billing را خراب می‌کند.",
+      "security_notes_fa": [
+        "timezone اشتباه correlation رخداد و billing را خراب می‌کند."
+      ],
       "search_keywords": [
         "core show settings",
         "core show settings",
@@ -2163,7 +2505,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:diagnostic-level:core-set-verbose",
@@ -2198,7 +2552,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "قبل از اجرا سطح فعلی را ثبت کن، فقط تماس آزمایشگاهی را انجام بده و سپس سطح مناسب قبلی را برگردان.",
-      "security_notes_fa": "verbosity بالا ممکن است حجم log را زیاد کند؛ سطوح را بی‌دلیل روی production بالا نگه ندار.",
+      "security_notes_fa": [
+        "verbosity بالا ممکن است حجم log را زیاد کند؛ سطوح را بی‌دلیل روی production بالا نگه ندار."
+      ],
       "search_keywords": [
         "core set verbose",
         "core set verbose 5",
@@ -2248,7 +2604,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:legacy-sip:sip-show-peers",
@@ -2283,7 +2651,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "ابتدا `module show like chan_sip` را بررسی کن؛ در سیستم‌های PJSIP از `pjsip show endpoints` استفاده کن.",
-      "security_notes_fa": "chan_sip در نسخه‌های جدید deprecated/حذف‌شده است؛ برای پیکربندی جدید از PJSIP استفاده کن.",
+      "security_notes_fa": [
+        "chan_sip در نسخه‌های جدید deprecated/حذف‌شده است؛ برای پیکربندی جدید از PJSIP استفاده کن."
+      ],
       "search_keywords": [
         "sip show peers",
         "sip show peers",
@@ -2333,7 +2703,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:performance:core-show-taskprocessors",
@@ -2368,7 +2750,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "نمونه‌ها را در زمان بار و idle مقایسه کن؛ نتیجه را با CPU، packet loss و logهای SIP همبسته کن.",
-      "security_notes_fa": "تفسیر queue depth به نسخه/module و workload وابسته است؛ بدون شواهد از restart پرهیز کن.",
+      "security_notes_fa": [
+        "تفسیر queue depth به نسخه/module و workload وابسته است؛ بدون شواهد از restart پرهیز کن."
+      ],
       "search_keywords": [
         "core show taskprocessors",
         "core show taskprocessors",
@@ -2418,7 +2802,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:pjsip-auth:pjsip-show-auths",
@@ -2453,7 +2849,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "وجود object را با Endpoint->Auth و registration logs تطبیق بده؛ مقدار secret را در CLI یا ticket چاپ نکن.",
-      "security_notes_fa": "از copy کردن config حاوی password/secret به گزارش‌ها خودداری کن.",
+      "security_notes_fa": [
+        "از copy کردن config حاوی password/secret به گزارش‌ها خودداری کن."
+      ],
       "search_keywords": [
         "pjsip show auths",
         "pjsip show auths",
@@ -2503,7 +2901,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:pjsip-aor:pjsip-show-aors",
@@ -2538,7 +2948,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "اگر تماس ورودی به endpoint نمی‌رسد، AOR/Contact را با REGISTER و NAT mapping تطبیق بده.",
-      "security_notes_fa": "Contact URI ممکن است IP داخلی تلفن باشد؛ پیش از ارسال گزارش mask کن.",
+      "security_notes_fa": [
+        "Contact URI ممکن است IP داخلی تلفن باشد؛ پیش از ارسال گزارش mask کن."
+      ],
       "search_keywords": [
         "pjsip show aors",
         "pjsip show aors",
@@ -2588,7 +3000,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:cli-discovery:core-show-help",
@@ -2623,7 +3047,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "در ابتدای لابراتوار command availability را بررسی و نسخهٔ Asterisk را در یادداشت ثبت کن.",
-      "security_notes_fa": "نام فرمان‌ها بین branchهای Asterisk تفاوت دارند؛ از اجرای blind script روی production اجتناب کن.",
+      "security_notes_fa": [
+        "نام فرمان‌ها بین branchهای Asterisk تفاوت دارند؛ از اجرای blind script روی production اجتناب کن."
+      ],
       "search_keywords": [
         "core show help",
         "core show help pjsip",
@@ -2673,7 +3099,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:system-logs:journalctl-u-asterisk",
@@ -2710,7 +3148,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "زمان رخداد SIP یا تماس تست را با بازهٔ journal محدود کن؛ اگر سرویس نام متفاوت دارد، systemctl status را بررسی کن.",
-      "security_notes_fa": "لاگ می‌تواند شماره داخلی و IP را افشا کند؛ بازهٔ کوتاه و دسترسی محدود انتخاب کن.",
+      "security_notes_fa": [
+        "لاگ می‌تواند شماره داخلی و IP را افشا کند؛ بازهٔ کوتاه و دسترسی محدود انتخاب کن."
+      ],
       "search_keywords": [
         "journalctl -u asterisk",
         "journalctl -u asterisk --since '30 minutes ago' --no-pager",
@@ -2760,7 +3200,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:issabel:log-tail:tail-n-100-var-log-asterisk-full",
@@ -2795,7 +3247,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "پیش از grep گسترده، 100 خط آخر را حفظ کن؛ سپس تماس کنترل‌شدهٔ جدید تولید و زمان/Call-ID را تطبیق بده.",
-      "security_notes_fa": "لاگ full ممکن است اطلاعات تماس و SIP headers داشته باشد؛ فایل را عمومی نکن.",
+      "security_notes_fa": [
+        "لاگ full ممکن است اطلاعات تماس و SIP headers داشته باشد؛ فایل را عمومی نکن."
+      ],
       "search_keywords": [
         "tail -n 100 /var/log/asterisk/full",
         "tail -n 100 /var/log/asterisk/full",
@@ -2845,7 +3299,19 @@
           "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Asterisk CLI on Issabel PBX.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Asterisk CLI on Issabel PBX با help یا مستند رسمی همان نسخه بررسی کن."
     }
   ]
 }

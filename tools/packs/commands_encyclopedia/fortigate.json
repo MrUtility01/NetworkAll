@@ -1,7 +1,7 @@
 {
   "package_schema_version": 1,
   "project": "ENGINEER JOKAR / NetworkEncyclopedia",
-  "generated_on": "2026-10-12",
+  "generated_on": "2026-10-13",
   "purpose": "commands encyclopedia - fortigate",
   "vendor_pack": "fortigate",
   "chapter_order": 68,
@@ -38,7 +38,11 @@
     "status": "review_required",
     "lab_status": "designed_not_executed",
     "note_fa": "ساختار JSON و مسیر آموزشی تولید شده؛ آزمایش دستورات باید روی نسخه/مدل هدف و با شواهد اجرا تکمیل شود.",
-    "notes_fa": "دو رکورد هم‌UID برای show router static ادغام شدند؛ عنوان جایگزین در رکورد اصلی حفظ شد. CLI باید با نسخهٔ FortiOS هدف تطبیق داده شود."
+    "notes_fa": "دو رکورد هم‌UID برای show router static ادغام شدند؛ عنوان جایگزین در رکورد اصلی حفظ شد. CLI باید با نسخهٔ FortiOS هدف تطبیق داده شود.",
+    "last_enrichment": "2026-10-13",
+    "gaps_fa": [
+      "معیار اعتبارسنجی، سطح ریسک، کنترل نسخه و راهنمای rollback به رکوردها افزوده شد؛ تأیید نهایی باید روی نسخهٔ واقعی هدف انجام شود."
+    ]
   },
   "commands": [
     {
@@ -74,7 +78,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "قبل از بررسی فرمان‌های version-specific، نسخه دقیق را ثبت و دستورات را با Command Reference همان branch تطبیق بده.",
-      "security_notes_fa": "Serial و build جزئیات تجهیز را آشکار می‌کنند؛ در گزارش عمومی mask کن.",
+      "security_notes_fa": [
+        "Serial و build جزئیات تجهیز را آشکار می‌کنند؛ در گزارش عمومی mask کن."
+      ],
       "search_keywords": [
         "get system status",
         "get system status",
@@ -124,7 +130,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:performance:get-system-performance-status",
@@ -159,7 +177,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "نمونه‌های زمان‌دار بگیر و با peak traffic و policy change همبسته کن؛ یک نمونه معیار ظرفیت نیست.",
-      "security_notes_fa": "خروجی performance را بدون نام دستگاه و زمان بررسی منتشر نکن.",
+      "security_notes_fa": [
+        "خروجی performance را بدون نام دستگاه و زمان بررسی منتشر نکن."
+      ],
       "search_keywords": [
         "get system performance status",
         "get system performance status",
@@ -209,7 +229,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:processes:diagnose-sys-top",
@@ -244,7 +276,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "در پنجرهٔ کوتاه مشاهده کن؛ قبل از restart process، نقش آن را در مستندات Fortinet شناسایی کن.",
-      "security_notes_fa": "تشخیص با stop کردن processهای security بدون راهنمای vendor می‌تواند ترافیک را تحت تأثیر قرار دهد.",
+      "security_notes_fa": [
+        "تشخیص با stop کردن processهای security بدون راهنمای vendor می‌تواند ترافیک را تحت تأثیر قرار دهد."
+      ],
       "search_keywords": [
         "diagnose sys top",
         "diagnose sys top 1 20",
@@ -294,7 +328,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:sessions:diagnose-sys-session-stat",
@@ -329,7 +375,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "مقدار را با session usage، traffic spike و timeoutهای گزارش‌شده تطبیق بده.",
-      "security_notes_fa": "از حذف گستردهٔ نشست‌ها برای عیب‌یابی اولیه اجتناب کن؛ کاربران قطع می‌شوند.",
+      "security_notes_fa": [
+        "از حذف گستردهٔ نشست‌ها برای عیب‌یابی اولیه اجتناب کن؛ کاربران قطع می‌شوند."
+      ],
       "search_keywords": [
         "diagnose sys session stat",
         "diagnose sys session stat",
@@ -379,7 +427,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:routing-table:get-router-info-routing-table-all",
@@ -414,7 +474,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "route منتخب را با policy route، VRF/VDOM و مسیر برگشت تطبیق بده؛ وجود route در جدول، match شدن firewall policy را ثابت نمی‌کند.",
-      "security_notes_fa": "جدول route توپولوژی داخلی را فاش می‌کند؛ قبل از انتشار IPها را mask کن.",
+      "security_notes_fa": [
+        "جدول route توپولوژی داخلی را فاش می‌کند؛ قبل از انتشار IPها را mask کن."
+      ],
       "search_keywords": [
         "get router info routing-table all",
         "get router info routing-table all",
@@ -464,7 +526,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:route-detail:get-router-info-routing-table-details",
@@ -499,7 +573,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک prefix lab را انتخاب کن و routeهای جایگزین، administrative distance و مسیر برگشت را ثبت کن.",
-      "security_notes_fa": "از تغییر route فقط پس از backup و کنترل impact استفاده کن.",
+      "security_notes_fa": [
+        "از تغییر route فقط پس از backup و کنترل impact استفاده کن."
+      ],
       "search_keywords": [
         "get router info routing-table details",
         "get router info routing-table details 10.50.0.0/16",
@@ -549,7 +625,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:ospf:get-router-info-ospf-neighbor",
@@ -584,7 +672,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "اگر state کامل نیست، area, timers, network type, authentication, MTU و adjacency log را جدا بررسی کن.",
-      "security_notes_fa": "اطلاعات routing داخلی را redacted کن؛ از debug گسترده روی روتر پرترافیک بدون plan خودداری کن.",
+      "security_notes_fa": [
+        "اطلاعات routing داخلی را redacted کن؛ از debug گسترده روی روتر پرترافیک بدون plan خودداری کن."
+      ],
       "search_keywords": [
         "get router info ospf neighbor",
         "get router info ospf neighbor",
@@ -634,7 +724,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:bgp:get-router-info-bgp-summary",
@@ -669,7 +771,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "State/PfxRcd را با policy و prefix limit تطبیق بده؛ Established با تعداد prefix صفر هم ممکن است نیازمند بررسی باشد.",
-      "security_notes_fa": "BGP route خروجی می‌تواند اطلاعات peering را افشا کند؛ از debug updates گسترده پرهیز کن.",
+      "security_notes_fa": [
+        "BGP route خروجی می‌تواند اطلاعات peering را افشا کند؛ از debug updates گسترده پرهیز کن."
+      ],
       "search_keywords": [
         "get router info bgp summary",
         "get router info bgp summary",
@@ -719,7 +823,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:static-route:show-router-static",
@@ -757,7 +873,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "config را با جدول route نصب‌شده مقایسه کن؛ static route نامعتبر یا disabled ممکن است در RIB فعال نباشد.",
-      "security_notes_fa": "پیش از ارسال config، gatewayها و شبکه‌های داخلی را پوشانده و backup امن نگه دار.",
+      "security_notes_fa": [
+        "پیش از ارسال config، gatewayها و شبکه‌های داخلی را پوشانده و backup امن نگه دار."
+      ],
       "search_keywords": [
         "show router static",
         "show router static",
@@ -807,7 +925,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:policy:show-firewall-policy",
@@ -842,7 +972,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "policy match را به‌صورت بالا به پایین و همراه interface pair/VDOM بررسی کن؛ log hit و session را با traffic واقعی تطبیق بده.",
-      "security_notes_fa": "Policy allow-any-any ریسک بالایی دارد؛ پیکربندی را بی‌اجازه تغییر نده.",
+      "security_notes_fa": [
+        "Policy allow-any-any ریسک بالایی دارد؛ پیکربندی را بی‌اجازه تغییر نده."
+      ],
       "search_keywords": [
         "show firewall policy",
         "show firewall policy",
@@ -892,7 +1024,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:policy-match:diagnose-firewall-iprope-lookup",
@@ -927,7 +1071,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "tuple را دقیقاً از packet واقعی/لابراتوار بگیر و protocol number را صحیح انتخاب کن؛ نتیجه را با log session مقایسه کن.",
-      "security_notes_fa": "فرمان تشخیصی فقط برای تحلیل مجاز؛ IP و پورت را از ترافیک کاربر بدون مجوز جمع‌آوری نکن.",
+      "security_notes_fa": [
+        "فرمان تشخیصی فقط برای تحلیل مجاز؛ IP و پورت را از ترافیک کاربر بدون مجوز جمع‌آوری نکن."
+      ],
       "search_keywords": [
         "diagnose firewall iprope lookup",
         "diagnose firewall iprope lookup 10.20.30.25 53000 10.20.30.10 53 17 port2",
@@ -977,7 +1123,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:debug-flow:diagnose-debug-flow",
@@ -1013,7 +1171,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط در لابراتوار/پنجرهٔ مصوب، filter محدود کن؛ پس از 20 packet فوراً با `diagnose debug flow trace stop` و `diagnose debug disable` خاتمه بده.",
-      "security_notes_fa": "Debug flow می‌تواند بار CPU و حجم لاگ ایجاد کند؛ فرمان‌های stop/disable را از ابتدا آماده کن.",
+      "security_notes_fa": [
+        "Debug flow می‌تواند بار CPU و حجم لاگ ایجاد کند؛ فرمان‌های stop/disable را از ابتدا آماده کن."
+      ],
       "search_keywords": [
         "diagnose debug flow",
         "diagnose debug flow filter addr 10.20.30.25\ndiagnose debug flow show function-name enable\ndiagnose debug flow trace start 20",
@@ -1063,7 +1223,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:debug-flow:diagnose-debug-flow-trace-stop",
@@ -1098,7 +1270,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "بعد از آزمایش بررسی کن debug فعال نمانده باشد؛ در change log زمان شروع/پایان را ثبت کن.",
-      "security_notes_fa": "جاگذاشتن debug روی تجهیزات پرترافیک می‌تواند منابع یا کنسول را اشغال کند.",
+      "security_notes_fa": [
+        "جاگذاشتن debug روی تجهیزات پرترافیک می‌تواند منابع یا کنسول را اشغال کند."
+      ],
       "search_keywords": [
         "diagnose debug flow trace stop",
         "diagnose debug flow trace stop\ndiagnose debug disable",
@@ -1148,7 +1322,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:packet-capture:diagnose-sniffer-packet",
@@ -1183,7 +1369,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "محدودهٔ capture، verbosity، packet count و زمان اجرا را محدود کن؛ در پایان با Ctrl+C توقف بده.",
-      "security_notes_fa": "PCAP/sniffer ممکن است دادهٔ شخصی و محتوا را آشکار کند؛ capture را محلی و کوتاه نگه دار.",
+      "security_notes_fa": [
+        "PCAP/sniffer ممکن است دادهٔ شخصی و محتوا را آشکار کند؛ capture را محلی و کوتاه نگه دار."
+      ],
       "search_keywords": [
         "diagnose sniffer packet",
         "diagnose sniffer packet any 'host 10.20.30.25 and port 53' 4 20 l",
@@ -1233,7 +1421,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:interfaces:get-system-interface-physical",
@@ -1268,7 +1468,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "status را با switch neighbor و کابل بررسی کن؛ interface منطقی VLAN و physical را اشتباه نگیر.",
-      "security_notes_fa": "پورت‌های مدیریت و نام interface بخشی از نقشه شبکه هستند.",
+      "security_notes_fa": [
+        "پورت‌های مدیریت و نام interface بخشی از نقشه شبکه هستند."
+      ],
       "search_keywords": [
         "get system interface physical",
         "get system interface physical",
@@ -1318,7 +1520,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:nic:diagnose-hardware-deviceinfo-nic",
@@ -1353,7 +1567,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "خروجی پورت را با NIC سوئیچ و interface counters دو طرف تطبیق بده؛ بررسی فیزیکی را هم انجام بده.",
-      "security_notes_fa": "خروجی مدل و سخت‌افزار ممکن است برای inventory حساس باشد.",
+      "security_notes_fa": [
+        "خروجی مدل و سخت‌افزار ممکن است برای inventory حساس باشد."
+      ],
       "search_keywords": [
         "diagnose hardware deviceinfo nic",
         "diagnose hardware deviceinfo nic port1",
@@ -1403,7 +1619,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:ipsec-ike:diagnose-vpn-ike-gateway-list",
@@ -1438,7 +1666,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "IKE state را با child SA, phase2 selectors و packet counters تطبیق بده؛ اگر down است، pre-shared secret را چاپ نکن.",
-      "security_notes_fa": "خروجی peer address را محدود کن؛ هرگز PSK را در log یا ticket ثبت نکن.",
+      "security_notes_fa": [
+        "خروجی peer address را محدود کن؛ هرگز PSK را در log یا ticket ثبت نکن."
+      ],
       "search_keywords": [
         "diagnose vpn ike gateway list",
         "diagnose vpn ike gateway list",
@@ -1488,7 +1718,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:ipsec-tunnel:diagnose-vpn-tunnel-list",
@@ -1523,7 +1765,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "در دو سمت، subnet selectors و route/policy را تطبیق بده؛ tunnel up ولی traffic صفر ممکن است selectors/route باشند.",
-      "security_notes_fa": "آدرس و selector داخلی را mask کن؛ reset tunnel موجب قطع سرویس می‌شود.",
+      "security_notes_fa": [
+        "آدرس و selector داخلی را mask کن؛ reset tunnel موجب قطع سرویس می‌شود."
+      ],
       "search_keywords": [
         "diagnose vpn tunnel list",
         "diagnose vpn tunnel list",
@@ -1573,7 +1817,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:ipsec-summary:get-vpn-ipsec-tunnel-summary",
@@ -1608,7 +1864,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "خلاصه را با جزئیات IKE SA و traffic counter هر tunnel مقایسه کن.",
-      "security_notes_fa": "وضعیت up به تنهایی عبور traffic کاربردی را ثابت نمی‌کند.",
+      "security_notes_fa": [
+        "وضعیت up به تنهایی عبور traffic کاربردی را ثابت نمی‌کند."
+      ],
       "search_keywords": [
         "get vpn ipsec tunnel summary",
         "get vpn ipsec tunnel summary",
@@ -1658,7 +1916,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:ssl-vpn:diagnose-vpn-ssl-monitor",
@@ -1693,7 +1963,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "نشست را با log احراز هویت، group mapping و policy دسترسی مقایسه کن؛ IP pool را نیز کنترل کن.",
-      "security_notes_fa": "نام کاربران و آدرس VPN اطلاعات حساس است؛ session را بدون تایید کاربر terminate نکن.",
+      "security_notes_fa": [
+        "نام کاربران و آدرس VPN اطلاعات حساس است؛ session را بدون تایید کاربر terminate نکن."
+      ],
       "search_keywords": [
         "diagnose vpn ssl monitor",
         "diagnose vpn ssl monitor",
@@ -1743,7 +2015,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:high-availability:get-system-ha-status",
@@ -1778,7 +2062,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "خروجی هر دو عضو را مقایسه کن؛ اختلاف checksum را با تغییرات مجاز و sync status تحلیل کن.",
-      "security_notes_fa": "Failover آزمایشی می‌تواند session را reset کند؛ بدون پنجره نگهداری trigger نکن.",
+      "security_notes_fa": [
+        "Failover آزمایشی می‌تواند session را reset کند؛ بدون پنجره نگهداری trigger نکن."
+      ],
       "search_keywords": [
         "get system ha status",
         "get system ha status",
@@ -1828,7 +2114,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:ha-config:diagnose-sys-ha-checksum-cluster",
@@ -1863,7 +2161,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "بخش mismatched را با config revision و زمان تغییرات مقایسه کن؛ اصلاح را از روش مستند Fortinet انجام بده.",
-      "security_notes_fa": "از synchronize/override کورکورانه پرهیز کن؛ ممکن است پیکربندی معتبر عضو دیگر بازنویسی شود.",
+      "security_notes_fa": [
+        "از synchronize/override کورکورانه پرهیز کن؛ ممکن است پیکربندی معتبر عضو دیگر بازنویسی شود."
+      ],
       "search_keywords": [
         "diagnose sys ha checksum cluster",
         "diagnose sys ha checksum cluster",
@@ -1913,7 +2213,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:icmp:execute-ping",
@@ -1948,7 +2260,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "مبدأ و VDOM را کنترل کن؛ اگر لازم شد source را طبق مستندات نسخه در لابراتوار تنظیم کن و مسیر برگشت را بررسی کن.",
-      "security_notes_fa": "از مقصد ناشناس flood نکن؛ ping موفق به معنی باز بودن TCP port نیست.",
+      "security_notes_fa": [
+        "از مقصد ناشناس flood نکن؛ ping موفق به معنی باز بودن TCP port نیست."
+      ],
       "search_keywords": [
         "execute ping",
         "execute ping 10.20.30.1",
@@ -1998,7 +2312,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:path-tracing:execute-traceroute",
@@ -2033,7 +2359,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "نتیجه را با source interface، policy route و traceroute کلاینت مقایسه کن؛ timeoutهای میانی را قطعی ندان.",
-      "security_notes_fa": "مسیر ترافیک را فقط برای مقصدهای مجاز بررسی کن و topology را محرمانه نگه دار.",
+      "security_notes_fa": [
+        "مسیر ترافیک را فقط برای مقصدهای مجاز بررسی کن و topology را محرمانه نگه دار."
+      ],
       "search_keywords": [
         "execute traceroute",
         "execute traceroute 1.1.1.1",
@@ -2083,7 +2411,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:arp:get-system-arp",
@@ -2118,7 +2458,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "IP problem را با interface VLAN، switch MAC table و ARP کلاینت تطبیق بده.",
-      "security_notes_fa": "مدخل ARP stale را بدون بررسی duplicate IP یا security incident پاک نکن.",
+      "security_notes_fa": [
+        "مدخل ARP stale را بدون بررسی duplicate IP یا security incident پاک نکن."
+      ],
       "search_keywords": [
         "get system arp",
         "get system arp",
@@ -2168,7 +2510,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:dhcp:execute-dhcp-lease-list",
@@ -2203,7 +2557,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "با DHCP scope واقعی و کلاینت آزمایشی مقایسه کن؛ اگر دستگاه DHCP server دیگری دارد، منبع Lease را مشخص کن.",
-      "security_notes_fa": "فرمان‌ها در نسخه و مدل تفاوت دارند؛ پیش از استفاده دستور را در CLI help همان FortiOS تأیید کن.",
+      "security_notes_fa": [
+        "فرمان‌ها در نسخه و مدل تفاوت دارند؛ پیش از استفاده دستور را در CLI help همان FortiOS تأیید کن."
+      ],
       "search_keywords": [
         "execute dhcp lease-list",
         "execute dhcp lease-list",
@@ -2253,7 +2609,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:dns:get-system-dns",
@@ -2288,7 +2656,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "پیکربندی DNS را با queryهای کنترل‌شده، route و policy خروجی از VDOM مربوط مقایسه کن.",
-      "security_notes_fa": "DNS تغییرکرده می‌تواند FortiGuard و سرویس‌های مدیریتی را مختل کند؛ از تغییر بدون plan بپرهیز.",
+      "security_notes_fa": [
+        "DNS تغییرکرده می‌تواند FortiGuard و سرویس‌های مدیریتی را مختل کند؛ از تغییر بدون plan بپرهیز."
+      ],
       "search_keywords": [
         "get system dns",
         "get system dns",
@@ -2338,7 +2708,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:admin-accounts:get-system-admin-list",
@@ -2373,7 +2755,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "حساب‌ها و profileها را با baseline دسترسی مقایسه کن؛ اکانت emergency را به‌صورت جداگانه مستند کن.",
-      "security_notes_fa": "نام administratorها و مجوزها اطلاعات حساس امنیتی هستند؛ حساب ناشناس را بدون change plan حذف نکن.",
+      "security_notes_fa": [
+        "نام administratorها و مجوزها اطلاعات حساس امنیتی هستند؛ حساب ناشناس را بدون change plan حذف نکن."
+      ],
       "search_keywords": [
         "get system admin list",
         "get system admin list",
@@ -2423,7 +2807,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:dhcp:show-system-dhcp-server",
@@ -2458,7 +2854,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "پیکربندی را با VLAN/subnet واقعی و DHCP relay تطبیق بده؛ روی gateway و DNS دقیق شو.",
-      "security_notes_fa": "خطا در scope یا interface می‌تواند به کاربران subnet اشتباه IP بدهد.",
+      "security_notes_fa": [
+        "خطا در scope یا interface می‌تواند به کاربران subnet اشتباه IP بدهد."
+      ],
       "search_keywords": [
         "show system dhcp server",
         "show system dhcp server",
@@ -2508,7 +2906,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:policy-route:show-router-policy",
@@ -2543,7 +2953,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "برای flow مشخص، source, destination, input interface و match ترتیب policy را به route منتخب متصل کن.",
-      "security_notes_fa": "policy routing اشتباه می‌تواند asymmetric routing ایجاد کند؛ بدون packet capture/flow debug اصلاح نکن.",
+      "security_notes_fa": [
+        "policy routing اشتباه می‌تواند asymmetric routing ایجاد کند؛ بدون packet capture/flow debug اصلاح نکن."
+      ],
       "search_keywords": [
         "show router policy",
         "show router policy",
@@ -2593,7 +3005,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:interface-kernel:diagnose-netlink-interface-list",
@@ -2628,7 +3052,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک interface مشخص را بررسی کن و counters را با `get system interface physical` و switch port برابر مقایسه کن.",
-      "security_notes_fa": "خروجی kernel-level به نسخه وابسته است؛ از فرمان‌های غیرمستند روی production خودداری کن.",
+      "security_notes_fa": [
+        "خروجی kernel-level به نسخه وابسته است؛ از فرمان‌های غیرمستند روی production خودداری کن."
+      ],
       "search_keywords": [
         "diagnose netlink interface list",
         "diagnose netlink interface list",
@@ -2678,7 +3104,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:fortigate:policy-diagnostics:diagnose-firewall-iprope-list",
@@ -2713,7 +3151,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط با راهنمایی نسخهٔ FortiOS و در lab بررسی کن؛ برای جریان واحد ترجیحاً iprope lookup با tuple دقیق را به کار ببر.",
-      "security_notes_fa": "diagnose سطح پایین می‌تواند خروجی بزرگ تولید کند؛ از اجرای بی‌حد و ثبت کل خروجی روی production بپرهیز.",
+      "security_notes_fa": [
+        "diagnose سطح پایین می‌تواند خروجی بزرگ تولید کند؛ از اجرای بی‌حد و ثبت کل خروجی روی production بپرهیز."
+      ],
       "search_keywords": [
         "diagnose firewall iprope list",
         "diagnose firewall iprope list",
@@ -2763,7 +3203,19 @@
           "url": "https://docs.fortinet.com/product/fortigate/7.4"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: FortiOS 7.x CLI.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در FortiOS 7.x CLI با help یا مستند رسمی همان نسخه بررسی کن."
     }
   ]
 }

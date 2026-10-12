@@ -1,7 +1,7 @@
 {
   "package_schema_version": 1,
   "project": "ENGINEER JOKAR / NetworkEncyclopedia",
-  "generated_on": "2026-10-12",
+  "generated_on": "2026-10-13",
   "purpose": "commands encyclopedia - windows cmd and batch",
   "vendor_pack": "windows_cmd",
   "chapter_order": 68,
@@ -34,7 +34,11 @@
   "content_quality": {
     "status": "review_required",
     "lab_status": "designed_not_executed",
-    "note_fa": "ساختار JSON و مسیر آموزشی تولید شده؛ آزمایش دستورات باید روی نسخه/مدل هدف و با شواهد اجرا تکمیل شود."
+    "note_fa": "ساختار JSON و مسیر آموزشی تولید شده؛ آزمایش دستورات باید روی نسخه/مدل هدف و با شواهد اجرا تکمیل شود.",
+    "last_enrichment": "2026-10-13",
+    "gaps_fa": [
+      "معیار اعتبارسنجی، سطح ریسک، کنترل نسخه و راهنمای rollback به رکوردها افزوده شد؛ تأیید نهایی باید روی نسخهٔ واقعی هدف انجام شود."
+    ]
   },
   "commands": [
     {
@@ -70,7 +74,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "خروجی را ذخیره و با قرارداد IP و DHCP scope تطبیق بده؛ رابط‌های مجازی را هم بررسی کن.",
-      "security_notes_fa": "خروجی می‌تواند نام میزبان، MAC، DNS و IP داخلی را افشا کند.",
+      "security_notes_fa": [
+        "خروجی می‌تواند نام میزبان، MAC، DNS و IP داخلی را افشا کند."
+      ],
       "search_keywords": [
         "ipconfig /all",
         "ipconfig /all",
@@ -120,7 +126,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:dns-cache:ipconfig-flushdns",
@@ -155,7 +173,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "پس از ثبت پاسخ قبلی و TTL، اجرا و سپس nslookup/Resolve-DnsName را دوباره آزمایش کن.",
-      "security_notes_fa": "این دستور رکورد اشتباه روی DNS server را اصلاح نمی‌کند.",
+      "security_notes_fa": [
+        "این دستور رکورد اشتباه روی DNS server را اصلاح نمی‌کند."
+      ],
       "search_keywords": [
         "ipconfig /flushdns",
         "ipconfig /flushdns",
@@ -205,7 +225,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:dns-cache:ipconfig-displaydns",
@@ -240,7 +272,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "پیش از Flush، نتیجه و TTL را ثبت کن و با پاسخ authoritative مقایسه کن.",
-      "security_notes_fa": "اطلاعات lookupهای اخیر کاربر را افشا نکن.",
+      "security_notes_fa": [
+        "اطلاعات lookupهای اخیر کاربر را افشا نکن."
+      ],
       "search_keywords": [
         "ipconfig /displaydns",
         "ipconfig /displaydns",
@@ -290,7 +324,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:dhcp-client:ipconfig-renew",
@@ -325,7 +371,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "روی VM کلاینت آزمایشگاهی اجرا کن؛ بعد از آن IP، gateway و DHCP Server را بررسی کن.",
-      "security_notes_fa": "اجرا روی remote system می‌تواند اتصال را موقتاً قطع کند؛ روی static IP اثر مورد انتظار متفاوت است.",
+      "security_notes_fa": [
+        "اجرا روی remote system می‌تواند اتصال را موقتاً قطع کند؛ روی static IP اثر مورد انتظار متفاوت است."
+      ],
       "search_keywords": [
         "ipconfig /renew",
         "ipconfig /renew",
@@ -375,7 +423,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:dhcp-client:ipconfig-release",
@@ -410,7 +470,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط روی VM آزمایشی انجام بده؛ سپس renew و DORA را در DHCP Server یا packet capture مشاهده کن.",
-      "security_notes_fa": "این فرمان عمداً connectivity رابط DHCP را قطع می‌کند؛ روی سیستم مدیریت راه‌دور اجرا نکن.",
+      "security_notes_fa": [
+        "این فرمان عمداً connectivity رابط DHCP را قطع می‌کند؛ روی سیستم مدیریت راه‌دور اجرا نکن."
+      ],
       "search_keywords": [
         "ipconfig /release",
         "ipconfig /release",
@@ -460,7 +522,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:icmp:ping-n-4-10-20-30-1",
@@ -495,7 +569,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "Gateway و سپس مقصد بعدی را تست کن؛ در صورت failure به ARP, VLAN, ACL و ICMP policy فکر کن.",
-      "security_notes_fa": "ICMP موفقیت برنامه یا TCP را ثابت نمی‌کند و ICMP block شده لزوماً به معنی خاموش بودن میزبان نیست.",
+      "security_notes_fa": [
+        "ICMP موفقیت برنامه یا TCP را ثابت نمی‌کند و ICMP block شده لزوماً به معنی خاموش بودن میزبان نیست."
+      ],
       "search_keywords": [
         "ping -n 4 10.20.30.1",
         "ping -n 4 10.20.30.1",
@@ -545,7 +621,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:path-tracing:tracert-d-1-1-1-1",
@@ -580,7 +668,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک مسیر مجاز و قابل دسترس را بررسی و hopها را با traceroute ابزار دیگر مقایسه کن؛ * را به‌عنوان قطعی کامل تفسیر نکن.",
-      "security_notes_fa": "آدرس‌های مسیر و topology شبکه را در گزارش عمومی حذف کن.",
+      "security_notes_fa": [
+        "آدرس‌های مسیر و topology شبکه را در گزارش عمومی حذف کن."
+      ],
       "search_keywords": [
         "tracert -d 1.1.1.1",
         "tracert -d 1.1.1.1",
@@ -630,7 +720,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:path-quality:pathping-n-1-1-1-1",
@@ -665,7 +767,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "صبر کن تا نمونه‌برداری کامل شود؛ loss در hop میانی را فقط وقتی مشکل تلقی کن که در مسیر بعدی هم اثر end-to-end دیده شود.",
-      "security_notes_fa": "برخی روترها ICMP rate-limit می‌کنند؛ نتایج hop به‌تنهایی ظرفیت مسیر را ثابت نمی‌کند.",
+      "security_notes_fa": [
+        "برخی روترها ICMP rate-limit می‌کنند؛ نتایج hop به‌تنهایی ظرفیت مسیر را ثابت نمی‌کند."
+      ],
       "search_keywords": [
         "pathping -n 1.1.1.1",
         "pathping -n 1.1.1.1",
@@ -715,7 +819,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:dns:nslookup-server-example-local",
@@ -750,7 +866,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "برای تفکیک resolver، سرور مورد نظر را صریح تعیین کن: `nslookup name serverIP` و پاسخ‌ها را مقایسه کن.",
-      "security_notes_fa": "نتیجهٔ مثبت فقط یک پاسخ برای نوع درخواست است؛ MX, AAAA و رکوردهای دیگر جدا هستند.",
+      "security_notes_fa": [
+        "نتیجهٔ مثبت فقط یک پاسخ برای نوع درخواست است؛ MX, AAAA و رکوردهای دیگر جدا هستند."
+      ],
       "search_keywords": [
         "nslookup server.example.local",
         "nslookup server.example.local",
@@ -800,7 +918,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:tcp-udp:netstat-ano",
@@ -835,7 +965,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "PID را با `tasklist /fi \"PID eq 4120\"` تطبیق بده و سپس مالک سرویس را بررسی کن.",
-      "security_notes_fa": "PID را مبنای بستن خودکار process قرار نده؛ process ممکن است critical باشد.",
+      "security_notes_fa": [
+        "PID را مبنای بستن خودکار process قرار نده؛ process ممکن است critical باشد."
+      ],
       "search_keywords": [
         "netstat -ano",
         "netstat -ano",
@@ -885,7 +1017,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:routing-table:route-print",
@@ -920,7 +1064,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "مسیر 0/0 و route مقصد داخلی را پیدا کن و با `tracert -d` تطبیق بده.",
-      "security_notes_fa": "خروجی می‌تواند IPهای داخلی و VPN routeها را افشا کند.",
+      "security_notes_fa": [
+        "خروجی می‌تواند IPهای داخلی و VPN routeها را افشا کند."
+      ],
       "search_keywords": [
         "route print",
         "route print -4",
@@ -970,7 +1116,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:route-change:route-add",
@@ -1005,7 +1163,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط روی VM بدون اتصال به شبکهٔ عملیاتی انجام بده؛ قبل از اجرا route print را ذخیره کن و پس از تست `route delete 198.51.100.0` را اجرا کن.",
-      "security_notes_fa": "گزینهٔ -p مسیر را پس از reboot نگه می‌دارد؛ برای مثال آموزشی از آن استفاده نکن مگر هدف آزمایش مشخص باشد.",
+      "security_notes_fa": [
+        "گزینهٔ -p مسیر را پس از reboot نگه می‌دارد؛ برای مثال آموزشی از آن استفاده نکن مگر هدف آزمایش مشخص باشد."
+      ],
       "search_keywords": [
         "route add",
         "route -p add 198.51.100.0 mask 255.255.255.0 10.20.30.1 metric 250",
@@ -1055,7 +1215,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:arp:arp-a",
@@ -1090,7 +1262,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "Gateway را ping کن و سپس ARP cache را بخوان؛ MAC را با جدول سوئیچ کنترل‌شده مقایسه کن.",
-      "security_notes_fa": "ARP cache موقتی است و به خودی خود اثبات spoofing نیست.",
+      "security_notes_fa": [
+        "ARP cache موقتی است و به خودی خود اثبات spoofing نیست."
+      ],
       "search_keywords": [
         "arp -a",
         "arp -a",
@@ -1140,7 +1314,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:mac-address:getmac-v-fo-list",
@@ -1175,7 +1361,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "MAC را از روی label فیزیکی/Hypervisor بررسی کن و رابط‌های مجازی را مشخص کن.",
-      "security_notes_fa": "MAC randomization و NIC teaming باید در تحلیل لحاظ شوند.",
+      "security_notes_fa": [
+        "MAC randomization و NIC teaming باید در تحلیل لحاظ شوند."
+      ],
       "search_keywords": [
         "getmac /v /fo list",
         "getmac /v /fo list",
@@ -1225,7 +1413,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:host-inventory:hostname",
@@ -1260,7 +1460,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "نام را با DNS A/PTR و CMDB تطبیق بده؛ از نام به‌تنهایی نتیجهٔ domain membership نگیر.",
-      "security_notes_fa": "hostname و domain suffix جزئیات سازمانی هستند.",
+      "security_notes_fa": [
+        "hostname و domain suffix جزئیات سازمانی هستند."
+      ],
       "search_keywords": [
         "hostname",
         "hostname",
@@ -1310,7 +1512,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:token-privileges:whoami-all",
@@ -1345,7 +1559,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "در یک shell عادی و elevated اجرا و اختلاف token را مقایسه کن؛ فقط privilege لازم را درخواست کن.",
-      "security_notes_fa": "خروجی می‌تواند نام دامنه و groupهای حساس را آشکار کند.",
+      "security_notes_fa": [
+        "خروجی می‌تواند نام دامنه و groupهای حساس را آشکار کند."
+      ],
       "search_keywords": [
         "whoami /all",
         "whoami /all",
@@ -1395,7 +1611,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:host-inventory:systeminfo",
@@ -1430,7 +1658,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "خروجی را با Get-ComputerInfo مقایسه کن و تفاوت فیلدهای locale/timezone را ثبت کن.",
-      "security_notes_fa": "قبل از انتشار، نام میزبان و نام کاربر logon را redact کن.",
+      "security_notes_fa": [
+        "قبل از انتشار، نام میزبان و نام کاربر logon را redact کن."
+      ],
       "search_keywords": [
         "systeminfo",
         "systeminfo",
@@ -1480,7 +1710,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:processes:tasklist-svc",
@@ -1515,7 +1757,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "PID مشکوک را با services.msc، Event Log و امضای executable بررسی کن.",
-      "security_notes_fa": "به‌خاطر اشتراک PID در service host چند سرویس می‌توانند در یک process باشند؛ بستن آن‌ها می‌تواند سیستم را خراب کند.",
+      "security_notes_fa": [
+        "به‌خاطر اشتراک PID در service host چند سرویس می‌توانند در یک process باشند؛ بستن آن‌ها می‌تواند سیستم را خراب کند."
+      ],
       "search_keywords": [
         "tasklist /svc",
         "tasklist /svc",
@@ -1565,7 +1809,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:services:sc-qc",
@@ -1600,7 +1856,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "PathName را با مسیر استاندارد و امضای فایل مقایسه کن؛ تنظیمات را پیش از تغییر backup کن.",
-      "security_notes_fa": "تغییر binary path سرویس ریسک persistence دارد؛ دستور QC فقط مشاهده است.",
+      "security_notes_fa": [
+        "تغییر binary path سرویس ریسک persistence دارد؛ دستور QC فقط مشاهده است."
+      ],
       "search_keywords": [
         "sc qc",
         "sc qc Spooler",
@@ -1650,7 +1908,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:services:sc-query",
@@ -1685,7 +1955,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "اگر Stopped بود، Event Viewer را بررسی کن؛ بدون فهم dependency آن را start نکن.",
-      "security_notes_fa": "State گذرا است؛ برای علت توقف به Service Control Manager log نیاز داری.",
+      "security_notes_fa": [
+        "State گذرا است؛ برای علت توقف به Service Control Manager log نیاز داری."
+      ],
       "search_keywords": [
         "sc query",
         "sc query Spooler",
@@ -1735,7 +2007,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:firewall-profile:netsh-advfirewall-show-allprofiles",
@@ -1770,7 +2054,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "پروفایل فعلی را با `Get-NetConnectionProfile` و GPO مقایسه کن؛ تغییرات را با Rule محدود انجام بده.",
-      "security_notes_fa": "Firewall را برای عیب‌یابی خاموش نکن؛ فیلتر ترافیک را با Rule موقت و narrow انجام بده.",
+      "security_notes_fa": [
+        "Firewall را برای عیب‌یابی خاموش نکن؛ فیلتر ترافیک را با Rule موقت و narrow انجام بده."
+      ],
       "search_keywords": [
         "netsh advfirewall show allprofiles",
         "netsh advfirewall show allprofiles",
@@ -1820,7 +2106,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:ip-configuration:netsh-interface-ipv4-show-config",
@@ -1855,7 +2153,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "پیکربندی را با ipconfig /all تطبیق بده؛ مقدارهای static را در inventory ثبت کن.",
-      "security_notes_fa": "اطلاعات شبکه داخلی ممکن است محرمانه باشد.",
+      "security_notes_fa": [
+        "اطلاعات شبکه داخلی ممکن است محرمانه باشد."
+      ],
       "search_keywords": [
         "netsh interface ipv4 show config",
         "netsh interface ipv4 show config",
@@ -1905,7 +2205,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:proxy:netsh-winhttp-show-proxy",
@@ -1940,7 +2252,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "اگر یک سرویس به اینترنت دسترسی ندارد، WinHTTP proxy را کنار proxy سطح کاربر و PAC مقایسه کن.",
-      "security_notes_fa": "تغییر proxy می‌تواند ارتباطات سیستمی را منحرف کند؛ این دستور مشاهده‌ای است.",
+      "security_notes_fa": [
+        "تغییر proxy می‌تواند ارتباطات سیستمی را منحرف کند؛ این دستور مشاهده‌ای است."
+      ],
       "search_keywords": [
         "netsh winhttp show proxy",
         "netsh winhttp show proxy",
@@ -1990,7 +2304,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:smb-client:net-use",
@@ -2025,7 +2351,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "نام share و اعتبارنامهٔ مورد استفاده را بدون چاپ secret بررسی کن؛ در عیب‌یابی credential mismatch از Event Log کمک بگیر.",
-      "security_notes_fa": "خروجی می‌تواند نام کاربر و فایل‌سرور را افشا کند.",
+      "security_notes_fa": [
+        "خروجی می‌تواند نام کاربر و فایل‌سرور را افشا کند."
+      ],
       "search_keywords": [
         "net use",
         "net use",
@@ -2075,7 +2403,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:smb-share:net-share",
@@ -2110,7 +2450,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "Share permissions را با ACL NTFS جداگانه بازبینی کن؛ share ناشناخته را پیش از حذف به مالک نسبت بده.",
-      "security_notes_fa": "Administrative shares طبیعی‌اند؛ از غیرفعال کردن کورکورانه آن‌ها خودداری کن.",
+      "security_notes_fa": [
+        "Administrative shares طبیعی‌اند؛ از غیرفعال کردن کورکورانه آن‌ها خودداری کن."
+      ],
       "search_keywords": [
         "net share",
         "net share",
@@ -2160,7 +2502,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:smb-server:net-session",
@@ -2197,7 +2551,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "برای تشخیص یک session، با Get-SmbSession مقایسه کن و زمان/اثر disconnect را ارزیابی کن.",
-      "security_notes_fa": "این دستور معمولاً نیاز به elevation روی server دارد؛ حذف session فعال می‌تواند انتقال فایل را قطع کند.",
+      "security_notes_fa": [
+        "این دستور معمولاً نیاز به elevation روی server دارد؛ حذف session فعال می‌تواند انتقال فایل را قطع کند."
+      ],
       "search_keywords": [
         "net session",
         "net session",
@@ -2247,7 +2603,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:scheduled-tasks:schtasks-query-fo-list-v",
@@ -2282,7 +2650,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "Taskهای ناشناخته را با XML و signer فایل action بررسی کن؛ فیلتر را به مسیر خاص محدود کن.",
-      "security_notes_fa": "خروجی ممکن است مسیرهای حساس و نام کاربر را فاش کند؛ برای شناسایی persistence، حذف عجولانه نکن.",
+      "security_notes_fa": [
+        "خروجی ممکن است مسیرهای حساس و نام کاربر را فاش کند؛ برای شناسایی persistence، حذف عجولانه نکن."
+      ],
       "search_keywords": [
         "schtasks /query /fo LIST /v",
         "schtasks /query /fo LIST /v",
@@ -2332,7 +2702,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:shell-path:where",
@@ -2367,7 +2749,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "اگر بیش از یک مسیر برگشت، نسخهٔ نخست و PATH را بررسی کن؛ از اجرای برنامهٔ ناشناس از پوشهٔ موقت بپرهیز.",
-      "security_notes_fa": "وجود executable هم‌نام می‌تواند زمینهٔ DLL/PATH hijacking باشد؛ مسیر را اعتبارسنجی کن.",
+      "security_notes_fa": [
+        "وجود executable هم‌نام می‌تواند زمینهٔ DLL/PATH hijacking باشد؛ مسیر را اعتبارسنجی کن."
+      ],
       "search_keywords": [
         "where",
         "where python",
@@ -2417,7 +2801,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:log-search:findstr",
@@ -2452,7 +2848,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "بازه و عبارت جستجو را مستند کن؛ برای الگوهای پیچیده از Select-String استفاده کن.",
-      "security_notes_fa": "لاگ ممکن است شامل token یا PII باشد؛ فقط در مسیرهای مجاز جستجو کن.",
+      "security_notes_fa": [
+        "لاگ ممکن است شامل token یا PII باشد؛ فقط در مسیرهای مجاز جستجو کن."
+      ],
       "search_keywords": [
         "findstr",
         "findstr /i /n /c:\"connection refused\" C:\\Logs\\app.log",
@@ -2502,7 +2900,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:developer-tooling:where-git",
@@ -2537,7 +2947,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "مسیر executable را با نصب مورد انتظار تطبیق بده و در صورت چند نسخه PATH را تصحیح کن.",
-      "security_notes_fa": "اسکریپت‌های مخزن ناشناس را صرفاً به خاطر نصب Git اجرا نکن.",
+      "security_notes_fa": [
+        "اسکریپت‌های مخزن ناشناس را صرفاً به خاطر نصب Git اجرا نکن."
+      ],
       "search_keywords": [
         "where git",
         "where git && git --version",
@@ -2587,7 +2999,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:file-copy-lab:robocopy",
@@ -2622,7 +3046,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "اول خروجی /L را review کن؛ در آزمایشگاه، بعد از تأیید مقصد و ACL یک اجرای واقعی مجاز انجام بده.",
-      "security_notes_fa": "/MIR می‌تواند فایل‌های مقصد را حذف کند؛ در آموزش اولیه از /L استفاده کن و مقصد را دوباره بررسی کن.",
+      "security_notes_fa": [
+        "/MIR می‌تواند فایل‌های مقصد را حذف کند؛ در آموزش اولیه از /L استفاده کن و مقصد را دوباره بررسی کن."
+      ],
       "search_keywords": [
         "robocopy",
         "robocopy C:\\Lab\\Source C:\\Lab\\Backup /E /L /R:0 /W:0",
@@ -2672,7 +3098,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:host-inventory:ver",
@@ -2707,7 +3145,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "خروجی را با systeminfo و winver مقایسه کن؛ نسخهٔ دقیق Update build را جدا یادداشت کن.",
-      "security_notes_fa": "خروجی نسخه به تنهایی patch compliance را ثابت نمی‌کند.",
+      "security_notes_fa": [
+        "خروجی نسخه به تنهایی patch compliance را ثابت نمی‌کند."
+      ],
       "search_keywords": [
         "ver",
         "ver",
@@ -2757,7 +3197,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:batch-control-flow:if-errorlevel",
@@ -2792,7 +3244,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک برنامهٔ تستی با exit code صفر و غیرصفر بساز؛ ترتیب شرط‌ها را از بزرگ به کوچک بررسی کن.",
-      "security_notes_fa": "اسکریپت باید خطا را به caller برگرداند؛ پیام متنی بدون exit code برای automation کافی نیست.",
+      "security_notes_fa": [
+        "اسکریپت باید خطا را به caller برگرداند؛ پیام متنی بدون exit code برای automation کافی نیست."
+      ],
       "search_keywords": [
         "if errorlevel",
         "some-command.exe\nif errorlevel 1 echo Failed",
@@ -2842,7 +3296,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:batch-variables:setlocal",
@@ -2877,7 +3343,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک متغیر را تغییر بده و پس از endlocal مقدار را بررسی کن؛ در loop بین %var% و !var! تفاوت را آزمایش کن.",
-      "security_notes_fa": "Delayed expansion می‌تواند رشته‌های دارای ! را تغییر دهد؛ دادهٔ خارجی را بدون بررسی در command line قرار نده.",
+      "security_notes_fa": [
+        "Delayed expansion می‌تواند رشته‌های دارای ! را تغییر دهد؛ دادهٔ خارجی را بدون بررسی در command line قرار نده."
+      ],
       "search_keywords": [
         "setlocal",
         "setlocal EnableExtensions EnableDelayedExpansion",
@@ -2927,7 +3395,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:batch-modules:call",
@@ -2962,7 +3442,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "خروجی code helper را با `if errorlevel` بررسی کن؛ مسیر نسبی را نسبت به %~dp0 بساز.",
-      "security_notes_fa": "فایل helper را قبل از اجرا inspect کن؛ مسیر قابل‌نوشتن توسط کاربران دیگر ریسک جایگزینی ایجاد می‌کند.",
+      "security_notes_fa": [
+        "فایل helper را قبل از اجرا inspect کن؛ مسیر قابل‌نوشتن توسط کاربران دیگر ریسک جایگزینی ایجاد می‌کند."
+      ],
       "search_keywords": [
         "call",
         "call .\\helpers\\health-check.bat",
@@ -3012,7 +3494,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:batch-exit-code:exit-b",
@@ -3047,7 +3541,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک batch parent بساز که child را با موفقیت و خطا اجرا کند و کد را بررسی کند.",
-      "security_notes_fa": "کد موفقیت را فقط پس از verify واقعی برگردان؛ در غیر این صورت CI خطا را پنهان می‌کند.",
+      "security_notes_fa": [
+        "کد موفقیت را فقط پس از verify واقعی برگردان؛ در غیر این صورت CI خطا را پنهان می‌کند."
+      ],
       "search_keywords": [
         "exit /b",
         "exit /b 0",
@@ -3097,7 +3593,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:batch-logging:echo",
@@ -3132,7 +3640,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "دسترسی نوشتن مقصد و escape کردن >, &, | را بررسی کن؛ سپس لاگ تولیدشده را بخوان.",
-      "security_notes_fa": "فایل گزارش را در پوشهٔ عمومی/قابل‌نوشتن توسط همه ذخیره نکن؛ دادهٔ محرمانه ثبت نکن.",
+      "security_notes_fa": [
+        "فایل گزارش را در پوشهٔ عمومی/قابل‌نوشتن توسط همه ذخیره نکن؛ دادهٔ محرمانه ثبت نکن."
+      ],
       "search_keywords": [
         "echo",
         "echo %DATE% %TIME% - health check started>> C:\\Lab\\health.log",
@@ -3182,7 +3692,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     },
     {
       "uid": "cmd:windows_cmd:environment:set",
@@ -3217,7 +3739,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط prefixهای غیرمحرمانه را بررسی کن؛ برای token از نمایش کل محیط خودداری کن.",
-      "security_notes_fa": "`set` بدون prefix می‌تواند مقدار secretها را چاپ کند؛ خروجی را در log عمومی ثبت نکن.",
+      "security_notes_fa": [
+        "`set` بدون prefix می‌تواند مقدار secretها را چاپ کند؛ خروجی را در log عمومی ثبت نکن."
+      ],
       "search_keywords": [
         "set",
         "set NETENC_",
@@ -3267,7 +3791,19 @@
           "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخه و context هدف را ثبت کن: Windows CMD / Batch.",
+        "معیار را با فیلدهای خروجی مقایسه کن: خروجی و وضعیت سرویس.",
+        "یک نمونهٔ سالم و یک نمونهٔ ناموفق را مقایسه و timestamp را ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "اگر فرمان فقط مشاهده‌ای است rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "اگر فرمان وضعیت را تغییر می‌دهد، قبل از اجرا پشتیبان/وضعیت اولیه و روش بازگشت معتبر همان نسخه را ثبت کن؛ از دستور بازگشت حدسی استفاده نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، وجود فرمان و پارامتر را در Windows CMD / Batch با help یا مستند رسمی همان نسخه بررسی کن."
     }
   ]
 }

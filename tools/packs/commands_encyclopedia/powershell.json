@@ -1,7 +1,7 @@
 {
   "package_schema_version": 1,
   "project": "ENGINEER JOKAR / NetworkEncyclopedia",
-  "generated_on": "2026-10-12",
+  "generated_on": "2026-10-13",
   "purpose": "commands encyclopedia - powershell",
   "vendor_pack": "powershell",
   "chapter_order": 68,
@@ -38,7 +38,8 @@
   "content_quality": {
     "status": "review_required",
     "lab_status": "designed_not_executed",
-    "note_fa": "ساختار JSON و مسیر آموزشی تولید شده؛ آزمایش دستورات باید روی نسخه/مدل هدف و با شواهد اجرا تکمیل شود."
+    "note_fa": "ساختار JSON و مسیر آموزشی تولید شده؛ آزمایش دستورات باید روی نسخه/مدل هدف و با شواهد اجرا تکمیل شود.",
+    "last_enrichment": "2026-10-13"
   },
   "commands": [
     {
@@ -84,7 +85,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "روی رایانهٔ آزمایشگاهی، خروجی Ethernet و Wi‑Fi را مقایسه و Gateway را با طرح آدرس‌دهی تطبیق بده.",
-      "security_notes_fa": "خروجی شامل اطلاعات توپولوژی داخلی است؛ هنگام اشتراک‌گذاری، IPها، DNS داخلی و نام میزبان را پاک‌سازی کن.",
+      "security_notes_fa": [
+        "خروجی شامل اطلاعات توپولوژی داخلی است؛ هنگام اشتراک‌گذاری، IPها، DNS داخلی و نام میزبان را پاک‌سازی کن."
+      ],
       "search_keywords": [
         "Get-NetIPConfiguration",
         "Get-NetIPConfiguration -Detailed",
@@ -134,7 +137,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: InterfaceAlias, IPv4DefaultGateway.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:adapter:get-netadapter",
@@ -178,7 +193,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "کارت مجازی را از کارت فیزیکی تفکیک کن؛ یک رابط را در محیط آزمایشگاه Disable/Enable و تغییر Status را مشاهده کن.",
-      "security_notes_fa": "قبل از غیرفعال کردن NIC دوردست مطمئن شو مسیر مدیریت جایگزین داری؛ ممکن است نشست RDP قطع شود.",
+      "security_notes_fa": [
+        "قبل از غیرفعال کردن NIC دوردست مطمئن شو مسیر مدیریت جایگزین داری؛ ممکن است نشست RDP قطع شود."
+      ],
       "search_keywords": [
         "Get-NetAdapter",
         "Get-NetAdapter -IncludeHidden",
@@ -228,7 +245,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Status, LinkSpeed.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:adapter-statistics:get-netadapterstatistics",
@@ -268,7 +297,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "شمارنده‌ها را پیش و پس از انتقال یک فایل آزمایشی ثبت کن و اختلاف بایت‌ها را با حجم تقریبی انتقال مقایسه کن.",
-      "security_notes_fa": "شمارنده‌های تجمعی را با نرخ لحظه‌ای اشتباه نگیر؛ برای روند، اختلاف زمان‌دار بگیر.",
+      "security_notes_fa": [
+        "شمارنده‌های تجمعی را با نرخ لحظه‌ای اشتباه نگیر؛ برای روند، اختلاف زمان‌دار بگیر."
+      ],
       "search_keywords": [
         "Get-NetAdapterStatistics",
         "Get-NetAdapterStatistics -Name 'Ethernet'",
@@ -318,7 +349,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: ReceivedPacketErrors.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:ip-address:get-netipaddress",
@@ -362,7 +405,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "IP هر رابط را با DHCP scope یا طرح IP سازمانی تطبیق بده و آدرس تکراری یا Prefix اشتباه را بررسی کن.",
-      "security_notes_fa": "آدرس‌های مدیریتی را در گزارش عمومی منتشر نکن؛ رابط‌های VPN و مجازی را هم در خروجی لحاظ کن.",
+      "security_notes_fa": [
+        "آدرس‌های مدیریتی را در گزارش عمومی منتشر نکن؛ رابط‌های VPN و مجازی را هم در خروجی لحاظ کن."
+      ],
       "search_keywords": [
         "Get-NetIPAddress",
         "Get-NetIPAddress | Sort-Object InterfaceIndex,AddressFamily",
@@ -412,7 +457,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: PrefixLength, PrefixOrigin.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:routing-table:get-netroute",
@@ -458,7 +515,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "دو مسیر پیش‌فرض آزمایشی با Metric متفاوت را فقط مشاهده کن؛ تعیین کن کدام مسیر ترجیح داده می‌شود و سپس توپولوژی را به حالت قبل برگردان.",
-      "security_notes_fa": "افزودن یا حذف Route می‌تواند دسترسی راه دور را قطع کند؛ پیش از تغییر مسیر، مسیر بازگشت و کنسول محلی را فراهم کن.",
+      "security_notes_fa": [
+        "افزودن یا حذف Route می‌تواند دسترسی راه دور را قطع کند؛ پیش از تغییر مسیر، مسیر بازگشت و کنسول محلی را فراهم کن."
+      ],
       "search_keywords": [
         "Get-NetRoute",
         "Get-NetRoute -AddressFamily IPv4 | Sort-Object RouteMetric",
@@ -508,7 +567,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: DestinationPrefix, RouteMetric.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:route-selection:find-netroute",
@@ -548,7 +619,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "با یک مقصد داخل شبکه و یک مقصد بیرون شبکه آزمایش کن؛ تفاوت Route منتخب و Source Address را ثبت کن.",
-      "security_notes_fa": "از IPهای عمومی به‌عنوان معیار قطعی سلامت اینترنت استفاده نکن؛ ICMP یا Route ممکن است طبق سیاست شبکه محدود شده باشد.",
+      "security_notes_fa": [
+        "از IPهای عمومی به‌عنوان معیار قطعی سلامت اینترنت استفاده نکن؛ ICMP یا Route ممکن است طبق سیاست شبکه محدود شده باشد."
+      ],
       "search_keywords": [
         "Find-NetRoute",
         "Find-NetRoute -RemoteIPAddress 1.1.1.1",
@@ -598,7 +671,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: SelectedSourceAddress.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:neighbor-cache:get-netneighbor",
@@ -638,7 +723,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "Gateway را پینگ کن و قبل/بعد، State را مقایسه کن؛ برای آزمایش از پاک‌سازی گستردهٔ کش روی شبکهٔ عملیاتی خودداری کن.",
-      "security_notes_fa": "MAC و IP همسایه‌ها جزئیات داخلی LAN را آشکار می‌کنند.",
+      "security_notes_fa": [
+        "MAC و IP همسایه‌ها جزئیات داخلی LAN را آشکار می‌کنند."
+      ],
       "search_keywords": [
         "Get-NetNeighbor",
         "Get-NetNeighbor | Sort-Object State,InterfaceIndex",
@@ -688,7 +775,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: State.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:connectivity:test-netconnection",
@@ -729,7 +828,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "برای سرور لابراتوار، ابتدا نام را تست کن و سپس IP ثابت را با همان پورت بررسی کن تا خرابی DNS از خرابی TCP جدا شود.",
-      "security_notes_fa": "تست موفق اتصال TCP سلامت برنامه، گواهی TLS یا مجوز اپلیکیشن را ثابت نمی‌کند.",
+      "security_notes_fa": [
+        "تست موفق اتصال TCP سلامت برنامه، گواهی TLS یا مجوز اپلیکیشن را ثابت نمی‌کند."
+      ],
       "search_keywords": [
         "Test-NetConnection",
         "Test-NetConnection -ComputerName server.example.local -Port 443 -InformationLevel Detailed",
@@ -779,7 +880,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: TcpTestSucceeded.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:dns:resolve-dnsname",
@@ -823,7 +936,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "نام داخلی را در DNS سازمانی و یک نام کنترل‌شدهٔ عمومی تست کن؛ DNS Server پاسخ‌دهنده را یادداشت کن.",
-      "security_notes_fa": "رکوردهای داخلی DNS می‌توانند نام و IP سامانه‌های سازمانی را افشا کنند.",
+      "security_notes_fa": [
+        "رکوردهای داخلی DNS می‌توانند نام و IP سامانه‌های سازمانی را افشا کنند."
+      ],
       "search_keywords": [
         "Resolve-DnsName",
         "Resolve-DnsName server.example.local -Type A",
@@ -873,7 +988,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: TTL, IPAddress.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:dns-client:get-dnsclientserveraddress",
@@ -913,7 +1040,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "آدرس DNS را با سیاست دامنه و DHCP option 006 مقایسه کن؛ رابط VPN را جداگانه بررسی کن.",
-      "security_notes_fa": "در محیط Active Directory، جایگزینی DNS داخلی با Resolver عمومی می‌تواند name resolution دامنه را مختل کند.",
+      "security_notes_fa": [
+        "در محیط Active Directory، جایگزینی DNS داخلی با Resolver عمومی می‌تواند name resolution دامنه را مختل کند."
+      ],
       "search_keywords": [
         "Get-DnsClientServerAddress",
         "Get-DnsClientServerAddress -AddressFamily IPv4",
@@ -963,7 +1092,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: ServerAddresses.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:dns-cache:clear-dnsclientcache",
@@ -1005,7 +1146,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط پس از بررسی TTL و رکورد مرجع اجرا کن؛ بلافاصله Resolve-DnsName را دوباره اجرا و سرور پاسخ‌دهنده را ثبت کن.",
-      "security_notes_fa": "پاک‌سازی کش مشکل رکورد authoritative را رفع نمی‌کند؛ از آن به‌عنوان راه‌حل دائمی استفاده نکن.",
+      "security_notes_fa": [
+        "پاک‌سازی کش مشکل رکورد authoritative را رفع نمی‌کند؛ از آن به‌عنوان راه‌حل دائمی استفاده نکن."
+      ],
       "search_keywords": [
         "Clear-DnsClientCache",
         "Clear-DnsClientCache",
@@ -1055,7 +1198,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Cache.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:tcp:get-nettcpconnection",
@@ -1100,7 +1255,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک ارتباط آزمایشی بساز، جدول را بخوان و PID را با Get-Process تطبیق بده؛ برای Listening از State مناسب استفاده کن.",
-      "security_notes_fa": "IPهای راه‌دور، پورت‌ها و PID را از خروجی عمومی حذف کن؛ صرف دیدن اتصال دلیل بدافزار نیست.",
+      "security_notes_fa": [
+        "IPهای راه‌دور، پورت‌ها و PID را از خروجی عمومی حذف کن؛ صرف دیدن اتصال دلیل بدافزار نیست."
+      ],
       "search_keywords": [
         "Get-NetTCPConnection",
         "Get-NetTCPConnection -State Established | Sort-Object RemotePort",
@@ -1150,7 +1307,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: State, OwningProcess.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:port-owner:get-nettcpconnection",
@@ -1190,7 +1359,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "PID را به Get-Process بده و مسیر فایل اجرایی را بررسی کن؛ در آزمایشگاه با یک HTTP listener کنترل‌شده تمرین کن.",
-      "security_notes_fa": "قبل از بستن فرایند سرویس‌محور، وابستگی و اثر downtime را بررسی کن.",
+      "security_notes_fa": [
+        "قبل از بستن فرایند سرویس‌محور، وابستگی و اثر downtime را بررسی کن."
+      ],
       "search_keywords": [
         "Get-NetTCPConnection",
         "Get-NetTCPConnection -LocalPort 443 | Select-Object LocalAddress,LocalPort,State,OwningProcess",
@@ -1240,7 +1411,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: LocalPort.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:udp:get-netudpendpoint",
@@ -1280,7 +1463,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط روی میزبان آزمایشگاهی، DNS یا سرویس UDP شناخته‌شده را با PID بررسی کن و آن را با پیکربندی سرویس تطبیق بده.",
-      "security_notes_fa": "Bind روی 0.0.0.0 یعنی همهٔ آدرس‌های IPv4 محلی؛ لزوماً به معنی دسترسی از اینترنت نیست.",
+      "security_notes_fa": [
+        "Bind روی 0.0.0.0 یعنی همهٔ آدرس‌های IPv4 محلی؛ لزوماً به معنی دسترسی از اینترنت نیست."
+      ],
       "search_keywords": [
         "Get-NetUDPEndpoint",
         "Get-NetUDPEndpoint | Sort-Object LocalPort",
@@ -1330,7 +1515,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: LocalAddress.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:firewall-profile:get-netfirewallprofile",
@@ -1370,7 +1567,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "در VM آزمایشگاهی، شبکهٔ فعال و پروفایل مرتبط را تشخیص بده و نتیجه را با GPO سازمان مقایسه کن.",
-      "security_notes_fa": "برای حل مشکل به شکل کورکورانه Firewall را خاموش نکن؛ تفاوت پروفایل شبکه باعث قاعدهٔ ناخواسته می‌شود.",
+      "security_notes_fa": [
+        "برای حل مشکل به شکل کورکورانه Firewall را خاموش نکن؛ تفاوت پروفایل شبکه باعث قاعدهٔ ناخواسته می‌شود."
+      ],
       "search_keywords": [
         "Get-NetFirewallProfile",
         "Get-NetFirewallProfile | Format-Table Name,Enabled,DefaultInboundAction,DefaultOutboundAction",
@@ -1420,7 +1619,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: DefaultInboundAction.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:firewall-rule:get-netfirewallrule",
@@ -1465,7 +1676,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "Ruleها را با DisplayName و Profile پالایش کن؛ نتیجه را با Get-NetFirewallPortFilter یا AddressFilter دقیق‌تر کن.",
-      "security_notes_fa": "قانون Allow گسترده روی Public می‌تواند سطح حمله را افزایش دهد؛ صرف وجود Rule به معنی match شدن آن نیست.",
+      "security_notes_fa": [
+        "قانون Allow گسترده روی Public می‌تواند سطح حمله را افزایش دهد؛ صرف وجود Rule به معنی match شدن آن نیست."
+      ],
       "search_keywords": [
         "Get-NetFirewallRule",
         "Get-NetFirewallRule -Enabled True -Direction Inbound | Select-Object DisplayName,Action,Profile",
@@ -1515,7 +1728,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Action, Profile.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:firewall-port-filter:get-netfirewallportfilter",
@@ -1555,7 +1780,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "Rule مورد انتظار را با پورت، پروتکل و RemoteAddress بررسی کن؛ پورت واقعی شنونده را هم جداگانه اندازه بگیر.",
-      "security_notes_fa": "Rule firewall و socket listener دو لایهٔ مستقل هستند؛ یکی را جایگزین بررسی دیگری نکن.",
+      "security_notes_fa": [
+        "Rule firewall و socket listener دو لایهٔ مستقل هستند؛ یکی را جایگزین بررسی دیگری نکن."
+      ],
       "search_keywords": [
         "Get-NetFirewallPortFilter",
         "Get-NetFirewallRule -DisplayName 'Allow HTTPS Lab' | Get-NetFirewallPortFilter",
@@ -1605,7 +1832,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: LocalPort.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:firewall-rule-change:new-netfirewallrule",
@@ -1651,7 +1890,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط در VM جداگانه و برای listener کنترل‌شدهٔ 8443 اجرا کن؛ پس از تست، با Remove-NetFirewallRule -DisplayName 'Lab HTTPS Inbound' حذفش کن.",
-      "security_notes_fa": "این تغییر ترافیک را مجاز می‌کند؛ هرگز بدون change ticket و بررسی Profile/RemoteAddress در سازمان اجرا نکن.",
+      "security_notes_fa": [
+        "این تغییر ترافیک را مجاز می‌کند؛ هرگز بدون change ticket و بررسی Profile/RemoteAddress در سازمان اجرا نکن."
+      ],
       "search_keywords": [
         "New-NetFirewallRule",
         "New-NetFirewallRule -DisplayName 'Lab HTTPS Inbound' -Direction Inbound -Protocol TCP -LocalPort 8443 -Action Allow -Profile Private",
@@ -1701,7 +1942,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Direction, Profile.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:services:get-service",
@@ -1745,7 +1998,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "وضعیت سرویس مورد نیاز را در شروع و بعد از راه‌اندازی دوباره ثبت کن و آن را با وابستگی‌های سرویس مقایسه کن.",
-      "security_notes_fa": "سرویس را صرفاً به خاطر Stop بودن فعال نکن؛ برخی سرویس‌ها عمدی manual/trigger-start هستند.",
+      "security_notes_fa": [
+        "سرویس را صرفاً به خاطر Stop بودن فعال نکن؛ برخی سرویس‌ها عمدی manual/trigger-start هستند."
+      ],
       "search_keywords": [
         "Get-Service",
         "Get-Service | Sort-Object Status,DisplayName",
@@ -1795,7 +2050,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Status, Name.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:service-details:get-ciminstance",
@@ -1839,7 +2106,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "برای یک سرویس آزمایشگاهی، Name، executable path و StartMode را با Get-Service مقایسه کن؛ مقادیر غیرمنتظره را بررسی کن.",
-      "security_notes_fa": "مسیرهای اجرایی سرویس‌ها می‌توانند نشانهٔ persistence باشند؛ قبل از تغییر، امضا و محل فایل را اعتبارسنجی کن.",
+      "security_notes_fa": [
+        "مسیرهای اجرایی سرویس‌ها می‌توانند نشانهٔ persistence باشند؛ قبل از تغییر، امضا و محل فایل را اعتبارسنجی کن."
+      ],
       "search_keywords": [
         "Get-CimInstance",
         "Get-CimInstance Win32_Service -Filter \"Name='Spooler'\"",
@@ -1889,7 +2158,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: StartMode, PathName.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:event-log:get-winevent",
@@ -1933,7 +2214,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "زمان رخداد را با زمان قطعی سرویس و timezone مقایسه کن؛ سپس Provider و Event ID را برای تحلیل دقیق‌تر باز کن.",
-      "security_notes_fa": "لاگ‌ها حاوی نام حساب، مسیر فایل و IP هستند؛ قبل از اشتراک‌گذاری redact کن.",
+      "security_notes_fa": [
+        "لاگ‌ها حاوی نام حساب، مسیر فایل و IP هستند؛ قبل از اشتراک‌گذاری redact کن."
+      ],
       "search_keywords": [
         "Get-WinEvent",
         "Get-WinEvent -LogName System -MaxEvents 50",
@@ -1983,7 +2266,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Id, ProviderName.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:event-filter:get-winevent",
@@ -2023,7 +2318,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "بازهٔ زمانی باریک را با یک Event ID مشخص فیلتر کن؛ پس از مشاهده، فیلتر را مرحله‌ای گسترش بده.",
-      "security_notes_fa": "زمان محلی و UTC را اشتباه نکن؛ ساعت سیستم ناسالم می‌تواند correlation رخدادها را گمراه کند.",
+      "security_notes_fa": [
+        "زمان محلی و UTC را اشتباه نکن؛ ساعت سیستم ناسالم می‌تواند correlation رخدادها را گمراه کند."
+      ],
       "search_keywords": [
         "Get-WinEvent",
         "Get-WinEvent -FilterHashtable @{LogName='System'; Id=7036; StartTime=(Get-Date).AddHours(-4)}",
@@ -2073,7 +2370,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: StartTime.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:log-tail:get-content",
@@ -2113,7 +2422,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط مسیر لاگ آزمایشی را دنبال کن؛ یک رخداد تولید کن و ثبت‌شدن آن را بررسی کن.",
-      "security_notes_fa": "لاگ ممکن است حاوی secret یا دادهٔ شخصی باشد؛ دسترسی فایل را محدود کن.",
+      "security_notes_fa": [
+        "لاگ ممکن است حاوی secret یا دادهٔ شخصی باشد؛ دسترسی فایل را محدود کن."
+      ],
       "search_keywords": [
         "Get-Content",
         "Get-Content C:\\Logs\\service.log -Tail 100 -Wait",
@@ -2163,7 +2474,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: -Tail.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:audit-log:start-transcript",
@@ -2203,7 +2526,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "در پوشهٔ آزمایشگاهی Transcript را شروع کن، چند فرمان read-only اجرا کن، سپس Stop-Transcript و محتوای فایل را بررسی کن.",
-      "security_notes_fa": "Transcript همهٔ secretها را لزوماً ماسک نمی‌کند؛ رمز و token را در ترمینال وارد نکن.",
+      "security_notes_fa": [
+        "Transcript همهٔ secretها را لزوماً ماسک نمی‌کند؛ رمز و token را در ترمینال وارد نکن."
+      ],
       "search_keywords": [
         "Start-Transcript",
         "Start-Transcript -Path .\\lab-transcript.txt -Append",
@@ -2253,7 +2578,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Path.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:host-inventory:get-computerinfo",
@@ -2293,7 +2630,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "خروجی را برای دو VM با build متفاوت بگیر و بررسی کن آیا تفاوت رفتار با نسخه مرتبط است.",
-      "security_notes_fa": "نام میزبان/دامنه ممکن است اطلاعات سازمان را فاش کند.",
+      "security_notes_fa": [
+        "نام میزبان/دامنه ممکن است اطلاعات سازمان را فاش کند."
+      ],
       "search_keywords": [
         "Get-ComputerInfo",
         "Get-ComputerInfo | Select-Object CsName,WindowsProductName,WindowsVersion,OsBuildNumber",
@@ -2343,7 +2682,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: OsBuildNumber.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:os-inventory:get-ciminstance-win32-operatingsystem",
@@ -2383,7 +2734,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "خروجی LastBootUpTime را با uptime سرویس و پنجرهٔ تغییرات مقایسه کن.",
-      "security_notes_fa": "ساعت سیستم و time zone در گزارش رخدادها مهم‌اند.",
+      "security_notes_fa": [
+        "ساعت سیستم و time zone در گزارش رخدادها مهم‌اند."
+      ],
       "search_keywords": [
         "Get-CimInstance Win32_OperatingSystem",
         "Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber,LastBootUpTime",
@@ -2433,7 +2786,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: LastBootUpTime.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:patch-management:get-hotfix",
@@ -2473,7 +2838,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک baseline از VM بساز و آن را با Windows Update / ابزار مدیریت پچ سازمان تطبیق بده؛ Get-HotFix تمام بسته‌ها را پوشش نمی‌دهد.",
-      "security_notes_fa": "نبود یک KB در Get-HotFix به‌تنهایی اثبات آسیب‌پذیری نیست.",
+      "security_notes_fa": [
+        "نبود یک KB در Get-HotFix به‌تنهایی اثبات آسیب‌پذیری نیست."
+      ],
       "search_keywords": [
         "Get-HotFix",
         "Get-HotFix | Sort-Object InstalledOn -Descending | Select-Object -First 20",
@@ -2523,7 +2890,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: HotFixID.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:local-users:get-localuser",
@@ -2563,7 +2942,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "حساب‌های آزمایشگاهی قدیمی را شناسایی کن؛ سپس وضعیت را با baseline حساب‌های مجاز مقایسه کن.",
-      "security_notes_fa": "برای ممیزی، نام حساب‌ها و زمان ورود را محدود به افراد مجاز نگه دار؛ حذف کاربر عملیاتی را با این دستور انجام نده.",
+      "security_notes_fa": [
+        "برای ممیزی، نام حساب‌ها و زمان ورود را محدود به افراد مجاز نگه دار؛ حذف کاربر عملیاتی را با این دستور انجام نده."
+      ],
       "search_keywords": [
         "Get-LocalUser",
         "Get-LocalUser | Select-Object Name,Enabled,LastLogon",
@@ -2613,7 +2994,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Enabled.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:local-groups:get-localgroupmember",
@@ -2653,7 +3046,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "عضویت‌های مستقیم و گروه‌های دامنه را ثبت کن؛ مسیر nested group را در Active Directory هم بررسی کن.",
-      "security_notes_fa": "خروجی privilege بالا را محرمانه نگه دار؛ گروه تو در تو ممکن است دسترسی بیشتری از ظاهر لیست بدهد.",
+      "security_notes_fa": [
+        "خروجی privilege بالا را محرمانه نگه دار؛ گروه تو در تو ممکن است دسترسی بیشتری از ظاهر لیست بدهد."
+      ],
       "search_keywords": [
         "Get-LocalGroupMember",
         "Get-LocalGroupMember -Group 'Administrators'",
@@ -2703,7 +3098,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: PrincipalSource.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:active-directory:get-aduser",
@@ -2749,7 +3156,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "در محیط دامنهٔ آزمایشگاهی حساب تست را بخوان و نتیجه را با سیاست password expiration و لاگ ورود مقایسه کن.",
-      "security_notes_fa": "ماژول AD و مجوز دایرکتوری لازم است؛ از خروجی حاوی صفات شخصی در چت یا گزارش عمومی پرهیز کن.",
+      "security_notes_fa": [
+        "ماژول AD و مجوز دایرکتوری لازم است؛ از خروجی حاوی صفات شخصی در چت یا گزارش عمومی پرهیز کن."
+      ],
       "search_keywords": [
         "Get-ADUser",
         "Get-ADUser -Identity jdoe -Properties Enabled,LastLogonDate,PasswordLastSet",
@@ -2799,7 +3208,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Enabled, LastLogonDate.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:active-directory:get-adgroupmember",
@@ -2841,7 +3262,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط در دامنهٔ آزمایشگاهی یا با مجوز audit اجرا کن؛ عضویت گروه‌های ممتاز را با فهرست تأییدشده مقایسه کن.",
-      "security_notes_fa": "خروجی Domain Admins حساس است؛ فقط حساب‌های مجاز باید این اطلاعات را دریافت کنند.",
+      "security_notes_fa": [
+        "خروجی Domain Admins حساس است؛ فقط حساب‌های مجاز باید این اطلاعات را دریافت کنند."
+      ],
       "search_keywords": [
         "Get-ADGroupMember",
         "Get-ADGroupMember -Identity 'Domain Admins' -Recursive",
@@ -2891,7 +3314,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: ObjectClass.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:active-directory:get-adcomputer",
@@ -2933,7 +3368,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "نتیجه را به OU آزمایشگاهی محدود کن و LastLogonDate را به‌عنوان برآورد، نه timestamp قطعی، تفسیر کن.",
-      "security_notes_fa": "فهرست گستردهٔ AD می‌تواند نام میزبان و ساختار سازمان را آشکار کند.",
+      "security_notes_fa": [
+        "فهرست گستردهٔ AD می‌تواند نام میزبان و ساختار سازمان را آشکار کند."
+      ],
       "search_keywords": [
         "Get-ADComputer",
         "Get-ADComputer -Filter 'Enabled -eq $true' -Properties OperatingSystem,LastLogonDate",
@@ -2983,7 +3420,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: OperatingSystem.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:smb-share:get-smbshare",
@@ -3023,7 +3472,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "Share را با ACL فایل‌سیستم جداگانه بررسی کن؛ دسترسی effective ترکیب share permissions و NTFS است.",
-      "security_notes_fa": "نام Share و مسیرها ممکن است اطلاعات ساختار فایل سازمان را فاش کنند.",
+      "security_notes_fa": [
+        "نام Share و مسیرها ممکن است اطلاعات ساختار فایل سازمان را فاش کنند."
+      ],
       "search_keywords": [
         "Get-SmbShare",
         "Get-SmbShare | Select-Object Name,Path,EncryptData,FolderEnumerationMode",
@@ -3073,7 +3524,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: EncryptData.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:smb-session:get-smbsession",
@@ -3115,7 +3578,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "با یک کلاینت آزمایشگاهی به share وصل شو و تطبیق اتصال را در سرور ببین؛ سپس نشست را طبیعی ببند.",
-      "security_notes_fa": "نام کاربر و کلاینت در خروجی عملیاتی‌اند؛ برای قطع نشست فقط پس از بررسی تأثیر اقدام کن.",
+      "security_notes_fa": [
+        "نام کاربر و کلاینت در خروجی عملیاتی‌اند؛ برای قطع نشست فقط پس از بررسی تأثیر اقدام کن."
+      ],
       "search_keywords": [
         "Get-SmbSession",
         "Get-SmbSession | Select-Object ClientComputerName,ClientUserName,NumOpens",
@@ -3165,7 +3630,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: NumOpens.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:scheduled-tasks:get-scheduledtask",
@@ -3205,7 +3682,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "مسیر task، Action، Principal و Trigger را جداگانه با Get-ScheduledTaskInfo و خروجی XML بررسی کن.",
-      "security_notes_fa": "Task زمان‌بندی‌شده می‌تواند persistence باشد؛ پیش از حذف، مالک و هدف را شناسایی کن.",
+      "security_notes_fa": [
+        "Task زمان‌بندی‌شده می‌تواند persistence باشد؛ پیش از حذف، مالک و هدف را شناسایی کن."
+      ],
       "search_keywords": [
         "Get-ScheduledTask",
         "Get-ScheduledTask | Select-Object TaskPath,TaskName,State",
@@ -3255,7 +3734,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: State.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:scheduled-task-history:get-scheduledtaskinfo",
@@ -3295,7 +3786,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "LastTaskResult را کنار History رویدادها تفسیر کن؛ صفر معمولاً موفقیت است اما برای برنامهٔ واقعی log داخلی هم لازم است.",
-      "security_notes_fa": "مقادیر نتیجه بین برنامه‌ها متفاوت‌اند؛ عدد غیرصفر را بدون مستندات Action به علت قطعی تبدیل نکن.",
+      "security_notes_fa": [
+        "مقادیر نتیجه بین برنامه‌ها متفاوت‌اند؛ عدد غیرصفر را بدون مستندات Action به علت قطعی تبدیل نکن."
+      ],
       "search_keywords": [
         "Get-ScheduledTaskInfo",
         "Get-ScheduledTaskInfo -TaskName 'LabHealthCheck' -TaskPath '\\NetworkAll\\'",
@@ -3345,7 +3838,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: LastTaskResult.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:certificates:get-childitem",
@@ -3389,7 +3894,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "گواهی منقضی‌شدهٔ VM را پیدا کن و expiration را با سرویس مصرف‌کننده تطبیق بده؛ private key را export نکن.",
-      "security_notes_fa": "از کپی یا ارسال private key اجتناب کن؛ thumbprint به تنهایی محرمانه نیست اما می‌تواند به شناسایی سامانه کمک کند.",
+      "security_notes_fa": [
+        "از کپی یا ارسال private key اجتناب کن؛ thumbprint به تنهایی محرمانه نیست اما می‌تواند به شناسایی سامانه کمک کند."
+      ],
       "search_keywords": [
         "Get-ChildItem",
         "Get-ChildItem Cert:\\LocalMachine\\My | Select-Object Subject,Thumbprint,NotAfter,HasPrivateKey",
@@ -3439,7 +3946,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: NotAfter, HasPrivateKey.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:script-policy:get-executionpolicy",
@@ -3479,7 +3998,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "Scope مؤثر را پیش از اجرای script بررسی کن؛ نتیجه را با Group Policy و روش امضای کد مقایسه کن.",
-      "security_notes_fa": "Execution Policy مرز امنیتی کامل برای جلوگیری از اجرای کد مخرب نیست؛ آن را با App Control و حداقل دسترسی تکمیل کن.",
+      "security_notes_fa": [
+        "Execution Policy مرز امنیتی کامل برای جلوگیری از اجرای کد مخرب نیست؛ آن را با App Control و حداقل دسترسی تکمیل کن."
+      ],
       "search_keywords": [
         "Get-ExecutionPolicy",
         "Get-ExecutionPolicy -List",
@@ -3529,7 +4050,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Scope.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:code-signing:get-authenticodesignature",
@@ -3569,7 +4102,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فایل آزمایشی signed و unsigned را مقایسه کن؛ thumbprint signer را با مرجع سازمان تطبیق بده.",
-      "security_notes_fa": "Status=Valid به تنهایی تضمین بی‌خطر بودن کد نیست؛ منبع و محتوای script را هم review کن.",
+      "security_notes_fa": [
+        "Status=Valid به تنهایی تضمین بی‌خطر بودن کد نیست؛ منبع و محتوای script را هم review کن."
+      ],
       "search_keywords": [
         "Get-AuthenticodeSignature",
         "Get-AuthenticodeSignature .\\approved-script.ps1",
@@ -3619,7 +4154,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Status.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:integrity:get-filehash",
@@ -3659,7 +4206,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "هش فایل را با مقدار منتشرشده از کانال معتبر و مستقل مقایسه کن؛ پس از کپی روی مقصد دوباره هش بگیر.",
-      "security_notes_fa": "هش، اصالت ناشر را ثابت نمی‌کند مگر با مرجع معتبر مقایسه شود؛ hash را از همان کانال ناشناس نپذیر.",
+      "security_notes_fa": [
+        "هش، اصالت ناشر را ثابت نمی‌کند مگر با مرجع معتبر مقایسه شود؛ hash را از همان کانال ناشناس نپذیر."
+      ],
       "search_keywords": [
         "Get-FileHash",
         "Get-FileHash .\\installer.msi -Algorithm SHA256",
@@ -3709,7 +4258,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Hash.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:pipeline:select-object",
@@ -3749,7 +4310,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "قبل و بعد از Select-Object تعداد و نام propertyها را با Get-Member مقایسه کن.",
-      "security_notes_fa": "فیلترکردن خروجی جایگزین مجوز دسترسی نیست؛ فقط ستون‌های ضروری را منتشر کن.",
+      "security_notes_fa": [
+        "فیلترکردن خروجی جایگزین مجوز دسترسی نیست؛ فقط ستون‌های ضروری را منتشر کن."
+      ],
       "search_keywords": [
         "Select-Object",
         "Get-NetAdapter | Select-Object Name,Status,LinkSpeed",
@@ -3799,7 +4362,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Property.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:pipeline-filter:where-object",
@@ -3839,7 +4414,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "شرط یکسان را روی نمونهٔ کنترل‌شده اجرا کن و تعداد نتایج قبل/بعد را با Measure-Object بررسی کن.",
-      "security_notes_fa": "شرط نادرست ممکن است موارد مهم را حذف کند؛ پیش از اجرای تغییرات bulk با خروجی read-only اعتبارسنجی کن.",
+      "security_notes_fa": [
+        "شرط نادرست ممکن است موارد مهم را حذف کند؛ پیش از اجرای تغییرات bulk با خروجی read-only اعتبارسنجی کن."
+      ],
       "search_keywords": [
         "Where-Object",
         "Get-Service | Where-Object Status -eq 'Running'",
@@ -3889,7 +4466,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Status.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:pipeline-metrics:measure-object",
@@ -3929,7 +4518,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "بازهٔ زمانی و واحد اندازه‌گیری را کنار نتیجه یادداشت کن؛ byte را برای گزارش به MiB/GiB تبدیل کن.",
-      "security_notes_fa": "جمع مصرف حافظهٔ Processها دقیقاً معادل حافظهٔ مصرفی کل سیستم نیست.",
+      "security_notes_fa": [
+        "جمع مصرف حافظهٔ Processها دقیقاً معادل حافظهٔ مصرفی کل سیستم نیست."
+      ],
       "search_keywords": [
         "Measure-Object",
         "Get-Process | Measure-Object WorkingSet64 -Sum -Average",
@@ -3979,7 +4570,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Sum.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:export-data:export-csv",
@@ -4019,7 +4622,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فایل را با Import-Csv بخوان و تعداد ردیف‌ها را با خروجی اصلی مقایسه کن.",
-      "security_notes_fa": "CSV ممکن است نام میزبان، IP و داده‌های محرمانه داشته باشد؛ مسیر و ACL آن را محدود کن.",
+      "security_notes_fa": [
+        "CSV ممکن است نام میزبان، IP و داده‌های محرمانه داشته باشد؛ مسیر و ACL آن را محدود کن."
+      ],
       "search_keywords": [
         "Export-Csv",
         "Get-NetAdapter | Select-Object Name,Status,LinkSpeed | Export-Csv .\\adapters.csv -NoTypeInformation -Encoding utf8",
@@ -4069,7 +4674,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: NoTypeInformation.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:import-data:import-csv",
@@ -4109,7 +4726,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "ستون‌های موردنیاز و ردیف‌های ناقص را اعتبارسنجی کن؛ پیش از استفاده در تغییرات شبکه، dry-run بساز.",
-      "security_notes_fa": "CSV untrusted input است؛ از اجرای مقدارهای سلولی با Invoke-Expression خودداری کن.",
+      "security_notes_fa": [
+        "CSV untrusted input است؛ از اجرای مقدارهای سلولی با Invoke-Expression خودداری کن."
+      ],
       "search_keywords": [
         "Import-Csv",
         "Import-Csv .\\inventory.csv | Where-Object Status -eq 'Up'",
@@ -4159,7 +4778,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Header.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:json-output:convertto-json",
@@ -4199,7 +4830,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "JSON را دوباره با ConvertFrom-Json بخوان و ساختار آرایه/شیء را بررسی کن؛ Depth کافی انتخاب کن.",
-      "security_notes_fa": "خروجی JSON هم ممکن است اطلاعات شبکه و شناسه‌های داخلی را فاش کند.",
+      "security_notes_fa": [
+        "خروجی JSON هم ممکن است اطلاعات شبکه و شناسه‌های داخلی را فاش کند."
+      ],
       "search_keywords": [
         "ConvertTo-Json",
         "Get-NetIPConfiguration | ConvertTo-Json -Depth 5",
@@ -4249,7 +4882,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Depth.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:ps-remoting:test-wsman",
@@ -4290,7 +4935,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "از کلاینت و سرور آزمایشگاهی، DNS، دسترسی پورت و وضعیت WinRM را مرحله‌ای تست کن.",
-      "security_notes_fa": "WSMan response لزوماً اجازهٔ اجرای remote یا احراز هویت موفق را ثابت نمی‌کند.",
+      "security_notes_fa": [
+        "WSMan response لزوماً اجازهٔ اجرای remote یا احراز هویت موفق را ثابت نمی‌کند."
+      ],
       "search_keywords": [
         "Test-WSMan",
         "Test-WSMan -ComputerName server.example.local",
@@ -4340,7 +4987,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: wsmid.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:ps-remoting:invoke-command",
@@ -4382,7 +5041,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط روی VM دوم با دسترسی least privilege اجرا کن؛ خروجی PSComputerName و خطاها را ثبت کن.",
-      "security_notes_fa": "Credential را داخل اسکریپت hardcode نکن و از TrustedHosts گسترده بدون تحلیل Kerberos استفاده نکن.",
+      "security_notes_fa": [
+        "Credential را داخل اسکریپت hardcode نکن و از TrustedHosts گسترده بدون تحلیل Kerberos استفاده نکن."
+      ],
       "search_keywords": [
         "Invoke-Command",
         "Invoke-Command -ComputerName LAB-SRV01 -ScriptBlock { Get-Service -Name Spooler }",
@@ -4432,7 +5093,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: PSComputerName.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:ps-remoting:enter-pssession",
@@ -4469,7 +5142,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "ابتدا Test-WSMan؛ فقط دستورهای مشاهده‌ای اجرا کن و با Exit-PSSession خارج شو.",
-      "security_notes_fa": "نشست ریموت privilege محلی کاربر مقصد را می‌گیرد؛ credential را به حساب محدود و زمان کوتاه محدود کن.",
+      "security_notes_fa": [
+        "نشست ریموت privilege محلی کاربر مقصد را می‌گیرد؛ credential را به حساب محدود و زمان کوتاه محدود کن."
+      ],
       "search_keywords": [
         "Enter-PSSession",
         "Enter-PSSession -ComputerName LAB-SRV01",
@@ -4519,7 +5194,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: خروجی و کد بازگشت.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:performance-counters:get-counter",
@@ -4559,7 +5246,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "قبل از نتیجه‌گیری نمونه‌های چندثانیه‌ای را در بازهٔ بار کنترل‌شده اجرا کن؛ مقادیر را با Task Manager/Event Log مقایسه کن.",
-      "security_notes_fa": "یک نمونهٔ کوتاه مبنای ظرفیت‌سنجی بلندمدت نیست.",
+      "security_notes_fa": [
+        "یک نمونهٔ کوتاه مبنای ظرفیت‌سنجی بلندمدت نیست."
+      ],
       "search_keywords": [
         "Get-Counter",
         "Get-Counter '\\Processor(_Total)\\% Processor Time' -SampleInterval 2 -MaxSamples 5",
@@ -4609,7 +5298,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: CookedValue.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:storage:get-volume",
@@ -4649,7 +5350,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فضای آزاد را به درصد تبدیل کن و آستانه هشدار سازمان را اعمال کن؛ وضعیت Storage Spaces را جداگانه بررسی کن.",
-      "security_notes_fa": "فضای خالی کم می‌تواند سرویس را مختل کند؛ پیش از حذف فایل‌ها مالک و retention را مشخص کن.",
+      "security_notes_fa": [
+        "فضای خالی کم می‌تواند سرویس را مختل کند؛ پیش از حذف فایل‌ها مالک و retention را مشخص کن."
+      ],
       "search_keywords": [
         "Get-Volume",
         "Get-Volume | Select-Object DriveLetter,FileSystemLabel,FileSystem,Size,SizeRemaining",
@@ -4699,7 +5402,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: SizeRemaining.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:physical-storage:get-physicaldisk",
@@ -4739,7 +5454,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "با Storage Manager یا hypervisor تطبیق بده؛ یک VM ممکن است اطلاعات فیزیکی میزبان را نمایش ندهد.",
-      "security_notes_fa": "خروجی Healthy تضمین نمی‌کند backup و restore قابل اجرا باشند.",
+      "security_notes_fa": [
+        "خروجی Healthy تضمین نمی‌کند backup و restore قابل اجرا باشند."
+      ],
       "search_keywords": [
         "Get-PhysicalDisk",
         "Get-PhysicalDisk | Select-Object FriendlyName,MediaType,HealthStatus,OperationalStatus,Size",
@@ -4789,7 +5506,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: HealthStatus.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:hyper-v:get-vm",
@@ -4831,7 +5560,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک VM لابراتوار را خاموش/روشن نکن؛ فقط وضعیت گزارش‌شده را با وضعیت guest و eventها مقایسه کن.",
-      "security_notes_fa": "اطلاعات VM/نام سرویس‌ها اطلاعات زیرساخت است؛ تنها از میزبان مجاز استفاده کن.",
+      "security_notes_fa": [
+        "اطلاعات VM/نام سرویس‌ها اطلاعات زیرساخت است؛ تنها از میزبان مجاز استفاده کن."
+      ],
       "search_keywords": [
         "Get-VM",
         "Get-VM | Select-Object Name,State,CPUUsage,MemoryAssigned",
@@ -4881,7 +5612,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: MemoryAssigned.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:hyper-v-networking:get-vmswitch",
@@ -4918,7 +5661,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "نوع switch را با نیاز Lab و NIC uplink تطبیق بده؛ در تغییر Binding حتماً مسیر مدیریت میزبان را حفظ کن.",
-      "security_notes_fa": "تغییر vSwitch می‌تواند connectivity میزبان و VMها را قطع کند.",
+      "security_notes_fa": [
+        "تغییر vSwitch می‌تواند connectivity میزبان و VMها را قطع کند."
+      ],
       "search_keywords": [
         "Get-VMSwitch",
         "Get-VMSwitch | Select-Object Name,SwitchType,NetAdapterInterfaceDescription",
@@ -4968,7 +5713,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: خروجی و کد بازگشت.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:route-change:new-netroute",
@@ -5005,7 +5762,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "فقط از شبکهٔ مستندسازی‌شدهٔ TEST-NET و VM ایزوله استفاده کن؛ پس از مشاهدهٔ Get-NetRoute route را با Remove-NetRoute مطابق شرایط آزمایش حذف کن.",
-      "security_notes_fa": "تغییر route به شبکهٔ واقعی می‌تواند traffic را منحرف یا مدیریت راه دور را قطع کند؛ این مثال برای تولید نیست.",
+      "security_notes_fa": [
+        "تغییر route به شبکهٔ واقعی می‌تواند traffic را منحرف یا مدیریت راه دور را قطع کند؛ این مثال برای تولید نیست."
+      ],
       "search_keywords": [
         "New-NetRoute",
         "New-NetRoute -DestinationPrefix '198.51.100.0/24' -InterfaceAlias 'Ethernet' -NextHop '10.20.30.1' -RouteMetric 250",
@@ -5055,7 +5814,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: خروجی و کد بازگشت.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:dns-change:set-dnsclientserveraddress",
@@ -5092,7 +5863,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "مقدار قبلی را قبل از تغییر ثبت کن؛ بعد Resolve-DnsName را به DNS داخلی اجرا کن و پس از پایان تنظیم قبلی را بازیابی کن.",
-      "security_notes_fa": "تنظیم DNS اشتباه ورود دامنه و سرویس‌ها را مختل می‌کند؛ روی رایانهٔ کاری بدون change control تغییر نده.",
+      "security_notes_fa": [
+        "تنظیم DNS اشتباه ورود دامنه و سرویس‌ها را مختل می‌کند؛ روی رایانهٔ کاری بدون change control تغییر نده."
+      ],
       "search_keywords": [
         "Set-DnsClientServerAddress",
         "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ServerAddresses 10.20.30.10,10.20.30.11",
@@ -5142,7 +5915,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: خروجی و کد بازگشت.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:adapter-bindings:get-netadapterbinding",
@@ -5182,7 +5967,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "Binding مربوط را با نیاز سرویس/VPN بررسی کن؛ پیش از disable کردن هر پروتکل اثر روی مدیریت و IP را ارزیابی کن.",
-      "security_notes_fa": "غیرفعال کردن binding می‌تواند شبکه را از دسترس خارج کند؛ صرفاً برای پاک‌سازی آزمایشی اقدام نکن.",
+      "security_notes_fa": [
+        "غیرفعال کردن binding می‌تواند شبکه را از دسترس خارج کند؛ صرفاً برای پاک‌سازی آزمایشی اقدام نکن."
+      ],
       "search_keywords": [
         "Get-NetAdapterBinding",
         "Get-NetAdapterBinding -Name 'Ethernet'",
@@ -5232,7 +6019,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Enabled.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:service-change:restart-service",
@@ -5269,7 +6068,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "اول `-WhatIf` را بررسی کن و تنها روی VM lab و با اجازهٔ نگهداری واقعی restart کن؛ پس از تغییر Get-Service و Event Log را بررسی کن.",
-      "security_notes_fa": "Restart سرویس می‌تواند کار کاربران را قطع کند؛ `-WhatIf` پیش‌نمایش است نه اثبات تمام پیامدها.",
+      "security_notes_fa": [
+        "Restart سرویس می‌تواند کار کاربران را قطع کند؛ `-WhatIf` پیش‌نمایش است نه اثبات تمام پیامدها."
+      ],
       "search_keywords": [
         "Restart-Service",
         "Restart-Service -Name Spooler -WhatIf",
@@ -5319,7 +6120,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: خروجی و کد بازگشت.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:processes:get-process",
@@ -5359,7 +6172,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "در دو زمان مشخص sample بگیر؛ CPU تجمعی را با درصد لحظه‌ای Task Manager اشتباه نکن.",
-      "security_notes_fa": "PID موقتی است و با restart می‌تواند تغییر کند؛ مصرف بالا همیشه نشانهٔ مشکل یا بدافزار نیست.",
+      "security_notes_fa": [
+        "PID موقتی است و با restart می‌تواند تغییر کند؛ مصرف بالا همیشه نشانهٔ مشکل یا بدافزار نیست."
+      ],
       "search_keywords": [
         "Get-Process",
         "Get-Process | Sort-Object CPU -Descending | Select-Object -First 15 Name,Id,CPU,WorkingSet64",
@@ -5409,7 +6224,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: WorkingSet64.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "medium",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:shell-discovery:get-command",
@@ -5449,7 +6276,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "قبل از اسکریپت روی چند سیستم، Source و Version ماژول را با Get-Module مقایسه کن.",
-      "security_notes_fa": "Alias یا function محلی می‌تواند نام یک دستور را shadow کند؛ از `-All` برای کشف موارد هم‌نام استفاده کن.",
+      "security_notes_fa": [
+        "Alias یا function محلی می‌تواند نام یک دستور را shadow کند؛ از `-All` برای کشف موارد هم‌نام استفاده کن."
+      ],
       "search_keywords": [
         "Get-Command",
         "Get-Command -Name Get-NetTCPConnection -All",
@@ -5499,7 +6328,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Source.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:shell-help:get-help",
@@ -5539,7 +6380,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "پارامترهای سازگار با نسخهٔ نصب‌شده را قبل از اجرای تغییرات بررسی کن؛ در صورت نیاز Update-Help را طبق سیاست سازمان انجام بده.",
-      "security_notes_fa": "متن Help ممکن است به‌روزرسانی‌نشده باشد؛ برای تغییرات مهم آن را با مستندات رسمی همان نسخه مقایسه کن.",
+      "security_notes_fa": [
+        "متن Help ممکن است به‌روزرسانی‌نشده باشد؛ برای تغییرات مهم آن را با مستندات رسمی همان نسخه مقایسه کن."
+      ],
       "search_keywords": [
         "Get-Help",
         "Get-Help Get-NetRoute -Full",
@@ -5589,7 +6432,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: SYNTAX.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:object-model:get-member",
@@ -5629,7 +6484,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "خروجی را ابتدا با Get-Member بخوان، سپس فقط propertyهای موجود را Select-Object کن.",
-      "security_notes_fa": "propertyها و نوع خروجی بین نسخه‌ها یا moduleها ممکن است تغییر کند.",
+      "security_notes_fa": [
+        "propertyها و نوع خروجی بین نسخه‌ها یا moduleها ممکن است تغییر کند."
+      ],
       "search_keywords": [
         "Get-Member",
         "Get-NetIPConfiguration | Get-Member",
@@ -5679,7 +6536,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: MemberType.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:server-roles:get-windowsfeature",
@@ -5716,7 +6585,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "خروجی نصب‌شده‌ها را با baseline سرور مقایسه کن؛ برای افزودن Role از راهنمای رسمی و change plan استفاده کن.",
-      "security_notes_fa": "فقط روی Windows Server و با ServerManager module؛ نصب Role روی production نیازمند change control است.",
+      "security_notes_fa": [
+        "فقط روی Windows Server و با ServerManager module؛ نصب Role روی production نیازمند change control است."
+      ],
       "search_keywords": [
         "Get-WindowsFeature",
         "Get-WindowsFeature | Where-Object Installed",
@@ -5766,7 +6637,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: خروجی و کد بازگشت.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:dhcp-server:get-dhcpserverv4scope",
@@ -5803,7 +6686,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "خروجی scope را با VLAN subnet و تعداد کلاینت‌ها مقایسه کن؛ فقط روی DHCP سرور آزمایشی تغییر انجام بده.",
-      "security_notes_fa": "اطلاعات IP plan زیرساختی است؛ تغییر Scope می‌تواند کل کاربران VLAN را تحت تأثیر قرار دهد.",
+      "security_notes_fa": [
+        "اطلاعات IP plan زیرساختی است؛ تغییر Scope می‌تواند کل کاربران VLAN را تحت تأثیر قرار دهد."
+      ],
       "search_keywords": [
         "Get-DhcpServerv4Scope",
         "Get-DhcpServerv4Scope -ComputerName LAB-DHCP01",
@@ -5853,7 +6738,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: خروجی و کد بازگشت.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:dhcp-leases:get-dhcpserverv4lease",
@@ -5890,7 +6787,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "IP مشکل‌دار را در Lease و ARP/Neighbor همبسته کن؛ برای duplicate IP، جدول سوئیچ و DHCP reservation را هم بررسی کن.",
-      "security_notes_fa": "ClientId و HostName دادهٔ شناسایی شبکه‌اند؛ هنگام انتشار ناشناس‌سازی کن.",
+      "security_notes_fa": [
+        "ClientId و HostName دادهٔ شناسایی شبکه‌اند؛ هنگام انتشار ناشناس‌سازی کن."
+      ],
       "search_keywords": [
         "Get-DhcpServerv4Lease",
         "Get-DhcpServerv4Lease -ComputerName LAB-DHCP01 -ScopeId 10.20.30.0",
@@ -5940,7 +6839,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: خروجی و کد بازگشت.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:dhcp-reservations:get-dhcpserverv4reservation",
@@ -5977,7 +6888,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "Reservation را با MAC واقعی و NIC failover مطابقت بده؛ قبل از تغییر، پیکربندی قبلی را export کن.",
-      "security_notes_fa": "Reservation اشتباه ممکن است IP تکراری بسازد؛ MAC randomization یا NIC replacement را در نظر بگیر.",
+      "security_notes_fa": [
+        "Reservation اشتباه ممکن است IP تکراری بسازد؛ MAC randomization یا NIC replacement را در نظر بگیر."
+      ],
       "search_keywords": [
         "Get-DhcpServerv4Reservation",
         "Get-DhcpServerv4Reservation -ComputerName LAB-DHCP01 -ScopeId 10.20.30.0",
@@ -6027,7 +6940,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: خروجی و کد بازگشت.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:ad-replication:get-adreplicationfailure",
@@ -6064,7 +6989,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "در lab چند DC را بررسی کن؛ در صورت خطا، DNS, RPC, time sync و event log را جداگانه بررسی کن.",
-      "security_notes_fa": "خروجی forest-wide ممکن است ساختار دامین را نشان دهد؛ با مجوز ادمین و محدوده مناسب اجرا کن.",
+      "security_notes_fa": [
+        "خروجی forest-wide ممکن است ساختار دامین را نشان دهد؛ با مجوز ادمین و محدوده مناسب اجرا کن."
+      ],
       "search_keywords": [
         "Get-ADReplicationFailure",
         "Get-ADReplicationFailure -Target * -Scope Forest",
@@ -6114,7 +7041,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: خروجی و کد بازگشت.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:dns-cache:get-dnsclientcache",
@@ -6154,7 +7093,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "یک نام مشخص را بعد از Resolve-DnsName جستجو کن و TTL را با TTL رکورد authoritative مقایسه کن.",
-      "security_notes_fa": "پاک کردن cache بدون ثبت وضعیت قبلی، شواهد عیب‌یابی را از بین می‌برد.",
+      "security_notes_fa": [
+        "پاک کردن cache بدون ثبت وضعیت قبلی، شواهد عیب‌یابی را از بین می‌برد."
+      ],
       "search_keywords": [
         "Get-DnsClientCache",
         "Get-DnsClientCache | Select-Object -First 30 Entry,RecordType,Data,TimeToLive",
@@ -6204,7 +7145,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: TimeToLive.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:tcp-process-correlation:get-nettcpconnection",
@@ -6244,7 +7197,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "در VM آزمایشگاهی یک نشست HTTPS بساز و نتیجه را با Resource Monitor مقایسه کن؛ Processهایی که پایان یافته‌اند را به عنوان missing تفسیر کن.",
-      "security_notes_fa": "نمایش مقصدهای ارتباط می‌تواند دادهٔ حساس کاربر باشد؛ گزارش را فقط برای عیب‌یابی مجاز نگه دار.",
+      "security_notes_fa": [
+        "نمایش مقصدهای ارتباط می‌تواند دادهٔ حساس کاربر باشد؛ گزارش را فقط برای عیب‌یابی مجاز نگه دار."
+      ],
       "search_keywords": [
         "Get-NetTCPConnection",
         "Get-NetTCPConnection -State Established | ForEach-Object { $p=Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue; [pscustomobject]@{Remote=$_.RemoteAddress;Port=$_.RemotePort;Process=$p.ProcessName;PID=$_.OwningProcess} }",
@@ -6294,7 +7249,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Remote.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:local-groups:get-localgroup",
@@ -6334,7 +7301,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "گروه‌های ویژه را با Local Security Policy و baseline دامنه مقایسه کن.",
-      "security_notes_fa": "نام/شناسهٔ گروه‌ها به تنهایی اثبات عضویت یا effective permission نیست.",
+      "security_notes_fa": [
+        "نام/شناسهٔ گروه‌ها به تنهایی اثبات عضویت یا effective permission نیست."
+      ],
       "search_keywords": [
         "Get-LocalGroup",
         "Get-LocalGroup | Sort-Object Name",
@@ -6384,7 +7353,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: SID.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     },
     {
       "uid": "cmd:powershell:smb-client:get-smbconnection",
@@ -6424,7 +7405,9 @@
         "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
       ],
       "lab_hint_fa": "پس از اتصال به share آزمایشی، dialect را بررسی کن و آن را با سیاست حداقل نسخهٔ SMB مقایسه کن.",
-      "security_notes_fa": "SMB1 را برای سازگاری فعال نکن مگر با ارزیابی ریسک مستند.",
+      "security_notes_fa": [
+        "SMB1 را برای سازگاری فعال نکن مگر با ارزیابی ریسک مستند."
+      ],
       "search_keywords": [
         "Get-SmbConnection",
         "Get-SmbConnection | Select-Object ServerName,ShareName,UserName,Dialect,NumOpens",
@@ -6474,7 +7457,19 @@
           "url": "https://learn.microsoft.com/powershell/"
         }
       ],
-      "source_status": "review_required"
+      "source_status": "review_required",
+      "validation_steps_fa": [
+        "نسخهٔ PowerShell و context اجرا را ثبت کن: Windows PowerShell 5.1 / PowerShell 7.x.",
+        "فیلدهای خروجی را بررسی کن: Dialect.",
+        "نتیجه را با یک نمونهٔ سالم و یک نمونهٔ ناموفق مقایسه کن و timestamp ثبت کن."
+      ],
+      "rollback_steps_fa": [
+        "برای فرمان مشاهده‌ای rollback لازم نیست؛ خروجی حساس را پاک‌سازی کن.",
+        "برای فرمان تغییردهنده، وضعیت اولیه و روش بازگشت معتبر همان نسخه را قبل از اجرا ثبت کن؛ rollback حدسی اجرا نکن."
+      ],
+      "risk_level": "low",
+      "lab_status": "designed_not_executed",
+      "version_check_fa": "پیش از اجرا، نسخهٔ Windows/PowerShell و وجود پارامتر را با Get-Command و Get-Help یا مستند رسمی همان نسخه تأیید کن."
     }
   ]
 }
