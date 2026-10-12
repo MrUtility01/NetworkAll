@@ -15,7 +15,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from flask import Flask, jsonify, render_template, request, send_from_directory, session, redirect
+from flask import Flask, jsonify, render_template, render_template_string, request, send_from_directory, session, redirect
 
 from core.db import WebDB
 from core.study import study_sync_apply, study_sync_index, study_sync_pull
