@@ -27,5 +27,9 @@ data class ScenarioEntity(
     val solution: String = "",
     val verification: String = "",
     val skillsRequired: String = "",
-    val estimatedHours: Int = 8
+    val estimatedHours: Int = 8,
+    val lastUpdated: String = "",
+    val contentHash: String = "",
+    val deviceId: String = "android",
+    val deleted: Boolean = false
 )
