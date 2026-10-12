@@ -27,12 +27,12 @@ LAB_RE = re.compile(r"\b(lab|laboratory|verify|verification|expected output|clea
 SCENARIO_RE = re.compile(r"scenario|incident|root cause|symptom|سناریو|علائم|علت ریشه.?ای", re.I)
 ANSWER_RE = re.compile(r"answer[_ -]?key|correct[_ -]?answer|پاسخ.?نامه|کلید پاسخ", re.I)
 SOURCE_RE = re.compile(r"official source|references?|rfc\s*\d|منابع رسمی|منبع:", re.I)
-EXPECTED_OUTPUT_RE = re.compile(r"expected (?:result|output)|sample output|output:\\s|خروجی مورد انتظار|خروجی نمونه|نتیجهٔ مورد انتظار|معیار قبولی", re.I)
+EXPECTED_OUTPUT_RE = re.compile(r"expected (?:result|output)|sample output|output:\s|خروجی مورد انتظار|خروجی نمونه|نتیجهٔ مورد انتظار|معیار قبولی", re.I)
 TROUBLESHOOT_RE = re.compile(r"troubleshoot|root cause|diagnos|عیب.?یابی|علت ریشه|درخت تصمیم|نشانه.*علت", re.I)
 SECURITY_RE = re.compile(r"security|hardening|threat model|rollback|recovery|امنیت|سخت.?سازی|تهدید|بازگشت|بازیابی|پاک.?سازی", re.I)
 GLOSSARY_RE = re.compile(r"glossary|vocabulary|واژه.?نامه|اصطلاحات کلیدی", re.I)
-DEPTH_LEVEL_RE = re.compile(r"(?i)(?:\\[\\s*(L[0-4])\\s*\\]|(?<![A-Za-z0-9])L([0-4])(?![A-Za-z0-9]))")
-WORD_RE = re.compile(r"(?u)\\b[\\w]+\\b")
+DEPTH_LEVEL_RE = re.compile(r"(?i)(?:\[\s*(L[0-4])\s*\]|(?<![A-Za-z0-9])L([0-4])(?![A-Za-z0-9]))")
+WORD_RE = re.compile(r"(?u)\b[\w]+\b")
 DEPTH_WORD_FLOORS = {"L0": 600, "L1": 800, "L2": 1200, "L3": 1600, "L4": 2200}
 NETWORK_TERMS = re.compile(r"\b(vlan|trunk|stp|ospf|bgp|router|switch|subnet|routing|ethernet|tcp/ip|network|networking|ipv4|ipv6|ip address|addressing|configure terminal|show running-config|show startup-config|show ip interface brief|switchport|etherchannel|port-channel|spanning[- ]tree|access-list|ip helper-address|router ospf|router bgp|ip route|no shutdown|copy running-config|write memory|cisco ios(?:-xe)?|catalyst|nexus|line vty|enable secret)\b|سوئیچ|روتر|مسیریابی|شبکه|آی.?پی|آدرس", re.I)
 
