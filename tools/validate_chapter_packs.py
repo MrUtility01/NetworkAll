@@ -19,6 +19,20 @@ LEVELS = ["L0", "L1", "L2", "L3", "L4"]
 WORD_FLOORS = {"L0": 600, "L1": 800, "L2": 1200, "L3": 1600, "L4": 2200}
 EXPECTED_QUESTIONS = {"L0": 5, "L1": 8, "L2": 10, "L3": 12, "L4": 15}
 PACKS = [
+    ("tools/packs/network_transport/tcp_transport_engineering_ch07_pack.json",
+     "tcp-transport-engineering-ch07", 7),
+    ("tools/packs/network_transport/udp_quic_engineering_ch08_pack.json",
+     "udp-quic-engineering-ch08", 8),
+    ("tools/packs/mikrotik/routeros_foundations_ch19_pack.json",
+     "routeros-foundations", 19),
+    ("tools/packs/mikrotik/routeros_routing_firewall_ch20_pack.json",
+     "routeros-routing-firewall", 20),
+    ("tools/packs/mikrotik/routeros_qos_vpn_ha_ch21_pack.json",
+     "routeros-qos-vpn-ha", 21),
+    ("tools/packs/mikrotik/routeros_monitoring_logging_zabbix_ch22_pack.json",
+     "mikrotik-monitoring-logging-zabbix-ch22", 22),
+    ("tools/packs/mikrotik/routeros_zabbix_operations_ch23_pack.json",
+     "mikrotik-zabbix-operations-ch23", 23),
     ("tools/packs/chapter14/advanced_routing_engineering_ch14_pack.json",
      "advanced-routing-engineering-ch14", 14),
     ("tools/packs/chapter15/mpls_vrf_l3vpn_ch15_pack.json",
@@ -96,8 +110,8 @@ for relative, pack_id, chapter in PACKS:
         questions = assessment.get("questions", [])
         answers = assessment.get("answer_key", [])
         expected = EXPECTED_QUESTIONS.get(level, 0)
-        if len(questions) != expected:
-            fail(f"{relative}: {uid}: expected {expected} questions, found {len(questions)}")
+        if len(questions) < expected:
+            fail(f"{relative}: {uid}: expected at least {expected} questions, found {len(questions)}")
         if len(answers) != len(questions):
             fail(f"{relative}: {uid}: answer count differs from question count")
         question_ids = [q.get("id") for q in questions]

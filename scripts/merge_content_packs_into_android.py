@@ -23,7 +23,17 @@ def load_json(p: Path):
 
 
 def find_pack_files():
-    """فقط مسیرهای مجاز — prompts/ اسکن نمی‌شود (سرعت/پایداری)."""
+    """فهرست بسته‌های مجاز را بر اساس catalog فعال می‌کند."""
+    catalog_path = ROOT / "tools/packs/pack_catalog.json"
+    try:
+        catalog = load_json(catalog_path)
+    except Exception as exc:
+        raise RuntimeError(f"Cannot read required pack catalog {catalog_path}: {exc}") from exc
+    inactive_paths = {
+        str(entry.get("path", ""))
+        for entry in catalog.get("packs", [])
+        if entry.get("active_in_merge") is False and entry.get("path")
+    }
     files = []
     files += list(ROOT.glob("tools/packs/**/*.json"))
     files += list(ROOT.glob("tools/packs/git_chapter64/Git_Chapter_64_Full.md"))
@@ -34,6 +44,9 @@ def find_pack_files():
         if (name.endswith(".md") and f.name != "Git_Chapter_64_Full.md") or name in ("readme.md", "readme_fa.md", "manifest.json", "pack_catalog.json"):
             continue
         rel = f.relative_to(ROOT).as_posix()
+        if rel in inactive_paths:
+            print(" inactive by pack_catalog:", rel)
+            continue
         quarantined = {
             "tools/packs/security_ethical_hacking/security_ethical_hacking_pack.json":
                 "template-heavy security lessons pending deep rewrite",
