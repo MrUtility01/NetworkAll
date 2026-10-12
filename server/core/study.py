@@ -27,7 +27,6 @@ def ensure_study_table(conn):
         );
         CREATE INDEX IF NOT EXISTS idx_study_next ON study_progress(next_review);
         CREATE INDEX IF NOT EXISTS idx_study_status ON study_progress(status);
-        CREATE INDEX IF NOT EXISTS idx_study_deleted_updated ON study_progress(deleted, last_updated);
         """
     )
     # Additive migration for databases created before progress synchronization.
@@ -40,6 +39,7 @@ def ensure_study_table(conn):
     ):
         if name not in columns:
             conn.execute(f"ALTER TABLE study_progress ADD COLUMN {name} {declaration}")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_study_deleted_updated ON study_progress(deleted, last_updated)")
     # Preserve old records and make them visible to incremental sync.
     conn.execute(
         """UPDATE study_progress
