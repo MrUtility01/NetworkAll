@@ -1,0 +1,266 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-12",
+  "purpose": "Chapter 17 progressive L0-L4 supplementary curriculum; preserve all existing content.",
+  "scope": {
+    "chapter_order": 17,
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lesson_count": 5,
+    "subchapter_order": 4,
+    "subchapter_title_fa": "۱۷.۴ مهندسی EVPN/VXLAN و Tenant",
+    "topic": "evpn-vxlan-engineering"
+  },
+  "instructional_contract": {
+    "level_floors": {
+      "L0": 600,
+      "L1": 800,
+      "L2": 1200,
+      "L3": 1600,
+      "L4": 2200
+    },
+    "volume_rule": "Competency, failure modes, labs, interoperability, scale and assessment determine volume; no arbitrary global cap.",
+    "separate_answer_key": true,
+    "lab_status": "designed_not_executed"
+  },
+  "content_quality": {
+    "status": "review_required",
+    "reason": "Lesson structure and assessment keys authored; actual lab execution and target-vendor verification remain pending."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch17:evpn-vxlan-engineering:l0",
+      "entity": "lesson",
+      "chapter_order": 17,
+      "subchapter_order": 4,
+      "lesson_order": 1,
+      "topic": "evpn-vxlan-engineering",
+      "domain": "data-center-networking",
+      "level": "L0",
+      "title_fa": "[L0] EVPN/VXLAN — از Underlay تا Multi-Tenant Data Center — آشنایی",
+      "title_en": "[L0] EVPN/VXLAN — Underlay to Multi-Tenant Data Center — Orientation",
+      "subchapter_title_fa": "۱۷.۴ مهندسی EVPN/VXLAN و Tenant",
+      "tags": [
+        "evpn-vxlan-engineering",
+        "L0"
+      ],
+      "summary": "درس آشنایی دربارهٔ EVPN/VXLAN — از Underlay تا Multi-Tenant Data Center",
+      "full_content": "# EVPN/VXLAN — آشنایی\n\n## مسئله\n\nدر data centerهای بزرگ، یک لایهٔ دو طولانی می‌تواند مقیاس، failure domain و جداسازی tenant را پیچیده کند. VXLAN با encapsulation Ethernet frame در UDP/IP امکان ساخت overlay لایهٔ دو روی یک underlay لایهٔ سه را می‌دهد. EVPN به‌عنوان control plane توزیع اطلاعات MAC/IP و endpointها را فراهم می‌کند.\n\n## اصطلاح‌ها\n\nVTEP نقطهٔ encapsulation/decapsulation در VXLAN است. VNI شناسهٔ segment منطقی داخل overlay است و با VLAN ID یکی نیست. Underlay شبکهٔ IP بین VTEPهاست؛ overlay شبکهٔ منطقی tenant است. EVPN از BGP برای انتشار اطلاعات reachability استفاده می‌کند، اما VXLAN خود به‌تنهایی control plane کامل نیست.\n\n## مسیر ساده\n\nیک میزبان در leaf اول فریم Ethernet می‌فرستد. VTEP آن را در VXLAN و UDP/IP encapsulate می‌کند، underlay packet را به VTEP مقصد می‌رساند و VTEP مقصد frame داخلی را باز می‌کند. برای این‌که مقصد remote پیدا شود، VTEPها باید mapping لازم بین endpoint و VNI را بدانند.\n\n## اشتباه‌های رایج\n\nوجود ping بین loopbackهای VTEP فقط underlay reachability را نشان می‌دهد؛ به معنی کارکرد overlay نیست. VNI و VLAN دو identifier متفاوت‌اند. EVPN control-plane و VXLAN data-plane نقش‌های متمایز دارند.\n\n## قرارداد Lab\nتوپولوژی، version/release، expected state، capture points، metricها، cleanup و rollback باید ثبت شوند. این سناریوها هنوز طراحی‌شده‌اند و پس از اجرای واقعی می‌توانند به verified ارتقا یابند.",
+      "commands": "Verify per release: underlay route/ECMP, BGP EVPN RIB, EVPN route types, RT import, VLAN-to-VNI mapping, VTEP peers, MAC/IP table and MTU/counters.",
+      "examples": "Lab: leaf-spine underlay, two VTEPs, two VNIs, two tenant segments, remote MAC/IP learning, anycast gateway and MTU validation.",
+      "notes": "content_status=review_required; lab_execution=not_yet_run; answer_key=separate; supplementary_chapter=17",
+      "learning_objectives": [
+        "تفکیک underlay، VXLAN data plane و EVPN control plane",
+        "تحلیل VNI/RT/route type و VTEP reachability",
+        "طراحی anycast/multi-homing و tenant isolation"
+      ],
+      "prerequisites": [],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch17-l0-1\",\"prompt\":\"VXLAN چه مسئله‌ای را حل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"ch17-l0-2\",\"prompt\":\"VTEP چیست؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"ch17-l0-3\",\"prompt\":\"VNI با VLAN ID یکسان است؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"ch17-l0-4\",\"prompt\":\"Underlay و overlay چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"ch17-l0-5\",\"prompt\":\"EVPN چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"ch17-l0-1\",\"answer\":\"حمل Ethernet frame در overlay روی underlay IP برای ساخت segmentهای منطقی مقیاس‌پذیر.\",\"rationale\":\"VXLAN به‌تنهایی control plane کامل نیست.\"},{\"id\":\"ch17-l0-2\",\"answer\":\"Endpoint encapsulation/decapsulation در VXLAN.\",\"rationale\":\"loopback reachability بین VTEPها در underlay لازم است.\"},{\"id\":\"ch17-l0-3\",\"answer\":\"خیر؛ VNI شناسهٔ segment overlay است و mapping به VLAN وابسته به طراحی است.\",\"rationale\":\"مقادیر برابر الزاماً معنای یکسان ندارند.\"},{\"id\":\"ch17-l0-4\",\"answer\":\"Underlay مسیر IP بین VTEPها را فراهم می‌کند؛ overlay شبکهٔ منطقی tenant را می‌سازد.\",\"rationale\":\"سلامت underlay overlay را به‌تنهایی ثابت نمی‌کند.\"},{\"id\":\"ch17-l0-5\",\"answer\":\"Control-plane انتشار reachability اطلاعات MAC/IP و routeهای overlay را فراهم می‌کند.\",\"rationale\":\"VXLAN data-plane و EVPN control-plane متفاوت‌اند.\"}]},\"source_refs\":[\"https://www.rfc-editor.org/rfc/rfc7348.html\",\"https://www.rfc-editor.org/rfc/rfc7432.html\",\"https://www.rfc-editor.org/rfc/rfc8365.html\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"subchapter_title_fa\":\"۱۷.۴ مهندسی EVPN/VXLAN و Tenant\"}",
+      "official_sources": [
+        {
+          "title": "RFC 7348 — Virtual eXtensible Local Area Network (VXLAN)",
+          "url": "https://www.rfc-editor.org/rfc/rfc7348.html"
+        },
+        {
+          "title": "RFC 7432 — BGP MPLS-Based Ethernet VPN",
+          "url": "https://www.rfc-editor.org/rfc/rfc7432.html"
+        },
+        {
+          "title": "RFC 8365 — Network Virtualization Overlay Solution Using EVPN",
+          "url": "https://www.rfc-editor.org/rfc/rfc8365.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch17:evpn-vxlan-engineering:l1",
+      "entity": "lesson",
+      "chapter_order": 17,
+      "subchapter_order": 4,
+      "lesson_order": 2,
+      "topic": "evpn-vxlan-engineering",
+      "domain": "data-center-networking",
+      "level": "L1",
+      "title_fa": "[L1] EVPN/VXLAN — از Underlay تا Multi-Tenant Data Center — مقدماتی",
+      "title_en": "[L1] EVPN/VXLAN — Underlay to Multi-Tenant Data Center — Beginner",
+      "subchapter_title_fa": "۱۷.۴ مهندسی EVPN/VXLAN و Tenant",
+      "tags": [
+        "evpn-vxlan-engineering",
+        "L1"
+      ],
+      "summary": "درس مقدماتی دربارهٔ EVPN/VXLAN — از Underlay تا Multi-Tenant Data Center",
+      "full_content": "# EVPN/VXLAN — مقدماتی\n\n## Underlay و overlay\n\nUnderlay باید بین loopbackهای VTEP مسیر IP پایدار داشته باشد؛ overlay بعداً VNIها و MAC/IP reachability tenantها را حمل می‌کند. در معماری leaf-spine، leafها معمولاً VTEP هستند و spineها underlay routing را فراهم می‌کنند. Underlay routing می‌تواند OSPF، IS-IS یا BGP باشد و باید با design واقعی تطبیق داده شود.\n\n## Encapsulation\n\nVTEP فریم داخلی را با VXLAN header و UDP/IP outer header می‌پوشاند. Outer destination IP، VTEP remote را مشخص می‌کند؛ inner Ethernet و IP ترافیک tenant را نگه می‌دارند. Overhead تونل MTU مؤثر را کاهش می‌دهد، پس MTU و fragmentation/PMTUD باید در طراحی بررسی شوند.\n\n## VNI و mapping\n\nVNI segment overlay را شناسایی می‌کند؛ mapping محلی VLAN-to-VNI وابسته به design است. یک VLAN ID برابر در دو سایت الزاماً tenant یکسان یا VNI یکسان را تضمین نمی‌کند. در multi-tenant، mapping table باید صریح و version-controlled باشد.\n\n## Lab\n\nدو leaf و یک spine در شبیه‌ساز بساز. ابتدا loopback reachability و UDP underlay را بررسی کن، سپس VTEP/VNI و host reachability را فعال کن. در هر مرحله underlay و overlay را جدا تست کن.\n\n## قرارداد Lab\nتوپولوژی، version/release، expected state، capture points، metricها، cleanup و rollback باید ثبت شوند. این سناریوها هنوز طراحی‌شده‌اند و پس از اجرای واقعی می‌توانند به verified ارتقا یابند.",
+      "commands": "Verify per release: underlay route/ECMP, BGP EVPN RIB, EVPN route types, RT import, VLAN-to-VNI mapping, VTEP peers, MAC/IP table and MTU/counters.",
+      "examples": "Lab: leaf-spine underlay, two VTEPs, two VNIs, two tenant segments, remote MAC/IP learning, anycast gateway and MTU validation.",
+      "notes": "content_status=review_required; lab_execution=not_yet_run; answer_key=separate; supplementary_chapter=17",
+      "learning_objectives": [
+        "تفکیک underlay، VXLAN data plane و EVPN control plane",
+        "تحلیل VNI/RT/route type و VTEP reachability",
+        "طراحی anycast/multi-homing و tenant isolation"
+      ],
+      "prerequisites": [
+        "IP routing، BGP basics، overlay/underlay concepts and security policy"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch17-l1-1\",\"prompt\":\"VXLAN چه مسئله‌ای را حل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch17-l1-2\",\"prompt\":\"VTEP چیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch17-l1-3\",\"prompt\":\"VNI با VLAN ID یکسان است؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch17-l1-4\",\"prompt\":\"Underlay و overlay چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch17-l1-5\",\"prompt\":\"EVPN چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch17-l1-6\",\"prompt\":\"EVPN Type 2 معمولاً چه چیزی حمل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch17-l1-7\",\"prompt\":\"EVPN Type 3 در مدل‌های رایج چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch17-l1-8\",\"prompt\":\"EVPN Type 5 معمولاً چه استفاده‌ای دارد؟\",\"type\":\"short_answer\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"ch17-l1-1\",\"answer\":\"حمل Ethernet frame در overlay روی underlay IP برای ساخت segmentهای منطقی مقیاس‌پذیر.\",\"rationale\":\"VXLAN به‌تنهایی control plane کامل نیست.\"},{\"id\":\"ch17-l1-2\",\"answer\":\"Endpoint encapsulation/decapsulation در VXLAN.\",\"rationale\":\"loopback reachability بین VTEPها در underlay لازم است.\"},{\"id\":\"ch17-l1-3\",\"answer\":\"خیر؛ VNI شناسهٔ segment overlay است و mapping به VLAN وابسته به طراحی است.\",\"rationale\":\"مقادیر برابر الزاماً معنای یکسان ندارند.\"},{\"id\":\"ch17-l1-4\",\"answer\":\"Underlay مسیر IP بین VTEPها را فراهم می‌کند؛ overlay شبکهٔ منطقی tenant را می‌سازد.\",\"rationale\":\"سلامت underlay overlay را به‌تنهایی ثابت نمی‌کند.\"},{\"id\":\"ch17-l1-5\",\"answer\":\"Control-plane انتشار reachability اطلاعات MAC/IP و routeهای overlay را فراهم می‌کند.\",\"rationale\":\"VXLAN data-plane و EVPN control-plane متفاوت‌اند.\"},{\"id\":\"ch17-l1-6\",\"answer\":\"MAC/IP reachability.\",\"rationale\":\"تفسیر attributes و import به design/platform وابسته است.\"},{\"id\":\"ch17-l1-7\",\"answer\":\"Inclusive multicast Ethernet tag/replication membership.\",\"rationale\":\"رفتار دقیق وابسته به overlay design است.\"},{\"id\":\"ch17-l1-8\",\"answer\":\"IP prefix route در EVPN designهای پشتیبانی‌شده.\",\"rationale\":\"به معنی هر route یا هر vendor behavior نیست.\"}]},\"source_refs\":[\"https://www.rfc-editor.org/rfc/rfc7348.html\",\"https://www.rfc-editor.org/rfc/rfc7432.html\",\"https://www.rfc-editor.org/rfc/rfc8365.html\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"subchapter_title_fa\":\"۱۷.۴ مهندسی EVPN/VXLAN و Tenant\"}",
+      "official_sources": [
+        {
+          "title": "RFC 7348 — Virtual eXtensible Local Area Network (VXLAN)",
+          "url": "https://www.rfc-editor.org/rfc/rfc7348.html"
+        },
+        {
+          "title": "RFC 7432 — BGP MPLS-Based Ethernet VPN",
+          "url": "https://www.rfc-editor.org/rfc/rfc7432.html"
+        },
+        {
+          "title": "RFC 8365 — Network Virtualization Overlay Solution Using EVPN",
+          "url": "https://www.rfc-editor.org/rfc/rfc8365.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch17:evpn-vxlan-engineering:l2",
+      "entity": "lesson",
+      "chapter_order": 17,
+      "subchapter_order": 4,
+      "lesson_order": 3,
+      "topic": "evpn-vxlan-engineering",
+      "domain": "data-center-networking",
+      "level": "L2",
+      "title_fa": "[L2] EVPN/VXLAN — از Underlay تا Multi-Tenant Data Center — ادمین",
+      "title_en": "[L2] EVPN/VXLAN — Underlay to Multi-Tenant Data Center — Administrator",
+      "subchapter_title_fa": "۱۷.۴ مهندسی EVPN/VXLAN و Tenant",
+      "tags": [
+        "evpn-vxlan-engineering",
+        "L2"
+      ],
+      "summary": "درس ادمین دربارهٔ EVPN/VXLAN — از Underlay تا Multi-Tenant Data Center",
+      "full_content": "# EVPN/VXLAN — ادمین\n\n## زنجیرهٔ تشخیص\n\nبررسی را به ترتیب topology و loopback reachability، BGP EVPN session/address family، routeهای EVPN، VNI/VLAN mapping، VTEP peer state، MAC/IP learning، VXLAN encapsulation و endpoint flow تقسیم کن. BGP EVPN session up به معنی دریافت و import شدن route موردنظر نیست. Underlay سالم به معنی overlay سالم نیست.\n\n## EVPN route types\n\nEVPN route types کاربردهای جدا دارند. Type 2 معمولاً MAC/IP reachability را منتشر می‌کند؛ Type 3 برای inclusive multicast Ethernet tag/transport membership در مدل‌های متداول به‌کار می‌رود؛ Type 5 برای IP prefix route در طرح‌های پشتیبانی‌شده کاربرد دارد. جزئیات استفاده به EVPN design و implementation وابسته است.\n\n## Lab\n\nسناریوهای جدا: VNI mapping اشتباه، BGP EVPN family خاموش، underlay route غایب، host MAC/IP route غایب و MTU mismatch. قبل از هر آزمایش route table، VNI state، VTEP peer و capture را پیش‌بینی کن. پس از rollback endpoint reachability و tenant isolation را دوباره بسنج.\n\n## امنیت\n\nVNI عضویت شبکهٔ overlay را مشخص می‌کند ولی encryption و identity authorization نیست. Route leak یا mapping اشتباه می‌تواند tenant isolation را بشکند؛ policy، route filters و access controls جدا لازم‌اند.\n\n## قرارداد Lab\nتوپولوژی، version/release، expected state، capture points، metricها، cleanup و rollback باید ثبت شوند. این سناریوها هنوز طراحی‌شده‌اند و پس از اجرای واقعی می‌توانند به verified ارتقا یابند.",
+      "commands": "Verify per release: underlay route/ECMP, BGP EVPN RIB, EVPN route types, RT import, VLAN-to-VNI mapping, VTEP peers, MAC/IP table and MTU/counters.",
+      "examples": "Lab: leaf-spine underlay, two VTEPs, two VNIs, two tenant segments, remote MAC/IP learning, anycast gateway and MTU validation.",
+      "notes": "content_status=review_required; lab_execution=not_yet_run; answer_key=separate; supplementary_chapter=17",
+      "learning_objectives": [
+        "تفکیک underlay، VXLAN data plane و EVPN control plane",
+        "تحلیل VNI/RT/route type و VTEP reachability",
+        "طراحی anycast/multi-homing و tenant isolation"
+      ],
+      "prerequisites": [
+        "IP routing، BGP basics، overlay/underlay concepts and security policy"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch17-l2-1\",\"prompt\":\"VXLAN چه مسئله‌ای را حل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch17-l2-2\",\"prompt\":\"VTEP چیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch17-l2-3\",\"prompt\":\"VNI با VLAN ID یکسان است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch17-l2-4\",\"prompt\":\"Underlay و overlay چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch17-l2-5\",\"prompt\":\"EVPN چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch17-l2-6\",\"prompt\":\"EVPN Type 2 معمولاً چه چیزی حمل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch17-l2-7\",\"prompt\":\"EVPN Type 3 در مدل‌های رایج چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch17-l2-8\",\"prompt\":\"EVPN Type 5 معمولاً چه استفاده‌ای دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch17-l2-9\",\"prompt\":\"چرا BGP EVPN Established کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch17-l2-10\",\"prompt\":\"Anycast gateway چه مزیتی دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"ch17-l2-1\",\"answer\":\"حمل Ethernet frame در overlay روی underlay IP برای ساخت segmentهای منطقی مقیاس‌پذیر.\",\"rationale\":\"VXLAN به‌تنهایی control plane کامل نیست.\"},{\"id\":\"ch17-l2-2\",\"answer\":\"Endpoint encapsulation/decapsulation در VXLAN.\",\"rationale\":\"loopback reachability بین VTEPها در underlay لازم است.\"},{\"id\":\"ch17-l2-3\",\"answer\":\"خیر؛ VNI شناسهٔ segment overlay است و mapping به VLAN وابسته به طراحی است.\",\"rationale\":\"مقادیر برابر الزاماً معنای یکسان ندارند.\"},{\"id\":\"ch17-l2-4\",\"answer\":\"Underlay مسیر IP بین VTEPها را فراهم می‌کند؛ overlay شبکهٔ منطقی tenant را می‌سازد.\",\"rationale\":\"سلامت underlay overlay را به‌تنهایی ثابت نمی‌کند.\"},{\"id\":\"ch17-l2-5\",\"answer\":\"Control-plane انتشار reachability اطلاعات MAC/IP و routeهای overlay را فراهم می‌کند.\",\"rationale\":\"VXLAN data-plane و EVPN control-plane متفاوت‌اند.\"},{\"id\":\"ch17-l2-6\",\"answer\":\"MAC/IP reachability.\",\"rationale\":\"تفسیر attributes و import به design/platform وابسته است.\"},{\"id\":\"ch17-l2-7\",\"answer\":\"Inclusive multicast Ethernet tag/replication membership.\",\"rationale\":\"رفتار دقیق وابسته به overlay design است.\"},{\"id\":\"ch17-l2-8\",\"answer\":\"IP prefix route در EVPN designهای پشتیبانی‌شده.\",\"rationale\":\"به معنی هر route یا هر vendor behavior نیست.\"},{\"id\":\"ch17-l2-9\",\"answer\":\"Route ممکن است advertise، import، map یا forward نشده باشد.\",\"rationale\":\"BGP session تنها یک مرحله است.\"},{\"id\":\"ch17-l2-10\",\"answer\":\"ارائهٔ gateway IP/MAC منطقی مشترک روی چند leaf برای ساده‌کردن endpoint mobility.\",\"rationale\":\"implementation و route/ARP behavior باید آزمایش شود.\"}]},\"source_refs\":[\"https://www.rfc-editor.org/rfc/rfc7348.html\",\"https://www.rfc-editor.org/rfc/rfc7432.html\",\"https://www.rfc-editor.org/rfc/rfc8365.html\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"subchapter_title_fa\":\"۱۷.۴ مهندسی EVPN/VXLAN و Tenant\"}",
+      "official_sources": [
+        {
+          "title": "RFC 7348 — Virtual eXtensible Local Area Network (VXLAN)",
+          "url": "https://www.rfc-editor.org/rfc/rfc7348.html"
+        },
+        {
+          "title": "RFC 7432 — BGP MPLS-Based Ethernet VPN",
+          "url": "https://www.rfc-editor.org/rfc/rfc7432.html"
+        },
+        {
+          "title": "RFC 8365 — Network Virtualization Overlay Solution Using EVPN",
+          "url": "https://www.rfc-editor.org/rfc/rfc8365.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch17:evpn-vxlan-engineering:l3",
+      "entity": "lesson",
+      "chapter_order": 17,
+      "subchapter_order": 4,
+      "lesson_order": 4,
+      "topic": "evpn-vxlan-engineering",
+      "domain": "data-center-networking",
+      "level": "L3",
+      "title_fa": "[L3] EVPN/VXLAN — از Underlay تا Multi-Tenant Data Center — مهندس",
+      "title_en": "[L3] EVPN/VXLAN — Underlay to Multi-Tenant Data Center — Engineer",
+      "subchapter_title_fa": "۱۷.۴ مهندسی EVPN/VXLAN و Tenant",
+      "tags": [
+        "evpn-vxlan-engineering",
+        "L3"
+      ],
+      "summary": "درس مهندس دربارهٔ EVPN/VXLAN — از Underlay تا Multi-Tenant Data Center",
+      "full_content": "# EVPN/VXLAN — مهندس\n\n## BGP EVPN control plane\n\nEVPN از BGP routeها برای توزیع MAC/IP reachability و دیگر اطلاعات overlay استفاده می‌کند. در مدل‌های رایج، Type 2 برای MAC/IP، Type 3 برای inclusive multicast/replication membership و Type 5 برای IP prefix استفاده می‌شود. تفسیر دقیق route attributes، ESI و RTها باید براساس RFC و platform بررسی شود. Route در BGP table ممکن است به‌علت RT import، VNI mapping یا policy در forwarding واقعی وارد نشود.\n\n## Leaf-spine underlay\n\nUnderlay باید loopback VTEPها را reachable کند و convergence قابل پیش‌بینی داشته باشد. ECMP می‌تواند مسیرهای موازی را استفاده کند، اما MTU، hashing، packet loss و symmetric assumptions را باید با workload واقعی آزمایش کرد. Spine معمولاً tenant MAC table سراسری را مانند leaf VTEP نگه نمی‌دارد؛ roles با design مشخص می‌شوند.\n\n## Anycast gateway و multi-homing\n\nAnycast gateway می‌تواند gateway IP/MAC یکسان را در چند leaf ارائه کند تا endpoint mobility ساده شود. Multi-homing با ESI و mechanismهای EVPN می‌تواند endpoint dual-homed را مدیریت کند، اما split-horizon, DF election و loop prevention باید فهمیده شوند. vendor behavior و feature support در هر release لازم است تأیید شود.\n\n## Lab\n\nیک tenant با دو VNI، دو leaf و دو endpoint بساز. route typeها، RTها، MAC/IP route، VTEP outer header، MTU و failure بعد از قطع یک uplink را ثبت کن. یک mapping اشتباه را جدا تزریق و rollback کن.\n\n## قرارداد Lab\nتوپولوژی، version/release، expected state، capture points، metricها، cleanup و rollback باید ثبت شوند. این سناریوها هنوز طراحی‌شده‌اند و پس از اجرای واقعی می‌توانند به verified ارتقا یابند.",
+      "commands": "Verify per release: underlay route/ECMP, BGP EVPN RIB, EVPN route types, RT import, VLAN-to-VNI mapping, VTEP peers, MAC/IP table and MTU/counters.",
+      "examples": "Lab: leaf-spine underlay, two VTEPs, two VNIs, two tenant segments, remote MAC/IP learning, anycast gateway and MTU validation.",
+      "notes": "content_status=review_required; lab_execution=not_yet_run; answer_key=separate; supplementary_chapter=17",
+      "learning_objectives": [
+        "تفکیک underlay، VXLAN data plane و EVPN control plane",
+        "تحلیل VNI/RT/route type و VTEP reachability",
+        "طراحی anycast/multi-homing و tenant isolation"
+      ],
+      "prerequisites": [
+        "IP routing، BGP basics، overlay/underlay concepts and security policy"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch17-l3-1\",\"prompt\":\"VXLAN چه مسئله‌ای را حل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch17-l3-2\",\"prompt\":\"VTEP چیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch17-l3-3\",\"prompt\":\"VNI با VLAN ID یکسان است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch17-l3-4\",\"prompt\":\"Underlay و overlay چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch17-l3-5\",\"prompt\":\"EVPN چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch17-l3-6\",\"prompt\":\"EVPN Type 2 معمولاً چه چیزی حمل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch17-l3-7\",\"prompt\":\"EVPN Type 3 در مدل‌های رایج چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch17-l3-8\",\"prompt\":\"EVPN Type 5 معمولاً چه استفاده‌ای دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch17-l3-9\",\"prompt\":\"چرا BGP EVPN Established کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch17-l3-10\",\"prompt\":\"Anycast gateway چه مزیتی دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch17-l3-11\",\"prompt\":\"چرا MTU در VXLAN مهم است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch17-l3-12\",\"prompt\":\"VNI یا RT اشتباه چه ریسکی دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"ch17-l3-1\",\"answer\":\"حمل Ethernet frame در overlay روی underlay IP برای ساخت segmentهای منطقی مقیاس‌پذیر.\",\"rationale\":\"VXLAN به‌تنهایی control plane کامل نیست.\"},{\"id\":\"ch17-l3-2\",\"answer\":\"Endpoint encapsulation/decapsulation در VXLAN.\",\"rationale\":\"loopback reachability بین VTEPها در underlay لازم است.\"},{\"id\":\"ch17-l3-3\",\"answer\":\"خیر؛ VNI شناسهٔ segment overlay است و mapping به VLAN وابسته به طراحی است.\",\"rationale\":\"مقادیر برابر الزاماً معنای یکسان ندارند.\"},{\"id\":\"ch17-l3-4\",\"answer\":\"Underlay مسیر IP بین VTEPها را فراهم می‌کند؛ overlay شبکهٔ منطقی tenant را می‌سازد.\",\"rationale\":\"سلامت underlay overlay را به‌تنهایی ثابت نمی‌کند.\"},{\"id\":\"ch17-l3-5\",\"answer\":\"Control-plane انتشار reachability اطلاعات MAC/IP و routeهای overlay را فراهم می‌کند.\",\"rationale\":\"VXLAN data-plane و EVPN control-plane متفاوت‌اند.\"},{\"id\":\"ch17-l3-6\",\"answer\":\"MAC/IP reachability.\",\"rationale\":\"تفسیر attributes و import به design/platform وابسته است.\"},{\"id\":\"ch17-l3-7\",\"answer\":\"Inclusive multicast Ethernet tag/replication membership.\",\"rationale\":\"رفتار دقیق وابسته به overlay design است.\"},{\"id\":\"ch17-l3-8\",\"answer\":\"IP prefix route در EVPN designهای پشتیبانی‌شده.\",\"rationale\":\"به معنی هر route یا هر vendor behavior نیست.\"},{\"id\":\"ch17-l3-9\",\"answer\":\"Route ممکن است advertise، import، map یا forward نشده باشد.\",\"rationale\":\"BGP session تنها یک مرحله است.\"},{\"id\":\"ch17-l3-10\",\"answer\":\"ارائهٔ gateway IP/MAC منطقی مشترک روی چند leaf برای ساده‌کردن endpoint mobility.\",\"rationale\":\"implementation و route/ARP behavior باید آزمایش شود.\"},{\"id\":\"ch17-l3-11\",\"answer\":\"Outer VXLAN/UDP/IP header overhead به packet اضافه می‌کند و MTU مؤثر را کم می‌کند.\",\"rationale\":\"بزرگ‌بودن MTU زیرساخت باید با کل مسیر سازگار باشد.\"},{\"id\":\"ch17-l3-12\",\"answer\":\"ممكن است overlay membership یا import route غلط شود و isolation بشکند.\",\"rationale\":\"آزمون منفی tenant لازم است.\"}]},\"source_refs\":[\"https://www.rfc-editor.org/rfc/rfc7348.html\",\"https://www.rfc-editor.org/rfc/rfc7432.html\",\"https://www.rfc-editor.org/rfc/rfc8365.html\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"subchapter_title_fa\":\"۱۷.۴ مهندسی EVPN/VXLAN و Tenant\"}",
+      "official_sources": [
+        {
+          "title": "RFC 7348 — Virtual eXtensible Local Area Network (VXLAN)",
+          "url": "https://www.rfc-editor.org/rfc/rfc7348.html"
+        },
+        {
+          "title": "RFC 7432 — BGP MPLS-Based Ethernet VPN",
+          "url": "https://www.rfc-editor.org/rfc/rfc7432.html"
+        },
+        {
+          "title": "RFC 8365 — Network Virtualization Overlay Solution Using EVPN",
+          "url": "https://www.rfc-editor.org/rfc/rfc8365.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch17:evpn-vxlan-engineering:l4",
+      "entity": "lesson",
+      "chapter_order": 17,
+      "subchapter_order": 4,
+      "lesson_order": 5,
+      "topic": "evpn-vxlan-engineering",
+      "domain": "data-center-networking",
+      "level": "L4",
+      "title_fa": "[L4] EVPN/VXLAN — از Underlay تا Multi-Tenant Data Center — خبره",
+      "title_en": "[L4] EVPN/VXLAN — Underlay to Multi-Tenant Data Center — Architect",
+      "subchapter_title_fa": "۱۷.۴ مهندسی EVPN/VXLAN و Tenant",
+      "tags": [
+        "evpn-vxlan-engineering",
+        "L4"
+      ],
+      "summary": "درس خبره دربارهٔ EVPN/VXLAN — از Underlay تا Multi-Tenant Data Center",
+      "full_content": "# EVPN/VXLAN — خبره و معماری\n\n## قرارداد معماری\n\nطرح EVPN/VXLAN باید tenant/VRF/VNI mapping، VLAN-to-VNI، VTEP addressing، underlay routing/ECMP، BGP EVPN address family، route target، route type expectation، anycast gateway، multi-homing، MTU، replication model و policy امنیتی را مشخص کند. VNI و VLAN ID واحد معنایی یکسان ندارند و هم‌ارزی آن‌ها صرفاً با mapping مستند حاصل می‌شود.\n\n## Control plane در برابر data plane\n\nBGP EVPN route دریافت‌شده، route imported into VRF/VNI، MAC/IP state و VXLAN packet forwarding مراحل جدا هستند. Route type 2، 3 و 5 باید به use case واقعی نسبت داده شوند؛ route type به‌تنهایی end-to-end service را ثابت نمی‌کند. Paired evidence شامل BGP RIB, EVPN routes, local MAC/IP table, VNI/VRF state, VTEP peer state, underlay FIB و packet capture لازم است.\n\n## Scale و failure domain\n\nافزایش endpointها تعداد MAC/IP routeها، VNIها، route churn و state در leafها را بالا می‌برد. ECMP، route reflection، ARP/ND suppression، multicast/ingress replication و anycast gateway trade-offهایی در bandwidth، latency، state و troubleshooting دارند. Capacity باید route scale، mobility churn، failover، convergence، packet-per-second و MTU را اندازه بگیرد.\n\n## Security\n\nOverlay segmentation جایگزین policy بین tenantها نیست. RT leak، VNI mapping collision، misconfigured anycast gateway، unmanaged VTEP یا underlay exposure می‌تواند جداسازی را تضعیف کند. نیازهای encryption، identity policy و east-west filtering باید جدا طراحی و آزمون شوند.\n\n## Acceptance\n\nتست‌های مثبت و منفی برای same-VNI reachability، cross-tenant denial، remote MAC learning، IP prefix route، host mobility، single-link/leaf failure، MTU-size sweep و rollback لازم است. معیار باید در endpoint application و control/data-plane state ثبت شود.\n\n## قرارداد Lab\nتوپولوژی، version/release، expected state، capture points، metricها، cleanup و rollback باید ثبت شوند. این سناریوها هنوز طراحی‌شده‌اند و پس از اجرای واقعی می‌توانند به verified ارتقا یابند.",
+      "commands": "Verify per release: underlay route/ECMP, BGP EVPN RIB, EVPN route types, RT import, VLAN-to-VNI mapping, VTEP peers, MAC/IP table and MTU/counters.",
+      "examples": "Lab: leaf-spine underlay, two VTEPs, two VNIs, two tenant segments, remote MAC/IP learning, anycast gateway and MTU validation.",
+      "notes": "content_status=review_required; lab_execution=not_yet_run; answer_key=separate; supplementary_chapter=17",
+      "learning_objectives": [
+        "تفکیک underlay، VXLAN data plane و EVPN control plane",
+        "تحلیل VNI/RT/route type و VTEP reachability",
+        "طراحی anycast/multi-homing و tenant isolation"
+      ],
+      "prerequisites": [
+        "IP routing، BGP basics، overlay/underlay concepts and security policy"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch17-l4-1\",\"prompt\":\"VXLAN چه مسئله‌ای را حل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-2\",\"prompt\":\"VTEP چیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-3\",\"prompt\":\"VNI با VLAN ID یکسان است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-4\",\"prompt\":\"Underlay و overlay چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-5\",\"prompt\":\"EVPN چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-6\",\"prompt\":\"EVPN Type 2 معمولاً چه چیزی حمل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-7\",\"prompt\":\"EVPN Type 3 در مدل‌های رایج چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-8\",\"prompt\":\"EVPN Type 5 معمولاً چه استفاده‌ای دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-9\",\"prompt\":\"چرا BGP EVPN Established کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-10\",\"prompt\":\"Anycast gateway چه مزیتی دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-11\",\"prompt\":\"چرا MTU در VXLAN مهم است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-12\",\"prompt\":\"VNI یا RT اشتباه چه ریسکی دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-13\",\"prompt\":\"Multi-homing چه پیچیدگی‌هایی دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-14\",\"prompt\":\"چه شواهدی overlay failure را از underlay جدا می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch17-l4-15\",\"prompt\":\"چه چیزی معماری EVPN/VXLAN را آمادهٔ انتشار می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"ch17-l4-1\",\"answer\":\"حمل Ethernet frame در overlay روی underlay IP برای ساخت segmentهای منطقی مقیاس‌پذیر.\",\"rationale\":\"VXLAN به‌تنهایی control plane کامل نیست.\"},{\"id\":\"ch17-l4-2\",\"answer\":\"Endpoint encapsulation/decapsulation در VXLAN.\",\"rationale\":\"loopback reachability بین VTEPها در underlay لازم است.\"},{\"id\":\"ch17-l4-3\",\"answer\":\"خیر؛ VNI شناسهٔ segment overlay است و mapping به VLAN وابسته به طراحی است.\",\"rationale\":\"مقادیر برابر الزاماً معنای یکسان ندارند.\"},{\"id\":\"ch17-l4-4\",\"answer\":\"Underlay مسیر IP بین VTEPها را فراهم می‌کند؛ overlay شبکهٔ منطقی tenant را می‌سازد.\",\"rationale\":\"سلامت underlay overlay را به‌تنهایی ثابت نمی‌کند.\"},{\"id\":\"ch17-l4-5\",\"answer\":\"Control-plane انتشار reachability اطلاعات MAC/IP و routeهای overlay را فراهم می‌کند.\",\"rationale\":\"VXLAN data-plane و EVPN control-plane متفاوت‌اند.\"},{\"id\":\"ch17-l4-6\",\"answer\":\"MAC/IP reachability.\",\"rationale\":\"تفسیر attributes و import به design/platform وابسته است.\"},{\"id\":\"ch17-l4-7\",\"answer\":\"Inclusive multicast Ethernet tag/replication membership.\",\"rationale\":\"رفتار دقیق وابسته به overlay design است.\"},{\"id\":\"ch17-l4-8\",\"answer\":\"IP prefix route در EVPN designهای پشتیبانی‌شده.\",\"rationale\":\"به معنی هر route یا هر vendor behavior نیست.\"},{\"id\":\"ch17-l4-9\",\"answer\":\"Route ممکن است advertise، import، map یا forward نشده باشد.\",\"rationale\":\"BGP session تنها یک مرحله است.\"},{\"id\":\"ch17-l4-10\",\"answer\":\"ارائهٔ gateway IP/MAC منطقی مشترک روی چند leaf برای ساده‌کردن endpoint mobility.\",\"rationale\":\"implementation و route/ARP behavior باید آزمایش شود.\"},{\"id\":\"ch17-l4-11\",\"answer\":\"Outer VXLAN/UDP/IP header overhead به packet اضافه می‌کند و MTU مؤثر را کم می‌کند.\",\"rationale\":\"بزرگ‌بودن MTU زیرساخت باید با کل مسیر سازگار باشد.\"},{\"id\":\"ch17-l4-12\",\"answer\":\"ممكن است overlay membership یا import route غلط شود و isolation بشکند.\",\"rationale\":\"آزمون منفی tenant لازم است.\"},{\"id\":\"ch17-l4-13\",\"answer\":\"ESI, DF election, split horizon و loop prevention باید هماهنگ شوند.\",\"rationale\":\"پشتیبانی vendor/release بررسی شود.\"},{\"id\":\"ch17-l4-14\",\"answer\":\"Underlay reachability/route و outer packet capture در کنار EVPN routes, VNI mapping و inner traffic.\",\"rationale\":\"پینگ loopback به تنهایی overlay را ثابت نمی‌کند.\"},{\"id\":\"ch17-l4-15\",\"answer\":\"Mapping, policy, routes, MTU, anycast/multi-homing, capacity, positive/negative tests and rollback.\",\"rationale\":\"نتیجهٔ واقعی لازم است.\"}]},\"source_refs\":[\"https://www.rfc-editor.org/rfc/rfc7348.html\",\"https://www.rfc-editor.org/rfc/rfc7432.html\",\"https://www.rfc-editor.org/rfc/rfc8365.html\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"subchapter_title_fa\":\"۱۷.۴ مهندسی EVPN/VXLAN و Tenant\"}",
+      "official_sources": [
+        {
+          "title": "RFC 7348 — Virtual eXtensible Local Area Network (VXLAN)",
+          "url": "https://www.rfc-editor.org/rfc/rfc7348.html"
+        },
+        {
+          "title": "RFC 7432 — BGP MPLS-Based Ethernet VPN",
+          "url": "https://www.rfc-editor.org/rfc/rfc7432.html"
+        },
+        {
+          "title": "RFC 8365 — Network Virtualization Overlay Solution Using EVPN",
+          "url": "https://www.rfc-editor.org/rfc/rfc8365.html"
+        }
+      ],
+      "source_status": "review_required"
+    }
+  ]
+}
