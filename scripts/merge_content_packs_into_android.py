@@ -635,6 +635,9 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
                 "notes": notes,
                 "meta_json": json.dumps(meta, ensure_ascii=False, separators=(",", ":")) if meta else "{}",
                 "learning_objectives": _objectives_text(objectives),
+                # Preserve the pack's descriptive subchapter title through normalization
+                # so append_unmatched_as_extra can create a meaningful tree node.
+                "subchapter_title_fa": src.get("subchapter_title_fa") or meta.get("subchapter_title_fa") or "",
                 "source_status": src.get("source_status") or "review_required",
             }
             incoming.append(lesson_record)
