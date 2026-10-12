@@ -1,5 +1,11 @@
 name: Build APK v1
 
+# Each commit previously launched another full 90-minute Android build. Keep
+# only the newest validation for this PR/branch to avoid stale builds competing.
+concurrency:
+  group: build-apk-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
   pull_request:
