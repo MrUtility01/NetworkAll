@@ -162,6 +162,75 @@ reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion /v ProgramFilesDir
     return summary, full, commands, lab
 
 def _linux(topic, level):
+    topic_folded = (topic or "").casefold()
+    if any(term in topic_folded for term in ("سلسله‌مراتب fs", "filesystem hierarchy", "hierarchy fs", "fhs", "سلسله مراتب فایل")):
+        summary = f"«{topic}»: FHS نقشهٔ معنایی مسیرهای لینوکس است؛ مسیر فایل، فضای دیسک و mount واقعی سه مفهوم جدا هستند."
+        full = f"""# {topic}
+
+**سطح:** {level} — {_depth(level)}
+
+## مدل ذهنی
+Filesystem Hierarchy Standard (FHS) قرارداد مشترکِ محل قرارگیری فایل‌هاست؛ چیدمان دقیق می‌تواند میان توزیع‌ها تفاوت داشته باشد. ریشهٔ فضای نام / است. هر پارتیشن یا شبکه‌فایل‌سیستم پس از mount زیر یک مسیر ظاهر می‌شود. بنابراین نام /var به‌تنهایی نمی‌گوید داده روی کدام دیسک است؛ findmnt این رابطه را نشان می‌دهد.
+
+## مسیرهای مهم
+| مسیر | محتوای معمول | نکتهٔ عملیاتی |
+|---|---|---|
+| /etc | پیکربندی سراسری | قبل/بعد تغییر diff و backup داشته باش |
+| /usr/bin و /usr/sbin | ابزارها و برنامه‌های توزیع | در بسیاری از توزیع‌ها /bin و /sbin به /usr لینک شده‌اند |
+| /var/log | لاگ سرویس‌ها | rotation و فضای مصرفی را بررسی کن |
+| /var/lib | state سرویس‌ها | حذف دستی ممکن است دیتابیس یا سرویس را خراب کند |
+| /home | داده و تنظیمات کاربران | ممکن است filesystem جدا باشد |
+| /root | خانهٔ root | با ریشهٔ / اشتباه نشود |
+| /tmp | دادهٔ موقت | ماندگاری بعد reboot تضمین نیست |
+| /run | PID و socketهای زمان اجرا | معمولاً tmpfs و پس از reboot بازسازی می‌شود |
+| /proc | نمای مجازی process و kernel | مصرف آن را با اندازهٔ فایل روی دیسک یکی نگیر |
+| /sys | نمای دستگاه و kernel | نوشتن روی بعضی attributeها تنظیم زنده را تغییر می‌دهد |
+| /dev | device node | با فایل معمولی فرق دارد؛ روی آن rm یا echo آزمایشی اجرا نکن |
+| /boot و /boot/efi | kernel، initramfs و EFI System Partition | تغییر اشتباه می‌تواند بوت را مختل کند |
+| /mnt و /media | mountهای دستی و رسانهٔ جداشدنی | وضعیت واقعی را با findmnt بررسی کن |
+| /opt و /srv | برنامه‌های افزوده و دادهٔ سرویس‌ها | به طراحی توزیع و سازمان وابسته‌اند |
+
+## فرق مسیر، mount، فضا و مجوز
+- مسیر: نامی در فضای نام فایل‌ها مانند /var/log.
+- mount point: محل اتصال یک filesystem؛ با findmnt -T /var/log منبع واقعی را ببین.
+- df -hT ظرفیت و نوع filesystem را نشان می‌دهد؛ du -xhd1 /var مصرف شاخه‌ها را در همان filesystem برآورد می‌کند.
+- df -i وضعیت inode را نشان می‌دهد؛ تمام‌شدن inode می‌تواند ساخت فایل را متوقف کند حتی اگر فضا باقی باشد.
+- namei -l /etc/ssh/sshd_config مجوز تک‌تک اجزای مسیر را نشان می‌دهد؛ ACL و mount options هم مهم‌اند.
+
+## RCA: فضای دیسک تمام شده
+1. با df -hT mountهای پر را پیدا کن.
+2. df -i را هم بررسی کن؛ بین کمبود block و کمبود inode تفاوت بگذار.
+3. اگر /var پر است، du -xhd1 /var را برای یافتن شاخهٔ بزرگ اجرا کن.
+4. اگر df مصرف نشان می‌دهد ولی du همان اندازه را نمی‌یابد، فایل حذف‌شده‌ای که یک process باز نگه داشته یا reserved blocks را بررسی کن؛ lsof +L1 می‌تواند سرنخ بدهد.
+5. قبل از پاک‌کردن لاگ یا داده، مالک سرویس، retention و الزامات ممیزی را تعیین کن. صرف بزرگ‌بودن /var/lib دلیل حذف آن نیست.
+
+## امنیت و معیار قبولی
+روی /proc، /sys، /dev، /boot و /var/lib آزمایش تغییردهنده اجرا نکن. درس زمانی تکمیل است که بتوانی منبع mount مسیر /var/log را با شاهد نشان بدهی، تفاوت df و du و inode را توضیح بدهی و برای filesystem پر یک اقدام ایمن و قابل بازگشت پیشنهاد کنی.
+"""
+        fence = chr(96) * 3
+        commands = f"""# بررسی‌های فقط‌خواندنی
+{fence}bash
+findmnt -T /var/log
+findmnt -o TARGET,SOURCE,FSTYPE,OPTIONS
+df -hT
+df -i
+du -xhd1 /var 2>/dev/null | sort -h
+namei -l /etc/ssh/sshd_config
+stat /etc/hostname
+{fence}
+"""
+        lab = """# آزمایشگاه فقط‌خواندنی — FHS
+
+1. findmnt -T /var/log را اجرا و TARGET/SOURCE/FSTYPE را ثبت کن.
+2. df -hT و df -i را مقایسه کن؛ محدودیت bytes است یا inode؟
+3. du -xhd1 /var را اجرا کن؛ خروجی باید روی همان filesystem بماند و سطح اول را خلاصه کند.
+4. namei -l /etc/ssh/sshd_config را بخوان و نخستین جزء مسیر با مجوز محدود را مشخص کن.
+5. هیچ فایل سیستمی را حذف یا ویرایش نکن.
+
+معیار قبولی: گزارش شامل منبع mount، درصد استفادهٔ block و inode، بزرگ‌ترین شاخهٔ قابل مشاهده و یک اقدام بررسی‌شده بدون حذف داده باشد.
+"""
+        return summary, full, commands, lab
+
     summary = f"«{topic}»: لینوکس = همه‌چیز فایل + process + permission + systemd."
     full = f"""# {topic}
 
