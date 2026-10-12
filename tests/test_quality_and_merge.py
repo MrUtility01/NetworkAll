@@ -326,6 +326,11 @@ class SyncApiContractTests(unittest.TestCase):
                     {"uid": "note-1", "entity": "note", "title": "OSPF notes",
                      "body": "Neighbor state checklist", "tags": "routing",
                      "last_updated": stamp, "device_id": "android-test", "deleted": True},
+                    {"uid": "lesson:study-test", "entity": "study", "status": "learning",
+                     "ease": 2.5, "interval_hours": 24, "last_studied": stamp,
+                     "next_review": "2026-10-13T04:00:00Z", "times_studied": 2,
+                     "notes": "Revise OSPF neighbor states", "last_updated": stamp,
+                     "device_id": "android-test", "deleted": False},
                     {"uid": "lesson:missing", "entity": "lesson", "title_fa": "درس ناشناخته"},
                     {"uid": "vault-1", "entity": "vault", "title": "must not sync", "secret": "plaintext"},
                 ]
@@ -339,7 +344,7 @@ class SyncApiContractTests(unittest.TestCase):
                 response = client.post("/api/sync/push", json=payload)
                 self.assertEqual(response.status_code, 200)
                 body = response.get_json()
-                self.assertEqual(body["accepted"], 2)
+                self.assertEqual(body["accepted"], 3)
                 self.assertEqual(body["unsupported"], 1)
                 self.assertEqual(body["unsupported_uids"], ["vault-1"])
                 self.assertEqual(body["missing_targets"], 1)
@@ -350,13 +355,17 @@ class SyncApiContractTests(unittest.TestCase):
                 self.assertIn("task-1", by_uid)
                 self.assertIn("note-1", by_uid)
                 self.assertTrue(by_uid["note-1"]["deleted"])
+                self.assertIn("lesson:study-test", by_uid)
+                self.assertEqual(by_uid["lesson:study-test"]["entity"], "study")
 
-                pulled = client.post("/api/sync/pull", json={"uids": ["task-1", "note-1"]}).get_json()
+                pulled = client.post("/api/sync/pull", json={"uids": ["task-1", "note-1", "lesson:study-test"]}).get_json()
                 records = {item["uid"]: item for item in pulled["records"]}
                 self.assertEqual(records["task-1"]["title"], "LAN sync test")
                 self.assertEqual(records["task-1"]["device_id"], "android-test")
                 self.assertTrue(records["note-1"]["deleted"])
                 self.assertNotIn("secret", records["note-1"])
+                self.assertEqual(records["lesson:study-test"]["times_studied"], 2)
+                self.assertEqual(records["lesson:study-test"]["notes"], "Revise OSPF neighbor states")
             db.conn.close()
 
 
