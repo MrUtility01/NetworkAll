@@ -531,7 +531,8 @@ class SyncApiContractTests(unittest.TestCase):
                 "records": [
                     {"uid": "task-1", "entity": "task", "title": "LAN sync test",
                      "body": "Created on Android", "done": False, "priority": 2,
-                     "due_at": "", "last_updated": stamp, "device_id": "android-test"},
+                     "due_at": "2026-10-13T04:30", "remind_at": "2026-10-13T04:30",
+                     "last_updated": stamp, "device_id": "android-test"},
                     {"uid": "note-1", "entity": "note", "title": "OSPF notes",
                      "body": "Neighbor state checklist", "tags": "routing",
                      "last_updated": stamp, "device_id": "android-test", "deleted": True},
@@ -591,6 +592,10 @@ class SyncApiContractTests(unittest.TestCase):
                 records = {item["uid"]: item for item in pulled["records"]}
                 self.assertEqual(records["task-1"]["title"], "LAN sync test")
                 self.assertEqual(records["task-1"]["device_id"], "android-test")
+                self.assertEqual(records["task-1"]["remind_at"], "2026-10-13T04:30")
+                server_task = db.conn.execute("SELECT remind_at, reminded_at FROM ws_tasks WHERE uid='task-1'").fetchone()
+                self.assertEqual(server_task["remind_at"], "2026-10-13T04:30")
+                self.assertEqual(server_task["reminded_at"], "")
                 self.assertTrue(records["note-1"]["deleted"])
                 self.assertNotIn("secret", records["note-1"])
                 self.assertEqual(records["lesson:study-test"]["times_studied"], 2)
@@ -616,6 +621,10 @@ class SyncApiContractTests(unittest.TestCase):
                      "body": "", "done": False, "priority": 2, "due_at": "",
                      "deleted": "yes", "last_updated": "2026-10-12T04:00:00Z",
                      "device_id": "android-test"},
+                    {"uid": "task-bad-reminder", "entity": "task", "title": "Bad reminder",
+                     "body": "", "done": False, "priority": 2, "due_at": "2026-10-13T09:00",
+                     "remind_at": "tomorrow morning", "last_updated": "2026-10-12T04:00:00Z",
+                     "device_id": "android-test"},
                 ]
             }
             try:
@@ -629,10 +638,10 @@ class SyncApiContractTests(unittest.TestCase):
                     self.assertEqual(response.status_code, 200)
                     body = response.get_json()
                     self.assertEqual(body["accepted"], 0)
-                    self.assertEqual(body["invalid"], 4)
+                    self.assertEqual(body["invalid"], 5)
                     self.assertEqual(
                         body["invalid_uids"],
-                        ["task-bad-priority", "task-bad-date", "task-bad-done", "task-bad-delete"],
+                        ["task-bad-priority", "task-bad-date", "task-bad-done", "task-bad-delete", "task-bad-reminder"],
                     )
                     manifest = client.get("/api/sync/manifest").get_json()
                     self.assertFalse(
