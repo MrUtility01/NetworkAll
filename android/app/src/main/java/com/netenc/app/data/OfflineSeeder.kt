@@ -195,7 +195,10 @@ object OfflineSeeder {
             arr
         }
         JsonToken.STRING -> reader.nextString()
-        JsonToken.NUMBER -> reader.nextString()
+        JsonToken.NUMBER -> {
+            val raw = reader.nextString()
+            raw.toLongOrNull() ?: raw.toDoubleOrNull() ?: raw
+        }
         JsonToken.BOOLEAN -> reader.nextBoolean()
         JsonToken.NULL -> {
             reader.nextNull()
