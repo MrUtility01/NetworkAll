@@ -129,6 +129,10 @@ class DeepFallbackTests(unittest.TestCase):
                 self.assertNotIn("## ۰) داستان واقعی سازمانی", lesson["full_content"])
                 self.assertIn("پاسخ‌نامه", lesson["full_content"])
                 self.assertIn("## ۱۰) منابع رسمی و مراجع", lesson["full_content"])
+                if "Btrfs Snapshot" in title:
+                    self.assertIn("copy-on-write", lesson["full_content"])
+                    self.assertIn("btrfs subvolume snapshot", lesson["full_content"])
+                    self.assertIn("جایگزین backup روی رسانه/سیستم جدا نیست", lesson["full_content"])
 
     def test_python_fallback_has_python_specific_troubleshooting(self):
         lesson = build_deep_fallback("[L2] Python exception handling", "Python exception handling")
