@@ -82,16 +82,25 @@ class TreeCatalogActivity : AppCompatActivity() {
             header.text = "محتوایی بارگذاری نشد. به صفحه اصلی برگردید و وضعیت بارگذاری را بررسی کنید."
             return
         }
+        // Repair display hierarchy defensively for older or partially imported rows.
+        // The seeder normally fills these fields, but the UI must remain usable even
+        // if an earlier database version stored missing metadata.
         val byChapter = lessons.groupBy {
-            val order = it.chapterOrder
+            val order = it.chapterOrder.takeIf { n -> n > 0 }
+                ?: Regex("""(?:ch|chapter)[-_: ]?(\\d+)""", RegexOption.IGNORE_CASE)
+                    .find(it.uid)?.groupValues?.getOrNull(1)?.toIntOrNull() ?: 0
             val title = it.chapterTitle.ifBlank {
-                if (order > 0) "فصل $order" else "بدون فصل‌بندی (نیازمند بازسازی)"
+                if (order > 0) "فصل $order" else "فصل‌بندی نشده"
             }
             order to title
         }.toSortedMap(compareBy({ it.first }, { it.second }))
         tree = byChapter.map { (key, listL) ->
-            val subs = listL.groupBy { it.subTitle.ifBlank { "عمومی" } }
-                .map { (st, ls) -> SubNode(st, ls.firstOrNull()?.subTitle.orEmpty(), ls.sortedBy { it.lessonOrder }) }
+            val subs = listL.groupBy { it.subTitle.ifBlank {
+                it.titleFa.substringBefore(" — ").ifBlank { "عمومی" }
+            } }
+                .map { (st, ls) ->
+                    SubNode(st, st, ls.sortedWith(compareBy<LessonEntity>({ it.lessonOrder }, { it.titleFa })))
+                }.sortedBy { it.title }
             ChapterNode(key.first, key.second, subs)
         }
         header.text = "${tree.size} فصل · ${lessons.size} درس"
