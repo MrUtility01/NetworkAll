@@ -38,6 +38,10 @@ abstract class AppDatabase : RoomDatabase() {
                 db.execSQL("ALTER TABLE study_progress ADD COLUMN lastUpdated TEXT NOT NULL DEFAULT ''")
                 db.execSQL("ALTER TABLE study_progress ADD COLUMN deviceId TEXT NOT NULL DEFAULT 'android'")
                 db.execSQL("ALTER TABLE study_progress ADD COLUMN deleted INTEGER NOT NULL DEFAULT 0")
+                // Existing phone progress predates lastUpdated. Backfill from lastStudied
+                // before the first sync so older local progress isn't overwritten by a
+                // server record simply because the new field starts empty.
+                db.execSQL("UPDATE study_progress SET lastUpdated = lastStudied WHERE lastUpdated = '' AND lastStudied IS NOT NULL AND lastStudied != ''")
             }
         }
 
