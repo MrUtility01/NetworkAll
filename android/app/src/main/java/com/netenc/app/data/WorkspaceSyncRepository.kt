@@ -51,9 +51,7 @@ class WorkspaceSyncRepository(context: Context) {
                 "note" -> {
                     val title = record.optString("title", "").trim()
                     if (title.isEmpty()) continue
-                    // WorkspaceDao exposes a point lookup only for tasks. Use the sync
-                    // projection to avoid treating the existence of a note as a new row.
-                    val local = dao.allNotesForSync().firstOrNull { it.uid == uid }
+                    val local = dao.noteByUid(uid)
                     if (local != null && !isRemoteNewer(remoteUpdated, local.lastUpdated)) continue
                     dao.upsertNote(
                         NoteEntity(
