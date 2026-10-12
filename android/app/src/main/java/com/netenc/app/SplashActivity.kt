@@ -14,14 +14,14 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
 /**
- * Local app-entry gate. The PIN is never stored in SharedPreferences as plaintext.
+ * Local app-entry gate. The password is verified as a salted PBKDF2 hash, never stored in plaintext.
  * This is a personal-device access gate, not a replacement for Android device lock/encryption.
  */
 class SplashActivity : AppCompatActivity() {
     companion object {
-        private const val PIN_SALT_HEX = "5f3a9c71d8e2046bb6f9012ac48d735e"
-        private const val PIN_HASH_HEX = "b3bcd73dc2fa994ab21c0af7f4353e6355fb260d1220ba45fb054176bb3a2f76"
-        private const val PIN_ITERATIONS = 200_000
+        private const val PASSWORD_SALT_HEX = "5f3a9c71d8e2046bb6f9012ac48d735e"
+        private const val PASSWORD_HASH_HEX = "aaf49102a320825f15b1dc26866c722203ccffec8e9a7d49d186ac9119a1e540"
+        private const val PASSWORD_ITERATIONS = 200_000
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ class SplashActivity : AppCompatActivity() {
             setPadding(48, 48, 48, 48)
         }
         root.addView(TextView(this).apply {
-            text = "Network Encyclopedia"
+            text = "Engineer Jokar · NetworkAll"
             textSize = 26f
             setTextColor(Color.parseColor("#1D4ED8"))
             gravity = Gravity.CENTER
@@ -50,8 +50,8 @@ class SplashActivity : AppCompatActivity() {
             setPadding(0, 16, 0, 20)
         })
         val pin = EditText(this).apply {
-            hint = "رمز ورود"
-            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            hint = "رمز ورود برنامه"
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
             gravity = Gravity.CENTER
             textAlignment = android.view.View.TEXT_ALIGNMENT_CENTER
             contentDescription = "رمز ورود برنامه"
@@ -84,9 +84,9 @@ class SplashActivity : AppCompatActivity() {
     private fun verifyPin(value: String): Boolean {
         if (value.length !in 8..32) return false
         return try {
-            val salt = PIN_SALT_HEX.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
-            val expected = PIN_HASH_HEX.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
-            val spec = PBEKeySpec(value.toCharArray(), salt, PIN_ITERATIONS, expected.size * 8)
+            val salt = PASSWORD_SALT_HEX.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
+            val expected = PASSWORD_HASH_HEX.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
+            val spec = PBEKeySpec(value.toCharArray(), salt, PASSWORD_ITERATIONS, expected.size * 8)
             val actual = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256").generateSecret(spec).encoded
             spec.clearPassword()
             java.security.MessageDigest.isEqual(expected, actual)
