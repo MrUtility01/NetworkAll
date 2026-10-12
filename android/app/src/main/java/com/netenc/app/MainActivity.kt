@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     private fun showPinGate() {
         val pinInput = EditText(this).apply {
             hint = "رمز ورود"
-            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             setSingleLine(true)
             layoutDirection = android.view.View.LAYOUT_DIRECTION_RTL
         }
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             0x5f, 0x3a, 0x9c.toByte(), 0x71, 0xd8.toByte(), 0xe2.toByte(), 0x04, 0x6b,
             0xb6.toByte(), 0xf9.toByte(), 0x01, 0x2a, 0xc4.toByte(), 0x8d.toByte(), 0x73, 0x5e
         )
-        val expected = hexToBytes("b3bcd73dc2fa994ab21c0af7f4353e6355fb260d1220ba45fb054176bb3a2f76")
+        val expected = hexToBytes("aaf49102a320825f15b1dc26866c722203ccffec8e9a7d49d186ac9119a1e540")
         val spec = PBEKeySpec(candidate.toCharArray(), salt, 200_000, 256)
         return try {
             val actual = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")

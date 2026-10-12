@@ -75,7 +75,7 @@ app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024
 # App-entry password for the local Windows UI. Override with NETENC_APP_PASSWORD if desired.
 # The built-in value is stored only as PBKDF2-HMAC-SHA256 (200k rounds), never as plaintext.
 _APP_PIN_SALT = bytes.fromhex("5f3a9c71d8e2046bb6f9012ac48d735e")
-_APP_PIN_HASH = bytes.fromhex("b3bcd73dc2fa994ab21c0af7f4353e6355fb260d1220ba45fb054176bb3a2f76")
+_APP_PIN_HASH = bytes.fromhex("aaf49102a320825f15b1dc26866c722203ccffec8e9a7d49d186ac9119a1e540")
 _APP_PIN_ITERATIONS = 200_000
 _SESSION_KEY_PATH = BASE / "data" / "session.key"
 _SESSION_KEY_PATH.parent.mkdir(parents=True, exist_ok=True)
