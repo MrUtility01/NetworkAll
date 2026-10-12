@@ -148,6 +148,27 @@ footer{color:#5f7188;text-align:center;margin-top:24px;font-size:.85rem}
       <div class="body"><p>در Bridge mode، تجهیزات کاربر معمولاً اتصال WAN مثل PPPoE، route و NAT را انجام می‌دهند. در Router mode، CPE می‌تواند DHCP، NAT، firewall و Wi-Fi را خودش مدیریت کند. قرار گرفتن یک روتر پشت روتر دیگر ممکن است Double NAT بسازد.</p><p>برای تشخیص، WAN IP، default route، DHCP server، bridge/VLAN، PPPoE و conntrack را بررسی کنید. تغییر حالت دستگاه ممکن است دسترسی مدیریت و سرویس را قطع کند؛ تنظیم فعلی و روش بازگشت را قبل از تغییر ثبت کنید.</p></div>
     </article>
 
+    <article>
+      <h2>۲۱. DNS Recursive Query؛ از Client تا Authoritative</h2>
+      <figure><img src="dns_lookup.svg" alt="مسیر پرس‌وجوی DNS از client به recursive resolver و سپس root، TLD و authoritative در صورت cache miss" loading="lazy"><figcaption>Cache hit ممکن است پرس‌وجو به root/TLD را حذف کند؛ TTL و پاسخ منفی هم اهمیت دارند.</figcaption></figure>
+      <div class="body"><p>Client معمولاً از recursive resolver پاسخ می‌خواهد. اگر پاسخ cache معتبر نداشته باشد، resolver referralهای root و TLD را دنبال می‌کند تا به authoritative server برسد. در تحلیل باید QNAME/QTYPE، resolver، RCODE، answer/authority و TTL ثبت شوند.</p><p>DNS موفق فقط resolution را ثابت می‌کند؛ TCP/TLS و خود برنامه را جدا بررسی کنید.</p></div>
+    </article>
+    <article>
+      <h2>۲۲. DHCP DORA؛ از Discover تا ACK</h2>
+      <figure><img src="dhcp_dora.svg" alt="چهار مرحلهٔ DHCPv4 شامل Discover، Offer، Request و ACK به همراه تنظیمات IP و نقش DHCP relay" loading="lazy"><figcaption>Offer به‌تنهایی lease نهایی نیست؛ پیام ACK و گزینه‌های دریافت‌شده را هم بررسی کنید.</figcaption></figure>
+      <div class="body"><p>DORA تخصیص اولیهٔ رایج DHCPv4 را نشان می‌دهد. در شبکهٔ چندVLAN، relay می‌تواند درخواست کلاینت را به DHCP server دوردست برساند. Lease renewal و rebinding رفتارهای دیگری‌اند و باید جدا آزمایش شوند.</p><p>برای عیب‌یابی، XID/client identifier، server identifier، scope، gateway/DNS options و مسیر رفت‌وبرگشت را به هم مرتبط کنید.</p></div>
+    </article>
+    <article>
+      <h2>۲۳. EVPN/VXLAN؛ Underlay در برابر Overlay</h2>
+      <figure><img src="evpn_vxlan_fabric.svg" alt="Fabric leaf-spine در underlay و دو VTEP در overlay که با VXLAN یک VNI را حمل می‌کنند، همراه control plane مبتنی بر BGP EVPN" loading="lazy"><figcaption>Underlay reachability بین VTEPها لازم است، اما به‌تنهایی remote MAC learning یا tenant connectivity را ثابت نمی‌کند.</figcaption></figure>
+      <div class="body"><p>Underlay مسیر IP بین VTEPها را فراهم می‌کند؛ VXLAN فریم tenant را encapsulate می‌کند و EVPN reachability را در control plane منتشر می‌کند. VNI و VLAN ID برابرِ معنایی ندارند و به mapping وابسته‌اند.</p><p>در رخداد، underlay RIB/FIB، EVPN RIB/route type، RT/VNI mapping، remote MAC/IP state، MTU و packet capture بیرونی/داخلی را جدا بررسی کنید.</p></div>
+    </article>
+    <article>
+      <h2>۲۴. SD-WAN + SASE؛ Path Selection تا Security Policy</h2>
+      <figure><img src="sdwan_sase_path.svg" alt="کلاینت شعبه، SD-WAN edge، underlayهای اینترنت/MPLS/5G، overlay tunnel، SASE POP، identity و application به همراه control plane جدا" loading="lazy"><figcaption>Controller online، tunnel up، login موفق و transaction موفق چهار وضعیت متفاوت‌اند.</figcaption></figure>
+      <div class="body"><p>SD-WAN می‌تواند مسیر را براساس SLA و نوع برنامه انتخاب کند. SASE ممکن است هویت/وضعیت دستگاه و سیاست‌های ZTNA، SWG یا FWaaS را در مسیر بررسی کند. سلامت لینک یا ورود موفق به‌تنهایی دسترسی مجاز به application را ثابت نمی‌کند.</p><p>برای پذیرش، application transaction، p95/p99 latency، loss/jitter، policy decision logs، failover و rollback را اندازه‌گیری کنید.</p></div>
+    </article>
+
   </section>
   <footer>NetworkAll · اینفوگرافیک‌های برداری آفلاین · قابل استفاده در ویندوز و اندروید · منابع و آزمایشگاه‌های تفصیلی در درس‌های مرتبط قرار می‌گیرند.</footer>
 </main>
