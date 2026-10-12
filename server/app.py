@@ -382,7 +382,7 @@ def sync_push():
     records = body.get("records") or body.get("items") or []
     if not isinstance(records, list) or len(records) > 1000:
         return jsonify({"error": "records must be a list with at most 1000 items"}), 400
-    accepted = kept = conflicts = unsupported = missing_targets = 0
+    accepted = kept = conflicts = unsupported = missing_targets = invalid = 0
     conflict_uids = []
     unsupported_uids = []
     missing_target_uids = []
@@ -421,6 +421,33 @@ def sync_push():
         except (TypeError, ValueError):
             kept += 1
             continue
+        # Reject malformed workspace items before reporting them as accepted.
+        # Without this validation, sync_apply could reject them later while the
+        # client saw only "kept" and advanced its sync cursor.
+        if entity in ("task", "note"):
+            title_value = item.get("title")
+            body_value = item.get("body", "")
+            tags_value = item.get("tags", "")
+            if body_value is None:
+                body_value = ""
+            if tags_value is None:
+                tags_value = ""
+            invalid_item = (
+                not isinstance(title_value, str)
+                or not title_value.strip()
+                or len(title_value.strip()) > 300
+                or not isinstance(body_value, str)
+                or len(body_value) > 2_000_000
+                or (
+                    entity == "note"
+                    and (not isinstance(tags_value, str) or len(tags_value) > 2_000)
+                )
+            )
+            if invalid_item:
+                invalid += 1
+                unsupported_uids.append(uid)
+                continue
+
         server = index.get((uid, entity))
         if not server and entity in ("lesson", "scenario"):
             # Curriculum sync may update existing rows only; creating a lesson
@@ -466,6 +493,8 @@ def sync_push():
         "unsupported_uids": unsupported_uids,
         "missing_targets": missing_targets,
         "missing_target_uids": missing_target_uids,
+        "invalid": invalid,
+        "invalid_uids": [uid for uid in unsupported_uids if uid not in unsupported_uids[:unsupported]], 
         "server_time": utc_now(),
     })
 
