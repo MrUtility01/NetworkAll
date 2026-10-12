@@ -31,7 +31,7 @@
 | حوزه | پوشش لازم از L0 تا L4 | وضعیت اولیه | منابع/اقدام |
 |---|---|---|---|
 | مبانی کامپیوتر و سخت‌افزار | CPU، RAM، cache، bus، ذخیره‌سازی، UEFI/BIOS، POST، firmware، درایور، عیب‌یابی قطعه و performance | in_progress — نیازمند inventory | فصل‌های پایه را با ماتریس قطعه/علائم/آزمون/نتیجه تطبیق بده |
-| مبانی شبکه و مدل‌های مرجع | OSI و TCP/IP، encapsulation، MTU، broadcast/collision domain، Ethernet، NIC، duplex، latency/jitter/loss | in_progress — نیازمند inventory | نمودار و Lab باید با Wireshark و ابزار سیستم‌عامل قابل تطبیق باشد |
+| مبانی شبکه و مدل‌های مرجع | OSI و TCP/IP، encapsulation، MTU، broadcast/collision domain، Ethernet، NIC، duplex، latency/jitter/loss | in_progress — Pack مسیر Packet Journey سطح L0-L4 اضافه شد؛ Lab هنوز اجرا نشده | `tools/packs/network_foundations/packet_path_deep_pack.json`؛ برای ادعای covered باید اجرا، بازبینی فنی و report نتیجه ثبت شود |
 | IPv4/IPv6 و subnetting | binary math، CIDR، VLSM، route aggregation، ARP/NDP، SLAAC/DHCPv6، ICMP، PMTUD و آدرس‌های ویژه | in_progress — نیازمند inventory | برای هر مهارت مثال محاسباتی با answer key و آزمون مرزی داشته باشد |
 | Switching و VLAN | MAC/CAM، unknown unicast flooding، access/trunk، 802.1Q، native VLAN، STP/RSTP, LACP/EtherChannel، port security، L2 loop | in_progress | Pack سوئیچینگ و فرمان‌ها به تفکیک سازنده، نسخه و خروجی ممیزی شوند |
 | Routing و پروتکل‌ها | static/default route، longest-prefix match، administrative distance، OSPF، BGP، redistribution، ECMP، convergence و route leak | in_progress | Packهای Routing و OSPF/BGP موجودند اما تا اجرای لابراتوار verified نیستند |
