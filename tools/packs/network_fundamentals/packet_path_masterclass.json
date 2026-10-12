@@ -817,6 +817,313 @@
           "ECMP"
         ]
       }
+    },
+    {
+      "uid": "packet-path-l4",
+      "chapter_order": 1,
+      "subchapter_order": 5,
+      "lesson_order": 1,
+      "level": "L4",
+      "depth_level": "L4",
+      "record_kind": "instructional_lesson",
+      "title_fa": "[L4] Capstone فوق‌متخصص: تحلیل RCA مسیر Wi‑Fi تا WAN",
+      "title_en": "Enterprise Packet-Path RCA Capstone",
+      "summary": "سناریوی شبکه سازمانی چند-VLAN برای تحلیل route، firewall/NAT، PMTUD، عدم تقارن، capture planning و change control.",
+      "prerequisites": [
+        "درس‌های L0–L3",
+        "آشنایی با VLAN، routing، firewall state، capture و change management"
+      ],
+      "learning_objectives": [
+        "ساخت فرضیه‌های قابل‌رد/تأیید",
+        "برنامه‌ریزی capture با محدودیت‌های مشخص",
+        "جداسازی مسیر رفت/برگشت و control/data plane",
+        "تعریف change/rollback و regression",
+        "نوشتن RCA بر پایه شواهد زمان‌دار"
+      ],
+      "full_content": "# Capstone L4: تحليل عطل متقطع من Wi‑Fi إلى WAN في شبكة مؤسسة\n\n## ملخص الحالة والقيود\nمؤسسة لديها SSID للعملاء على VLAN 30، حواسيب مكتبية على VLAN 20، وخوادم تطبيق على VLAN 120. توجد بوابة افتراضية عالية التوافر، وجدار ناري stateful، وترجمة NAT إلى WAN ومزود خدمة خارجي. بعض المستخدمين يشتكون أن صفحات صغيرة تعمل، بينما upload كبير أو جلسات HTTPS طويلة تتوقف بشكل متقطع. المشكلة زادت بعد تغيير uplink ولا تظهر على كل VLAN. المطلوب تحديد السبب بدليل، لا تعطيل الأمان أو تغيير كل الشبكة.\n\nالمعمارية الافتراضية للتدريب قد تختلف عن المؤسسة الفعلية. لا تفترض أن Access Point يمرر الإطارات مباشرة إلى سويتش التوزيع؛ بعض الشبكات تستخدم controller tunnel. لا تفترض أن firewall هو default gateway في كل تصميم، أو أن NAT يحدث عند أول router. قبل التحليل ارسم المسار الفيزيائي والمنطقي، وحدد أين ينتهي VLAN، وأي جهاز يقوم بالـ routing، وأين توجد stateful inspection وNAT وWAN handoff. استخدم العناوين التوثيقية 192.168.x.x و198.51.100.0/24 في المختبر، ولا تضع بيانات عملاء حقيقية في الحزمة التعليمية.\n\n## أهداف التعلم\n- بناء فرضيات قابلة للدحض تربط L2/L3/transport/application.\n- فصل اتجاه forward عن return path، وcontrol plane عن data plane.\n- اختيار نقاط capture وmetrics بحيث تكتشف آخر موضع موثوق للحزمة.\n- تفسير MTU/PMTUD، VLAN، DHCP/DNS، NAT stateful وasymmetry.\n- وضع change plan وrollback ومجموعة regression tests لكل نطاق متأثر.\n- إعداد RCA يستطيع مهندس آخر مراجعته دون الاعتماد على ذاكرة المنفذ.\n\n## المرحلة 0: منع إفساد الدليل\nتأكد من نطاق التفويض، نافذة العمل، جهة الاتصال، ومتى يجب الإيقاف. لا تعطّل firewall أو تغيّر default routes على الإنتاج كاختبار عشوائي. سجّل وقت الأجهزة بالمنطقة الزمنية، الإصدارات، topology المنطقية، أسماء VLAN/VRF والـ uplink، حالة HA، حجم المشكلة وعدد المتأثرين. احفظ config read-only، route/FIB state، counters، session/NAT samples بعد تنقيح المعلومات الحساسة. أنشئ hash للـ captures وحافظ على سلسلة وصول واضحة.\n\nحدد baseline من مستخدم متأثر وآخر غير متأثر في نفس النافذة الزمنية. لا تعتمد على تجربة واحدة؛ سجل خمس معاملات أو العدد المتناسب مع معدل المشكلة ووقت العطل. حدد إذا كان الفشل يحدث مع upload أو download أو الاتجاهين، وهل يرتبط roaming أو AP معين أو WAN failover. التغيير الذي حصل قبل المشكلة قرينة لترتيب الفرضيات وليس إثباتاً للسبب.\n\n## فرضيات أولية قابلة للاختبار\n**H1 — MTU/PMTUD:** أحجام صغيرة تمر، أحجام أكبر تتوقف، وICMP Packet Too Big/Fragmentation Needed لا تصل أو يتعامل معها مسار ما بشكل غير صحيح. التغيير في uplink قد أضاف overhead مثل PPPoE أو tunnel.\n**H2 — عدم تماثل المسار:** traffic يخرج من gateway HA أو WAN، لكن الرد يعود عبر مسار مختلف لا يملك state/session المتوقعة أو يمر بجدار آخر.\n**H3 — VLAN/trunk mismatch:** Wi‑Fi clients فقط أو مجموعة من APs قد تُربط إلى VLAN غير متوقعة على uplink؛ DHCP قد يمنح IP صالحاً لكن gateway/ACL مختلفة.\n**H4 — QoS/Queue drop:** counters وqueue drops ترتفع تحت load، فتبدو المشكلة متقطعة أو تؤثر في الحجم والاتجاه.\n**H5 — DNS أو التطبيق:** DNS أو TLS/server يسبب delay/failure مستقلاً عن نقل IP؛ لا تُستبعد الفرضية قبل تسجيل DNS/TCP/TLS evidence.\n**H6 — NAT/session/policy:** mapping أو timeout أو policy hit غير صحيح على مسار معين.\n**H7 — Capture blind spot:** الفجوة المرئية ناتجة جزئياً من SPAN oversubscription أو capture filter أو offload لا من الشبكة ذاتها.\n\nلكل فرضية اكتب ثلاثة عناصر: الملاحظة المتوقع ظهورها إذا كانت صحيحة، والدليل الذي يضعفها، والاختبار الأقل خطورة الذي يفصل بينها وبين البدائل. لا ترتب الفرضيات كحقائق. إذا كانت اثنتان تفسران الأعراض نفسها، استخدم نقطة رصد إضافية لا تغييرين متزامنين.\n\n## المرحلة 1: Establish baseline\nعلى عميل متأثر وغير متأثر، اجمع IP/prefix، gateway، DNS resolver، BSSID/RSSI، VLAN mapping كما يظهر في controller، route table ووقت الاختبار. نفذ معاملات قابلة للتكرار: lookup اسم، اتصال إلى endpoint مصرح به، نقل payload صغير ومتدرج، ثم تدفق طويل. سجل RTT median وp95، error rate، retransmission ومعدل النقل بدلاً من وصف «بطيء». في الخوادم، سجل access/application log ووقت transaction ID عند توفره.\n\nفي Wi‑Fi، اربط المستخدم بـ BSSID/Controller/AP، auth events، roaming history وRF channel/noise. افحص switch access/trunk، VLAN allowed list، STP state، errors/discards وMAC learning. الحصول على عنوان من DHCP لا يثبت VLAN الصحيحة، ولا يثبت أن ACL أو route إلى الخادم متاح. في Windows سجّل route print وipconfig /all، وفي Linux سجّل ip -br address وip route get وip neigh، مع timestamps دون نشر بيانات شخصية.\n\n## المرحلة 2: Map the packet path\nحدد بالضبط:\n1. Client stack/WLAN.\n2. Radio/AP and controller tunnel if applicable.\n3. AP uplink and access/distribution switch.\n4. VLAN gateway/HA pair.\n5. Firewall policy, NAT session and selected egress.\n6. ISP handoff/ONT/modem and provider.\n7. Destination load balancer/server.\n8. Return path through the independent route and stateful devices.\n\nفي كل حد اختر capture أو counter مناسباً. على العميل يمكن أن تؤثر offload capabilities؛ على switch يمكن أن تؤثر SPAN direction/oversubscription؛ على firewall قد يكون hardware acceleration يجعل capture على مستوى مختلف من forwarding path. سجّل هذه القيود. لا تفترض أن غياب الحزمة من capture يعني أنها لم تمر ما لم تُعرف قدرة نقطة الالتقاط.\n\nأنشئ جدولاً يصف لكل نقطة: العنوان/interface، جهة الالتقاط TX/RX، packet tuple، الوقت، route/policy state وعدادات drops/error. استخدم tuple يشمل protocol وsource/destination IP/port عندما يكون ذلك مناسباً، لكن انتبه إلى أن NAT أو load balancer قد يغيره. عند كل translation، وثق الربط بين tuple قبل وبعد. لا تعتمد على IP وحده إذا كان الخادم متعدد الواجهات أو إذا تكررت العناوين بين VRF.\n\n## المرحلة 3: تفسير مسار L2/L3\nعلى العميل، إذا كانت الوجهة غير محلية، يجب أن يصبح next hop هو gateway، لا MAC الخادم العام. استخدم route lookup محلياً، ARP/ND cache ثم MAC/VLAN evidence على switch. على gateway، افحص VRF، route الأكثر تحديداً، next-hop recursion، adjacency وinterface state. وجود route في RIB لا يثبت وحده أن FIB/adjacency تعمل أو أن ACL تسمح بالمرور.\n\nعند المرور عبر L3، يجب أن يتغير header الخاص بالوصلة إلى MAC الجار التالي وأن ينقص TTL/Hop Limit. عنوان IP قد يتغير بفعل NAT، tunnel أو proxy؛ إذا تغير، طابق ترجمة NAT/session أو encapsulation بعينها. قارن counters pre/post policy، queue discards، interface drops/errors وCPU dataplane/control-plane. الاختلاف في counters يجب أن يرتبط زمنياً بالاختبار. إذا كانت counters تتزايد طوال اليوم وليس في نافذة العطل، فقد لا تفسر المشكلة وحدها.\n\nافحص HA state وactive gateway في نفس لحظة التجربة. تغيير الدور قد يحوّل الحركة إلى جهاز لا يحمل session state أو له uplink/policy مختلف. لا تمسح sessions كخطوة تشخيص أولى؛ ذلك قد يخلق انقطاعاً إضافياً ويخفي السلوك الأصلي. اختبر failover في مختبر مصمم، وفصل بين سلوك الجلسات الجديدة والجلسات القائمة.\n\n## المرحلة 4: اختبر MTU دون تخمين\nابدأ بالـ effective MTU المتوقع لكل link وتكاليف encapsulation. اختبر payload متدرجاً في بيئة مصرح بها، مع تسجيل DF وICMP behavior في IPv4 أو Packet Too Big في IPv6. إذا كانت الأحجام الصغيرة تنجح والكبيرة تتوقف، قارن packet length على LAN وWAN والرسائل ICMP. افحص ما إذا كانت رسالة MTU تدخل وتخرج من كل firewall/zone. لا تعتبر ping واحداً بمقاس واحد دليلاً كافياً، ولا تفرض jumbo frames أو تقلل MTU لجميع VLAN كحل عام.\n\nإذا تم استخدام TCP MSS clamping، وثّق موضع تطبيقه، اتجاهه والقيمة الناتجة، ثم تحقق من UDP والتطبيقات غير TCP كي لا يخفي الحل عرضاً آخر. إذا استدعت الشبكة أنفاقاً أو PPPoE، احسب overhead بدلاً من وضع قيمة عشوائية. بعد الإصلاح، كرر الاختبار من عملاء على كل VLAN ذات صلة. افحص IPv4 وIPv6 منفصلين إذا كان كلاهما نشطاً؛ النجاح على IPv4 لا يثبت سلامة ICMPv6 أو PMTUD في IPv6.\n\n## المرحلة 5: اختبر asymmetry وNAT\nسجل tuple قبل NAT وبعده: source/destination IP، protocol/ports، translated tuple، rule ID، session age وegress interface. تحقق من gateway/HA role وقت الاتصال، route للعودة، ECMP/PBR، ISP source validation وstateful firewall. إذا خرج SYN عبر WAN-A لكن الرد عاد عبر WAN-B دون state متوافق، فقد يُسقطه جدار Stateful حتى مع صحة routing. لا تعالج ذلك بتغيير NAT rules عشوائياً قبل إثبات الاتجاهين.\n\nعند failover، اختبر اتصالاً جديداً واتصالاً قائماً منفصلين: بعض الجلسات القائمة لن تبقى إذا تغير public address أو state sync غير متاح؛ هذا اختلاف عن عدم إنشاء الجلسات الجديدة. وثّق expected behavior ووقت convergence بدلاً من وصف كل reset كفشل غير مقبول. تأكد أيضاً من أن return route إلى public/NAT address لا يرجع إلى جهاز أو VRF غير متوقع.\n\n## المرحلة 6: تحقق من DHCP/DNS وVLAN\nإذا كانت المشكلة محصورة في SSID أو مواقع بعينها، قارن VLAN mapping وallowed VLAN على كل trunk، DHCP relay helper، scope exhaustion، lease options، gateway وresolver. افحص DNS response code وTTL وsplit-horizon/forwarder. إذا كان الاتصال بالـ IP يعمل واسم النطاق لا يعمل، ركز على DNS؛ إذا كان TCP SYN لا يغادر client فلا يبدأ التشخيص من DNS upstream.\n\nلا تخلط بين DNS TTL، IP TTL وDHCP lease: هي مؤقتات مختلفة لطبقات ووظائف مختلفة. لا تستنتج أن اسم النطاق خاطئ بسبب traceroute؛ ولا تستنتج أن WAN سليم بسبب نجاح ping إلى gateway. عند الشك في DNS، قارن الاستجابة من resolver المعتاد ومن authoritative/recursive بدقة وبما يتفق مع سياسة المؤسسة، وسجل cache ووقت الاستجابة. لا تغيّر resolver للمستخدمين كلهم قبل إثبات أن المشكلة في resolver وليس في routing إلى ذلك resolver.\n\n## المرحلة 7: خطة تغيير قابلة للتراجع\nلكل إصلاح:\n- سجل baseline والconfig المتأثرة.\n- اكتب فرضية السبب والأدلة التي تؤيدها.\n- حدد المكوّن والنطاق والنافذة.\n- عرف pass/fail: معاملات التطبيق، الأحجام الصغيرة والكبيرة، كل اتجاه، VLANs مجاورة، loss/RTT، counters، وstate/NAT حسب الحاجة.\n- جهّز rollback command/config وشرط التوقف قبل التنفيذ.\n- غيّر متغيراً واحداً حيثما أمكن؛ لا تجمع تعديل MTU وNAT وACL وrouting في change واحد غير قابل للتمييز.\n- تحقق بعد التغيير، احتفظ بالمخرجات واحذف الأسرار من التقرير.\n- راجع أثر التغيير خلال نافذة مناسبة وحدث runbook.\n\nالتغيير الذي يبدو ناجحاً لعشر ثوانٍ ليس بالضرورة ناجحاً. أعد الحالة مع العدد نفسه من المعاملات التي فشلت، انتظر المدة التي كانت المشكلة تظهر خلالها، وراقب مؤشرات side effect. إذا كان الإصلاح يغيّر default route أو security policy، تحقق من الإدارة البعيدة وخطة استعادة الوصول قبل الالتزام به.\n\n## حالات اختبار إلزامية للمختبر\nA. HTTPS request صغير يكتمل، مع PCAP في العميل والبوابة.\nB. نقل payload متدرج لاكتشاف MTU/PMTUD break.\nC. Flow من Wi‑Fi VLAN ومن wired VLAN إلى نفس الوجهة.\nD. اختبار DNS cache hit/miss ومقارنة resolver المعني.\nE. فتح جلسة جديدة ومقارنة اتصال قائم خلال failover مصرح به.\nF. اختبار الاتجاه العكسي أو التطبيق الذي يبادر من جهة الخادم.\nG. اختبار policy deny في مختبر مع counters لتأكيد أن سبب الرفض مرئي.\nH. اختبار rollback وإثبات العودة إلى baseline.\nيجب أن تتضمن كل حالة topology، النسخة، خطوات التنفيذ، output/capture المتوقع، teardown ومعيار نجاح واضح. الاختبار الذي لا يملك نتيجة متوقعة لا يصلح كمعيار قبول.\n\n## الأداء والسعة في RCA\nعندما يكون العرض متقطعاً تحت الحمل، أضف capacity evidence ولا تفسر كل delay على أنه خطأ route. قارن link utilization مع line rate، queue occupancy/drops، CPU وbuffer metrics المتاحة، TCP retransmission وRTT percentile في النافذة الزمنية نفسها. المتوسط قد يخفي spikes قصيرة؛ لذلك p95 أو p99 مع عدد العينات مفيد، لكن percentile على عينات قليلة لا يعطي ثقة عالية. سجّل sampling interval وطريقة التجميع حتى تكون المقارنة قبل وبعد عادلة.\n\nافصل throughput عن goodput: throughput يقيس معدل البتات المنقولة على الوصلة، بينما goodput يقارب بيانات التطبيق المفيدة بعد استبعاد بعض overhead وإعادة الإرسال. اتصال Wi‑Fi قد يتغير معدل PHY مع RSSI/retries؛ أما queue drop على WAN قد يظهر كفقد عام أو retransmission. انظر إلى الاتجاه الذي يتأثر، ونوع الحركة، ووقت الذروة قبل تغيير QoS. عند الحاجة، نفذ اختباراً مضبوطاً في lab بدلاً من مولّد حمل على شبكة عمل.\n\nلا تضبط shaping/policing بقيم تقديرية من دون baseline. الـ shaper قد يخزن الحركة ويزيد latency؛ policer قد يسقط الحزم بعد تجاوز المعدل. إذا تغيّرت هذه القواعد، تحقق من classes والمطابقة وcounters وDSCP trust end-to-end. سجل الفرق بين congestion الفعلي وبين physical errors مثل CRC أو optical light level المنخفض؛ فالإصلاحان مختلفان.\n\n## RCA النهائي\nاكتب timeline مع timestamps موحدة، نطاق التأثير، النتائج الفعلية، آخر حد ثبت عنده مرور الحزمة وأول حد فشل فيه الإثبات، route/ACL/queue/MTU/NAT state ذات صلة، والفرضيات البديلة التي اختُبرت. اذكر ما لم تستطع الأدلة تحديده. السبب الجذري ليس «المودم» أو «الشبكة»؛ يجب صياغته كآلية قابلة للتحقق، مثل «رسالة ICMP اللازمة لاكتشاف MTU تم إسقاطها عند policy X، مما سبب توقف تدفقات بحجم Y» فقط إذا كانت الأدلة تثبت ذلك.\n\n## مخاطر أمنية\nPCAP وsession tables قد تحتوي بيانات شخصية أو token/session metadata؛ اجمع الضروري، احمِ التخزين، استخدم synthetic credentials في التدريب، وسجل authorization. لا تعرض مفاتيح VPN أو credentials في محتوى تعليمي. لا تعطل firewall في الإنتاج لإثبات فرضية. قبل مشاركة evidence، افحص DNS names، IPهای عمومی، headers وpayload، وراجع احتمال وجود token یا شناسهٔ مشتری.\n\n## قاموس خبراء\nControl plane يحسب/يتبادل المسارات والسياسات؛ Data plane يمرر الحزم الفعلية. RIB/FIB ليسا دائماً متطابقين. Asymmetric routing يعني مساري forward/return مختلفين. Stateful inspection يعتمد على حالة التدفق. PMTUD يكتشف MTU الممكن في المسار. Queue discard يختلف عن physical interface error. SPAN mirror يختلف عن TAP أو packet capture داخل endpoint. این تفاوت‌ها به انتخاب اقدام اصلاحی درست کمک می‌کنند و مانع نسبت‌دادن هر symptom به یک دستگاه خاص می‌شوند.\n\n## معیار پایان پرونده\nلا تُغلق المشكلة حتى يتكرر الإصلاح على عميل متأثر وعميل مقارنة، وتنجح المعاملات الصغيرة والكبيرة وفي الاتجاهات المعنية، ولا تزيد errors/discards أو تتأثر VLAN مجاورة، ويُنفذ rollback test في المختبر، وتُحفظ أدلة منقّحة ويُحدّث runbook. ينبغي أن يستطيع مهندس آخر تنفيذ إجراءات التحقق وإعادة إنتاج النتيجة دون الاعتماد على محادثة شفوية.",
+      "commands": "Route/VRF lookup; ACL/NAT state and counters; interface/queue drops; multi-point PCAP; baseline and rollback evidence",
+      "examples": "HTTPS کوچک موفق و transfer بزرگ متوقف؛ فرضیه MTU فقط با capture و شواهد ICMP/counters معتبر می‌شود، نه با حدس یا ping منفرد.",
+      "notes": "L4 capstone؛ اجرا فقط در lab یا محدوده مصرح مجاز است. نمونه PCAP واقعی یا credential وارد بسته آموزشی نشود.",
+      "official_sources": [
+        {
+          "title": "Wireshark User's Guide",
+          "url": "https://www.wireshark.org/docs/wsug_html_chunked/"
+        },
+        {
+          "title": "RFC 1191 — Path MTU Discovery",
+          "url": "https://www.rfc-editor.org/rfc/rfc1191"
+        },
+        {
+          "title": "RFC 8200 — IPv6",
+          "url": "https://www.rfc-editor.org/rfc/rfc8200"
+        },
+        {
+          "title": "RFC 826 — ARP",
+          "url": "https://www.rfc-editor.org/rfc/rfc826"
+        }
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "depth_level": "L4",
+        "record_kind": "instructional_lesson",
+        "assessment": {
+          "questions": [
+            {
+              "id": "packet-path-l4-q01",
+              "prompt": "کدام مدرک برای نسبت‌دادن محل Drop قوی‌تر است؟",
+              "options": [
+                "فقط یک traceroute",
+                "capture/counter هم‌زمان در مرزهای متوالی به‌همراه route وpolicy state",
+                "فقط screenshot مرورگر",
+                "فقط DNS TTL"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q02",
+              "prompt": "در تغییر route/NAT قبل از اجرا چه چیزهایی لازم است؟",
+              "options": [
+                "صرفاً فرمان جدید",
+                "baseline، دامنه اثر، معیار پذیرش، rollback trigger و روش بازگشت آزموده‌شده",
+                "فقط یک ping",
+                "حذف logهای قدیمی"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q03",
+              "prompt": "برای اثبات NAT چه چیزی را باید مقایسه کرد؟",
+              "options": [
+                "آدرس private کلاینت به‌تنهایی",
+                "tuple قبل/بعد، session state، rule ID و capture دو سمت ترجمه",
+                "DNS TTL به‌تنهایی",
+                "MAC table access"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q04",
+              "prompt": "ریسک عدم تقارن در firewall stateful چیست؟",
+              "options": [
+                "هیچ ریسکی ندارد",
+                "پاسخ ممکن است از مسیر/دستگاه فاقد state متناظر برگردد",
+                "تمام VLANها merge می‌شوند",
+                "ARP غیرفعال می‌شود"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q05",
+              "prompt": "چه چیزی اصلاح PMTUD را بهتر اعتبارسنجی می‌کند؟",
+              "options": [
+                "Ping کوچک به gateway",
+                "تست payload متدرج، capture ICMP/DF/PMTUD و انتقال واقعی برنامه",
+                "فقط DNS lookup",
+                "چراغ WAN"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q06",
+              "prompt": "برای بررسی Wi-Fi VLAN اشتباه کدام شواهد مناسب‌تر است؟",
+              "options": [
+                "فقط SSID قابل مشاهده",
+                "mapping در AP/controller، trunk VLAN، MAC table، DHCP lease و gateway",
+                "فقط CPU DNS",
+                "فقط A record"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q07",
+              "prompt": "برای incident loss چه KPIها کامل‌ترند؟",
+              "options": [
+                "فقط میانگین ping",
+                "loss/retransmission/RTT distribution، interface drops/errors، queue drops و سرویس هدف در زمان واحد",
+                "فقط CPU سرور",
+                "فقط تعداد کاربران"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q08",
+              "prompt": "در هر Router hop کدام تغییر رایج است؟",
+              "options": [
+                "همیشه IP مبدأ و مقصد",
+                "L2 header جدید و TTL/Hop Limit کمتر؛ NAT/tunnel ممکن است IP/port را هم تغییر دهند",
+                "DNS رکورد را عوض می‌کند",
+                "payload اجباری رمزگشایی می‌شود"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q09",
+              "prompt": "چرا route lookup به‌تنهایی عبور packet را ثابت نمی‌کند؟",
+              "options": [
+                "چون فقط انتخاب مسیر را نشان می‌دهد و ACL، adjacency، MTU، queue و forwarding failures هم اثر دارند",
+                "چون route بی‌فایده است",
+                "چون switch فقط DNS می‌خواند",
+                "چون TTL ثابت می‌ماند"
+              ],
+              "correct_index": 0
+            },
+            {
+              "id": "packet-path-l4-q10",
+              "prompt": "آزمایش L4 امن چگونه اجرا می‌شود؟",
+              "options": [
+                "تغییر هم‌زمان تمام routeها",
+                "محیط مجاز/ایزوله، baseline، محدوده محدود، معیار توقف، rollback و شواهد ثبت‌شده",
+                "غیرفعال کردن همیشگی firewall",
+                "ثبت credential در PCAP"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q11",
+              "prompt": "چرا باید محدودیت capture روی platform را ثبت کرد؟",
+              "options": [
+                "همه vendorها capture یکسان دارند",
+                "interface، direction، VRF، offload و hardware path بر آنچه دیده می‌شود اثر دارند",
+                "هر capture همیشه روی wire است",
+                "SPAN هرگز drop ندارد"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q12",
+              "prompt": "برای رخداد متناوب چه عواملی اهمیت دارند؟",
+              "options": [
+                "فقط snapshot سالم",
+                "failover، route convergence، lease/ARP aging، queue peak، roaming و ساعت‌ها",
+                "فقط SSID",
+                "فقط سازنده MAC"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q13",
+              "prompt": "RCA حرفه‌ای چه چیزی باید داشته باشد؟",
+              "options": [
+                "فهرست فرمان‌ها بدون تفسیر",
+                "timeline، impact، شواهد، فرضیه‌های رد/تأیید، علت، اصلاح و regression checks",
+                "حدس مهندس",
+                "فقط ping"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q14",
+              "prompt": "چگونه از افشای اطلاعات در PCAP آموزشی جلوگیری می‌شود؟",
+              "options": [
+                "نگهداری raw capture با رمزها",
+                "sanitization، آدرس/credential ساختگی، redaction و کنترل دسترسی",
+                "قرار دادن فایل در پوشه عمومی",
+                "ثبت secret در مثال"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l4-q15",
+              "prompt": "چه مجموعه‌ای برای آزمون نهایی تغییر مسیر مناسب‌تر است؟",
+              "options": [
+                "فقط route table",
+                "forward/return path، application transaction، DNS، MTU، failover، logs/counters و rollback",
+                "فقط speed test",
+                "فقط ARP"
+              ],
+              "correct_index": 1
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "packet-path-l4-q01",
+              "correct_index": 1,
+              "explanation": "شواهد زمان‌دار قبل و بعد از تصمیم forwarding محل محتمل حذف را محدود می‌کند."
+            },
+            {
+              "id": "packet-path-l4-q02",
+              "correct_index": 1,
+              "explanation": "تغییر کنترل‌شده به معیار موفقیت و نقطه توقف نیاز دارد."
+            },
+            {
+              "id": "packet-path-l4-q03",
+              "correct_index": 1,
+              "explanation": "فقط state و تغییر tuple محل واقعی ترجمه را نشان می‌دهد."
+            },
+            {
+              "id": "packet-path-l4-q04",
+              "correct_index": 1,
+              "explanation": "جریان برگشت باید با مسیر و stateful inspection هماهنگ باشد."
+            },
+            {
+              "id": "packet-path-l4-q05",
+              "correct_index": 1,
+              "explanation": "تست باید بسته‌های اندازه‌های مختلف و پیام‌های کنترلی را پوشش دهد."
+            },
+            {
+              "id": "packet-path-l4-q06",
+              "correct_index": 1,
+              "explanation": "Association موفق mapping صحیح VLAN یا gateway را تضمین نمی‌کند."
+            },
+            {
+              "id": "packet-path-l4-q07",
+              "correct_index": 1,
+              "explanation": "شواهد چندلایه congestion و physical error را از endpoint symptom جدا می‌کند."
+            },
+            {
+              "id": "packet-path-l4-q08",
+              "correct_index": 1,
+              "explanation": "تغییرات عادی hop را از ترجمه/encapsulation باید تفکیک کرد."
+            },
+            {
+              "id": "packet-path-l4-q09",
+              "correct_index": 0,
+              "explanation": "وجود مسیر control-plane تضمین data-plane delivery نیست."
+            },
+            {
+              "id": "packet-path-l4-q10",
+              "correct_index": 1,
+              "explanation": "تمرین پیشرفته نباید به اختلال سرویس یا افشای اطلاعات منجر شود."
+            },
+            {
+              "id": "packet-path-l4-q11",
+              "correct_index": 1,
+              "explanation": "روش مشاهده به اندازهٔ محتوای capture مهم است."
+            },
+            {
+              "id": "packet-path-l4-q12",
+              "correct_index": 1,
+              "explanation": "عوامل وابسته به زمان می‌توانند مشکل را فقط در پنجره‌های خاص ایجاد کنند."
+            },
+            {
+              "id": "packet-path-l4-q13",
+              "correct_index": 1,
+              "explanation": "RCA قابل بازبینی باید رابطه علت و شاهد را نشان دهد."
+            },
+            {
+              "id": "packet-path-l4-q14",
+              "correct_index": 1,
+              "explanation": "PCAP ممکن است session token، دادهٔ شخصی یا محتوای غیررمزشده داشته باشد."
+            },
+            {
+              "id": "packet-path-l4-q15",
+              "correct_index": 1,
+              "explanation": "معیار قبولی باید رفتار برنامه و مسیرهای عادی و failure را بررسی کند."
+            }
+          ]
+        },
+        "glossary": [
+          "Control Plane",
+          "Data Plane",
+          "RIB",
+          "FIB",
+          "Asymmetric Routing",
+          "Stateful Inspection",
+          "PMTUD",
+          "ECMP",
+          "RCA"
+        ]
+      }
     }
   ]
 }
