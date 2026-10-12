@@ -127,6 +127,33 @@ class ContentAuditMetadataTests(unittest.TestCase):
         self.assertNotIn("missing_depth_level", command["checks"])
 
 
+class PacketPathMasterclassTests(unittest.TestCase):
+    def test_progressive_l0_to_l4_pack_has_level_depth_and_separate_answer_keys(self):
+        path = ROOT / "tools/packs/network_fundamentals/packet_path_masterclass.json"
+        pack = json.loads(path.read_text(encoding="utf-8"))
+        lessons = pack.get("lessons", [])
+        self.assertEqual({item.get("depth_level") for item in lessons}, {"L0", "L1", "L2", "L3", "L4"})
+        floors = {"L0": 600, "L1": 800, "L2": 1200, "L3": 1600, "L4": 2200}
+        question_floors = {"L0": 5, "L1": 8, "L2": 10, "L3": 12, "L4": 15}
+        uids = [item.get("uid") for item in lessons]
+        self.assertEqual(len(uids), len(set(uids)), "lesson UIDs must be unique")
+        for item in lessons:
+            with self.subTest(uid=item["uid"]):
+                level = item["depth_level"]
+                word_count = len(re.findall(r"(?u)\\b[\\w]+\\b", item.get("full_content", "")))
+                self.assertGreaterEqual(word_count, floors[level])
+                assessment = item.get("meta", {}).get("assessment", {})
+                questions = assessment.get("questions", [])
+                answer_key = assessment.get("answer_key", [])
+                self.assertGreaterEqual(len(questions), question_floors[level])
+                question_ids = {q.get("id") for q in questions}
+                answer_ids = {a.get("id") for a in answer_key}
+                self.assertEqual(question_ids, answer_ids)
+                self.assertTrue(all(a.get("explanation") for a in answer_key))
+                self.assertTrue(item.get("official_sources"))
+                self.assertEqual(item.get("source_status"), "review_required")
+
+
 class InfographicRouteTests(unittest.TestCase):
     def test_shared_infographic_gallery_and_packet_diagram_are_served(self):
         client = server_app.app.test_client()
