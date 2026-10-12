@@ -718,6 +718,45 @@ class SyncApiContractTests(unittest.TestCase):
             finally:
                 db.conn.close()
 
+    def test_task_reminder_time_round_trips_but_delivery_marker_stays_device_local(self):
+        with tempfile.TemporaryDirectory() as td:
+            db = WebDB(Path(td) / "sync-reminder.sqlite")
+            stamp = "2026-10-12T04:00:00Z"
+            payload = {
+                "records": [
+                    {"uid": "task-reminder-1", "entity": "task", "title": "Submit report",
+                     "body": "Verify exported report", "done": False, "priority": 2,
+                     "due_at": "2026-10-13T04:30", "remind_at": "2026-10-13T04:30",
+                     "last_updated": stamp, "device_id": "android-test"},
+                    {"uid": "task-reminder-invalid", "entity": "task", "title": "Invalid reminder",
+                     "body": "", "done": False, "priority": 2, "due_at": "2026-10-13T04:30",
+                     "remind_at": "2026-99-99T44:88", "last_updated": stamp,
+                     "device_id": "android-test"},
+                ]
+            }
+            try:
+                with (
+                    patch.object(server_app, "db", return_value=db),
+                    patch.object(server_app, "require_token", return_value=None),
+                    patch.object(workspace_routes, "_db_path", return_value=db.path),
+                ):
+                    client = server_app.app.test_client()
+                    pushed = client.post("/api/sync/push", json=payload)
+                    self.assertEqual(pushed.status_code, 200)
+                    result = pushed.get_json()
+                    self.assertEqual(result["accepted"], 1)
+                    self.assertEqual(result["invalid"], 1)
+                    pulled = client.post(
+                        "/api/sync/pull", json={"uids": ["task-reminder-1", "task-reminder-invalid"]}
+                    ).get_json()
+                    records = {row["uid"]: row for row in pulled["records"]}
+                    self.assertEqual(records["task-reminder-1"]["remind_at"], "2026-10-13T04:30")
+                    self.assertNotIn("reminded_at", records["task-reminder-1"])
+                    self.assertNotIn("task-reminder-invalid", records)
+            finally:
+                db.conn.close()
+
+
     def test_sync_push_does_not_claim_success_when_storage_rejects_existing_lesson(self):
         with tempfile.TemporaryDirectory() as td:
             db = WebDB(Path(td) / "sync-reject.sqlite")
