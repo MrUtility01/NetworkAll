@@ -447,6 +447,89 @@ def _objectives_text(value):
     return str(value or "").strip()
 
 
+
+def _assessment_pairs(assessment):
+    if not isinstance(assessment, dict):
+        return []
+    questions = assessment.get("questions")
+    answers = assessment.get("answer_key")
+    if not isinstance(questions, list) or not isinstance(answers, list):
+        return []
+    by_id = {
+        str(answer.get("id") or answer.get("question_id") or ""): answer
+        for answer in answers if isinstance(answer, dict)
+    }
+    pairs = []
+    for index, raw in enumerate(questions):
+        if not isinstance(raw, dict):
+            continue
+        question = dict(raw)
+        qid = str(question.get("id") or "")
+        answer = by_id.get(qid)
+        if answer is None or not isinstance(question.get("options"), list) or len(question["options"]) < 2:
+            continue
+        correct = answer.get("correct_index", question.get("correct_index"))
+        try:
+            correct = int(correct)
+        except (TypeError, ValueError):
+            continue
+        if not 0 <= correct < len(question["options"]):
+            continue
+        pairs.append((question, dict(answer), correct))
+    return pairs
+
+
+def _merge_assessments(existing, incoming, src):
+    """Prefer vendor questions, but never replace a deeper answer-matched quiz with an empty/short stub."""
+    current_pairs = _assessment_pairs(existing)
+    incoming_pairs = _assessment_pairs(incoming)
+    if not incoming_pairs:
+        return existing if current_pairs else (incoming if isinstance(incoming, dict) else existing)
+    title = str(src.get("title_fa") or "")
+    level = str(src.get("level") or "")
+    if not level:
+        match = re.match(r"^\s*\[(L[0-4])\]", title, re.I)
+        level = match.group(1).upper() if match else "L0"
+    floor = {"L0": 5, "L1": 8, "L2": 10, "L3": 12, "L4": 15}.get(level.upper(), 5)
+    # If the source-specific bank meets the floor, keep it intact.
+    if len(incoming_pairs) >= floor:
+        return {
+            "questions": [q for q, _, _ in incoming_pairs],
+            "answer_key": [
+                {"id": str(q.get("id") or ""), "correct_index": ci,
+                 "explanation": str(a.get("explanation") or a.get("rationale") or "")}
+                for q, a, ci in incoming_pairs
+            ],
+        }
+
+    merged_questions, merged_answers, used_ids, used_prompts = [], [], set(), set()
+    # Domain-specific questions come first; the generated deep bank supplies the missing floor.
+    for question, answer, correct in incoming_pairs + current_pairs:
+        prompt = re.sub(r"\s+", " ", str(question.get("prompt") or question.get("text") or "")).strip().casefold()
+        if prompt and prompt in used_prompts:
+            continue
+        original_id = str(question.get("id") or "")
+        qid = original_id if original_id and original_id not in used_ids else f"merged_q{len(merged_questions) + 1}"
+        while qid in used_ids:
+            qid += "_x"
+        q = dict(question)
+        q["id"] = qid
+        used_ids.add(qid)
+        if prompt:
+            used_prompts.add(prompt)
+        merged_questions.append(q)
+        merged_answers.append({
+            "id": qid,
+            "correct_index": correct,
+            "explanation": str(answer.get("explanation") or answer.get("rationale") or "پاسخ با معیار پذیرش درس توجیه شود."),
+        })
+        if len(merged_questions) >= floor:
+            break
+    if not merged_questions:
+        return existing if current_pairs else incoming
+    return {"questions": merged_questions, "answer_key": merged_answers}
+
+
 def _merge_lesson_metadata(target, src):
     incoming = _source_meta(src)
     if incoming:
@@ -454,7 +537,9 @@ def _merge_lesson_metadata(target, src):
         # Source-pack assessment is more specific than a generated fallback.
         merged = {**existing, **incoming}
         if incoming.get("assessment"):
-            merged["assessment"] = incoming["assessment"]
+            merged["assessment"] = _merge_assessments(
+                existing.get("assessment"), incoming.get("assessment"), src
+            )
         target["meta_json"] = json.dumps(merged, ensure_ascii=False, separators=(",", ":"))
     objectives = src.get("learning_objectives") or incoming.get("learning_objectives")
     if objectives:

@@ -373,6 +373,60 @@ class DeepFallbackTests(unittest.TestCase):
 
 
 class ContentMergeTests(unittest.TestCase):
+    def test_empty_pack_assessment_does_not_erase_generated_quiz(self):
+        questions = [
+            {"id": f"base_{i}", "prompt": f"Generated question {i}", "options": ["A", "B", "C", "D"]}
+            for i in range(8)
+        ]
+        answers = [{"id": q["id"], "correct_index": 1, "explanation": "Generated answer"} for q in questions]
+        base = {
+            "title_fa": "[L1] Lesson",
+            "level": "L1",
+            "meta_json": json.dumps({"assessment": {"questions": questions, "answer_key": answers}}),
+        }
+        incoming = {
+            "title_fa": "[L1] Lesson",
+            "level": "L1",
+            "meta_json": json.dumps({"assessment": {"questions": [], "answer_key": []}}),
+        }
+        apply_fields(base, incoming)
+        meta = json.loads(base["meta_json"])
+        self.assertEqual(len(meta["assessment"]["questions"]), 8)
+        self.assertEqual(
+            {q["id"] for q in meta["assessment"]["questions"]},
+            {a["id"] for a in meta["assessment"]["answer_key"]},
+        )
+
+    def test_short_pack_quiz_keeps_domain_questions_and_tops_up_to_level_floor(self):
+        base_questions = [
+            {"id": f"base_{i}", "prompt": f"Generated question {i}", "options": ["A", "B", "C", "D"]}
+            for i in range(8)
+        ]
+        base_answers = [{"id": q["id"], "correct_index": 1, "explanation": "Generated answer"} for q in base_questions]
+        pack_questions = [
+            {"id": f"vendor_{i}", "prompt": f"Vendor-specific question {i}", "options": ["A", "B", "C", "D"]}
+            for i in range(2)
+        ]
+        pack_answers = [{"id": q["id"], "correct_index": 2, "explanation": "Vendor answer"} for q in pack_questions]
+        base = {
+            "title_fa": "[L1] Lesson",
+            "level": "L1",
+            "meta_json": json.dumps({"assessment": {"questions": base_questions, "answer_key": base_answers}}),
+        }
+        incoming = {
+            "title_fa": "[L1] Lesson",
+            "level": "L1",
+            "meta_json": json.dumps({"assessment": {"questions": pack_questions, "answer_key": pack_answers}}),
+        }
+        apply_fields(base, incoming)
+        assessment = json.loads(base["meta_json"])["assessment"]
+        self.assertGreaterEqual(len(assessment["questions"]), 8)
+        self.assertEqual(assessment["questions"][0]["id"], "vendor_0")
+        self.assertEqual(
+            {q["id"] for q in assessment["questions"]},
+            {a["id"] for a in assessment["answer_key"]},
+        )
+
     def test_pack_merge_does_not_overwrite_longer_base_lesson(self):
         base = {
             "full_content": "BASE_DEEP_CONTENT " * 400,

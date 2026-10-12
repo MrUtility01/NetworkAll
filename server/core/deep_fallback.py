@@ -862,6 +862,17 @@ def _assessment_with_depth(cat: str, topic: str, level: str) -> Dict[str, Any]:
 
 def _official_sources(cat: str) -> list[dict[str, str]]:
     sources = {
+        "hardware": [("Intel Product Specifications", "https://ark.intel.com/"), ("Microsoft Windows Hardware Documentation", "https://learn.microsoft.com/windows-hardware/")],
+        "firmware": [("Microsoft Secure Boot documentation", "https://learn.microsoft.com/windows-hardware/design/device-experiences/oem-secure-boot"), ("Microsoft BitLocker documentation", "https://learn.microsoft.com/windows/security/operating-system-security/data-protection/bitlocker/")],
+        "storage": [("Microsoft Storage documentation", "https://learn.microsoft.com/windows-server/storage/"), ("SNIA Technical Resources", "https://www.snia.org/technical")],
+        "virtualization": [("Microsoft Hyper-V documentation", "https://learn.microsoft.com/windows-server/virtualization/hyper-v/"), ("VMware Documentation", "https://docs.vmware.com/")],
+        "resource": [("Microsoft Windows Performance documentation", "https://learn.microsoft.com/windows-server/administration/performance-tuning/"), ("Linux performance documentation", "https://docs.kernel.org/admin-guide/")],
+        "acl": [("Cisco Documentation", "https://www.cisco.com/c/en/us/support/index.html"), ("NIST SP 800-41 — Firewalls", "https://csrc.nist.gov/pubs/sp/800/41/r1/final")],
+        "nat": [("RFC 3022 — Traditional IP Network Address Translator", "https://www.rfc-editor.org/rfc/rfc3022"), ("RFC 4787 — NAT Behavioral Requirements for Unicast UDP", "https://www.rfc-editor.org/rfc/rfc4787")],
+        "qos": [("RFC 2474 — DiffServ Field", "https://www.rfc-editor.org/rfc/rfc2474"), ("RFC 4594 — Configuration Guidelines for DiffServ Service Classes", "https://www.rfc-editor.org/rfc/rfc4594")],
+        "ha": [("NIST SP 800-34 — Contingency Planning", "https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final"), ("Microsoft Failover Clustering documentation", "https://learn.microsoft.com/windows-server/failover-clustering/failover-clustering-overview")],
+        "ansible": [("Ansible Documentation", "https://docs.ansible.com/"), ("Ansible Best Practices", "https://docs.ansible.com/ansible/latest/tips_tricks/ansible_tips_tricks.html")],
+        "terraform": [("HashiCorp Terraform Documentation", "https://developer.hashicorp.com/terraform/docs"), ("Terraform Language Documentation", "https://developer.hashicorp.com/terraform/language")],
         "powershell": [("Microsoft Learn — PowerShell", "https://learn.microsoft.com/powershell/"), ("PowerShell Scripting", "https://learn.microsoft.com/powershell/scripting/overview")],
         "windows": [("Microsoft Learn — Windows Server", "https://learn.microsoft.com/windows-server/"), ("Microsoft Learn — PowerShell", "https://learn.microsoft.com/powershell/")],
         "linux": [("Linux man-pages", "https://man7.org/linux/man-pages/"), ("Linux kernel documentation", "https://docs.kernel.org/")],

@@ -1,36 +1,27 @@
-# نصب و همگام‌سازی
+# نصب و راه‌اندازی NetworkAll
 
-## ویندوز (میزبان)
+## نسخهٔ آمادهٔ آزمایش
+بستهٔ ویندوز از GitHub Actions به‌صورت Portable ZIP ساخته می‌شود و در حالت فعلی EXE مستقل نیست. برای اجرا Windows 10/11 64-bit و Python 3.11 یا جدیدتر نیاز است.
 
-```bat
-git clone https://github.com/MrUtility01/NetworkEncyclopedia.git
-cd NetworkEncyclopedia
-```
+1. ZIP را در یک مسیر قابل‌نوشتن مثل `C:\NetworkAll` استخراج کنید.
+2. `windows\Start-NetworkAll.bat` را اجرا کنید و پنجره را باز نگه دارید.
+3. رابط وب در همان رایانه روی `http://127.0.0.1:5050` در دسترس است.
+4. برای اتصال گوشی، IP خصوصی ویندوز را با `ipconfig` پیدا کنید و در دستگاه دوم از `http://IP-ویندوز:5050` استفاده کنید. هر دو دستگاه باید از یک شبکهٔ خصوصی قابل‌دسترسی باشند.
+5. رمز ورود محلی برنامه: `engineerjokar`. توکن Sync با رمز ورود یکی نیست؛ توکن تصادفی در `server\data\sync-token.txt` نگهداری می‌شود.
 
-### هسته ۶۳ فصل
-فایل‌های `server/core/db.py`، `phase_a.py`، `full_curriculum.py` را از بسته محلی
-`NetworkEncyclopediaWeb` یا `NetworkEncyclopedia_full_core_for_github.zip` داخل `server/core/` کپی کنید.
+## محتوای مشترک Windows و Android
+در بستهٔ ویندوز فایل `shared\curriculum_index.json.gz` قرار دارد که همان فهرست ادغام‌شدهٔ مورد استفادهٔ APK است. در نخستین دسترسی به پایگاه داده، سرور آن را وارد می‌کند؛ وقتی نسخهٔ index تغییر کند، پیش از به‌روزرسانی بکاپ SQLite ساخته می‌شود. شناسه‌های درس برای همگام‌سازی به شناسهٔ index منتقل می‌شوند و دادهٔ پیشرفت مطالعه/یادداشت‌ها در جدول مستقل حفظ می‌شوند. خطای واردکردن فهرست باعث rollback تراکنش می‌شود و پایگاه قبلی حفظ خواهد شد.
 
-همچنین `server/static/app.css` و `app.js` را از همان بسته کپی کنید.
+## بکاپ و بازیابی
+- بکاپ SQLite سرور و فایل‌های داده در `server\data` هستند؛ پوشه را حذف نکنید.
+- JSON Export/Import برای انتقال محتوای کاربر در رابط برنامه وجود دارد؛ فایل JSON رمزگذاری نشده است، پس آن را در مخزن عمومی یا فضای اشتراکی عمومی نگذارید.
+- بکاپ SQLite سرور را هنگام بسته بودن سرور یا با سازوکار backup برنامه بگیرید. Restore را ابتدا روی یک کپی اجرا و تعداد درس، یادداشت، task و پیشرفت مرور را کنترل کنید.
+- توکن Sync و هر کلید محلی را از ZIPهای قابل‌انتشار، Git و گزارش‌های عمومی جدا نگه دارید.
 
-```bat
-cd server
-python -m pip install -r requirements.txt
-python app.py
-```
+## حریم شبکه
+پورت 5050 را فقط در شبکهٔ Private مورد اعتماد قابل دسترسی کنید؛ آن را به اینترنت عمومی فوروارد نکنید. توکن داخل `server\data\sync-token.txt` محرمانه است.
 
-LAN IP در کنسول چاپ می‌شود. اندروید همان IP را می‌زند.
-
-## اندروید
-
-Android Studio → Open → `android/` → Run  
-دکمه **اتصال** سپس **همگام‌سازی** (دوطرفه + ذخیره آفلاین JSON)
-
-## Sync
-
-- GET `/api/sync/hello`
-- GET `/api/sync/manifest?since=`
-- POST `/api/sync/pull`
-- POST `/api/sync/push`
-
-تعارض: Last-Write-Wins
+## خطاهای رایج
+- اگر Python پیدا نشد، Python 3.11 یا جدیدتر نصب و Add to PATH فعال باشد.
+- اگر گوشی وصل نشد، IP، پروفایل Private فایروال، پورت 5050 و توکن Sync را بررسی کنید.
+- اگر فهرست محتوای قدیمی ظاهر شد، پیام `shared curriculum refresh` کنسول و پوشهٔ `server\data\backups` را بررسی کنید.
