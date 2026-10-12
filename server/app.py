@@ -478,20 +478,31 @@ def sync_push():
                 priority_value = item.get("priority", 1)
                 done_value = item.get("done", False)
                 due_value = item.get("due_at", item.get("dueAt", ""))
-                valid_due = isinstance(due_value, str) and len(due_value) <= 32
-                if valid_due and due_value:
+                remind_value = item.get("remind_at", item.get("remindAt", ""))
+                def valid_local_time(value):
+                    if not isinstance(value, str) or len(value) > 32:
+                        return False
+                    if not value:
+                        return True
                     try:
-                        if len(due_value) == 10:
-                            datetime.strptime(due_value, "%Y-%m-%d")
+                        if len(value) == 10:
+                            datetime.strptime(value, "%Y-%m-%d")
                         else:
-                            datetime.strptime(due_value, "%Y-%m-%dT%H:%M")
+                            datetime.strptime(value, "%Y-%m-%dT%H:%M")
+                        return True
                     except ValueError:
-                        valid_due = False
+                        return False
+                valid_due = valid_local_time(due_value)
+                valid_remind = valid_local_time(remind_value)
+                # A reminder must be a timed date, not an all-day date.
+                if remind_value and (len(remind_value) == 10 or not due_value):
+                    valid_remind = False
                 invalid_item = invalid_item or (
                     type(priority_value) is not int
                     or priority_value not in (1, 2, 3)
                     or not valid_flag(done_value)
                     or not valid_due
+                    or not valid_remind
                 )
             if invalid_item:
                 invalid += 1
