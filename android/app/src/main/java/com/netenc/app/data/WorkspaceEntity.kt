@@ -1,5 +1,6 @@
 package com.netenc.app.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -13,7 +14,7 @@ data class TaskEntity(
     val priority: Int = 1,
     val lastUpdated: String = "",
     val deviceId: String = "android",
-    val deleted: Boolean = false
+    @ColumnInfo(defaultValue = "0") val deleted: Boolean = false
 )
 
 @Entity(tableName = "notes")
@@ -24,7 +25,7 @@ data class NoteEntity(
     val tags: String = "",
     val lastUpdated: String = "",
     val deviceId: String = "android",
-    val deleted: Boolean = false
+    @ColumnInfo(defaultValue = "0") val deleted: Boolean = false
 )
 
 @Entity(tableName = "vault_items")
