@@ -10,7 +10,7 @@ interface ScenarioDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertAll(items: List<ScenarioEntity>)
 
-    @Query("SELECT * FROM scenarios ORDER BY code")
+    @Query("SELECT * FROM scenarios WHERE deleted = 0 ORDER BY code")
     suspend fun all(): List<ScenarioEntity>
 
     @Query("SELECT * FROM scenarios WHERE code = :code LIMIT 1")
