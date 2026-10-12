@@ -18,7 +18,7 @@ _LEVEL_FA = {
 
 _CATS: List[Tuple[str, List[str]]] = [
     ("powershell", ["powershell", "cmdlet", "psremoting", "winrm", "execution policy", "پاورشل"]),
-    ("firmware", ["bios", "uefi", "secure boot", "tpm", "boot order", "boot manager", "csm", "mbr", "gpt", "esp", "firmware", "grub", "pxe", "فریمور", "بوت"]),
+    ("firmware", ["bios", "uefi", "secure boot", "tpm", "boot order", "boot manager", "bootloader", "boot loader", "systemd-boot", "csm", "mbr", "gpt", "esp", "firmware", "grub", "pxe", "فریمور", "بوت"]),
     ("hardware", ["cpu", "processor", "alu", "control unit", "register", "pipeline", "clock", "frequency", "core", "thread", "hyper-thread", "cache", "instruction set", "x86", "x64", "arm", "risc", "cisc", "ram", "memory", "ddr", "ecc", "motherboard", "chipset", "socket", "expansion slot", "usb", "nic", "form factor", "dual quad", "timing", "xmp", "u.2", "tbw", "dwpd", "pcie", "m.2", "sata", "nvme", "hdd", "ssd", "psu", "power supply", "80plus", "ups", "pdu", "beep code", "q-code", "no post", "no power", "proliant", "ilo", "smart array", "oneview", "cooling", "thermal", "restart", "server hardware", "esd", "post", "پردازنده", "مادربرد", "حافظه", "اسمبل", "سخت‌افزار", "خمیر حرارتی", "فرکانس", "پردازشگر", "رجیستر", "کش", "سوکت", "اسلات توسعه", "هدرها", "تغذیه", "سرمایش", "فرم‌فاکتور", "ظرفیت سازمانی", "ریل‌های برق", "توزیع برق", "نصب خنک‌کننده", "نصب کارت توسعه", "اولین روشن شدن", "ریستارت مکرر", "گرمای بیش از حد", "تمیزکاری سیستم", "تعویض خمیر", "برنامه نگهداری پیشگیرانه", "نسل‌های gen", "hpe oneview", "خانواده proliant", "ilo نصب", "smart array کنترلر"]),
     ("git", ["git ", "github", "گیت", "repository", "rebase", "pull request", "merge request"]),
     ("cloud", ["azure", "aws", "cloud", "security group", "vpc", "vnet", "ابر"]),
@@ -39,7 +39,7 @@ _CATS: List[Tuple[str, List[str]]] = [
     ("firewall", ["firewall", "fortigate", "asa", "policy", "zone"]),
     ("ha", ["hsrp", "vrrp", "glbp", "failover", "active-standby"]),
     ("qos", ["qos", "dscp", "policing", "shaping", "priority"]),
-    ("linux", ["linux", "kernel", "user space", "syscall", "system call", "scheduler", "daemon", "process", "filesystem", "file system", "ext4", "xfs", "zfs", "lvm", "mount", "fstab", "fdisk", "parted", "chmod", "chown", "bash", "shell script", "apt ", "dnf ", "rpm", "grub", "iptables", "nftables", "ss "]),
+    ("linux", ["linux", "kernel", "user space", "syscall", "system call", "scheduler", "daemon", "process", "systemd", "journalctl", "fhs", "filesystem", "file system", "btrfs", "ext4", "xfs", "zfs", "swap", "lvm", "mount", "fstab", "fdisk", "parted", "chmod", "chown", "bash", "shell script", "apt ", "dnf ", "rpm", "grub", "iptables", "nftables", "ss "]),
     ("windows", ["windows", "registry", "services.msc", "event viewer", "task manager", "resource monitor", "safe mode", "task scheduler", "gpo", "active directory", "kerberos", "ntfs", "winlogon"]),
     ("storage", ["raid", "nvme", "ssd", "san", "iscsi", "latency", "iops", "disk io", "fat32", "exfat", "efs", "refs", "partition", "diskpart", "storage", "ذخیره‌سازی", "دیسک"]),
     ("virtualization", ["vmware", "esxi", "kubernetes", "docker", "pod", "hypervisor", "virtual machine", "virtualization", "vt-x", "amd-v", "container", "vcenter", "virtual switch"]),
