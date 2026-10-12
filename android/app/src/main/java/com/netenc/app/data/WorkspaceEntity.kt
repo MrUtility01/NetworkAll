@@ -14,7 +14,10 @@ data class TaskEntity(
     val priority: Int = 1,
     val lastUpdated: String = "",
     val deviceId: String = "android",
-    @ColumnInfo(defaultValue = "0") val deleted: Boolean = false
+    @ColumnInfo(defaultValue = "0") val deleted: Boolean = false,
+    @ColumnInfo(defaultValue = "''") val remindAt: String = "",
+    // Device-local delivery state; never included in cross-device sync.
+    @ColumnInfo(defaultValue = "''") val remindedAt: String = ""
 )
 
 @Entity(tableName = "notes")
