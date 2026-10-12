@@ -1,0 +1,325 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-12",
+  "purpose": "Progressive L0-L4 DHCP DORA course mapped to the existing Chapter 11.1 DORA titles.",
+  "scope": {
+    "chapter_order": 11,
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lesson_count": 5,
+    "topics": [
+      {
+        "id": "dhcp-dora",
+        "title_fa": "DORA",
+        "title_en": "DHCP DORA"
+      }
+    ]
+  },
+  "instructional_contract": {
+    "level_floors": {
+      "L0": 600,
+      "L1": 800,
+      "L2": 1200,
+      "L3": 1600,
+      "L4": 2200
+    },
+    "volume_rule": "Competency, state transitions, failure modes and verified labs determine volume; no arbitrary global cap.",
+    "lab_status": "designed_not_executed",
+    "separate_answer_key": true
+  },
+  "content_quality": {
+    "status": "review_required",
+    "reason": "Course and assessment structure authored; relay, lease renewal, failover and security labs must be run in a controlled environment before verification."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch11:dora:l0",
+      "entity": "lesson",
+      "chapter_order": 11,
+      "subchapter_order": 1,
+      "lesson_order": 1,
+      "topic": "dhcp-dora",
+      "domain": "network-services",
+      "level": "L0",
+      "title_fa": "[L0] DORA — آشنایی",
+      "title_en": "[L0] DHCP DORA — آشنایی",
+      "tags": [
+        "DHCP",
+        "DORA",
+        "lease",
+        "relay",
+        "IPAM",
+        "L0"
+      ],
+      "summary": "DORA را با ترتیب درست توضیح دهد؛ نقش DHCP client/server و lease را بشناسد؛ فرق DHCP با DNS را توضیح دهد",
+      "full_content": "# DORA — آشنایی\n\n## DHCP برای چه کاری است؟\nDHCP به دستگاه کمک می‌کند بدون واردکردن دستی همهٔ تنظیمات، آدرس IP و گزینه‌هایی مثل subnet mask/prefix، default gateway و DNS را دریافت کند. DHCPv4 معمولاً با UDP پورت 67 روی سرور و پورت 68 روی کلاینت کار می‌کند. DHCP فقط دادن IP نیست؛ یک اجارهٔ زمانی (lease) و مجموعه‌ای از options به کلاینت می‌دهد. DNS نام را به داده‌هایی مثل آدرس تبدیل می‌کند؛ این دو سرویس نقش متفاوت دارند.\n\n## چهار گام DORA\n- Discover: کلاینتی که هنوز آدرس ندارد برای یافتن سرور DHCP درخواست می‌فرستد؛ این پیام اغلب به‌صورت broadcast در لینک محلی است.\n- Offer: یک سرور پیشنهادی شامل آدرس قابل اختصاص و گزینه‌ها می‌فرستد.\n- Request: کلاینت پیشنهاد موردنظر را درخواست می‌کند و انتخابش را اعلام می‌کند.\n- Acknowledge (ACK): سرور اجاره و تنظیمات را تأیید می‌کند. اگر سرور درخواست را قبول نکند، ممکن است NAK ارسال کند.\n\nDORA معمولاً برای گرفتن lease اولیه توضیح داده می‌شود. تمام تبادل‌های بعدی الزاماً چهار پیام کامل را از ابتدا تکرار نمی‌کنند؛ renewal و rebinding مسیرهای خاص خود را دارند.\n\n## چرا DHCP با VLAN مرتبط است؟\nDHCP Discover معمولاً broadcast محلی است و روتر آن را به‌صورت خودکار به تمام subnetهای دیگر منتقل نمی‌کند. اگر سرور در subnet دیگری باشد، gateway یا روتر باید در صورت پشتیبانی و پیکربندی درست DHCP relay انجام دهد. اگر لپ‌تاپ به Wi-Fi متصل است اما IP معتبر ندارد، ممکن است VLAN، access port، relay، scope سرور یا خود سرور مشکل داشته باشد؛ صرفاً «Wi-Fi وصل است» سلامت DHCP را ثابت نمی‌کند.\n\n## اجاره و گزینه‌ها\nLease مشخص می‌کند کلاینت تا چه زمانی می‌تواند آدرس را استفاده کند، مشروط به تمدید و قواعد پروتکل. Options می‌توانند default router (گزینهٔ 3)، DNS server (گزینهٔ 6)، domain name (گزینهٔ 15) و تنظیمات دیگر را ارائه دهند. Scope یا pool محدوده‌ای از آدرس‌هاست که سرور می‌تواند تخصیص دهد؛ exclusionها از تخصیص آدرس‌های رزروشده جلوگیری می‌کنند.\n\n## مثال مشاهده‌ای\nدر Windows از ipconfig /all برای دیدن DHCP Enabled، DHCP Server، Lease Obtained/Expires، IPv4، gateway و DNS استفاده کن. ipconfig /release و /renew تغییر وضعیت ایجاد می‌کنند؛ روی سیستم عملیاتی فقط با اجازه و آگاهی از اثر آن‌ها استفاده کن. در این درس، ابتدا فقط خروجی موجود را ببین و ثبت کن.\n\n## خطاهای رایج\nآدرس 169.254.x.x در Windows معمولاً نشان می‌دهد کلاینت نتوانسته IPv4 lease مناسب دریافت کند، اما علت را به‌تنهایی مشخص نمی‌کند. DNS server اشتباه ممکن است بعد از دریافت IP رخ دهد؛ DHCP موفق بودن، DNS و اینترنت را تضمین نمی‌کند. داشتن دو DHCP server در یک subnet بدون طراحی هماهنگ می‌تواند به کلاینت‌ها تنظیمات ناسازگار بدهد.\n\n## واژه‌نامه\nDiscover جستجوی سرور، Offer پیشنهاد، Request درخواست اجاره، ACK تأیید، Lease اجاره، Scope محدودهٔ تخصیص، Relay انتقال کنترل‌شدهٔ درخواست به سرور در subnet دیگر است.",
+      "commands": "Windows: ipconfig /all; Get-DhcpServerv4Scope; Get-DhcpServerv4Lease. Linux: dhclient -v or network-manager logs; packet capture filter UDP 67/68. Verify syntax against target OS release.",
+      "examples": "Use an isolated VLAN, controlled DHCP server and test clients. Never run rogue-server, scope-exhaustion or relay-change experiments on a production VLAN.",
+      "notes": "source=tools/packs/network_services/dhcp_dora_deep_pack.json; status=review_required; lab_execution=not_yet_run; infographic=shared/infographics/dhcp_dora.svg",
+      "learning_objectives": [
+        "DORA را با ترتیب درست توضیح دهد",
+        "نقش DHCP client/server و lease را بشناسد",
+        "فرق DHCP با DNS را توضیح دهد"
+      ],
+      "prerequisites": [],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"dhcp-l0-1\",\"prompt\":\"DORA مخفف کدام چهار پیام است؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"dhcp-l0-2\",\"prompt\":\"DHCPv4 معمولاً از کدام UDP portها استفاده می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"dhcp-l0-3\",\"prompt\":\"چرا DHCP Discover معمولاً از broadcast استفاده می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"dhcp-l0-4\",\"prompt\":\"DHCP Relay چه مشکلی را حل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"dhcp-l0-5\",\"prompt\":\"T1 و T2 در چرخهٔ lease به چه مفهومی مرتبط‌اند؟\",\"type\":\"short_answer\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"dhcp-l0-1\",\"answer\":\"Discover, Offer, Request, Acknowledge.\",\"rationale\":\"این توالی برای تخصیص اولیهٔ رایج IPv4 به‌کار می‌رود.\"},{\"id\":\"dhcp-l0-2\",\"answer\":\"Server روی UDP/67 و client روی UDP/68.\",\"rationale\":\"relay و وضعیت پیام می‌تواند شکل packet را تغییر دهد اما نقش portهای پایه باقی است.\"},{\"id\":\"dhcp-l0-3\",\"answer\":\"کلاینت هنوز lease/address معتبر ندارد و سرور را در لینک محلی پیدا می‌کند.\",\"rationale\":\"relay لازم است تا این درخواست از مرز L3 به server برسد.\"},{\"id\":\"dhcp-l0-4\",\"answer\":\"درخواست محلی را به DHCP server در subnet دیگر می‌رساند و پاسخ را برمی‌گرداند.\",\"rationale\":\"broadcast عادی از روتر عبور داده نمی‌شود.\"},{\"id\":\"dhcp-l0-5\",\"answer\":\"T1 زمان معمول شروع renewal و T2 زمان rebinding در صورت دسترسی‌نداشتن به server قبلی است.\",\"rationale\":\"جزئیات timer تابع پروتکل/implementation و optionهاست.\"}]},\"related_infographics\":[\"dhcp_dora.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 2131 — Dynamic Host Configuration Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc2131.html"
+        },
+        {
+          "title": "RFC 2132 — DHCP Options and BOOTP Vendor Extensions",
+          "url": "https://www.rfc-editor.org/rfc/rfc2132.html"
+        },
+        {
+          "title": "RFC 3046 — DHCP Relay Agent Information Option",
+          "url": "https://www.rfc-editor.org/rfc/rfc3046.html"
+        },
+        {
+          "title": "Microsoft Learn — DHCP Server",
+          "url": "https://learn.microsoft.com/en-us/windows-server/networking/technologies/dhcp/dhcp-top"
+        },
+        {
+          "title": "MikroTik RouterOS — DHCP",
+          "url": "https://help.mikrotik.com/docs/display/ROS/DHCP"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch11:dora:l1",
+      "entity": "lesson",
+      "chapter_order": 11,
+      "subchapter_order": 1,
+      "lesson_order": 2,
+      "topic": "dhcp-dora",
+      "domain": "network-services",
+      "level": "L1",
+      "title_fa": "[L1] DORA — مقدماتی",
+      "title_en": "[L1] DHCP DORA — مقدماتی",
+      "tags": [
+        "DHCP",
+        "DORA",
+        "lease",
+        "relay",
+        "IPAM",
+        "L1"
+      ],
+      "summary": "توالی DORA و فیلدهای اصلی را بخواند؛ lease و renewal را از تخصیص اولیه جدا کند؛ علائم DHCP failure را لایه‌بندی کند",
+      "full_content": "# DORA — مقدماتی\n\n## DORA به‌عنوان state machine\nدر ابتدای اتصال، کلاینت ممکن است IP معتبر نداشته باشد؛ به همین دلیل Discover اغلب broadcast است. Offer یک سرور را به کلاینت معرفی می‌کند و می‌تواند آدرس، مدت lease و options را داشته باشد. Request انتخاب کلاینت را مشخص می‌کند؛ ACK پایان موفق مرحلهٔ تخصیص است. در packet capture، XID یا transaction ID و شناسهٔ کلاینت/آدرس سخت‌افزاری برای تطبیق پیام‌ها مهم‌اند. فقط دیدن یک Offer تضمین نمی‌کند کلاینت lease گرفته؛ باید پیام‌های بعدی و گزینه‌های نهایی مشاهده شوند.\n\nDHCPv4 از UDP 67/68 استفاده می‌کند. پاسخ ممکن است بسته به وضعیت کلاینت و مسیر مستقیم/relay به شکل broadcast یا unicast منتقل شود. شکل دقیق پیام را با وضعیت واقعی client و RFC تطبیق بده، نه فقط با نمودار DORA.\n\n## Lease، T1/T2 و renewal\nLease موقت است و کلاینت پیش از انقضای آن تلاش می‌کند آدرس را تمدید کند. در رفتار متداول، T1 زمان آغاز renewal با سرور اصلی lease و T2 زمان rebinding برای یافتن سرور در دسترس است؛ مقادیر واقعی با گزینه‌ها و پیاده‌سازی مرتبط‌اند. اگر renewal شکست بخورد، کلاینت ممکن است مدتی آدرس را نگه دارد و بعد مجبور به از دست‌دادن آن شود. بنابراین مشکل DHCP ممکن است چند ساعت پس از اتصال اولیه ظاهر شود؛ آزمایش فقط هنگام boot کافی نیست.\n\n## Scope و Options\nScope با subnet هماهنگ است و شامل range، exclusions، reservations و options می‌شود. Reservation به یک شناسهٔ کلاینت، اغلب MAC در سناریوهای ساده، آدرس مشخص می‌دهد؛ اما طراحی‌های مدرن ممکن است Client Identifier دیگری داشته باشند. Option 3 اغلب default router، option 6 DNS، option 15 domain و option 42 NTP را مشخص می‌کند. گزینهٔ نادرست می‌تواند IP معتبر بدهد ولی DNS یا gateway را به مقدار اشتباه تنظیم کند.\n\n## ابزار مشاهده‌ای\nWindows: ipconfig /all و Get-NetIPConfiguration. در محیط مجاز می‌توان از ipconfig /renew استفاده کرد، ولی پیش از آن آدرس فعلی، session remote و اثر قطع اتصال را بررسی کن. Linux بسته به توزیع و network manager از journal، dhclient یا ابزار مدیریت شبکه استفاده می‌کند. capture باید filter بر مبنای UDP 67/68 و interface درست داشته باشد. در شبکه‌های VLAN-aware، capture endpoint ممکن است tagging trunk را نشان ندهد چون tag روی access uplink اضافه می‌شود.\n\n## لابراتوار\nیک subnet جدا، DHCP server کنترل‌شده و client آزمایشگاهی بساز. ابتدا DORA کامل را مشاهده و XID و offered IP را ثبت کن. سپس در Lab یک option آزمایشی DNS نادرست تعیین کن و بررسی کن که client چه پیکربندی می‌گیرد. پس از آن option را به مقدار baseline برگردان و lease تازه بگیر. هیچ scope یا option عملیاتی را برای این تمرین تغییر نده.\n\n## عیب‌یابی اولیه\n- Discover دیده نمی‌شود: client state، interface، firewall endpoint یا capture filter را بررسی کن.\n- Discover دیده می‌شود اما Offer نمی‌آید: VLAN، relay، scope exhaustion، سرور و مسیر برگشت را بررسی کن.\n- Offer هست اما ACK نیست: Request/NAK، چند سرور، reservation/client ID و server logs مطرح‌اند.\n- IP هست اما gateway/DNS اشتباه است: optionها و reservationها را بخوان.\n- اتصال اولیه سالم اما بعداً قطع می‌شود: lease renewal، reachability سرور و conflict را بررسی کن.\n\n## معیار قبولی\nگزارش باید همهٔ مرحله‌های مشاهده‌شده، DHCP server انتخاب‌شده، lease، options و محدودیت capture را ثبت کند. متن نمونه یا نمودار DORA را به‌جای اجرای واقعی معرفی نکن.",
+      "commands": "Windows: ipconfig /all; Get-DhcpServerv4Scope; Get-DhcpServerv4Lease. Linux: dhclient -v or network-manager logs; packet capture filter UDP 67/68. Verify syntax against target OS release.",
+      "examples": "Use an isolated VLAN, controlled DHCP server and test clients. Never run rogue-server, scope-exhaustion or relay-change experiments on a production VLAN.",
+      "notes": "source=tools/packs/network_services/dhcp_dora_deep_pack.json; status=review_required; lab_execution=not_yet_run; infographic=shared/infographics/dhcp_dora.svg",
+      "learning_objectives": [
+        "توالی DORA و فیلدهای اصلی را بخواند",
+        "lease و renewal را از تخصیص اولیه جدا کند",
+        "علائم DHCP failure را لایه‌بندی کند"
+      ],
+      "prerequisites": [
+        "IPv4 subnet, UDP, VLAN/broadcast domain and basic DNS"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"dhcp-l1-1\",\"prompt\":\"DORA مخفف کدام چهار پیام است؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dhcp-l1-2\",\"prompt\":\"DHCPv4 معمولاً از کدام UDP portها استفاده می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dhcp-l1-3\",\"prompt\":\"چرا DHCP Discover معمولاً از broadcast استفاده می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dhcp-l1-4\",\"prompt\":\"DHCP Relay چه مشکلی را حل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dhcp-l1-5\",\"prompt\":\"T1 و T2 در چرخهٔ lease به چه مفهومی مرتبط‌اند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dhcp-l1-6\",\"prompt\":\"چرا IP معتبر، درستی gateway و DNS را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dhcp-l1-7\",\"prompt\":\"Scope exhaustion چگونه دیده می‌شود؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dhcp-l1-8\",\"prompt\":\"DHCP Option 82 برای چیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"dhcp-l1-1\",\"answer\":\"Discover, Offer, Request, Acknowledge.\",\"rationale\":\"این توالی برای تخصیص اولیهٔ رایج IPv4 به‌کار می‌رود.\"},{\"id\":\"dhcp-l1-2\",\"answer\":\"Server روی UDP/67 و client روی UDP/68.\",\"rationale\":\"relay و وضعیت پیام می‌تواند شکل packet را تغییر دهد اما نقش portهای پایه باقی است.\"},{\"id\":\"dhcp-l1-3\",\"answer\":\"کلاینت هنوز lease/address معتبر ندارد و سرور را در لینک محلی پیدا می‌کند.\",\"rationale\":\"relay لازم است تا این درخواست از مرز L3 به server برسد.\"},{\"id\":\"dhcp-l1-4\",\"answer\":\"درخواست محلی را به DHCP server در subnet دیگر می‌رساند و پاسخ را برمی‌گرداند.\",\"rationale\":\"broadcast عادی از روتر عبور داده نمی‌شود.\"},{\"id\":\"dhcp-l1-5\",\"answer\":\"T1 زمان معمول شروع renewal و T2 زمان rebinding در صورت دسترسی‌نداشتن به server قبلی است.\",\"rationale\":\"جزئیات timer تابع پروتکل/implementation و optionهاست.\"},{\"id\":\"dhcp-l1-6\",\"answer\":\"Options ممکن است اشتباه یا ناسازگار باشند.\",\"rationale\":\"باید optionهای lease و connectivity مراحل بعد را بررسی کرد.\"},{\"id\":\"dhcp-l1-7\",\"answer\":\"سرور آدرس آزاد کافی ندارد و client ممکن است Offer دریافت نکند.\",\"rationale\":\"Lease table، exclusions و reservations را بررسی کن.\"},{\"id\":\"dhcp-l1-8\",\"answer\":\"انتقال اطلاعات relay agent مانند circuit/remote identifiers در صورت پشتیبانی.\",\"rationale\":\"اعتماد به درج‌کننده و policy server اهمیت دارد.\"}]},\"related_infographics\":[\"dhcp_dora.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 2131 — Dynamic Host Configuration Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc2131.html"
+        },
+        {
+          "title": "RFC 2132 — DHCP Options and BOOTP Vendor Extensions",
+          "url": "https://www.rfc-editor.org/rfc/rfc2132.html"
+        },
+        {
+          "title": "RFC 3046 — DHCP Relay Agent Information Option",
+          "url": "https://www.rfc-editor.org/rfc/rfc3046.html"
+        },
+        {
+          "title": "Microsoft Learn — DHCP Server",
+          "url": "https://learn.microsoft.com/en-us/windows-server/networking/technologies/dhcp/dhcp-top"
+        },
+        {
+          "title": "MikroTik RouterOS — DHCP",
+          "url": "https://help.mikrotik.com/docs/display/ROS/DHCP"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch11:dora:l2",
+      "entity": "lesson",
+      "chapter_order": 11,
+      "subchapter_order": 1,
+      "lesson_order": 3,
+      "topic": "dhcp-dora",
+      "domain": "network-services",
+      "level": "L2",
+      "title_fa": "[L2] DORA — ادمین",
+      "title_en": "[L2] DHCP DORA — ادمین",
+      "tags": [
+        "DHCP",
+        "DORA",
+        "lease",
+        "relay",
+        "IPAM",
+        "L2"
+      ],
+      "summary": "DORA و renewal را با capture تشخیص دهد؛ relay، scope و options را عیب‌یابی کند؛ DHCP conflict و rogue server را با شواهد بررسی کند",
+      "full_content": "# DORA — ادمین\n\n## عیب‌یابی با packet trace\nبرای یک DHCP incident، interface/VLAN، MAC یا client identifier، transaction ID، IP فعلی، DHCP server و timestamp را ثبت کن. در trace به دنبال Discover, Offer, Request, ACK/NAK و relay information بگرد. اگر capture فقط Discover را نشان می‌دهد، نمی‌توان نتیجه گرفت سرور پاسخ نداده مگر اینکه نقطهٔ capture و مسیر برگشت را بشناسی. یک switch SPAN ممکن است جهت یا ظرفیت محدود داشته باشد. در صورت دسترسی، capture روی client، relay و server فرضیه‌ها را از هم جدا می‌کند.\n\n## Relay و مرز لایهٔ ۳\nDiscover broadcast به‌طور عادی از روتر عبور نمی‌کند. DHCP relay درخواست را به سرور در subnet دیگر منتقل می‌کند و فیلدهایی مانند gateway/relay information برای انتخاب scope مناسب مهم‌اند. اگر relay address اشتباه باشد، سرور ممکن است scope مناسب پیدا نکند یا lease از subnet نامناسب بدهد. relay باید روی interface/VLAN درست فعال باشد و مسیر UDP، policy و برگشت پاسخ را داشته باشد. در برخی طراحی‌ها Option 82 اطلاعات پورت/مدار را به server می‌دهد؛ policy server باید با insertion/removal آن سازگار باشد.\n\n## Scope exhaustion و conflict\nوقتی pool آدرس آزاد کافی ندارد، کلاینت جدید ممکن است Discover بفرستد اما Offer مناسبی دریافت نکند. باید active leases، exclusions، reservations، lease duration، stale leases و خطای duplicate address را بررسی کرد. طولانی‌کردن lease می‌تواند turnover را کم کند اما آدرس‌های کم‌یاب را بیشتر اشغال کند؛ کوتاه‌کردن زیاد lease بار renewal را بالا می‌برد. Conflict detection و DHCPDECLINE در برخی سناریوها کمک می‌کنند آدرس تکراری کنار گذاشته شود؛ رفتار و logها به server implementation وابسته‌اند.\n\n## چند DHCP server و rogue DHCP\nداشتن چند سرور DHCP فقط زمانی امن است که طراحی هماهنگ باشد، مثلاً failover relationship یا scopeهای غیرهم‌پوشان با کنترل مشخص. دو سرور مستقل با pool هم‌پوشان یا options ناسازگار می‌توانند به کلاینت‌ها gateway/DNS متفاوت بدهند. Rogue DHCP می‌تواند کلاینت را به gateway یا DNS مهاجم بفرستد. در سوئیچ‌های دارای پشتیبانی، DHCP snooping و trust ports می‌توانند DHCP serverهای مجاز را محدود کنند؛ پیکربندی feature باید با vendor/release تأیید شود و trust روی پورت اشتباه ممکن است کنترل را بی‌اثر کند.\n\n## Labهای پیشنهادی\nA. Scope exhaustion در شبکهٔ ایزوله: pool کوچک و چند client ایجاد کن؛ شمارش free/active lease را با Offerها مقایسه کن.\nB. Relay: client در subnet A، server در subnet B و relay روی gateway قرار بده. Capture قبل و بعد relay را مقایسه کن و relay address را ثبت کن.\nC. Option fault: DNS/router option را در scope آزمایشی اشتباه بگذار، نتیجهٔ ipconfig را مشاهده کن و rollback کن.\nD. Rogue-server demonstration فقط در isolated VLAN: دو DHCP responder کنترل‌شده را اجرا و نشان بده چرا first/competing offer و optionهای نامنطبق مشکل امنیتی‌اند. هرگز این آزمایش را به VLAN عملیاتی وصل نکن.\n\n## معیار قبولی\nباید بتوانی failure را به client, relay, server, scope, options یا L2 security محدود کنی. هر ادعا باید با packet, lease table, event log یا counter پشتیبانی شود. پس از Lab همهٔ تنظیمات آزمایشی پاک و baseline مجدداً تأیید شوند.",
+      "commands": "Windows: ipconfig /all; Get-DhcpServerv4Scope; Get-DhcpServerv4Lease. Linux: dhclient -v or network-manager logs; packet capture filter UDP 67/68. Verify syntax against target OS release.",
+      "examples": "Use an isolated VLAN, controlled DHCP server and test clients. Never run rogue-server, scope-exhaustion or relay-change experiments on a production VLAN.",
+      "notes": "source=tools/packs/network_services/dhcp_dora_deep_pack.json; status=review_required; lab_execution=not_yet_run; infographic=shared/infographics/dhcp_dora.svg",
+      "learning_objectives": [
+        "DORA و renewal را با capture تشخیص دهد",
+        "relay، scope و options را عیب‌یابی کند",
+        "DHCP conflict و rogue server را با شواهد بررسی کند"
+      ],
+      "prerequisites": [
+        "IPv4 subnet, UDP, VLAN/broadcast domain and basic DNS"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"dhcp-l2-1\",\"prompt\":\"DORA مخفف کدام چهار پیام است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dhcp-l2-2\",\"prompt\":\"DHCPv4 معمولاً از کدام UDP portها استفاده می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dhcp-l2-3\",\"prompt\":\"چرا DHCP Discover معمولاً از broadcast استفاده می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dhcp-l2-4\",\"prompt\":\"DHCP Relay چه مشکلی را حل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dhcp-l2-5\",\"prompt\":\"T1 و T2 در چرخهٔ lease به چه مفهومی مرتبط‌اند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dhcp-l2-6\",\"prompt\":\"چرا IP معتبر، درستی gateway و DNS را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dhcp-l2-7\",\"prompt\":\"Scope exhaustion چگونه دیده می‌شود؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dhcp-l2-8\",\"prompt\":\"DHCP Option 82 برای چیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dhcp-l2-9\",\"prompt\":\"چرا دو DHCP server مستقل با pool هم‌پوشان خطرناک‌اند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dhcp-l2-10\",\"prompt\":\"DHCP snooping چه هدفی دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"dhcp-l2-1\",\"answer\":\"Discover, Offer, Request, Acknowledge.\",\"rationale\":\"این توالی برای تخصیص اولیهٔ رایج IPv4 به‌کار می‌رود.\"},{\"id\":\"dhcp-l2-2\",\"answer\":\"Server روی UDP/67 و client روی UDP/68.\",\"rationale\":\"relay و وضعیت پیام می‌تواند شکل packet را تغییر دهد اما نقش portهای پایه باقی است.\"},{\"id\":\"dhcp-l2-3\",\"answer\":\"کلاینت هنوز lease/address معتبر ندارد و سرور را در لینک محلی پیدا می‌کند.\",\"rationale\":\"relay لازم است تا این درخواست از مرز L3 به server برسد.\"},{\"id\":\"dhcp-l2-4\",\"answer\":\"درخواست محلی را به DHCP server در subnet دیگر می‌رساند و پاسخ را برمی‌گرداند.\",\"rationale\":\"broadcast عادی از روتر عبور داده نمی‌شود.\"},{\"id\":\"dhcp-l2-5\",\"answer\":\"T1 زمان معمول شروع renewal و T2 زمان rebinding در صورت دسترسی‌نداشتن به server قبلی است.\",\"rationale\":\"جزئیات timer تابع پروتکل/implementation و optionهاست.\"},{\"id\":\"dhcp-l2-6\",\"answer\":\"Options ممکن است اشتباه یا ناسازگار باشند.\",\"rationale\":\"باید optionهای lease و connectivity مراحل بعد را بررسی کرد.\"},{\"id\":\"dhcp-l2-7\",\"answer\":\"سرور آدرس آزاد کافی ندارد و client ممکن است Offer دریافت نکند.\",\"rationale\":\"Lease table، exclusions و reservations را بررسی کن.\"},{\"id\":\"dhcp-l2-8\",\"answer\":\"انتقال اطلاعات relay agent مانند circuit/remote identifiers در صورت پشتیبانی.\",\"rationale\":\"اعتماد به درج‌کننده و policy server اهمیت دارد.\"},{\"id\":\"dhcp-l2-9\",\"answer\":\"ممکن است lease و options ناسازگار یا آدرس تکراری به کلاینت بدهند.\",\"rationale\":\"failover باید طراحی و synchronization معتبر داشته باشد.\"},{\"id\":\"dhcp-l2-10\",\"answer\":\"محدودکردن پاسخ‌های DHCP به پورت‌های مورداعتماد طبق پیاده‌سازی سوئیچ.\",\"rationale\":\"پیکربندی trust اشتباه می‌تواند کنترل را بی‌اثر یا clientها را قطع کند.\"}]},\"related_infographics\":[\"dhcp_dora.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 2131 — Dynamic Host Configuration Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc2131.html"
+        },
+        {
+          "title": "RFC 2132 — DHCP Options and BOOTP Vendor Extensions",
+          "url": "https://www.rfc-editor.org/rfc/rfc2132.html"
+        },
+        {
+          "title": "RFC 3046 — DHCP Relay Agent Information Option",
+          "url": "https://www.rfc-editor.org/rfc/rfc3046.html"
+        },
+        {
+          "title": "Microsoft Learn — DHCP Server",
+          "url": "https://learn.microsoft.com/en-us/windows-server/networking/technologies/dhcp/dhcp-top"
+        },
+        {
+          "title": "MikroTik RouterOS — DHCP",
+          "url": "https://help.mikrotik.com/docs/display/ROS/DHCP"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch11:dora:l3",
+      "entity": "lesson",
+      "chapter_order": 11,
+      "subchapter_order": 1,
+      "lesson_order": 4,
+      "topic": "dhcp-dora",
+      "domain": "network-services",
+      "level": "L3",
+      "title_fa": "[L3] DORA — مهندس",
+      "title_en": "[L3] DHCP DORA — مهندس",
+      "tags": [
+        "DHCP",
+        "DORA",
+        "lease",
+        "relay",
+        "IPAM",
+        "L3"
+      ],
+      "summary": "چرخهٔ DHCP را در شبکهٔ چندVLAN تحلیل کند؛ failover و lease edge caseها را بررسی کند؛ RCA با capture و server telemetry بسازد",
+      "full_content": "# DORA — مهندس\n\n## DHCP به‌عنوان چرخهٔ عمر address\nDORA فقط تخصیص اولیه را توضیح می‌دهد. چرخهٔ کامل شامل selecting/requesting/bound و renewal/rebinding، lease expiry و مسیرهای خطا مانند DECLINE، RELEASE و NAK است. در renewal معمولاً کلاینت تلاش می‌کند lease موجود را حفظ کند؛ rebinding زمانی است که سرور قبلی در دسترس نیست و کلاینت می‌کوشد از سرور دیگری تمدید کند. اگر فقط startup را بررسی کنی، outageهایی که در T1/T2 یا پس از renew رخ می‌دهند از دست می‌روند.\n\nدر capture باید transaction ID، client identifier/chaddr، ciaddr/yiaddr/giaddr و options مربوط را به‌درستی تفسیر کرد. نام فیلدها به قالب DHCP packet اشاره دارند و کاربرد آن‌ها به حالت پیام بستگی دارد. Relay می‌تواند giaddr یا relay agent information را برای انتخاب scope و اعمال policy استفاده کند. Option 82 ممکن است Circuit-ID/Remote-ID داشته باشد؛ insertion، trust boundary و server policy باید در طراحی مشخص شوند.\n\n## Relay و مسیر برگشت\nدر شبکهٔ چندVLAN، relay روی رابط gateway کلاینت یا سرویس متناظر قرار دارد. Relay درخواست broadcast را به server مشخصی می‌رساند و پاسخ را به segment مناسب برمی‌گرداند. اگر server درخواست را از relay address نامناسب ببیند، ممکن است scope اشتباه یا عدم وجود scope رخ دهد. اگر response به relay می‌رسد اما کلاینت ACK نمی‌بیند، بررسی client VLAN, relay interface, ACL, return route و filtering لازم است. Capture نقطه‌ای باید مشخص کند packet قبل از relay، بعد از relay، و در سمت server کجا مشاهده شده است.\n\n## Lease policy و address management\nLease duration باید با تعداد client، pool size، mobility و رفتار renewable clientها هماهنگ باشد. شبکهٔ Wi-Fi مهمان با turnover بالا ممکن است lease متفاوتی از printer/server ثابت بخواهد. Reservation مبتنی بر MAC یا client identifier ممکن است با NIC replacement، virtualization یا randomization تغییر کند؛ بنابراین inventory باید identifier واقعی را نشان دهد. Exclusionها باید با آدرس static خارج از scope هماهنگ شوند تا conflict رخ ندهد. DHCP و DNS integration می‌تواند PTR/recordها را خودکار به‌روزرسانی کند، اما aging, scavenging, permissions و ownership باید بررسی شوند.\n\n## Failover و availability\nDHCP failover یا پیاده‌سازی‌های مشابه باید state replication, lease ownership, partner state, communications interval و recovery semantics را طبق product مشخص کنند. Split-scope سنتی با failover protocol یکسان نیست. اگر دو server بدون synchronization آدرس‌های هم‌پوشان بدهند، duplicate allocation ممکن است رخ دهد. Test plan باید قطع یک partner، از دست‌دادن relay-to-server path، بازیابی partner و lease renewalهای در حال پرواز را آزمایش کند. فقط دیدن هر دو server online، failover کارا را ثابت نمی‌کند.\n\n## RCA روی trace\n- Discover ندارد: interface/VLAN/client state یا capture filter.\n- Discover به relay می‌رسد ولی server آن را نمی‌بیند: relay routing/ACL/helper/server reachability.\n- Server Offer دارد اما client Request/ACK کامل ندارد: return path، competing servers، client identifier، option/server policy.\n- DHCP ACK معتبر است اما ارتباط عملی ندارد: subnet/gateway/DNS option، duplicate IP، route یا policy را جدا بررسی کن.\n- فقط renew شکست می‌خورد: lease state، server availability، T1/T2، pool pressure و failover partner.\nبرای هر حالت از دو یا چند منبع مستقل استفاده کن؛ client output و server event log همراه packet trace اعتماد بیشتری از یک علامت منفرد می‌دهد.\n\n## امنیت\nRogue DHCP می‌تواند default gateway یا DNS را تغییر دهد. DHCP snooping، port trust model، DAI و IP source guard در محصولات پشتیبان قابل استفاده‌اند، اما feature interlock و binding table باید در topology واقعی فهمیده شوند. Relay agent information نیز اطلاعات محل اتصال endpoint را منتقل می‌کند و باید به trust boundary متصل باشد. لاگ DHCP می‌تواند MAC/client identifier و مکان اتصال را افشا کند؛ دسترسی و retention باید محدود شود.\n\n## Verification و rollback\nدر تغییر scope یا relay، قبل از اجرا subnet, exclusions, reservations, options, active leases و DHCP server identifier را ذخیره کن. پس از اصلاح، کلاینت تازه، کلاینت renewal، کلاینت از subnet relayشده، DNS resolution و جریان برنامه را آزمایش کن. Rollback باید config و lease semantics را پوشش دهد؛ بازگرداندن فقط GUI form یا command text کافی نیست.",
+      "commands": "Windows: ipconfig /all; Get-DhcpServerv4Scope; Get-DhcpServerv4Lease. Linux: dhclient -v or network-manager logs; packet capture filter UDP 67/68. Verify syntax against target OS release.",
+      "examples": "Use an isolated VLAN, controlled DHCP server and test clients. Never run rogue-server, scope-exhaustion or relay-change experiments on a production VLAN.",
+      "notes": "source=tools/packs/network_services/dhcp_dora_deep_pack.json; status=review_required; lab_execution=not_yet_run; infographic=shared/infographics/dhcp_dora.svg",
+      "learning_objectives": [
+        "چرخهٔ DHCP را در شبکهٔ چندVLAN تحلیل کند",
+        "failover و lease edge caseها را بررسی کند",
+        "RCA با capture و server telemetry بسازد"
+      ],
+      "prerequisites": [
+        "IPv4 subnet, UDP, VLAN/broadcast domain and basic DNS"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"dhcp-l3-1\",\"prompt\":\"DORA مخفف کدام چهار پیام است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dhcp-l3-2\",\"prompt\":\"DHCPv4 معمولاً از کدام UDP portها استفاده می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dhcp-l3-3\",\"prompt\":\"چرا DHCP Discover معمولاً از broadcast استفاده می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dhcp-l3-4\",\"prompt\":\"DHCP Relay چه مشکلی را حل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dhcp-l3-5\",\"prompt\":\"T1 و T2 در چرخهٔ lease به چه مفهومی مرتبط‌اند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dhcp-l3-6\",\"prompt\":\"چرا IP معتبر، درستی gateway و DNS را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dhcp-l3-7\",\"prompt\":\"Scope exhaustion چگونه دیده می‌شود؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dhcp-l3-8\",\"prompt\":\"DHCP Option 82 برای چیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dhcp-l3-9\",\"prompt\":\"چرا دو DHCP server مستقل با pool هم‌پوشان خطرناک‌اند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dhcp-l3-10\",\"prompt\":\"DHCP snooping چه هدفی دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dhcp-l3-11\",\"prompt\":\"فرق DHCP failover با split-scope چیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dhcp-l3-12\",\"prompt\":\"چرا باید renewal هم تست شود؟\",\"type\":\"short_answer\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"dhcp-l3-1\",\"answer\":\"Discover, Offer, Request, Acknowledge.\",\"rationale\":\"این توالی برای تخصیص اولیهٔ رایج IPv4 به‌کار می‌رود.\"},{\"id\":\"dhcp-l3-2\",\"answer\":\"Server روی UDP/67 و client روی UDP/68.\",\"rationale\":\"relay و وضعیت پیام می‌تواند شکل packet را تغییر دهد اما نقش portهای پایه باقی است.\"},{\"id\":\"dhcp-l3-3\",\"answer\":\"کلاینت هنوز lease/address معتبر ندارد و سرور را در لینک محلی پیدا می‌کند.\",\"rationale\":\"relay لازم است تا این درخواست از مرز L3 به server برسد.\"},{\"id\":\"dhcp-l3-4\",\"answer\":\"درخواست محلی را به DHCP server در subnet دیگر می‌رساند و پاسخ را برمی‌گرداند.\",\"rationale\":\"broadcast عادی از روتر عبور داده نمی‌شود.\"},{\"id\":\"dhcp-l3-5\",\"answer\":\"T1 زمان معمول شروع renewal و T2 زمان rebinding در صورت دسترسی‌نداشتن به server قبلی است.\",\"rationale\":\"جزئیات timer تابع پروتکل/implementation و optionهاست.\"},{\"id\":\"dhcp-l3-6\",\"answer\":\"Options ممکن است اشتباه یا ناسازگار باشند.\",\"rationale\":\"باید optionهای lease و connectivity مراحل بعد را بررسی کرد.\"},{\"id\":\"dhcp-l3-7\",\"answer\":\"سرور آدرس آزاد کافی ندارد و client ممکن است Offer دریافت نکند.\",\"rationale\":\"Lease table، exclusions و reservations را بررسی کن.\"},{\"id\":\"dhcp-l3-8\",\"answer\":\"انتقال اطلاعات relay agent مانند circuit/remote identifiers در صورت پشتیبانی.\",\"rationale\":\"اعتماد به درج‌کننده و policy server اهمیت دارد.\"},{\"id\":\"dhcp-l3-9\",\"answer\":\"ممکن است lease و options ناسازگار یا آدرس تکراری به کلاینت بدهند.\",\"rationale\":\"failover باید طراحی و synchronization معتبر داشته باشد.\"},{\"id\":\"dhcp-l3-10\",\"answer\":\"محدودکردن پاسخ‌های DHCP به پورت‌های مورداعتماد طبق پیاده‌سازی سوئیچ.\",\"rationale\":\"پیکربندی trust اشتباه می‌تواند کنترل را بی‌اثر یا clientها را قطع کند.\"},{\"id\":\"dhcp-l3-11\",\"answer\":\"Split-scope poolها را تقسیم می‌کند؛ failover می‌تواند state/lease ownership بین partnerها هماهنگ کند.\",\"rationale\":\"رفتار دقیق وابسته به محصول است.\"},{\"id\":\"dhcp-l3-12\",\"answer\":\"ممکن است initial DORA موفق باشد ولی بعداً server یا path در T1/T2 در دسترس نباشد.\",\"rationale\":\"آزمون startup به‌تنهایی چرخهٔ عمر lease را پوشش نمی‌دهد.\"}]},\"related_infographics\":[\"dhcp_dora.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 2131 — Dynamic Host Configuration Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc2131.html"
+        },
+        {
+          "title": "RFC 2132 — DHCP Options and BOOTP Vendor Extensions",
+          "url": "https://www.rfc-editor.org/rfc/rfc2132.html"
+        },
+        {
+          "title": "RFC 3046 — DHCP Relay Agent Information Option",
+          "url": "https://www.rfc-editor.org/rfc/rfc3046.html"
+        },
+        {
+          "title": "Microsoft Learn — DHCP Server",
+          "url": "https://learn.microsoft.com/en-us/windows-server/networking/technologies/dhcp/dhcp-top"
+        },
+        {
+          "title": "MikroTik RouterOS — DHCP",
+          "url": "https://help.mikrotik.com/docs/display/ROS/DHCP"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch11:dora:l4",
+      "entity": "lesson",
+      "chapter_order": 11,
+      "subchapter_order": 1,
+      "lesson_order": 5,
+      "topic": "dhcp-dora",
+      "domain": "network-services",
+      "level": "L4",
+      "title_fa": "[L4] DORA — خبره",
+      "title_en": "[L4] DHCP DORA — خبره",
+      "tags": [
+        "DHCP",
+        "DORA",
+        "lease",
+        "relay",
+        "IPAM",
+        "L4"
+      ],
+      "summary": "DHCP service را با availability و امنیت طراحی کند؛ lease/failover/relay را در سناریوهای رخداد تحلیل کند؛ capacity، change و acceptance plan تعریف کند",
+      "full_content": "# DORA — خبره و طراحی معماری\n\n## قرارداد آدرس‌دهی و منبع حقیقت\nDHCP باید بخشی از یک برنامهٔ مدیریت آدرس باشد: subnet/IPAM، DHCP scopes, exclusions, reservations, dynamic leases، DNS records، static infrastructure IPs و owner/expiry باید با هم سازگار باشند. آدرس‌های static نباید ناخواسته در pool قابل تخصیص باقی بمانند. Reservation باید با identifier واقعی کلاینت هماهنگ باشد؛ فقط فرض‌کردن MAC ممکن است در محیط‌هایی با client identifier، NIC replacement یا virtualization غلط باشد. برای هر subnet، owner، mask/prefix، gateway، DNS, NTP, lease policy و relay path مستند شود.\n\n## چرخهٔ عمر و state machine\nDORA چهار پیام آغازین متداول را نشان می‌دهد؛ چرخهٔ عملیاتی علاوه بر آن شامل lease renewal، rebinding، release، decline، nak و reinitialization پس از link/network changes است. T1/T2 و policyهای renewal بر اساس RFC و implementation تعیین می‌شوند. کلاینت ممکن است lease معتبر داشته باشد اما نتواند در renewal به server دسترسی یابد؛ صرف successful startup کافی نیست. Availability monitoring باید هم initial lease و هم renewal/rebinding را پوشش دهد. Capture باید XID، client identifier، requested/assigned IP، server identifier، relay address و options را به event timeline پیوند دهد.\n\n## Relay، Option 82 و trust boundaries\nDHCP relay مسیر broadcast محلی را به server واقع در subnet دیگر وصل می‌کند. Relay address به server کمک می‌کند scope مربوط را انتخاب کند. Option 82 می‌تواند اطلاعات circuit/remote را اضافه کند؛ این metadata تنها وقتی قابل اعتماد است که relayهای مجاز و trust boundary مشخص باشند. اگر rogue relay اجازهٔ درج metadata غیرقابل اعتماد داشته باشد، server policy ممکن است scope یا option اشتباه را اعمال کند. مسیر request و response باید از نظر ACL، VRF, route و policy به‌طور جداگانه بررسی شود.\n\n## Scope planning، lease و capacity\nScope size باید با client concurrency، turnover، offline duration و lease length محاسبه شود. Lease کوتاه باعث آزادسازی سریع‌تر address اما renewal QPS بیشتر می‌شود؛ lease بلند renewal load را کم می‌کند اما dynamic pool را مدت بیشتری اشغال می‌کند. Reservations و exclusions از ظرفیت واقعی کم می‌کنند. برای hotspot مهمان، رویدادهای پرتراکم یا شبکهٔ صنعتی با دستگاه‌های کم‌تحرک، policy یکسان ممکن است مناسب نباشد. Capacity plan باید peak concurrent clients، offer/ack rate، renewal spikes، partner failover و رشد آینده را مدل کند.\n\n## Failover و consistency\nDHCP failover طبق implementation می‌تواند حالت‌ها و timerهای خاص داشته باشد. Partner replication و lease ownership باید در test harness بررسی شود. Split-scope صرفاً دو pool مستقل است و با پروتکل failover با state-sharing یکسان نیست. Acceptance باید یک partner را قطع کند، client جدید بگیرد، lease موجود را تمدید کند، partner را بازگرداند و احتمال duplicate allocation یا ناسازگاری optionها را بررسی کند. Failover زمانی ثابت شده که رفتار client و lease state در سناریوی واقعی کنترل‌شده دیده شود، نه صرفاً اینکه process دوم running است.\n\n## Security threat model\nRogue DHCP، starvation، spoofed relay information، scope exhaustion، unauthorized management/update، exposure of lease logs و optionهای مخرب ریسک‌های مهم‌اند. DHCP snooping می‌تواند فقط پورت‌های مورداعتماد را به‌عنوان مسیر DHCP server در نظر بگیرد؛ port trust باید با اتصال واقعی upstream server/relay تطبیق داده شود. Dynamic ARP Inspection یا IP Source Guard، اگر پشتیبانی و طراحی شده باشند، ممکن است از bindingهای معتبر DHCP استفاده کنند اما binding mismatch می‌تواند legitimate client را قطع کند. این featureها را در maintenance window و با recovery access نصب و آزمایش کن.\n\n## DNS integration و دادهٔ چرخهٔ عمر\nDynamic DNS update ممکن است hostname-to-address mapping و PTRها را با DHCP هماهنگ کند. باید مشخص باشد client یا server مالک update است، کدام credential با چه permission عمل می‌کند، حذف/aging رکوردها چگونه مدیریت می‌شود و چه زمانی lease منقضی یا client جابه‌جا شده است. Stale DNS record ممکن است پس از پایان lease باقی بماند؛ فقط lease database یا DNS zone به‌تنهایی وضعیت کل را ثابت نمی‌کند. تست باید یک client renew, release, move و expiration را در zone آزمایشی پوشش دهد.\n\n## Observability و RCA\nMetricهای مناسب می‌توانند Discover-to-ACK latency، offer/ack success، timeout/NAK/DECLINE، free-address ratio، scope exhaustion, relay failure، failover partner state و lease renewal success باشند. Logها باید به client identifier، scope، relay/giaddr و timestamp مرتبط شوند، ولی retention و دسترسی باید privacy را رعایت کند. در رخداد “IP ندارد”، source VLAN و packet trace را با server lease/event log تطبیق بده. در رخداد “IP دارد اما سرویس ندارد”، options، gateway، DNS، route و policy را جدا بررسی کن.\n\n## Acceptance suite\n- کلاینت جدید DORA را کامل می‌کند و options صحیح دریافت می‌کند.\n- کلاینت leaseدار renewal را انجام می‌دهد؛ مسیر T1/T2/failover آزموده می‌شود.\n- relay در چند subnet scope درست انتخاب و پاسخ را به subnet هدف بازمی‌گرداند.\n- آدرس خارج pool یا exclusion به dynamic client تخصیص نمی‌یابد.\n- DHCP snooping در VLAN آزمایشی server جعلی را رد می‌کند بدون آنکه مسیر مجاز قطع شود.\n- DNS integration پس از renew/release/expiration طبق design عمل می‌کند.\n- failover partner قطع و بازیابی می‌شود و duplicate allocation رخ نمی‌دهد.\n- rollback، config و رفتار کلاینت/سرور را به baseline برمی‌گرداند.\n\n## منابع و Definition of Done\nRFC 2131 رفتار پایهٔ DHCPv4، RFC 2132 optionها و RFC 3046 relay agent information را مشخص می‌کنند؛ syntax و جزئیات implementation را از مستندات نسخهٔ واقعی Microsoft/Cisco/MikroTik/سازندهٔ مقصد تأیید کن. یک DHCP design فقط وقتی آمادهٔ production است که IPAM, scope, relay, option, lease, failover, security, logging, privacy, rollback و نتایج آزمون ثبت شده باشند. این درس‌های آموزشی تا اجرای واقعی Labها review-required می‌مانند.",
+      "commands": "Windows: ipconfig /all; Get-DhcpServerv4Scope; Get-DhcpServerv4Lease. Linux: dhclient -v or network-manager logs; packet capture filter UDP 67/68. Verify syntax against target OS release.",
+      "examples": "Use an isolated VLAN, controlled DHCP server and test clients. Never run rogue-server, scope-exhaustion or relay-change experiments on a production VLAN.",
+      "notes": "source=tools/packs/network_services/dhcp_dora_deep_pack.json; status=review_required; lab_execution=not_yet_run; infographic=shared/infographics/dhcp_dora.svg",
+      "learning_objectives": [
+        "DHCP service را با availability و امنیت طراحی کند",
+        "lease/failover/relay را در سناریوهای رخداد تحلیل کند",
+        "capacity، change و acceptance plan تعریف کند"
+      ],
+      "prerequisites": [
+        "IPv4 subnet, UDP, VLAN/broadcast domain and basic DNS"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"dhcp-l4-1\",\"prompt\":\"DORA مخفف کدام چهار پیام است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-2\",\"prompt\":\"DHCPv4 معمولاً از کدام UDP portها استفاده می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-3\",\"prompt\":\"چرا DHCP Discover معمولاً از broadcast استفاده می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-4\",\"prompt\":\"DHCP Relay چه مشکلی را حل می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-5\",\"prompt\":\"T1 و T2 در چرخهٔ lease به چه مفهومی مرتبط‌اند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-6\",\"prompt\":\"چرا IP معتبر، درستی gateway و DNS را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-7\",\"prompt\":\"Scope exhaustion چگونه دیده می‌شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-8\",\"prompt\":\"DHCP Option 82 برای چیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-9\",\"prompt\":\"چرا دو DHCP server مستقل با pool هم‌پوشان خطرناک‌اند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-10\",\"prompt\":\"DHCP snooping چه هدفی دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-11\",\"prompt\":\"فرق DHCP failover با split-scope چیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-12\",\"prompt\":\"چرا باید renewal هم تست شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-13\",\"prompt\":\"چرا DHCP و DNS integration می‌تواند stale record بسازد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-14\",\"prompt\":\"برای عیب‌یابی relay چه اطلاعاتی مهم است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dhcp-l4-15\",\"prompt\":\"چه چیزی اثبات می‌کند DHCP design آمادهٔ production است؟\",\"type\":\"short_answer\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"dhcp-l4-1\",\"answer\":\"Discover, Offer, Request, Acknowledge.\",\"rationale\":\"این توالی برای تخصیص اولیهٔ رایج IPv4 به‌کار می‌رود.\"},{\"id\":\"dhcp-l4-2\",\"answer\":\"Server روی UDP/67 و client روی UDP/68.\",\"rationale\":\"relay و وضعیت پیام می‌تواند شکل packet را تغییر دهد اما نقش portهای پایه باقی است.\"},{\"id\":\"dhcp-l4-3\",\"answer\":\"کلاینت هنوز lease/address معتبر ندارد و سرور را در لینک محلی پیدا می‌کند.\",\"rationale\":\"relay لازم است تا این درخواست از مرز L3 به server برسد.\"},{\"id\":\"dhcp-l4-4\",\"answer\":\"درخواست محلی را به DHCP server در subnet دیگر می‌رساند و پاسخ را برمی‌گرداند.\",\"rationale\":\"broadcast عادی از روتر عبور داده نمی‌شود.\"},{\"id\":\"dhcp-l4-5\",\"answer\":\"T1 زمان معمول شروع renewal و T2 زمان rebinding در صورت دسترسی‌نداشتن به server قبلی است.\",\"rationale\":\"جزئیات timer تابع پروتکل/implementation و optionهاست.\"},{\"id\":\"dhcp-l4-6\",\"answer\":\"Options ممکن است اشتباه یا ناسازگار باشند.\",\"rationale\":\"باید optionهای lease و connectivity مراحل بعد را بررسی کرد.\"},{\"id\":\"dhcp-l4-7\",\"answer\":\"سرور آدرس آزاد کافی ندارد و client ممکن است Offer دریافت نکند.\",\"rationale\":\"Lease table، exclusions و reservations را بررسی کن.\"},{\"id\":\"dhcp-l4-8\",\"answer\":\"انتقال اطلاعات relay agent مانند circuit/remote identifiers در صورت پشتیبانی.\",\"rationale\":\"اعتماد به درج‌کننده و policy server اهمیت دارد.\"},{\"id\":\"dhcp-l4-9\",\"answer\":\"ممکن است lease و options ناسازگار یا آدرس تکراری به کلاینت بدهند.\",\"rationale\":\"failover باید طراحی و synchronization معتبر داشته باشد.\"},{\"id\":\"dhcp-l4-10\",\"answer\":\"محدودکردن پاسخ‌های DHCP به پورت‌های مورداعتماد طبق پیاده‌سازی سوئیچ.\",\"rationale\":\"پیکربندی trust اشتباه می‌تواند کنترل را بی‌اثر یا clientها را قطع کند.\"},{\"id\":\"dhcp-l4-11\",\"answer\":\"Split-scope poolها را تقسیم می‌کند؛ failover می‌تواند state/lease ownership بین partnerها هماهنگ کند.\",\"rationale\":\"رفتار دقیق وابسته به محصول است.\"},{\"id\":\"dhcp-l4-12\",\"answer\":\"ممکن است initial DORA موفق باشد ولی بعداً server یا path در T1/T2 در دسترس نباشد.\",\"rationale\":\"آزمون startup به‌تنهایی چرخهٔ عمر lease را پوشش نمی‌دهد.\"},{\"id\":\"dhcp-l4-13\",\"answer\":\"Lease expiration/move و ownership رکوردهای dynamic update ممکن است هم‌زمان نشوند.\",\"rationale\":\"aging, scavenging و permissions باید طراحی شوند.\"},{\"id\":\"dhcp-l4-14\",\"answer\":\"client VLAN, giaddr/relay information, server scope, return route, ACL و timestamp.\",\"rationale\":\"capture دو سوی relay/server فرضیه‌ها را تفکیک می‌کند.\"},{\"id\":\"dhcp-l4-15\",\"answer\":\"Acceptance tests واقعی شامل initial lease، renewal، relay، failover، security، rollback و verification.\",\"rationale\":\"وجود process یا config به‌تنهایی کافی نیست.\"}]},\"related_infographics\":[\"dhcp_dora.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 2131 — Dynamic Host Configuration Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc2131.html"
+        },
+        {
+          "title": "RFC 2132 — DHCP Options and BOOTP Vendor Extensions",
+          "url": "https://www.rfc-editor.org/rfc/rfc2132.html"
+        },
+        {
+          "title": "RFC 3046 — DHCP Relay Agent Information Option",
+          "url": "https://www.rfc-editor.org/rfc/rfc3046.html"
+        },
+        {
+          "title": "Microsoft Learn — DHCP Server",
+          "url": "https://learn.microsoft.com/en-us/windows-server/networking/technologies/dhcp/dhcp-top"
+        },
+        {
+          "title": "MikroTik RouterOS — DHCP",
+          "url": "https://help.mikrotik.com/docs/display/ROS/DHCP"
+        }
+      ],
+      "source_status": "review_required"
+    }
+  ]
+}
