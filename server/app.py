@@ -386,6 +386,7 @@ def sync_push():
     conflict_uids = []
     unsupported_uids = []
     missing_target_uids = []
+    invalid_uids = []
     index = {}
     d = db()
     for row in d.sync_index():
@@ -445,7 +446,7 @@ def sync_push():
             )
             if invalid_item:
                 invalid += 1
-                unsupported_uids.append(uid)
+                invalid_uids.append(uid)
                 continue
 
         server = index.get((uid, entity))
@@ -494,7 +495,7 @@ def sync_push():
         "missing_targets": missing_targets,
         "missing_target_uids": missing_target_uids,
         "invalid": invalid,
-        "invalid_uids": [uid for uid in unsupported_uids if uid not in unsupported_uids[:unsupported]], 
+        "invalid_uids": invalid_uids,
         "server_time": utc_now(),
     })
 
