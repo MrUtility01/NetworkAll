@@ -210,27 +210,46 @@ class MainActivity : AppCompatActivity() {
                     pulled += withContext(Dispatchers.IO) { scenarioSyncRepo.upsertFromPullJson(body) }
                 }
                 val pushArr = withContext(Dispatchers.IO) {
-                    val combined = repo.buildPushArray()
+                    val combined = repo.buildPushArray(since)
                     val workspace = workspaceSyncRepo.buildPushArray()
                     for (i in 0 until workspace.length()) combined.put(workspace.get(i))
                     combined
                 }
                 var pushSummary = "push=0"
                 if (pushArr.length() > 0) {
-                    val pushBody = withContext(Dispatchers.IO) { c.push(pushArr) }
-                    val result = org.json.JSONObject(pushBody)
-                    val unsupported = result.optInt("unsupported", 0)
-                    val missing = result.optInt("missing_targets", 0)
-                    val conflicts = result.optInt("conflicts", 0)
-                    pushSummary = "push accepted=${result.optInt("accepted", 0)} kept=${result.optInt("kept", 0)} conflicts=$conflicts unsupported=$unsupported missing=$missing"
-                    // Do not advance the incremental cursor when the server rejected or
-                    // could not safely apply records; otherwise a partial sync looks complete.
+                    var accepted = 0
+                    var kept = 0
+                    var conflicts = 0
+                    var unsupported = 0
+                    var missing = 0
+                    var start = 0
+                    // Keep requests below both the server's 1000-record cap and its
+                    // 8 MiB request limit. A single oversized record still fails loudly.
+                    while (start < pushArr.length()) {
+                        val end = minOf(start + 25, pushArr.length())
+                        val batch = org.json.JSONArray()
+                        for (i in start until end) batch.put(pushArr.get(i))
+                        val pushBody = withContext(Dispatchers.IO) { c.push(batch) }
+                        val result = org.json.JSONObject(pushBody)
+                        accepted += result.optInt("accepted", 0)
+                        kept += result.optInt("kept", 0)
+                        conflicts += result.optInt("conflicts", 0)
+                        unsupported += result.optInt("unsupported", 0)
+                        missing += result.optInt("missing_targets", 0)
+                        start = end
+                        // Don't advance the cursor or continue a misleading partial push.
+                        if (unsupported > 0 || missing > 0 || conflicts > 0) break
+                    }
+                    pushSummary = "push=${pushArr.length()} accepted=$accepted kept=$kept conflicts=$conflicts unsupported=$unsupported missing=$missing"
                     if (unsupported > 0 || missing > 0 || conflicts > 0) {
                         log("⚠ sync ناقص: pull=$pulled $pushSummary")
                         return@launch
                     }
                 }
-                withContext(Dispatchers.IO) { repo.setLastSync(Instant.now().toString()) }
+                // Use the server's manifest snapshot, not the phone clock after the
+                // sync. This prevents edits made during sync from falling behind the cursor.
+                val cursor = m.generated_at?.takeIf { it.isNotBlank() } ?: Instant.now().toString()
+                withContext(Dispatchers.IO) { repo.setLastSync(cursor) }
                 log("✓ sync pull=$pulled $pushSummary")
             } catch (e: Exception) { log("sync: ${e.message}") }
         }
