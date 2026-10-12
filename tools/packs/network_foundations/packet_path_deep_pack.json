@@ -1,0 +1,348 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-12",
+  "purpose": "Progressive L0-L4 deepening of the existing Chapter 6 Packet Journey lessons. Existing titles and stable lesson identity are preserved by title-based merge.",
+  "scope": {
+    "chapter_order": 6,
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lesson_count": 5,
+    "topics": [
+      {
+        "id": "packet-journey",
+        "title_fa": "مسیر بسته از App تا کابل",
+        "title_en": "Packet Journey from Application to Network Link"
+      }
+    ]
+  },
+  "instructional_contract": {
+    "level_floors": {
+      "L0": 600,
+      "L1": 800,
+      "L2": 1200,
+      "L3": 1600,
+      "L4": 2200
+    },
+    "volume_rule": "Count unique competencies, labs, failure modes, platforms and assessment outcomes; no arbitrary global cap.",
+    "lab_status": "designed_not_executed",
+    "separate_answer_key": true
+  },
+  "compatibility": {
+    "scope": "Platform-neutral concepts. Exact CLI syntax, counters and device behavior must be verified against the relevant vendor, model and release."
+  },
+  "content_quality": {
+    "status": "review_required",
+    "reason": "Course content and assessment structure are authored; the labs have not been executed and vendor-specific command output must be independently verified before status can become verified."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch06:packet-journey:l0",
+      "entity": "lesson",
+      "chapter_order": 6,
+      "subchapter_order": 5,
+      "lesson_order": 1,
+      "topic": "packet-journey",
+      "domain": "network-foundations",
+      "level": "L0",
+      "title_fa": "[L0] مسیر بسته از App تا کابل — آشنایی",
+      "title_en": "[L0] Packet Journey from Application to Network Link — آشنایی",
+      "tags": [
+        "network-foundations",
+        "packet-journey",
+        "Ethernet",
+        "IP",
+        "routing",
+        "L0"
+      ],
+      "summary": "برای مقصد خارج subnet معمولاً MAC کدام دستگاه روی لینک اول لازم است؟؛ Access Point در حالت bridge چه نقشی دارد؟؛ تفاوت IP مقصد و MAC فریم خروجی چیست؟",
+      "full_content": "# مسیر بسته از App تا کابل — آشنایی\n\n## هدف قابل سنجش\nپس از این درس بتوانی با زبان خودت توضیح بدهی چرا یک درخواست برنامه به چند قالب داده تبدیل می‌شود، سیستم‌عامل چگونه انتخاب می‌کند بسته به کجا برود، و نقش Wi-Fi، Access Point، سوئیچ، روتر و مودم/ONT چیست.\n\n## مدل ذهنی: یک درخواست، چند لایه\nمرورگر یک درخواست مثل بازکردن سایت ایجاد می‌کند. اگر برنامه به نام دامنه وصل شود، ممکن است سیستم‌عامل برای یافتن IP از DNS استفاده کند؛ ولی اگر جواب در cache باشد، پرس‌وجوی شبکه‌ای تازه‌ای لازم نیست. پس از مشخص‌شدن آدرس، برنامه درخواست transport می‌کند. TCP در اتصال‌های متداول HTTPS قابلیت برقراری اتصال و تحویل مرتب داده را فراهم می‌کند. سپس IP آدرس مبدأ و مقصد را در بسته قرار می‌دهد. برای عبور از لینک محلی، بسته در فریم لایهٔ پیوند قرار می‌گیرد و کارت شبکه یا رادیو آن را به سیگنال تبدیل می‌کند. این فرایند encapsulation نام دارد.\n\n«داده»، «segment»، «IP packet» و «Ethernet frame» دقیقاً یک چیز نیستند. نام هر PDU به لایه‌ای بستگی دارد که آن را بررسی می‌کنیم. در مکالمهٔ روزمره همه را «پکت» می‌نامیم، اما هنگام بررسی capture باید بپرسیم منظورمان کدام لایه است.\n\n## مقصد محلی است یا دور؟\nنمونه: لپ‌تاپ IP برابر 192.168.10.20/24 و دروازهٔ پیش‌فرض 192.168.10.1 دارد. مقصد 192.168.10.50 در همان subnet است؛ مقصد 198.51.100.80 خارج از subnet است. در حالت دوم لپ‌تاپ معمولاً فریم را به MAC آدرس دروازه می‌دهد، درحالی‌که IP مقصد هنوز آدرس سرور دوردست است. 198.51.100.0/24 از محدوده‌های رزروشده برای مستندسازی است؛ این مثال را مقصد واقعی قابل دسترسی تلقی نکن.\n\nبرای ارسال روی لینک، میزبان باید MAC آدرس next hop را بداند. در IPv4 این نگاشت معمولاً با ARP به دست می‌آید؛ در IPv6 Neighbor Discovery مبتنی بر ICMPv6 استفاده می‌شود. اگر حل آدرس همسایه شکست بخورد، وجود route به‌تنهایی کافی نیست.\n\n## نقش تجهیزات\n- **Access Point:** در حالت رایج، فریم‌های WLAN را به LAN bridge می‌کند. AP الزاماً router یا DHCP server نیست.\n- **Switch:** فریم را با MAC مقصد و عضویت VLAN هدایت می‌کند. دو میزبان در VLAN یکسان ممکن است مستقیم از سوئیچ عبور کنند و نیازی به روتر نداشته باشند.\n- **Router:** بستهٔ IP را با جدول route بررسی می‌کند و next hop یا رابط خروجی را انتخاب می‌کند. روی لینک بعدی معمولاً فریم جدیدی می‌سازد.\n- **Modem/ONT:** رسانهٔ دسترسی اپراتور را خاتمه می‌دهد یا تبدیل می‌کند. بعضی دستگاه‌ها روتر، NAT، DHCP و Wi-Fi را نیز در همان بدنه دارند.\n- **Firewall/NAT:** بر اساس پیکربندی ممکن است ترافیک را مجاز یا رد کند، یا آدرس و پورت را ترجمه کند. NAT رمزنگاری نیست و جایگزین کامل firewall policy نمی‌شود.\n\n## مثال عملی بدون تغییر پیکربندی\nدر Windows دستور ipconfig /all را اجرا کن و IPv4، subnet mask، default gateway و DNS را پیدا کن. سپس arp -a یا Get-NetNeighbor را برای مشاهدهٔ همسایه‌ها به کار ببر. این فرمان‌ها فقط مشاهده‌ای‌اند. یک ping ناموفق به معنی خرابی قطعی روتر نیست، چون ممکن است ICMP مسدود شده باشد. اتصال نام دامنه را از اتصال مستقیم به IP و از TCP را از TLS جدا بررسی کن.\n\n## تمرین\nیک نمودار ساده بکش: برنامه → سیستم‌عامل → NIC/Wi-Fi → AP یا سوئیچ → روتر → مودم/ONT → ISP → سرور. زیر هر گره بنویس چه تصمیم یا تبدیلی آنجا رخ می‌دهد. اگر مودم و روتر در یک دستگاه باشند، نقش‌های منطقی را جدا رسم کن.\n\n## خطاهای رایج\nاتصال Wi-Fi به معنی اینترنت نیست؛ ممکن است DHCP، DNS، gateway یا upstream مشکل داشته باشد. پاسخ gateway به ping، سرویس وب را ثابت نمی‌کند. سوئیچ لایهٔ ۲ و روتر لایهٔ ۳ تصمیم یکسان نمی‌گیرند. مسیر پاسخ هم الزماً از همان تجهیزات به ترتیب معکوس عبور نمی‌کند.\n\n## واژه‌نامه\nEncapsulation یعنی قرار دادن داده در قالب لایه؛ MAC شناسهٔ لایهٔ پیوند است؛ IP برای ارسال بین شبکه‌ها به‌کار می‌رود؛ Default Gateway مسیر پیش‌فرض به مقصدهای خارج از subnet است؛ ONT خاتمه‌دهندهٔ شبکهٔ نوری مشترک است.",
+      "commands": "Windows: ipconfig /all; route print; arp -a; Get-NetNeighbor; Test-NetConnection. Linux: ip -br address; ip route; ip neigh; tracepath. Vendor commands must be verified for the exact platform/release.",
+      "examples": "Controlled topology: client → AP/bridge → VLAN-aware switch → router/firewall → modem/ONT/CPE → ISP simulation → test server. RFC 5737 addresses are examples for documentation only; actual labs must use a controlled, owned subnet.",
+      "notes": "source=tools/packs/network_foundations/packet_path_deep_pack.json; quality=review_required; lab_execution=not_yet_run; infographic_refs=packet_path.svg,arp_ndp.svg,tcp_handshake.svg,nat_pat.svg,packet_capture_points.svg,network_troubleshooting.svg",
+      "learning_objectives": [
+        "برای مقصد خارج subnet معمولاً MAC کدام دستگاه روی لینک اول لازم است؟",
+        "Access Point در حالت bridge چه نقشی دارد؟",
+        "تفاوت IP مقصد و MAC فریم خروجی چیست؟"
+      ],
+      "prerequisites": [],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"packet-l0-1\",\"prompt\":\"اگر مقصد خارج از prefix محلی باشد، MAC کدام next hop روی لینک اول لازم است؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"packet-l0-2\",\"prompt\":\"چرا DNS موفق، TCP موفق را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"packet-l0-3\",\"prompt\":\"چرا TCP handshake موفق، TLS را اثبات نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"packet-l0-4\",\"prompt\":\"در هر hop روتر معمولاً چه تغییری در L2 اعمال می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"packet-l0-5\",\"prompt\":\"چرا VLAN جدا بدون gateway بین VLANها ارتباط ایجاد نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"packet-l0-1\",\"answer\":\"معمولاً MAC دروازهٔ پیش‌فرض در رابط خروجی؛ IP destination هنوز میزبان دوردست است.\",\"rationale\":\"لایهٔ پیوند فقط برای لینک فعلی آدرس‌دهی می‌کند و MAC سرور اینترنتی معمولاً قابل resolve محلی نیست.\"},{\"id\":\"packet-l0-2\",\"answer\":\"DNS فقط پاسخ نام/آدرس می‌دهد؛ route، firewall و listener برای TCP جدا هستند.\",\"rationale\":\"پاسخ DNS می‌تواند cached باشد و شکست‌های بعدی مستقل‌اند.\"},{\"id\":\"packet-l0-3\",\"answer\":\"TCP اتصال انتقالی می‌سازد؛ TLS اعتبارسنجی گواهی، نام و سیاست رمزنگاری دارد.\",\"rationale\":\"TLS ممکن است به‌علت clock، SNI، trust یا version failure دهد.\"},{\"id\":\"packet-l0-4\",\"answer\":\"فریم جدید متناسب با رابط خروجی و MAC next hop می‌سازد.\",\"rationale\":\"آدرس‌های MAC محلی‌اند و در پیوند بعدی عوض می‌شوند؛ IPها معمولاً باقی می‌مانند مگر NAT/tunnel.\"},{\"id\":\"packet-l0-5\",\"answer\":\"VLAN دامنهٔ لایهٔ ۲ را جدا می‌کند؛ ارتباط subnetها به routing و policy نیاز دارد.\",\"rationale\":\"عضویت VLAN معادل route نیست.\"}]},\"related_infographics\":[\"packet_path.svg\",\"arp_ndp.svg\",\"tcp_handshake.svg\",\"nat_pat.svg\",\"packet_capture_points.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 826 — An Ethernet Address Resolution Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc826.html"
+        },
+        {
+          "title": "RFC 4861 — Neighbor Discovery for IPv6",
+          "url": "https://www.rfc-editor.org/rfc/rfc4861.html"
+        },
+        {
+          "title": "RFC 9293 — Transmission Control Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc9293.html"
+        },
+        {
+          "title": "RFC 3022 — Traditional IP Network Address Translator",
+          "url": "https://www.rfc-editor.org/rfc/rfc3022.html"
+        },
+        {
+          "title": "RFC 2131 — Dynamic Host Configuration Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc2131.html"
+        },
+        {
+          "title": "RFC 5737 — IPv4 Address Blocks Reserved for Documentation",
+          "url": "https://www.rfc-editor.org/rfc/rfc5737.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch06:packet-journey:l1",
+      "entity": "lesson",
+      "chapter_order": 6,
+      "subchapter_order": 5,
+      "lesson_order": 2,
+      "topic": "packet-journey",
+      "domain": "network-foundations",
+      "level": "L1",
+      "title_fa": "[L1] مسیر بسته از App تا کابل — مقدماتی",
+      "title_en": "[L1] Packet Journey from Application to Network Link — مقدماتی",
+      "tags": [
+        "network-foundations",
+        "packet-journey",
+        "Ethernet",
+        "IP",
+        "routing",
+        "L1"
+      ],
+      "summary": "برای جداسازی DNS از TCP چه دو آزمون جدا انجام می‌دهی؟؛ چرا route موجود به معنی پاسخ‌گویی next hop نیست؟؛ کدام تفاوت میان Access Point و Router وجود دارد؟",
+      "full_content": "# مسیر بسته از App تا کابل — مقدماتی\n\n## خروجی مورد انتظار\nباید بتوانی یک اتصال تازه به مقصد خارج از subnet را مرحله‌بندی کنی، تفاوت route و neighbor resolution را بفهمی و با چند فرمان مشاهده‌ای مشخص کنی خرابی احتمالاً در DNS، IP، TCP یا لایهٔ دسترسی است. پیش‌نیاز: IPv4/IPv6 prefix، MAC، gateway و مفهوم پورت.\n\n## ترتیب مسیر\n۱) برنامه نام مقصد را به resolver می‌دهد. resolver ممکن است cache را پاسخ دهد یا از DNS سازمانی، recursive resolver یا سازوکار دیگری استفاده کند. در نتیجه همهٔ درخواست‌ها لزوماً بستهٔ DNS جدید نمی‌سازند.\n۲) برنامه transport را انتخاب می‌کند. TCP/443 در HTTPS رایج است؛ QUIC/UDP نیز در HTTP/3 متداول است. پس نباید فرض کنیم هر مرورگر برای وب همیشه TCP دارد.\n۳) سیستم‌عامل route را براساس مقصد، prefix، metric و گاهی policy routing انتخاب می‌کند.\n۴) برای ساخت فریم محلی، MAC آدرس next hop لازم است: MAC میزبان مقصد اگر محلی باشد، و MAC gateway اگر مقصد remote باشد.\n۵) Wi-Fi association و امنیت WLAN، VLAN mapping، bridge و سوئیچینگ محلی را طی می‌کند.\n۶) روتر براساس IP مقصد lookup انجام می‌دهد، TTL/Hop Limit را کم می‌کند و برای لینک بعدی فریم متناسب می‌سازد.\n۷) در مسیر ممکن است ACL، firewall state، policy-based routing، NAT/PAT، tunnel یا QoS وجود داشته باشد.\n۸) مودم/ONT و شبکهٔ اپراتور ترافیک را از فناوری دسترسی عبور می‌دهند. پاسخ ممکن است route دیگری برگردد.\n\n## مثال آدرس‌دهی\nمیزبان 192.168.10.20/24، gateway برابر 192.168.10.1 و یک IP مقصد مستندسازی‌شده مثل 198.51.100.80 دارد. prefix محلی 192.168.10.0/24 است؛ بنابراین مقصد remote است. بستهٔ IP به سرور اشاره می‌کند اما فریم Ethernet اول به MAC دروازه تحویل می‌شود. اگر روتر روی خروجی NAT انجام دهد، آدرس/پورت ترجمه‌شده در capture بیرونی متفاوت خواهد بود. آدرس‌های RFC 5737 برای مستندسازی هستند؛ برای Lab به‌جای آن‌ها از سرور تحت مالکیت خودت استفاده کن.\n\n## ابزارهای پایه\n~~~powershell\nipconfig /all\nroute print\narp -a\nGet-NetNeighbor\nTest-NetConnection <test-host> -Port 443\n~~~\n~~~bash\nip -br address\nip route\nip neigh\ntracepath <test-host>\n~~~\nخروجی route وجود مسیر انتخابی را نشان می‌دهد، نه اینکه next hop پاسخگو یا firewall باز باشد. neighbor cache نگاشت لینک را نشان می‌دهد، نه سلامت WAN. Test-NetConnection یک آزمون transport محدود انجام می‌دهد؛ موفقیت آن TLS و پاسخ کاربرد را ثابت نمی‌کند.\n\n## لابراتوار قابل تکرار\n- پیش از شروع، نسخهٔ سیستم‌عامل، رابط فعال، IP/prefix، gateway و زمان را ثبت کن.\n- route انتخابی مقصد آزمایشی و همسایهٔ مرتبط را مشاهده کن.\n- DNS resolve را جدا از اتصال مستقیم IP اجرا کن.\n- در صورت مجاز بودن، capture بگیر و زمان، interface و فیلتر را ثبت کن.\n- خروجی را با baseline مقایسه کن و مشخص کن کدام فرضیه تأیید یا رد می‌شود.\n- هیچ route، VLAN، firewall یا NAT عملیاتی را برای این تمرین تغییر نده.\n\n## تفسیر علت‌ها\nاگر IP وجود ندارد یا از APIPA استفاده شده، DHCP، VLAN و اتصال دسترسی را بررسی کن. اگر IP هست اما neighbor دروازه resolve نمی‌شود، prefix اشتباه، VLAN mismatch، AP/bridge یا ARP/NDP را بررسی کن. اگر مقصد IP قابل دسترسی است اما نام resolve نمی‌شود، DNS، cache و split DNS مطرح‌اند. اگر SYN بیرون می‌رود اما پاسخ نمی‌آید، ACL، route برگشت، NAT یا سرور محتمل‌اند. اگر TCP برقرار اما TLS شکست می‌خورد، ساعت سیستم، گواهی، hostname/SNI و trust chain را بررسی کن.\n\n## معیار قبولی\nگزارش باید نشان دهد مقصد محلی یا remote است، MAC لازم روی لینک اول کدام است، هر فرمان کدام لایه را می‌سنجد، چه چیز هنوز اثبات نشده و گام بعدی چگونه انتخاب شده است. عبارت کلی «شبکه مشکل دارد» تشخیص قابل قبول نیست.",
+      "commands": "Windows: ipconfig /all; route print; arp -a; Get-NetNeighbor; Test-NetConnection. Linux: ip -br address; ip route; ip neigh; tracepath. Vendor commands must be verified for the exact platform/release.",
+      "examples": "Controlled topology: client → AP/bridge → VLAN-aware switch → router/firewall → modem/ONT/CPE → ISP simulation → test server. RFC 5737 addresses are examples for documentation only; actual labs must use a controlled, owned subnet.",
+      "notes": "source=tools/packs/network_foundations/packet_path_deep_pack.json; quality=review_required; lab_execution=not_yet_run; infographic_refs=packet_path.svg,arp_ndp.svg,tcp_handshake.svg,nat_pat.svg,packet_capture_points.svg,network_troubleshooting.svg",
+      "learning_objectives": [
+        "برای جداسازی DNS از TCP چه دو آزمون جدا انجام می‌دهی؟",
+        "چرا route موجود به معنی پاسخ‌گویی next hop نیست؟",
+        "کدام تفاوت میان Access Point و Router وجود دارد؟"
+      ],
+      "prerequisites": [
+        "IPv4/IPv6 prefix, MAC, default gateway and link-layer encapsulation"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"packet-l1-1\",\"prompt\":\"اگر مقصد خارج از prefix محلی باشد، MAC کدام next hop روی لینک اول لازم است؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"packet-l1-2\",\"prompt\":\"چرا DNS موفق، TCP موفق را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"packet-l1-3\",\"prompt\":\"چرا TCP handshake موفق، TLS را اثبات نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"packet-l1-4\",\"prompt\":\"در هر hop روتر معمولاً چه تغییری در L2 اعمال می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"packet-l1-5\",\"prompt\":\"چرا VLAN جدا بدون gateway بین VLANها ارتباط ایجاد نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"packet-l1-6\",\"prompt\":\"اگر SYN از WAN خارج شود و پاسخ نیاید، چه علت‌هایی همچنان ممکن‌اند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"packet-l1-7\",\"prompt\":\"چرا route موجود در RIB کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"packet-l1-8\",\"prompt\":\"NAT چه کاری نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"packet-l1-1\",\"answer\":\"معمولاً MAC دروازهٔ پیش‌فرض در رابط خروجی؛ IP destination هنوز میزبان دوردست است.\",\"rationale\":\"لایهٔ پیوند فقط برای لینک فعلی آدرس‌دهی می‌کند و MAC سرور اینترنتی معمولاً قابل resolve محلی نیست.\"},{\"id\":\"packet-l1-2\",\"answer\":\"DNS فقط پاسخ نام/آدرس می‌دهد؛ route، firewall و listener برای TCP جدا هستند.\",\"rationale\":\"پاسخ DNS می‌تواند cached باشد و شکست‌های بعدی مستقل‌اند.\"},{\"id\":\"packet-l1-3\",\"answer\":\"TCP اتصال انتقالی می‌سازد؛ TLS اعتبارسنجی گواهی، نام و سیاست رمزنگاری دارد.\",\"rationale\":\"TLS ممکن است به‌علت clock، SNI، trust یا version failure دهد.\"},{\"id\":\"packet-l1-4\",\"answer\":\"فریم جدید متناسب با رابط خروجی و MAC next hop می‌سازد.\",\"rationale\":\"آدرس‌های MAC محلی‌اند و در پیوند بعدی عوض می‌شوند؛ IPها معمولاً باقی می‌مانند مگر NAT/tunnel.\"},{\"id\":\"packet-l1-5\",\"answer\":\"VLAN دامنهٔ لایهٔ ۲ را جدا می‌کند؛ ارتباط subnetها به routing و policy نیاز دارد.\",\"rationale\":\"عضویت VLAN معادل route نیست.\"},{\"id\":\"packet-l1-6\",\"answer\":\"upstream filtering، سرور، مسیر برگشت، ACL یا نقص capture.\",\"rationale\":\"مشاهدهٔ یک جهت به‌تنهایی علت ریشه‌ای را ثابت نمی‌کند.\"},{\"id\":\"packet-l1-7\",\"answer\":\"FIB، adjacency، next-hop resolution و policy ممکن است ارسال را متوقف کنند.\",\"rationale\":\"کنترل مسیر و forwarding واقعی شواهد جدا دارند.\"},{\"id\":\"packet-l1-8\",\"answer\":\"رمزنگاری یا firewall policy کامل انجام نمی‌دهد.\",\"rationale\":\"NAT ترجمهٔ آدرس/پورت است؛ مجوز دسترسی مسئلهٔ جداست.\"}]},\"related_infographics\":[\"packet_path.svg\",\"arp_ndp.svg\",\"tcp_handshake.svg\",\"nat_pat.svg\",\"packet_capture_points.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 826 — An Ethernet Address Resolution Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc826.html"
+        },
+        {
+          "title": "RFC 4861 — Neighbor Discovery for IPv6",
+          "url": "https://www.rfc-editor.org/rfc/rfc4861.html"
+        },
+        {
+          "title": "RFC 9293 — Transmission Control Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc9293.html"
+        },
+        {
+          "title": "RFC 3022 — Traditional IP Network Address Translator",
+          "url": "https://www.rfc-editor.org/rfc/rfc3022.html"
+        },
+        {
+          "title": "RFC 2131 — Dynamic Host Configuration Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc2131.html"
+        },
+        {
+          "title": "RFC 5737 — IPv4 Address Blocks Reserved for Documentation",
+          "url": "https://www.rfc-editor.org/rfc/rfc5737.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch06:packet-journey:l2",
+      "entity": "lesson",
+      "chapter_order": 6,
+      "subchapter_order": 5,
+      "lesson_order": 3,
+      "topic": "packet-journey",
+      "domain": "network-foundations",
+      "level": "L2",
+      "title_fa": "[L2] مسیر بسته از App تا کابل — ادمین",
+      "title_en": "[L2] Packet Journey from Application to Network Link — ادمین",
+      "tags": [
+        "network-foundations",
+        "packet-journey",
+        "Ethernet",
+        "IP",
+        "routing",
+        "L2"
+      ],
+      "summary": "چرا nslookup موفق الزاماً مسیر مرورگر را ثابت نمی‌کند؟؛ چه عواملی روی انتخاب route در میزبان چندرابطه‌ای اثر دارند؟؛ چرا MAC table باید همراه VLAN بررسی شود؟",
+      "full_content": "# مسیر بسته از App تا کابل — ادمین\n\n## هدف عملیاتی\nیک flow را با شواهد چندلایه عیب‌یابی کن؛ آزمون انتخابی باید فرضیه‌ها را از هم جدا کند. فقط تکرار فرمان‌ها یا بررسی همهٔ لایه‌ها به‌صورت چک‌لیست ثابت، عیب‌یابی حرفه‌ای محسوب نمی‌شود.\n\n## Host stack و انتخاب مسیر\nبرای URL دارای نام، resolver ممکن است cache، search suffix، split DNS، VPN client، proxy یا DoH را درگیر کند. مرورگر ممکن است connection pool داشته باشد یا QUIC را به‌جای TCP انتخاب کند؛ بنابراین nslookup موفق لزوماً مسیر همان درخواست مرورگر را توصیف نمی‌کند. برای تست دقیق، نام مقصد، IP واقعی انتخاب‌شده، پروتکل، پورت، proxy، رابط و اینکه اتصال جدید است یا reuse شده را ثبت کن.\n\nدر میزبان چندرابطه‌ای، route lookup تابع prefix و metric است و ممکن است policy routing، VPN route و source-address selection هم اثر بگذارد. پیش از بررسی روتر، خروجی route مخصوص همان مقصد را بخوان. IPv6 link-local نیازمند scope interface است؛ اگر scope اشتباه باشد، آدرس ظاهراً معتبر است اما از رابط درست استفاده نمی‌شود.\n\n## Access، VLAN و L2\nدر Wi-Fi، association و رمزنگاری WLAN مقدم بر IP است؛ سپس SSID می‌تواند به VLAN مشخص نگاشت شود. RSSI به‌تنهایی کیفیت را ثابت نمی‌کند؛ SNR، retransmission، تداخل کانال، roaming و خطاهای رادیویی را نیز در نظر بگیر. AP در حالت bridge لایهٔ ۲ را عبور می‌دهد؛ در بعضی محصولات captive portal، NAT یا routing هم دارد.\n\nسوئیچ جدول MAC را جداگانه برای هر VLAN تفسیر می‌کند. Access port میزبان را به VLAN منتسب می‌کند؛ trunk با 802.1Q چند VLAN را حمل می‌کند. Allowed VLAN list ناقص، native VLAN mismatch، STP block، err-disable و LACP mismatch علت‌های متفاوت‌اند. در یک رخداد، ابتدا VLAN/port state و MAC learning را با timestamp بررسی کن؛ سپس بررسی کن آیا فریم روی نقطهٔ capture مورد انتظار دیده می‌شود.\n\n## Routing، policy و NAT\nروتر از جدول forwarding تصمیم می‌گیرد بسته از کدام رابط یا next hop خارج شود. TTL IPv4 یا Hop Limit IPv6 کم می‌شود. Neighbor resolution در رابط خروجی لازم است؛ وجود RIB route بدون adjacency کامل به معنی forwarding موفق نیست. Policy routing، VRF، ACL، firewall zone، uRPF، QoS policer یا MTU هم می‌توانند نتیجه را عوض کنند.\n\nNAT/PAT در صورت فعال بودن tuple را ترجمه و state نگه می‌دارد. آدرس‌ها و پورت‌ها در capture سمت داخل و خارج می‌توانند متفاوت باشند. برای تشخیص Double NAT، آدرس WAN دستگاه کاربر را با آدرس مشاهده‌شده از شبکه‌ای بیرون مقایسه کن؛ اگر CPE روتر دیگری پشت خود دارد، ترجمهٔ دوم محتمل است. CGNAT در شبکهٔ اپراتور هم می‌تواند وجود داشته باشد. از مشاهدهٔ private WAN به تنهایی نمی‌توان سیاست اپراتور را کامل استنتاج کرد.\n\n## سناریوی واقعی‌نما\nکاربر از Wi-Fi به وب‌سرویس داخلی وصل نمی‌شود اما ping gateway موفق است. ترتیب آزمون:\n1. نام دقیق، IP پاسخ DNS و پروتکل/پورت برنامه را ثبت کن.\n2. اتصال IP مستقیم به پورت را جداگانه تست کن.\n3. route و source interface میزبان را مشخص کن.\n4. VLAN/SSID mapping، MAC table و link counters را از تجهیزات مجاز بخوان.\n5. firewall counters و route برگشت را با همان flow tuple و بازهٔ زمانی تطبیق بده.\n6. در صورت دسترسی، capture دو طرف firewall بگیر.\n7. پس از محدود شدن علت، فقط یک تغییر کوچک در لابراتوار انجام بده، سپس آن را rollback و معیار پذیرش را تکرار کن.\n\n## Capture و نقطهٔ دید\nاگر SYN روی client دیده می‌شود اما سمت سرور دیده نمی‌شود، معلوم نیست کجا افتاده مگر نقاط مشاهده متناسب باشد. ممکن است capture روی client پیش از ارسال سیمی باشد، SPAN دچار oversubscription شود، VLAN اشتباه گرفته شود یا packet در ACL drop شود. اگر SYN از WAN خارج و هیچ پاسخ به WAN نمی‌رسد، مسیر برگشت یا مقصد هم باید بررسی شود. اگر SYN-ACK به WAN برگشته اما به client نمی‌رسد، conntrack، ترجمهٔ NAT، route برگشت و firewall state مطرح‌اند. اگر TCP کامل است ولی TLS شکست می‌خورد، مسیر خام را دوباره از اول تغییر نده؛ گواهی، hostname/SNI و زمان را بسنج.\n\n## معیار قبولی آزمایش\nبرای هر علت محتمل باید یک شاهد تأییدکننده و یک آزمون تمایزبخش بنویسی. گزارش شامل زمان و timezone، رابط، فیلتر capture، flow tuple، baseline و نتیجهٔ rollback است. «همه‌چیز را reset کردم و درست شد» علت ریشه‌ای نیست و ممکن است شواهد یا state لازم را از بین ببرد.",
+      "commands": "Windows: ipconfig /all; route print; arp -a; Get-NetNeighbor; Test-NetConnection. Linux: ip -br address; ip route; ip neigh; tracepath. Vendor commands must be verified for the exact platform/release.",
+      "examples": "Controlled topology: client → AP/bridge → VLAN-aware switch → router/firewall → modem/ONT/CPE → ISP simulation → test server. RFC 5737 addresses are examples for documentation only; actual labs must use a controlled, owned subnet.",
+      "notes": "source=tools/packs/network_foundations/packet_path_deep_pack.json; quality=review_required; lab_execution=not_yet_run; infographic_refs=packet_path.svg,arp_ndp.svg,tcp_handshake.svg,nat_pat.svg,packet_capture_points.svg,network_troubleshooting.svg",
+      "learning_objectives": [
+        "چرا nslookup موفق الزاماً مسیر مرورگر را ثابت نمی‌کند؟",
+        "چه عواملی روی انتخاب route در میزبان چندرابطه‌ای اثر دارند؟",
+        "چرا MAC table باید همراه VLAN بررسی شود؟"
+      ],
+      "prerequisites": [
+        "IPv4/IPv6 prefix, MAC, default gateway and link-layer encapsulation"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"packet-l2-1\",\"prompt\":\"اگر مقصد خارج از prefix محلی باشد، MAC کدام next hop روی لینک اول لازم است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"packet-l2-2\",\"prompt\":\"چرا DNS موفق، TCP موفق را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"packet-l2-3\",\"prompt\":\"چرا TCP handshake موفق، TLS را اثبات نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"packet-l2-4\",\"prompt\":\"در هر hop روتر معمولاً چه تغییری در L2 اعمال می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"packet-l2-5\",\"prompt\":\"چرا VLAN جدا بدون gateway بین VLANها ارتباط ایجاد نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"packet-l2-6\",\"prompt\":\"اگر SYN از WAN خارج شود و پاسخ نیاید، چه علت‌هایی همچنان ممکن‌اند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"packet-l2-7\",\"prompt\":\"چرا route موجود در RIB کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"packet-l2-8\",\"prompt\":\"NAT چه کاری نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"packet-l2-9\",\"prompt\":\"چرا باید timestamp، interface و فیلتر capture ثبت شود؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"packet-l2-10\",\"prompt\":\"چرا پاسخ flow می‌تواند از مسیر دیگری بازگردد؟\",\"type\":\"short_answer\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"packet-l2-1\",\"answer\":\"معمولاً MAC دروازهٔ پیش‌فرض در رابط خروجی؛ IP destination هنوز میزبان دوردست است.\",\"rationale\":\"لایهٔ پیوند فقط برای لینک فعلی آدرس‌دهی می‌کند و MAC سرور اینترنتی معمولاً قابل resolve محلی نیست.\"},{\"id\":\"packet-l2-2\",\"answer\":\"DNS فقط پاسخ نام/آدرس می‌دهد؛ route، firewall و listener برای TCP جدا هستند.\",\"rationale\":\"پاسخ DNS می‌تواند cached باشد و شکست‌های بعدی مستقل‌اند.\"},{\"id\":\"packet-l2-3\",\"answer\":\"TCP اتصال انتقالی می‌سازد؛ TLS اعتبارسنجی گواهی، نام و سیاست رمزنگاری دارد.\",\"rationale\":\"TLS ممکن است به‌علت clock، SNI، trust یا version failure دهد.\"},{\"id\":\"packet-l2-4\",\"answer\":\"فریم جدید متناسب با رابط خروجی و MAC next hop می‌سازد.\",\"rationale\":\"آدرس‌های MAC محلی‌اند و در پیوند بعدی عوض می‌شوند؛ IPها معمولاً باقی می‌مانند مگر NAT/tunnel.\"},{\"id\":\"packet-l2-5\",\"answer\":\"VLAN دامنهٔ لایهٔ ۲ را جدا می‌کند؛ ارتباط subnetها به routing و policy نیاز دارد.\",\"rationale\":\"عضویت VLAN معادل route نیست.\"},{\"id\":\"packet-l2-6\",\"answer\":\"upstream filtering، سرور، مسیر برگشت، ACL یا نقص capture.\",\"rationale\":\"مشاهدهٔ یک جهت به‌تنهایی علت ریشه‌ای را ثابت نمی‌کند.\"},{\"id\":\"packet-l2-7\",\"answer\":\"FIB، adjacency، next-hop resolution و policy ممکن است ارسال را متوقف کنند.\",\"rationale\":\"کنترل مسیر و forwarding واقعی شواهد جدا دارند.\"},{\"id\":\"packet-l2-8\",\"answer\":\"رمزنگاری یا firewall policy کامل انجام نمی‌دهد.\",\"rationale\":\"NAT ترجمهٔ آدرس/پورت است؛ مجوز دسترسی مسئلهٔ جداست.\"},{\"id\":\"packet-l2-9\",\"answer\":\"برای هم‌بسته‌کردن مشاهدات و شناخت محدودیت نقطهٔ دید.\",\"rationale\":\"بدون این زمینه ممکن است دو capture نامرتبط مقایسه شوند.\"},{\"id\":\"packet-l2-10\",\"answer\":\"مسیر رفت و برگشت مستقل محاسبه می‌شوند و routing نامتقارن رخ می‌دهد.\",\"rationale\":\"Firewall/NAT state ممکن است به asymmetry حساس باشد.\"}]},\"related_infographics\":[\"packet_path.svg\",\"arp_ndp.svg\",\"tcp_handshake.svg\",\"nat_pat.svg\",\"packet_capture_points.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 826 — An Ethernet Address Resolution Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc826.html"
+        },
+        {
+          "title": "RFC 4861 — Neighbor Discovery for IPv6",
+          "url": "https://www.rfc-editor.org/rfc/rfc4861.html"
+        },
+        {
+          "title": "RFC 9293 — Transmission Control Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc9293.html"
+        },
+        {
+          "title": "RFC 3022 — Traditional IP Network Address Translator",
+          "url": "https://www.rfc-editor.org/rfc/rfc3022.html"
+        },
+        {
+          "title": "RFC 2131 — Dynamic Host Configuration Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc2131.html"
+        },
+        {
+          "title": "RFC 5737 — IPv4 Address Blocks Reserved for Documentation",
+          "url": "https://www.rfc-editor.org/rfc/rfc5737.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch06:packet-journey:l3",
+      "entity": "lesson",
+      "chapter_order": 6,
+      "subchapter_order": 5,
+      "lesson_order": 4,
+      "topic": "packet-journey",
+      "domain": "network-foundations",
+      "level": "L3",
+      "title_fa": "[L3] مسیر بسته از App تا کابل — مهندس",
+      "title_en": "[L3] Packet Journey from Application to Network Link — مهندس",
+      "tags": [
+        "network-foundations",
+        "packet-journey",
+        "Ethernet",
+        "IP",
+        "routing",
+        "L3"
+      ],
+      "summary": "سه نوع state مستقل در packet journey نام ببر و فرقشان را توضیح بده.؛ چرا connection pooling تحلیل capture را پیچیده می‌کند؟؛ فرق RIB، FIB و adjacency چیست؟",
+      "full_content": "# مسیر بسته از App تا کابل — مهندس\n\n## مدل state transition\nدر این سطح، مسیر end-to-end را به stateهای مستقل تبدیل کن: resolution، انتخاب transport، route lookup، neighbor resolution، frame transmission، switching، routing، security policy، NAT/tunnel، WAN forwarding، server socket و پاسخ برنامه. یک state سالم ثابت نمی‌کند state بعدی سالم است. هر ادعا باید به شواهدی وصل شود که روش مشاهده و محدودیت‌هایش مشخص است.\n\n## Resolver و برنامه\nBrowser ممکن است cache، connection pool، proxy، VPN extension، service worker یا QUIC را به‌کار برد. در نتیجه درخواست DNS جدید، SYN TCP یا اتصال تازه لزوماً برای هر بار بازکردن صفحه رخ نمی‌دهد. hostname، مقصد IP واقعی، SNI، protocol/port و source interface را ثبت کن. در split-horizon DNS پاسخ داخلی و بیرونی می‌تواند عمداً متفاوت باشد؛ فقط نسبت به design مرجع قضاوت کن.\n\n## Route و adjacency\nدر host چندرابطه‌ای، prefix و metric، policy route، VPN split tunnel، source selection و interface scope در مسیر دخیل‌اند. در IPv6 link-local، scope مربوط به رابط اهمیت دارد. Route در RIB نمایش مسیر کنترلی است؛ FIB/ASIC، adjacency، ARP/NDP، ACL و VRF می‌توانند مانع ارسال واقعی شوند. در روتر، TTL/Hop Limit کاهش می‌یابد و فریم خروجی با MAC متناسب next hop ساخته می‌شود؛ مگر NAT یا tunnel، IPهای انتهایی معمولاً حفظ می‌شوند.\n\n## WLAN و VLAN\nAssociation بی‌سیم، احراز هویت و کلیدهای link layer قبل از مسیر IP قرار دارند. کیفیت RF فقط RSSI نیست: SNR، retries، interference، channel utilization، roaming و airtime می‌توانند packet loss یا latency ایجاد کنند. SSID mapping، client isolation و 802.1X/RADIUS نیز نقش دارند. در switching، جدول MAC بر اساس VLAN تفسیر می‌شود؛ trunk/tagging، native VLAN، STP/RSTP، LACP، port-security و err-disable هرکدام failure mode متفاوتی دارند.\n\n## Security policy، NAT و MTU\nFirewall ممکن است zone، interface، connection tuple و state را بررسی کند. PBR، VRF، ECMP، uRPF و QoS هم می‌توانند تصمیم را تغییر دهند. NAT/PAT آدرس/پورت را ترجمه می‌کند و state مربوط به flow را نگه می‌دارد؛ مسیر نامتقارن یا timeout می‌تواند ارتباط را قطع کند. VPN tunnel یک outer header اضافه می‌کند و MTU موثر را کاهش می‌دهد. اگر handshake کوچک موفق و payload بزرگ stall می‌شود، PMTUD و ICMP filtering را با آزمون کنترل‌شده بررسی کن، نه با حدس یا کاهش کورکورانهٔ MTU.\n\n## Lab چندنقطه‌ای\nتوپولوژی آزمایش: Client → AP/bridge → switch در VLAN 10 → firewall/router → شبیه‌ساز WAN → test server. baseline شامل route/RIB/FIB، neighbor cache، MAC table، interface counters، firewall counters، NAT/conntrack و MTU باشد.\n- آزمایش پایه: یک جریان DNS و سپس TCP/TLS، همراه timestamp.\n- شکست کنترل‌شدهٔ اول: VLAN allowed-list در لابراتوار را تغییر بده؛ پیش‌بینی کن MAC learning یا capture در کدام مرز تغییر می‌کند.\n- شکست کنترل‌شدهٔ دوم: ACL محدود برای مقصد/پورت آزمایش اضافه کن؛ قبل و بعد hit counter و capture را مقایسه کن.\n- هر تغییر را پس از ذخیرهٔ baseline اعمال کن؛ هم‌زمان چند متغیر را عوض نکن.\n- rollback کن و سلامت را با همان flow tuple دوباره ثابت کن.\n\n## استنتاج با paired capture\nاگر SYN روی client هست ولی بعد از switch نیست، قبل از نسبت‌دادن علت به سوئیچ کیفیت SPAN، direction، VLAN و uplink را بررسی کن. اگر از WAN بیرون رفته و SYN-ACK نمی‌آید، upstream، سرور و route برگشت همچنان فرضیه‌اند. اگر پاسخ تا WAN برگشته ولی در LAN دیده نمی‌شود، mapping و state را بررسی کن. اگر TCP برقرار ولی TLS Alert ظاهر شده، hostname/SNI، certificate chain، system clock و trust store را بسنج. اگر TLS موفق اما HTTP 403/502 است، پاسخ برنامه یا reverse proxy شاهد مهم‌تری از route است.\n\n## روش ثبت\nهر رکورد رخداد باید symptom، timestamp/timezone، source/destination tuple، interface/VRF/VLAN، hypothesis، discriminating test، نتیجه، root cause، remediation و independent verification داشته باشد. Filter، snap length، capture loss و تاثیر offload را ثبت کن. Capture payload را به حداقل لازم محدود کن و دادهٔ حساس را قبل از اشتراک‌گذاری حذف کن.\n\n## خطاهای رایج در روش کار\nRoute موجود لزوماً FIB adjacency سالم نیست؛ ping gateway فقط ICMP echo را می‌سنجد؛ DNS cache ممکن است capture را دور بزند؛ SPAN ممکن است packet drop کند؛ RST علت واحد ندارد؛ و پاسخ از مسیر برگشت متفاوت ممکن است از firewall state عبور نکند. اگر شواهد ناکافی‌اند، وضعیت را «نامشخص» ثبت کن نه «تأییدشده».",
+      "commands": "Windows: ipconfig /all; route print; arp -a; Get-NetNeighbor; Test-NetConnection. Linux: ip -br address; ip route; ip neigh; tracepath. Vendor commands must be verified for the exact platform/release.",
+      "examples": "Controlled topology: client → AP/bridge → VLAN-aware switch → router/firewall → modem/ONT/CPE → ISP simulation → test server. RFC 5737 addresses are examples for documentation only; actual labs must use a controlled, owned subnet.",
+      "notes": "source=tools/packs/network_foundations/packet_path_deep_pack.json; quality=review_required; lab_execution=not_yet_run; infographic_refs=packet_path.svg,arp_ndp.svg,tcp_handshake.svg,nat_pat.svg,packet_capture_points.svg,network_troubleshooting.svg",
+      "learning_objectives": [
+        "سه نوع state مستقل در packet journey نام ببر و فرقشان را توضیح بده.",
+        "چرا connection pooling تحلیل capture را پیچیده می‌کند؟",
+        "فرق RIB، FIB و adjacency چیست؟"
+      ],
+      "prerequisites": [
+        "IPv4/IPv6 prefix, MAC, default gateway and link-layer encapsulation"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"packet-l3-1\",\"prompt\":\"اگر مقصد خارج از prefix محلی باشد، MAC کدام next hop روی لینک اول لازم است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"packet-l3-2\",\"prompt\":\"چرا DNS موفق، TCP موفق را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"packet-l3-3\",\"prompt\":\"چرا TCP handshake موفق، TLS را اثبات نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"packet-l3-4\",\"prompt\":\"در هر hop روتر معمولاً چه تغییری در L2 اعمال می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"packet-l3-5\",\"prompt\":\"چرا VLAN جدا بدون gateway بین VLANها ارتباط ایجاد نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"packet-l3-6\",\"prompt\":\"اگر SYN از WAN خارج شود و پاسخ نیاید، چه علت‌هایی همچنان ممکن‌اند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"packet-l3-7\",\"prompt\":\"چرا route موجود در RIB کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"packet-l3-8\",\"prompt\":\"NAT چه کاری نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"packet-l3-9\",\"prompt\":\"چرا باید timestamp، interface و فیلتر capture ثبت شود؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"packet-l3-10\",\"prompt\":\"چرا پاسخ flow می‌تواند از مسیر دیگری بازگردد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"packet-l3-11\",\"prompt\":\"چگونه DNS را از آزمون TCP جدا می‌کنی؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"packet-l3-12\",\"prompt\":\"چرا SPAN ممکن است packet را از دست بدهد؟\",\"type\":\"short_answer\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"packet-l3-1\",\"answer\":\"معمولاً MAC دروازهٔ پیش‌فرض در رابط خروجی؛ IP destination هنوز میزبان دوردست است.\",\"rationale\":\"لایهٔ پیوند فقط برای لینک فعلی آدرس‌دهی می‌کند و MAC سرور اینترنتی معمولاً قابل resolve محلی نیست.\"},{\"id\":\"packet-l3-2\",\"answer\":\"DNS فقط پاسخ نام/آدرس می‌دهد؛ route، firewall و listener برای TCP جدا هستند.\",\"rationale\":\"پاسخ DNS می‌تواند cached باشد و شکست‌های بعدی مستقل‌اند.\"},{\"id\":\"packet-l3-3\",\"answer\":\"TCP اتصال انتقالی می‌سازد؛ TLS اعتبارسنجی گواهی، نام و سیاست رمزنگاری دارد.\",\"rationale\":\"TLS ممکن است به‌علت clock، SNI، trust یا version failure دهد.\"},{\"id\":\"packet-l3-4\",\"answer\":\"فریم جدید متناسب با رابط خروجی و MAC next hop می‌سازد.\",\"rationale\":\"آدرس‌های MAC محلی‌اند و در پیوند بعدی عوض می‌شوند؛ IPها معمولاً باقی می‌مانند مگر NAT/tunnel.\"},{\"id\":\"packet-l3-5\",\"answer\":\"VLAN دامنهٔ لایهٔ ۲ را جدا می‌کند؛ ارتباط subnetها به routing و policy نیاز دارد.\",\"rationale\":\"عضویت VLAN معادل route نیست.\"},{\"id\":\"packet-l3-6\",\"answer\":\"upstream filtering، سرور، مسیر برگشت، ACL یا نقص capture.\",\"rationale\":\"مشاهدهٔ یک جهت به‌تنهایی علت ریشه‌ای را ثابت نمی‌کند.\"},{\"id\":\"packet-l3-7\",\"answer\":\"FIB، adjacency، next-hop resolution و policy ممکن است ارسال را متوقف کنند.\",\"rationale\":\"کنترل مسیر و forwarding واقعی شواهد جدا دارند.\"},{\"id\":\"packet-l3-8\",\"answer\":\"رمزنگاری یا firewall policy کامل انجام نمی‌دهد.\",\"rationale\":\"NAT ترجمهٔ آدرس/پورت است؛ مجوز دسترسی مسئلهٔ جداست.\"},{\"id\":\"packet-l3-9\",\"answer\":\"برای هم‌بسته‌کردن مشاهدات و شناخت محدودیت نقطهٔ دید.\",\"rationale\":\"بدون این زمینه ممکن است دو capture نامرتبط مقایسه شوند.\"},{\"id\":\"packet-l3-10\",\"answer\":\"مسیر رفت و برگشت مستقل محاسبه می‌شوند و routing نامتقارن رخ می‌دهد.\",\"rationale\":\"Firewall/NAT state ممکن است به asymmetry حساس باشد.\"},{\"id\":\"packet-l3-11\",\"answer\":\"نام را جدا resolve می‌کنم و اتصال به IP:port را مستقل می‌سنجم.\",\"rationale\":\"این آزمون DNS را از flow مستقیم حذف می‌کند، نه TLS/app را.\"},{\"id\":\"packet-l3-12\",\"answer\":\"ظرفیت mirror، انتخاب جهت، تنظیم پورت یا قابلیت دستگاه ممکن است محدود باشد.\",\"rationale\":\"نبود packet در mirror بدون بررسی سلامت capture proof قطعی نیست.\"}]},\"related_infographics\":[\"packet_path.svg\",\"arp_ndp.svg\",\"tcp_handshake.svg\",\"nat_pat.svg\",\"packet_capture_points.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 826 — An Ethernet Address Resolution Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc826.html"
+        },
+        {
+          "title": "RFC 4861 — Neighbor Discovery for IPv6",
+          "url": "https://www.rfc-editor.org/rfc/rfc4861.html"
+        },
+        {
+          "title": "RFC 9293 — Transmission Control Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc9293.html"
+        },
+        {
+          "title": "RFC 3022 — Traditional IP Network Address Translator",
+          "url": "https://www.rfc-editor.org/rfc/rfc3022.html"
+        },
+        {
+          "title": "RFC 2131 — Dynamic Host Configuration Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc2131.html"
+        },
+        {
+          "title": "RFC 5737 — IPv4 Address Blocks Reserved for Documentation",
+          "url": "https://www.rfc-editor.org/rfc/rfc5737.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch06:packet-journey:l4",
+      "entity": "lesson",
+      "chapter_order": 6,
+      "subchapter_order": 5,
+      "lesson_order": 5,
+      "topic": "packet-journey",
+      "domain": "network-foundations",
+      "level": "L4",
+      "title_fa": "[L4] مسیر بسته از App تا کابل — خبره",
+      "title_en": "[L4] Packet Journey from Application to Network Link — خبره",
+      "tags": [
+        "network-foundations",
+        "packet-journey",
+        "Ethernet",
+        "IP",
+        "routing",
+        "L4"
+      ],
+      "summary": "چرا RIB به‌تنهایی عبور packet را اثبات نمی‌کند؟؛ چه اطلاعاتی باید برای تعریف دقیق یک flow ثبت شود؟؛ چرا nslookup موفق همان رفتار Browser را تضمین نمی‌کند؟",
+      "full_content": "# مسیر بسته از App تا کابل — خبره و طراحی معماری\n\n## تبدیل «شبکه قطع است» به مسئلهٔ قابل اثبات\nدر سطح معماری، گزارش کلی «اینترنت قطع است» کافی نیست. باید مشخص شود کدام جریان، از کدام source address/interface/VRF و در چه زمانی به کدام destination IP:port، با کدام transport و policy شکست می‌خورد. مسیر وب یک زنجیره از stateهای مستقل است: resolver، انتخاب TCP/QUIC، socket و source-address selection، route/policy-route، neighbor resolution، WLAN/Ethernet encapsulation، switch forwarding، router/firewall policy، NAT/conntrack، WAN access، upstream route، server socket و application response. هر state ممکن است سالم باشد درحالی‌که کل transaction شکست خورده است.\n\nاصل معماری: control plane مسیر مورد انتظار را نشان می‌دهد، نه لزوماً packet forwarding واقعی. RIB ممکن است route را داشته باشد اما FIB/ASIC، adjacency، ACL، hardware counters یا tunnel state ارسال را متوقف کنند. مشاهدهٔ route در CLI کافی نیست؛ شاهد data-plane، drop counters، packet capture یا آزمون end-to-end متناظر لازم است.\n\n## DNS و رفتار برنامه\nمرورگر ممکن است DNS cache، connection pool، proxy، VPN extension، QUIC یا DoH داشته باشد. بنابراین موفقیت nslookup لزوماً مسیر همان درخواست مرورگر را توصیف نمی‌کند. برای تشخیص دقیق hostname، resolved IP، SNI، پورت، transport، proxy settings و connection reuse را ثبت کن. Split-horizon DNS می‌تواند پاسخ داخلی و بیرونی متفاوت و کاملاً عمدی بدهد. Cache TTL نیز تضمین انتشار لحظه‌ای نیست. برنامه ممکن است برای یک URL اتصال reuse کند؛ نبود SYN تازه در capture دلیل نبود ارتباط نیست.\n\n## Host routing و source-address selection\nروی میزبان multi-homed، route انتخابی تابع prefix، metric، policy route، source address، interface scope و گاهی VPN filter driver است. مسیر خاص /32 یا route سازمانی ممکن است default gateway را کنار بزند. پیش از مقصر دانستن روتر، route lookup برای مقصد همان flow را استخراج کن و source/interface را ثبت کن. Capture میزبان نیز ممکن است به‌علت checksum/segmentation offload دقیقاً مشابه فریم روی سیم نباشد؛ قابلیت NIC و محل مشاهده بخشی از گزارش فنی هستند.\n\n## دسترسی بی‌سیم و switching\nAssociation و امنیت WLAN پیش از IP قرار می‌گیرند. RSSI به تنهایی کیفیت را تعیین نمی‌کند؛ SNR، channel utilization، retries، roaming و airtime مهم‌اند. SSID mapping، VLAN assignment، client isolation و 802.1X/RADIUS می‌توانند مرز شکست باشند. AP ممکن است bridge باشد یا قابلیت L3، captive portal یا NAT داشته باشد؛ توپولوژی باید از پیکربندی واقعی استخراج شود.\n\nدر سوئیچ، MAC table به VLAN وابسته است؛ trunk، 802.1Q tagging، allowed VLAN، native VLAN، STP/RSTP، LACP/MLAG و port-security failure mode جدا دارند. SPAN هم ممکن است به‌دلیل oversubscription، انتخاب direction یا limitation پلتفرم packet از دست بدهد. پس نبود packet در یک mirror port شاهد مهم است، ولی اگر ظرفیت/تنظیم SPAN تأیید نشده باشد اثبات قطعی نیست.\n\n## Routing، policy، NAT و tunnel\nRouter از FIB برای forwarding استفاده می‌کند و در مسیر معمول IP، TTL/Hop Limit را کاهش می‌دهد. ACL، zone firewall، policy-based routing، VRF، uRPF، QoS، policer، MTU/PMTUD و tunnel می‌توانند packet را drop یا تغییر دهند. NAT/PAT state جریان را با tuple آدرس/پورت، پروتکل، endpoint دور و timeout نگه می‌دارد. برای تحلیل ترجمه چهار tuple inside-local، inside-global، outside-global و در صورت کاربرد outside-local را ثبت کن. برای IPv6، فرض NAT44 را به‌طور خودکار اعمال نکن؛ policy و routing لایهٔ ۳ ممکن است اصل کار باشند.\n\nTunnel/VPN یک outer header و مسیر زیرین به مسیر اضافه می‌کند. MTU موثر با encapsulation کاهش می‌یابد؛ فیلتر شدن پیام‌های ICMP مرتبط با PMTUD ممکن است موجب موفقیت handshake کوچک و hang شدن payloadهای بزرگ شود. برای تشخیص MTU در آزمایشگاه اندازهٔ payload و DF behavior را گام‌به‌گام بررسی کن؛ تغییر MTU کورکورانه می‌تواند مشکل جدیدی بسازد.\n\n## Modem، ONT، Bridge و شبکهٔ اپراتور\nمودم/ONT فناوری دسترسی را خاتمه می‌دهد، اما CPE می‌تواند router، NAT، firewall، DHCP server و AP را در یک chassis ادغام کند. در bridge mode اتصال WAN/PPPoE ممکن است روی روتر downstream برقرار شود؛ در router mode خود CPE مسیر و NAT را مدیریت می‌کند. Double NAT یعنی دو مرز ترجمه؛ CGNAT یعنی ترجمه در شبکهٔ اپراتور نیز ممکن است وجود داشته باشد. مقایسهٔ WAN IP با آدرس observed از بیرون کمک می‌کند، اما public address مشاهده‌شده تضمین inbound reachability نیست؛ upstream ACL، policy اپراتور و route برگشت نیز مطرح‌اند.\n\n## طراحی آزمون تمایزبخش\nبرای هر فرضیه آزمونی طراحی کن که جایگزین‌های اصلی را جدا کند:\n- DNS را با یک اتصال مستقیم به IP مقایسه کن؛ این کار DNS را از آن آزمون حذف می‌کند ولی TLS/برنامه هنوز جدا هستند.\n- route lookup را با capture در interface واقعی مقایسه کن؛ این کار اختلاف control-plane/data-plane را آشکار می‌کند.\n- captureهای دو سمت firewall را با conntrack/NAT mapping و counters هم‌زمان کن.\n- اگر SYN به WAN خارج می‌شود ولی پاسخ نمی‌آید، server-side capture، upstream و مسیر برگشت را بررسی کن.\n- اگر TCP کامل است اما TLS Alert دیده می‌شود، clock، certificate chain، SNI/hostname و trust store را آزمایش کن.\n- اگر TLS موفق اما HTTP 403/502 است، application/reverse-proxy logs را دنبال کن؛ route را بی‌دلیل تغییر نده.\n\n## Lab معماری با failure injection\nاز شبیه‌ساز مجاز استفاده کن: client VLAN 10، server VLAN 30، firewall بین آن‌ها و WAN شبیه‌سازی‌شده. Baseline باید شامل RIB/FIB، ARP/NDP، MAC/VLAN table، interface counters، ACL hits، conntrack/NAT state، MTU و paired capture باشد.\n1. یک درخواست سالم DNS سپس TCP/TLS اجرا و flow tuple را ثبت کن.\n2. فقط یک failure کنترل‌شده بساز: VLAN allowed-list، ACL، route برگشت یا MTU.\n3. پیش از اجرای آزمایش پیش‌بینی کن در هر نقطه چه packet/counter تغییر می‌کند.\n4. همان flow را با timestamp ثابت تکرار کن تا packet loss مقطعی یا SPAN overflow با علت پایدار اشتباه نشود.\n5. تغییر را rollback کن و معیار سالم را مستقل از فرمان تغییر دوباره بررسی کن.\n6. گزارش نهایی باید نشان دهد کدام فرضیه رد شده و کدام شاهد علت نهایی را متمایز کرده است.\n\n## ظرفیت، کارایی و مقیاس\nThroughput اسمی لینک با کارایی کاربرد یکسان نیست. Small packets می‌توانند packet-per-second را محدود کنند؛ NAT session table، TCAM/FIB limits، queueing، bufferbloat، policer، encryption overhead و interrupt/offload در ظرفیت واقعی اثر دارند. Benchmark L4 باید پروفایل اندازهٔ packet، concurrency، burst، transport، encryption و مسیر برگشت را مشخص کند. عدد تست تک‌جریانی را به همهٔ workloadها تعمیم نده. ابزار capture هم خودش می‌تواند loss ایجاد کند و باید ظرفیت کافی داشته باشد.\n\n## امنیت و مدیریت تغییر\nCapture می‌تواند DNS query، username، cookie و payload حساس داشته باشد. collection باید محدود به flow و بازهٔ لازم، با دسترسی حداقلی و نگهداری مشخص باشد. تغییر production باید baseline، backup، rollback، change window و معیار verification داشته باشد. خاموش‌کردن global firewall یا پاک‌کردن تمام conntrack state راه تشخیص اولیه نیست؛ blast radius می‌تواند بسیار بزرگ باشد.\n\n## منابع و محدودیت‌ها\nاین درس مدل عمومی end-to-end است؛ MPLS، EVPN/VXLAN، SD-WAN، proxy، load balancer، service mesh یا carrier NAT ممکن است مرزهای بیشتری اضافه کنند. topology و نسخهٔ واقعی هر تجهیز باید از پیکربندی استخراج شود. برای ARP از RFC 826، برای IPv6 ND از RFC 4861، برای TCP از RFC 9293، برای NAT سنتی از RFC 3022، برای DHCP از RFC 2131 و برای آدرس‌های مستندسازی IPv4 از RFC 5737 استفاده کن. دستورهای اجرایی و behavior وابسته به vendor را در مستند رسمی همان release تأیید کن؛ این متن دستور تغییر production نیست.",
+      "commands": "Windows: ipconfig /all; route print; arp -a; Get-NetNeighbor; Test-NetConnection. Linux: ip -br address; ip route; ip neigh; tracepath. Vendor commands must be verified for the exact platform/release.",
+      "examples": "Controlled topology: client → AP/bridge → VLAN-aware switch → router/firewall → modem/ONT/CPE → ISP simulation → test server. RFC 5737 addresses are examples for documentation only; actual labs must use a controlled, owned subnet.",
+      "notes": "source=tools/packs/network_foundations/packet_path_deep_pack.json; quality=review_required; lab_execution=not_yet_run; infographic_refs=packet_path.svg,arp_ndp.svg,tcp_handshake.svg,nat_pat.svg,packet_capture_points.svg,network_troubleshooting.svg",
+      "learning_objectives": [
+        "چرا RIB به‌تنهایی عبور packet را اثبات نمی‌کند؟",
+        "چه اطلاعاتی باید برای تعریف دقیق یک flow ثبت شود؟",
+        "چرا nslookup موفق همان رفتار Browser را تضمین نمی‌کند؟"
+      ],
+      "prerequisites": [
+        "IPv4/IPv6 prefix, MAC, default gateway and link-layer encapsulation"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"packet-l4-1\",\"prompt\":\"اگر مقصد خارج از prefix محلی باشد، MAC کدام next hop روی لینک اول لازم است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-2\",\"prompt\":\"چرا DNS موفق، TCP موفق را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-3\",\"prompt\":\"چرا TCP handshake موفق، TLS را اثبات نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-4\",\"prompt\":\"در هر hop روتر معمولاً چه تغییری در L2 اعمال می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-5\",\"prompt\":\"چرا VLAN جدا بدون gateway بین VLANها ارتباط ایجاد نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-6\",\"prompt\":\"اگر SYN از WAN خارج شود و پاسخ نیاید، چه علت‌هایی همچنان ممکن‌اند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-7\",\"prompt\":\"چرا route موجود در RIB کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-8\",\"prompt\":\"NAT چه کاری نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-9\",\"prompt\":\"چرا باید timestamp، interface و فیلتر capture ثبت شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-10\",\"prompt\":\"چرا پاسخ flow می‌تواند از مسیر دیگری بازگردد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-11\",\"prompt\":\"چگونه DNS را از آزمون TCP جدا می‌کنی؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-12\",\"prompt\":\"چرا SPAN ممکن است packet را از دست بدهد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-13\",\"prompt\":\"چطور Double NAT را از CGNAT تفکیک می‌کنی؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-14\",\"prompt\":\"چه چیزی در flowهای tunnel باید جدا ثبت شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"packet-l4-15\",\"prompt\":\"چه معیارهایی یک عیب‌یابی قابل‌تکرار می‌سازند؟\",\"type\":\"short_answer\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"packet-l4-1\",\"answer\":\"معمولاً MAC دروازهٔ پیش‌فرض در رابط خروجی؛ IP destination هنوز میزبان دوردست است.\",\"rationale\":\"لایهٔ پیوند فقط برای لینک فعلی آدرس‌دهی می‌کند و MAC سرور اینترنتی معمولاً قابل resolve محلی نیست.\"},{\"id\":\"packet-l4-2\",\"answer\":\"DNS فقط پاسخ نام/آدرس می‌دهد؛ route، firewall و listener برای TCP جدا هستند.\",\"rationale\":\"پاسخ DNS می‌تواند cached باشد و شکست‌های بعدی مستقل‌اند.\"},{\"id\":\"packet-l4-3\",\"answer\":\"TCP اتصال انتقالی می‌سازد؛ TLS اعتبارسنجی گواهی، نام و سیاست رمزنگاری دارد.\",\"rationale\":\"TLS ممکن است به‌علت clock، SNI، trust یا version failure دهد.\"},{\"id\":\"packet-l4-4\",\"answer\":\"فریم جدید متناسب با رابط خروجی و MAC next hop می‌سازد.\",\"rationale\":\"آدرس‌های MAC محلی‌اند و در پیوند بعدی عوض می‌شوند؛ IPها معمولاً باقی می‌مانند مگر NAT/tunnel.\"},{\"id\":\"packet-l4-5\",\"answer\":\"VLAN دامنهٔ لایهٔ ۲ را جدا می‌کند؛ ارتباط subnetها به routing و policy نیاز دارد.\",\"rationale\":\"عضویت VLAN معادل route نیست.\"},{\"id\":\"packet-l4-6\",\"answer\":\"upstream filtering، سرور، مسیر برگشت، ACL یا نقص capture.\",\"rationale\":\"مشاهدهٔ یک جهت به‌تنهایی علت ریشه‌ای را ثابت نمی‌کند.\"},{\"id\":\"packet-l4-7\",\"answer\":\"FIB، adjacency، next-hop resolution و policy ممکن است ارسال را متوقف کنند.\",\"rationale\":\"کنترل مسیر و forwarding واقعی شواهد جدا دارند.\"},{\"id\":\"packet-l4-8\",\"answer\":\"رمزنگاری یا firewall policy کامل انجام نمی‌دهد.\",\"rationale\":\"NAT ترجمهٔ آدرس/پورت است؛ مجوز دسترسی مسئلهٔ جداست.\"},{\"id\":\"packet-l4-9\",\"answer\":\"برای هم‌بسته‌کردن مشاهدات و شناخت محدودیت نقطهٔ دید.\",\"rationale\":\"بدون این زمینه ممکن است دو capture نامرتبط مقایسه شوند.\"},{\"id\":\"packet-l4-10\",\"answer\":\"مسیر رفت و برگشت مستقل محاسبه می‌شوند و routing نامتقارن رخ می‌دهد.\",\"rationale\":\"Firewall/NAT state ممکن است به asymmetry حساس باشد.\"},{\"id\":\"packet-l4-11\",\"answer\":\"نام را جدا resolve می‌کنم و اتصال به IP:port را مستقل می‌سنجم.\",\"rationale\":\"این آزمون DNS را از flow مستقیم حذف می‌کند، نه TLS/app را.\"},{\"id\":\"packet-l4-12\",\"answer\":\"ظرفیت mirror، انتخاب جهت، تنظیم پورت یا قابلیت دستگاه ممکن است محدود باشد.\",\"rationale\":\"نبود packet در mirror بدون بررسی سلامت capture proof قطعی نیست.\"},{\"id\":\"packet-l4-13\",\"answer\":\"WAN IP تجهیزات مرزی را با آدرس observed از بیرون و توپولوژی مورد اعتماد مقایسه می‌کنم.\",\"rationale\":\"ترجمه ممکن است در CPE یا در شبکهٔ اپراتور رخ دهد.\"},{\"id\":\"packet-l4-14\",\"answer\":\"inner header، outer header، MTU موثر و route زیرین.\",\"rationale\":\"encapsulation یک مسیر بیرونی و overhead اضافه می‌کند.\"},{\"id\":\"packet-l4-15\",\"answer\":\"baseline، timestamp، flow tuple، آزمون تمایزبخش، علت ریشه‌ای، rollback و verification مستقل.\",\"rationale\":\"فقط گفتن «درست شد» شواهد علت و سلامت پس از تغییر نیست.\"}]},\"related_infographics\":[\"packet_path.svg\",\"arp_ndp.svg\",\"tcp_handshake.svg\",\"nat_pat.svg\",\"packet_capture_points.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 826 — An Ethernet Address Resolution Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc826.html"
+        },
+        {
+          "title": "RFC 4861 — Neighbor Discovery for IPv6",
+          "url": "https://www.rfc-editor.org/rfc/rfc4861.html"
+        },
+        {
+          "title": "RFC 9293 — Transmission Control Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc9293.html"
+        },
+        {
+          "title": "RFC 3022 — Traditional IP Network Address Translator",
+          "url": "https://www.rfc-editor.org/rfc/rfc3022.html"
+        },
+        {
+          "title": "RFC 2131 — Dynamic Host Configuration Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc2131.html"
+        },
+        {
+          "title": "RFC 5737 — IPv4 Address Blocks Reserved for Documentation",
+          "url": "https://www.rfc-editor.org/rfc/rfc5737.html"
+        }
+      ],
+      "source_status": "review_required"
+    }
+  ]
+}
