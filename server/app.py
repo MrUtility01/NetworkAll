@@ -15,7 +15,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_from_directory
 
 from core.db import WebDB
 from core.study import study_sync_apply, study_sync_index, study_sync_pull
@@ -160,6 +160,21 @@ if _MODULE_STATUS["workspace"]:
         set_auth_checker(check_token, extract_token, SYNC_TOKEN)
     except Exception as e:
         print("workspace auth wire", e)
+
+
+# Public static learning graphics; the directory contains no user-specific data.
+INFOGRAPHICS_DIR = REPO_ROOT / "shared" / "infographics"
+
+
+@app.get("/infographics")
+@app.get("/infographics/")
+def infographic_gallery():
+    return send_from_directory(str(INFOGRAPHICS_DIR), "index.html")
+
+
+@app.get("/infographics/<path:filename>")
+def infographic_asset(filename: str):
+    return send_from_directory(str(INFOGRAPHICS_DIR), filename)
 
 
 @app.get("/")
