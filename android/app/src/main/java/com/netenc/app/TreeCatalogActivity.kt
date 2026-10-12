@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class TreeCatalogActivity : AppCompatActivity() {
-    data class SubNode(val title: String, val lessons: List<LessonEntity>)
+    data class SubNode(val title: String, val sourceTitle: String, val lessons: List<LessonEntity>)
     data class ChapterNode(val order: Int, val title: String, val subs: List<SubNode>)
 
     private lateinit var list: ExpandableListView
@@ -91,7 +91,7 @@ class TreeCatalogActivity : AppCompatActivity() {
         }.toSortedMap(compareBy({ it.first }, { it.second }))
         tree = byChapter.map { (key, listL) ->
             val subs = listL.groupBy { it.subTitle.ifBlank { "عمومی" } }
-                .map { (st, ls) -> SubNode(st, ls.sortedBy { it.lessonOrder }) }
+                .map { (st, ls) -> SubNode(st, ls.firstOrNull()?.subTitle.orEmpty(), ls.sortedBy { it.lessonOrder }) }
             ChapterNode(key.first, key.second, subs)
         }
         header.text = "${tree.size} فصل · ${lessons.size} درس"
@@ -117,33 +117,26 @@ class TreeCatalogActivity : AppCompatActivity() {
             }
             override fun getChildView(g: Int, c: Int, last: Boolean, convert: View?, parent: ViewGroup?): View {
                 val sub = tree[g].subs[c]
-                val box = LinearLayout(this@TreeCatalogActivity).apply {
-                    orientation = LinearLayout.VERTICAL
-                    setPadding(48, 12, 24, 12)
-                    setBackgroundColor(Ui.BG)
-                }
-                box.addView(TextView(this@TreeCatalogActivity).apply {
-                    text = "${sub.title} (${sub.lessons.size})"
-                    setTextColor(Ui.ACCENT)
+                // Keep the expandable tree lightweight: a child is one subchapter row,
+                // not a container that eagerly creates hundreds of lesson TextViews.
+                val row = (convert as? TextView) ?: TextView(this@TreeCatalogActivity).apply {
+                    setPadding(48, 22, 24, 22)
                     textSize = 14f
                     typeface = Ui.persianTypeface()
-                })
-                sub.lessons.forEach { les ->
-                    box.addView(TextView(this@TreeCatalogActivity).apply {
-                        text = "  · ${les.titleFa}"
-                        setTextColor(Ui.TEXT)
-                        textSize = 13f
-                        setPadding(8, 10, 8, 10)
-                        typeface = Ui.persianTypeface()
-                        setOnClickListener {
-                            startActivity(
-                                Intent(this@TreeCatalogActivity, LessonDetailActivity::class.java)
-                                    .putExtra("uid", les.uid)
-                            )
-                        }
-                    })
                 }
-                return box
+                row.text = "${sub.title}  (${sub.lessons.size} درس)  ›"
+                row.setTextColor(Ui.ACCENT)
+                row.setBackgroundColor(Ui.CARD)
+                row.setOnClickListener {
+                    startActivity(
+                        Intent(this@TreeCatalogActivity, SubchapterLessonsActivity::class.java)
+                            .putExtra("chapter_order", tree[g].order)
+                            .putExtra("chapter_title", tree[g].title)
+                            .putExtra("sub_title", sub.sourceTitle)
+                            .putExtra("sub_display_title", sub.title)
+                    )
+                }
+                return row
             }
         })
     }
