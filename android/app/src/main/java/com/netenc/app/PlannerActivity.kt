@@ -252,6 +252,7 @@ class PlannerActivity : AppCompatActivity() {
     private fun refreshTasks() {
         lifecycleScope.launch {
             tasks = withContext(Dispatchers.IO) { database.workspaceDao().allTasks() }
+            TaskReminderScheduler.reconcileAll(this@PlannerActivity)
             renderCalendar()
             renderTasks()
         }
@@ -287,10 +288,13 @@ class PlannerActivity : AppCompatActivity() {
                 setOnCheckedChangeListener { _, checked ->
                     lifecycleScope.launch {
                         withContext(Dispatchers.IO) {
-                            database.workspaceDao().upsertTask(task.copy(done = checked, lastUpdated = Instant.now().toString()))
+                            database.workspaceDao().upsertTask(task.copy(
+                                done = checked,
+                                lastUpdated = Instant.now().toString(),
+                                remindedAt = if (checked) task.remindedAt else ""
+                            ))
                         }
-                        if (checked) TaskReminderScheduler.cancel(this@PlannerActivity, task.uid)
-                        else scheduleTaskReminder(task.copy(done = false))
+                        TaskReminderScheduler.reconcileAll(this@PlannerActivity)
                         refreshTasks()
                     }
                 }
@@ -321,7 +325,7 @@ class PlannerActivity : AppCompatActivity() {
                     .setPositiveButton("حذف") { _, _ ->
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO) { database.workspaceDao().deleteTask(task.uid) }
-                            TaskReminderScheduler.cancel(this@PlannerActivity, task.uid)
+                            TaskReminderScheduler.reconcileAll(this@PlannerActivity)
                             refreshTasks()
                         }
                     }.show()
@@ -427,13 +431,12 @@ class PlannerActivity : AppCompatActivity() {
                     done = false,
                     dueAt = due,
                     priority = priority.selectedItemPosition + 1,
-                    lastUpdated = Instant.now().toString()
+                    lastUpdated = Instant.now().toString(),
+                    remindAt = if (reminder.isChecked && chosenHour != null && chosenMinute != null) due else ""
                 )
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) { database.workspaceDao().upsertTask(task) }
-                    if (reminder.isChecked && chosenHour != null && chosenMinute != null) {
-                        TaskReminderScheduler.schedule(this@PlannerActivity, id, base.timeInMillis)
-                    }
+                    TaskReminderScheduler.reconcileAll(this@PlannerActivity)
                     dialog.dismiss()
                     refreshTasks()
                 }
