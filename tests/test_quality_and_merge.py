@@ -508,6 +508,25 @@ class SyncApiContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             db = WebDB(Path(td) / "sync-api.sqlite")
             stamp = "2026-10-12T04:00:00Z"
+            chapter_id = db.conn.execute(
+                "INSERT INTO chapters(order_index, title_fa, title_en) VALUES(1, ?, ?)",
+                ("Sync Lab", "Sync Lab"),
+            ).lastrowid
+            level_id = db.conn.execute(
+                "INSERT INTO levels(chapter_id, order_index, title_fa, title_en) VALUES(?, 1, ?, ?)",
+                (chapter_id, "Sync lesson", "Sync lesson"),
+            ).lastrowid
+            db.conn.execute(
+                "INSERT INTO lessons(level_id, order_index, title_fa, last_updated) VALUES(?, 1, ?, ?)",
+                (level_id, "Lesson for study sync", stamp),
+            )
+            db.conn.commit()
+            db.ensure_sync_columns()
+            db.conn.execute(
+                "UPDATE lessons SET uid=? WHERE title_fa=?",
+                ("lesson:study-test", "Lesson for study sync"),
+            )
+            db.conn.commit()
             payload = {
                 "records": [
                     {"uid": "task-1", "entity": "task", "title": "LAN sync test",
@@ -522,6 +541,11 @@ class SyncApiContractTests(unittest.TestCase):
                      "notes": "Revise OSPF neighbor states", "last_updated": stamp,
                      "device_id": "android-test", "deleted": False},
                     {"uid": "lesson:missing", "entity": "lesson", "title_fa": "درس ناشناخته"},
+                    {"uid": "lesson:study-orphan", "entity": "study", "status": "learning",
+                     "ease": 2.5, "interval_hours": 24, "last_studied": stamp,
+                     "next_review": "2026-10-13T04:00:00Z", "times_studied": 2,
+                     "notes": "must be rejected without a lesson", "last_updated": stamp,
+                     "device_id": "android-test", "deleted": False},
                     {"uid": "vault-1", "entity": "vault", "title": "must not sync", "secret": "plaintext"},
                     {"uid": "note-invalid", "entity": "note", "title": "   ",
                      "body": "must not be silently dropped", "tags": "routing",
@@ -544,8 +568,11 @@ class SyncApiContractTests(unittest.TestCase):
                 self.assertEqual(body["accepted"], 3)
                 self.assertEqual(body["unsupported"], 1)
                 self.assertEqual(body["unsupported_uids"], ["vault-1"])
-                self.assertEqual(body["missing_targets"], 1)
-                self.assertEqual(body["missing_target_uids"], ["lesson:missing"])
+                self.assertEqual(body["missing_targets"], 2)
+                self.assertEqual(
+                    body["missing_target_uids"],
+                    ["lesson:missing", "study:lesson:study-orphan"],
+                )
                 self.assertEqual(body["invalid"], 2)
                 self.assertEqual(body["invalid_uids"], ["note-invalid", "lesson:study-invalid"])
                 self.assertEqual(body["apply_rejected"], 0)
@@ -555,6 +582,7 @@ class SyncApiContractTests(unittest.TestCase):
                 self.assertIn("task-1", by_uid)
                 self.assertIn("note-1", by_uid)
                 self.assertNotIn("note-invalid", by_uid)
+                self.assertNotIn("lesson:study-orphan", by_uid)
                 self.assertTrue(by_uid["note-1"]["deleted"])
                 self.assertIn("lesson:study-test", by_uid)
                 self.assertEqual(by_uid["lesson:study-test"]["entity"], "study")
