@@ -3,6 +3,8 @@ package com.netenc.app.data
 import android.content.Context
 import org.json.JSONArray
 import org.json.JSONObject
+import java.time.Instant
+import java.time.OffsetDateTime
 
 class LessonRepository(context: Context) {
     private val dao = AppDatabase.get(context).lessonDao()
@@ -52,9 +54,16 @@ class LessonRepository(context: Context) {
         return list.size
     }
 
-    suspend fun buildPushArray(): JSONArray {
+    /**
+     * Curriculum is server-authored. On a first sync, never upload the entire
+     * offline seed/cache (thousands of rows). After the initial cursor is set,
+     * only send locally changed rows newer than that cursor, including tombstones.
+     */
+    suspend fun buildPushArray(since: String?): JSONArray {
         val out = JSONArray()
+        if (since.isNullOrBlank()) return out
         for (e in dao.allForPush()) {
+            if (!isAfter(e.lastUpdated, since)) continue
             out.put(
                 JSONObject()
                     .put("uid", e.uid)
@@ -78,5 +87,17 @@ class LessonRepository(context: Context) {
             )
         }
         return out
+    }
+
+    private fun isAfter(candidate: String, reference: String): Boolean {
+        if (candidate.isBlank() || reference.isBlank()) return false
+        return timestampMillis(candidate) > timestampMillis(reference)
+    }
+
+    private fun timestampMillis(value: String): Long = try {
+        Instant.parse(value).toEpochMilli()
+    } catch (_: Exception) {
+        try { OffsetDateTime.parse(value).toInstant().toEpochMilli() }
+        catch (_: Exception) { Long.MIN_VALUE }
     }
 }
