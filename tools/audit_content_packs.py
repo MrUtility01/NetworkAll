@@ -224,7 +224,15 @@ def inspect_record(path, item, index, min_chars):
         node.get("answer_key") or node.get("answers")
         for node in meta_nodes
     ) or bool(ANSWER_RE.search(blob))
-    status = text(item.get("source_status") or item.get("status") or (item.get("meta") or {}).get("status")).lower()
+    meta_value = item.get("meta") or {}
+    if isinstance(meta_value, str):
+        try:
+            meta_value = json.loads(meta_value)
+        except (TypeError, ValueError):
+            meta_value = {}
+    if not isinstance(meta_value, dict):
+        meta_value = {}
+    status = text(item.get("source_status") or item.get("status") or meta_value.get("status")).lower()
     checks = {
         "needs_human_review": any(flag in status for flag in ("review_required", "draft", "seeded", "todo")),
         "shallow": len(blob.strip()) < min_chars,
@@ -392,6 +400,9 @@ def main():
     print("\nWarning counts:")
     for key, count in report["warning_counts"].items():
         print(f" - {key}: {count}")
+    print("\nDepth-level counts:")
+    for level, count in report["depth_level_counts"].items():
+        print(f" - {level}: {count}")
     print("\nFiles needing most review:")
     for row in sorted(report["file_summaries"], key=lambda x: (x["shallow"] + x["missing_answer_key_marker"] + x["missing_lab_marker"], x["records"]), reverse=True)[:20]:
         print(f" - {row['file']}: records={row['records']} shallow={row['shallow']} no_lab_marker={row['missing_lab_marker']} no_answer_key_marker={row['missing_answer_key_marker']}")
