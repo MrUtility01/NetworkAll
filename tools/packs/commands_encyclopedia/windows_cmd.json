@@ -1,0 +1,3273 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkEncyclopedia",
+  "generated_on": "2026-10-12",
+  "purpose": "commands encyclopedia - windows cmd and batch",
+  "vendor_pack": "windows_cmd",
+  "chapter_order": 68,
+  "chapter_title_fa": "دانشنامه جامع دستورات",
+  "vendor": "powershell",
+  "platform": "Windows CMD / Batch",
+  "scope": [
+    {
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "title": "CMD و Batch برای مدیریت و خودکارسازی ویندوز",
+      "topics": [
+        "IP configuration",
+        "Connectivity",
+        "Routes and ARP",
+        "Sockets and processes",
+        "Firewall",
+        "SMB",
+        "Logs",
+        "Batch control flow",
+        "Safe file operations"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "content_quality": {
+    "status": "review_required",
+    "lab_status": "designed_not_executed",
+    "note_fa": "ساختار JSON و مسیر آموزشی تولید شده؛ آزمایش دستورات باید روی نسخه/مدل هدف و با شواهد اجرا تکمیل شود."
+  },
+  "commands": [
+    {
+      "uid": "cmd:windows_cmd:ip-configuration:ipconfig-all",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "ip-configuration",
+      "level": "L0",
+      "title_fa": "نمایش کامل پیکربندی IP",
+      "title_en": "ipconfig /all",
+      "command": "ipconfig /all",
+      "aliases": [],
+      "syntax": "ipconfig /all",
+      "arguments": [],
+      "when_to_use_fa": "دیدن IP، subnet mask، gateway، DNS و وضعیت DHCP",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: دیدن IP، subnet mask، gateway، DNS و وضعیت DHCP",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: ipconfig /all",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: خروجی را ذخیره و با قرارداد IP و DHCP scope تطبیق بده؛ رابط‌های مجازی را هم بررسی کن."
+      ],
+      "sample_output": "Host Name . . . : LAB-WS01\nIPv4 Address . . : 10.20.30.25\nDefault Gateway . : 10.20.30.1\nDNS Servers . . . : 10.20.30.10",
+      "output_fields_fa": [],
+      "related_commands": [
+        "ipconfig /displaydns",
+        "route print"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "خروجی را ذخیره و با قرارداد IP و DHCP scope تطبیق بده؛ رابط‌های مجازی را هم بررسی کن.",
+      "security_notes_fa": "خروجی می‌تواند نام میزبان، MAC، DNS و IP داخلی را افشا کند.",
+      "search_keywords": [
+        "ipconfig /all",
+        "ipconfig /all",
+        "نمایش کامل پیکربندی IP",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "ip-configuration"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `ipconfig /all` چه هدفی دارد؟",
+          "back": "دیدن IP، subnet mask، gateway، DNS و وضعیت DHCP"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش کامل پیکربندی IP» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خروجی می‌تواند نام میزبان، MAC، DNS و IP داخلی را افشا کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q001",
+            "prompt": "برای این هدف، «دیدن IP، subnet mask، gateway، DNS و وضعیت DHCP»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "ipconfig /all",
+              "ipconfig /displaydns",
+              "route print",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q001",
+            "correct_index": 0,
+            "explain_fa": "`ipconfig /all` برای دیدن IP، subnet mask، gateway، DNS و وضعیت DHCP. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** خروجی را ذخیره و با قرارداد IP و DHCP scope تطبیق بده؛ رابط‌های مجازی را هم بررسی کن.\n**هدف:** دیدن IP، subnet mask، gateway، DNS و وضعیت DHCP\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش کامل پیکربندی IP\n\n**دستور:** `ipconfig /all`\n\n**هدف عملیاتی:** دیدن IP، subnet mask، gateway، DNS و وضعیت DHCP\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. خروجی را ذخیره و با قرارداد IP و DHCP scope تطبیق بده؛ رابط‌های مجازی را هم بررسی کن.\n\n## نمونه خروجی\n\n```text\n\nHost Name . . . : LAB-WS01\nIPv4 Address . . : 10.20.30.25\nDefault Gateway . : 10.20.30.1\nDNS Servers . . . : 10.20.30.10\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخروجی می‌تواند نام میزبان، MAC، DNS و IP داخلی را افشا کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`ipconfig /displaydns`، `route print`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:dns-cache:ipconfig-flushdns",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "troubleshoot",
+      "subcategory": "dns-cache",
+      "level": "L1",
+      "title_fa": "تازه‌سازی کش DNS",
+      "title_en": "ipconfig /flushdns",
+      "command": "ipconfig /flushdns",
+      "aliases": [],
+      "syntax": "ipconfig /flushdns",
+      "arguments": [],
+      "when_to_use_fa": "پاک‌کردن DNS resolver cache محلی پس از اصلاح رکورد",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: پاک‌کردن DNS resolver cache محلی پس از اصلاح رکورد",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: ipconfig /flushdns",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: پس از ثبت پاسخ قبلی و TTL، اجرا و سپس nslookup/Resolve-DnsName را دوباره آزمایش کن."
+      ],
+      "sample_output": "Windows IP Configuration\nSuccessfully flushed the DNS Resolver Cache.",
+      "output_fields_fa": [],
+      "related_commands": [
+        "ipconfig /displaydns",
+        "nslookup"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "پس از ثبت پاسخ قبلی و TTL، اجرا و سپس nslookup/Resolve-DnsName را دوباره آزمایش کن.",
+      "security_notes_fa": "این دستور رکورد اشتباه روی DNS server را اصلاح نمی‌کند.",
+      "search_keywords": [
+        "ipconfig /flushdns",
+        "ipconfig /flushdns",
+        "تازه‌سازی کش DNS",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "troubleshoot",
+        "dns-cache"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `ipconfig /flushdns` چه هدفی دارد؟",
+          "back": "پاک‌کردن DNS resolver cache محلی پس از اصلاح رکورد"
+        },
+        {
+          "front": "قبل از استفاده عملی از «تازه‌سازی کش DNS» چه نکته‌ای را کنترل کنیم؟",
+          "back": "این دستور رکورد اشتباه روی DNS server را اصلاح نمی‌کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q002",
+            "prompt": "برای این هدف، «پاک‌کردن DNS resolver cache محلی پس از اصلاح رکورد»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "ipconfig /flushdns",
+              "ipconfig /displaydns",
+              "nslookup",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q002",
+            "correct_index": 0,
+            "explain_fa": "`ipconfig /flushdns` برای پاک‌کردن DNS resolver cache محلی پس از اصلاح رکورد. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** پس از ثبت پاسخ قبلی و TTL، اجرا و سپس nslookup/Resolve-DnsName را دوباره آزمایش کن.\n**هدف:** پاک‌کردن DNS resolver cache محلی پس از اصلاح رکورد\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# تازه‌سازی کش DNS\n\n**دستور:** `ipconfig /flushdns`\n\n**هدف عملیاتی:** پاک‌کردن DNS resolver cache محلی پس از اصلاح رکورد\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. پس از ثبت پاسخ قبلی و TTL، اجرا و سپس nslookup/Resolve-DnsName را دوباره آزمایش کن.\n\n## نمونه خروجی\n\n```text\n\nWindows IP Configuration\nSuccessfully flushed the DNS Resolver Cache.\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاین دستور رکورد اشتباه روی DNS server را اصلاح نمی‌کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`ipconfig /displaydns`، `nslookup`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:dns-cache:ipconfig-displaydns",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "troubleshoot",
+      "subcategory": "dns-cache",
+      "level": "L1",
+      "title_fa": "نمایش کش DNS",
+      "title_en": "ipconfig /displaydns",
+      "command": "ipconfig /displaydns",
+      "aliases": [],
+      "syntax": "ipconfig /displaydns",
+      "arguments": [],
+      "when_to_use_fa": "بررسی رکوردهای کش‌شده در Resolver ویندوز",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی رکوردهای کش‌شده در Resolver ویندوز",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: ipconfig /displaydns",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: پیش از Flush، نتیجه و TTL را ثبت کن و با پاسخ authoritative مقایسه کن."
+      ],
+      "sample_output": "Record Name . . . : server.example.local\nRecord Type . . . : 1\nA (Host) Record . : 10.20.30.50",
+      "output_fields_fa": [],
+      "related_commands": [
+        "ipconfig /flushdns",
+        "nslookup"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "پیش از Flush، نتیجه و TTL را ثبت کن و با پاسخ authoritative مقایسه کن.",
+      "security_notes_fa": "اطلاعات lookupهای اخیر کاربر را افشا نکن.",
+      "search_keywords": [
+        "ipconfig /displaydns",
+        "ipconfig /displaydns",
+        "نمایش کش DNS",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "troubleshoot",
+        "dns-cache"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `ipconfig /displaydns` چه هدفی دارد؟",
+          "back": "بررسی رکوردهای کش‌شده در Resolver ویندوز"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش کش DNS» چه نکته‌ای را کنترل کنیم؟",
+          "back": "اطلاعات lookupهای اخیر کاربر را افشا نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q003",
+            "prompt": "برای این هدف، «بررسی رکوردهای کش‌شده در Resolver ویندوز»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "ipconfig /displaydns",
+              "ipconfig /flushdns",
+              "nslookup",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q003",
+            "correct_index": 0,
+            "explain_fa": "`ipconfig /displaydns` برای بررسی رکوردهای کش‌شده در Resolver ویندوز. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** پیش از Flush، نتیجه و TTL را ثبت کن و با پاسخ authoritative مقایسه کن.\n**هدف:** بررسی رکوردهای کش‌شده در Resolver ویندوز\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش کش DNS\n\n**دستور:** `ipconfig /displaydns`\n\n**هدف عملیاتی:** بررسی رکوردهای کش‌شده در Resolver ویندوز\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. پیش از Flush، نتیجه و TTL را ثبت کن و با پاسخ authoritative مقایسه کن.\n\n## نمونه خروجی\n\n```text\n\nRecord Name . . . : server.example.local\nRecord Type . . . : 1\nA (Host) Record . : 10.20.30.50\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاطلاعات lookupهای اخیر کاربر را افشا نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`ipconfig /flushdns`، `nslookup`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:dhcp-client:ipconfig-renew",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "troubleshoot",
+      "subcategory": "dhcp-client",
+      "level": "L1",
+      "title_fa": "درخواست اجاره DHCP جدید",
+      "title_en": "ipconfig /renew",
+      "command": "ipconfig /renew",
+      "aliases": [],
+      "syntax": "ipconfig /renew",
+      "arguments": [],
+      "when_to_use_fa": "درخواست renew lease رابط‌های DHCP-enabled",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: درخواست renew lease رابط‌های DHCP-enabled",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: ipconfig /renew",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: روی VM کلاینت آزمایشگاهی اجرا کن؛ بعد از آن IP، gateway و DHCP Server را بررسی کن."
+      ],
+      "sample_output": "Windows IP Configuration\nSuccessfully renewed the IP Address.",
+      "output_fields_fa": [],
+      "related_commands": [
+        "ipconfig /release",
+        "ipconfig /all"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "روی VM کلاینت آزمایشگاهی اجرا کن؛ بعد از آن IP، gateway و DHCP Server را بررسی کن.",
+      "security_notes_fa": "اجرا روی remote system می‌تواند اتصال را موقتاً قطع کند؛ روی static IP اثر مورد انتظار متفاوت است.",
+      "search_keywords": [
+        "ipconfig /renew",
+        "ipconfig /renew",
+        "درخواست اجاره DHCP جدید",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "troubleshoot",
+        "dhcp-client"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `ipconfig /renew` چه هدفی دارد؟",
+          "back": "درخواست renew lease رابط‌های DHCP-enabled"
+        },
+        {
+          "front": "قبل از استفاده عملی از «درخواست اجاره DHCP جدید» چه نکته‌ای را کنترل کنیم؟",
+          "back": "اجرا روی remote system می‌تواند اتصال را موقتاً قطع کند؛ روی static IP اثر مورد انتظار متفاوت است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q004",
+            "prompt": "برای این هدف، «درخواست renew lease رابط‌های DHCP-enabled»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "ipconfig /renew",
+              "ipconfig /release",
+              "ipconfig /all",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q004",
+            "correct_index": 0,
+            "explain_fa": "`ipconfig /renew` برای درخواست renew lease رابط‌های DHCP-enabled. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** روی VM کلاینت آزمایشگاهی اجرا کن؛ بعد از آن IP، gateway و DHCP Server را بررسی کن.\n**هدف:** درخواست renew lease رابط‌های DHCP-enabled\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# درخواست اجاره DHCP جدید\n\n**دستور:** `ipconfig /renew`\n\n**هدف عملیاتی:** درخواست renew lease رابط‌های DHCP-enabled\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. روی VM کلاینت آزمایشگاهی اجرا کن؛ بعد از آن IP، gateway و DHCP Server را بررسی کن.\n\n## نمونه خروجی\n\n```text\n\nWindows IP Configuration\nSuccessfully renewed the IP Address.\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاجرا روی remote system می‌تواند اتصال را موقتاً قطع کند؛ روی static IP اثر مورد انتظار متفاوت است. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`ipconfig /release`، `ipconfig /all`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:dhcp-client:ipconfig-release",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "troubleshoot",
+      "subcategory": "dhcp-client",
+      "level": "L2",
+      "title_fa": "آزادسازی اجاره DHCP",
+      "title_en": "ipconfig /release",
+      "command": "ipconfig /release",
+      "aliases": [],
+      "syntax": "ipconfig /release",
+      "arguments": [],
+      "when_to_use_fa": "آزاد کردن IPv4 lease برای آزمایش چرخهٔ DHCP",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: آزاد کردن IPv4 lease برای آزمایش چرخهٔ DHCP",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: ipconfig /release",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: فقط روی VM آزمایشی انجام بده؛ سپس renew و DORA را در DHCP Server یا packet capture مشاهده کن."
+      ],
+      "sample_output": "Windows IP Configuration\nEthernet: IP Address released",
+      "output_fields_fa": [],
+      "related_commands": [
+        "ipconfig /renew",
+        "ipconfig /all"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "فقط روی VM آزمایشی انجام بده؛ سپس renew و DORA را در DHCP Server یا packet capture مشاهده کن.",
+      "security_notes_fa": "این فرمان عمداً connectivity رابط DHCP را قطع می‌کند؛ روی سیستم مدیریت راه‌دور اجرا نکن.",
+      "search_keywords": [
+        "ipconfig /release",
+        "ipconfig /release",
+        "آزادسازی اجاره DHCP",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "troubleshoot",
+        "dhcp-client"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `ipconfig /release` چه هدفی دارد؟",
+          "back": "آزاد کردن IPv4 lease برای آزمایش چرخهٔ DHCP"
+        },
+        {
+          "front": "قبل از استفاده عملی از «آزادسازی اجاره DHCP» چه نکته‌ای را کنترل کنیم؟",
+          "back": "این فرمان عمداً connectivity رابط DHCP را قطع می‌کند؛ روی سیستم مدیریت راه‌دور اجرا نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q005",
+            "prompt": "برای این هدف، «آزاد کردن IPv4 lease برای آزمایش چرخهٔ DHCP»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "ipconfig /release",
+              "ipconfig /renew",
+              "ipconfig /all",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q005",
+            "correct_index": 0,
+            "explain_fa": "`ipconfig /release` برای آزاد کردن IPv4 lease برای آزمایش چرخهٔ DHCP. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** فقط روی VM آزمایشی انجام بده؛ سپس renew و DORA را در DHCP Server یا packet capture مشاهده کن.\n**هدف:** آزاد کردن IPv4 lease برای آزمایش چرخهٔ DHCP\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# آزادسازی اجاره DHCP\n\n**دستور:** `ipconfig /release`\n\n**هدف عملیاتی:** آزاد کردن IPv4 lease برای آزمایش چرخهٔ DHCP\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. فقط روی VM آزمایشی انجام بده؛ سپس renew و DORA را در DHCP Server یا packet capture مشاهده کن.\n\n## نمونه خروجی\n\n```text\n\nWindows IP Configuration\nEthernet: IP Address released\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاین فرمان عمداً connectivity رابط DHCP را قطع می‌کند؛ روی سیستم مدیریت راه‌دور اجرا نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`ipconfig /renew`، `ipconfig /all`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:icmp:ping-n-4-10-20-30-1",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "troubleshoot",
+      "subcategory": "icmp",
+      "level": "L0",
+      "title_fa": "آزمون دسترس‌پذیری ICMP",
+      "title_en": "ping -n 4 10.20.30.1",
+      "command": "ping -n 4 10.20.30.1",
+      "aliases": [],
+      "syntax": "ping -n 4 10.20.30.1",
+      "arguments": [],
+      "when_to_use_fa": "آزمون RTT و از دست رفتن پاسخ ICMP به مقصد کنترل‌شده",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: آزمون RTT و از دست رفتن پاسخ ICMP به مقصد کنترل‌شده",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: ping -n 4 10.20.30.1",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: Gateway و سپس مقصد بعدی را تست کن؛ در صورت failure به ARP, VLAN, ACL و ICMP policy فکر کن."
+      ],
+      "sample_output": "Reply from 10.20.30.1: bytes=32 time<1ms TTL=255\nPackets: Sent = 4, Received = 4, Lost = 0 (0% loss)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "tracert -d",
+        "pathping -n"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "Gateway و سپس مقصد بعدی را تست کن؛ در صورت failure به ARP, VLAN, ACL و ICMP policy فکر کن.",
+      "security_notes_fa": "ICMP موفقیت برنامه یا TCP را ثابت نمی‌کند و ICMP block شده لزوماً به معنی خاموش بودن میزبان نیست.",
+      "search_keywords": [
+        "ping -n 4 10.20.30.1",
+        "ping -n 4 10.20.30.1",
+        "آزمون دسترس‌پذیری ICMP",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "troubleshoot",
+        "icmp"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `ping -n 4 10.20.30.1` چه هدفی دارد؟",
+          "back": "آزمون RTT و از دست رفتن پاسخ ICMP به مقصد کنترل‌شده"
+        },
+        {
+          "front": "قبل از استفاده عملی از «آزمون دسترس‌پذیری ICMP» چه نکته‌ای را کنترل کنیم؟",
+          "back": "ICMP موفقیت برنامه یا TCP را ثابت نمی‌کند و ICMP block شده لزوماً به معنی خاموش بودن میزبان نیست."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q006",
+            "prompt": "برای این هدف، «آزمون RTT و از دست رفتن پاسخ ICMP به مقصد کنترل‌شده»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "ping -n 4 10.20.30.1",
+              "tracert -d",
+              "pathping -n",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q006",
+            "correct_index": 0,
+            "explain_fa": "`ping -n 4 10.20.30.1` برای آزمون RTT و از دست رفتن پاسخ ICMP به مقصد کنترل‌شده. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** Gateway و سپس مقصد بعدی را تست کن؛ در صورت failure به ARP, VLAN, ACL و ICMP policy فکر کن.\n**هدف:** آزمون RTT و از دست رفتن پاسخ ICMP به مقصد کنترل‌شده\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# آزمون دسترس‌پذیری ICMP\n\n**دستور:** `ping -n 4 10.20.30.1`\n\n**هدف عملیاتی:** آزمون RTT و از دست رفتن پاسخ ICMP به مقصد کنترل‌شده\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. Gateway و سپس مقصد بعدی را تست کن؛ در صورت failure به ARP, VLAN, ACL و ICMP policy فکر کن.\n\n## نمونه خروجی\n\n```text\n\nReply from 10.20.30.1: bytes=32 time<1ms TTL=255\nPackets: Sent = 4, Received = 4, Lost = 0 (0% loss)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nICMP موفقیت برنامه یا TCP را ثابت نمی‌کند و ICMP block شده لزوماً به معنی خاموش بودن میزبان نیست. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`tracert -d`، `pathping -n`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:path-tracing:tracert-d-1-1-1-1",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "troubleshoot",
+      "subcategory": "path-tracing",
+      "level": "L1",
+      "title_fa": "ردیابی hopها",
+      "title_en": "tracert -d 1.1.1.1",
+      "command": "tracert -d 1.1.1.1",
+      "aliases": [],
+      "syntax": "tracert -d 1.1.1.1",
+      "arguments": [],
+      "when_to_use_fa": "مشاهدهٔ hopهای لایه ۳ بدون reverse DNS برای کاهش تأخیر تحلیل",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهدهٔ hopهای لایه ۳ بدون reverse DNS برای کاهش تأخیر تحلیل",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: tracert -d 1.1.1.1",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: یک مسیر مجاز و قابل دسترس را بررسی و hopها را با traceroute ابزار دیگر مقایسه کن؛ * را به‌عنوان قطعی کامل تفسیر نکن."
+      ],
+      "sample_output": "Tracing route to 1.1.1.1\n1  <1 ms  <1 ms  <1 ms  10.20.30.1\n2  5 ms   6 ms   5 ms   192.0.2.1",
+      "output_fields_fa": [],
+      "related_commands": [
+        "ping",
+        "pathping -n"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "یک مسیر مجاز و قابل دسترس را بررسی و hopها را با traceroute ابزار دیگر مقایسه کن؛ * را به‌عنوان قطعی کامل تفسیر نکن.",
+      "security_notes_fa": "آدرس‌های مسیر و topology شبکه را در گزارش عمومی حذف کن.",
+      "search_keywords": [
+        "tracert -d 1.1.1.1",
+        "tracert -d 1.1.1.1",
+        "ردیابی hopها",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "troubleshoot",
+        "path-tracing"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `tracert -d 1.1.1.1` چه هدفی دارد؟",
+          "back": "مشاهدهٔ hopهای لایه ۳ بدون reverse DNS برای کاهش تأخیر تحلیل"
+        },
+        {
+          "front": "قبل از استفاده عملی از «ردیابی hopها» چه نکته‌ای را کنترل کنیم؟",
+          "back": "آدرس‌های مسیر و topology شبکه را در گزارش عمومی حذف کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q007",
+            "prompt": "برای این هدف، «مشاهدهٔ hopهای لایه ۳ بدون reverse DNS برای کاهش تأخیر تحلیل»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "tracert -d 1.1.1.1",
+              "ping",
+              "pathping -n",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q007",
+            "correct_index": 0,
+            "explain_fa": "`tracert -d 1.1.1.1` برای مشاهدهٔ hopهای لایه ۳ بدون reverse DNS برای کاهش تأخیر تحلیل. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** یک مسیر مجاز و قابل دسترس را بررسی و hopها را با traceroute ابزار دیگر مقایسه کن؛ * را به‌عنوان قطعی کامل تفسیر نکن.\n**هدف:** مشاهدهٔ hopهای لایه ۳ بدون reverse DNS برای کاهش تأخیر تحلیل\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# ردیابی hopها\n\n**دستور:** `tracert -d 1.1.1.1`\n\n**هدف عملیاتی:** مشاهدهٔ hopهای لایه ۳ بدون reverse DNS برای کاهش تأخیر تحلیل\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. یک مسیر مجاز و قابل دسترس را بررسی و hopها را با traceroute ابزار دیگر مقایسه کن؛ * را به‌عنوان قطعی کامل تفسیر نکن.\n\n## نمونه خروجی\n\n```text\n\nTracing route to 1.1.1.1\n1  <1 ms  <1 ms  <1 ms  10.20.30.1\n2  5 ms   6 ms   5 ms   192.0.2.1\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nآدرس‌های مسیر و topology شبکه را در گزارش عمومی حذف کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`ping`، `pathping -n`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:path-quality:pathping-n-1-1-1-1",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "troubleshoot",
+      "subcategory": "path-quality",
+      "level": "L2",
+      "title_fa": "اندازه‌گیری افت مسیر",
+      "title_en": "pathping -n 1.1.1.1",
+      "command": "pathping -n 1.1.1.1",
+      "aliases": [],
+      "syntax": "pathping -n 1.1.1.1",
+      "arguments": [],
+      "when_to_use_fa": "برآورد loss/latency روی hopها طی چند probe؛ زمان اجرا از tracert بیشتر است",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: برآورد loss/latency روی hopها طی چند probe؛ زمان اجرا از tracert بیشتر است",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: pathping -n 1.1.1.1",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: صبر کن تا نمونه‌برداری کامل شود؛ loss در hop میانی را فقط وقتی مشکل تلقی کن که در مسیر بعدی هم اثر end-to-end دیده شود."
+      ],
+      "sample_output": "Source to Here  This Node/Link\n10.20.30.1  0% / 0%\n192.0.2.1   2% / 0%",
+      "output_fields_fa": [],
+      "related_commands": [
+        "tracert -d",
+        "ping"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "صبر کن تا نمونه‌برداری کامل شود؛ loss در hop میانی را فقط وقتی مشکل تلقی کن که در مسیر بعدی هم اثر end-to-end دیده شود.",
+      "security_notes_fa": "برخی روترها ICMP rate-limit می‌کنند؛ نتایج hop به‌تنهایی ظرفیت مسیر را ثابت نمی‌کند.",
+      "search_keywords": [
+        "pathping -n 1.1.1.1",
+        "pathping -n 1.1.1.1",
+        "اندازه‌گیری افت مسیر",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "troubleshoot",
+        "path-quality"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `pathping -n 1.1.1.1` چه هدفی دارد؟",
+          "back": "برآورد loss/latency روی hopها طی چند probe؛ زمان اجرا از tracert بیشتر است"
+        },
+        {
+          "front": "قبل از استفاده عملی از «اندازه‌گیری افت مسیر» چه نکته‌ای را کنترل کنیم؟",
+          "back": "برخی روترها ICMP rate-limit می‌کنند؛ نتایج hop به‌تنهایی ظرفیت مسیر را ثابت نمی‌کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q008",
+            "prompt": "برای این هدف، «برآورد loss/latency روی hopها طی چند probe؛ زمان اجرا از tracert بیشتر است»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "pathping -n 1.1.1.1",
+              "tracert -d",
+              "ping",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q008",
+            "correct_index": 0,
+            "explain_fa": "`pathping -n 1.1.1.1` برای برآورد loss/latency روی hopها طی چند probe؛ زمان اجرا از tracert بیشتر است. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** صبر کن تا نمونه‌برداری کامل شود؛ loss در hop میانی را فقط وقتی مشکل تلقی کن که در مسیر بعدی هم اثر end-to-end دیده شود.\n**هدف:** برآورد loss/latency روی hopها طی چند probe؛ زمان اجرا از tracert بیشتر است\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# اندازه‌گیری افت مسیر\n\n**دستور:** `pathping -n 1.1.1.1`\n\n**هدف عملیاتی:** برآورد loss/latency روی hopها طی چند probe؛ زمان اجرا از tracert بیشتر است\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. صبر کن تا نمونه‌برداری کامل شود؛ loss در hop میانی را فقط وقتی مشکل تلقی کن که در مسیر بعدی هم اثر end-to-end دیده شود.\n\n## نمونه خروجی\n\n```text\n\nSource to Here  This Node/Link\n10.20.30.1  0% / 0%\n192.0.2.1   2% / 0%\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nبرخی روترها ICMP rate-limit می‌کنند؛ نتایج hop به‌تنهایی ظرفیت مسیر را ثابت نمی‌کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`tracert -d`، `ping`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:dns:nslookup-server-example-local",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "troubleshoot",
+      "subcategory": "dns",
+      "level": "L0",
+      "title_fa": "پرس‌وجوی DNS",
+      "title_en": "nslookup server.example.local",
+      "command": "nslookup server.example.local",
+      "aliases": [],
+      "syntax": "nslookup server.example.local",
+      "arguments": [],
+      "when_to_use_fa": "تست name resolution از طریق resolver فعال",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: تست name resolution از طریق resolver فعال",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: nslookup server.example.local",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: برای تفکیک resolver، سرور مورد نظر را صریح تعیین کن: `nslookup name serverIP` و پاسخ‌ها را مقایسه کن."
+      ],
+      "sample_output": "Server: 10.20.30.10\nAddress: 10.20.30.10#53\nName: server.example.local\nAddress: 10.20.30.50",
+      "output_fields_fa": [],
+      "related_commands": [
+        "ipconfig /all",
+        "ipconfig /flushdns"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "برای تفکیک resolver، سرور مورد نظر را صریح تعیین کن: `nslookup name serverIP` و پاسخ‌ها را مقایسه کن.",
+      "security_notes_fa": "نتیجهٔ مثبت فقط یک پاسخ برای نوع درخواست است؛ MX, AAAA و رکوردهای دیگر جدا هستند.",
+      "search_keywords": [
+        "nslookup server.example.local",
+        "nslookup server.example.local",
+        "پرس‌وجوی DNS",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "troubleshoot",
+        "dns"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `nslookup server.example.local` چه هدفی دارد؟",
+          "back": "تست name resolution از طریق resolver فعال"
+        },
+        {
+          "front": "قبل از استفاده عملی از «پرس‌وجوی DNS» چه نکته‌ای را کنترل کنیم؟",
+          "back": "نتیجهٔ مثبت فقط یک پاسخ برای نوع درخواست است؛ MX, AAAA و رکوردهای دیگر جدا هستند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q009",
+            "prompt": "برای این هدف، «تست name resolution از طریق resolver فعال»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "nslookup server.example.local",
+              "ipconfig /all",
+              "ipconfig /flushdns",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q009",
+            "correct_index": 0,
+            "explain_fa": "`nslookup server.example.local` برای تست name resolution از طریق resolver فعال. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** برای تفکیک resolver، سرور مورد نظر را صریح تعیین کن: `nslookup name serverIP` و پاسخ‌ها را مقایسه کن.\n**هدف:** تست name resolution از طریق resolver فعال\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# پرس‌وجوی DNS\n\n**دستور:** `nslookup server.example.local`\n\n**هدف عملیاتی:** تست name resolution از طریق resolver فعال\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. برای تفکیک resolver، سرور مورد نظر را صریح تعیین کن: `nslookup name serverIP` و پاسخ‌ها را مقایسه کن.\n\n## نمونه خروجی\n\n```text\n\nServer: 10.20.30.10\nAddress: 10.20.30.10#53\nName: server.example.local\nAddress: 10.20.30.50\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nنتیجهٔ مثبت فقط یک پاسخ برای نوع درخواست است؛ MX, AAAA و رکوردهای دیگر جدا هستند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`ipconfig /all`، `ipconfig /flushdns`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:tcp-udp:netstat-ano",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "tcp-udp",
+      "level": "L1",
+      "title_fa": "نمایش سوکت‌ها و PID",
+      "title_en": "netstat -ano",
+      "command": "netstat -ano",
+      "aliases": [],
+      "syntax": "netstat -ano",
+      "arguments": [],
+      "when_to_use_fa": "مشاهدهٔ Local/Foreign Address، State و PID برای socketهای TCP",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهدهٔ Local/Foreign Address، State و PID برای socketهای TCP",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: netstat -ano",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: PID را با `tasklist /fi \"PID eq 4120\"` تطبیق بده و سپس مالک سرویس را بررسی کن."
+      ],
+      "sample_output": "Proto Local Address  Foreign Address State PID\nTCP 0.0.0.0:443 0.0.0.0:0 LISTENING 4120",
+      "output_fields_fa": [],
+      "related_commands": [
+        "tasklist /svc",
+        "Get-NetTCPConnection"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "PID را با `tasklist /fi \"PID eq 4120\"` تطبیق بده و سپس مالک سرویس را بررسی کن.",
+      "security_notes_fa": "PID را مبنای بستن خودکار process قرار نده؛ process ممکن است critical باشد.",
+      "search_keywords": [
+        "netstat -ano",
+        "netstat -ano",
+        "نمایش سوکت‌ها و PID",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "tcp-udp"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `netstat -ano` چه هدفی دارد؟",
+          "back": "مشاهدهٔ Local/Foreign Address، State و PID برای socketهای TCP"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش سوکت‌ها و PID» چه نکته‌ای را کنترل کنیم؟",
+          "back": "PID را مبنای بستن خودکار process قرار نده؛ process ممکن است critical باشد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q010",
+            "prompt": "برای این هدف، «مشاهدهٔ Local/Foreign Address، State و PID برای socketهای TCP»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "netstat -ano",
+              "tasklist /svc",
+              "Get-NetTCPConnection",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q010",
+            "correct_index": 0,
+            "explain_fa": "`netstat -ano` برای مشاهدهٔ Local/Foreign Address، State و PID برای socketهای TCP. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** PID را با `tasklist /fi \"PID eq 4120\"` تطبیق بده و سپس مالک سرویس را بررسی کن.\n**هدف:** مشاهدهٔ Local/Foreign Address، State و PID برای socketهای TCP\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش سوکت‌ها و PID\n\n**دستور:** `netstat -ano`\n\n**هدف عملیاتی:** مشاهدهٔ Local/Foreign Address، State و PID برای socketهای TCP\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. PID را با `tasklist /fi \"PID eq 4120\"` تطبیق بده و سپس مالک سرویس را بررسی کن.\n\n## نمونه خروجی\n\n```text\n\nProto Local Address  Foreign Address State PID\nTCP 0.0.0.0:443 0.0.0.0:0 LISTENING 4120\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nPID را مبنای بستن خودکار process قرار نده؛ process ممکن است critical باشد. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`tasklist /svc`، `Get-NetTCPConnection`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:routing-table:route-print",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "routing",
+      "subcategory": "routing-table",
+      "level": "L1",
+      "title_fa": "نمایش جدول Route",
+      "title_en": "route print",
+      "command": "route print -4",
+      "aliases": [],
+      "syntax": "route print -4",
+      "arguments": [],
+      "when_to_use_fa": "مشاهدهٔ IPv4 routing table و interface metrics",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهدهٔ IPv4 routing table و interface metrics",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: route print -4",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: مسیر 0/0 و route مقصد داخلی را پیدا کن و با `tracert -d` تطبیق بده."
+      ],
+      "sample_output": "Network Destination  Netmask  Gateway  Interface Metric\n0.0.0.0 0.0.0.0 10.20.30.1 10.20.30.25 25",
+      "output_fields_fa": [],
+      "related_commands": [
+        "ipconfig /all",
+        "tracert -d"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "مسیر 0/0 و route مقصد داخلی را پیدا کن و با `tracert -d` تطبیق بده.",
+      "security_notes_fa": "خروجی می‌تواند IPهای داخلی و VPN routeها را افشا کند.",
+      "search_keywords": [
+        "route print",
+        "route print -4",
+        "نمایش جدول Route",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "routing",
+        "routing-table"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `route print -4` چه هدفی دارد؟",
+          "back": "مشاهدهٔ IPv4 routing table و interface metrics"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش جدول Route» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خروجی می‌تواند IPهای داخلی و VPN routeها را افشا کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q011",
+            "prompt": "برای این هدف، «مشاهدهٔ IPv4 routing table و interface metrics»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "route print -4",
+              "ipconfig /all",
+              "tracert -d",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q011",
+            "correct_index": 0,
+            "explain_fa": "`route print -4` برای مشاهدهٔ IPv4 routing table و interface metrics. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** مسیر 0/0 و route مقصد داخلی را پیدا کن و با `tracert -d` تطبیق بده.\n**هدف:** مشاهدهٔ IPv4 routing table و interface metrics\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش جدول Route\n\n**دستور:** `route print -4`\n\n**هدف عملیاتی:** مشاهدهٔ IPv4 routing table و interface metrics\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. مسیر 0/0 و route مقصد داخلی را پیدا کن و با `tracert -d` تطبیق بده.\n\n## نمونه خروجی\n\n```text\n\nNetwork Destination  Netmask  Gateway  Interface Metric\n0.0.0.0 0.0.0.0 10.20.30.1 10.20.30.25 25\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخروجی می‌تواند IPهای داخلی و VPN routeها را افشا کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`ipconfig /all`، `tracert -d`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:route-change:route-add",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "routing",
+      "subcategory": "route-change",
+      "level": "L3",
+      "title_fa": "افزودن Route موقت در Lab",
+      "title_en": "route add",
+      "command": "route -p add 198.51.100.0 mask 255.255.255.0 10.20.30.1 metric 250",
+      "aliases": [],
+      "syntax": "route -p add 198.51.100.0 mask 255.255.255.0 10.20.30.1 metric 250",
+      "arguments": [],
+      "when_to_use_fa": "آزمایش اضافه کردن route به شبکهٔ TEST-NET در VM ایزوله",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: آزمایش اضافه کردن route به شبکهٔ TEST-NET در VM ایزوله",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: route -p add 198.51.100.0 mask 255.255.255.0 10.20.30.1 metric 250",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: فقط روی VM بدون اتصال به شبکهٔ عملیاتی انجام بده؛ قبل از اجرا route print را ذخیره کن و پس از تست `route delete 198.51.100.0` را اجرا کن."
+      ],
+      "sample_output": "OK! (جزئیات پایداری به سوییچ -p وابسته است)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "route print",
+        "route delete"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "فقط روی VM بدون اتصال به شبکهٔ عملیاتی انجام بده؛ قبل از اجرا route print را ذخیره کن و پس از تست `route delete 198.51.100.0` را اجرا کن.",
+      "security_notes_fa": "گزینهٔ -p مسیر را پس از reboot نگه می‌دارد؛ برای مثال آموزشی از آن استفاده نکن مگر هدف آزمایش مشخص باشد.",
+      "search_keywords": [
+        "route add",
+        "route -p add 198.51.100.0 mask 255.255.255.0 10.20.30.1 metric 250",
+        "افزودن Route موقت در Lab",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "routing",
+        "route-change"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `route -p add 198.51.100.0 mask 255.255.255.0 10.20.30.1 metric 250` چه هدفی دارد؟",
+          "back": "آزمایش اضافه کردن route به شبکهٔ TEST-NET در VM ایزوله"
+        },
+        {
+          "front": "قبل از استفاده عملی از «افزودن Route موقت در Lab» چه نکته‌ای را کنترل کنیم؟",
+          "back": "گزینهٔ -p مسیر را پس از reboot نگه می‌دارد؛ برای مثال آموزشی از آن استفاده نکن مگر هدف آزمایش مشخص باشد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q012",
+            "prompt": "برای این هدف، «آزمایش اضافه کردن route به شبکهٔ TEST-NET در VM ایزوله»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "route -p add 198.51.100.0 mask 255.255.255.0 10.20.30.1 metric 250",
+              "route print",
+              "route delete",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q012",
+            "correct_index": 0,
+            "explain_fa": "`route -p add 198.51.100.0 mask 255.255.255.0 10.20.30.1 metric 250` برای آزمایش اضافه کردن route به شبکهٔ TEST-NET در VM ایزوله. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** فقط روی VM بدون اتصال به شبکهٔ عملیاتی انجام بده؛ قبل از اجرا route print را ذخیره کن و پس از تست `route delete 198.51.100.0` را اجرا کن.\n**هدف:** آزمایش اضافه کردن route به شبکهٔ TEST-NET در VM ایزوله\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# افزودن Route موقت در Lab\n\n**دستور:** `route -p add 198.51.100.0 mask 255.255.255.0 10.20.30.1 metric 250`\n\n**هدف عملیاتی:** آزمایش اضافه کردن route به شبکهٔ TEST-NET در VM ایزوله\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. فقط روی VM بدون اتصال به شبکهٔ عملیاتی انجام بده؛ قبل از اجرا route print را ذخیره کن و پس از تست `route delete 198.51.100.0` را اجرا کن.\n\n## نمونه خروجی\n\n```text\n\nOK! (جزئیات پایداری به سوییچ -p وابسته است)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nگزینهٔ -p مسیر را پس از reboot نگه می‌دارد؛ برای مثال آموزشی از آن استفاده نکن مگر هدف آزمایش مشخص باشد. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`route print`، `route delete`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:arp:arp-a",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "troubleshoot",
+      "subcategory": "arp",
+      "level": "L1",
+      "title_fa": "نمایش کش ARP",
+      "title_en": "arp -a",
+      "command": "arp -a",
+      "aliases": [],
+      "syntax": "arp -a",
+      "arguments": [],
+      "when_to_use_fa": "بررسی نگاشت IPv4 به MAC در interface مشخص",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی نگاشت IPv4 به MAC در interface مشخص",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: arp -a",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: Gateway را ping کن و سپس ARP cache را بخوان؛ MAC را با جدول سوئیچ کنترل‌شده مقایسه کن."
+      ],
+      "sample_output": "Interface: 10.20.30.25 --- 0x8\n10.20.30.1 00-11-22-33-44-55 dynamic",
+      "output_fields_fa": [],
+      "related_commands": [
+        "ipconfig /all",
+        "ping"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "Gateway را ping کن و سپس ARP cache را بخوان؛ MAC را با جدول سوئیچ کنترل‌شده مقایسه کن.",
+      "security_notes_fa": "ARP cache موقتی است و به خودی خود اثبات spoofing نیست.",
+      "search_keywords": [
+        "arp -a",
+        "arp -a",
+        "نمایش کش ARP",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "troubleshoot",
+        "arp"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `arp -a` چه هدفی دارد؟",
+          "back": "بررسی نگاشت IPv4 به MAC در interface مشخص"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش کش ARP» چه نکته‌ای را کنترل کنیم؟",
+          "back": "ARP cache موقتی است و به خودی خود اثبات spoofing نیست."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q013",
+            "prompt": "برای این هدف، «بررسی نگاشت IPv4 به MAC در interface مشخص»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "arp -a",
+              "ipconfig /all",
+              "ping",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q013",
+            "correct_index": 0,
+            "explain_fa": "`arp -a` برای بررسی نگاشت IPv4 به MAC در interface مشخص. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** Gateway را ping کن و سپس ARP cache را بخوان؛ MAC را با جدول سوئیچ کنترل‌شده مقایسه کن.\n**هدف:** بررسی نگاشت IPv4 به MAC در interface مشخص\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش کش ARP\n\n**دستور:** `arp -a`\n\n**هدف عملیاتی:** بررسی نگاشت IPv4 به MAC در interface مشخص\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. Gateway را ping کن و سپس ARP cache را بخوان؛ MAC را با جدول سوئیچ کنترل‌شده مقایسه کن.\n\n## نمونه خروجی\n\n```text\n\nInterface: 10.20.30.25 --- 0x8\n10.20.30.1 00-11-22-33-44-55 dynamic\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nARP cache موقتی است و به خودی خود اثبات spoofing نیست. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`ipconfig /all`، `ping`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:mac-address:getmac-v-fo-list",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "mac-address",
+      "level": "L0",
+      "title_fa": "نمایش MAC کارت‌ها",
+      "title_en": "getmac /v /fo list",
+      "command": "getmac /v /fo list",
+      "aliases": [],
+      "syntax": "getmac /v /fo list",
+      "arguments": [],
+      "when_to_use_fa": "ثبت MAC هر رابط و وضعیت transport برای inventory",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: ثبت MAC هر رابط و وضعیت transport برای inventory",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: getmac /v /fo list",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: MAC را از روی label فیزیکی/Hypervisor بررسی کن و رابط‌های مجازی را مشخص کن."
+      ],
+      "sample_output": "Connection Name: Ethernet\nNetwork Adapter: Intel Ethernet\nPhysical Address: 00-11-22-33-44-55",
+      "output_fields_fa": [],
+      "related_commands": [
+        "ipconfig /all",
+        "arp -a"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "MAC را از روی label فیزیکی/Hypervisor بررسی کن و رابط‌های مجازی را مشخص کن.",
+      "security_notes_fa": "MAC randomization و NIC teaming باید در تحلیل لحاظ شوند.",
+      "search_keywords": [
+        "getmac /v /fo list",
+        "getmac /v /fo list",
+        "نمایش MAC کارت‌ها",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "mac-address"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `getmac /v /fo list` چه هدفی دارد؟",
+          "back": "ثبت MAC هر رابط و وضعیت transport برای inventory"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش MAC کارت‌ها» چه نکته‌ای را کنترل کنیم؟",
+          "back": "MAC randomization و NIC teaming باید در تحلیل لحاظ شوند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q014",
+            "prompt": "برای این هدف، «ثبت MAC هر رابط و وضعیت transport برای inventory»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "getmac /v /fo list",
+              "ipconfig /all",
+              "arp -a",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q014",
+            "correct_index": 0,
+            "explain_fa": "`getmac /v /fo list` برای ثبت MAC هر رابط و وضعیت transport برای inventory. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** MAC را از روی label فیزیکی/Hypervisor بررسی کن و رابط‌های مجازی را مشخص کن.\n**هدف:** ثبت MAC هر رابط و وضعیت transport برای inventory\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش MAC کارت‌ها\n\n**دستور:** `getmac /v /fo list`\n\n**هدف عملیاتی:** ثبت MAC هر رابط و وضعیت transport برای inventory\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. MAC را از روی label فیزیکی/Hypervisor بررسی کن و رابط‌های مجازی را مشخص کن.\n\n## نمونه خروجی\n\n```text\n\nConnection Name: Ethernet\nNetwork Adapter: Intel Ethernet\nPhysical Address: 00-11-22-33-44-55\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nMAC randomization و NIC teaming باید در تحلیل لحاظ شوند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`ipconfig /all`، `arp -a`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:host-inventory:hostname",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "host-inventory",
+      "level": "L0",
+      "title_fa": "نمایش نام میزبان",
+      "title_en": "hostname",
+      "command": "hostname",
+      "aliases": [],
+      "syntax": "hostname",
+      "arguments": [],
+      "when_to_use_fa": "دریافت نام میزبان برای تطبیق لاگ و inventory",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: دریافت نام میزبان برای تطبیق لاگ و inventory",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: hostname",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: نام را با DNS A/PTR و CMDB تطبیق بده؛ از نام به‌تنهایی نتیجهٔ domain membership نگیر."
+      ],
+      "sample_output": "LAB-WS01",
+      "output_fields_fa": [],
+      "related_commands": [
+        "systeminfo",
+        "whoami /all"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "نام را با DNS A/PTR و CMDB تطبیق بده؛ از نام به‌تنهایی نتیجهٔ domain membership نگیر.",
+      "security_notes_fa": "hostname و domain suffix جزئیات سازمانی هستند.",
+      "search_keywords": [
+        "hostname",
+        "hostname",
+        "نمایش نام میزبان",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "host-inventory"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `hostname` چه هدفی دارد؟",
+          "back": "دریافت نام میزبان برای تطبیق لاگ و inventory"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش نام میزبان» چه نکته‌ای را کنترل کنیم؟",
+          "back": "hostname و domain suffix جزئیات سازمانی هستند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q015",
+            "prompt": "برای این هدف، «دریافت نام میزبان برای تطبیق لاگ و inventory»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "hostname",
+              "systeminfo",
+              "whoami /all",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q015",
+            "correct_index": 0,
+            "explain_fa": "`hostname` برای دریافت نام میزبان برای تطبیق لاگ و inventory. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** نام را با DNS A/PTR و CMDB تطبیق بده؛ از نام به‌تنهایی نتیجهٔ domain membership نگیر.\n**هدف:** دریافت نام میزبان برای تطبیق لاگ و inventory\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش نام میزبان\n\n**دستور:** `hostname`\n\n**هدف عملیاتی:** دریافت نام میزبان برای تطبیق لاگ و inventory\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. نام را با DNS A/PTR و CMDB تطبیق بده؛ از نام به‌تنهایی نتیجهٔ domain membership نگیر.\n\n## نمونه خروجی\n\n```text\n\nLAB-WS01\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nhostname و domain suffix جزئیات سازمانی هستند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`systeminfo`، `whoami /all`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:token-privileges:whoami-all",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "identity",
+      "subcategory": "token-privileges",
+      "level": "L1",
+      "title_fa": "نمایش هویت و گروه‌ها",
+      "title_en": "whoami /all",
+      "command": "whoami /all",
+      "aliases": [],
+      "syntax": "whoami /all",
+      "arguments": [],
+      "when_to_use_fa": "دیدن حساب، SID، گروه‌ها و privilegeهای token فعلی",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: دیدن حساب، SID، گروه‌ها و privilegeهای token فعلی",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: whoami /all",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: در یک shell عادی و elevated اجرا و اختلاف token را مقایسه کن؛ فقط privilege لازم را درخواست کن."
+      ],
+      "sample_output": "USER INFORMATION\nUser Name: CONTOSO\\jdoe\nGROUP INFORMATION\n...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "net user",
+        "Get-LocalGroupMember"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "در یک shell عادی و elevated اجرا و اختلاف token را مقایسه کن؛ فقط privilege لازم را درخواست کن.",
+      "security_notes_fa": "خروجی می‌تواند نام دامنه و groupهای حساس را آشکار کند.",
+      "search_keywords": [
+        "whoami /all",
+        "whoami /all",
+        "نمایش هویت و گروه‌ها",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "identity",
+        "token-privileges"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `whoami /all` چه هدفی دارد؟",
+          "back": "دیدن حساب، SID، گروه‌ها و privilegeهای token فعلی"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش هویت و گروه‌ها» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خروجی می‌تواند نام دامنه و groupهای حساس را آشکار کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q016",
+            "prompt": "برای این هدف، «دیدن حساب، SID، گروه‌ها و privilegeهای token فعلی»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "whoami /all",
+              "net user",
+              "Get-LocalGroupMember",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q016",
+            "correct_index": 0,
+            "explain_fa": "`whoami /all` برای دیدن حساب، SID، گروه‌ها و privilegeهای token فعلی. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** در یک shell عادی و elevated اجرا و اختلاف token را مقایسه کن؛ فقط privilege لازم را درخواست کن.\n**هدف:** دیدن حساب، SID، گروه‌ها و privilegeهای token فعلی\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش هویت و گروه‌ها\n\n**دستور:** `whoami /all`\n\n**هدف عملیاتی:** دیدن حساب، SID، گروه‌ها و privilegeهای token فعلی\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. در یک shell عادی و elevated اجرا و اختلاف token را مقایسه کن؛ فقط privilege لازم را درخواست کن.\n\n## نمونه خروجی\n\n```text\n\nUSER INFORMATION\nUser Name: CONTOSO\\jdoe\nGROUP INFORMATION\n...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخروجی می‌تواند نام دامنه و groupهای حساس را آشکار کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`net user`، `Get-LocalGroupMember`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:host-inventory:systeminfo",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "host-inventory",
+      "level": "L0",
+      "title_fa": "اطلاعات سیستم",
+      "title_en": "systeminfo",
+      "command": "systeminfo",
+      "aliases": [],
+      "syntax": "systeminfo",
+      "arguments": [],
+      "when_to_use_fa": "جمع‌آوری نسخه OS، build، uptime و اطلاعات platform",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: جمع‌آوری نسخه OS، build، uptime و اطلاعات platform",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: systeminfo",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: خروجی را با Get-ComputerInfo مقایسه کن و تفاوت فیلدهای locale/timezone را ثبت کن."
+      ],
+      "sample_output": "Host Name: LAB-WS01\nOS Name: Microsoft Windows 11 Pro\nSystem Boot Time: 10/12/2026, 8:05:00 AM",
+      "output_fields_fa": [],
+      "related_commands": [
+        "hostname",
+        "wmic os get Caption,Version"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "خروجی را با Get-ComputerInfo مقایسه کن و تفاوت فیلدهای locale/timezone را ثبت کن.",
+      "security_notes_fa": "قبل از انتشار، نام میزبان و نام کاربر logon را redact کن.",
+      "search_keywords": [
+        "systeminfo",
+        "systeminfo",
+        "اطلاعات سیستم",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "host-inventory"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `systeminfo` چه هدفی دارد؟",
+          "back": "جمع‌آوری نسخه OS، build، uptime و اطلاعات platform"
+        },
+        {
+          "front": "قبل از استفاده عملی از «اطلاعات سیستم» چه نکته‌ای را کنترل کنیم؟",
+          "back": "قبل از انتشار، نام میزبان و نام کاربر logon را redact کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q017",
+            "prompt": "برای این هدف، «جمع‌آوری نسخه OS، build، uptime و اطلاعات platform»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "systeminfo",
+              "hostname",
+              "wmic os get Caption,Version",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q017",
+            "correct_index": 0,
+            "explain_fa": "`systeminfo` برای جمع‌آوری نسخه OS، build، uptime و اطلاعات platform. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** خروجی را با Get-ComputerInfo مقایسه کن و تفاوت فیلدهای locale/timezone را ثبت کن.\n**هدف:** جمع‌آوری نسخه OS، build، uptime و اطلاعات platform\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# اطلاعات سیستم\n\n**دستور:** `systeminfo`\n\n**هدف عملیاتی:** جمع‌آوری نسخه OS، build، uptime و اطلاعات platform\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. خروجی را با Get-ComputerInfo مقایسه کن و تفاوت فیلدهای locale/timezone را ثبت کن.\n\n## نمونه خروجی\n\n```text\n\nHost Name: LAB-WS01\nOS Name: Microsoft Windows 11 Pro\nSystem Boot Time: 10/12/2026, 8:05:00 AM\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nقبل از انتشار، نام میزبان و نام کاربر logon را redact کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`hostname`، `wmic os get Caption,Version`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:processes:tasklist-svc",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "processes",
+      "level": "L1",
+      "title_fa": "فهرست Processها همراه Service",
+      "title_en": "tasklist /svc",
+      "command": "tasklist /svc",
+      "aliases": [],
+      "syntax": "tasklist /svc",
+      "arguments": [],
+      "when_to_use_fa": "دیدن PID و سرویس‌های میزبانی‌شده در هر process",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: دیدن PID و سرویس‌های میزبانی‌شده در هر process",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: tasklist /svc",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: PID مشکوک را با services.msc، Event Log و امضای executable بررسی کن."
+      ],
+      "sample_output": "Image Name PID Services\nsvchost.exe 1234 Dnscache, NlaSvc",
+      "output_fields_fa": [],
+      "related_commands": [
+        "netstat -ano",
+        "taskkill"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "PID مشکوک را با services.msc، Event Log و امضای executable بررسی کن.",
+      "security_notes_fa": "به‌خاطر اشتراک PID در service host چند سرویس می‌توانند در یک process باشند؛ بستن آن‌ها می‌تواند سیستم را خراب کند.",
+      "search_keywords": [
+        "tasklist /svc",
+        "tasklist /svc",
+        "فهرست Processها همراه Service",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "processes"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `tasklist /svc` چه هدفی دارد؟",
+          "back": "دیدن PID و سرویس‌های میزبانی‌شده در هر process"
+        },
+        {
+          "front": "قبل از استفاده عملی از «فهرست Processها همراه Service» چه نکته‌ای را کنترل کنیم؟",
+          "back": "به‌خاطر اشتراک PID در service host چند سرویس می‌توانند در یک process باشند؛ بستن آن‌ها می‌تواند سیستم را خراب کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q018",
+            "prompt": "برای این هدف، «دیدن PID و سرویس‌های میزبانی‌شده در هر process»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "tasklist /svc",
+              "netstat -ano",
+              "taskkill",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q018",
+            "correct_index": 0,
+            "explain_fa": "`tasklist /svc` برای دیدن PID و سرویس‌های میزبانی‌شده در هر process. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** PID مشکوک را با services.msc، Event Log و امضای executable بررسی کن.\n**هدف:** دیدن PID و سرویس‌های میزبانی‌شده در هر process\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# فهرست Processها همراه Service\n\n**دستور:** `tasklist /svc`\n\n**هدف عملیاتی:** دیدن PID و سرویس‌های میزبانی‌شده در هر process\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. PID مشکوک را با services.msc، Event Log و امضای executable بررسی کن.\n\n## نمونه خروجی\n\n```text\n\nImage Name PID Services\nsvchost.exe 1234 Dnscache, NlaSvc\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nبه‌خاطر اشتراک PID در service host چند سرویس می‌توانند در یک process باشند؛ بستن آن‌ها می‌تواند سیستم را خراب کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`netstat -ano`، `taskkill`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:services:sc-qc",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "services",
+      "level": "L1",
+      "title_fa": "بازبینی پیکربندی سرویس",
+      "title_en": "sc qc",
+      "command": "sc qc Spooler",
+      "aliases": [],
+      "syntax": "sc qc Spooler",
+      "arguments": [],
+      "when_to_use_fa": "نمایش نوع start، binary path، dependency و حساب اجرا",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: نمایش نوع start، binary path، dependency و حساب اجرا",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: sc qc Spooler",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: PathName را با مسیر استاندارد و امضای فایل مقایسه کن؛ تنظیمات را پیش از تغییر backup کن."
+      ],
+      "sample_output": "SERVICE_NAME: Spooler\nBINARY_PATH_NAME: ...\\spoolsv.exe\nSTART_TYPE: 2 AUTO_START",
+      "output_fields_fa": [],
+      "related_commands": [
+        "sc query",
+        "tasklist /svc"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "PathName را با مسیر استاندارد و امضای فایل مقایسه کن؛ تنظیمات را پیش از تغییر backup کن.",
+      "security_notes_fa": "تغییر binary path سرویس ریسک persistence دارد؛ دستور QC فقط مشاهده است.",
+      "search_keywords": [
+        "sc qc",
+        "sc qc Spooler",
+        "بازبینی پیکربندی سرویس",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "services"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `sc qc Spooler` چه هدفی دارد؟",
+          "back": "نمایش نوع start، binary path، dependency و حساب اجرا"
+        },
+        {
+          "front": "قبل از استفاده عملی از «بازبینی پیکربندی سرویس» چه نکته‌ای را کنترل کنیم؟",
+          "back": "تغییر binary path سرویس ریسک persistence دارد؛ دستور QC فقط مشاهده است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q019",
+            "prompt": "برای این هدف، «نمایش نوع start، binary path، dependency و حساب اجرا»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "sc qc Spooler",
+              "sc query",
+              "tasklist /svc",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q019",
+            "correct_index": 0,
+            "explain_fa": "`sc qc Spooler` برای نمایش نوع start، binary path، dependency و حساب اجرا. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** PathName را با مسیر استاندارد و امضای فایل مقایسه کن؛ تنظیمات را پیش از تغییر backup کن.\n**هدف:** نمایش نوع start، binary path، dependency و حساب اجرا\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# بازبینی پیکربندی سرویس\n\n**دستور:** `sc qc Spooler`\n\n**هدف عملیاتی:** نمایش نوع start، binary path، dependency و حساب اجرا\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. PathName را با مسیر استاندارد و امضای فایل مقایسه کن؛ تنظیمات را پیش از تغییر backup کن.\n\n## نمونه خروجی\n\n```text\n\nSERVICE_NAME: Spooler\nBINARY_PATH_NAME: ...\\spoolsv.exe\nSTART_TYPE: 2 AUTO_START\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nتغییر binary path سرویس ریسک persistence دارد؛ دستور QC فقط مشاهده است. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`sc query`، `tasklist /svc`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:services:sc-query",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "services",
+      "level": "L0",
+      "title_fa": "وضعیت یک سرویس",
+      "title_en": "sc query",
+      "command": "sc query Spooler",
+      "aliases": [],
+      "syntax": "sc query Spooler",
+      "arguments": [],
+      "when_to_use_fa": "دیدن STATE و WIN32_EXIT_CODE سرویس",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: دیدن STATE و WIN32_EXIT_CODE سرویس",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: sc query Spooler",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: اگر Stopped بود، Event Viewer را بررسی کن؛ بدون فهم dependency آن را start نکن."
+      ],
+      "sample_output": "SERVICE_NAME: Spooler\nSTATE: 4 RUNNING\nWIN32_EXIT_CODE: 0",
+      "output_fields_fa": [],
+      "related_commands": [
+        "sc qc",
+        "net start"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "اگر Stopped بود، Event Viewer را بررسی کن؛ بدون فهم dependency آن را start نکن.",
+      "security_notes_fa": "State گذرا است؛ برای علت توقف به Service Control Manager log نیاز داری.",
+      "search_keywords": [
+        "sc query",
+        "sc query Spooler",
+        "وضعیت یک سرویس",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "services"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `sc query Spooler` چه هدفی دارد؟",
+          "back": "دیدن STATE و WIN32_EXIT_CODE سرویس"
+        },
+        {
+          "front": "قبل از استفاده عملی از «وضعیت یک سرویس» چه نکته‌ای را کنترل کنیم؟",
+          "back": "State گذرا است؛ برای علت توقف به Service Control Manager log نیاز داری."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q020",
+            "prompt": "برای این هدف، «دیدن STATE و WIN32_EXIT_CODE سرویس»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "sc query Spooler",
+              "sc qc",
+              "net start",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q020",
+            "correct_index": 0,
+            "explain_fa": "`sc query Spooler` برای دیدن STATE و WIN32_EXIT_CODE سرویس. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** اگر Stopped بود، Event Viewer را بررسی کن؛ بدون فهم dependency آن را start نکن.\n**هدف:** دیدن STATE و WIN32_EXIT_CODE سرویس\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# وضعیت یک سرویس\n\n**دستور:** `sc query Spooler`\n\n**هدف عملیاتی:** دیدن STATE و WIN32_EXIT_CODE سرویس\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. اگر Stopped بود، Event Viewer را بررسی کن؛ بدون فهم dependency آن را start نکن.\n\n## نمونه خروجی\n\n```text\n\nSERVICE_NAME: Spooler\nSTATE: 4 RUNNING\nWIN32_EXIT_CODE: 0\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nState گذرا است؛ برای علت توقف به Service Control Manager log نیاز داری. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`sc qc`، `net start`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:firewall-profile:netsh-advfirewall-show-allprofiles",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "firewall",
+      "subcategory": "firewall-profile",
+      "level": "L1",
+      "title_fa": "نمایش پروفایل‌های Firewall",
+      "title_en": "netsh advfirewall show allprofiles",
+      "command": "netsh advfirewall show allprofiles",
+      "aliases": [],
+      "syntax": "netsh advfirewall show allprofiles",
+      "arguments": [],
+      "when_to_use_fa": "مشاهده وضعیت Firewall و سیاست پیش‌فرض Domain/Private/Public",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهده وضعیت Firewall و سیاست پیش‌فرض Domain/Private/Public",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: netsh advfirewall show allprofiles",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: پروفایل فعلی را با `Get-NetConnectionProfile` و GPO مقایسه کن؛ تغییرات را با Rule محدود انجام بده."
+      ],
+      "sample_output": "Domain Profile Settings:\nState ON\nPrivate Profile Settings:\nState ON\nPublic Profile Settings:\nState ON",
+      "output_fields_fa": [],
+      "related_commands": [
+        "netsh advfirewall firewall show rule name=all",
+        "Get-NetFirewallProfile"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "پروفایل فعلی را با `Get-NetConnectionProfile` و GPO مقایسه کن؛ تغییرات را با Rule محدود انجام بده.",
+      "security_notes_fa": "Firewall را برای عیب‌یابی خاموش نکن؛ فیلتر ترافیک را با Rule موقت و narrow انجام بده.",
+      "search_keywords": [
+        "netsh advfirewall show allprofiles",
+        "netsh advfirewall show allprofiles",
+        "نمایش پروفایل‌های Firewall",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "firewall",
+        "firewall-profile"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `netsh advfirewall show allprofiles` چه هدفی دارد؟",
+          "back": "مشاهده وضعیت Firewall و سیاست پیش‌فرض Domain/Private/Public"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش پروفایل‌های Firewall» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Firewall را برای عیب‌یابی خاموش نکن؛ فیلتر ترافیک را با Rule موقت و narrow انجام بده."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q021",
+            "prompt": "برای این هدف، «مشاهده وضعیت Firewall و سیاست پیش‌فرض Domain/Private/Public»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "netsh advfirewall show allprofiles",
+              "netsh advfirewall firewall show rule name=all",
+              "Get-NetFirewallProfile",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q021",
+            "correct_index": 0,
+            "explain_fa": "`netsh advfirewall show allprofiles` برای مشاهده وضعیت Firewall و سیاست پیش‌فرض Domain/Private/Public. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** پروفایل فعلی را با `Get-NetConnectionProfile` و GPO مقایسه کن؛ تغییرات را با Rule محدود انجام بده.\n**هدف:** مشاهده وضعیت Firewall و سیاست پیش‌فرض Domain/Private/Public\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش پروفایل‌های Firewall\n\n**دستور:** `netsh advfirewall show allprofiles`\n\n**هدف عملیاتی:** مشاهده وضعیت Firewall و سیاست پیش‌فرض Domain/Private/Public\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. پروفایل فعلی را با `Get-NetConnectionProfile` و GPO مقایسه کن؛ تغییرات را با Rule محدود انجام بده.\n\n## نمونه خروجی\n\n```text\n\nDomain Profile Settings:\nState ON\nPrivate Profile Settings:\nState ON\nPublic Profile Settings:\nState ON\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nFirewall را برای عیب‌یابی خاموش نکن؛ فیلتر ترافیک را با Rule موقت و narrow انجام بده. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`netsh advfirewall firewall show rule name=all`، `Get-NetFirewallProfile`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:ip-configuration:netsh-interface-ipv4-show-config",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "ip-configuration",
+      "level": "L1",
+      "title_fa": "نمایش تنظیمات IPv4 رابط",
+      "title_en": "netsh interface ipv4 show config",
+      "command": "netsh interface ipv4 show config",
+      "aliases": [],
+      "syntax": "netsh interface ipv4 show config",
+      "arguments": [],
+      "when_to_use_fa": "نمایش IP, gateway, metric و DNS interfaceهای IPv4",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: نمایش IP, gateway, metric و DNS interfaceهای IPv4",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: netsh interface ipv4 show config",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: پیکربندی را با ipconfig /all تطبیق بده؛ مقدارهای static را در inventory ثبت کن."
+      ],
+      "sample_output": "Configuration for interface \"Ethernet\"\nDHCP enabled: Yes\nIP Address: 10.20.30.25",
+      "output_fields_fa": [],
+      "related_commands": [
+        "ipconfig /all",
+        "route print"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "پیکربندی را با ipconfig /all تطبیق بده؛ مقدارهای static را در inventory ثبت کن.",
+      "security_notes_fa": "اطلاعات شبکه داخلی ممکن است محرمانه باشد.",
+      "search_keywords": [
+        "netsh interface ipv4 show config",
+        "netsh interface ipv4 show config",
+        "نمایش تنظیمات IPv4 رابط",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "ip-configuration"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `netsh interface ipv4 show config` چه هدفی دارد؟",
+          "back": "نمایش IP, gateway, metric و DNS interfaceهای IPv4"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش تنظیمات IPv4 رابط» چه نکته‌ای را کنترل کنیم؟",
+          "back": "اطلاعات شبکه داخلی ممکن است محرمانه باشد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q022",
+            "prompt": "برای این هدف، «نمایش IP, gateway, metric و DNS interfaceهای IPv4»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "netsh interface ipv4 show config",
+              "ipconfig /all",
+              "route print",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q022",
+            "correct_index": 0,
+            "explain_fa": "`netsh interface ipv4 show config` برای نمایش IP, gateway, metric و DNS interfaceهای IPv4. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** پیکربندی را با ipconfig /all تطبیق بده؛ مقدارهای static را در inventory ثبت کن.\n**هدف:** نمایش IP, gateway, metric و DNS interfaceهای IPv4\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش تنظیمات IPv4 رابط\n\n**دستور:** `netsh interface ipv4 show config`\n\n**هدف عملیاتی:** نمایش IP, gateway, metric و DNS interfaceهای IPv4\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. پیکربندی را با ipconfig /all تطبیق بده؛ مقدارهای static را در inventory ثبت کن.\n\n## نمونه خروجی\n\n```text\n\nConfiguration for interface \"Ethernet\"\nDHCP enabled: Yes\nIP Address: 10.20.30.25\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاطلاعات شبکه داخلی ممکن است محرمانه باشد. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`ipconfig /all`، `route print`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:proxy:netsh-winhttp-show-proxy",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "troubleshoot",
+      "subcategory": "proxy",
+      "level": "L1",
+      "title_fa": "نمایش WinHTTP Proxy",
+      "title_en": "netsh winhttp show proxy",
+      "command": "netsh winhttp show proxy",
+      "aliases": [],
+      "syntax": "netsh winhttp show proxy",
+      "arguments": [],
+      "when_to_use_fa": "بررسی proxy مورد استفادهٔ اجزای WinHTTP، جدا از تنظیمات مرورگر",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی proxy مورد استفادهٔ اجزای WinHTTP، جدا از تنظیمات مرورگر",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: netsh winhttp show proxy",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: اگر یک سرویس به اینترنت دسترسی ندارد، WinHTTP proxy را کنار proxy سطح کاربر و PAC مقایسه کن."
+      ],
+      "sample_output": "Current WinHTTP proxy settings:\nDirect access (no proxy server).",
+      "output_fields_fa": [],
+      "related_commands": [
+        "netsh winhttp reset proxy",
+        "Get-ItemProperty"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "اگر یک سرویس به اینترنت دسترسی ندارد، WinHTTP proxy را کنار proxy سطح کاربر و PAC مقایسه کن.",
+      "security_notes_fa": "تغییر proxy می‌تواند ارتباطات سیستمی را منحرف کند؛ این دستور مشاهده‌ای است.",
+      "search_keywords": [
+        "netsh winhttp show proxy",
+        "netsh winhttp show proxy",
+        "نمایش WinHTTP Proxy",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "troubleshoot",
+        "proxy"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `netsh winhttp show proxy` چه هدفی دارد؟",
+          "back": "بررسی proxy مورد استفادهٔ اجزای WinHTTP، جدا از تنظیمات مرورگر"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش WinHTTP Proxy» چه نکته‌ای را کنترل کنیم؟",
+          "back": "تغییر proxy می‌تواند ارتباطات سیستمی را منحرف کند؛ این دستور مشاهده‌ای است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q023",
+            "prompt": "برای این هدف، «بررسی proxy مورد استفادهٔ اجزای WinHTTP، جدا از تنظیمات مرورگر»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "netsh winhttp show proxy",
+              "netsh winhttp reset proxy",
+              "Get-ItemProperty",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q023",
+            "correct_index": 0,
+            "explain_fa": "`netsh winhttp show proxy` برای بررسی proxy مورد استفادهٔ اجزای WinHTTP، جدا از تنظیمات مرورگر. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** اگر یک سرویس به اینترنت دسترسی ندارد، WinHTTP proxy را کنار proxy سطح کاربر و PAC مقایسه کن.\n**هدف:** بررسی proxy مورد استفادهٔ اجزای WinHTTP، جدا از تنظیمات مرورگر\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش WinHTTP Proxy\n\n**دستور:** `netsh winhttp show proxy`\n\n**هدف عملیاتی:** بررسی proxy مورد استفادهٔ اجزای WinHTTP، جدا از تنظیمات مرورگر\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. اگر یک سرویس به اینترنت دسترسی ندارد، WinHTTP proxy را کنار proxy سطح کاربر و PAC مقایسه کن.\n\n## نمونه خروجی\n\n```text\n\nCurrent WinHTTP proxy settings:\nDirect access (no proxy server).\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nتغییر proxy می‌تواند ارتباطات سیستمی را منحرف کند؛ این دستور مشاهده‌ای است. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`netsh winhttp reset proxy`، `Get-ItemProperty`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:smb-client:net-use",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "smb-client",
+      "level": "L0",
+      "title_fa": "نمایش اتصال‌های network share",
+      "title_en": "net use",
+      "command": "net use",
+      "aliases": [],
+      "syntax": "net use",
+      "arguments": [],
+      "when_to_use_fa": "دیدن mappingهای SMB فعلی و وضعیت connection",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: دیدن mappingهای SMB فعلی و وضعیت connection",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: net use",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: نام share و اعتبارنامهٔ مورد استفاده را بدون چاپ secret بررسی کن؛ در عیب‌یابی credential mismatch از Event Log کمک بگیر."
+      ],
+      "sample_output": "Status Local Remote Network\nOK Z: \\\\LAB-FS01\\Dept-Lab Microsoft Windows Network",
+      "output_fields_fa": [],
+      "related_commands": [
+        "net share",
+        "Get-SmbConnection"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "نام share و اعتبارنامهٔ مورد استفاده را بدون چاپ secret بررسی کن؛ در عیب‌یابی credential mismatch از Event Log کمک بگیر.",
+      "security_notes_fa": "خروجی می‌تواند نام کاربر و فایل‌سرور را افشا کند.",
+      "search_keywords": [
+        "net use",
+        "net use",
+        "نمایش اتصال‌های network share",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "smb-client"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `net use` چه هدفی دارد؟",
+          "back": "دیدن mappingهای SMB فعلی و وضعیت connection"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش اتصال‌های network share» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خروجی می‌تواند نام کاربر و فایل‌سرور را افشا کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q024",
+            "prompt": "برای این هدف، «دیدن mappingهای SMB فعلی و وضعیت connection»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "net use",
+              "net share",
+              "Get-SmbConnection",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q024",
+            "correct_index": 0,
+            "explain_fa": "`net use` برای دیدن mappingهای SMB فعلی و وضعیت connection. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** نام share و اعتبارنامهٔ مورد استفاده را بدون چاپ secret بررسی کن؛ در عیب‌یابی credential mismatch از Event Log کمک بگیر.\n**هدف:** دیدن mappingهای SMB فعلی و وضعیت connection\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش اتصال‌های network share\n\n**دستور:** `net use`\n\n**هدف عملیاتی:** دیدن mappingهای SMB فعلی و وضعیت connection\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. نام share و اعتبارنامهٔ مورد استفاده را بدون چاپ secret بررسی کن؛ در عیب‌یابی credential mismatch از Event Log کمک بگیر.\n\n## نمونه خروجی\n\n```text\n\nStatus Local Remote Network\nOK Z: \\\\LAB-FS01\\Dept-Lab Microsoft Windows Network\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخروجی می‌تواند نام کاربر و فایل‌سرور را افشا کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`net share`، `Get-SmbConnection`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:smb-share:net-share",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "smb-share",
+      "level": "L1",
+      "title_fa": "نمایش Shareهای میزبان",
+      "title_en": "net share",
+      "command": "net share",
+      "aliases": [],
+      "syntax": "net share",
+      "arguments": [],
+      "when_to_use_fa": "فهرست shareهای محلی و پوشهٔ پشت آن‌ها",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: فهرست shareهای محلی و پوشهٔ پشت آن‌ها",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: net share",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: Share permissions را با ACL NTFS جداگانه بازبینی کن؛ share ناشناخته را پیش از حذف به مالک نسبت بده."
+      ],
+      "sample_output": "Share name Resource\nADMIN$ C:\\Windows\nDept-Lab D:\\Shares\\Dept-Lab",
+      "output_fields_fa": [],
+      "related_commands": [
+        "net use",
+        "Get-SmbShare"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "Share permissions را با ACL NTFS جداگانه بازبینی کن؛ share ناشناخته را پیش از حذف به مالک نسبت بده.",
+      "security_notes_fa": "Administrative shares طبیعی‌اند؛ از غیرفعال کردن کورکورانه آن‌ها خودداری کن.",
+      "search_keywords": [
+        "net share",
+        "net share",
+        "نمایش Shareهای میزبان",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "smb-share"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `net share` چه هدفی دارد؟",
+          "back": "فهرست shareهای محلی و پوشهٔ پشت آن‌ها"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش Shareهای میزبان» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Administrative shares طبیعی‌اند؛ از غیرفعال کردن کورکورانه آن‌ها خودداری کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q025",
+            "prompt": "برای این هدف، «فهرست shareهای محلی و پوشهٔ پشت آن‌ها»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "net share",
+              "net use",
+              "Get-SmbShare",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q025",
+            "correct_index": 0,
+            "explain_fa": "`net share` برای فهرست shareهای محلی و پوشهٔ پشت آن‌ها. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** Share permissions را با ACL NTFS جداگانه بازبینی کن؛ share ناشناخته را پیش از حذف به مالک نسبت بده.\n**هدف:** فهرست shareهای محلی و پوشهٔ پشت آن‌ها\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش Shareهای میزبان\n\n**دستور:** `net share`\n\n**هدف عملیاتی:** فهرست shareهای محلی و پوشهٔ پشت آن‌ها\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. Share permissions را با ACL NTFS جداگانه بازبینی کن؛ share ناشناخته را پیش از حذف به مالک نسبت بده.\n\n## نمونه خروجی\n\n```text\n\nShare name Resource\nADMIN$ C:\\Windows\nDept-Lab D:\\Shares\\Dept-Lab\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nAdministrative shares طبیعی‌اند؛ از غیرفعال کردن کورکورانه آن‌ها خودداری کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`net use`، `Get-SmbShare`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:smb-server:net-session",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "smb-server",
+      "level": "L2",
+      "title_fa": "نمایش نشست‌های فایل‌سرور",
+      "title_en": "net session",
+      "command": "net session",
+      "aliases": [],
+      "syntax": "net session",
+      "arguments": [],
+      "when_to_use_fa": "مشاهدهٔ کلاینت‌های SMB متصل به Windows Server",
+      "prerequisites_fa": [
+        "Windows Server؛ Administrator/read permissions."
+      ],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهدهٔ کلاینت‌های SMB متصل به Windows Server",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: net session",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: برای تشخیص یک session، با Get-SmbSession مقایسه کن و زمان/اثر disconnect را ارزیابی کن."
+      ],
+      "sample_output": "Computer User Client Type\n\\\\LAB-WS01 CONTOSO\\jdoe Windows 10",
+      "output_fields_fa": [],
+      "related_commands": [
+        "Get-SmbSession",
+        "net share"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "برای تشخیص یک session، با Get-SmbSession مقایسه کن و زمان/اثر disconnect را ارزیابی کن.",
+      "security_notes_fa": "این دستور معمولاً نیاز به elevation روی server دارد؛ حذف session فعال می‌تواند انتقال فایل را قطع کند.",
+      "search_keywords": [
+        "net session",
+        "net session",
+        "نمایش نشست‌های فایل‌سرور",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "smb-server"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `net session` چه هدفی دارد؟",
+          "back": "مشاهدهٔ کلاینت‌های SMB متصل به Windows Server"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش نشست‌های فایل‌سرور» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Windows Server؛ Administrator/read permissions."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q026",
+            "prompt": "برای این هدف، «مشاهدهٔ کلاینت‌های SMB متصل به Windows Server»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "net session",
+              "Get-SmbSession",
+              "net share",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q026",
+            "correct_index": 0,
+            "explain_fa": "`net session` برای مشاهدهٔ کلاینت‌های SMB متصل به Windows Server. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** برای تشخیص یک session، با Get-SmbSession مقایسه کن و زمان/اثر disconnect را ارزیابی کن.\n**هدف:** مشاهدهٔ کلاینت‌های SMB متصل به Windows Server\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش نشست‌های فایل‌سرور\n\n**دستور:** `net session`\n\n**هدف عملیاتی:** مشاهدهٔ کلاینت‌های SMB متصل به Windows Server\n\n## روش اجرا\n\n1. پیش‌نیاز را تأیید کن: Windows Server؛ Administrator/read permissions.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. برای تشخیص یک session، با Get-SmbSession مقایسه کن و زمان/اثر disconnect را ارزیابی کن.\n\n## نمونه خروجی\n\n```text\n\nComputer User Client Type\n\\\\LAB-WS01 CONTOSO\\jdoe Windows 10\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاین دستور معمولاً نیاز به elevation روی server دارد؛ حذف session فعال می‌تواند انتقال فایل را قطع کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`Get-SmbSession`، `net share`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:scheduled-tasks:schtasks-query-fo-list-v",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "scheduled-tasks",
+      "level": "L2",
+      "title_fa": "فهرست Taskهای زمان‌بندی‌شده",
+      "title_en": "schtasks /query /fo LIST /v",
+      "command": "schtasks /query /fo LIST /v",
+      "aliases": [],
+      "syntax": "schtasks /query /fo LIST /v",
+      "arguments": [],
+      "when_to_use_fa": "مرور trigger، آخرین اجرا، task path و actionهای زمان‌بندی‌شده",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مرور trigger، آخرین اجرا، task path و actionهای زمان‌بندی‌شده",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: schtasks /query /fo LIST /v",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: Taskهای ناشناخته را با XML و signer فایل action بررسی کن؛ فیلتر را به مسیر خاص محدود کن."
+      ],
+      "sample_output": "TaskName: \\NetworkAll\\LabHealthCheck\nStatus: Ready\nLast Run Time: ...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "Get-ScheduledTask",
+        "wevtutil qe"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "Taskهای ناشناخته را با XML و signer فایل action بررسی کن؛ فیلتر را به مسیر خاص محدود کن.",
+      "security_notes_fa": "خروجی ممکن است مسیرهای حساس و نام کاربر را فاش کند؛ برای شناسایی persistence، حذف عجولانه نکن.",
+      "search_keywords": [
+        "schtasks /query /fo LIST /v",
+        "schtasks /query /fo LIST /v",
+        "فهرست Taskهای زمان‌بندی‌شده",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "scheduled-tasks"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `schtasks /query /fo LIST /v` چه هدفی دارد؟",
+          "back": "مرور trigger، آخرین اجرا، task path و actionهای زمان‌بندی‌شده"
+        },
+        {
+          "front": "قبل از استفاده عملی از «فهرست Taskهای زمان‌بندی‌شده» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خروجی ممکن است مسیرهای حساس و نام کاربر را فاش کند؛ برای شناسایی persistence، حذف عجولانه نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q027",
+            "prompt": "برای این هدف، «مرور trigger، آخرین اجرا، task path و actionهای زمان‌بندی‌شده»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "schtasks /query /fo LIST /v",
+              "Get-ScheduledTask",
+              "wevtutil qe",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q027",
+            "correct_index": 0,
+            "explain_fa": "`schtasks /query /fo LIST /v` برای مرور trigger، آخرین اجرا، task path و actionهای زمان‌بندی‌شده. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** Taskهای ناشناخته را با XML و signer فایل action بررسی کن؛ فیلتر را به مسیر خاص محدود کن.\n**هدف:** مرور trigger، آخرین اجرا، task path و actionهای زمان‌بندی‌شده\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# فهرست Taskهای زمان‌بندی‌شده\n\n**دستور:** `schtasks /query /fo LIST /v`\n\n**هدف عملیاتی:** مرور trigger، آخرین اجرا، task path و actionهای زمان‌بندی‌شده\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. Taskهای ناشناخته را با XML و signer فایل action بررسی کن؛ فیلتر را به مسیر خاص محدود کن.\n\n## نمونه خروجی\n\n```text\n\nTaskName: \\NetworkAll\\LabHealthCheck\nStatus: Ready\nLast Run Time: ...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخروجی ممکن است مسیرهای حساس و نام کاربر را فاش کند؛ برای شناسایی persistence، حذف عجولانه نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`Get-ScheduledTask`، `wevtutil qe`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:shell-path:where",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "shell-path",
+      "level": "L0",
+      "title_fa": "جستجوی executable در PATH",
+      "title_en": "where",
+      "command": "where python",
+      "aliases": [],
+      "syntax": "where python",
+      "arguments": [],
+      "when_to_use_fa": "یافتن executableهای هم‌نام در PATH و جلوگیری از اجرای نسخهٔ اشتباه",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: یافتن executableهای هم‌نام در PATH و جلوگیری از اجرای نسخهٔ اشتباه",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: where python",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: اگر بیش از یک مسیر برگشت، نسخهٔ نخست و PATH را بررسی کن؛ از اجرای برنامهٔ ناشناس از پوشهٔ موقت بپرهیز."
+      ],
+      "sample_output": "C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "output_fields_fa": [],
+      "related_commands": [
+        "where git",
+        "python --version"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "اگر بیش از یک مسیر برگشت، نسخهٔ نخست و PATH را بررسی کن؛ از اجرای برنامهٔ ناشناس از پوشهٔ موقت بپرهیز.",
+      "security_notes_fa": "وجود executable هم‌نام می‌تواند زمینهٔ DLL/PATH hijacking باشد؛ مسیر را اعتبارسنجی کن.",
+      "search_keywords": [
+        "where",
+        "where python",
+        "جستجوی executable در PATH",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "shell-path"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `where python` چه هدفی دارد؟",
+          "back": "یافتن executableهای هم‌نام در PATH و جلوگیری از اجرای نسخهٔ اشتباه"
+        },
+        {
+          "front": "قبل از استفاده عملی از «جستجوی executable در PATH» چه نکته‌ای را کنترل کنیم؟",
+          "back": "وجود executable هم‌نام می‌تواند زمینهٔ DLL/PATH hijacking باشد؛ مسیر را اعتبارسنجی کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q028",
+            "prompt": "برای این هدف، «یافتن executableهای هم‌نام در PATH و جلوگیری از اجرای نسخهٔ اشتباه»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "where python",
+              "where git",
+              "python --version",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q028",
+            "correct_index": 0,
+            "explain_fa": "`where python` برای یافتن executableهای هم‌نام در PATH و جلوگیری از اجرای نسخهٔ اشتباه. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** اگر بیش از یک مسیر برگشت، نسخهٔ نخست و PATH را بررسی کن؛ از اجرای برنامهٔ ناشناس از پوشهٔ موقت بپرهیز.\n**هدف:** یافتن executableهای هم‌نام در PATH و جلوگیری از اجرای نسخهٔ اشتباه\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# جستجوی executable در PATH\n\n**دستور:** `where python`\n\n**هدف عملیاتی:** یافتن executableهای هم‌نام در PATH و جلوگیری از اجرای نسخهٔ اشتباه\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. اگر بیش از یک مسیر برگشت، نسخهٔ نخست و PATH را بررسی کن؛ از اجرای برنامهٔ ناشناس از پوشهٔ موقت بپرهیز.\n\n## نمونه خروجی\n\n```text\n\nC:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python311\\python.exe\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nوجود executable هم‌نام می‌تواند زمینهٔ DLL/PATH hijacking باشد؛ مسیر را اعتبارسنجی کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`where git`، `python --version`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:log-search:findstr",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "troubleshoot",
+      "subcategory": "log-search",
+      "level": "L1",
+      "title_fa": "فیلتر متن لاگ با findstr",
+      "title_en": "findstr",
+      "command": "findstr /i /n /c:\"connection refused\" C:\\Logs\\app.log",
+      "aliases": [],
+      "syntax": "findstr /i /n /c:\"connection refused\" C:\\Logs\\app.log",
+      "arguments": [],
+      "when_to_use_fa": "جستجوی case-insensitive و شمارهٔ خط در فایل متنی",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: جستجوی case-insensitive و شمارهٔ خط در فایل متنی",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: findstr /i /n /c:\"connection refused\" C:\\Logs\\app.log",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: بازه و عبارت جستجو را مستند کن؛ برای الگوهای پیچیده از Select-String استفاده کن."
+      ],
+      "sample_output": "245:2026-10-12 ERROR connection refused",
+      "output_fields_fa": [],
+      "related_commands": [
+        "Get-Content",
+        "wevtutil qe"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "بازه و عبارت جستجو را مستند کن؛ برای الگوهای پیچیده از Select-String استفاده کن.",
+      "security_notes_fa": "لاگ ممکن است شامل token یا PII باشد؛ فقط در مسیرهای مجاز جستجو کن.",
+      "search_keywords": [
+        "findstr",
+        "findstr /i /n /c:\"connection refused\" C:\\Logs\\app.log",
+        "فیلتر متن لاگ با findstr",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "troubleshoot",
+        "log-search"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `findstr /i /n /c:\"connection refused\" C:\\Logs\\app.log` چه هدفی دارد؟",
+          "back": "جستجوی case-insensitive و شمارهٔ خط در فایل متنی"
+        },
+        {
+          "front": "قبل از استفاده عملی از «فیلتر متن لاگ با findstr» چه نکته‌ای را کنترل کنیم؟",
+          "back": "لاگ ممکن است شامل token یا PII باشد؛ فقط در مسیرهای مجاز جستجو کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q029",
+            "prompt": "برای این هدف، «جستجوی case-insensitive و شمارهٔ خط در فایل متنی»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "findstr /i /n /c:\"connection refused\" C:\\Logs\\app.log",
+              "Get-Content",
+              "wevtutil qe",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q029",
+            "correct_index": 0,
+            "explain_fa": "`findstr /i /n /c:\"connection refused\" C:\\Logs\\app.log` برای جستجوی case-insensitive و شمارهٔ خط در فایل متنی. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** بازه و عبارت جستجو را مستند کن؛ برای الگوهای پیچیده از Select-String استفاده کن.\n**هدف:** جستجوی case-insensitive و شمارهٔ خط در فایل متنی\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# فیلتر متن لاگ با findstr\n\n**دستور:** `findstr /i /n /c:\"connection refused\" C:\\Logs\\app.log`\n\n**هدف عملیاتی:** جستجوی case-insensitive و شمارهٔ خط در فایل متنی\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. بازه و عبارت جستجو را مستند کن؛ برای الگوهای پیچیده از Select-String استفاده کن.\n\n## نمونه خروجی\n\n```text\n\n245:2026-10-12 ERROR connection refused\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nلاگ ممکن است شامل token یا PII باشد؛ فقط در مسیرهای مجاز جستجو کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`Get-Content`، `wevtutil qe`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:developer-tooling:where-git",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "developer-tooling",
+      "level": "L0",
+      "title_fa": "نمایش نسخه و مسیر Git",
+      "title_en": "where git",
+      "command": "where git && git --version",
+      "aliases": [],
+      "syntax": "where git && git --version",
+      "arguments": [],
+      "when_to_use_fa": "تأیید نصب Git و جلوگیری از استفاده از نسخهٔ اشتباه",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: تأیید نصب Git و جلوگیری از استفاده از نسخهٔ اشتباه",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: where git && git --version",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: مسیر executable را با نصب مورد انتظار تطبیق بده و در صورت چند نسخه PATH را تصحیح کن."
+      ],
+      "sample_output": "C:\\Program Files\\Git\\cmd\\git.exe\ngit version 2.x",
+      "output_fields_fa": [],
+      "related_commands": [
+        "git --version",
+        "where python"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "مسیر executable را با نصب مورد انتظار تطبیق بده و در صورت چند نسخه PATH را تصحیح کن.",
+      "security_notes_fa": "اسکریپت‌های مخزن ناشناس را صرفاً به خاطر نصب Git اجرا نکن.",
+      "search_keywords": [
+        "where git",
+        "where git && git --version",
+        "نمایش نسخه و مسیر Git",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "developer-tooling"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `where git && git --version` چه هدفی دارد؟",
+          "back": "تأیید نصب Git و جلوگیری از استفاده از نسخهٔ اشتباه"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش نسخه و مسیر Git» چه نکته‌ای را کنترل کنیم؟",
+          "back": "اسکریپت‌های مخزن ناشناس را صرفاً به خاطر نصب Git اجرا نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q030",
+            "prompt": "برای این هدف، «تأیید نصب Git و جلوگیری از استفاده از نسخهٔ اشتباه»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "where git && git --version",
+              "git --version",
+              "where python",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q030",
+            "correct_index": 0,
+            "explain_fa": "`where git && git --version` برای تأیید نصب Git و جلوگیری از استفاده از نسخهٔ اشتباه. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** مسیر executable را با نصب مورد انتظار تطبیق بده و در صورت چند نسخه PATH را تصحیح کن.\n**هدف:** تأیید نصب Git و جلوگیری از استفاده از نسخهٔ اشتباه\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش نسخه و مسیر Git\n\n**دستور:** `where git && git --version`\n\n**هدف عملیاتی:** تأیید نصب Git و جلوگیری از استفاده از نسخهٔ اشتباه\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. مسیر executable را با نصب مورد انتظار تطبیق بده و در صورت چند نسخه PATH را تصحیح کن.\n\n## نمونه خروجی\n\n```text\n\nC:\\Program Files\\Git\\cmd\\git.exe\ngit version 2.x\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاسکریپت‌های مخزن ناشناس را صرفاً به خاطر نصب Git اجرا نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`git --version`، `where python`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:file-copy-lab:robocopy",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "file-copy-lab",
+      "level": "L2",
+      "title_fa": "پیش‌نمایش کپی با Robocopy",
+      "title_en": "robocopy",
+      "command": "robocopy C:\\Lab\\Source C:\\Lab\\Backup /E /L /R:0 /W:0",
+      "aliases": [],
+      "syntax": "robocopy C:\\Lab\\Source C:\\Lab\\Backup /E /L /R:0 /W:0",
+      "arguments": [],
+      "when_to_use_fa": "شبیه‌سازی فهرست فایل‌هایی که کپی می‌شدند بدون انجام تغییر با /L",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: شبیه‌سازی فهرست فایل‌هایی که کپی می‌شدند بدون انجام تغییر با /L",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: robocopy C:\\Lab\\Source C:\\Lab\\Backup /E /L /R:0 /W:0",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: اول خروجی /L را review کن؛ در آزمایشگاه، بعد از تأیید مقصد و ACL یک اجرای واقعی مجاز انجام بده."
+      ],
+      "sample_output": "Files : 12\nCopied : 0\nFailed : 0",
+      "output_fields_fa": [],
+      "related_commands": [
+        "dir",
+        "certutil -hashfile"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "اول خروجی /L را review کن؛ در آزمایشگاه، بعد از تأیید مقصد و ACL یک اجرای واقعی مجاز انجام بده.",
+      "security_notes_fa": "/MIR می‌تواند فایل‌های مقصد را حذف کند؛ در آموزش اولیه از /L استفاده کن و مقصد را دوباره بررسی کن.",
+      "search_keywords": [
+        "robocopy",
+        "robocopy C:\\Lab\\Source C:\\Lab\\Backup /E /L /R:0 /W:0",
+        "پیش‌نمایش کپی با Robocopy",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "file-copy-lab"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `robocopy C:\\Lab\\Source C:\\Lab\\Backup /E /L /R:0 /W:0` چه هدفی دارد؟",
+          "back": "شبیه‌سازی فهرست فایل‌هایی که کپی می‌شدند بدون انجام تغییر با /L"
+        },
+        {
+          "front": "قبل از استفاده عملی از «پیش‌نمایش کپی با Robocopy» چه نکته‌ای را کنترل کنیم؟",
+          "back": "/MIR می‌تواند فایل‌های مقصد را حذف کند؛ در آموزش اولیه از /L استفاده کن و مقصد را دوباره بررسی کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q031",
+            "prompt": "برای این هدف، «شبیه‌سازی فهرست فایل‌هایی که کپی می‌شدند بدون انجام تغییر با /L»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "robocopy C:\\Lab\\Source C:\\Lab\\Backup /E /L /R:0 /W:0",
+              "dir",
+              "certutil -hashfile",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q031",
+            "correct_index": 0,
+            "explain_fa": "`robocopy C:\\Lab\\Source C:\\Lab\\Backup /E /L /R:0 /W:0` برای شبیه‌سازی فهرست فایل‌هایی که کپی می‌شدند بدون انجام تغییر با /L. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** اول خروجی /L را review کن؛ در آزمایشگاه، بعد از تأیید مقصد و ACL یک اجرای واقعی مجاز انجام بده.\n**هدف:** شبیه‌سازی فهرست فایل‌هایی که کپی می‌شدند بدون انجام تغییر با /L\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# پیش‌نمایش کپی با Robocopy\n\n**دستور:** `robocopy C:\\Lab\\Source C:\\Lab\\Backup /E /L /R:0 /W:0`\n\n**هدف عملیاتی:** شبیه‌سازی فهرست فایل‌هایی که کپی می‌شدند بدون انجام تغییر با /L\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. اول خروجی /L را review کن؛ در آزمایشگاه، بعد از تأیید مقصد و ACL یک اجرای واقعی مجاز انجام بده.\n\n## نمونه خروجی\n\n```text\n\nFiles : 12\nCopied : 0\nFailed : 0\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\n/MIR می‌تواند فایل‌های مقصد را حذف کند؛ در آموزش اولیه از /L استفاده کن و مقصد را دوباره بررسی کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`dir`، `certutil -hashfile`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:host-inventory:ver",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "host-inventory",
+      "level": "L0",
+      "title_fa": "خواندن نسخه با ابزار cmd",
+      "title_en": "ver",
+      "command": "ver",
+      "aliases": [],
+      "syntax": "ver",
+      "arguments": [],
+      "when_to_use_fa": "نمایش نسخهٔ kernel/Windows از CMD",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: نمایش نسخهٔ kernel/Windows از CMD",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: ver",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: خروجی را با systeminfo و winver مقایسه کن؛ نسخهٔ دقیق Update build را جدا یادداشت کن."
+      ],
+      "sample_output": "Microsoft Windows [Version 10.0.22631.XXXX]",
+      "output_fields_fa": [],
+      "related_commands": [
+        "systeminfo",
+        "hostname"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "خروجی را با systeminfo و winver مقایسه کن؛ نسخهٔ دقیق Update build را جدا یادداشت کن.",
+      "security_notes_fa": "خروجی نسخه به تنهایی patch compliance را ثابت نمی‌کند.",
+      "search_keywords": [
+        "ver",
+        "ver",
+        "خواندن نسخه با ابزار cmd",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "host-inventory"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `ver` چه هدفی دارد؟",
+          "back": "نمایش نسخهٔ kernel/Windows از CMD"
+        },
+        {
+          "front": "قبل از استفاده عملی از «خواندن نسخه با ابزار cmd» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خروجی نسخه به تنهایی patch compliance را ثابت نمی‌کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q032",
+            "prompt": "برای این هدف، «نمایش نسخهٔ kernel/Windows از CMD»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "ver",
+              "systeminfo",
+              "hostname",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q032",
+            "correct_index": 0,
+            "explain_fa": "`ver` برای نمایش نسخهٔ kernel/Windows از CMD. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** خروجی را با systeminfo و winver مقایسه کن؛ نسخهٔ دقیق Update build را جدا یادداشت کن.\n**هدف:** نمایش نسخهٔ kernel/Windows از CMD\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# خواندن نسخه با ابزار cmd\n\n**دستور:** `ver`\n\n**هدف عملیاتی:** نمایش نسخهٔ kernel/Windows از CMD\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. خروجی را با systeminfo و winver مقایسه کن؛ نسخهٔ دقیق Update build را جدا یادداشت کن.\n\n## نمونه خروجی\n\n```text\n\nMicrosoft Windows [Version 10.0.22631.XXXX]\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخروجی نسخه به تنهایی patch compliance را ثابت نمی‌کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`systeminfo`، `hostname`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:batch-control-flow:if-errorlevel",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "automation",
+      "subcategory": "batch-control-flow",
+      "level": "L1",
+      "title_fa": "تبدیل کد خروج در Batch",
+      "title_en": "if errorlevel",
+      "command": "some-command.exe\nif errorlevel 1 echo Failed",
+      "aliases": [],
+      "syntax": "some-command.exe\nif errorlevel 1 echo Failed",
+      "arguments": [],
+      "when_to_use_fa": "بررسی ERRORLEVEL پس از اجرای برنامه در فایل Batch",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی ERRORLEVEL پس از اجرای برنامه در فایل Batch",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: some-command.exe\nif errorlevel 1 echo Failed",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: یک برنامهٔ تستی با exit code صفر و غیرصفر بساز؛ ترتیب شرط‌ها را از بزرگ به کوچک بررسی کن."
+      ],
+      "sample_output": "Failed  (فقط اگر return code >= 1 باشد)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "exit /b",
+        "call"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "یک برنامهٔ تستی با exit code صفر و غیرصفر بساز؛ ترتیب شرط‌ها را از بزرگ به کوچک بررسی کن.",
+      "security_notes_fa": "اسکریپت باید خطا را به caller برگرداند؛ پیام متنی بدون exit code برای automation کافی نیست.",
+      "search_keywords": [
+        "if errorlevel",
+        "some-command.exe\nif errorlevel 1 echo Failed",
+        "تبدیل کد خروج در Batch",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "automation",
+        "batch-control-flow"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `some-command.exe\nif errorlevel 1 echo Failed` چه هدفی دارد؟",
+          "back": "بررسی ERRORLEVEL پس از اجرای برنامه در فایل Batch"
+        },
+        {
+          "front": "قبل از استفاده عملی از «تبدیل کد خروج در Batch» چه نکته‌ای را کنترل کنیم؟",
+          "back": "اسکریپت باید خطا را به caller برگرداند؛ پیام متنی بدون exit code برای automation کافی نیست."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q033",
+            "prompt": "برای این هدف، «بررسی ERRORLEVEL پس از اجرای برنامه در فایل Batch»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "some-command.exe\nif errorlevel 1 echo Failed",
+              "exit /b",
+              "call",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q033",
+            "correct_index": 0,
+            "explain_fa": "`some-command.exe\nif errorlevel 1 echo Failed` برای بررسی ERRORLEVEL پس از اجرای برنامه در فایل Batch. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** یک برنامهٔ تستی با exit code صفر و غیرصفر بساز؛ ترتیب شرط‌ها را از بزرگ به کوچک بررسی کن.\n**هدف:** بررسی ERRORLEVEL پس از اجرای برنامه در فایل Batch\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# تبدیل کد خروج در Batch\n\n**دستور:** `some-command.exe\nif errorlevel 1 echo Failed`\n\n**هدف عملیاتی:** بررسی ERRORLEVEL پس از اجرای برنامه در فایل Batch\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. یک برنامهٔ تستی با exit code صفر و غیرصفر بساز؛ ترتیب شرط‌ها را از بزرگ به کوچک بررسی کن.\n\n## نمونه خروجی\n\n```text\n\nFailed  (فقط اگر return code >= 1 باشد)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاسکریپت باید خطا را به caller برگرداند؛ پیام متنی بدون exit code برای automation کافی نیست. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`exit /b`، `call`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:batch-variables:setlocal",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "automation",
+      "subcategory": "batch-variables",
+      "level": "L1",
+      "title_fa": "تعریف متغیر محلی Batch",
+      "title_en": "setlocal",
+      "command": "setlocal EnableExtensions EnableDelayedExpansion",
+      "aliases": [],
+      "syntax": "setlocal EnableExtensions EnableDelayedExpansion",
+      "arguments": [],
+      "when_to_use_fa": "محدود کردن تغییر متغیرها به محیط اجرای اسکریپت و کنترل expansion",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: محدود کردن تغییر متغیرها به محیط اجرای اسکریپت و کنترل expansion",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: setlocal EnableExtensions EnableDelayedExpansion",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: یک متغیر را تغییر بده و پس از endlocal مقدار را بررسی کن؛ در loop بین %var% و !var! تفاوت را آزمایش کن."
+      ],
+      "sample_output": "Environment changes local to this batch file.",
+      "output_fields_fa": [],
+      "related_commands": [
+        "endlocal",
+        "set"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "یک متغیر را تغییر بده و پس از endlocal مقدار را بررسی کن؛ در loop بین %var% و !var! تفاوت را آزمایش کن.",
+      "security_notes_fa": "Delayed expansion می‌تواند رشته‌های دارای ! را تغییر دهد؛ دادهٔ خارجی را بدون بررسی در command line قرار نده.",
+      "search_keywords": [
+        "setlocal",
+        "setlocal EnableExtensions EnableDelayedExpansion",
+        "تعریف متغیر محلی Batch",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "automation",
+        "batch-variables"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `setlocal EnableExtensions EnableDelayedExpansion` چه هدفی دارد؟",
+          "back": "محدود کردن تغییر متغیرها به محیط اجرای اسکریپت و کنترل expansion"
+        },
+        {
+          "front": "قبل از استفاده عملی از «تعریف متغیر محلی Batch» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Delayed expansion می‌تواند رشته‌های دارای ! را تغییر دهد؛ دادهٔ خارجی را بدون بررسی در command line قرار نده."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q034",
+            "prompt": "برای این هدف، «محدود کردن تغییر متغیرها به محیط اجرای اسکریپت و کنترل expansion»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "setlocal EnableExtensions EnableDelayedExpansion",
+              "endlocal",
+              "set",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q034",
+            "correct_index": 0,
+            "explain_fa": "`setlocal EnableExtensions EnableDelayedExpansion` برای محدود کردن تغییر متغیرها به محیط اجرای اسکریپت و کنترل expansion. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** یک متغیر را تغییر بده و پس از endlocal مقدار را بررسی کن؛ در loop بین %var% و !var! تفاوت را آزمایش کن.\n**هدف:** محدود کردن تغییر متغیرها به محیط اجرای اسکریپت و کنترل expansion\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# تعریف متغیر محلی Batch\n\n**دستور:** `setlocal EnableExtensions EnableDelayedExpansion`\n\n**هدف عملیاتی:** محدود کردن تغییر متغیرها به محیط اجرای اسکریپت و کنترل expansion\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. یک متغیر را تغییر بده و پس از endlocal مقدار را بررسی کن؛ در loop بین %var% و !var! تفاوت را آزمایش کن.\n\n## نمونه خروجی\n\n```text\n\nEnvironment changes local to this batch file.\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nDelayed expansion می‌تواند رشته‌های دارای ! را تغییر دهد؛ دادهٔ خارجی را بدون بررسی در command line قرار نده. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`endlocal`، `set`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:batch-modules:call",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "automation",
+      "subcategory": "batch-modules",
+      "level": "L1",
+      "title_fa": "فراخوانی Batch دیگر",
+      "title_en": "call",
+      "command": "call .\\helpers\\health-check.bat",
+      "aliases": [],
+      "syntax": "call .\\helpers\\health-check.bat",
+      "arguments": [],
+      "when_to_use_fa": "اجرای یک batch دیگر و بازگشت به caller",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: اجرای یک batch دیگر و بازگشت به caller",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: call .\\helpers\\health-check.bat",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: خروجی code helper را با `if errorlevel` بررسی کن؛ مسیر نسبی را نسبت به %~dp0 بساز."
+      ],
+      "sample_output": "Helper completed; caller continues (خروجی تابع است)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "exit /b",
+        "setlocal"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "خروجی code helper را با `if errorlevel` بررسی کن؛ مسیر نسبی را نسبت به %~dp0 بساز.",
+      "security_notes_fa": "فایل helper را قبل از اجرا inspect کن؛ مسیر قابل‌نوشتن توسط کاربران دیگر ریسک جایگزینی ایجاد می‌کند.",
+      "search_keywords": [
+        "call",
+        "call .\\helpers\\health-check.bat",
+        "فراخوانی Batch دیگر",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "automation",
+        "batch-modules"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `call .\\helpers\\health-check.bat` چه هدفی دارد؟",
+          "back": "اجرای یک batch دیگر و بازگشت به caller"
+        },
+        {
+          "front": "قبل از استفاده عملی از «فراخوانی Batch دیگر» چه نکته‌ای را کنترل کنیم؟",
+          "back": "فایل helper را قبل از اجرا inspect کن؛ مسیر قابل‌نوشتن توسط کاربران دیگر ریسک جایگزینی ایجاد می‌کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q035",
+            "prompt": "برای این هدف، «اجرای یک batch دیگر و بازگشت به caller»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "call .\\helpers\\health-check.bat",
+              "exit /b",
+              "setlocal",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q035",
+            "correct_index": 0,
+            "explain_fa": "`call .\\helpers\\health-check.bat` برای اجرای یک batch دیگر و بازگشت به caller. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** خروجی code helper را با `if errorlevel` بررسی کن؛ مسیر نسبی را نسبت به %~dp0 بساز.\n**هدف:** اجرای یک batch دیگر و بازگشت به caller\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# فراخوانی Batch دیگر\n\n**دستور:** `call .\\helpers\\health-check.bat`\n\n**هدف عملیاتی:** اجرای یک batch دیگر و بازگشت به caller\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. خروجی code helper را با `if errorlevel` بررسی کن؛ مسیر نسبی را نسبت به %~dp0 بساز.\n\n## نمونه خروجی\n\n```text\n\nHelper completed; caller continues (خروجی تابع است)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nفایل helper را قبل از اجرا inspect کن؛ مسیر قابل‌نوشتن توسط کاربران دیگر ریسک جایگزینی ایجاد می‌کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`exit /b`، `setlocal`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:batch-exit-code:exit-b",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "automation",
+      "subcategory": "batch-exit-code",
+      "level": "L1",
+      "title_fa": "پایان Batch با return code",
+      "title_en": "exit /b",
+      "command": "exit /b 0",
+      "aliases": [],
+      "syntax": "exit /b 0",
+      "arguments": [],
+      "when_to_use_fa": "بازگرداندن exit code به caller بدون بستن کل CMD به‌طور اجباری",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بازگرداندن exit code به caller بدون بستن کل CMD به‌طور اجباری",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: exit /b 0",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: یک batch parent بساز که child را با موفقیت و خطا اجرا کند و کد را بررسی کند."
+      ],
+      "sample_output": "ERRORLEVEL becomes 0 in the caller.",
+      "output_fields_fa": [],
+      "related_commands": [
+        "if errorlevel",
+        "call"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "یک batch parent بساز که child را با موفقیت و خطا اجرا کند و کد را بررسی کند.",
+      "security_notes_fa": "کد موفقیت را فقط پس از verify واقعی برگردان؛ در غیر این صورت CI خطا را پنهان می‌کند.",
+      "search_keywords": [
+        "exit /b",
+        "exit /b 0",
+        "پایان Batch با return code",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "automation",
+        "batch-exit-code"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `exit /b 0` چه هدفی دارد؟",
+          "back": "بازگرداندن exit code به caller بدون بستن کل CMD به‌طور اجباری"
+        },
+        {
+          "front": "قبل از استفاده عملی از «پایان Batch با return code» چه نکته‌ای را کنترل کنیم؟",
+          "back": "کد موفقیت را فقط پس از verify واقعی برگردان؛ در غیر این صورت CI خطا را پنهان می‌کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q036",
+            "prompt": "برای این هدف، «بازگرداندن exit code به caller بدون بستن کل CMD به‌طور اجباری»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "exit /b 0",
+              "if errorlevel",
+              "call",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q036",
+            "correct_index": 0,
+            "explain_fa": "`exit /b 0` برای بازگرداندن exit code به caller بدون بستن کل CMD به‌طور اجباری. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** یک batch parent بساز که child را با موفقیت و خطا اجرا کند و کد را بررسی کند.\n**هدف:** بازگرداندن exit code به caller بدون بستن کل CMD به‌طور اجباری\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# پایان Batch با return code\n\n**دستور:** `exit /b 0`\n\n**هدف عملیاتی:** بازگرداندن exit code به caller بدون بستن کل CMD به‌طور اجباری\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. یک batch parent بساز که child را با موفقیت و خطا اجرا کند و کد را بررسی کند.\n\n## نمونه خروجی\n\n```text\n\nERRORLEVEL becomes 0 in the caller.\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nکد موفقیت را فقط پس از verify واقعی برگردان؛ در غیر این صورت CI خطا را پنهان می‌کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`if errorlevel`، `call`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:batch-logging:echo",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "automation",
+      "subcategory": "batch-logging",
+      "level": "L0",
+      "title_fa": "ساخت فایل گزارش در Batch",
+      "title_en": "echo",
+      "command": "echo %DATE% %TIME% - health check started>> C:\\Lab\\health.log",
+      "aliases": [],
+      "syntax": "echo %DATE% %TIME% - health check started>> C:\\Lab\\health.log",
+      "arguments": [],
+      "when_to_use_fa": "ثبت پیام timestampدار در فایل گزارش لابراتوار",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: ثبت پیام timestampدار در فایل گزارش لابراتوار",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: echo %DATE% %TIME% - health check started>> C:\\Lab\\health.log",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: دسترسی نوشتن مقصد و escape کردن >, &, | را بررسی کن؛ سپس لاگ تولیدشده را بخوان."
+      ],
+      "sample_output": "12/10/2026 18:40:00 - health check started",
+      "output_fields_fa": [],
+      "related_commands": [
+        "type",
+        "findstr"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "دسترسی نوشتن مقصد و escape کردن >, &, | را بررسی کن؛ سپس لاگ تولیدشده را بخوان.",
+      "security_notes_fa": "فایل گزارش را در پوشهٔ عمومی/قابل‌نوشتن توسط همه ذخیره نکن؛ دادهٔ محرمانه ثبت نکن.",
+      "search_keywords": [
+        "echo",
+        "echo %DATE% %TIME% - health check started>> C:\\Lab\\health.log",
+        "ساخت فایل گزارش در Batch",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "automation",
+        "batch-logging"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `echo %DATE% %TIME% - health check started>> C:\\Lab\\health.log` چه هدفی دارد؟",
+          "back": "ثبت پیام timestampدار در فایل گزارش لابراتوار"
+        },
+        {
+          "front": "قبل از استفاده عملی از «ساخت فایل گزارش در Batch» چه نکته‌ای را کنترل کنیم؟",
+          "back": "فایل گزارش را در پوشهٔ عمومی/قابل‌نوشتن توسط همه ذخیره نکن؛ دادهٔ محرمانه ثبت نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q037",
+            "prompt": "برای این هدف، «ثبت پیام timestampدار در فایل گزارش لابراتوار»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "echo %DATE% %TIME% - health check started>> C:\\Lab\\health.log",
+              "type",
+              "findstr",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q037",
+            "correct_index": 0,
+            "explain_fa": "`echo %DATE% %TIME% - health check started>> C:\\Lab\\health.log` برای ثبت پیام timestampدار در فایل گزارش لابراتوار. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** دسترسی نوشتن مقصد و escape کردن >, &, | را بررسی کن؛ سپس لاگ تولیدشده را بخوان.\n**هدف:** ثبت پیام timestampدار در فایل گزارش لابراتوار\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# ساخت فایل گزارش در Batch\n\n**دستور:** `echo %DATE% %TIME% - health check started>> C:\\Lab\\health.log`\n\n**هدف عملیاتی:** ثبت پیام timestampدار در فایل گزارش لابراتوار\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. دسترسی نوشتن مقصد و escape کردن >, &, | را بررسی کن؛ سپس لاگ تولیدشده را بخوان.\n\n## نمونه خروجی\n\n```text\n\n12/10/2026 18:40:00 - health check started\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nفایل گزارش را در پوشهٔ عمومی/قابل‌نوشتن توسط همه ذخیره نکن؛ دادهٔ محرمانه ثبت نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`type`، `findstr`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_cmd:environment:set",
+      "vendor": "powershell",
+      "platform": "Windows CMD / Batch",
+      "category": "monitor",
+      "subcategory": "environment",
+      "level": "L0",
+      "title_fa": "نمایش متغیرهای محیطی انتخابی",
+      "title_en": "set",
+      "command": "set NETENC_",
+      "aliases": [],
+      "syntax": "set NETENC_",
+      "arguments": [],
+      "when_to_use_fa": "مشاهدهٔ متغیرهای متناسب با prefix بدون چاپ همهٔ environment",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهدهٔ متغیرهای متناسب با prefix بدون چاپ همهٔ environment",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: set NETENC_",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: فقط prefixهای غیرمحرمانه را بررسی کن؛ برای token از نمایش کل محیط خودداری کن."
+      ],
+      "sample_output": "NETENC_PORT=5050\nNETENC_HOST=0.0.0.0",
+      "output_fields_fa": [],
+      "related_commands": [
+        "echo %PATH%",
+        "setlocal"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "فقط prefixهای غیرمحرمانه را بررسی کن؛ برای token از نمایش کل محیط خودداری کن.",
+      "security_notes_fa": "`set` بدون prefix می‌تواند مقدار secretها را چاپ کند؛ خروجی را در log عمومی ثبت نکن.",
+      "search_keywords": [
+        "set",
+        "set NETENC_",
+        "نمایش متغیرهای محیطی انتخابی",
+        "windows_cmd",
+        "Windows CMD / Batch",
+        "monitor",
+        "environment"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `set NETENC_` چه هدفی دارد؟",
+          "back": "مشاهدهٔ متغیرهای متناسب با prefix بدون چاپ همهٔ environment"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش متغیرهای محیطی انتخابی» چه نکته‌ای را کنترل کنیم؟",
+          "back": "`set` بدون prefix می‌تواند مقدار secretها را چاپ کند؛ خروجی را در log عمومی ثبت نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q038",
+            "prompt": "برای این هدف، «مشاهدهٔ متغیرهای متناسب با prefix بدون چاپ همهٔ environment»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "set NETENC_",
+              "echo %PATH%",
+              "setlocal",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q038",
+            "correct_index": 0,
+            "explain_fa": "`set NETENC_` برای مشاهدهٔ متغیرهای متناسب با prefix بدون چاپ همهٔ environment. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** فقط prefixهای غیرمحرمانه را بررسی کن؛ برای token از نمایش کل محیط خودداری کن.\n**هدف:** مشاهدهٔ متغیرهای متناسب با prefix بدون چاپ همهٔ environment\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش متغیرهای محیطی انتخابی\n\n**دستور:** `set NETENC_`\n\n**هدف عملیاتی:** مشاهدهٔ متغیرهای متناسب با prefix بدون چاپ همهٔ environment\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. فقط prefixهای غیرمحرمانه را بررسی کن؛ برای token از نمایش کل محیط خودداری کن.\n\n## نمونه خروجی\n\n```text\n\nNETENC_PORT=5050\nNETENC_HOST=0.0.0.0\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\n`set` بدون prefix می‌تواند مقدار secretها را چاپ کند؛ خروجی را در log عمومی ثبت نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`echo %PATH%`، `setlocal`\n\n## منابع رسمی\n\n[Microsoft Learn — Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)",
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — Windows commands",
+          "url": "https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands"
+        }
+      ],
+      "source_status": "review_required"
+    }
+  ]
+}
