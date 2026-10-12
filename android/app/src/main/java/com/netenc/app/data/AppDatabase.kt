@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         LessonEntity::class, SyncMetaEntity::class, ScenarioEntity::class, StudyEntity::class,
         TaskEntity::class, NoteEntity::class, VaultEntity::class
     ],
-    version = 6,
+    version = 7,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -33,6 +33,14 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE study_progress ADD COLUMN lastUpdated TEXT NOT NULL DEFAULT ''")
+                db.execSQL("ALTER TABLE study_progress ADD COLUMN deviceId TEXT NOT NULL DEFAULT 'android'")
+                db.execSQL("ALTER TABLE study_progress ADD COLUMN deleted INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+
         @Volatile private var INSTANCE: AppDatabase? = null
 
         fun get(context: Context): AppDatabase {
@@ -44,7 +52,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                     // Never wipe notes, tasks, study history, or Vault on an unknown upgrade.
                     // Add explicit Room migrations before increasing the database version.
-                    .addMigrations(MIGRATION_5_6)
+                    .addMigrations(MIGRATION_5_6, MIGRATION_6_7)
                     .fallbackToDestructiveMigrationOnDowngrade()
                     .build()
                     .also { INSTANCE = it }
