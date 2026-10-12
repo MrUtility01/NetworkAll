@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
+import os
 
 
 def ensure_study_table(conn):
@@ -185,18 +186,24 @@ def mark_study(conn, lesson_uid: str, action: str):
         status = "known" if times >= 3 and interval >= 72 else "learning"
         next_r = now + timedelta(hours=interval)
 
+    updated_at = _now()
     conn.execute(
-        """INSERT INTO study_progress(lesson_uid,status,ease,interval_hours,last_studied,next_review,times_studied)
-           VALUES(?,?,?,?,?,?,?)
+        """INSERT INTO study_progress(
+               lesson_uid,status,ease,interval_hours,last_studied,next_review,times_studied,
+               last_updated,device_id,deleted,content_hash
+           ) VALUES(?,?,?,?,?,?,?,?,?,?,?)
            ON CONFLICT(lesson_uid) DO UPDATE SET
              status=excluded.status, ease=excluded.ease, interval_hours=excluded.interval_hours,
              last_studied=excluded.last_studied, next_review=excluded.next_review,
-             times_studied=excluded.times_studied""",
-        (lesson_uid, status, ease, interval, _now(), next_r.replace(microsecond=0).isoformat() + "Z", times),
+             times_studied=excluded.times_studied, last_updated=excluded.last_updated,
+             device_id=excluded.device_id, deleted=0, content_hash=''""",
+        (lesson_uid, status, ease, interval, updated_at, next_r.replace(microsecond=0).isoformat() + "Z",
+         times, updated_at, os.environ.get("NETENC_DEVICE", "server")[:128], 0, ""),
     )
     conn.commit()
     return {"uid": lesson_uid, "status": status, "next_review": next_r.isoformat() + "Z",
-            "interval_hours": interval, "ease": ease, "times_studied": times}
+            "interval_hours": interval, "ease": ease, "times_studied": times,
+            "last_updated": updated_at}
 
 
 def due_reviews(conn, limit=50):
