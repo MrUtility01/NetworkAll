@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         LessonEntity::class, SyncMetaEntity::class, ScenarioEntity::class, StudyEntity::class,
         TaskEntity::class, NoteEntity::class, VaultEntity::class
     ],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -201,6 +201,14 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Reminder time is synced. Delivery history stays local to each device.
+                db.execSQL("ALTER TABLE tasks ADD COLUMN remindAt TEXT NOT NULL DEFAULT ''")
+                db.execSQL("ALTER TABLE tasks ADD COLUMN remindedAt TEXT NOT NULL DEFAULT ''")
+            }
+        }
+
         @Volatile private var INSTANCE: AppDatabase? = null
 
         fun get(context: Context): AppDatabase {
@@ -212,7 +220,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                     // Never wipe notes, tasks, study history, or Vault on an unknown upgrade.
                     // Add explicit Room migrations before increasing the database version.
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8)
                     .fallbackToDestructiveMigrationOnDowngrade()
                     .build()
                     .also { INSTANCE = it }
