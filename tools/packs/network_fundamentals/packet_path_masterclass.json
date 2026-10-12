@@ -563,6 +563,260 @@
           "PBR"
         ]
       }
+    },
+    {
+      "uid": "packet-path-l3",
+      "chapter_order": 1,
+      "subchapter_order": 4,
+      "lesson_order": 1,
+      "level": "L3",
+      "depth_level": "L3",
+      "record_kind": "instructional_lesson",
+      "title_fa": "[L3] تحلیل PCAP برای پیدا کردن محل Drop و علت ریشه‌ای",
+      "title_en": "Multi-point PCAP Troubleshooting",
+      "summary": "تحلیل capture چندنقطه‌ای، TCP، DNS/DHCP، ICMP، PMTUD، offload، حدود SPAN و حفاظت شواهد.",
+      "prerequisites": [
+        "درس‌های L0–L2",
+        "مبانی TCP/IP و خواندن خروجی ابزارها"
+      ],
+      "learning_objectives": [
+        "تعریف capture plan قابل آزمون",
+        "تفسیر شواهد TCP/DNS/ARP/MTU",
+        "تمایز محل مشاهده از محل علت",
+        "تهیه RCA با فرضیه و شواهد و redaction"
+      ],
+      "full_content": "# قراءة رحلة الحزمة عبر PCAP: تشخيص الأعطال متعددة الطبقات — المستوى L3\n\n## أهداف العمل\nحوّل PCAP إلى سلسلة أدلة، لا إلى انطباعات. يجب أن تستطيع ربط وقت إنشاء الاتصال، DNS query، ARP/ND، DHCP، TCP handshake، retransmission، ICMP errors، route/firewall counters وبين نقاط الالتقاط في الشبكة. كذلك يجب أن توثق حدود ما يستطيع capture إثباته وما لا يستطيع إثباته. هذا المستوى يفترض معرفة packet path والـ forwarding؛ الهدف هو تشخيص حادث معقد باستخدام عدة مصادر شواهد.\n\n## 1. اكتب السؤال قبل بدء الالتقاط\nحدد سؤالاً قابلاً للإجابة: هل لا تغادر الحزمة العميل، أم تغادر ولا تدخل الواجهة التالية، أم تصل للخادم ولا يعود الرد؟ تجنب الالتقاط الطويل غير المحدد الذي ينتج gigabytes من البيانات دون فرضية. اختر نقطتين أو أكثر حول المرشح المحتمل: endpoint، uplink AP، switch SPAN/TAP، gateway ingress/egress، WAN أو server NIC. في كل نقطة سجل interface/VRF/VLAN، الاتجاه، وقت الجهاز والمنطقة الزمنية، capture filter، نوع الالتقاط، packet-drop counters وحالة offload.\n\nالتقط أثناء المشكلة لا بعد اختفائها. حجم capture الطويل قد يملأ buffers؛ capture filters تقلل البيانات قبل الحفظ، أما display filters فتُطبق على ملف موجود. إذا أخطأت في capture filter، لا تستطيع استعادة الحزم التي لم تُكتب. في المرحلة الاستكشافية، اجمع قدراً كافياً من البروتوكولات المساندة: ARP/ND وDNS وDHCP وICMP إلى جانب TCP/UDP. بعد ذلك استخدم display filters لتضييق العرض.\n\n## 2. متطلبات مقارنة capture بين نقطتين\nوحّد أو اعرف فرق الساعات. فرق زمني غير معروف قد يجعل response يبدو وكأنه سبق request. سجل NTP/time status والـ timezone، ولا تعتمد على ساعة endpoint مقابل ساعة router دون معرفة الانحراف. سجل أيضاً ما إذا كان كل capture يلتقط TX أو RX أو الاتجاهين، وما إذا كان SPAN/TAP قد يسقط packets عند oversubscription. على بعض المنصات، hardware offload يجعل capture الخاص بالـ control CPU مختلفاً عن الحزم التي تمر عبر ASIC. لا تعمم حدود أداة على كل الأجهزة.\n\nعلى endpoint يمكن أن تظهر checksum غير المكتملة أو segment aggregation بسبب TSO/GSO/GRO/LRO. لا تعتبر checksum invalid بالضرورة فساداً على السلك؛ قارن capture على نقطة أخرى وحالة offload. Capture من AP على واجهة LAN قد لا يحتوي كل retries أو control frames اللاسلكية؛ monitor mode وradiotap يقدمان منظوراً آخر. كل دليل يجب أن يرافقه وصف لكيفية جمعه.\n\n## 3. فلاتر أساسية مع تفسير حدودها\n- ip.addr == 198.51.100.40 يعرض IPv4 traffic الذي يظهر فيه العنوان مصدراً أو وجهة.\n- tcp.stream eq N يركز على stream تم تحديده بعد اختيار packet منه؛ تحقق من أن stream المقصود للمعاملة الصحيحة.\n- tcp.flags.syn == 1 && tcp.flags.ack == 0 يساعد في رؤية SYN الأولي، لكنه لا يثبت أن الـ SYN خرج من NIC فعلياً في capture endpoint.\n- arp أو icmp أو dns تساعد في كشف البروتوكولات المساعدة؛ في IPv6 استخدم icmpv6 وneighbor discovery fields.\n- tcp.analysis.retransmission علامة تحليل مفيدة، وليست وحدها دليلاً على link loss؛ reordering أو capture drops قد ينتج علامات مشابهة.\n\nاحفظ نسخة الأصلية read-only ثم أنشئ نسخة منقحة للعرض. سجل filter والنسخة وchecksum. لا تعدل PCAP الأصلي على أنه تقرير مصدري؛ أي crop أو redaction يجب توثيقه.\n\n## 4. قراءة بداية تدفق TCP\nSYN من العميل يثبت أن بداية المحاولة ظهرت في نقطة الالتقاط. SYN-ACK يظهر أن الطرف الآخر أو وسيطاً استجاب كما وصل إلى نقطة الالتقاط. RST يمكن أن يشير إلى رفض أو إغلاق، لكنه لا يثبت وحده سبب رفض التطبيق. إذا رأيت SYN يخرج من العميل ولا ترى SYN-ACK عنده، فإن موضع الفقد غير محدد؛ تحتاج capture بينية، firewall counters، route/NAT state، server listener وreturn path.\n\nRetransmission وduplicate ACK وRTT مفيدة لكنها ليست تشخيصاً ذاتياً. قد تنتج عن ازدحام queue أو فقد في الوصلة أو إعادة ترتيب أو مسار غير متماثل أو loss من أداة capture نفسها. اربطها بعدادات الواجهة وإحصاءات TCP في الطرفين، وميّز packet loss الفعلي عن artifacts الناتجة عن offload أو SPAN. إذا رأيت SYN-ACK في WAN ولا يظهر في LAN، افحص نقطة تحويل state/NAT والجدار الناري واتجاه الرد، وليس مجرد route في اتجاه واحد.\n\n## 5. مسار DNS وDHCP وNeighbor\nإذا لم يبدأ TCP أصلاً، اسأل هل الاسم حُلّ؟ هل أُرسلت DNS query إلى resolver المقصود؟ هل الإجابة NXDOMAIN أو SERVFAIL أو timeout؟ هل cache أو split DNS أو suffix غيّر الاسم؟ إذا فشل الجهاز في الحصول على IP، تتبع DHCP DORA أو تجديد lease، VLAN الصحيحة، DHCP relay، scope exhaustion وoption 3/6. لا تفترض أن ظهور SSID يعني حصول lease.\n\nNeighbor resolution خطوة قبل الإرسال إلى next hop. في IPv4 راقب ARP request/reply وgratuitous ARP عند الموضوعية؛ في IPv6 راقب Neighbor Solicitation/Advertisement وRouter Advertisement حسب السيناريو. غياب ARP response قد يعني VLAN/neighbor مشكلة أو policy لا تسمح أو أن الطرف غير حاضر؛ لا يعني تلقائياً أن السويتش تالف. فحص DHCP وneighbor منفصل عن فحص DNS: الحصول على IP لا يثبت صحة resolver، ووجود DNS answer لا يثبت route إلى العنوان الناتج.\n\n## 6. Route وTTL وTraceroute\nTraceroute يغيّر TTL/Hop Limit ويراقب رسائل ICMP المرتبطة، لكن بعض الشبكات تحجب ICMP، أو تحدد معدل هذه الرسائل، أو تستخدم MPLS/tunnels تجعل الأثر المرئي مختلفاً. لا ينبغي اعتبار كل hop نجمةً دليلاً على فقد forwarding traffic؛ قد يكون control-plane response فقط هو المحجوب. اجمع route lookup وFIB/VRF وinterface counters مع trace.\n\nعبر كل راوتر يختلف frame link-layer عادةً، بينما تبقى عناوين IP النهائية غالباً ثابتة ما لم يحدث NAT أو tunnel أو proxy. TTL في IPv4 يقل، checksum header يتغير، ويمكن أن تتغير DSCP/ECN وفق policy. إذا رأيت عنوان IP/port مختلفاً عند نقطة لاحقة، تحقق من NAT، proxy، load balancer أو encapsulation قبل اعتبارها corruption. في المسارات ذات ECMP، يمكن أن تتحرك التدفقات بين next hops؛ اربط الملاحظة بالـ flow/tuple والوقت.\n\n## 7. MTU وBlack-hole\nقارن packet lengths، DF/fragmentation في IPv4، وICMP Fragmentation Needed أو ICMPv6 Packet Too Big عند الاقتضاء. فشل حزم كبيرة مع نجاح الصغيرة قرينة مهمة. تحقق من MTU على كل link وتكاليف tunnel/PPPoE/VXLAN، سياسة firewall لرسائل ICMP، وMSS في TCP. لا تقلل MTU بشكل عشوائي على كل الواجهات؛ قِس الأثر على المسار والاتصال الفعلي.\n\nاختبر أحجاماً متدرجة داخل البيئة المصرح بها، وسجل نوع payload، DF، نتيجة ping إذا استُخدم، ونجاح نقل التطبيق. لا تفسر ping واحداً على أنه قياس كامل للـ PMTU؛ قد تُعامل ICMP echo برسائل وpolicy مختلفة عن بروتوكول التطبيق. إذا نجح handshake ثم حدث stall عند packets كبيرة، افحص الرسائل اللازمة لـ PMTUD والـ retransmissions وTCP MSS.\n\n## 8. مختبر: اتصال HTTPS يتوقف\nالمشهد: حاسوب متصل بـ Wi‑Fi، يحصل على IP، يستطيع ping إلى gateway، لكنه لا يحمل صفحة HTTPS كبيرة. اجمع قبل التغيير:\n1. معلومات IP/route/DNS وBSSID وVLAN/SSID mapping.\n2. PCAP من العميل أثناء DNS وTCP/TLS، من دون جمع بيانات غير لازمة.\n3. capture أو counters على egress للبوابة، مع الوقت نفسه.\n4. route lookup وACL/firewall hit counters وNAT/session state.\n5. قياسات بحجم payload تدريجي واختبارات MTU مع ICMP ذات الصلة.\n6. سجل server/access logs للمعاملة نفسها إن كان متاحاً، مع تنقيح البيانات الحساسة.\n\nإذا كان DNS يعيد IP صحيحاً وSYN/SYN-ACK يكتمل ثم يتوقف النقل عند أحجام معينة، ارفع فرضية MTU/PMTUD. إن غادر request العميل ولم يظهر عند WAN، افحص forwarding/policy/queue بين النقطتين. إن ظهر على WAN ووصل للوجهة لكن لم يظهر الرد على WAN، اتبع return path والخادم. بعد الإصلاح كرر النقل الكبير، DNS، الاتصال القصير، والـ failover إن كان ضمن نطاق المشكلة. يجب أن تتوقع نتيجة لكل خطوة قبل بدء الاختبار، وإلا فلن تعرف هل التجربة دعمت الفرضية أم لم تقِسها.\n\n## 9. سلم القرار من الأعراض إلى السبب\n- **No L2/association:** RF، authentication، cable/link، VLAN access/trunk.\n- **No address:** DHCP DORA، scope/relay، duplicate address، subnet/prefix.\n- **No local gateway adjacency:** ARP/ND، gateway IP/interface، port/VLAN.\n- **Route/control issue:** route lookup، VRF، next hop، recursion، convergence.\n- **Policy/state:** ACL، firewall zones، NAT/session، RPF، proxy/load balancer.\n- **Transport:** SYN/ACK، RST، retransmissions، window، MSS/MTU.\n- **Application/security:** TLS handshake/certificate، proxy policy، server listener، application logs.\n\nهذا السلم ليس شرطاً أن يكون linear حرفياً؛ قد تتواجد أكثر من مشكلة. استخدمه لمنع القفز من أعراض الطبقة العليا إلى تعديل طبقة أدنى بلا دليل. دوّن الفرضيات البديلة وما الذي يفصل بينها.\n\n## 10. التعامل مع غموض الدليل\nفرّق بين «لم أر الحزمة» و«أثبت أن الحزمة لم تمر». في الحالة الأولى قد تكون نقطة الالتقاط خاطئة أو غير مكتملة أو فقدت packets. اكتب لكل استنتاج مستوى الثقة: مؤكد بمشاهدتين مستقلتين، مرجح بدليل واحد، أو غير محسوم. استخدم capture من نقطتين متتاليتين إن أمكن، وطابق tuple والـ sequence number والوقت، مع مراعاة NAT أو fragmentation أو tunneling الذي قد يغيّر شكل الحزمة بين النقطتين.\n\nعند وجود أكثر من تفسير، أنشئ جدول فرضيات صغيراً: observation المتوقع إذا كانت الفرضية صحيحة، observation الذي يفندها، مصدر الدليل والخطوة التالية الأقل خطورة. لا تكرر command فقط لأنه شائع؛ اختر أداة تجيب سؤالاً بعينه. إذا كانت counters تزداد لكن capture لا يظهر drops، افحص ما إذا كان counter يخص interface الصحيح أو queue/ASIC مختلفاً. إذا كانت capture تبين فجوة، افحص loss counters الخاصة بأداة الالتقاط قبل اتهام الشبكة.\n\n## حماية الأدلة والخصوصية\nPCAP قد يحتوي أسماء مستخدمين وmetadata شخصية وcookie/session token أو بيانات غير مشفرة. احصل على تصريح مناسب، التقط أقل ما يلزم، خزّن الملف في مكان محمي، سجل checksum ووقت جمعه، وطبّق retention policy. لا ترفع PCAP حقيقي إلى issue عام أو حزمة Android. للمواد التعليمية استخدم synthetic credentials وعناوين اختبار موثقة أو أمثلة منزوعة التعريف. لا تضع أسرار VPN أو بيانات عملاء ضمن محتوى الدرس.\n\n## قالب تقرير التحليل\nالتقرير القابل للمراجعة يذكر سؤال الاختبار، topology/versions، timestamps، نقاط capture، filters، الأدلة الإيجابية والسلبية، alternative hypotheses، ما لم يستطع capture إثباته، الخطوة التصحيحية والنتيجة بعد الإصلاح. أعطِ أسماء ملفات وأرقام frames/stream ذات صلة بعد sanitization. تجنب عبارة «الشبكة بطيئة» دون تعريف RTT median/p95، loss، throughput، percentile وwindow.\n\n## المصطلحات المتقدمة\n**Capture filter:** شرط يحدد الحزم التي تحفظ أصلاً. **Display filter:** شرط عرض على ملف موجود. **SPAN:** نسخ traffic من منافذ/VLAN إلى منفذ مراقبة. **TAP:** نقطة وصول سلبية إلى الوسيط وفق نوعها. **Offload:** نقل بعض المعالجة إلى NIC أو hardware. **Asymmetric routing:** مسار forward يختلف عن return. **PMTUD:** اكتشاف MTU للمسار. **ECMP:** توزيع تدفقات بين مسارات متساوية الكلفة.\n\n## معيار القبول\nيجب أن يستطيع مهندس آخر إعادة إنتاج الاختبار ضمن المختبر، وأن يحدد آخر نقطة ثبت عندها مرور الطلب وأول نقطة موضع شك، ويشرح لماذا رُفضت فرضيات بديلة. لابراتوار ناجح ليس PCAP طويلاً؛ هو دليل مناسب يجيب سؤالاً محدداً ويدعم قراراً قابلاً للتحقق.",
+      "commands": "Wireshark filters: ip.addr == <IP>; tcp.stream eq <N>; arp; dns; icmp; icmpv6\nCapture points: client, AP/uplink, gateway ingress/egress, WAN",
+      "examples": "SYN خروجی کلاینت بدون SYN-ACK مشاهده شد؛ این محل Drop را مشخص نمی‌کند تا capture و counters میانی مقایسه شوند.",
+      "notes": "سطح L3؛ capture باید روی محیط مجاز انجام شود؛ PCAP خام حاوی اطلاعات حساس را در مخزن محتوای عمومی قرار ندهید.",
+      "official_sources": [
+        {
+          "title": "Wireshark User's Guide",
+          "url": "https://www.wireshark.org/docs/wsug_html_chunked/"
+        },
+        {
+          "title": "RFC 1191 — Path MTU Discovery",
+          "url": "https://www.rfc-editor.org/rfc/rfc1191"
+        },
+        {
+          "title": "RFC 792 — Internet Control Message Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc792"
+        }
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "depth_level": "L3",
+        "record_kind": "instructional_lesson",
+        "assessment": {
+          "questions": [
+            {
+              "id": "packet-path-l3-q01",
+              "prompt": "هل غياب SYN-ACK في capture العميل يثبت أن firewall الوجهة أسقطه؟",
+              "options": [
+                "نعم دائماً",
+                "لا؛ يجب تحديد آخر نقطة شوهد فيها الطلب والرد مع captures/counters وسياسات المسار العكسي",
+                "يثبت أن DNS معطل",
+                "يثبت أن TCP لا يعمل"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l3-q02",
+              "prompt": "ما الفرق بين capture filter وdisplay filter؟",
+              "options": [
+                "لا فرق",
+                "الأول يحدد ما يُحفظ ابتداءً، والثاني يرشح العرض على بيانات تم التقاطها",
+                "الأول يعالج DNS فقط",
+                "الثاني يغير packet الأصلية"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l3-q03",
+              "prompt": "ما الذي قد يسبب checksum يبدو خاطئاً في capture endpoint؟",
+              "options": [
+                "Offload مثل TSO/GSO/GRO/LRO",
+                "DHCP lease فقط",
+                "VLAN اسمها خاطئ",
+                "DNS TTL"
+              ],
+              "correct_index": 0
+            },
+            {
+              "id": "packet-path-l3-q04",
+              "prompt": "ماذا يثبت SYN صادر من العميل؟",
+              "options": [
+                "أنه وصل حتماً إلى الخادم",
+                "أنه ظهر في نقطة الالتقاط؛ لا يثبت كل hop بعد ذلك",
+                "أن DNS سليم",
+                "أن NAT لا يعمل"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l3-q05",
+              "prompt": "كيف تفسر retransmissions؟",
+              "options": [
+                "دليل قطعي على cable fault",
+                "إشارة تحتاج ربطاً مع capture drops، reordering، TCP statistics وinterface counters",
+                "دليل قطعي على MTU",
+                "إثبات أن الخادم offline"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l3-q06",
+              "prompt": "لماذا لا تكفي نجمة في traceroute لإثبات packet drop؟",
+              "options": [
+                "كل الأجهزة تعطل IP",
+                "قد يحجب الجهاز ICMP أو يحد معدل control-plane responses مع استمرار forwarding",
+                "لأن TTL لا ينقص",
+                "لأن DNS يغير route"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l3-q07",
+              "prompt": "أي علامة تدعم فرضية MTU black-hole؟",
+              "options": [
+                "فشل كل الحزم بالقدر نفسه",
+                "نجاح أحجام صغيرة وفشل transfer كبير مع غياب أو حجب ICMP اللازم لـ PMTUD",
+                "فشل DHCP Offer فقط",
+                "MAC table فارغ دائماً"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l3-q08",
+              "prompt": "لماذا نسجل timezone وفرق الساعة بين captures؟",
+              "options": [
+                "للتجميل فقط",
+                "كي لا نستنتج ترتيب request/response خطأً من timestamps غير متزامنة",
+                "لتغيير source IP",
+                "لا حاجة إليها"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l3-q09",
+              "prompt": "أي capture قد لا يعرض كل حركة Wi-Fi؟",
+              "options": [
+                "Capture على AP LAN interface قد لا يضم كل 802.11 retries/control frames",
+                "أي PCAP يحتوي دائماً كل شيء",
+                "Capture على NIC يرى كل WAN",
+                "DNS log"
+              ],
+              "correct_index": 0
+            },
+            {
+              "id": "packet-path-l3-q10",
+              "prompt": "لماذا لا يثبت ping صغير نجاح Path MTU Discovery؟",
+              "options": [
+                "لأنه لا يرسل IP",
+                "لأن حجم الرسالة والسياسة قد يختلفان عن تدفق التطبيق، ويجب اختبار أحجام/ICMP/التطبيق",
+                "لأن ping لا يستخدم route",
+                "لأنه يغيّر DNS"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l3-q11",
+              "prompt": "ما الإجراء الصحيح لحماية PCAP؟",
+              "options": [
+                "رفع الملف الخام إلى issue عامة",
+                "تخويل الالتقاط، تقليل المحتوى، redaction، تخزين محمي وretention محدد",
+                "إضافة credential للاختبار",
+                "وضعه في Android assets"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l3-q12",
+              "prompt": "ما الذي يجعل RCA قابلاً للمراجعة؟",
+              "options": [
+                "قائمة أوامر بلا نتائج",
+                "timeline، نقاط capture، فرضيات وأدلة، حدود الاستنتاج، إصلاح وregression test",
+                "رأي المهندس فقط",
+                "فقط عدد frames"
+              ],
+              "correct_index": 1
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "packet-path-l3-q01",
+              "correct_index": 1,
+              "explanation": "غياب الرد في نقطة واحدة لا يحدد موضع الفقد أو الجهة المسؤولة."
+            },
+            {
+              "id": "packet-path-l3-q02",
+              "correct_index": 1,
+              "explanation": "ما لم يُلتقط بسبب capture filter لا يمكن استعادته لاحقاً."
+            },
+            {
+              "id": "packet-path-l3-q03",
+              "correct_index": 0,
+              "explanation": "قد تُلتقط packet قبل اكتمال معالجة checksum أو segmentation العتادية."
+            },
+            {
+              "id": "packet-path-l3-q04",
+              "correct_index": 1,
+              "explanation": "capture يثبت الرصد عند موضعه، وليس المرور عبر بقية الطريق."
+            },
+            {
+              "id": "packet-path-l3-q05",
+              "correct_index": 1,
+              "explanation": "عدة أسباب يمكن أن تنتج الأعراض نفسها."
+            },
+            {
+              "id": "packet-path-l3-q06",
+              "correct_index": 1,
+              "explanation": "traceroute يعتمد على استجابة hop إلى رسائل TTL/Hop Limit، وليس قياساً مباشراً لكل data-plane flow."
+            },
+            {
+              "id": "packet-path-l3-q07",
+              "correct_index": 1,
+              "explanation": "المقارنة بين الأحجام ورسائل PMTUD تساعد في اختبار الفرضية."
+            },
+            {
+              "id": "packet-path-l3-q08",
+              "correct_index": 1,
+              "explanation": "تسلسل الحدث يعتمد على الزمن؛ اختلاف الساعات قد يضلل RCA."
+            },
+            {
+              "id": "packet-path-l3-q09",
+              "correct_index": 0,
+              "explanation": "الرؤية تختلف باختلاف monitor mode والـ interface ومكان الالتقاط."
+            },
+            {
+              "id": "packet-path-l3-q10",
+              "correct_index": 1,
+              "explanation": "اختبار PMTU يحتاج أحجاماً وملاحظات ملائمة للحركة التي تفشل."
+            },
+            {
+              "id": "packet-path-l3-q11",
+              "correct_index": 1,
+              "explanation": "PCAP قد يحتوي tokens أو بيانات شخصية أو غير مشفرة."
+            },
+            {
+              "id": "packet-path-l3-q12",
+              "correct_index": 1,
+              "explanation": "تقرير جيد يربط الدليل بالاستنتاج ويذكر ما لا يستطيع إثباته."
+            }
+          ]
+        },
+        "glossary": [
+          "PCAP",
+          "SPAN",
+          "TAP",
+          "Offload",
+          "PMTUD",
+          "RIB",
+          "FIB",
+          "Asymmetric Routing",
+          "ECMP"
+        ]
+      }
     }
   ]
 }
