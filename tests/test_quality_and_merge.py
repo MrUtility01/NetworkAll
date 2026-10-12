@@ -47,6 +47,28 @@ class ContentAuditMetadataTests(unittest.TestCase):
         self.assertEqual(row["chapter_title"], "Cisco Routing")
         self.assertEqual(row["subchapter_title"], "OSPF")
 
+    def test_network_cli_command_titles_avoid_false_boilerplate_flags(self):
+        path = ROOT / "tools/packs/audit-test.json"
+        repeated_network_text = "VLAN trunk STP router gateway"
+        for index, title in enumerate(("[L2] configure terminal", "[L1] فیلتر switchport Gi1/0/1"), 1):
+            with self.subTest(title=title):
+                row = inspect_record(
+                    path,
+                    {"uid": f"cli-{index}", "title_fa": title, "full_content": repeated_network_text},
+                    index,
+                    1,
+                )
+                self.assertNotIn("generic_network_boilerplate", row["checks"])
+
+        nonnetwork = inspect_record(
+            path,
+            {"uid": "powershell-service", "title_fa": "PowerShell Get-Service",
+             "full_content": repeated_network_text},
+            3,
+            1,
+        )
+        self.assertIn("generic_network_boilerplate", nonnetwork["checks"])
+
     def test_actionable_warnings_sort_before_review_status_only(self):
         high_risk = {"index": 100, "checks": ["needs_human_review", "missing_answer_key_marker"]}
         review_only = {"index": 1, "checks": ["needs_human_review"]}
