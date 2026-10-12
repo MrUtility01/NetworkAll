@@ -118,6 +118,22 @@ def record_blob(item):
     return "\n".join(text(item.get(k)) for k in keys if k in item)
 
 
+REVIEW_PRIORITY = {
+    "missing_title": 100, "shallow": 90, "template_heavy": 80,
+    "generic_network_boilerplate": 70, "missing_answer_key_marker": 65,
+    "missing_lab_marker": 55, "missing_scenario_marker": 45,
+    "missing_source_marker": 35, "needs_human_review": 0,
+}
+
+
+def review_sort_key(item):
+    """Sort high-impact actionable warnings before review-status-only rows."""
+    return (
+        -sum(REVIEW_PRIORITY.get(check, 10) for check in item.get("checks", [])),
+        item.get("index", 0),
+    )
+
+
 def mark_template_heavy(rows, records):
     """Flag records dominated by long paragraphs repeated across many lessons."""
     paragraphs_by_record = []
@@ -282,18 +298,9 @@ def main():
             report["active_curriculum"]["records"] = len(active_rows)
             active_counts = Counter(check for item in active_rows for check in item["checks"])
             report["active_curriculum"]["warnings"] = dict(sorted(active_counts.items()))
-            priority = {
-                "missing_title": 100, "shallow": 90, "template_heavy": 80,
-                "generic_network_boilerplate": 70, "missing_answer_key_marker": 65,
-                "missing_lab_marker": 55, "missing_scenario_marker": 45,
-                "missing_source_marker": 35, "needs_human_review": 0,
-            }
             review_rows = sorted(
                 (item for item in active_rows if item["checks"]),
-                key=lambda item: (
-                    -sum(priority.get(check, 10) for check in item["checks"]),
-                    item["index"],
-                ),
+                key=review_sort_key,
             )
             report["active_curriculum"]["review_samples"] = [
                 {
