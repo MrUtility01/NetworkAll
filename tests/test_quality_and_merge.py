@@ -22,7 +22,7 @@ from audit_content import _item_quality
 from audit_content_packs import extract_items, inspect_record, review_sort_key
 from core.db import WebDB
 from core.deep_fallback import build_deep_fallback
-from core.rich_content import build_rich_lesson
+from core.rich_content import _contains_any, build_rich_lesson
 import app as server_app
 import workspace_routes
 from core.study import study_sync_apply, study_sync_index, study_sync_pull
@@ -109,6 +109,10 @@ class DeepFallbackTests(unittest.TestCase):
         self.assertIn("SMART", content)
         self.assertIn("منابع رسمی و مراجع", content)
         self.assertIn("Intel Product Support", content)
+
+    def test_short_acronym_does_not_match_inside_an_unrelated_word(self):
+        self.assertFalse(_contains_any("Network Bottleneck", ("TTL",)))
+        self.assertTrue(_contains_any("Set TTL on the record", ("TTL",)))
 
     def test_case_insensitive_specialist_dispatch_for_boot_linux_fs_and_resources(self):
         cases = [
