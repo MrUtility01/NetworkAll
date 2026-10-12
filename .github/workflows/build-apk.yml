@@ -133,8 +133,8 @@ jobs:
           root = Path("shared/infographics")
           page = (root / "index.html").read_text(encoding="utf-8")
           refs = set(re.findall(r"""<img[^>]+src=["']([^"']+\\.svg)["']""", page))
-          if len(refs) < 6:
-              raise SystemExit(f"Expected at least 6 infographic diagrams, found {len(refs)}")
+          if len(refs) < 11:
+              raise SystemExit(f"Expected at least 11 infographic diagrams, found {len(refs)}")
           for ref in sorted(refs):
               path = (root / ref).resolve()
               if root.resolve() not in path.parents or not path.is_file():
