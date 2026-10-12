@@ -15,6 +15,7 @@ import com.netenc.app.data.AppDatabase
 import com.netenc.app.data.NoteEntity
 import com.netenc.app.data.TaskEntity
 import com.netenc.app.data.VaultEntity
+import com.netenc.app.reminder.TaskReminderScheduler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -77,6 +78,10 @@ class WorkspaceActivity : AppCompatActivity() {
                         Triple(it.uid, (if (it.done) "✓ " else "○ ") + it.title, it.body)
                     }
                 }
+            }
+            if (mode == "tasks") {
+                runCatching { TaskReminderScheduler.reconcileAll(this@WorkspaceActivity) }
+                    .onFailure { Toast.makeText(this@WorkspaceActivity, "یادآوری کارها: ${it.message}", Toast.LENGTH_SHORT).show() }
             }
             listView.removeAllViews()
             if (rows.isEmpty()) {
@@ -212,7 +217,13 @@ class WorkspaceActivity : AppCompatActivity() {
                 db.workspaceDao().allTasks().find { it.uid == uid }
             } ?: return@launch
             withContext(Dispatchers.IO) {
-                db.workspaceDao().upsertTask(task.copy(done = !task.done, lastUpdated = now()))
+                db.workspaceDao().upsertTask(
+                    task.copy(
+                        done = !task.done,
+                        lastUpdated = now(),
+                        remindedAt = if (task.done) "" else task.remindedAt
+                    )
+                )
             }
             refresh()
             Toast.makeText(this@WorkspaceActivity, if (!task.done) "انجام شد" else "باز شد", Toast.LENGTH_SHORT).show()
