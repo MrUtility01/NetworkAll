@@ -247,15 +247,33 @@ def _workspace_hash(record):
 
 
 def _workspace_record(row, entity):
-    item = dict(row)
-    item["entity"] = entity
-    item["deleted"] = bool(item.get("deleted", 0))
+    raw = dict(row)
+    # Project only protocol fields. Scheduler-only fields such as reminded_at
+    # must not affect cross-platform content hashes.
     if entity == "task":
-        item["done"] = bool(item.get("done", 0))
-        item["due_at"] = item.get("due_at") or ""
-        item["priority"] = int(item.get("priority") or 1)
-    item["device_id"] = item.get("device_id") or ""
-    item["last_updated"] = item.get("last_updated") or ""
+        item = {
+            "uid": raw.get("uid") or "",
+            "entity": "task",
+            "title": raw.get("title") or "",
+            "body": raw.get("body") or "",
+            "done": bool(raw.get("done", 0)),
+            "due_at": raw.get("due_at") or "",
+            "priority": int(raw.get("priority") or 1),
+            "last_updated": raw.get("last_updated") or "",
+            "device_id": raw.get("device_id") or "",
+            "deleted": bool(raw.get("deleted", 0)),
+        }
+    else:
+        item = {
+            "uid": raw.get("uid") or "",
+            "entity": "note",
+            "title": raw.get("title") or "",
+            "body": raw.get("body") or "",
+            "tags": raw.get("tags") or "",
+            "last_updated": raw.get("last_updated") or "",
+            "device_id": raw.get("device_id") or "",
+            "deleted": bool(raw.get("deleted", 0)),
+        }
     item["content_hash"] = _workspace_hash(item)
     return item
 
