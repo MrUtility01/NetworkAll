@@ -1,0 +1,318 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-12",
+  "purpose": "Operational Zabbix monitoring for MikroTik: signal design, interface counters, trigger validation, Syslog correlation, RCA, capacity and safe rollout.",
+  "scope": {
+    "chapter_order": 23,
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lesson_count": 5,
+    "topics": [
+      {
+        "id": "mikrotik-zabbix-operations",
+        "title_fa": "سناریوهای عملیاتی Zabbix برای MikroTik",
+        "title_en": "Operational Zabbix for MikroTik"
+      }
+    ]
+  },
+  "instructional_contract": {
+    "level_floors": {
+      "L0": 600,
+      "L1": 800,
+      "L2": 1200,
+      "L3": 1600,
+      "L4": 2200
+    },
+    "lab_status": "designed_not_executed",
+    "answer_key_separate": true
+  },
+  "content_quality": {
+    "status": "review_required",
+    "reason": "Target-version import, real telemetry, notification delivery, restore and failover require lab evidence."
+  },
+  "compatibility": {
+    "routeros_v6_v7": "Verify command paths on the target release.",
+    "zabbix": "Validate item keys, trigger syntax, preprocessing and macros on exact server version. This curriculum pack is not an importable Zabbix template."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch23:zabbix-operations:l0",
+      "entity": "lesson",
+      "chapter_order": 23,
+      "subchapter_order": 1,
+      "lesson_order": 1,
+      "subchapter_title_fa": "۲۳.1 مدل داده تا هشدار",
+      "topic": "mikrotik-zabbix-operations",
+      "domain": "mikrotik-routeros",
+      "level": "L0",
+      "title_fa": "[L0] مدل داده تا هشدار",
+      "title_en": "Monitoring Signal Model",
+      "tags": [
+        "Zabbix",
+        "MikroTik",
+        "monitoring",
+        "L0"
+      ],
+      "summary": "مدل داده تا هشدار",
+      "full_content": "Host نماینده دستگاه است؛ Item داده را جمع می‌کند؛ Trigger شرط را ارزیابی می‌کند؛ Event تغییر وضعیت و Action اعلان یا اقدام را انجام می‌دهد. سلامت یک Item معادل سلامت کامل سرویس نیست. پیش از ساخت هشدار چهار چیز را تعیین کنید: سیگنال دقیق، نقطه مشاهده، پنجره زمانی و اقدام مالک. صفر ممکن است مقدار واقعی باشد؛ stale مقدار قدیمی و missing نبود داده قابل اتکاست. این وضعیت‌ها را یکسان تفسیر نکنید. اگر Ping شکست خورد اما سایر Itemها تازه‌اند، سیاست ICMP و مسیر مانیتورینگ را بررسی کنید. اگر همه داده‌ها stale شده‌اند، collector، شبکه مدیریت، مجوز و polling را بررسی کنید. این‌ها فرضیه‌اند و برای اعلام علت قطعی به شاهد مستقل نیاز دارند. در Host آزمایشی حالت عادی، مرزی و نقض‌کننده را اجرا و شرط Recovery را هم آزمایش کنید. نام Host را پایدار نگه دارید، ساعت‌ها را همگام کنید و credentialها را در pack یا Git قرار ندهید. هر Trigger باید واحد، پنجره، severity، مالک، runbook، Recovery و آزمون مثبت و منفی داشته باشد. داده‌های این درس مثال آموزشی‌اند، نه capture واقعی.",
+      "commands": "/interface print stats; /system resource print",
+      "examples": "Fixture آموزشی مصنوعی؛ خروجی واقعی تجهیزات نیست.",
+      "notes": "lab_status=designed_not_executed; verify exact RouterOS/Zabbix versions.",
+      "learning_objectives": [
+        "مفهوم و سازوکار را توضیح دهد",
+        "شواهد را با معیار پذیرش تفسیر کند",
+        "آزمون و مسیر عیب‌یابی را طراحی کند"
+      ],
+      "prerequisites": [],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch23-l0-q1\",\"prompt\":\"تفاوت Item و Trigger چیست؟\",\"type\":\"applied\",\"level\":\"L0\"},{\"id\":\"ch23-l0-q2\",\"prompt\":\"چرا stale با صفر فرق دارد؟\",\"type\":\"applied\",\"level\":\"L0\"},{\"id\":\"ch23-l0-q3\",\"prompt\":\"برای Trigger چه معیارهایی لازم است؟\",\"type\":\"applied\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"ch23-l0-q1\",\"answer\":\"Item مقدار یا رخداد را جمع می‌کند؛ Trigger شرط را روی داده ارزیابی می‌کند.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"},{\"id\":\"ch23-l0-q2\",\"answer\":\"صفر مقدار معتبر است؛ stale مقدار قدیمی و missing نبود داده قابل اتکاست.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"},{\"id\":\"ch23-l0-q3\",\"answer\":\"سیگنال، واحد، پنجره، severity، مالک، runbook، Recovery و تست مثبت/منفی لازم‌اند.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "Zabbix Documentation",
+          "url": "https://www.zabbix.com/documentation/current/en/manual"
+        },
+        {
+          "title": "MikroTik Documentation",
+          "url": "https://help.mikrotik.com/docs/"
+        },
+        {
+          "title": "rsyslog Documentation",
+          "url": "https://www.rsyslog.com/doc/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch23:zabbix-operations:l1",
+      "entity": "lesson",
+      "chapter_order": 23,
+      "subchapter_order": 2,
+      "lesson_order": 2,
+      "subchapter_title_fa": "۲۳.2 نرخ ترافیک و Counter",
+      "topic": "mikrotik-zabbix-operations",
+      "domain": "mikrotik-routeros",
+      "level": "L1",
+      "title_fa": "[L1] نرخ ترافیک و Counter",
+      "title_en": "Interface Counters and Rates",
+      "tags": [
+        "Zabbix",
+        "MikroTik",
+        "monitoring",
+        "L1"
+      ],
+      "summary": "نرخ ترافیک و Counter",
+      "full_content": "Counterهای octet معمولاً تجمعی‌اند، نه نرخ لحظه‌ای. نرخ خام برابر delta octets ضربدر ۸ تقسیم بر elapsed seconds است. اگر دستگاه reboot کند، counter reset شود، interface index عوض شود یا فاصله نمونه‌گیری اشتباه باشد، delta گمراه‌کننده می‌شود. اگر delta برابر ۵۰۰٬۰۰۰ octet طی ۱۰ ثانیه باشد، نرخ خام ۴۰۰٬۰۰۰ bit/s است. اگر counter از ۹٬۰۰۰٬۰۰۰ به ۱٬۰۰۰ برگردد، آن را نرخ منفی یا جهش واقعی گزارش نکنید؛ reset یا discontinuity را بررسی کنید. در RouterOS فرمان‌های مشاهده‌ای /interface print stats و /system resource print را با نسخه هدف تطبیق دهید. آستانه جهانی مانند ۸۰ درصد برای همه لینک‌ها مناسب نیست؛ ظرفیت، shaping، burst، نقش لینک و SLO را در نظر بگیرید. نرخ صفر می‌تواند idle بودن لینک باشد؛ جهش می‌تواند ناشی از فاصله نمونه، واحد bytes/bits یا تغییر interface باشد. خطاهای interface را با نرخ رشد counter بسنجید. آزمایشگاه باید حالت عادی، افزایش کنترل‌شده و reset را شامل شود و مقدار خام، زمان نمونه و نرخ محاسبه‌شده را ثبت کند. SNMP را به شبکه مدیریت محدود و در صورت پشتیبانی SNMPv3 authPriv را ترجیح دهید.",
+      "commands": "/interface print stats; /system resource print",
+      "examples": "Fixture آموزشی مصنوعی؛ خروجی واقعی تجهیزات نیست.",
+      "notes": "lab_status=designed_not_executed; verify exact RouterOS/Zabbix versions.",
+      "learning_objectives": [
+        "مفهوم و سازوکار را توضیح دهد",
+        "شواهد را با معیار پذیرش تفسیر کند",
+        "آزمون و مسیر عیب‌یابی را طراحی کند"
+      ],
+      "prerequisites": [
+        "lesson:ch23:zabbix-operations:l0"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch23-l1-q1\",\"prompt\":\"نرخ ۵۰۰٬۰۰۰ octet طی ۱۰ ثانیه چند bit/s است؟\",\"type\":\"applied\",\"level\":\"L1\"},{\"id\":\"ch23-l1-q2\",\"prompt\":\"کاهش ناگهانی counter را چگونه بررسی می‌کنید؟\",\"type\":\"applied\",\"level\":\"L1\"},{\"id\":\"ch23-l1-q3\",\"prompt\":\"در discontinuity چه می‌کنید؟\",\"type\":\"applied\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"ch23-l1-q1\",\"answer\":\"۴۰۰٬۰۰۰ bit/s؛ delta×8/time.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"},{\"id\":\"ch23-l1-q2\",\"answer\":\"reset، reboot، rollover، interface index، فاصله نمونه و واحد را بررسی کنید.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"},{\"id\":\"ch23-l1-q3\",\"answer\":\"عادی، نقض کوتاه، نقض پایدار، Recovery، stale/unsupported و مرزی.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "Zabbix Documentation",
+          "url": "https://www.zabbix.com/documentation/current/en/manual"
+        },
+        {
+          "title": "MikroTik Documentation",
+          "url": "https://help.mikrotik.com/docs/"
+        },
+        {
+          "title": "rsyslog Documentation",
+          "url": "https://www.rsyslog.com/doc/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch23:zabbix-operations:l2",
+      "entity": "lesson",
+      "chapter_order": 23,
+      "subchapter_order": 3,
+      "lesson_order": 3,
+      "subchapter_title_fa": "۲۳.3 Trigger و Recovery مقاوم",
+      "topic": "mikrotik-zabbix-operations",
+      "domain": "mikrotik-routeros",
+      "level": "L2",
+      "title_fa": "[L2] Trigger و Recovery مقاوم",
+      "title_en": "Robust Trigger Design",
+      "tags": [
+        "Zabbix",
+        "MikroTik",
+        "monitoring",
+        "L2"
+      ],
+      "summary": "Trigger و Recovery مقاوم",
+      "full_content": "Trigger باید وضعیت قابل اقدام را مدل کند، نه هر نوسان را. syntax توابع زمانی و expression را در نسخه دقیق Zabbix اعتبارسنجی کنید؛ این درس Template قابل import نیست. اگر Problem و Recovery دقیقاً یک آستانه داشته باشند، نویز نزدیک مرز می‌تواند اعلان‌های متوالی بسازد. برای نمونه می‌توان Problem بالای ۹۰ درصد و Recovery زیر ۸۰ درصد داشت؛ اعداد نمونه‌اند و باید از ظرفیت و SLO استخراج شوند. Recovery باید از داده تازه استفاده کند تا stale value بهبودی کاذب نسازد. قطع یک روتر می‌تواند هشدارهای ثانویه VPN، interface و CPU ایجاد کند؛ وابستگی Trigger نویز را کم می‌کند اما وابستگی اشتباه رخداد مستقل را پنهان می‌سازد. ماتریس آزمون شامل حالت عادی، نقض کوتاه، نقض پایدار، Recovery، stale/unsupported و مقدار مرزی است. اگر Trigger فعال ولی نمودار طبیعی است timestamp، واحد، preprocessing، timezone، polling و expression را بررسی کنید. اگر Event ساخته شده اما اعلان نرسیده، action conditions، media، مجوز و maintenance window را جدا بررسی کنید. قبل از تغییر backup بگیرید، روی Host آزمایشی تست کنید و false positive، زمان تشخیص، زمان بازیابی و اعلان‌های تکراری را اندازه بگیرید.",
+      "commands": "/interface print stats; /system resource print",
+      "examples": "Fixture آموزشی مصنوعی؛ خروجی واقعی تجهیزات نیست.",
+      "notes": "lab_status=designed_not_executed; verify exact RouterOS/Zabbix versions.",
+      "learning_objectives": [
+        "مفهوم و سازوکار را توضیح دهد",
+        "شواهد را با معیار پذیرش تفسیر کند",
+        "آزمون و مسیر عیب‌یابی را طراحی کند"
+      ],
+      "prerequisites": [
+        "lesson:ch23:zabbix-operations:l1"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch23-l2-q1\",\"prompt\":\"Hysteresis چه مشکلی را حل می‌کند؟\",\"type\":\"applied\",\"level\":\"L2\"},{\"id\":\"ch23-l2-q2\",\"prompt\":\"چرا stale data نباید Recovery بسازد؟\",\"type\":\"applied\",\"level\":\"L2\"},{\"id\":\"ch23-l2-q3\",\"prompt\":\"ماتریس آزمون Trigger چه حالت‌هایی دارد؟\",\"type\":\"applied\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"ch23-l2-q1\",\"answer\":\"آستانه Recovery جدا، نوسان نزدیک مرز را کاهش می‌دهد.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"},{\"id\":\"ch23-l2-q2\",\"answer\":\"مقدار قدیمی وضعیت اکنون نیست و نباید بهبودی کاذب بسازد.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"},{\"id\":\"ch23-l2-q3\",\"answer\":\"فایل، ACL/rotation، Agent، log item، preprocessing و زمان آخرین داده را بررسی کنید.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "Zabbix Documentation",
+          "url": "https://www.zabbix.com/documentation/current/en/manual"
+        },
+        {
+          "title": "MikroTik Documentation",
+          "url": "https://help.mikrotik.com/docs/"
+        },
+        {
+          "title": "rsyslog Documentation",
+          "url": "https://www.rsyslog.com/doc/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch23:zabbix-operations:l3",
+      "entity": "lesson",
+      "chapter_order": 23,
+      "subchapter_order": 4,
+      "lesson_order": 4,
+      "subchapter_title_fa": "۲۳.4 هم‌بستگی Syslog و RCA",
+      "topic": "mikrotik-zabbix-operations",
+      "domain": "mikrotik-routeros",
+      "level": "L3",
+      "title_fa": "[L3] هم‌بستگی Syslog و RCA",
+      "title_en": "Syslog Correlation and RCA",
+      "tags": [
+        "Zabbix",
+        "MikroTik",
+        "monitoring",
+        "L3"
+      ],
+      "summary": "هم‌بستگی Syslog و RCA",
+      "full_content": "پیام link down رخداد لینک را ثبت می‌کند اما علت را مشخص نمی‌کند؛ کابل، اپتیک، برق، طرف مقابل، shutdown مدیریتی، تغییر پیکربندی یا reboot ممکن‌اند. در RCA مشاهده، فرضیه و علت تأییدشده را جدا کنید. برای حادثه شناسه و پنجره زمانی بسازید و timestamp/timezone، hostname، interface، severity/topic، تغییر پیکربندی، route، VPN، counter و وضعیت collector را کنار هم قرار دهید. اختلاف ساعت می‌تواند ترتیب رخدادها را تغییر دهد؛ NTP و timezone را ثبت کنید. زمان اولین Problem و آخرین داده سالم را از Zabbix بگیرید؛ رسیدن datagram را از نوشتن فایل جدا بررسی کنید؛ سپس ACL، rotation، Agent، log item و preprocessing را بررسی کنید. اگر هیچ log و همه Itemها stale هستند، collector و شبکه مدیریت را بررسی کنید. اگر فایل پر است اما Item stale است، مرز فایل تا Agent را بررسی کنید. اگر حادثه پس از تغییر رخ داده، diff و زمان تغییر را مقایسه کنید؛ هم‌زمانی به‌تنهایی علیت نیست. نسخه خام را دست‌نخورده نگه دارید، زمان جمع‌آوری و hash را ثبت و نسخه redact‌شده بسازید. token، SNMP community و اطلاعات حساس را حذف کنید. تمرین باید fixtureهای link flap، collector down و clock skew داشته باشد و برای هر فرضیه شاهد تأییدکننده و ردکننده تعریف کند.",
+      "commands": "sudo tcpdump -ni any udp port 514; sudo systemctl status rsyslog --no-pager; sudo journalctl -u rsyslog --since '15 minutes ago'",
+      "examples": "Fixture آموزشی مصنوعی؛ خروجی واقعی تجهیزات نیست.",
+      "notes": "lab_status=designed_not_executed; verify exact RouterOS/Zabbix versions.",
+      "learning_objectives": [
+        "مفهوم و سازوکار را توضیح دهد",
+        "شواهد را با معیار پذیرش تفسیر کند",
+        "آزمون و مسیر عیب‌یابی را طراحی کند"
+      ],
+      "prerequisites": [
+        "lesson:ch23:zabbix-operations:l2"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch23-l3-q1\",\"prompt\":\"چرا link down علت فیزیکی را ثابت نمی‌کند؟\",\"type\":\"applied\",\"level\":\"L3\"},{\"id\":\"ch23-l3-q2\",\"prompt\":\"فایل log موجود است اما Item stale؛ چه می‌کنید؟\",\"type\":\"applied\",\"level\":\"L3\"},{\"id\":\"ch23-l3-q3\",\"prompt\":\"Observation را از root cause جدا کنید.\",\"type\":\"applied\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"ch23-l3-q1\",\"answer\":\"علل متعددی ممکن‌اند؛ شاهد مستقل لازم است.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"},{\"id\":\"ch23-l3-q2\",\"answer\":\"مسیر collector، فایل، Agent، Item و preprocessing را بررسی کنید.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"},{\"id\":\"ch23-l3-q3\",\"answer\":\"Observation داده ثبت‌شده است؛ علت ریشه‌ای باید با شواهد مستقل تأیید شود.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "Zabbix Documentation",
+          "url": "https://www.zabbix.com/documentation/current/en/manual"
+        },
+        {
+          "title": "MikroTik Documentation",
+          "url": "https://help.mikrotik.com/docs/"
+        },
+        {
+          "title": "rsyslog Documentation",
+          "url": "https://www.rsyslog.com/doc/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch23:zabbix-operations:l4",
+      "entity": "lesson",
+      "chapter_order": 23,
+      "subchapter_order": 5,
+      "lesson_order": 5,
+      "subchapter_title_fa": "۲۳.5 ظرفیت، SLO و rollout",
+      "topic": "mikrotik-zabbix-operations",
+      "domain": "mikrotik-routeros",
+      "level": "L4",
+      "title_fa": "[L4] ظرفیت، SLO و rollout",
+      "title_en": "Capacity and Safe Rollout",
+      "tags": [
+        "Zabbix",
+        "MikroTik",
+        "monitoring",
+        "L4"
+      ],
+      "summary": "ظرفیت، SLO و rollout",
+      "full_content": "سامانه مانیتورینگ خود failure domain دارد: روتر، شبکه مدیریت، collector، Zabbix server/proxy، دیتابیس، storage، notification channel و ساعت. SLIهایی مانند نسبت check موفق، freshness داده و تأخیر Event تا اعلان تعریف کنید؛ داشبورد سبز به‌تنهایی دسترس‌پذیری انتهابه‌انتها را ثابت نمی‌کند. نرخ نظری checkها تقریباً Host × Item فعال تقسیم بر polling interval است. برای ۲۰۰ Host با ۴۰ Item و فاصله ۶۰ ثانیه، نرخ نظری ۱۳۳ check/s است؛ retry، discovery، dependent items، trigger پیچیده، burst و تأخیر DB در آن لحاظ نشده و benchmark واقعی لازم است. History خام و Trends هزینه و کاربرد متفاوت دارند؛ retention را با نیاز RCA، نرخ نمونه‌برداری و هزینه هماهنگ کنید. وجود دو سرور به‌تنهایی HA نیست: همگام‌سازی configuration، دیتابیس، ownership، جلوگیری از اعلان تکراری، failover و restore باید آزمایش شوند. تهدیدها شامل دسترسی غیرمجاز SNMP، تزریق Syslog، افشای log و سوءاستفاده از Action script هستند؛ management network محدود، RBAC، least privilege، secret store و backup رمزگذاری‌شده به‌کار ببرید. UDP Syslog به‌تنهایی تحویل تضمین‌شده یا احراز هویت پیام ندارد. rollout امن شامل ثبت نسخه‌ها، backup، restore آزمایشی، Host پایلوت، fixture مثبت و منفی و معیار توقف از پیش تعریف‌شده است. موفقیت باید با شواهد زمان‌دار، نسخه دقیق، checksum و نتیجه مورد انتظار/واقعی ثبت شود؛ benchmark یا restore اجرا نشده را passed اعلام نکنید.",
+      "commands": "/interface print stats; /system resource print",
+      "examples": "Fixture آموزشی مصنوعی؛ خروجی واقعی تجهیزات نیست.",
+      "notes": "lab_status=designed_not_executed; verify exact RouterOS/Zabbix versions.",
+      "learning_objectives": [
+        "مفهوم و سازوکار را توضیح دهد",
+        "شواهد را با معیار پذیرش تفسیر کند",
+        "آزمون و مسیر عیب‌یابی را طراحی کند"
+      ],
+      "prerequisites": [
+        "lesson:ch23:zabbix-operations:l3"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch23-l4-q1\",\"prompt\":\"چرا نرخ نظری check ظرفیت واقعی را تضمین نمی‌کند؟\",\"type\":\"applied\",\"level\":\"L4\"},{\"id\":\"ch23-l4-q2\",\"prompt\":\"چرا دو سرور به‌تنهایی HA نیست؟\",\"type\":\"applied\",\"level\":\"L4\"},{\"id\":\"ch23-l4-q3\",\"prompt\":\"برای اثبات restore چه شواهدی ثبت می‌کنید؟\",\"type\":\"applied\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"ch23-l4-q1\",\"answer\":\"حدود ۱۳۳ check/s؛ retry، discovery، نوع Item، trigger و DB نیازمند benchmark هستند.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"},{\"id\":\"ch23-l4-q2\",\"answer\":\"configuration، DB، ownership، اعلان تکراری و failover را آزمایش کنید.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"},{\"id\":\"ch23-l4-q3\",\"answer\":\"نسخه backup، checksum، زمان restore، محیط مقصد، صحت داده و عملکرد سرویس ثبت شوند.\",\"rationale\":\"پاسخ باید با معیار فنی و روش راستی‌آزمایی پشتیبانی شود.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "Zabbix Documentation",
+          "url": "https://www.zabbix.com/documentation/current/en/manual"
+        },
+        {
+          "title": "MikroTik Documentation",
+          "url": "https://help.mikrotik.com/docs/"
+        },
+        {
+          "title": "rsyslog Documentation",
+          "url": "https://www.rsyslog.com/doc/"
+        }
+      ],
+      "source_status": "review_required"
+    }
+  ],
+  "test_fixtures": [
+    {
+      "id": "ch23-traffic",
+      "kind": "synthetic_fixture_not_real_device_output",
+      "input": {
+        "deltaOctets": 500000,
+        "seconds": 10
+      },
+      "expected": {
+        "bitsPerSecond": 400000
+      }
+    },
+    {
+      "id": "ch23-reset",
+      "kind": "synthetic_fixture_not_real_device_output",
+      "input": {
+        "previous": 9000000,
+        "current": 1000
+      },
+      "expected": {
+        "rate": "invalid_until_discontinuity_handled"
+      }
+    },
+    {
+      "id": "ch23-stale",
+      "kind": "synthetic_fixture_not_real_device_output",
+      "input": {
+        "ageSeconds": 900,
+        "pollingSeconds": 60
+      },
+      "expected": {
+        "state": "telemetry_stale_not_device_healthy"
+      }
+    }
+  ]
+}
