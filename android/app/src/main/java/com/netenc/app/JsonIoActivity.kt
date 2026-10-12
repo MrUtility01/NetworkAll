@@ -212,8 +212,9 @@ class JsonIoActivity : AppCompatActivity() {
                     contentResolver.openInputStream(uri)?.bufferedReader(Charsets.UTF_8)?.use { it.readText() }
                         ?: throw IllegalStateException("فایل انتخاب‌شده قابل خواندن نیست")
                 }
-                // Keep the selected source unchanged; importJsonText performs a validated merge.
-                importJsonText(text)
+                // Stage the chosen JSON in app-private storage; the existing importer validates and merges it.
+                withContext(Dispatchers.IO) { exportFile().writeText(text) }
+                importJson()
             } catch (e: Exception) {
                 log.text = "خطا در خواندن فایل: ${e.message}"
             }
