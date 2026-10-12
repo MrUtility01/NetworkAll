@@ -106,6 +106,10 @@ def main() -> int:
             if not isinstance(qid, str) or not qid.strip():
                 fail(f"{uid}: question without id", errors)
                 continue
+            if question.get("level") != level:
+                fail(f"{uid}: question {qid} level does not match lesson level {level}", errors)
+            if not str(question.get("prompt", "")).strip():
+                fail(f"{uid}: question {qid} has an empty prompt", errors)
             if qid in seen_question_ids:
                 fail(f"duplicate question id: {qid}", errors)
             seen_question_ids.add(qid)
@@ -142,6 +146,19 @@ def main() -> int:
         fail("instructional_contract.level_floors differs from the repository standard", errors)
     if contract.get("separate_answer_key") is not True:
         fail("separate_answer_key must be true", errors)
+    if contract.get("lab_status") != "executed":
+        print("NOTE  practical labs are not marked executed; content cannot be considered fully verified")
+    if not isinstance(pack.get("sources"), list) or not pack.get("sources"):
+        fail("sources must be a non-empty array", errors)
+    for lesson in lessons:
+        if not isinstance(lesson, dict):
+            continue
+        for field in ("summary", "learning_objectives", "prerequisites", "full_content", "meta_json"):
+            value = lesson.get(field)
+            if not value:
+                fail(f"{lesson.get('uid', 'unknown lesson')}: required field {field} is empty", errors)
+        if not isinstance(lesson.get("learning_objectives"), list) or not lesson.get("learning_objectives"):
+            fail(f"{lesson.get('uid', 'unknown lesson')}: learning_objectives must be a non-empty array", errors)
     if pack.get("content_quality", {}).get("status") == "verified" and errors:
         fail("content cannot be marked verified while audit gaps remain", errors)
 
