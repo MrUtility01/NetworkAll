@@ -12,7 +12,8 @@ data class TaskEntity(
     val dueAt: String = "",
     val priority: Int = 1,
     val lastUpdated: String = "",
-    val deviceId: String = "android"
+    val deviceId: String = "android",
+    val deleted: Boolean = false
 )
 
 @Entity(tableName = "notes")
@@ -22,7 +23,8 @@ data class NoteEntity(
     val body: String = "",
     val tags: String = "",
     val lastUpdated: String = "",
-    val deviceId: String = "android"
+    val deviceId: String = "android",
+    val deleted: Boolean = false
 )
 
 @Entity(tableName = "vault_items")
