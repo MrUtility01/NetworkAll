@@ -22,7 +22,9 @@ class LessonRepository(context: Context) {
         for (i in 0 until arr.length()) {
             val r = arr.getJSONObject(i)
             val uid = r.optString("uid")
-            if (uid.isBlank()) continue
+            // Manifest pulls also contain scenarios, tasks, and notes. Never coerce
+            // those rows into the lessons table.
+            if (uid.isBlank() || r.optString("entity", "lesson") != "lesson") continue
             list.add(
                 LessonEntity(
                     uid = uid,
