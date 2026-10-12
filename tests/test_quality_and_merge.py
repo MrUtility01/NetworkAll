@@ -22,6 +22,7 @@ from audit_content import _item_quality
 from audit_content_packs import extract_items, inspect_record, review_sort_key
 from core.db import WebDB
 from core.deep_fallback import build_deep_fallback
+from core.rich_content import build_rich_lesson
 import app as server_app
 import workspace_routes
 from core.study import study_sync_apply, study_sync_index, study_sync_pull
@@ -108,6 +109,19 @@ class DeepFallbackTests(unittest.TestCase):
         self.assertIn("SMART", content)
         self.assertIn("منابع رسمی و مراجع", content)
         self.assertIn("Intel Product Support", content)
+
+    def test_case_insensitive_specialist_dispatch_for_boot_linux_fs_and_resources(self):
+        cases = [
+            ("[L2] systemd-boot", "boot"),
+            ("[L1] journalctl پایه", "linux"),
+            ("[L2] Btrfs Snapshot", "linux_fs"),
+            ("[L2] Network Bottleneck", "resource"),
+        ]
+        for title, expected_category in cases:
+            with self.subTest(title=title):
+                lesson = build_rich_lesson(title, title)
+                self.assertEqual(lesson["category"], expected_category)
+                self.assertIn(title.split("] ", 1)[-1], lesson["full_content"])
 
     def test_python_fallback_has_python_specific_troubleshooting(self):
         lesson = build_deep_fallback("[L2] Python exception handling", "Python exception handling")
