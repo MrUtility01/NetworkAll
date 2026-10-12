@@ -161,6 +161,23 @@ footer{color:#5f7188;text-align:center;margin-top:24px;font-size:.85rem}
       <div class="body"><p>SD-WAN می‌تواند مسیر را براساس SLA و نوع برنامه انتخاب کند. SASE ممکن است هویت/وضعیت دستگاه و سیاست‌های ZTNA، SWG یا FWaaS را در مسیر بررسی کند. سلامت لینک یا ورود موفق به‌تنهایی دسترسی مجاز به application را ثابت نمی‌کند.</p><p>برای پذیرش، application transaction، p95/p99 latency، loss/jitter، policy decision logs، failover و rollback را اندازه‌گیری کنید.</p></div>
     </article>
 
+
+    <article>
+      <h2>۲۱. RouterOS — مسیر Packet و Firewall Chains</h2>
+      <figure><img src="routeros_packet_flow.svg" alt="مسیر مفهومی packet در RouterOS شامل raw، connection tracking، NAT، route lookup و تمایز input/forward/output" loading="lazy"><figcaption>Chain درست را از مقصد packet تشخیص بده؛ ترتیب دقیق را با نسخهٔ RouterOS تطبیق بده.</figcaption></figure>
+      <div class="body"><p>Input برای ترافیک مقصد خود روتر، forward برای ترافیک عبوری و output برای ترافیک تولیدی خود روتر است. NAT ترجمه انجام می‌دهد اما جایگزین Firewall policy نیست. برای RCA، route table، conntrack/NAT state، rule counters و capture را به یک flow مشخص مرتبط کن.</p><p>این نمودار مفهومی است؛ packet-flow رسمی و رفتارهای IPv4/IPv6 را در release هدف بررسی کن.</p></div>
+    </article>
+    <article>
+      <h2>۲۲. QoS — Queue، PCQ و نقطهٔ ازدحام</h2>
+      <figure><img src="qos_queues.svg" alt="مسیر کلاس‌بندی ترافیک از clientها تا mangle، Simple Queue یا Queue Tree/PCQ و سپس لینک WAN؛ همراه با هشدار FastTrack" loading="lazy"><figcaption>صف مؤثر باید در نقطهٔ قابل‌کنترل ازدحام قرار گیرد.</figcaption></figure>
+      <div class="body"><p>Simple Queue، Queue Tree و PCQ سیاست‌های متفاوتی برای rate، priority و تقسیم منابع دارند. قبل و بعد از تنظیم، throughput، p95 latency، jitter، loss و queue drops را با چند client و mixed traffic اندازه‌گیری کن. FastTrack ممکن است در برخی نسخه‌ها و queue typeها مسیر عادی queue/mangle را دور بزند.</p></div>
+    </article>
+    <article>
+      <h2>۲۳. VPN و VRRP — تونل و دسترس‌پذیری</h2>
+      <figure><img src="vpn_vrrp_ha.svg" alt="دو روتر با VRRP virtual gateway، اتصال WAN و تونل WireGuard یا IPsec به سایت دوردست و آزمون failover/failback" loading="lazy"><figcaption>Tunnel up یا تغییر Master به‌تنهایی سلامت سرویس کاربردی را اثبات نمی‌کند.</figcaption></figure>
+      <div class="body"><p>VRRP مالکیت virtual gateway را تغییر می‌دهد؛ NAT/conntrack و VPN sessionها لزوماً sync نمی‌شوند. در تست failover، existing و new flows، زمان بازیابی، packet loss، tunnel state و application probe را جدا ثبت کن. سناریوهای قطع روتر و قطع upstream را جداگانه بررسی کن.</p></div>
+    </article>
+
   </section>
   <footer>NetworkAll · اینفوگرافیک‌های برداری آفلاین · قابل استفاده در ویندوز و اندروید · منابع و آزمایشگاه‌های تفصیلی در درس‌های مرتبط قرار می‌گیرند.</footer>
 </main>
