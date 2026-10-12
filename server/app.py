@@ -210,10 +210,11 @@ def extract_token() -> str:
 
 
 def check_token() -> bool:
-    if session.get("app_authenticated"):
-        return True
+    # LAN token policy must apply before browser-session authentication as well.
     if REMOTE_BIND and len(SYNC_TOKEN) < 24:
         return False
+    if session.get("app_authenticated"):
+        return True
     candidate = extract_token()
     if SYNC_TOKEN:
         return hmac.compare_digest(candidate, SYNC_TOKEN)
