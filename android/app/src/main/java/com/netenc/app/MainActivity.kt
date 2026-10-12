@@ -229,6 +229,7 @@ class MainActivity : AppCompatActivity() {
                     var conflicts = 0
                     var unsupported = 0
                     var missing = 0
+                    var invalid = 0
                     var start = 0
                     // Keep requests below both the server's 1000-record cap and its
                     // 8 MiB request limit. A single oversized record still fails loudly.
@@ -243,12 +244,13 @@ class MainActivity : AppCompatActivity() {
                         conflicts += result.optInt("conflicts", 0)
                         unsupported += result.optInt("unsupported", 0)
                         missing += result.optInt("missing_targets", 0)
+                        invalid += result.optInt("invalid", 0)
                         start = end
                         // Don't advance the cursor or continue a misleading partial push.
-                        if (unsupported > 0 || missing > 0 || conflicts > 0) break
+                        if (unsupported > 0 || missing > 0 || conflicts > 0 || invalid > 0) break
                     }
-                    pushSummary = "push=${pushArr.length()} accepted=$accepted kept=$kept conflicts=$conflicts unsupported=$unsupported missing=$missing"
-                    if (unsupported > 0 || missing > 0 || conflicts > 0) {
+                    pushSummary = "push=${pushArr.length()} accepted=$accepted kept=$kept conflicts=$conflicts unsupported=$unsupported missing=$missing invalid=$invalid"
+                    if (unsupported > 0 || missing > 0 || conflicts > 0 || invalid > 0) {
                         log("⚠ sync ناقص: pull=$pulled $pushSummary")
                         return@launch
                     }
