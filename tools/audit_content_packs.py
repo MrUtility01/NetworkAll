@@ -51,6 +51,12 @@ def pack_files():
     return sorted(found.values())
 
 
+def _with_audit_context(item, **context):
+    row = dict(item)
+    row["_audit_context"] = context
+    return row
+
+
 def extract_items(obj, path):
     """Yield normalized lesson/command-like records from known pack shapes."""
     if not isinstance(obj, dict):
@@ -64,9 +70,24 @@ def extract_items(obj, path):
         for chapter in obj["chapters"]:
             if not isinstance(chapter, dict):
                 continue
+            try:
+                chapter_order = int(chapter.get("order", chapter.get("chapter_order", 0)) or 0)
+            except (TypeError, ValueError):
+                chapter_order = 0
+            chapter_title = text(chapter.get("title_fa") or chapter.get("title_en") or chapter.get("title"))
             for sub in chapter.get("subchapters") or []:
                 if isinstance(sub, dict):
-                    items.extend(x for x in (sub.get("lessons") or []) if isinstance(x, dict))
+                    sub_title = text(sub.get("title_fa") or sub.get("title_en") or sub.get("title"))
+                    items.extend(
+                        _with_audit_context(
+                            row,
+                            chapter_order=chapter_order or None,
+                            chapter_title=chapter_title,
+                            subchapter_title=sub_title,
+                        )
+                        for row in (sub.get("lessons") or [])
+                        if isinstance(row, dict)
+                    )
     curriculum = obj.get("curriculum")
     if isinstance(curriculum, dict):
         for chapter in curriculum.get("chapters") or []:
@@ -171,11 +192,15 @@ def inspect_record(path, item, index, min_chars):
         "missing_title": not any(item.get(k) for k in ("title_fa", "title_en", "title", "command")),
     }
     uid = text(item.get("uid") or item.get("id") or item.get("code")).strip()
+    context = item.get("_audit_context") if isinstance(item.get("_audit_context"), dict) else {}
     return {
         "file": str(path.relative_to(ROOT)).replace("\\", "/"),
         "index": index,
         "uid": uid,
         "title": title[:180],
+        "chapter_order": context.get("chapter_order"),
+        "chapter_title": context.get("chapter_title", ""),
+        "subchapter_title": context.get("subchapter_title", ""),
         "content_chars": len(blob),
         "checks": [k for k, value in checks.items() if value],
         "field_presence": {
@@ -257,10 +282,29 @@ def main():
             report["active_curriculum"]["records"] = len(active_rows)
             active_counts = Counter(check for item in active_rows for check in item["checks"])
             report["active_curriculum"]["warnings"] = dict(sorted(active_counts.items()))
+            priority = {
+                "missing_title": 100, "shallow": 90, "template_heavy": 80,
+                "generic_network_boilerplate": 70, "missing_answer_key_marker": 65,
+                "missing_lab_marker": 55, "missing_scenario_marker": 45,
+                "missing_source_marker": 35, "needs_human_review": 0,
+            }
+            review_rows = sorted(
+                (item for item in active_rows if item["checks"]),
+                key=lambda item: (
+                    -sum(priority.get(check, 10) for check in item["checks"]),
+                    item["index"],
+                ),
+            )
             report["active_curriculum"]["review_samples"] = [
-                {"uid": item["uid"], "title": item["title"], "checks": item["checks"], "content_chars": item["content_chars"]}
-                for item in active_rows if item["checks"][:]
-            ][:500]
+                {
+                    "uid": item["uid"], "title": item["title"],
+                    "chapter_order": item["chapter_order"],
+                    "chapter_title": item["chapter_title"],
+                    "subchapter_title": item["subchapter_title"],
+                    "checks": item["checks"], "content_chars": item["content_chars"],
+                }
+                for item in review_rows[:500]
+            ]
         except Exception as exc:
             report["active_curriculum"]["error"] = str(exc)
 
