@@ -23,6 +23,9 @@ interface WorkspaceDao {
     @Query("UPDATE tasks SET deleted = 1, lastUpdated = strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE uid = :uid")
     suspend fun deleteTask(uid: String)
 
+    @Query("UPDATE tasks SET remindedAt = :timestamp WHERE uid = :uid")
+    suspend fun markTaskReminded(uid: String, timestamp: String)
+
     @Query("SELECT * FROM notes WHERE deleted = 0 ORDER BY lastUpdated DESC")
     suspend fun allNotes(): List<NoteEntity>
 
