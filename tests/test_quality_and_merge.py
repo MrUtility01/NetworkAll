@@ -382,6 +382,10 @@ class SyncApiContractTests(unittest.TestCase):
                     {"uid": "note-invalid", "entity": "note", "title": "   ",
                      "body": "must not be silently dropped", "tags": "routing",
                      "last_updated": stamp, "device_id": "android-test"},
+                    {"uid": "lesson:study-invalid", "entity": "study", "status": "corrupted",
+                     "ease": 2.5, "interval_hours": 24, "times_studied": 2,
+                     "notes": "must be reported", "last_updated": stamp,
+                     "device_id": "android-test"},
                 ]
             }
             with (
@@ -398,8 +402,9 @@ class SyncApiContractTests(unittest.TestCase):
                 self.assertEqual(body["unsupported_uids"], ["vault-1"])
                 self.assertEqual(body["missing_targets"], 1)
                 self.assertEqual(body["missing_target_uids"], ["lesson:missing"])
-                self.assertEqual(body["invalid"], 1)
-                self.assertEqual(body["invalid_uids"], ["note-invalid"])
+                self.assertEqual(body["invalid"], 2)
+                self.assertEqual(body["invalid_uids"], ["note-invalid", "lesson:study-invalid"])
+                self.assertEqual(body["apply_rejected"], 0)
 
                 manifest = client.get("/api/sync/manifest").get_json()
                 by_uid = {item["uid"]: item for item in manifest["items"]}
