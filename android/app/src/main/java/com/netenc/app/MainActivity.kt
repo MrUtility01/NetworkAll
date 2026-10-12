@@ -23,7 +23,6 @@ import com.netenc.app.data.ScenarioSyncRepository
 import com.netenc.app.data.StudySyncRepository
 import com.netenc.app.reminder.ReminderScheduler
 import com.netenc.app.reminder.TaskReminderScheduler
-import com.netenc.app.reminder.TaskReminderScheduler
 import com.netenc.app.sync.SyncClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
