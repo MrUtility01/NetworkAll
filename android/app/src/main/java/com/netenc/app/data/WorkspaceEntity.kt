@@ -28,7 +28,11 @@ data class NoteEntity(
     val tags: String = "",
     val lastUpdated: String = "",
     val deviceId: String = "android",
-    @ColumnInfo(defaultValue = "0") val deleted: Boolean = false
+    @ColumnInfo(defaultValue = "0") val deleted: Boolean = false,
+    // Synchronizes with Windows so both devices can schedule the same reminder.
+    @ColumnInfo(defaultValue = "''") val remindAt: String = "",
+    // Local delivery guard. Deliberately excluded from synchronization.
+    @ColumnInfo(defaultValue = "''") val remindedAt: String = ""
 )
 
 @Entity(tableName = "vault_items")
