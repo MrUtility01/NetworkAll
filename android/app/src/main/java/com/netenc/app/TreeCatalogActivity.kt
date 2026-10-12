@@ -87,7 +87,7 @@ class TreeCatalogActivity : AppCompatActivity() {
         // if an earlier database version stored missing metadata.
         val byChapter = lessons.groupBy {
             val order = it.chapterOrder.takeIf { n -> n > 0 }
-                ?: Regex("""(?:ch|chapter)[-_: ]?(\\d+)""", RegexOption.IGNORE_CASE)
+                ?: Regex("""(?:ch|chapter)[-_: ]?(\d+)""", RegexOption.IGNORE_CASE)
                     .find(it.uid)?.groupValues?.getOrNull(1)?.toIntOrNull() ?: 0
             val title = it.chapterTitle.ifBlank {
                 if (order > 0) "فصل $order" else "فصل‌بندی نشده"
