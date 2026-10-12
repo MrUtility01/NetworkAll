@@ -132,7 +132,7 @@ jobs:
           from pathlib import Path
           root = Path("shared/infographics")
           page = (root / "index.html").read_text(encoding="utf-8")
-          refs = set(re.findall(r'<img[^>]+src=["\\']([^"\\']+\\.svg)["\\']', page))
+          refs = set(re.findall(r"""<img[^>]+src=["']([^"']+\\.svg)["']""", page))
           if len(refs) < 6:
               raise SystemExit(f"Expected at least 6 infographic diagrams, found {len(refs)}")
           for ref in sorted(refs):
