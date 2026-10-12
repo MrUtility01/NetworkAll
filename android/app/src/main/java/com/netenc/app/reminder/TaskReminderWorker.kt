@@ -19,9 +19,19 @@ class TaskReminderWorker(ctx: Context, params: WorkerParameters) : CoroutineWork
 
     override suspend fun doWork(): Result {
         val uid = inputData.getString(KEY_UID) ?: return Result.failure()
-        val task = AppDatabase.get(applicationContext).workspaceDao().taskByUid(uid)
+        val database = AppDatabase.get(applicationContext)
+        val dao = database.workspaceDao()
+        val task = dao.taskByUid(uid) ?: return Result.success()
+        if (task.done || task.deleted || task.remindAt.isBlank() || task.remindedAt.isNotBlank()) {
+            return Result.success()
+        }
+        val reminderAt = TaskReminderScheduler.parseReminderAtMillis(task.remindAt)
             ?: return Result.success()
-        if (task.done) return Result.success()
+        // A queued job may belong to an older due time. Never notify before the current reminder.
+        if (reminderAt > System.currentTimeMillis() + 30_000L) {
+            TaskReminderScheduler.schedule(applicationContext, uid, reminderAt)
+            return Result.success()
+        }
 
         val manager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = "netenc_task_reminders"
@@ -62,6 +72,7 @@ class TaskReminderWorker(ctx: Context, params: WorkerParameters) : CoroutineWork
             .setAutoCancel(true)
             .build()
         manager.notify(uid.hashCode(), notification)
+        dao.markTaskReminded(uid, java.time.Instant.now().toString())
         return Result.success()
     }
 }
