@@ -1,0 +1,238 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkEncyclopedia",
+  "generated_on": "2026-10-12",
+  "purpose": "بستهٔ مهندسی مسیریابی برای فصل ۱۴؛ OSPF، BGP policy و عیب‌یابی RIB/FIB. پیش از import باید UIDها و فصل مقصد با رکوردهای موجود تطبیق داده شوند.",
+  "scope": [
+    {
+      "chapter_order": 14,
+      "subchapter_order": 1,
+      "title": "مسیریابی پیشرفته",
+      "topics": [
+        "OSPF",
+        "BGP",
+        "RIB/FIB",
+        "route troubleshooting"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "content_quality": {
+    "target": "توسعه‌یافته",
+    "validation": "review_required; schema، UID و سازگاری فرمان‌ها باید بازبینی شوند"
+  },
+  "lessons": [
+    {
+      "uid": "lesson:routing-engineering:ospf-l2",
+      "chapter_order": 14,
+      "subchapter_order": 1,
+      "lesson_order": 1,
+      "level": "L2",
+      "title_fa": "[L2] OSPF؛ همسایگی، Area و انتخاب مسیر",
+      "title_en": "OSPF adjacency and route selection",
+      "topic": "routing-engineering",
+      "summary": "فرایند تشکیل همسایگی، تطبیق پارامترها، نقش LSDB و معیار انتخاب مسیر را با عیب‌یابی مرحله‌ای توضیح می‌دهد.",
+      "full_content": "# OSPF؛ همسایگی، Area و انتخاب مسیر\n\n## مدل ذهنی\nOSPF یک پروتکل مسیریابی link-state است. روترها اطلاعات وضعیت لینک را در قالب LSA توزیع می‌کنند، پایگاه دادهٔ وضعیت لینک یا LSDB را در محدودهٔ Area همگرا می‌سازند و الگوریتم SPF را برای محاسبهٔ مسیرهای مناسب اجرا می‌کنند. OSPF مثل distance-vector صرفاً یک عدد فاصله را به همسایه نمی‌فرستد؛ هر روتر بر اساس توپولوژی آموخته‌شده محاسبه می‌کند.\n\n## تشکیل همسایگی\nروترها Hello می‌فرستند و پارامترهای لازم برای همسایگی را مقایسه می‌کنند. موارد مهم شامل Area ID، timerهای Hello/Dead، نوع شبکه، authentication در صورت تنظیم، و در بعضی سناریوها subnet و قابلیت‌هاست. در لینک broadcast، انتخاب DR/BDR روی رفتار adjacency اثر دارد. در شبکهٔ point-to-point نقش DR/BDR مانند LAN broadcast نیست. یکسان بودن Process ID در تمام سازندگان شرط عمومی OSPF نیست؛ Process ID معمولاً محلی به روتر است، در حالی‌که Area و پارامترهای پروتکل باید سازگار باشند.\n\n## مسیر از LSDB تا RIB\nLSAها وضعیت لینک را توصیف می‌کنند؛ LSDB نمای توپولوژی را در Area فراهم می‌کند. SPF مسیرهای کاندید را محاسبه می‌کند و نتیجه پس از بررسی سیاست‌ها و ترجیح مسیرها به جدول مسیریابی (RIB) می‌رسد. وجود یک LSA به‌تنهایی تضمین نمی‌کند route نهایی در RIB نصب شود؛ route دیگر با ترجیح بهتر، فیلتر یا خطای next-hop می‌تواند نتیجه را تغییر دهد. هزینهٔ OSPF بر اساس bandwidth مرجع و تنظیمات پلتفرم محاسبه می‌شود، پس مقدار cost را از روی سرعت لینک بدون بررسی پیکربندی نتیجه نگیرید.\n\n## عیب‌یابی شواهد محور\nنشانه: همسایگی در Full نیست. ابتدا وضعیت adjacency و لاگ را ثبت کنید؛ سپس Area، timer، network type، authentication، MTU و دسترسی multicast/unicast موردنیاز را بررسی کنید. در برخی پلتفرم‌ها mismatch MTU می‌تواند در Exchange/Loading مشکل ایجاد کند. هم‌زمان همهٔ تنظیمات را تغییر ندهید. پس از اصلاح، وضعیت همسایه، LSDB و route نصب‌شده را جداگانه بررسی کنید.\n\n## لابراتوار\nدر دو روتر مجازی یا شبیه‌ساز مجاز، یک Area کوچک با دو شبکه بسازید. baseline شامل neighbor state، LSDB و RIB را ذخیره کنید. در یک آزمایش جدا یک پارامتر سازگاری را تغییر دهید و اثرش را مشاهده کنید؛ سپس تنظیم را بازگردانید. از تغییر روی شبکهٔ عملیاتی بدون backup و برنامهٔ rollback خودداری کنید.\n\n## ارزیابی\n1. تفاوت LSDB با RIB چیست؟\n2. چرا یکسان بودن Process ID در تمام روترها شرط عمومی نیست؟\n3. برای adjacency ناتمام چه شواهدی باید جمع‌آوری شود؟",
+      "commands": [
+        "show ip ospf neighbor",
+        "show ip ospf database",
+        "show ip route ospf"
+      ],
+      "examples": [
+        "تطبیق neighbor state، LSDB و RIB در دو روتر مجازی."
+      ],
+      "notes": "فرمان‌ها میان سازندگان تفاوت دارند؛ قبل از اجرا، syntax پلتفرم را بررسی کنید و تغییرات را فقط در محیط مجاز انجام دهید.",
+      "learning_objectives": [
+        "فرایند OSPF از Hello تا RIB را توضیح دهد.",
+        "پارامترهای adjacency را عیب‌یابی کند.",
+        "LSDB را از RIB تفکیک کند."
+      ],
+      "prerequisites": [],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "ospf-l2-1",
+              "prompt": "تفاوت LSDB با RIB چیست؟",
+              "type": "short_answer",
+              "level": "L2"
+            },
+            {
+              "id": "ospf-l2-2",
+              "prompt": "چرا یکسان بودن Process ID در تمام روترها شرط عمومی نیست؟",
+              "type": "short_answer",
+              "level": "L2"
+            },
+            {
+              "id": "ospf-l2-3",
+              "prompt": "برای adjacency ناتمام چه شواهدی باید جمع‌آوری شود؟",
+              "type": "short_answer",
+              "level": "L2"
+            }
+          ],
+          "answer_key": {
+            "ospf-l2-1": "LSDB نمای توپولوژی link-state در محدودهٔ OSPF است؛ RIB جدول مسیرهای انتخاب‌شده برای forwarding/control plane است و ممکن است همهٔ LSAها را به route نصب‌شده تبدیل نکند.",
+            "ospf-l2-2": "Process ID معمولاً محلی به روتر است؛ پارامترهایی مانند Area و سازگاری پروتکل مهم‌اند و لازم نیست Process ID در همهٔ روترها یکسان باشد.",
+            "ospf-l2-3": "Neighbor state، log، Area، Hello/Dead timers، network type، authentication، MTU، رابط و شواهد Hello/DBD در capture یا ابزار روتر."
+          }
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:routing-engineering:bgp-l3",
+      "chapter_order": 14,
+      "subchapter_order": 1,
+      "lesson_order": 2,
+      "level": "L3",
+      "title_fa": "[L3] BGP؛ سیاست مسیر، Path Attributes و Prefix Filtering",
+      "title_en": "BGP path attributes and routing policy",
+      "topic": "routing-engineering",
+      "summary": "تفاوت eBGP و iBGP، صفات مسیر، سیاست وارد/صادرکردن prefix و اهمیت فیلتر و محدودیت prefix را آموزش می‌دهد.",
+      "full_content": "# BGP؛ سیاست مسیر، Path Attributes و Prefix Filtering\n\n## نقش BGP\nBGP یک پروتکل path-vector است که برای تبادل reachability بین Autonomous Systemها و نیز درون شبکه‌های بزرگ به‌کار می‌رود. BGP فقط کوتاه‌ترین مسیر فیزیکی را انتخاب نمی‌کند؛ سیاست محلی، ویژگی‌های مسیر و ترتیب تصمیم‌گیری پیاده‌سازی روی نتیجه اثر دارند. بنابراین «مسیر با کمترین hop همیشه برنده است» برداشت نادرستی است.\n\n## صفات مهم\nAS_PATH توالی ASهایی را نشان می‌دهد که مسیر از آن‌ها عبور کرده و در بسیاری از سناریوها برای جلوگیری از loop و سیاست‌گذاری استفاده می‌شود. NEXT_HOP مشخص می‌کند مسیر از کدام next hop قابل دسترسی است. LOCAL_PREF معمولاً برای ترجیح خروجی درون یک AS استفاده می‌شود و مقدار بالاتر در قواعد متداول ترجیح دارد. MED می‌تواند به همسایه دربارهٔ مسیر ورودی پیشنهادی اشاره کند؛ دامنهٔ مقایسه و ترتیب تصمیم به سیاست و پیاده‌سازی وابسته است. وزن (Weight) در برخی سازندگان ویژگی محلی و غیرقابل‌انتشار است. این صفات را نباید مستقل از ترتیب تصمیم‌گیری پلتفرم تفسیر کرد.\n\n## eBGP و iBGP\neBGP برای تبادل بین ASهای متفاوت و iBGP برای توزیع مسیرهای BGP درون AS به‌کار می‌رود. قواعد انتشار، next-hop و نیاز به full mesh یا route reflector به طراحی بستگی دارد. همسایگی Established به معنی پذیرفته‌شدن تمام prefixهای مورد انتظار نیست؛ policy، prefix-list، route-map، maximum-prefix یا نبودن مسیر در RIB ممکن است نتیجه را محدود کند.\n\n## امنیت و کنترل سیاست\nفیلتر inbound و outbound، محدودیت تعداد prefix، بررسی مالکیت و مجازبودن prefix، و محافظت از نشست‌ها ضروری‌اند. اشتباه در اعلان prefix می‌تواند blackhole یا نشت مسیر ایجاد کند. پیش از تغییر policy، diff، محدودهٔ prefix، جامعه‌های BGP و روش rollback را ثبت کنید. تغییرات را ابتدا در آزمایشگاه یا با پنجرهٔ تغییر کنترل‌شده بررسی کنید.\n\n## عیب‌یابی\nاگر session Established است ولی مقصد در دسترس نیست، وضعیت session تنها شاهد کافی نیست. بررسی کنید prefix دریافت شده، policy آن را پذیرفته، next-hop قابل دسترسی است، route در Loc-RIB و RIB نصب شده و مسیر برگشت وجود دارد. در سمت مقابل نیز اعلان خروجی و policy صادرات را بررسی کنید. مسیرهای بیش از حد خاص ممکن است در فیلترها یا سیاست‌های بالادست حذف شوند.\n\n## ارزیابی\n1. LOCAL_PREF معمولاً چه کاربردی دارد؟\n2. چرا Established بودن BGP تضمین نمی‌کند prefix در RIB نصب شود؟\n3. چه کنترل‌هایی ریسک route leak یا اعلان اشتباه را کاهش می‌دهند؟",
+      "commands": [
+        "show ip bgp summary",
+        "show ip bgp",
+        "show ip route"
+      ],
+      "examples": [
+        "بررسی policy و مسیر دریافت‌شده در آزمایشگاه BGP با prefixهای مستندسازی."
+      ],
+      "notes": "فرمان‌ها میان سازندگان تفاوت دارند؛ قبل از اجرا، syntax پلتفرم را بررسی کنید و تغییرات را فقط در محیط مجاز انجام دهید.",
+      "learning_objectives": [
+        "صفات مهم BGP را توضیح دهد.",
+        "policy وارد/صادر را تحلیل کند.",
+        "ریسک route leak را کاهش دهد."
+      ],
+      "prerequisites": [
+        "lesson:routing-engineering:ospf-l2"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "bgp-l3-1",
+              "prompt": "LOCAL_PREF معمولاً چه کاربردی دارد؟",
+              "type": "short_answer",
+              "level": "L3"
+            },
+            {
+              "id": "bgp-l3-2",
+              "prompt": "چرا Established بودن BGP تضمین نمی‌کند prefix در RIB نصب شود؟",
+              "type": "short_answer",
+              "level": "L3"
+            },
+            {
+              "id": "bgp-l3-3",
+              "prompt": "چه کنترل‌هایی ریسک route leak یا اعلان اشتباه را کاهش می‌دهند؟",
+              "type": "short_answer",
+              "level": "L3"
+            }
+          ],
+          "answer_key": {
+            "bgp-l3-1": "LOCAL_PREF معمولاً ترجیح مسیر خروجی درون یک AS را تعیین می‌کند؛ مقدار بالاتر در سیاست‌های متداول ترجیح دارد.",
+            "bgp-l3-2": "Policy ممکن است prefix را رد کند، next-hop ممکن است resolve نشود، route دیگری ترجیح داده شود یا مسیر در RIB نصب نشود؛ session فقط وضعیت همسایگی را نشان می‌دهد.",
+            "bgp-l3-3": "فیلتر prefix وارد/صادر، محدودیت maximum-prefix، اعتبارسنجی مجازبودن prefix، بازبینی policy، logging و برنامهٔ rollback."
+          }
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:routing-engineering:rca-l3",
+      "chapter_order": 14,
+      "subchapter_order": 1,
+      "lesson_order": 3,
+      "level": "L3",
+      "title_fa": "[L3] عیب‌یابی مسیر؛ RIB، FIB، مسیر برگشت و حلقه‌ها",
+      "title_en": "Routing troubleshooting, RIB/FIB and return path",
+      "topic": "routing-engineering",
+      "summary": "روش تشخیص route غایب، next-hop نامعتبر، مسیر نامتقارن، blackhole و تفاوت RIB و FIB را با شواهد عملیاتی ارائه می‌کند.",
+      "full_content": "# عیب‌یابی مسیر؛ RIB، FIB، مسیر برگشت و حلقه‌ها\n\n## RIB و FIB\nRIB پایگاه دادهٔ مسیرهای شناخته‌شده و کاندید است؛ FIB ساختار forwarding است که برای ارسال بسته در مسیر داده استفاده می‌شود. وجود route در خروجی یک فرمان به‌تنهایی اثبات نمی‌کند سخت‌افزار یا dataplane بسته را درست forward می‌کند. جزئیات RIB/FIB و فرمان‌ها به سیستم‌عامل روتر وابسته‌اند؛ ابزار control-plane و dataplane را با هم بررسی کنید.\n\n## روش تشخیص\n1. از مبدأ، route انتخاب‌شده به مقصد و source address را ثبت کنید.\n2. روی هر hop مهم، route و next-hop را بررسی کنید.\n3. وضعیت رابط، ARP/neighbor و شمارنده‌های خطا را ثبت کنید.\n4. مسیر برگشت از مقصد به مبدأ را جدا بررسی کنید؛ ارتباط ممکن است به علت نامتقارن بودن مسیر یا ACL یک‌طرفه شکست بخورد.\n5. traceroute را به‌عنوان سرنخ استفاده کنید، نه نقشهٔ قطعی مسیر؛ ICMP یا UDP پاسخ‌دهی می‌تواند فیلتر شود و مسیرهای ECMP نتیجه را تغییر دهند.\n6. پس از هر تغییر، همان آزمون و همان مبدأ/مقصد را تکرار کنید.\n\n## Blackhole و route خلاصه\nBlackhole ممکن است از route دقیق به رابط خاموش، next-hop غیرقابل دسترس، ACL، route خلاصهٔ بیش از حد یا حذف مسیر برگشت ایجاد شود. اگر summary گسترده‌تر از محدودهٔ واقعی باشد، ترافیک مقصدهایی را به سمت روتر می‌فرستد که route جزئی ندارند. بررسی longest-prefix match و مسیرهای دقیق‌تر برای تشخیص حیاتی است. route پیش‌فرض ممکن است خطای جزئی را پنهان کند، پس جدول route را برای مقصد دقیق تحلیل کنید.\n\n## لابراتوار کنترل‌شده\nدر شبیه‌ساز، سه روتر و دو subnet بسازید. baseline route، next-hop و traceroute را ذخیره کنید. سپس در مرحله‌ای جدا route برگشت را حذف یا summary را به‌صورت کنترل‌شده تغییر دهید. نشانهٔ مورد انتظار را پیش‌بینی، capture و route table را ثبت و سپس تنظیم اصلی را بازگردانید. این آزمایش را فقط در شبیه‌ساز یا محیط مجاز اجرا کنید.\n\n## گزارش RCA\nگزارش باید زمان، مبدأ/مقصد، prefix، route انتخاب‌شده، next-hop، شاهدهای هر hop، نتیجهٔ مسیر برگشت، تغییر انجام‌شده و روش rollback را داشته باشد. عبارت «روتر مشکل داشت» علت ریشه‌ای نیست؛ باید مشخص شود کدام تصمیم forwarding یا کدام سیاست بسته را متوقف کرده است.\n\n## ارزیابی\n1. تفاوت RIB و FIB چیست؟\n2. چرا traceroute مسیر را همیشه کامل نشان نمی‌دهد؟\n3. چگونه route summary می‌تواند blackhole ایجاد کند؟\n4. چرا مسیر برگشت باید جداگانه بررسی شود؟",
+      "commands": [
+        "show ip route 192.0.2.10",
+        "traceroute 192.0.2.10",
+        "show ip cef 192.0.2.10"
+      ],
+      "examples": [
+        "تشخیص route غایب یا مسیر برگشت در توپولوژی سه‌روتری شبیه‌سازی‌شده."
+      ],
+      "notes": "فرمان‌ها میان سازندگان تفاوت دارند؛ قبل از اجرا، syntax پلتفرم را بررسی کنید و تغییرات را فقط در محیط مجاز انجام دهید.",
+      "learning_objectives": [
+        "RIB و FIB را تفکیک کند.",
+        "مسیر برگشت و longest-prefix match را بررسی کند.",
+        "گزارش RCA قابل تکرار تهیه کند."
+      ],
+      "prerequisites": [
+        "lesson:routing-engineering:ospf-l2"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "rca-l3-1",
+              "prompt": "تفاوت RIB و FIB چیست؟",
+              "type": "short_answer",
+              "level": "L3"
+            },
+            {
+              "id": "rca-l3-2",
+              "prompt": "چرا traceroute مسیر را همیشه کامل نشان نمی‌دهد؟",
+              "type": "short_answer",
+              "level": "L3"
+            },
+            {
+              "id": "rca-l3-3",
+              "prompt": "چگونه route summary می‌تواند blackhole ایجاد کند؟",
+              "type": "short_answer",
+              "level": "L3"
+            },
+            {
+              "id": "rca-l3-4",
+              "prompt": "چرا مسیر برگشت باید جداگانه بررسی شود؟",
+              "type": "short_answer",
+              "level": "L3"
+            }
+          ],
+          "answer_key": {
+            "rca-l3-1": "RIB مسیرهای شناخته‌شده و کاندید را نگه می‌دارد؛ FIB ساختار forwarding برای ارسال بسته است.",
+            "rca-l3-2": "روتر یا فایروال ممکن است پاسخ TTL exceeded را فیلتر کند؛ ECMP و سیاست پاسخ ICMP هم می‌توانند نتیجه را ناقص کنند.",
+            "rca-l3-3": "اگر summary مقصدهایی را پوشش دهد که route جزئی برایشان وجود ندارد، ترافیک به سمت روتر خلاصه‌ساز می‌رود و ممکن است دور ریخته شود.",
+            "rca-l3-4": "مسیر برگشت ممکن است route، ACL یا next-hop متفاوت داشته باشد؛ مسیر رفت سالم به معنی برگشت سالم نیست."
+          }
+        }
+      },
+      "source_status": "review_required"
+    }
+  ],
+  "answer_key": {
+    "ospf-l2-1": "LSDB نمای توپولوژی link-state در محدودهٔ OSPF است؛ RIB جدول مسیرهای انتخاب‌شده برای forwarding/control plane است و ممکن است همهٔ LSAها را به route نصب‌شده تبدیل نکند.",
+    "ospf-l2-2": "Process ID معمولاً محلی به روتر است؛ پارامترهایی مانند Area و سازگاری پروتکل مهم‌اند و لازم نیست Process ID در همهٔ روترها یکسان باشد.",
+    "ospf-l2-3": "Neighbor state، log، Area، Hello/Dead timers، network type، authentication، MTU، رابط و شواهد Hello/DBD در capture یا ابزار روتر.",
+    "bgp-l3-1": "LOCAL_PREF معمولاً ترجیح مسیر خروجی درون یک AS را تعیین می‌کند؛ مقدار بالاتر در سیاست‌های متداول ترجیح دارد.",
+    "bgp-l3-2": "Policy ممکن است prefix را رد کند، next-hop ممکن است resolve نشود، route دیگری ترجیح داده شود یا مسیر در RIB نصب نشود؛ session فقط وضعیت همسایگی را نشان می‌دهد.",
+    "bgp-l3-3": "فیلتر prefix وارد/صادر، محدودیت maximum-prefix، اعتبارسنجی مجازبودن prefix، بازبینی policy، logging و برنامهٔ rollback.",
+    "rca-l3-1": "RIB مسیرهای شناخته‌شده و کاندید را نگه می‌دارد؛ FIB ساختار forwarding برای ارسال بسته است.",
+    "rca-l3-2": "روتر یا فایروال ممکن است پاسخ TTL exceeded را فیلتر کند؛ ECMP و سیاست پاسخ ICMP هم می‌توانند نتیجه را ناقص کنند.",
+    "rca-l3-3": "اگر summary مقصدهایی را پوشش دهد که route جزئی برایشان وجود ندارد، ترافیک به سمت روتر خلاصه‌ساز می‌رود و ممکن است دور ریخته شود.",
+    "rca-l3-4": "مسیر برگشت ممکن است route، ACL یا next-hop متفاوت داشته باشد؛ مسیر رفت سالم به معنی برگشت سالم نیست."
+  },
+  "sources": [
+    {
+      "title": "RFC 2328 — OSPF Version 2",
+      "url": "https://www.rfc-editor.org/rfc/rfc2328"
+    },
+    {
+      "title": "RFC 4271 — A Border Gateway Protocol 4 (BGP-4)",
+      "url": "https://www.rfc-editor.org/rfc/rfc4271"
+    },
+    {
+      "title": "RFC 7454 — BGP Operations and Security",
+      "url": "https://www.rfc-editor.org/rfc/rfc7454"
+    }
+  ]
+}
