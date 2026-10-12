@@ -252,6 +252,38 @@ class DeepFallbackTests(unittest.TestCase):
         self.assertTrue(quality["has_answer_key"])
         self.assertTrue(quality["answer_key_ids_match"])
 
+    def test_fallback_is_progressive_and_has_glossary_sources_and_lab_status(self):
+        floors = {"L0": 5, "L1": 8, "L2": 10, "L3": 12, "L4": 15}
+        for level, floor in floors.items():
+            lesson = build_deep_fallback(f"[{level}] DNS recursive resolver", "DNS recursive resolver", level)
+            assessment = lesson["assessment"]
+            qids = [q["id"] for q in assessment["questions"]]
+            aids = [a["id"] for a in assessment["answer_key"]]
+            with self.subTest(level=level):
+                self.assertGreaterEqual(len(qids), floor)
+                self.assertEqual(len(qids), len(set(qids)))
+                self.assertEqual(set(qids), set(aids))
+                self.assertTrue(all(a.get("explanation") for a in assessment["answer_key"]))
+                self.assertTrue(lesson.get("official_sources"))
+                self.assertEqual(lesson.get("lab_status"), "designed_not_executed")
+                self.assertIn("## واژه‌نامهٔ تخصصی", lesson["full_content"])
+                self.assertIn("## خروجی مورد انتظار و معیار قبولی", lesson["full_content"])
+                self.assertIn("## سناریوی عملی و Lab acceptance", lesson["full_content"])
+
+    def test_specialist_content_receives_level_floor_without_losing_domain_explanation(self):
+        lesson = build_rich_lesson("[L2] CPU چیست و چگونه کار می‌کند", "CPU fundamentals", level="L2")
+        assessment = lesson["assessment"]
+        qids = [q["id"] for q in assessment["questions"]]
+        aids = [a["id"] for a in assessment["answer_key"]]
+        self.assertGreaterEqual(len(qids), 10)
+        self.assertEqual(len(qids), len(set(qids)))
+        self.assertEqual(set(qids), set(aids))
+        self.assertIn("RAM میز کار است", lesson["full_content"])
+        self.assertIn("## واژه‌نامهٔ تخصصی", lesson["full_content"])
+        self.assertIn("## خروجی مورد انتظار و معیار قبولی", lesson["full_content"])
+        self.assertTrue(lesson.get("official_sources"))
+        self.assertEqual(lesson.get("lab_status"), "designed_not_executed")
+
 
 class ContentMergeTests(unittest.TestCase):
     def test_pack_merge_does_not_overwrite_longer_base_lesson(self):

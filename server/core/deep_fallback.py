@@ -797,6 +797,172 @@ def _assessment_json(cat: str, topic: str) -> Dict[str, Any]:
     return {"questions": qs, "answer_key": answer_key}
 
 
+
+def _assessment_with_depth(cat: str, topic: str, level: str) -> Dict[str, Any]:
+    """Top up structured tests to the declared L0-L4 floor with matched answer IDs."""
+    assessment = _assessment_json(cat, topic)
+    questions = [dict(q) for q in (assessment.get("questions") or [])]
+    answers = [dict(a) for a in (assessment.get("answer_key") or [])]
+    floors = {"L0": 5, "L1": 8, "L2": 10, "L3": 12, "L4": 15}
+    target = floors.get(level, 5)
+    supplements = [
+        ("پیش از تغییر «{topic}» کدام اقدام درست‌تر است؟", ["ثبت baseline، نسخه، زمان و خروجی فعلی", "تغییر هم‌زمان چند تنظیم", "پاک‌کردن لاگ‌های قبلی", "اعتماد به یک پیام موفقیت"], 0, "Baseline و شواهد قبل از تغییر امکان مقایسه و بازگشت را فراهم می‌کنند."),
+        ("اگر نتیجهٔ «{topic}» با انتظار فرق داشت، قدم بعدی مناسب چیست؟", ["ثبت ورودی و خروجی و محدودکردن دامنهٔ خرابی", "تکرار کورکورانهٔ تغییر", "خاموش‌کردن مانیتورینگ", "گسترش تغییر به همهٔ میزبان‌ها"], 0, "مقایسهٔ ورودی و خروجی فرضیه‌ها را قابل آزمون می‌کند."),
+        ("کدام مورد برای پذیرش عملی «{topic}» شاهد قوی‌تری است؟", ["آزمون تعریف‌شده با خروجی قابل تکرار", "صرفاً نبودن پیام خطا", "تصویر بدون زمان", "گزارش شفاهی"], 0, "معیار قبولی باید با ورودی و آزمون قابل تکرار اثبات شود."),
+        ("چرا در آزمایش «{topic}» باید هر بار یک متغیر تغییر کند؟", ["برای جداکردن اثر هر تغییر و یافتن علت", "برای حذف نیاز به لاگ", "برای افزایش تعداد تغییرها", "برای جلوگیری از مقایسه"], 0, "تغییر تک‌متغیره امکان نسبت‌دادن نتیجه به علت محتمل را حفظ می‌کند."),
+        ("کدام روش برای rollback تغییر «{topic}» امن‌تر است؟", ["طرح بازگشت مستند و آزموده‌شده پیش از Apply", "حذف نسخهٔ قبلی", "تکیه بر حافظهٔ اپراتور", "تغییر حدسی چند گزینه"], 0, "Rollback باید پیش از تغییر تعریف و در محیط کنترل‌شده بررسی شود."),
+        ("برای جلوگیری از false positive در پایش «{topic}» چه آزمونی کمک می‌کند؟", ["نمونهٔ سالم و negative control", "فقط یک نمونهٔ خراب", "حذف timestamp", "بالا بردن آستانه تا هشدار خاموش شود"], 0, "نمونهٔ سالم کمک می‌کند شرط هشدار بی‌دلیل فعال نشود."),
+        ("اگر راهنمای «{topic}» به نسخه وابسته باشد، چه باید کرد؟", ["نسخه را ثبت و مستندات رسمی همان نسخه را بررسی کرد", "دستور نسخه‌ای دیگر را بی‌بررسی اجرا کرد", "هشدار را نادیده گرفت", "زمان اجرا را ثبت نکرد"], 0, "نسخه و مستندات مرجع برای تفسیر رفتار فرمان لازم‌اند."),
+        ("کدام مورد بهترین مستند نتیجهٔ آزمایش «{topic}» است؟", ["فرضیه، ورودی، زمان، خروجی، نتیجه و اقدام بعدی", "فقط عبارت درست شد", "فرمان بدون خروجی", "فقط زمان پایان"], 0, "مستند قابل ممیزی باید مسیر شواهد و تصمیم را بازسازی‌پذیر کند."),
+        ("هنگام خطای «{topic}»، کدام مقایسه معمولاً علت را بهتر محدود می‌کند؟", ["محیط سالم و معیوب با نسخه و ورودی قابل مقایسه", "دو محیط با تغییرات نامعلوم", "فقط محیط خراب پس از چند تغییر", "اطلاعات بدون timestamp"], 0, "مقایسهٔ کنترل‌شده تفاوت‌های مؤثر را از نویز جدا می‌کند."),
+        ("برای تغییر «{topic}» در محیط سازمانی کدام اصل ضروری است؟", ["دامنهٔ اثر، مالک، پنجره و معیار توقف مشخص باشد", "همهٔ سامانه‌ها هم‌زمان تغییر کنند", "مالک و معیار نامشخص بمانند", "تغییر ثبت نشود"], 0, "Change control جلوی گسترش بی‌برنامهٔ اثر را می‌گیرد."),
+        ("کدام روش برای دادهٔ حساس در Lab «{topic}» مناسب‌تر است؟", ["ماسک‌کردن secretها و استفاده از دادهٔ آزمایشی", "قرار دادن token در خروجی عمومی", "ثبت رمز در history", "انتشار dump واقعی"], 0, "دادهٔ غیرحساس و ماسک‌کردن secretها ریسک افشا را کاهش می‌دهند."),
+        ("چه زمانی نتیجهٔ آزمایش «{topic}» را می‌توان verified اعلام کرد؟", ["پس از اجرای آزمون در محیط مشخص و ثبت شواهد پذیرش", "پس از نوشتن راهنما", "پس از build برنامه", "پس از زیادشدن کلمات"], 0, "طراحی Lab یا موفقیت build جای اجرای فنی را نمی‌گیرد."),
+        ("برای تشخیص علت ریشه‌ای «{topic}» کدام رویکرد مناسب‌تر است؟", ["Symptom → Scope → Evidence → Hypothesis → Test → Verify", "تغییر فوری بدون مشاهده", "تأیید اولین حدس", "حذف لاگ‌ها"], 0, "RCA باید از شواهد و آزمون فرضیه عبور کند."),
+    ]
+    used_ids = {str(q.get("id") or "") for q in questions}
+    next_index = 1
+    for prompt, options, correct, explanation in supplements:
+        if len(questions) >= target:
+            break
+        qid = f"supplement_{next_index}"
+        while qid in used_ids:
+            next_index += 1
+            qid = f"supplement_{next_index}"
+        used_ids.add(qid)
+        questions.append({"id": qid, "prompt": prompt.format(topic=topic), "options": options, "points": 1})
+        answers.append({"id": qid, "correct_index": correct, "explanation": explanation})
+        next_index += 1
+
+    answer_by_id = {
+        str(a.get("id") or a.get("question_id") or ""): a
+        for a in answers if str(a.get("id") or a.get("question_id") or "")
+    }
+    normalized_questions, normalized_answers, seen = [], [], set()
+    for i, question in enumerate(questions[:target], 1):
+        q = dict(question)
+        old_id = str(q.get("id") or f"q{i}")
+        qid = old_id if old_id not in seen else f"unique_q{i}"
+        seen.add(qid)
+        q["id"] = qid
+        normalized_questions.append(q)
+        answer = answer_by_id.get(old_id, {})
+        correct_index = answer.get("correct_index", q.get("correct_index", 0))
+        try:
+            correct_index = int(correct_index)
+        except (TypeError, ValueError):
+            correct_index = 0
+        normalized_answers.append({
+            "id": qid,
+            "correct_index": correct_index,
+            "explanation": str(answer.get("explanation") or "پاسخ باید با شواهد و معیار پذیرش همین درس توجیه شود.")
+        })
+    return {"questions": normalized_questions, "answer_key": normalized_answers}
+
+
+def _official_sources(cat: str) -> list[dict[str, str]]:
+    sources = {
+        "powershell": [("Microsoft Learn — PowerShell", "https://learn.microsoft.com/powershell/"), ("PowerShell Scripting", "https://learn.microsoft.com/powershell/scripting/overview")],
+        "windows": [("Microsoft Learn — Windows Server", "https://learn.microsoft.com/windows-server/"), ("Microsoft Learn — PowerShell", "https://learn.microsoft.com/powershell/")],
+        "linux": [("Linux man-pages", "https://man7.org/linux/man-pages/"), ("Linux kernel documentation", "https://docs.kernel.org/")],
+        "git": [("Git Reference", "https://git-scm.com/docs"), ("GitHub Docs", "https://docs.github.com/")],
+        "python": [("Python Documentation", "https://docs.python.org/3/"), ("pytest Documentation", "https://docs.pytest.org/")],
+        "sql": [("SQLite Documentation", "https://www.sqlite.org/docs.html"), ("PostgreSQL Documentation", "https://www.postgresql.org/docs/")],
+        "dns": [("RFC 1034 — Domain Names Concepts", "https://www.rfc-editor.org/rfc/rfc1034"), ("RFC 1035 — Domain Names Implementation", "https://www.rfc-editor.org/rfc/rfc1035"), ("Microsoft DNS documentation", "https://learn.microsoft.com/windows-server/networking/dns/")],
+        "dhcp": [("RFC 2131 — DHCP", "https://www.rfc-editor.org/rfc/rfc2131"), ("RFC 2132 — DHCP Options", "https://www.rfc-editor.org/rfc/rfc2132"), ("Microsoft DHCP documentation", "https://learn.microsoft.com/windows-server/networking/technologies/dhcp/")],
+        "tcpip": [("RFC Editor — TCP/IP Standards", "https://www.rfc-editor.org/"), ("Wireshark User Guide", "https://www.wireshark.org/docs/wsug_html_chunked/")],
+        "network": [("Cisco Documentation", "https://www.cisco.com/c/en/us/support/index.html"), ("RFC Editor", "https://www.rfc-editor.org/"), ("Wireshark User Guide", "https://www.wireshark.org/docs/wsug_html_chunked/")],
+        "vlan": [("Cisco Configuration Guides", "https://www.cisco.com/c/en/us/support/index.html"), ("IEEE 802.1 Working Group", "https://1.ieee802.org/")],
+        "stp": [("IEEE 802.1 Working Group", "https://1.ieee802.org/"), ("Cisco Documentation", "https://www.cisco.com/c/en/us/support/index.html")],
+        "ospf": [("RFC 2328 — OSPFv2", "https://www.rfc-editor.org/rfc/rfc2328"), ("Cisco Documentation", "https://www.cisco.com/c/en/us/support/index.html")],
+        "bgp": [("RFC 4271 — BGP-4", "https://www.rfc-editor.org/rfc/rfc4271"), ("RFC 8212 — BGP Default EBGP Route Propagation", "https://www.rfc-editor.org/rfc/rfc8212")],
+        "vpn": [("RFC 4301 — IPsec Architecture", "https://www.rfc-editor.org/rfc/rfc4301"), ("RFC 7296 — IKEv2", "https://www.rfc-editor.org/rfc/rfc7296")],
+        "firewall": [("NIST SP 800-41 — Firewalls", "https://csrc.nist.gov/pubs/sp/800/41/r1/final"), ("Cisco Documentation", "https://www.cisco.com/c/en/us/support/index.html")],
+        "wireless": [("Wi-Fi Alliance", "https://www.wi-fi.org/"), ("Cisco Wireless Documentation", "https://www.cisco.com/c/en/us/support/wireless/index.html")],
+        "security": [("NIST SP 800 Series", "https://csrc.nist.gov/publications/sp800"), ("CISA Secure by Design", "https://www.cisa.gov/securebydesign")],
+        "backup": [("NIST Computer Security Resource Center", "https://csrc.nist.gov/"), ("Microsoft Backup documentation", "https://learn.microsoft.com/windows-server/administration/windows-server-backup/")],
+        "monitoring": [("Zabbix Documentation", "https://www.zabbix.com/documentation/current/en/manual"), ("Prometheus Documentation", "https://prometheus.io/docs/introduction/overview/")],
+        "soc": [("NIST SP 800-61 — Incident Handling", "https://csrc.nist.gov/pubs/sp/800/61/r2/final"), ("CISA Incident Response", "https://www.cisa.gov/topics/cyber-threats-and-advisories/incident-response")],
+        "cloud": [("Microsoft Azure Documentation", "https://learn.microsoft.com/azure/"), ("AWS Documentation", "https://docs.aws.amazon.com/")],
+        "voip": [("RFC Editor", "https://www.rfc-editor.org/"), ("Wireshark User Guide", "https://www.wireshark.org/docs/wsug_html_chunked/")],
+        "multicast": [("RFC 7761 — PIM-SM", "https://www.rfc-editor.org/rfc/rfc7761"), ("RFC 3376 — IGMPv3", "https://www.rfc-editor.org/rfc/rfc3376")],
+        "mpls": [("RFC 3031 — MPLS Architecture", "https://www.rfc-editor.org/rfc/rfc3031"), ("RFC 4364 — BGP/MPLS IP VPNs", "https://www.rfc-editor.org/rfc/rfc4364")],
+        "vxlan": [("RFC 7348 — VXLAN", "https://www.rfc-editor.org/rfc/rfc7348"), ("RFC 7432 — BGP EVPN", "https://www.rfc-editor.org/rfc/rfc7432")],
+    }
+    selected = sources.get(cat, [
+        ("RFC Editor", "https://www.rfc-editor.org/"),
+        ("Microsoft Learn", "https://learn.microsoft.com/"),
+        ("NIST Computer Security Resource Center", "https://csrc.nist.gov/"),
+    ])
+    return [{"title": title, "url": url} for title, url in selected]
+
+
+def _glossary_block(topic: str, cat: str) -> str:
+    terms = {
+        "network": [("Encapsulation", "قرار دادن دادهٔ لایهٔ بالاتر در PDU لایهٔ پایین‌تر"), ("Gateway", "نقطهٔ عبور به شبکهٔ دیگر"), ("Control plane", "تصمیم مسیر و وضعیت پروتکل"), ("Data plane", "عبور بسته بر اساس جدول‌ها و سیاست‌ها"), ("MTU", "حد اندازهٔ PDU در مسیر/رابط")],
+        "tcpip": [("Sequence number", "شماره‌گذاری بایت‌ها در جریان TCP"), ("ACK", "تأیید دریافت در پشتهٔ TCP"), ("RTT", "زمان رفت‌وبرگشت"), ("RTO", "مهلت ارسال مجدد"), ("Goodput", "نرخ دادهٔ مفید برنامه")],
+        "dns": [("Stub resolver", "پرس‌وجوکنندهٔ محلی سیستم‌عامل/برنامه"), ("Recursive resolver", "سرویسی که نتیجه را تا پاسخ نهایی دنبال می‌کند"), ("Authoritative server", "منبع اصلی پاسخ‌های یک zone"), ("TTL", "مدت اعتبار cache رکورد"), ("DNSSEC", "اعتبارسنجی اصالت پاسخ DNS")],
+        "dhcp": [("DORA", "Discover، Offer، Request، Acknowledge"), ("Lease", "مدت اعتبار تخصیص آدرس"), ("Scope", "محدودهٔ آدرس‌های قابل تخصیص"), ("Relay", "انتقال درخواست DHCP بین subnetها"), ("Reservation", "تخصیص ثابت بر پایهٔ شناسهٔ کلاینت")],
+        "vlan": [("Access port", "پورتی برای ترافیک معمول یک VLAN"), ("802.1Q trunk", "حمل چند VLAN با tag"), ("Native VLAN", "رفتار ترافیک بدون tag در trunk"), ("SVI", "رابط منطقی لایهٔ ۳ برای VLAN"), ("Allowed VLAN list", "VLANهای مجاز روی trunk")],
+        "stp": [("Root Bridge", "مرجع محاسبهٔ توپولوژی STP"), ("Root Port", "بهترین مسیر سوییچ غیرریشه به Root"), ("BPDU", "پیام کنترلی STP"), ("Loop", "چرخهٔ لایهٔ ۲ که می‌تواند flood بسازد"), ("Convergence", "رسیدن پروتکل به حالت پایدار پس از تغییر")],
+        "ospf": [("Neighbor", "روتری که پیام‌های OSPF را تبادل می‌کند"), ("Adjacency", "همسایگی کامل برای همگام‌سازی توپولوژی"), ("LSA", "تبلیغ وضعیت لینک یا توپولوژی"), ("LSDB", "پایگاه دادهٔ توپولوژی OSPF"), ("Cost", "هزینهٔ محاسباتی مسیر")],
+        "bgp": [("AS", "دامنهٔ سیاست مسیریابی مستقل"), ("eBGP/iBGP", "نشست BGP بین/داخل AS"), ("AS_PATH", "ویژگی مسیر که ASهای عبورکرده را نگه می‌دارد"), ("Prefix-list", "فیلتر prefixها"), ("Route leak", "انتشار مسیر برخلاف سیاست موردنظر")],
+        "vpn": [("IKE", "مذاکره و مدیریت کلید IPsec"), ("Security Association", "پارامترهای امنیتی جریان"), ("Traffic selector", "ترافیکی که وارد تونل می‌شود"), ("NAT-T", "کپسوله‌سازی IPsec برای عبور از NAT"), ("DPD", "تشخیص peer غیرفعال")],
+        "firewall": [("Stateful inspection", "ارزیابی بسته بر اساس وضعیت اتصال"), ("Default deny", "رد ترافیکی که صریحاً مجاز نشده"), ("NAT", "ترجمهٔ آدرس/پورت، نه مجوز دسترسی"), ("Zone", "گروه منطقی interfaceها بر اساس اعتماد"), ("Rule counter", "شمارندهٔ تطبیق rule")],
+        "wireless": [("RSSI", "قدرت سیگنال دریافتی"), ("SNR", "نسبت سیگنال به نویز"), ("Channel width", "پهنای کانال"), ("Roaming", "انتقال کلاینت میان APها"), ("Retry rate", "نرخ تکرار ارسال فریم")],
+        "monitoring": [("Metric", "اندازه‌گیری عددی زمان‌مند"), ("Log", "رخداد ثبت‌شده با زمان و منبع"), ("Trigger", "شرط ارزیابی هشدار"), ("Stale data", "دادهٔ قدیمی‌تر از بازهٔ انتظار"), ("RCA", "تحلیل علت ریشه‌ای مبتنی بر شواهد")],
+        "git": [("Working tree", "فایل‌های جاری و تغییرکرده"), ("Index", "ناحیهٔ staging پیش از commit"), ("Commit", "snapshot تاریخچه"), ("Revert", "commit جدید برای معکوس‌کردن تغییر"), ("Reflog", "تاریخچهٔ جابه‌جایی refهای محلی")],
+        "powershell": [("Cmdlet", "فرمان PowerShell با قرارداد پارامترها"), ("Object pipeline", "انتقال objectها میان فرمان‌ها"), ("Terminating error", "خطایی که جریان را متوقف می‌کند"), ("WhatIf", "پیش‌نمایش اثر عملیات پشتیبانی‌کننده"), ("Transcript", "ثبت جلسه برای بازبینی")],
+        "windows": [("Service Control Manager", "مدیریت چرخهٔ سرویس‌ها"), ("Event Log", "رخدادهای زمان‌مند"), ("GPO", "سیاست متمرکز Windows"), ("ACL", "فهرست مجوزها"), ("WinRM", "بستر مدیریت راه دور Windows")],
+        "linux": [("systemd unit", "تعریف سرویس/منبع برای systemd"), ("journalctl", "ابزار خواندن journal"), ("syscall", "درخواست سرویس از kernel"), ("Permission bits", "مجوزهای owner/group/other"), ("Package manager", "ابزار نصب و به‌روزرسانی")],
+        "python": [("Input contract", "شکل و محدودیت ورودی"), ("Exception", "مسیر خطا برای مدیریت آگاهانه"), ("Unit test", "آزمون رفتار یک واحد کوچک"), ("Virtual environment", "محیط جدا برای وابستگی‌ها"), ("Idempotency", "تکرار بدون اثر تجاری اضافی")],
+        "sql": [("Transaction", "مجموعه تغییرات اتمی"), ("Constraint", "قید صحت داده"), ("Index", "ساختار دسترسی برای جست‌وجو"), ("Query plan", "طرح اجرای انتخاب‌شده"), ("Integrity check", "بررسی سازگاری ساختاری پایگاه داده")],
+        "storage": [("IOPS", "تعداد عملیات I/O در ثانیه"), ("Latency", "زمان پاسخ عملیات I/O"), ("Throughput", "نرخ انتقال داده"), ("RAID", "ترکیب دیسک برای ظرفیت/افزونگی/کارایی"), ("Restore test", "آزمون واقعی بازیابی")],
+        "virtualization": [("Hypervisor", "لایهٔ اجرای ماشین‌های مجازی"), ("Guest", "سیستم‌عامل داخل VM"), ("vSwitch", "سوئیچ نرم‌افزاری شبکهٔ مجازی"), ("Datastore", "محل فایل‌های VM"), ("Snapshot", "نقطهٔ زمانی؛ جایگزین backup مستقل نیست")],
+    }
+    glossary = terms.get(cat, [
+        ("Baseline", "وضعیت مرجع پیش از تغییر"), ("Evidence", "خروجی قابل بازبینی برای پشتیبانی از نتیجه"),
+        ("Acceptance criterion", "شرط قابل‌اندازه‌گیری برای قبول تغییر"), ("Rollback", "بازگشت کنترل‌شده به وضعیت قبلی"),
+        ("RCA", "تحلیل علت ریشه‌ای با آزمون فرضیه‌ها"),
+    ])
+    rows = [(topic, "موضوع محوری این درس و دامنه‌ای که باید مستقل توضیح و آزمایش شود.")] + glossary
+    table = "| اصطلاح | تعریف عملیاتی |\n|---|---|\n" + "\n".join(f"| **{name}** | {definition} |" for name, definition in rows)
+    return "## واژه‌نامهٔ تخصصی / Glossary\n" + table
+
+
+def _expected_output_block(topic: str, cat: str, level: str) -> str:
+    samples = {
+        "dns": "A example.test 192.0.2.10 TTL=300 (نمونهٔ فرضی؛ خروجی واقعی از resolver آزمایش ثبت شود).",
+        "dhcp": "Discover → Offer → Request → ACK؛ آدرس، lease، gateway و DNS تخصیص‌یافته در کلاینت ثبت شود.",
+        "tcpip": "SYN → SYN-ACK → ACK نمونهٔ handshake است؛ به‌تنهایی موفقیت TLS یا برنامه را اثبات نمی‌کند.",
+        "network": "نمونهٔ فرضی route: 192.0.2.0/24 via 192.0.2.1؛ route واقعی انتخاب‌شده و interface خروجی ثبت شود.",
+        "powershell": "قالب خروجی: Name=Spooler; Status=Running؛ مقدار واقعی وابسته به میزبان و زمان است.",
+        "windows": "قالب: ServiceName / Status / StartType به همراه Event ID و timestamp.",
+        "linux": "قالب: Active: active (running)؛ قبولی شامل exit status، health check و لاگ تازه است.",
+        "git": "خروجی مورد انتظار: branch، فایل‌های staged، diff و commit ID؛ secret نباید staged باشد.",
+        "python": "نتیجهٔ test suite، تعداد pass/fail و exception قابل بازتولید برای ورودی نامعتبر ثبت شود.",
+        "sql": "در SQLite آزمایشی، PRAGMA integrity_check باید ok برگرداند؛ query plan جدا ثبت شود.",
+        "backup": "checksum، زمان backup/restore، شمار رکوردهای بازیابی‌شده و نتیجهٔ integrity ثبت شود.",
+        "monitoring": "Item تازه، timestamp، Trigger برای fixture مثبت و Recovery برای fixture سالم مشاهده شود.",
+    }
+    sample = samples.get(cat, "خروجی باید شامل ورودی آزمایش، نسخه/محیط، مقدار مشاهده‌شده، معیار قبولی و نتیجهٔ pass/fail باشد.")
+    return (
+        f"## خروجی مورد انتظار و معیار قبولی\n**موضوع:** {topic}\n\n{sample}\n\n"
+        "این نمونه قالب/fixture آموزشی است، نه ادعای اجرای واقعی روی تجهیز. نسخه، timestamp، نقطهٔ مشاهده و ورودی دقیق را مستند کنید. در شکست، طبق rollback plan بازگردید."
+    )
+
+
+def _scenario_output_block(topic: str, cat: str, level: str) -> str:
+    return (
+        "## سناریوی عملی و Lab acceptance / Scenario\n"
+        f"**سناریو:** {_story(topic, cat)}\n\n"
+        f"**روش اجرای کنترل‌شده:**\n{_frame_steps(cat)}\n\n"
+        f"**خروجی مورد انتظار:**\n{_expected_output_block(topic, cat, level)}\n\n"
+        f"**شرط توقف:** در نبود دسترسی، نسخه، backup یا دامنهٔ مجاز، آزمایش شروع نشود. "
+        f"تا اجرای واقعی و ثبت شواهد، وضعیت درس designed_not_executed بماند."
+    )
+
+
 def build_deep_fallback(
     title_fa: str, title_en: str = "", level: str | None = None
 ) -> Dict[str, Any]:
@@ -930,6 +1096,10 @@ Symptom → Scope (کجا؟) → Evidence (دستور) → Hypothesis → Test �
 منابع زیر برای بررسی نسخه، تفاوت‌های پیاده‌سازی و راستی‌آزمایی آزمایش‌ها هستند؛ قبل از اجرای تغییر روی محیط واقعی، مستندات همان نسخه و سازنده را بررسی کن.
 
 {_source_block(cat)}
+
+{_scenario_output_block(topic, cat, level)}
+
+{_glossary_block(topic, cat)}
 """
 
     lab = _lab_concrete(topic, cat, level)
@@ -954,7 +1124,7 @@ Symptom → Scope (کجا؟) → Evidence (دستور) → Hypothesis → Test �
         "level": level,
         "topic": topic,
         "category": cat,
-        "assessment": _assessment_json(cat, topic),
+        "assessment": _assessment_with_depth(cat, topic, level),
         "learning_objectives": [
             f"توضیح سازوکار و کاربرد {topic}",
             f"اجرای آزمایش کنترل‌شده و تفسیر نتیجه {topic}",
@@ -962,4 +1132,7 @@ Symptom → Scope (کجا؟) → Evidence (دستور) → Hypothesis → Test �
         ],
         "prerequisites": [f"مفاهیم پایه دسته {cat}", "محیط آزمایشی ایزوله و امکان ثبت خروجی"],
         "source_status": "review_required",
+        "official_sources": _official_sources(cat),
+        "lab_status": "designed_not_executed",
+        "content_status": "review_required",
     }

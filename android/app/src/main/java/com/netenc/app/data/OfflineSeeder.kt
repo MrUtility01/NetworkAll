@@ -16,7 +16,7 @@ import java.io.InputStreamReader
 import java.util.zip.GZIPInputStream
 
 object OfflineSeeder {
-    private const val META_SEEDED = "offline_seeded_v17"
+    private const val META_SEEDED = "offline_seeded_v18"
     private const val BATCH_SIZE = 50
     private val seedMutex = Mutex()
 

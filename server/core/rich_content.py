@@ -183,6 +183,9 @@ def _dense_support_sections(dense_content: str, candidate_content: str) -> list[
         "## ۷) چک‌لیست Production": ("چک‌لیست production", "production checklist", "قبل از apply"),
         "## ۹) خودآزمایی و پاسخ‌نامه": ("پاسخ‌نامه", "answer key", "self assessment", "خودآزمایی", "assessment"),
         "## ۱۰) منابع رسمی و مراجع": ("منابع رسمی", "official sources", "مراجع", "references"),
+        "## واژه‌نامهٔ تخصصی": ("واژه‌نامه", "glossary", "اصطلاحات کلیدی"),
+        "## خروجی مورد انتظار و معیار قبولی": ("خروجی مورد انتظار", "expected output", "معیار قبولی"),
+        "## سناریوی عملی و Lab acceptance": ("سناریوی عملی", "scenario", "lab acceptance"),
     }
     body_lower = (candidate_content or "").casefold()
     blocks: list[str] = []
@@ -209,6 +212,77 @@ def _dense_support_sections(dense_content: str, candidate_content: str) -> list[
     return chosen
 
 
+
+def _assessment_with_floor(candidate: Dict[str, Any] | None, fallback: Dict[str, Any] | None, level: str | None) -> Dict[str, Any]:
+    """Keep lesson-specific MCQs and append answer-matched items to the L0-L4 floor."""
+    floors = {"L0": 5, "L1": 8, "L2": 10, "L3": 12, "L4": 15}
+    target = floors.get(str(level or "L0").upper(), 5)
+    candidate = candidate if isinstance(candidate, dict) else {}
+    fallback = fallback if isinstance(fallback, dict) else {}
+    base_questions = fallback.get("questions") if isinstance(fallback.get("questions"), list) else []
+    base_answers = fallback.get("answer_key") if isinstance(fallback.get("answer_key"), list) else []
+    base_answer_by_id = {str(x.get("id") or x.get("question_id") or ""): x for x in base_answers if isinstance(x, dict)}
+    fallback_pairs = []
+    for q in base_questions:
+        if not isinstance(q, dict):
+            continue
+        ans = base_answer_by_id.get(str(q.get("id") or ""))
+        if ans is not None and isinstance(q.get("options"), list) and len(q["options"]) >= 2:
+            fallback_pairs.append((dict(q), dict(ans)))
+
+    qs = candidate.get("questions") if isinstance(candidate.get("questions"), list) else []
+    raw_answers = candidate.get("answer_key")
+    if isinstance(raw_answers, list):
+        answer_by_id = {str(x.get("id") or x.get("question_id") or ""): x for x in raw_answers if isinstance(x, dict)}
+    elif isinstance(raw_answers, dict):
+        answer_by_id = {str(k): (v if isinstance(v, dict) else {"answer": v}) for k, v in raw_answers.items()}
+    else:
+        answer_by_id = {}
+    out_q, out_a, used = [], [], set()
+    for i, raw_q in enumerate(qs):
+        if len(out_q) >= target or not isinstance(raw_q, dict):
+            continue
+        q = dict(raw_q)
+        old_id = str(q.get("id") or f"question_{i + 1}")
+        ans = answer_by_id.get(old_id)
+        ci = q.get("correct_index")
+        if isinstance(ans, dict):
+            if ci is None:
+                ci = ans.get("correct_index")
+            if ci is None:
+                val = ans.get("answer")
+                if isinstance(val, int) or (isinstance(val, str) and val.strip().isdigit()):
+                    ci = int(val)
+        if not isinstance(q.get("options"), list) or len(q["options"]) < 2 or ci is None:
+            continue
+        try:
+            ci = int(ci)
+        except (TypeError, ValueError):
+            continue
+        if not 0 <= ci < len(q["options"]):
+            continue
+        qid = old_id if old_id not in used else f"lesson_q_{i + 1}"
+        used.add(qid)
+        q["id"] = qid
+        out_q.append(q)
+        out_a.append({"id": qid, "correct_index": ci, "explanation": str((ans or {}).get("explanation") or (ans or {}).get("rationale") or q.get("explanation") or "پاسخ با معیار پذیرش درس توجیه شود.")})
+
+    for base_q, base_a in fallback_pairs:
+        if len(out_q) >= target:
+            break
+        qid = f"support_{len(out_q) + 1}"
+        while qid in used:
+            qid += "_x"
+        q = dict(base_q)
+        q["id"] = qid
+        used.add(qid)
+        out_q.append(q)
+        out_a.append({"id": qid, "correct_index": int(base_a.get("correct_index", 0)), "explanation": str(base_a.get("explanation") or "پاسخ با معیار پذیرش درس توجیه شود.")})
+    if not out_q:
+        return {"questions": list(base_questions[:target]), "answer_key": list(base_answers[:target])}
+    return {"questions": out_q, "answer_key": out_a}
+
+
 def _ensure_dense(title_fa: str, title_en: str, level: str | None, candidate: Dict[str, Any] | None) -> Dict[str, Any]:
     from core.deep_fallback import build_deep_fallback
     dense = build_deep_fallback(title_fa, title_en, level or level_tag(title_fa))
@@ -225,8 +299,11 @@ def _ensure_dense(title_fa: str, title_en: str, level: str | None, candidate: Di
             pieces = [candidate_body] if candidate_body else []
             pieces.extend(support)
             out["full_content"] = "\n\n---\n\n".join(pieces)
-        if not isinstance(out.get("assessment"), dict) or not out["assessment"].get("questions") or not out["assessment"].get("answer_key"):
-            out["assessment"] = dense.get("assessment") or {}
+        out["assessment"] = _assessment_with_floor(out.get("assessment"), dense.get("assessment"), level or level_tag(title_fa))
+        out["official_sources"] = out.get("official_sources") or dense.get("official_sources") or []
+        out["lab_status"] = out.get("lab_status") or dense.get("lab_status") or "designed_not_executed"
+        out["content_status"] = out.get("content_status") or dense.get("content_status") or "review_required"
+        out["prerequisites"] = out.get("prerequisites") or dense.get("prerequisites") or []
         if not out.get("learning_objectives"):
             out["learning_objectives"] = dense.get("learning_objectives") or []
         if not out.get("prerequisites"):
@@ -269,11 +346,11 @@ def _ensure_dense(title_fa: str, title_en: str, level: str | None, candidate: Di
     out["level"] = candidate.get("level") or out.get("level")
     out["topic"] = candidate.get("topic") or out.get("topic")
     out["category"] = specialist_category or out.get("category")
-    if not isinstance(candidate.get("assessment"), dict) or not candidate["assessment"].get("questions") or not candidate["assessment"].get("answer_key"):
-        out["assessment"] = dense.get("assessment") or {}
-    else:
-        out["assessment"] = candidate["assessment"]
+    out["assessment"] = _assessment_with_floor(candidate.get("assessment"), dense.get("assessment"), level or level_tag(title_fa))
     out["learning_objectives"] = candidate.get("learning_objectives") or dense.get("learning_objectives") or []
     out["prerequisites"] = candidate.get("prerequisites") or dense.get("prerequisites") or []
     out["source_status"] = candidate.get("source_status") or dense.get("source_status") or "review_required"
+    out["official_sources"] = candidate.get("official_sources") or dense.get("official_sources") or []
+    out["lab_status"] = candidate.get("lab_status") or dense.get("lab_status") or "designed_not_executed"
+    out["content_status"] = candidate.get("content_status") or dense.get("content_status") or "review_required"
     return out
