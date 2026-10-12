@@ -379,6 +379,9 @@ class SyncApiContractTests(unittest.TestCase):
                      "device_id": "android-test", "deleted": False},
                     {"uid": "lesson:missing", "entity": "lesson", "title_fa": "درس ناشناخته"},
                     {"uid": "vault-1", "entity": "vault", "title": "must not sync", "secret": "plaintext"},
+                    {"uid": "note-invalid", "entity": "note", "title": "   ",
+                     "body": "must not be silently dropped", "tags": "routing",
+                     "last_updated": stamp, "device_id": "android-test"},
                 ]
             }
             with (
@@ -395,11 +398,14 @@ class SyncApiContractTests(unittest.TestCase):
                 self.assertEqual(body["unsupported_uids"], ["vault-1"])
                 self.assertEqual(body["missing_targets"], 1)
                 self.assertEqual(body["missing_target_uids"], ["lesson:missing"])
+                self.assertEqual(body["invalid"], 1)
+                self.assertEqual(body["invalid_uids"], ["note-invalid"])
 
                 manifest = client.get("/api/sync/manifest").get_json()
                 by_uid = {item["uid"]: item for item in manifest["items"]}
                 self.assertIn("task-1", by_uid)
                 self.assertIn("note-1", by_uid)
+                self.assertNotIn("note-invalid", by_uid)
                 self.assertTrue(by_uid["note-1"]["deleted"])
                 self.assertIn("lesson:study-test", by_uid)
                 self.assertEqual(by_uid["lesson:study-test"]["entity"], "study")
