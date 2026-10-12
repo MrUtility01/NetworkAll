@@ -232,12 +232,30 @@ class MainActivity : AppCompatActivity() {
                     var invalid = 0
                     var applyRejected = 0
                     var start = 0
-                    // Keep requests below both the server's 1000-record cap and its
-                    // 8 MiB request limit. A single oversized record still fails loudly.
+                    // Bound the serialized UTF-8 request size as well as record count.
+                    // Record sizes vary widely for lessons and notes, so a fixed batch
+                    // of 25 records can exceed Flask's 8 MiB request limit.
+                    val maxBatchBytes = 7 * 1024 * 1024
                     while (start < pushArr.length()) {
-                        val end = minOf(start + 25, pushArr.length())
                         val batch = org.json.JSONArray()
-                        for (i in start until end) batch.put(pushArr.get(i))
+                        // Include the JSON envelope and leave headroom for brackets/commas.
+                        var serializedBytes = """{"records":[]}""".toByteArray(Charsets.UTF_8).size
+                        while (start < pushArr.length() && batch.length() < 25) {
+                            val record = pushArr.get(start)
+                            val recordBytes = record.toString().toByteArray(Charsets.UTF_8).size
+                            val additionalBytes = recordBytes + if (batch.length() == 0) 0 else 1
+                            if (serializedBytes + additionalBytes > maxBatchBytes) {
+                                if (batch.length() == 0) {
+                                    throw IllegalStateException(
+                                        "یک رکورد همگام‌سازی از سقف امن ۷ MiB بزرگ‌تر است؛ انتقال متوقف شد تا درخواست ردشده یا ناقص ارسال نشود."
+                                    )
+                                }
+                                break
+                            }
+                            batch.put(record)
+                            serializedBytes += additionalBytes
+                            start++
+                        }
                         val pushBody = withContext(Dispatchers.IO) { c.push(batch) }
                         val result = org.json.JSONObject(pushBody)
                         accepted += result.optInt("accepted", 0)
@@ -247,7 +265,6 @@ class MainActivity : AppCompatActivity() {
                         missing += result.optInt("missing_targets", 0)
                         invalid += result.optInt("invalid", 0)
                         applyRejected += result.optInt("apply_rejected", 0)
-                        start = end
                         // Don't advance the cursor or continue a misleading partial push.
                         if (unsupported > 0 || missing > 0 || conflicts > 0 || invalid > 0 || applyRejected > 0) break
                     }
