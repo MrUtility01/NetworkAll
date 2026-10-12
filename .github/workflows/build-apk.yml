@@ -24,6 +24,12 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install Python test dependencies
+        run: |
+          set -e
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r server/requirements.txt
+
       - name: Python syntax and regression tests
         run: |
           set -e
