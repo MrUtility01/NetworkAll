@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import hmac
+import json
 import os
 import uuid
 from datetime import datetime, timezone
@@ -199,24 +200,158 @@ def _conn():
     c.execute("""CREATE TABLE IF NOT EXISTS ws_tasks(
         uid TEXT PRIMARY KEY, title TEXT NOT NULL, body TEXT DEFAULT '', done INT DEFAULT 0,
         last_updated TEXT, due_at TEXT NOT NULL DEFAULT '', priority INTEGER NOT NULL DEFAULT 1,
-        remind_at TEXT NOT NULL DEFAULT '', reminded_at TEXT NOT NULL DEFAULT ''
+        remind_at TEXT NOT NULL DEFAULT '', reminded_at TEXT NOT NULL DEFAULT '',
+        device_id TEXT NOT NULL DEFAULT '', deleted INTEGER NOT NULL DEFAULT 0,
+        content_hash TEXT NOT NULL DEFAULT ''
     )""")
-    c.execute("CREATE TABLE IF NOT EXISTS ws_notes(uid TEXT PRIMARY KEY, title TEXT, body TEXT, last_updated TEXT)")
+    c.execute("""CREATE TABLE IF NOT EXISTS ws_notes(
+        uid TEXT PRIMARY KEY, title TEXT, body TEXT, last_updated TEXT,
+        tags TEXT NOT NULL DEFAULT '', device_id TEXT NOT NULL DEFAULT '',
+        deleted INTEGER NOT NULL DEFAULT 0, content_hash TEXT NOT NULL DEFAULT ''
+    )""")
     c.execute("CREATE TABLE IF NOT EXISTS ws_vault(uid TEXT PRIMARY KEY, title TEXT, username TEXT, secret TEXT, last_updated TEXT)")
-    # Non-destructive migration for databases made by older versions.
+    # Non-destructive, additive migration for databases made by older versions.
     task_columns = {row["name"] for row in c.execute("PRAGMA table_info(ws_tasks)").fetchall()}
     for name, declaration in (
         ("due_at", "TEXT NOT NULL DEFAULT ''"),
         ("priority", "INTEGER NOT NULL DEFAULT 1"),
         ("remind_at", "TEXT NOT NULL DEFAULT ''"),
         ("reminded_at", "TEXT NOT NULL DEFAULT ''"),
+        ("device_id", "TEXT NOT NULL DEFAULT ''"),
+        ("deleted", "INTEGER NOT NULL DEFAULT 0"),
+        ("content_hash", "TEXT NOT NULL DEFAULT ''"),
     ):
         if name not in task_columns:
             c.execute(f"ALTER TABLE ws_tasks ADD COLUMN {name} {declaration}")
+    note_columns = {row["name"] for row in c.execute("PRAGMA table_info(ws_notes)").fetchall()}
+    for name, declaration in (
+        ("tags", "TEXT NOT NULL DEFAULT ''"),
+        ("device_id", "TEXT NOT NULL DEFAULT ''"),
+        ("deleted", "INTEGER NOT NULL DEFAULT 0"),
+        ("content_hash", "TEXT NOT NULL DEFAULT ''"),
+    ):
+        if name not in note_columns:
+            c.execute(f"ALTER TABLE ws_notes ADD COLUMN {name} {declaration}")
     c.execute("CREATE INDEX IF NOT EXISTS idx_ws_tasks_due ON ws_tasks(due_at, done)")
     c.execute("CREATE INDEX IF NOT EXISTS idx_ws_tasks_reminder ON ws_tasks(remind_at, reminded_at, done)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_ws_tasks_deleted_updated ON ws_tasks(deleted, last_updated)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_ws_notes_deleted_updated ON ws_notes(deleted, last_updated)")
     c.commit()
     return c
+
+
+def _workspace_hash(record):
+    keys = sorted(k for k in record if k not in ("device_id", "last_updated", "content_hash"))
+    blob = json.dumps({k: record[k] for k in keys}, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def _workspace_record(row, entity):
+    item = dict(row)
+    item["entity"] = entity
+    item["deleted"] = bool(item.get("deleted", 0))
+    if entity == "task":
+        item["done"] = bool(item.get("done", 0))
+        item["due_at"] = item.get("due_at") or ""
+        item["priority"] = int(item.get("priority") or 1)
+    item["device_id"] = item.get("device_id") or ""
+    item["last_updated"] = item.get("last_updated") or ""
+    item["content_hash"] = _workspace_hash(item)
+    return item
+
+
+def sync_index():
+    """Manifest metadata for user-owned tasks/notes. Vault is intentionally excluded."""
+    c = _conn()
+    try:
+        result = []
+        for entity, table in (("task", "ws_tasks"), ("note", "ws_notes")):
+            rows = c.execute(
+                f"SELECT * FROM {table} WHERE uid IS NOT NULL AND uid!=''"
+            ).fetchall()
+            result.extend({
+                "uid": _workspace_record(row, entity)["uid"],
+                "entity": entity,
+                "last_updated": _workspace_record(row, entity)["last_updated"],
+                "content_hash": _workspace_record(row, entity)["content_hash"],
+                "deleted": _workspace_record(row, entity)["deleted"],
+            } for row in rows)
+        return result
+    finally:
+        c.close()
+
+
+def sync_pull(uids):
+    """Pull task/note records and tombstones by stable UID; never exports Vault secrets."""
+    clean = list(dict.fromkeys(str(uid) for uid in uids if str(uid).strip()))
+    if not clean:
+        return []
+    c = _conn()
+    try:
+        marks = ",".join("?" for _ in clean)
+        out = []
+        for entity, table in (("task", "ws_tasks"), ("note", "ws_notes")):
+            rows = c.execute(f"SELECT * FROM {table} WHERE uid IN ({marks})", clean).fetchall()
+            out.extend(_workspace_record(row, entity) for row in rows)
+        return out
+    finally:
+        c.close()
+
+
+def sync_apply(records):
+    """Persist accepted task/note edits. Deletes are soft tombstones; Vault never syncs."""
+    now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    c = _conn()
+    applied = 0
+    try:
+        for record in records:
+            if not isinstance(record, dict):
+                continue
+            uid = str(record.get("uid") or "").strip()
+            entity = str(record.get("entity") or "")
+            if not uid or len(uid) > 128 or entity not in ("task", "note"):
+                continue
+            title = str(record.get("title") or "").strip()
+            body = str(record.get("body") or "")
+            if not title or len(title) > 300 or len(body) > 2_000_000:
+                continue
+            updated = str(record.get("last_updated") or record.get("lastUpdated") or now)[:64]
+            device = str(record.get("device_id") or record.get("deviceId") or "")[:128]
+            deleted = 1 if record.get("deleted") is True or record.get("deleted") == 1 else 0
+            digest = str(record.get("content_hash") or record.get("contentHash") or "")[:128]
+            if entity == "task":
+                try:
+                    priority = int(record.get("priority", 1))
+                except (TypeError, ValueError):
+                    priority = 1
+                if priority not in (1, 2, 3):
+                    priority = 1
+                due_at = str(record.get("due_at") or record.get("dueAt") or "")[:32]
+                done = 1 if record.get("done") is True or record.get("done") == 1 else 0
+                c.execute(
+                    """INSERT INTO ws_tasks(uid,title,body,done,last_updated,due_at,priority,device_id,deleted,content_hash)
+                       VALUES(?,?,?,?,?,?,?,?,?,?)
+                       ON CONFLICT(uid) DO UPDATE SET title=excluded.title, body=excluded.body,
+                       done=excluded.done, last_updated=excluded.last_updated, due_at=excluded.due_at,
+                       priority=excluded.priority, device_id=excluded.device_id, deleted=excluded.deleted,
+                       content_hash=excluded.content_hash""",
+                    (uid, title, body, done, updated, due_at, priority, device, deleted, digest),
+                )
+            else:
+                tags = str(record.get("tags") or "")[:2000]
+                c.execute(
+                    """INSERT INTO ws_notes(uid,title,body,last_updated,tags,device_id,deleted,content_hash)
+                       VALUES(?,?,?,?,?,?,?,?)
+                       ON CONFLICT(uid) DO UPDATE SET title=excluded.title, body=excluded.body,
+                       last_updated=excluded.last_updated, tags=excluded.tags, device_id=excluded.device_id,
+                       deleted=excluded.deleted, content_hash=excluded.content_hash""",
+                    (uid, title, body, updated, tags, device, deleted, digest),
+                )
+            applied += 1
+        c.commit()
+        return applied
+    finally:
+        c.close()
 
 
 def _cookie_ok() -> bool:
@@ -262,7 +397,11 @@ def workspace_page():
         if request.form.get("delete"):
             uid = request.form["delete"]
             table = {"notes": "ws_notes", "vault": "ws_vault"}.get(tab, "ws_tasks")
-            c.execute(f"DELETE FROM {table} WHERE uid=?", (uid,))
+            if tab == "vault":
+                c.execute("DELETE FROM ws_vault WHERE uid=?", (uid,))
+            else:
+                c.execute(f"UPDATE {table} SET deleted=1,last_updated=? WHERE uid=?",
+                          (datetime.now(timezone.utc).isoformat(), uid))
             c.commit()
         else:
             title = (request.form.get("title") or "").strip()
@@ -272,14 +411,14 @@ def workspace_page():
                 uid = str(uuid.uuid4())
                 now = datetime.now(timezone.utc).isoformat()
                 if tab == "notes":
-                    c.execute("INSERT INTO ws_notes VALUES(?,?,?,?)", (uid, title, body, now))
+                    c.execute("INSERT INTO ws_notes(uid,title,body,last_updated) VALUES(?,?,?,?)", (uid, title, body, now))
                 elif tab == "vault":
                     c.execute("INSERT INTO ws_vault VALUES(?,?,?,?,?)", (uid, title, username, _seal(body), now))
                 else:
                     c.execute("INSERT INTO ws_tasks(uid,title,body,done,last_updated) VALUES(?,?,?,?,?)", (uid, title, body, 0, now))
                 c.commit()
     if tab == "notes":
-        items = c.execute("SELECT uid,title,body FROM ws_notes ORDER BY last_updated DESC").fetchall()
+        items = c.execute("SELECT uid,title,body FROM ws_notes WHERE deleted=0 ORDER BY last_updated DESC").fetchall()
         title = "یادداشت‌ها"
     elif tab == "vault":
         rows = c.execute("SELECT uid,title,username,secret FROM ws_vault ORDER BY title").fetchall()
@@ -318,7 +457,7 @@ def workspace_page():
             c.commit()
         title = "مدیریت رمز ورود (AES-GCM)"
     else:
-        items = c.execute("SELECT uid,title,body FROM ws_tasks ORDER BY last_updated DESC").fetchall()
+        items = c.execute("SELECT uid,title,body FROM ws_tasks WHERE deleted=0 ORDER BY last_updated DESC").fetchall()
         title = "مدیریت کارها"
     return render_template_string(PAGE, items=items, title=title, tab=tab)
 
@@ -367,7 +506,7 @@ def planner_tasks():
             return jsonify({"ok": False, "error": "invalid_limit"}), 400
         rows = c.execute(
             """SELECT uid,title,body,done,last_updated,due_at,priority,remind_at
-               FROM ws_tasks ORDER BY
+               FROM ws_tasks WHERE deleted=0 ORDER BY
                  CASE WHEN due_at='' THEN 1 ELSE 0 END, due_at ASC, priority DESC, last_updated DESC
                LIMIT ?""", (limit,)
         ).fetchall()
@@ -424,7 +563,8 @@ def planner_task_item(uid):
         c.close()
         return jsonify({"ok": False, "error": "not_found"}), 404
     if request.method == "DELETE":
-        c.execute("DELETE FROM ws_tasks WHERE uid=?", (uid,))
+        c.execute("UPDATE ws_tasks SET deleted=1,last_updated=? WHERE uid=?",
+                  (datetime.now(timezone.utc).isoformat(), uid))
         c.commit()
         c.close()
         return jsonify({"ok": True, "deleted": uid})
