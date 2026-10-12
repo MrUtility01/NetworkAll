@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT / "shared"))
 from merge_content_packs_into_android import append_unmatched_as_extra, apply_fields, commands_to_lessons, git_markdown_to_lessons
 from sync_engine import compare_lww, content_hash, merge_push
 from audit_content import _item_quality
-from audit_content_packs import inspect_record
+from audit_content_packs import extract_items, inspect_record, review_sort_key
 from core.db import WebDB
 from core.deep_fallback import build_deep_fallback
 import app as server_app
@@ -28,6 +28,30 @@ from core.study import study_sync_apply, study_sync_index, study_sync_pull
 
 
 class ContentAuditMetadataTests(unittest.TestCase):
+    def test_audit_keeps_chapter_and_subchapter_context(self):
+        path = ROOT / "tools/packs/audit-test.json"
+        items = extract_items({
+            "chapters": [{
+                "order": 68,
+                "title_fa": "Cisco Routing",
+                "subchapters": [{
+                    "title_fa": "OSPF",
+                    "lessons": [{"uid": "audit-osfp", "title_fa": "OSPF neighbor states",
+                                 "full_content": "## Lab\\n## Scenario"}],
+                }],
+            }],
+        }, path)
+        self.assertEqual(len(items), 1)
+        row = inspect_record(path, items[0], 1, 1)
+        self.assertEqual(row["chapter_order"], 68)
+        self.assertEqual(row["chapter_title"], "Cisco Routing")
+        self.assertEqual(row["subchapter_title"], "OSPF")
+
+    def test_actionable_warnings_sort_before_review_status_only(self):
+        high_risk = {"index": 100, "checks": ["needs_human_review", "missing_answer_key_marker"]}
+        review_only = {"index": 1, "checks": ["needs_human_review"]}
+        self.assertLess(review_sort_key(high_risk), review_sort_key(review_only))
+
     def test_audit_recognizes_nested_assessment_and_answer_key_metadata(self):
         assessment = {
             "questions": [{"id": "q1", "prompt": "؟", "options": ["الف", "ب"]}],
