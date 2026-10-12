@@ -397,6 +397,7 @@ class WebDB:
 
     def sync_apply(self, records):
         self.ensure_sync_columns()
+        applied = 0
         for rec in records:
             uid = rec.get("uid") or ""
             entity = rec.get("entity") or ("scenario" if uid.startswith("scenario:") else "lesson")
@@ -414,6 +415,7 @@ class WebDB:
                      rec.get("content_hash", ""), rec.get("device_id", ""),
                      1 if rec.get("deleted") else 0, uid),
                 )
+                applied += 1
             elif entity == "scenario":
                 if not self.conn.execute("SELECT id FROM scenarios WHERE uid=?", (uid,)).fetchone():
                     continue
@@ -424,4 +426,6 @@ class WebDB:
                      rec.get("verification", ""), rec.get("last_updated"), rec.get("content_hash", ""),
                      rec.get("device_id", ""), 1 if rec.get("deleted") else 0, uid),
                 )
+                applied += 1
         self.conn.commit()
+        return applied
