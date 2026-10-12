@@ -5,72 +5,70 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.netenc.app.data.AppDatabase
+import com.netenc.app.data.TaskEntity
 import java.time.Instant
 import java.time.LocalDateTime
-import java.time.OffsetDateTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.util.Locale
+import java.time.format.DateTimeParseException
 import java.util.concurrent.TimeUnit
 
 object TaskReminderScheduler {
-    private fun workName(uid: String) = "netenc_task_reminder_" + uid
+    private fun uniqueName(uid: String) = "netenc-task-reminder:$uid"
 
-    fun schedule(context: Context, uid: String, triggerAtMillis: Long) {
-        val delay = (triggerAtMillis - System.currentTimeMillis()).coerceAtLeast(0L)
+    fun schedule(context: Context, uid: String, atMillis: Long) {
+        if (uid.isBlank()) return
+        val delay = (atMillis - System.currentTimeMillis()).coerceAtLeast(0L)
         val request = OneTimeWorkRequestBuilder<TaskReminderWorker>()
-            .setInputData(Data.Builder().putString(TaskReminderWorker.KEY_UID, uid).build())
             .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+            .setInputData(workDataOf(TaskReminderWorker.KEY_TASK_UID to uid))
+            .addTag("netenc-task-reminder")
             .build()
-        WorkManager.getInstance(context).enqueueUniqueWork(
-            workName(uid),
-            ExistingWorkPolicy.REPLACE,
-            request
-        )
+        WorkManager.getInstance(context.applicationContext)
+            .enqueueUniqueWork(uniqueName(uid), ExistingWorkPolicy.REPLACE, request)
     }
 
     fun cancel(context: Context, uid: String) {
-        WorkManager.getInstance(context).cancelUniqueWork(workName(uid))
+        if (uid.isBlank()) return
+        WorkManager.getInstance(context.applicationContext).cancelUniqueWork(uniqueName(uid))
     }
 
     /**
-     * Rebuild schedules from durable Room data. WorkManager survives process death/reboot,
-     * but reconciliation also covers newly synced tasks, restored backups and changed due times.
-     * Each device stores remindedAt locally, so Windows delivery never suppresses Android alerts.
+     * Reconcile durable work after process restart, sync, edits, completion/deletion or
+     * returning from Android notification settings. Only remindAt is synchronized;
+     * remindedAt remains a delivery guard on each device.
      */
-    suspend fun reconcileAll(context: Context): Int {
-        val dao = AppDatabase.get(context).workspaceDao()
+    suspend fun reconcileAll(context: Context) {
+        val dao = AppDatabase.get(context.applicationContext).workspaceDao()
         val tasks = dao.allTasksForSync()
-        var scheduled = 0
         for (task in tasks) {
             if (task.deleted || task.done || task.remindAt.isBlank() || task.remindedAt.isNotBlank()) {
                 cancel(context, task.uid)
                 continue
             }
-            val at = parseReminderAtMillis(task.remindAt)
-            if (at == null) {
+            val atMillis = parseReminderMillis(task.remindAt)
+            if (atMillis == null) {
                 cancel(context, task.uid)
                 continue
             }
-            schedule(context, task.uid, at)
-            scheduled++
+            schedule(context, task.uid, atMillis)
         }
-        return scheduled
     }
 
-    fun parseReminderAtMillis(value: String): Long? {
+    fun parseReminderMillis(value: String): Long? {
         val raw = value.trim()
-        if (raw.isEmpty()) return null
-        try { return Instant.parse(raw).toEpochMilli() } catch (_: Exception) { }
-        try { return OffsetDateTime.parse(raw).toInstant().toEpochMilli() } catch (_: Exception) { }
+        if (raw.isBlank()) return null
         return try {
-            // The planner stores local wall time as yyyy-MM-dd'T'HH:mm (without a zone).
-            val local = LocalDateTime.parse(
-                raw.take(16),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm", Locale.US)
-            )
-            local.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            // Planner and Windows store local wall-clock times without a zone suffix.
+            LocalDateTime.parse(raw).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        } catch (_: DateTimeParseException) {
+            try {
+                // Accept explicit ISO-8601 instants from migrated/externally-created records.
+                Instant.parse(raw).toEpochMilli()
+            } catch (_: Exception) {
+                null
+            }
         } catch (_: Exception) {
             null
         }
