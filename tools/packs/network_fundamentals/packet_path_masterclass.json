@@ -337,6 +337,232 @@
           "Default Route"
         ]
       }
+    },
+    {
+      "uid": "packet-path-l2",
+      "chapter_order": 1,
+      "subchapter_order": 3,
+      "lesson_order": 1,
+      "level": "L2",
+      "depth_level": "L2",
+      "record_kind": "instructional_lesson",
+      "title_fa": "[L2] Forwarding واقعی روتر: RIB/FIB، Next Hop، TTL، MTU و NAT",
+      "title_en": "Router Forwarding, RIB/FIB, MTU and NAT",
+      "summary": "تحلیل مسیر data-plane از ingress تا egress؛ route lookup، adjacency، TTL، MTU/PMTUD، NAT و queueing همراه با سناریوی آزمایشگاهی.",
+      "prerequisites": [
+        "درس L0 مسیر Packet",
+        "درس L1 ARP/ND و VLAN"
+      ],
+      "learning_objectives": [
+        "تمایز RIB و FIB",
+        "تحلیل adjacency و next-hop",
+        "تشخيص MTU/PMTUD و NAT باستخدام الشواهد",
+        "بناء خطة rollback واختبار بعد التغيير"
+      ],
+      "full_content": "# Forwarding في الراوتر: RIB/FIB وNext Hop وTTL وMTU وNAT — المستوى L2\n\n## أهداف العمل\nافهم كيف تمر الحزمة من واجهة دخول إلى واجهة خروج، ولماذا لا يكفي وجود route لإثبات forwarding، وكيف تتفاعل adjacency والسياسة وMTU وNAT. في نهاية الدرس يجب أن تستطيع إثبات آخر نقطة مرّ عندها packet وفهم مجموعة الشواهد المطلوبة لإصلاح مختبر من شبكتين.\n\n## نموذج التنفيذ عبر data plane\n1. **Ingress:** تصل الإشارة إلى interface ثم frame. يجب أن تسمح واجهة الدخول بنوع encapsulation وVLAN الصحيحين. frame غير صالح أو interface في حالة down قد لا يصل إلى IP lookup الطبيعي.\n2. **Decapsulation and validation:** يقرأ الراوتر EtherType ثم header IP. يتحقق من الإصدار وطول header والحقول الأساسية والسياسات المتعلقة بالمصدر. في IPv4 يوجد header checksum؛ IPv6 لا يحتوي checksum عامّاً للـ IP header.\n3. **Local or transit:** يقارن الوجهة بعناوين محلية أو خدمات الراوتر. إن كانت الحزمة موجهة إلى الراوتر، تدخل control plane/input path؛ وإن كانت transit، تحتاج إلى forwarding decision.\n4. **Policy:** ACL أو firewall zone policy أو control-plane policing أو VRF/context قد يقبل أو يسقط الحركة قبل أو بعد بعض خطوات lookup وفق المنصة.\n5. **Route lookup:** تبحث آلية forwarding عن أطول prefix مطابق. يجب التمييز بين routing protocol/RIB الذي يجمع المسارات ويختارها، وبين FIB أو بنية forwarding المحسنة للـ data plane. قد توجد فروق خلال convergence أو عند فشل hardware adjacency.\n6. **Next-hop resolution:** قد تشير route إلى connected interface أو next hop recursive. يجب حل recursion إلى واجهة وadjacency صالحتين. عبر Ethernet قد يحتاج الراوتر ARP أو IPv6 ND كي يعرف MAC الجار التالي.\n7. **Hop processing:** يقل TTL في IPv4 أو Hop Limit في IPv6. إذا انتهت القيمة لا يتم forwarding عادي، وقد يولد ICMP Time Exceeded إذا سمحت السياسة وحدود المعدل. في IPv4 يتغير header checksum نتيجة TTL.\n8. **Egress construction:** يبني الراوتر frame جديداً حسب الوصلة الخارجة، مع MAC مناسب للـ next hop وVLAN/encapsulation الصحيحين. قد تدخل queueing وQoS وpolicing وMTU وfragmentation والتسريع العتادي في التنفيذ.\n9. **NAT أو Tunnel:** إن انطبقت قاعدة NAT، قد يتغير عنوان IP أو port وتحدث checksum والـ session state ذات الصلة. التونل يضيف تغليفاً آخر. لا تفترض NAT على كل hop.\n\n## مثال Longest-Prefix Match\nافترض وجود routes: 10.0.0.0/8 عبر A، و10.20.0.0/16 عبر B، و10.20.30.0/24 عبر C، بالإضافة إلى default route. الوجهة 10.20.30.45 تطابق عدة prefixes، لكن /24 أكثر تحديداً من /16 و/8، لذلك هو المرشح إذا كان صالحاً ومثبتاً في مسار forwarding. لو اختفت /24، يمكن أن يستخدم /16. اختيار route يتأثر بما دخل RIB وبصلاحية next hop؛ مقارنة metric خام بين بروتوكولات مختلفة لا تختزل قرار النظام إلى رقم واحد.\n\n## RIB وFIB وAdjacency\nRIB تمثل معلومات المسارات التي تجمعها آليات control plane وتختار منها المسار الأفضل وفق السياسة والمنصة. FIB هي البنية المستخدمة لتنفيذ lookup على مستوى forwarding، وقد توزع في hardware. Adjacency تخزن معلومات لازمة للإرسال إلى الجار، مثل رأس L2 أو الواجهة والـ rewrite المعلوماتي. لذلك يمكن أن ترى route في جدول التحكم، ولكن لا تصل الحزمة بسبب adjacency incomplete، hardware table/resource problem، interface failure أو policy drop. افحص الجدولين والـ counters المتاحة ولا تساوِ بينهما تلقائياً.\n\n## IPv4 Fragmentation وPath MTU Discovery\nMTU هو الحد الأقصى للحجم في وصلة/سياق طبقة معين. Ethernet MTU التقليدي للـ IP غالباً 1500 byte، لكن PPPoE والأنفاق وVXLAN وjumbo frames قد تغير الحجم المتاح. في IPv4 يمكن تجزئة الحزمة في ظروف معينة إذا لم تمنعها DF والسياسة. عندما تكون DF set وتكون الحزمة أكبر من MTU الخروج، يجب أن تصل للمصدر رسالة ICMP مناسبة Fragmentation Needed وفق آلية Path MTU Discovery. إذا حجبت الرسالة، قد يحدث black-hole: حزم صغيرة تعمل بينما نقل كبير أو جلسة TLS تتوقف.\n\nفي IPv6 لا تقوم الراوترات بتجزئة packet عابرة بالطريقة التقليدية؛ يعتمد المصدر على Path MTU Discovery ورسائل ICMPv6 Packet Too Big. لا تنقل وصف IPv4 إلى IPv6 دون مراجعة. TCP MSS clamping قد يكون workaround مدروساً لبعض المسارات، لكنه لا يثبت إصلاح UDP أو كل tunnel overhead.\n\n## مثال NAT وتحليل tuple\nمضيف داخلي 192.168.10.25 يفتح اتصالاً إلى خادم عام. يمكن أن ينفذ راوتر الحافة Source NAT إلى عنوان WAN. على جانب LAN ترى source الداخلي، وعلى WAN ترى translated source. جدول NAT/session يربط tuple الأصلي بالمترجم. إذا ظهر request على LAN ولم يظهر على WAN، افحص route وpolicy وqueue وegress state. إذا ظهر على WAN ووصل إلى destination لكن الرد لا يعود، افحص return path وACL وNAT state وupstream filtering. لا تعلن أن NAT السبب لمجرد أن عنواناً خاصاً موجود في LAN.\n\n## مختبر: راوتر وشبكتان\nالطوبولوجيا: PC-A في 192.168.10.0/24، R1 بين الشبكتين، وخادم اختبار في 198.51.100.0/24. استخدم شبكة معزولة أو محاكي، واحفظ config قبل التغيير.\n- افحص جدول Route وVRF/context ثم اختبر next hop resolution.\n- التقط traffic على ingress وegress باستخدام أدوات مناسبة للمنصة.\n- قارن source/destination MAC وVLAN في الإطارين؛ يجب أن يطابقا الرابطين المختلفين.\n- راقب TTL في IPv4 بين نقاط L3؛ لا تتوقع checksum IPv4 header أن يبقى ثابتاً.\n- إذا اختبرت MTU، زد payload تدريجياً وسجل DF/IPv6 behavior وICMP والنتيجة من طبقة التطبيق.\n- إذا اختبرت NAT، قارن tuples قبل وبعد الترجمة مع session table وrule counter.\n\n## عيب‌یابی مرتب\n- **No route:** تحقق من VRF، connected interface، route source، summarization وrecursive next hop.\n- **Route موجود لكن Drop:** راجع ACL/firewall counters وpolicy، RPF/anti-spoof، control-plane policing وlogs.\n- **Adjacency incomplete:** تحقق من VLAN، L2 neighbor، ARP/ND ووجود الطرف الآخر.\n- **Intermittent loss:** راجع interface errors، drops، queue congestion، CPU، failover وroute convergence.\n- **Only large transfers fail:** MTU، PMTUD، ICMP policy، tunnel overhead وMSS.\n- **Outbound works, reply fails:** return routing، asymmetric path، NAT/session timeout، stateful firewall وupstream ACL.\n- **One subnet only:** VRF، route leaking، gateway SVI، ACL بين VLAN وDHCP options.\n\n## QoS وQueues وHardware Forwarding\nيمكن أن تختار route الصحيحة ومع ذلك تتأخر الحزمة أو تُسقط بسبب queue congestion أو policer/shaper أو egress buffer. افصل بين physical errors (CRC، duplex أو optical errors) وبين queue drops وpolicy counters؛ الأول قد يشير إلى رابط/وسيط، والثاني إلى ازدحام أو policy. بعض المنصات تقوم بمسار fast-path في ASIC؛ capture للـ CPU أو CLI counters قد لا يعرض كل packet كما لو كان software forwarding. افهم نطاق الأداة قبل الاستنتاج، واربط metrics بنفس نافذة الزمن.\n\n## أمان وتغيير وRollback\nقبل تغيير ACL أو NAT أو route، سجل config والroute table وsession counters، وحدد نطاق التأثير ووقت التغيير ومعيار التراجع. لا تفرغ session table أو تعطل firewall في شبكة الإنتاج لمجرد الاختبار. نفذ تغييراً واحداً، تحقق من اتصال التطبيق ومجموعة شبكات مجاورة، ثم أعد config عند تجاوز معيار التوقف. بعد التغيير، افحص forward وreturn path مستقلاً، ولا تكتفِ بـ ping إلى gateway.\n\n## معجم المستوى L2\n**RIB:** معلومات المسارات في control plane. **FIB:** بنية forwarding للـ data plane. **Adjacency:** معلومات إرسال next hop. **PMTUD:** اكتشاف MTU للمسار. **DF:** Do Not Fragment في IPv4. **RPF:** Reverse Path Forwarding check. **VRF:** فصل جداول routing المنطقية. **ECMP:** توزيع تدفقات بين مسارات متساوية الكلفة. **PBR:** Policy-Based Routing. المصطلحات متصلة لكنها ليست مترادفات.\n\n## معيار القبول\nلا يكفي أن يوجد route في جدول التحكم. يجب أن تثبت أن packet صالحة دخلت، وأن forwarding lookup اختار مساراً، وأن adjacency والسياسة سمحتا، وأن egress أرسل الفريم. في سيناريو فشل، حدد آخر نقطة ثبت عندها مرور packet وأول نقطة لم يعد مرورها مثبتاً، ثم اذكر كيف تتحقق من الإصلاح والـ rollback.",
+      "commands": "show ip route <prefix>\nshow ip arp\nshow interfaces counters errors\nip route get <destination>\ntcpdump -ni <interface> 'arp or icmp'",
+      "examples": "وجود route لـ 10.20.0.0/16 لا يطغى على 10.20.30.0/24 الأكثر تحديداً إذا كان صالحاً. راقب MAC/TTL وICMP وNAT state على نقاط مناسبة.",
+      "notes": "المحتوى L2؛ يلزم تنفيذ المختبر على محاكي أو شبكة معزولة. answer_key منفصل ومطابق لمعرفات الأسئلة.",
+      "official_sources": [
+        {
+          "title": "RFC 791 — Internet Protocol",
+          "url": "https://www.rfc-editor.org/rfc/rfc791"
+        },
+        {
+          "title": "RFC 1191 — Path MTU Discovery",
+          "url": "https://www.rfc-editor.org/rfc/rfc1191"
+        },
+        {
+          "title": "RFC 8200 — IPv6",
+          "url": "https://www.rfc-editor.org/rfc/rfc8200"
+        },
+        {
+          "title": "RFC 4861 — IPv6 Neighbor Discovery",
+          "url": "https://www.rfc-editor.org/rfc/rfc4861"
+        }
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "depth_level": "L2",
+        "record_kind": "instructional_lesson",
+        "assessment": {
+          "questions": [
+            {
+              "id": "packet-path-l2-q01",
+              "prompt": "ما الذي يمثله longest-prefix match؟",
+              "options": [
+                "أقدم route دائماً",
+                "أطول prefix منطبق على عنوان الوجهة",
+                "أكبر MTU",
+                "أقوى إشارة Wi-Fi"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l2-q02",
+              "prompt": "لماذا يجب التمييز بين RIB وFIB؟",
+              "options": [
+                "كلاهما DNS cache",
+                "RIB معلومات control-plane بينما FIB بنية forwarding المستخدمة في data-plane",
+                "FIB جدول MAC فقط",
+                "لا يوجد فرق في أي جهاز"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l2-q03",
+              "prompt": "ما الذي يتغير عادةً عند Router hop؟",
+              "options": [
+                "كل عناوين IP دائماً",
+                "L2 header للوصلة الخارجة وينقص TTL/Hop Limit",
+                "كل DNS records",
+                "كل TCP ports دائماً"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l2-q04",
+              "prompt": "متى يكون ARP/ND مهماً بعد route lookup؟",
+              "options": [
+                "عند الحاجة إلى حل MAC/neighbor للـ next hop على وصلة مناسبة",
+                "بعد كل DNS response",
+                "فقط عند HTTPS",
+                "لا علاقة له بالإرسال"
+              ],
+              "correct_index": 0
+            },
+            {
+              "id": "packet-path-l2-q05",
+              "prompt": "ما النمط الذي قد يشير إلى MTU black-hole؟",
+              "options": [
+                "كل الحزم الصغيرة والكبيرة تفشل بلا فرق",
+                "الحزم/التدفقات الصغيرة تعمل بينما الكبيرة تتوقف مع مشكلة رسائل PMTUD",
+                "لا يحصل الجهاز على SSID",
+                "تظهر MAC جديدة فقط"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l2-q06",
+              "prompt": "هل كل Router ينفذ NAT؟",
+              "options": [
+                "نعم دائماً",
+                "لا؛ يجب وجود قاعدة/مسار ترجمة فعلي",
+                "فقط عندما يوجد DNS",
+                "فقط في IPv6"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l2-q07",
+              "prompt": "ماذا يثبت وجود route في جدول التحكم؟",
+              "options": [
+                "أن كل packet ستصل حتماً",
+                "أن هناك معلومة مسار، لكنه لا يثبت adjacency أو policy أو egress forwarding",
+                "أن DNS سليم",
+                "أن MTU متساوٍ على المسار"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l2-q08",
+              "prompt": "ما الشاهد الأفضل للتحقق من NAT؟",
+              "options": [
+                "IP خاص عند العميل فقط",
+                "tuple قبل وبعد الترجمة وNAT/session state وrule counters",
+                "MAC table على access switch فقط",
+                "DNS TTL فقط"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l2-q09",
+              "prompt": "في IPv6، ماذا يفعل الراوتر عادةً مع packet تتجاوز MTU؟",
+              "options": [
+                "يفرّغها إلى Ethernet jumbo frame تلقائياً دائماً",
+                "لا يقوم بتجزئة packet عابرة بالطريقة التقليدية؛ يعتمد المصدر على PMTUD وICMPv6 Packet Too Big",
+                "يستخدم ARP",
+                "يحوّلها إلى TCP"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l2-q10",
+              "prompt": "أي تصميم اختبار MTU أكثر قيمة؟",
+              "options": [
+                "تغيير MTU على كل الواجهات في آن واحد",
+                "زيادة payload تدريجياً مع توثيق DF/ICMP والقاطعات ونقاط capture ونتيجة التطبيق",
+                "ping واحد إلى gateway فقط",
+                "تعطيل firewall نهائياً"
+              ],
+              "correct_index": 1
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "packet-path-l2-q01",
+              "correct_index": 1,
+              "explanation": "الـ prefix الأكثر تحديداً يحكم lookup إذا كان المسار صالحاً في بنية forwarding."
+            },
+            {
+              "id": "packet-path-l2-q02",
+              "correct_index": 1,
+              "explanation": "وجود مسار في RIB لا يثبت دائماً أن hardware adjacency/FIB جاهزة."
+            },
+            {
+              "id": "packet-path-l2-q03",
+              "correct_index": 1,
+              "explanation": "NAT قد يغير IP/port لكن ذلك ليس نتيجة حتمية لكل hop."
+            },
+            {
+              "id": "packet-path-l2-q04",
+              "correct_index": 0,
+              "explanation": "تحتاج الواجهة إلى adjacency قابلة للاستخدام لإرسال frame عبر Ethernet."
+            },
+            {
+              "id": "packet-path-l2-q05",
+              "correct_index": 1,
+              "explanation": "حجب ICMP اللازم لاكتشاف MTU قد يمنع المصدر من خفض حجم packet."
+            },
+            {
+              "id": "packet-path-l2-q06",
+              "correct_index": 1,
+              "explanation": "NAT ميزة policy-based وليست خطوة حتمية في forwarding."
+            },
+            {
+              "id": "packet-path-l2-q07",
+              "correct_index": 1,
+              "explanation": "قد تظل الحزمة عرضة إلى adjacency failure أو ACL drop أو queue discard."
+            },
+            {
+              "id": "packet-path-l2-q08",
+              "correct_index": 1,
+              "explanation": "مراجعة state والمقارنة على جانبي نقطة الترجمة تثبت ما إذا كان NAT طبق."
+            },
+            {
+              "id": "packet-path-l2-q09",
+              "correct_index": 1,
+              "explanation": "تختلف معالجة fragmentation في IPv6 عن IPv4 ويجب اختبارها على أساس منفصل."
+            },
+            {
+              "id": "packet-path-l2-q10",
+              "correct_index": 1,
+              "explanation": "اختبار مضبوط يميز الحد الفعلي ورسائل التحكم وأثر المسار على التطبيق."
+            }
+          ]
+        },
+        "glossary": [
+          "RIB",
+          "FIB",
+          "Adjacency",
+          "PMTUD",
+          "DF",
+          "RPF",
+          "VRF",
+          "ECMP",
+          "PBR"
+        ]
+      }
     }
   ]
 }
