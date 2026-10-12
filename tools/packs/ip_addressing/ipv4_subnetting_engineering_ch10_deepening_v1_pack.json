@@ -1,0 +1,247 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll / NetworkEncyclopedia",
+  "generated_on": "2026-10-12",
+  "purpose": "بستهٔ توسعهٔ عمیق IPv4 و Subnetting با مثال‌های حل‌شده، VLSM، عیب‌یابی و پاسخ‌نامهٔ جدا؛ پیش از ورود به دیتابیس، UIDها باید با محتوای موجود تطبیق داده شوند.",
+  "scope": {
+    "chapter_order": 10,
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3"
+    ],
+    "lesson_count": 4,
+    "topics": [
+      {
+        "id": "ipv4-subnetting-engineering",
+        "title_fa": "IPv4 و Subnetting؛ از بیت تا طراحی شبکه",
+        "title_en": "IPv4 Addressing and Subnetting Engineering"
+      }
+    ]
+  },
+  "instructional_contract": [
+    "توضیح مفهومی و محاسبهٔ مرحله‌به‌مرحله",
+    "مثال حل‌شده و معیار قبولی",
+    "لابراتوار کنترل‌شده و ایمن",
+    "عیب‌یابی بر پایهٔ شواهد",
+    "پرسش‌ها در درس و answer_key جدا",
+    "حفظ UID و عدم حذف خودکار دادهٔ موجود"
+  ],
+  "content_quality": {
+    "target": "توسعه‌یافته",
+    "word_floor": 600,
+    "validation": "review_required; JSON، UIDها، کلید پاسخ و سازگاری importer باید در CI و دیتابیس آزمایشی بررسی شوند"
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ipv4-subnetting:l0",
+      "chapter_order": 10,
+      "subchapter_order": 1,
+      "lesson_order": 1,
+      "topic": "ipv4-subnetting-engineering",
+      "domain": "network-addressing",
+      "level": "L0",
+      "title_fa": "[L0] IPv4، ماسک و Prefix؛ فهم آدرس به زبان بیت",
+      "title_en": "IPv4 addresses, masks and prefixes",
+      "tags": [
+        "IPv4",
+        "CIDR",
+        "subnetting",
+        "network-design",
+        "troubleshooting",
+        "L0",
+        "deepened"
+      ],
+      "summary": "ساختار ۳۲ بیتی IPv4، معنای prefix، بخش شبکه و میزبان و محاسبهٔ network/broadcast را از صفر آموزش می‌دهد.",
+      "full_content": "# IPv4، ماسک و Prefix؛ فهم آدرس به زبان بیت\n\n## هدف یادگیری\nدر پایان درس باید بتوانید IPv4 را به نمایش باینری تبدیل کنید، prefix را به ماسک تبدیل کنید و آدرس شبکه، broadcast و بازهٔ معمول میزبان را محاسبه کنید.\n\n## ۱. IPv4 در سطح بیت\nIPv4 یک عدد ۳۲ بیتی است که معمولاً به چهار octet ده‌دهی با نقطه نمایش داده می‌شود. هر octet هشت بیت و مقداری از ۰ تا ۲۵۵ دارد. برای مثال 192.168.10.34 در باینری برابر 11000000.10101000.00001010.00100010 است. نمایش ده‌دهی فقط شکل خواناتر همان بیت‌هاست؛ تصمیم مسیریابی بر اساس آدرس، prefix و جدول route گرفته می‌شود، نه ظاهر رشته.\n\n## ۲. Prefix و subnet mask\nدر notation CIDR، /24 یعنی ۲۴ بیت نخست prefix شبکه و ۸ بیت باقی‌مانده بخش میزبان است. ماسک /24 برابر 255.255.255.0 و ماسک /26 برابر 255.255.255.192 است؛ در octet آخر ماسک /26 دو بیت نخست شبکه‌اند (128+64=192). تعداد بیت میزبان برابر 32 منهای prefix است. تعداد کل ترکیب‌ها 2 به توان تعداد بیت میزبان است.\n\nبرای subnet معمولی IPv4 دارای broadcast، آدرس شبکه و broadcast معمولاً برای تخصیص به میزبان استفاده نمی‌شوند؛ بنابراین ظرفیت سنتی 2^h−2 است. این قاعده برای /31 روی لینک point-to-point و /32 که یک آدرس منفرد را مشخص می‌کند استثناهای کاربردی دارد. نوع لینک و پشتیبانی تجهیزات را بررسی کنید، نه اینکه فرمول را کورکورانه اعمال کنید.\n\n## ۳. مثال حل‌شده: 192.168.10.34/24\nماسک 255.255.255.0 است. سه octet نخست بخش شبکه‌اند و octet آخر بخش میزبان است. Network برابر 192.168.10.0، broadcast برابر 192.168.10.255 و بازهٔ معمول میزبان‌ها 192.168.10.1 تا 192.168.10.254 است. تعداد کل آدرس‌ها 256 و تعداد قابل تخصیص معمول 254 است.\n\n## ۴. مثال دوم: 10.20.30.77/26\nماسک /26 برابر 255.255.255.192 است. اندازهٔ بلوک در octet آخر 256−192=64 است؛ بلوک‌ها از 0، 64، 128 و 192 شروع می‌شوند. عدد 77 در بازهٔ 64 تا 127 است، پس network برابر 10.20.30.64، broadcast برابر 10.20.30.127 و بازهٔ معمول میزبان‌ها 10.20.30.65 تا 10.20.30.126 است.\n\n## ۵. چرا prefix مهم است؟\nدو دستگاه با آدرس 192.168.10.34/24 و 192.168.10.200/24 در یک subnet هستند؛ اما 192.168.11.20/24 در subnet دیگری است. اگر prefix اشتباه باشد، میزبان ممکن است مقصد remote را on-link تصور کند و برای MAC مقصد ARP بفرستد، درحالی‌که باید MAC gateway را resolve کند. این خطا ممکن است ارتباط را یک‌طرفه کند.\n\n## ۶. مشاهدهٔ سیستم\nWindows: Get-NetIPConfiguration، Get-NetIPAddress -AddressFamily IPv4 و Get-NetRoute -AddressFamily IPv4.\nLinux: ip -br -4 address، ip -4 route و ip route get 192.0.2.10.\nاین فرمان‌ها وضعیت محلی و انتخاب route را نشان می‌دهند؛ به‌تنهایی سلامت کل مسیر تا برنامهٔ مقصد را ثابت نمی‌کنند.\n\n## ۷. خطاهای رایج\n- یکسان دانستن IP میزبان با آدرس شبکه.\n- فرض اینکه همهٔ subnetها 254 میزبان دارند.\n- مقایسهٔ دو IP بدون درنظرگرفتن prefix.\n- نتیجه‌گیری دربارهٔ خرابی شبکه فقط از روی ping؛ فایروال ممکن است ICMP را مسدود کند.\n\n## ارزیابی\n1. /27 چند بیت میزبان و چند آدرس کل دارد؟\n2. network و broadcast آدرس 172.16.5.130/25 چیست؟\n3. چرا 192.168.1.10/24 و 192.168.2.10/24 در subnet یکسان نیستند؟\n4. چرا /31 نیازمند توجه به نوع لینک است؟",
+      "commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetIPAddress -AddressFamily IPv4",
+        "ip -br -4 address",
+        "ip route get 192.0.2.10"
+      ],
+      "examples": [
+        "محاسبهٔ network، broadcast و بازهٔ میزبان برای 10.20.30.77/26.",
+        "مقایسهٔ /24 و /26 با نمایش باینری."
+      ],
+      "notes": "از محدوده‌های خصوصی و آدرس‌های مستندسازی استفاده کنید؛ محاسبهٔ آدرس با تصمیم route یکی نیست.",
+      "learning_objectives": [
+        "IPv4 را به بیت تبدیل کند.",
+        "ماسک را از prefix استخراج کند.",
+        "network، broadcast و بازهٔ معمول میزبان را محاسبه کند.",
+        "اثر prefix اشتباه بر ARP و route را توضیح دهد."
+      ],
+      "prerequisites": [],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"subnet-l0-1\",\"prompt\":\"/27 چند بیت میزبان و چند آدرس کل دارد؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"subnet-l0-2\",\"prompt\":\"network و broadcast آدرس 172.16.5.130/25 چیست؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"subnet-l0-3\",\"prompt\":\"چرا 192.168.1.10/24 و 192.168.2.10/24 در subnet یکسان نیستند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"subnet-l0-4\",\"prompt\":\"چرا /31 نیازمند توجه به نوع لینک است؟\",\"type\":\"short_answer\",\"level\":\"L0\"}]},\"word_floor\":600}"
+    },
+    {
+      "uid": "lesson:ipv4-subnetting:l1",
+      "chapter_order": 10,
+      "subchapter_order": 1,
+      "lesson_order": 2,
+      "topic": "ipv4-subnetting-engineering",
+      "domain": "network-addressing",
+      "level": "L1",
+      "title_fa": "[L1] VLSM و طراحی Subnet؛ ظرفیت، بلوک و تجمیع",
+      "title_en": "VLSM, subnet sizing and route aggregation",
+      "tags": [
+        "IPv4",
+        "CIDR",
+        "subnetting",
+        "network-design",
+        "troubleshooting",
+        "L1",
+        "deepened"
+      ],
+      "summary": "طراحی subnetهای با اندازهٔ متفاوت، انتخاب prefix بر اساس ظرفیت، مرزبندی CIDR و route aggregation را آموزش می‌دهد.",
+      "full_content": "# VLSM و طراحی Subnet؛ ظرفیت، بلوک و تجمیع\n\n## ۱. مسئلهٔ طراحی\nدر شبکهٔ واقعی ممکن است یک بخش 90 میزبان، بخش دیگر 26 میزبان و بخش مدیریت 12 میزبان داشته باشد. اختصاص یک /24 به هر بخش، فضای آدرس را هدر می‌دهد. VLSM اجازه می‌دهد از بلوک اصلی، subnetهایی با prefix متفاوت بسازیم؛ مشروط بر اینکه محدوده‌ها هم‌پوشانی نداشته باشند و روی مرزهای صحیح CIDR قرار گیرند.\n\n## ۲. انتخاب prefix از نیاز میزبان\nبرای subnet معمولی broadcast، کوچک‌ترین h را بیابید که 2^h−2 حداقل نیاز میزبان باشد؛ سپس prefix برابر 32−h است. برای 90 میزبان، h=7 و /25 لازم است زیرا 126 آدرس میزبان معمول فراهم می‌کند. برای 26 میزبان، h=5 و /27 لازم است که 30 میزبان معمول دارد. برای 12 میزبان، h=4 و /28 کافی است که 14 میزبان معمول دارد. فضای رشد، gateway، تجهیزات زیرساختی و آدرس‌های رزروشده را هم در طراحی وارد کنید.\n\n## ۳. مثال طراحی از 192.168.50.0/24\nنیازها: 90، 26، 12 و دو endpoint نقطه‌به‌نقطه. از بزرگ‌ترین subnet شروع کنید:\n- 90 میزبان: 192.168.50.0/25؛ بازهٔ معمول .1 تا .126؛ broadcast برابر .127.\n- 26 میزبان: 192.168.50.128/27؛ بازهٔ .129 تا .158؛ broadcast برابر .159.\n- 12 میزبان: 192.168.50.160/28؛ بازهٔ .161 تا .174؛ broadcast برابر .175.\n- لینک دو endpoint با /30: 192.168.50.176/30؛ آدرس‌های endpoint معمول .177 و .178؛ broadcast برابر .179.\nمحدودهٔ باقی‌مانده هنوز بخشی از بلوک /24 است. این طرح نمونه است و باید با رشد آینده، DHCP، VPN و سیاست آدرس‌دهی تطبیق یابد.\n\n## ۴. اندازهٔ بلوک و هم‌ترازی\nاندازهٔ بلوک در octet مربوطه برابر 256 منهای مقدار ماسک همان octet است. برای /27، ماسک octet آخر 224 و اندازهٔ بلوک 32 است؛ مرزها 0، 32، 64، 96، 128، 160، 192 و 224 هستند. بنابراین 192.168.50.150/27 در بلوک 128 تا 159 قرار دارد؛ network برابر .128 و broadcast برابر .159 است. آغاز دلخواه subnet خارج از مرز صحیح، prefix معتبر هم‌تراز ایجاد نمی‌کند.\n\n## ۵. Route aggregation\nچند prefix را فقط وقتی می‌توان خلاصه کرد که محدوده‌ها پیوسته، تعداد بلوک‌ها مناسب و آدرس آغازین با مرز بلوک خلاصه‌شده هم‌تراز باشد. شباهت ظاهری سه octet نخست کافی نیست. خلاصه‌سازی بیش از حد می‌تواند ترافیک را به مسیری بفرستد که مقصد واقعی را ندارد. قبل از اعمال summary، بازهٔ پوشش داده‌شده، routeهای دقیق‌تر و مسیر برگشت را بررسی کنید.\n\n## ۶. لابراتوار طراحی\n1. تعداد فعلی میزبان، رشد پیش‌بینی‌شده و نیاز زیرساختی هر بخش را ثبت کنید.\n2. prefix حداقلی را با فرمول ظرفیت محاسبه کنید.\n3. subnetها را از بزرگ به کوچک تخصیص دهید.\n4. network، broadcast و host range را در جدول ثبت کنید.\n5. هم‌پوشانی را با IP calculator یا اسکریپت کنترل کنید و دو مورد را دستی بازبینی کنید.\n6. VLAN، gateway و route مورد انتظار را مشخص کنید.\n7. قبل از تغییر عملیاتی، backup و برنامهٔ rollback داشته باشید.\n\n## ارزیابی\n1. برای 50 میزبان کوچک‌ترین prefix معمول چیست؟\n2. چرا تخصیص subnetها از بزرگ به کوچک مفید است؟\n3. آیا 192.168.10.0/25 و 192.168.10.128/25 را می‌توان به /24 خلاصه کرد؟\n4. /26 چند آدرس کل و چند میزبان معمول قابل تخصیص دارد؟",
+      "commands": [
+        "ipcalc 192.168.50.0/25",
+        "ip route",
+        "Get-NetRoute -AddressFamily IPv4"
+      ],
+      "examples": [
+        "طراحی VLSM برای بخش‌های 90، 26، 12 و دو endpoint از 192.168.50.0/24."
+      ],
+      "notes": "پیش از اجرا، هم‌پوشانی با VPN، شعب، DHCP و routeهای موجود بررسی شود.",
+      "learning_objectives": [
+        "prefix را از ظرفیت انتخاب کند.",
+        "VLSM بدون هم‌پوشانی طراحی کند.",
+        "اندازهٔ بلوک و مرز CIDR را محاسبه کند.",
+        "محدودیت‌های route aggregation را توضیح دهد."
+      ],
+      "prerequisites": [
+        "lesson:ipv4-subnetting:l0"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"subnet-l1-1\",\"prompt\":\"برای 50 میزبان کوچک‌ترین prefix معمول چیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"subnet-l1-2\",\"prompt\":\"چرا VLSM را معمولاً از بزرگ‌ترین نیاز آغاز می‌کنیم؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"subnet-l1-3\",\"prompt\":\"آیا دو /25 از .0 و .128 می‌توانند یک /24 را پوشش دهند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"subnet-l1-4\",\"prompt\":\"تعداد آدرس کل و میزبان معمول در /26 چقدر است؟\",\"type\":\"short_answer\",\"level\":\"L1\"}]},\"word_floor\":600}"
+    },
+    {
+      "uid": "lesson:ipv4-subnetting:l2",
+      "chapter_order": 10,
+      "subchapter_order": 1,
+      "lesson_order": 3,
+      "topic": "ipv4-subnetting-engineering",
+      "domain": "network-addressing",
+      "level": "L2",
+      "title_fa": "[L2] عیب‌یابی Subnet؛ از IP میزبان تا جدول Route",
+      "title_en": "Subnet troubleshooting from host to routing table",
+      "tags": [
+        "IPv4",
+        "CIDR",
+        "subnetting",
+        "network-design",
+        "troubleshooting",
+        "L2",
+        "deepened"
+      ],
+      "summary": "رویکرد مرحله‌ای تشخیص prefix، gateway، DHCP، ARP و مسیر رفت‌وبرگشت را با سناریوهای عملی ارائه می‌کند.",
+      "full_content": "# عیب‌یابی Subnet؛ از IP میزبان تا جدول Route\n\n## ۱. اصل کار\nوقتی میزبان به سرور دسترسی ندارد، ماسک را تصادفی تغییر ندهید. ابتدا دامنهٔ خرابی را مشخص کنید: یک میزبان، یک VLAN، یک subnet یا کل مسیر؟ وضعیت اولیه را ذخیره کنید و در هر مرحله فقط یک متغیر را تغییر دهید. Ping فقط آزمون ICMP است؛ شکست آن می‌تواند ناشی از فایروال یا غیرفعال بودن پاسخ باشد، و موفقیت آن سلامت پورت برنامه را ثابت نمی‌کند.\n\n## ۲. ترتیب تشخیص\n1. پیکربندی میزبان: IP، prefix، gateway، DNS و منبع پیکربندی DHCP یا static را ثبت کنید.\n2. جدول route: برای مقصد دقیق، route انتخاب‌شده و next hop را بررسی کنید.\n3. شبکهٔ محلی: اگر مقصد on-link است، ARP/neighbor و VLAN را بررسی کنید؛ اگر remote است، gateway محلی باید قابل دسترسی باشد.\n4. مسیر روتر: route رفت و برگشت، ACL، NAT و policy routing را بررسی کنید.\n5. برنامه: پورت شنونده، سرویس، TLS، نام میزبان و log را بررسی کنید.\nهر مرحله باید فرضیه‌ای را تقویت یا رد کند؛ تغییر هم‌زمان DNS، gateway و firewall علت اصلی را مبهم می‌کند.\n\n## ۳. سناریوی prefix نامتناسب\nمیزبان A دارای 192.168.10.20/16 و میزبان B دارای 192.168.11.30/24 است و هر دو در یک VLAN قرار دارند. A ممکن است B را on-link تصور کند و برای MAC خود B درخواست ARP بفرستد؛ B با /24 ممکن است A را remote ببیند و پاسخ را از gateway بفرستد. این عدم تقارن می‌تواند ارتباط را مختل کند. راه‌حل درست، بازبینی طرح آدرس‌دهی و هماهنگ‌کردن prefix است، نه افزودن routeهای تصادفی.\n\n## ۴. سناریوی gateway اشتباه\nمیزبان 10.20.30.40/24 باید gateway برابر 10.20.30.1 داشته باشد اما 10.20.31.1 تنظیم شده است. چون gateway خارج از subnet محلی است، سیستم معمولاً نمی‌تواند next hop را مستقیماً resolve کند، مگر route یا پیکربندی خاصی وجود داشته باشد. route میزبان و neighbor table را بررسی کنید؛ سپس DHCP option یا تنظیم static را اصلاح کنید. بعد از اصلاح، دسترسی gateway، مقصد IP و نام DNS را جداگانه آزمایش کنید.\n\n## ۵. فرمان‌ها و تفسیر\nWindows: ipconfig /all، Get-NetIPConfiguration، Get-NetRoute -AddressFamily IPv4، Get-NetNeighbor -AddressFamily IPv4 و Test-NetConnection 192.0.2.10 -Port 443.\nLinux: ip -br -4 addr، ip -4 route، ip route get 192.0.2.10، ip neigh و ping -c 3 192.0.2.1.\nTest-NetConnection می‌تواند اتصال TCP به پورت را آزمایش کند؛ ping جایگزین آزمون پورت نیست. آدرس‌های نمونه را با مقصد مجاز محیط خود جایگزین کنید.\n\n## ۶. DHCP و scope\nبررسی کنید scope با subnet واقعی سازگار است: mask، router option، DNS، lease، exclusions و reservationها. وجود IP در محدودهٔ درست کافی نیست؛ scope اشتباه در VLAN یا DHCP relay/helper نادرست می‌تواند lease نامتناسب ایجاد کند. خروجی کلاینت را با تنظیمات و log سرور تطبیق دهید. قبل از renew کردن روی میزبان راه دور، خطر قطع اتصال مدیریتی را ارزیابی کنید.\n\n## ۷. لابراتوار کنترل‌شده\nدر دو VM با شبکهٔ host-only ابتدا prefix صحیح تنظیم کنید و ارتباط را ثبت کنید. سپس در مرحله‌ای جدا prefix یکی از VMها را عمداً تغییر دهید. پیش‌بینی کنید مقصد local یا remote تشخیص داده می‌شود و route و neighbor table را مشاهده کنید. در پایان تنظیم صحیح را بازگردانید و آزمون را تکرار کنید. از دستکاری شبکهٔ تولیدی یا قطع دسترسی راه دور خودداری کنید.\n\n## ۸. گزارش حادثه\nزمان، مبدأ، مقصد، VLAN، prefixها، route و neighbor پیش از تغییر، شواهد دو سمت، فرضیه‌ها، تغییر انجام‌شده، نتیجهٔ پس از تغییر و روش rollback را ثبت کنید. گزارش حرفه‌ای میان مشاهده و تفسیر تفاوت می‌گذارد و موارد اثبات‌نشده را صریح اعلام می‌کند.\n\n## ارزیابی\n1. چرا شکست ping خرابی route را قطعی نمی‌کند؟\n2. prefix اشتباه چگونه می‌تواند ARP را به سمت مقصد نامناسب بفرستد؟\n3. در DHCP چه تنظیماتی باید بررسی شوند؟\n4. چرا تغییر یک متغیر در هر مرحله روش بهتری است؟",
+      "commands": [
+        "ipconfig /all",
+        "Get-NetRoute -AddressFamily IPv4",
+        "Get-NetNeighbor -AddressFamily IPv4",
+        "ip route get 192.0.2.10",
+        "ip neigh"
+      ],
+      "examples": [
+        "دو VM با prefix نامتناسب؛ مقایسهٔ route و neighbor قبل و بعد از اصلاح."
+      ],
+      "notes": "لابراتوار فقط در VM یا شبکهٔ تحت کنترل اجرا شود؛ تغییر از راه دور باید rollback داشته باشد.",
+      "learning_objectives": [
+        "خطاهای IP، prefix، gateway و DHCP را تفکیک کند.",
+        "route و neighbor table را تفسیر کند.",
+        "از شواهد چندلایه استفاده کند.",
+        "گزارش عیب‌یابی قابل تکرار تهیه کند."
+      ],
+      "prerequisites": [
+        "lesson:ipv4-subnetting:l0",
+        "lesson:ipv4-subnetting:l1"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"subnet-l2-1\",\"prompt\":\"چرا شکست ping خرابی route را قطعی نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"subnet-l2-2\",\"prompt\":\"prefix اشتباه چگونه می‌تواند ARP را به مقصد نامناسب بفرستد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"subnet-l2-3\",\"prompt\":\"در DHCP کدام گزینه‌ها برای عیب‌یابی مهم‌اند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"subnet-l2-4\",\"prompt\":\"چرا تغییر یک متغیر در هر مرحله بهتر است؟\",\"type\":\"short_answer\",\"level\":\"L2\"}]},\"word_floor\":600}"
+    },
+    {
+      "uid": "lesson:ipv4-subnetting:l3",
+      "chapter_order": 10,
+      "subchapter_order": 1,
+      "lesson_order": 4,
+      "topic": "ipv4-subnetting-engineering",
+      "domain": "network-addressing",
+      "level": "L3",
+      "title_fa": "[L3] /31، /32، شبکهٔ خصوصی، NAT و IPv6",
+      "title_en": "Advanced prefixes, private addressing and IPv6",
+      "tags": [
+        "IPv4",
+        "CIDR",
+        "subnetting",
+        "network-design",
+        "troubleshooting",
+        "L3",
+        "deepened"
+      ],
+      "summary": "استثناهای CIDR، محدوده‌های خصوصی، هم‌پوشانی VPN و تفاوت‌های بنیادی IPv4 و IPv6 را توضیح می‌دهد.",
+      "full_content": "# /31، /32، شبکهٔ خصوصی، NAT و IPv6\n\n## ۱. /31 و /32\nدر لینک IPv4 از نوع point-to-point، RFC 3021 اجازه می‌دهد /31 برای دو endpoint استفاده شود؛ در این کاربرد، دو آدرس برای دو سمت لینک‌اند و قاعدهٔ سنتی حذف network و broadcast مانند subnetهای LAN به همان شکل اعمال نمی‌شود. /31 را برای هر LAN به‌صورت خودکار انتخاب نکنید؛ نوع لینک و پشتیبانی تجهیزات باید بررسی شود. /32 یک prefix با یک آدرس منفرد است و برای loopback، host route و شناسایی آدرس خاص کاربرد دارد.\n\n## ۲. بلوک‌های خصوصی\nRFC 1918 سه بلوک خصوصی IPv4 را تعریف می‌کند: 10.0.0.0/8، 172.16.0.0/12 و 192.168.0.0/16. این آدرس‌ها برای شبکه‌های داخلی‌اند و معمولاً مستقیماً در اینترنت عمومی route نمی‌شوند. خصوصی بودن به معنی امن بودن نیست؛ segmentation، ACL، احراز هویت و پایش همچنان لازم‌اند. دو سازمان ممکن است هر دو از 10.0.0.0/8 استفاده کنند؛ هنگام اتصال VPN یا ادغام شبکه، هم‌پوشانی باعث ابهام routing می‌شود و ممکن است renumbering یا NAT طراحی‌شده لازم باشد.\n\n## ۳. NAT با subnetting یکی نیست\nSubnetting فضای آدرس را به prefixهای کوچک‌تر تقسیم می‌کند. NAT آدرس‌ها و در PAT معمولاً پورت‌ها را در مرز شبکه ترجمه می‌کند. NAT به‌تنهایی firewall یا کنترل دسترسی کامل نیست و خطای طراحی subnet را جادویی حل نمی‌کند. هنگام عیب‌یابی، آدرس قبل و بعد از ترجمه، جدول NAT، مسیر برگشت و قواعد فایروال را بررسی کنید. در VPN، شبکه‌های خصوصی هم‌پوشان ممکن است پیش از ترجمه نیازمند طراحی مجدد باشند.\n\n## ۴. Broadcast و VLAN\nآدرس broadcast IPv4 در subnet معمولی آخرین آدرس محدوده است. broadcast در Ethernet معمولاً به اعضای همان broadcast domain می‌رسد؛ روترها آن را به subnet دیگر forward نمی‌کنند مگر با سازوکار خاص. VLANها مرزهای جداگانهٔ لایهٔ ۲ می‌سازند، حتی اگر از یک سوئیچ فیزیکی استفاده کنند. آدرس‌دهی درست بدون تطبیق VLAN، SVI، gateway و routeها کافی نیست.\n\n## ۵. IPv6\nIPv6 آدرس ۱۲۸ بیتی و prefix notation دارد. در LANهای معمول، /64 بسیار رایج است؛ اما طراحی خاص ممکن است نیازهای متفاوت داشته باشد. IPv6 از ARP استفاده نمی‌کند؛ Neighbor Discovery مبتنی بر ICMPv6 است. IPv6 broadcast ندارد و از multicast و سازوکارهای دیگر استفاده می‌کند. قواعد IPv4 مانند کم‌کردن دو آدرس برای network و broadcast را به IPv6 تعمیم ندهید. وجود IPv6 روی رابط نیز به معنی دسترسی end-to-end نیست؛ route، Router Advertisement، DNS AAAA، firewall و MTU همچنان مهم‌اند.\n\n## ۶. لابراتوار بازبینی\nدر توپولوژی مجازی یک LAN با /24، یک لینک point-to-point با /31 در صورت پشتیبانی و یک loopback با /32 تعریف کنید. جدول آدرس و route مورد انتظار را ثبت کنید. سپس دو subnet خصوصی هم‌پوشان را روی کاغذ تحلیل کنید و توضیح دهید چرا مقصد route مبهم می‌شود. روی روتر عملیاتی بدون backup، تأیید و برنامهٔ بازگشت تغییر ندهید.\n\n## خطاهای رایج\n- تصور اینکه NAT همان firewall است.\n- تصور اینکه private IP به معنی امنیت است.\n- استفاده از /31 بدون بررسی نوع لینک.\n- تعمیم broadcast IPv4 به IPv6.\n- نادیده‌گرفتن هم‌پوشانی subnet در VPN.\n- فراموش‌کردن route برگشت.\n\n## ارزیابی\n1. کاربرد معمول /31 و /32 چیست؟\n2. بلوک‌های خصوصی IPv4 کدام‌اند؟\n3. چرا NAT جایگزین firewall نیست؟\n4. دو تفاوت ARP/IPv4 با Neighbor Discovery/IPv6 چیست؟",
+      "commands": [
+        "ip -4 route",
+        "ip -6 route",
+        "Get-NetRoute -AddressFamily IPv4",
+        "Get-NetRoute -AddressFamily IPv6"
+      ],
+      "examples": [
+        "مقایسهٔ LAN /24، لینک point-to-point /31 و loopback /32 در توپولوژی مجازی."
+      ],
+      "notes": "/31 وابسته به نوع لینک و پشتیبانی تجهیزات است؛ IPv6 جداگانه اعتبارسنجی شود.",
+      "learning_objectives": [
+        "استثناهای /31 و /32 را شرح دهد.",
+        "بلوک‌های خصوصی RFC 1918 را شناسایی کند.",
+        "NAT، subnetting و firewall را تفکیک کند.",
+        "تفاوت‌های آدرس‌دهی IPv4 و IPv6 را بیان کند."
+      ],
+      "prerequisites": [
+        "lesson:ipv4-subnetting:l0",
+        "lesson:ipv4-subnetting:l1"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"subnet-l3-1\",\"prompt\":\"/31 و /32 معمولاً چه کاربردهایی دارند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"subnet-l3-2\",\"prompt\":\"بلوک‌های خصوصی IPv4 را فهرست کنید.\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"subnet-l3-3\",\"prompt\":\"چرا NAT جایگزین firewall و segmentation نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"subnet-l3-4\",\"prompt\":\"دو تفاوت IPv4 ARP/broadcast با IPv6 ND/multicast چیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"}]},\"word_floor\":600}"
+    }
+  ],
+  "answer_key": {
+    "subnet-l0-1": "/27 یعنی 5 بیت میزبان و 32 آدرس کل؛ در subnet معمولی broadcast معمولاً 30 آدرس قابل تخصیص است.",
+    "subnet-l0-2": "/25 اندازهٔ بلوک 128 است؛ network برابر 172.16.5.128 و broadcast برابر 172.16.5.255 است.",
+    "subnet-l0-3": "چون با prefix /24 سه octet نخست بخش شبکه‌اند و 192.168.1.0/24 با 192.168.2.0/24 متفاوت است.",
+    "subnet-l0-4": "/31 می‌تواند در لینک point-to-point دو endpoint را پوشش دهد؛ /32 یک آدرس منفرد/host route است. کاربرد و پشتیبانی باید بررسی شود.",
+    "subnet-l1-1": "/26؛ شش بیت میزبان، 64 آدرس کل و معمولاً 62 آدرس قابل تخصیص. /27 فقط 30 میزبان معمول دارد.",
+    "subnet-l1-2": "از تکه‌تکه‌شدن فضا جلوگیری می‌کند و شانس باقی‌ماندن بلوک پیوستهٔ مناسب برای subnetهای بزرگ را افزایش می‌دهد.",
+    "subnet-l1-3": "بله؛ دو /25 پیوسته و هم‌تراز دقیقاً محدودهٔ 192.168.10.0/24 را پوشش می‌دهند.",
+    "subnet-l1-4": "/26 برابر 64 آدرس کل و در subnet معمولی broadcast برابر 62 آدرس قابل تخصیص است.",
+    "subnet-l2-1": "ICMP ممکن است فیلتر شود؛ سرویس، پورت، DNS یا سیاست پاسخ‌دهی هم ممکن است مشکل داشته باشد. route و آزمون مناسب سرویس را جداگانه بررسی کنید.",
+    "subnet-l2-2": "میزبان با prefix نادرست مقصد remote را on-link می‌بیند و برای MAC خود مقصد ARP می‌فرستد، نه برای MAC gateway.",
+    "subnet-l2-3": "IP، prefix، default gateway، DNS، DHCP server، lease، exclusions، reservations و VLAN/relay در صورت استفاده.",
+    "subnet-l2-4": "رابطهٔ علت و معلول را قابل تشخیص می‌کند و مانع پنهان‌شدن خطا با تغییرات هم‌زمان می‌شود.",
+    "subnet-l3-1": "/31 برای لینک point-to-point در صورت پشتیبانی و /32 برای loopback، host route یا یک آدرس منفرد به کار می‌رود.",
+    "subnet-l3-2": "10.0.0.0/8، 172.16.0.0/12 و 192.168.0.0/16.",
+    "subnet-l3-3": "NAT ترجمهٔ آدرس/پورت است؛ به‌تنهایی مجوز، segmentation، بازرسی یا کنترل دسترسی کامل را تضمین نمی‌کند.",
+    "subnet-l3-4": "IPv4 از ARP برای نگاشت IPv4 به MAC و از broadcast subnet استفاده می‌کند؛ IPv6 از Neighbor Discovery مبتنی بر ICMPv6 بهره می‌برد و broadcast ندارد."
+  },
+  "sources": [
+    {
+      "title": "RFC 4632 — Classless Inter-domain Routing (CIDR)",
+      "url": "https://www.rfc-editor.org/rfc/rfc4632"
+    },
+    {
+      "title": "RFC 1918 — Address Allocation for Private Internets",
+      "url": "https://www.rfc-editor.org/rfc/rfc1918"
+    },
+    {
+      "title": "RFC 3021 — Using 31-Bit Prefixes on IPv4 Point-to-Point Links",
+      "url": "https://www.rfc-editor.org/rfc/rfc3021"
+    },
+    {
+      "title": "RFC 4291 — IP Version 6 Addressing Architecture",
+      "url": "https://www.rfc-editor.org/rfc/rfc4291"
+    },
+    {
+      "title": "RFC 4861 — Neighbor Discovery for IP version 6",
+      "url": "https://www.rfc-editor.org/rfc/rfc4861"
+    }
+  ]
+}
