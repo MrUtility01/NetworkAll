@@ -10,7 +10,7 @@ import java.io.BufferedInputStream
 import java.util.zip.GZIPInputStream
 
 object OfflineSeeder {
-    private const val META_SEEDED = "offline_seeded_v14"
+    private const val META_SEEDED = "offline_seeded_v15"
     private val seedMutex = Mutex()
 
     suspend fun ensureSeeded(context: Context, force: Boolean = false): Int = seedMutex.withLock {
@@ -64,7 +64,7 @@ object OfflineSeeder {
                             learningObjectives = les.optString("learning_objectives", ""),
                             sourceStatus = les.optString("source_status", "review_required"),
                             lastUpdated = "2026-10-11T12:00:00Z",
-                            contentHash = "offline-v14-ch68",
+                            contentHash = "offline-v15-ch68",
                             deviceId = "android-offline",
                             // Preserve user soft-deletions when refreshing the bundled curriculum.
                             deleted = existingRows[uid]?.deleted ?: false,
