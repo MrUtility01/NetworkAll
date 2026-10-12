@@ -422,6 +422,31 @@ def sync_push():
         except (TypeError, ValueError):
             kept += 1
             continue
+        if entity == "study":
+            status_value = str(item.get("status") or "new").lower()
+            try:
+                ease_value = float(item.get("ease", 2.5))
+                interval_value = int(item.get("interval_hours", item.get("intervalHours", 1)))
+                times_value = int(item.get("times_studied", item.get("timesStudied", 0)))
+            except (TypeError, ValueError, OverflowError):
+                invalid += 1
+                invalid_uids.append(uid)
+                continue
+            notes_value = item.get("notes", "")
+            if notes_value is None:
+                notes_value = ""
+            invalid_study = (
+                status_value not in {"new", "learning", "known", "review"}
+                or not 1.0 <= ease_value <= 4.0
+                or not 0 <= interval_value <= 24 * 365
+                or not 0 <= times_value <= 10_000_000
+                or not isinstance(notes_value, str)
+            )
+            if invalid_study:
+                invalid += 1
+                invalid_uids.append(uid)
+                continue
+
         # Reject malformed workspace items before reporting them as accepted.
         # Without this validation, sync_apply could reject them later while the
         # client saw only "kept" and advanced its sync cursor.
@@ -471,6 +496,7 @@ def sync_push():
             kept += 1
         else:
             kept += 1
+    apply_rejected = 0
     if curriculum_to_apply:
         d.sync_apply(curriculum_to_apply)
     if workspace_to_apply:
@@ -479,12 +505,14 @@ def sync_push():
             rejected_workspace = len(workspace_to_apply) - applied_workspace
             accepted -= rejected_workspace
             kept += rejected_workspace
+            apply_rejected += rejected_workspace
     if study_to_apply:
         applied_study = study_sync_apply(d.conn, study_to_apply)
         if applied_study < len(study_to_apply):
             rejected_study = len(study_to_apply) - applied_study
             accepted -= rejected_study
             kept += rejected_study
+            apply_rejected += rejected_study
     return jsonify({
         "accepted": accepted,
         "kept": kept,
@@ -496,6 +524,7 @@ def sync_push():
         "missing_target_uids": missing_target_uids,
         "invalid": invalid,
         "invalid_uids": invalid_uids,
+        "apply_rejected": apply_rejected,
         "server_time": utc_now(),
     })
 
