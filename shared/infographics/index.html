@@ -71,7 +71,7 @@ footer{color:#5f7188;text-align:center;margin-top:24px;font-size:.85rem}
       <figure><img src="wifi_enterprise.svg" alt="کلاینت بی‌سیم، احراز هویت و Association با اکسس پوینت، VLAN سوییچ، DHCP، دروازه و اینترنت" loading="lazy"><figcaption>وصل‌شدن رادیویی به AP معادل داشتن IP معتبر یا دسترسی اینترنت نیست.</figcaption></figure>
       <div class="body"><ul><li>کلاینت اسکن، Authentication/Association و در شبکه‌های امن سازوکار امنیتی/کلید را طی می‌کند.</li><li>AP ترافیک را به VLAN/SSID درست نگاشت می‌کند؛ uplink ممکن است access یا trunk باشد.</li><li>DHCP، DNS، default gateway، ACL/firewall و مسیر WAN مراحل مجزایی‌اند؛ هرکدام باید جدا بررسی شوند.</li><li>در roaming، کلاینت بین APها جابه‌جا می‌شود؛ کیفیت RF، کانال، توان، تداخل، پوشش و احراز هویت مهم‌اند.</li></ul><p>عیب‌یابی را از لایهٔ رادیویی به بالا انجام دهید: Association → VLAN → DHCP → DNS → Gateway → Route/NAT → مقصد.</p></div>
     </article>
-  </section>
+
 
     <article>
       <h2>۷. بوت Windows از UEFI تا Sign-in</h2>
@@ -98,6 +98,54 @@ footer{color:#5f7188;text-align:center;margin-top:24px;font-size:.85rem}
       <figure><img src="backup_recovery.svg" alt="چرخهٔ طراحی backup با RPO/RTO، نسخهٔ مستقل و immutable، آزمون restore و ثبت شواهد" loading="lazy"><figcaption>Backup موفق هنوز ثابت نمی‌کند که سرویس قابل بازیابی است.</figcaption></figure>
       <div class="body"><p>RPO میزان از دست‌رفتن دادهٔ قابل‌قبول و RTO زمان هدف برای برگشت سرویس است. نسخهٔ آفلاین یا immutable باید از اعتبارنامهٔ معمول و دامنهٔ خرابی/نفوذ جدا محافظت شود.</p><p>Restore را در محیط ایزوله انجام دهید و صحت داده، وابستگی‌ها و کارکرد برنامه را بسنجید. زمان بازیابی واقعی و خطاهای آزمون را ثبت کنید و runbook را به‌روز نگه دارید.</p></div>
     </article>
+  </section>
+
+    <article>
+      <h2>۱۲. ARP در IPv4 و Neighbor Discovery در IPv6</h2>
+      <figure><img src="arp_ndp.svg" alt="مقایسهٔ ARP broadcast و reply یک‌پخشی با Neighbor Solicitation و Advertisement در IPv6" loading="lazy"><figcaption>برای مقصد off-subnet معمولاً MAC دروازه resolve می‌شود، نه MAC سرور اینترنتی.</figcaption></figure>
+      <div class="body"><p>ARP آدرس IPv4 را به آدرس لایهٔ پیوند در همان شبکه نگاشت می‌کند. IPv6 از Neighbor Discovery روی ICMPv6 استفاده می‌کند و علاوه بر نگاشت همسایه، قابلیت‌هایی مانند Router Discovery و Duplicate Address Detection دارد.</p><ul><li>Windows: <code>arp -a</code> و <code>Get-NetNeighbor</code></li><li>Linux: <code>ip neigh show</code></li><li>در رخداد مشکل، VLAN، IP تکراری، cache کهنه و drop شدن ARP/ICMPv6 را بررسی کنید.</li></ul></div>
+    </article>
+    <article>
+      <h2>۱۳. TCP سه‌مرحله‌ای و پایان اتصال</h2>
+      <figure><img src="tcp_handshake.svg" alt="توالی SYN، SYN-ACK و ACK و سپس انتقال داده و پایان ساده‌شدهٔ TCP" loading="lazy"><figcaption>موفق‌شدن handshake فقط اتصال TCP را ثابت می‌کند؛ سلامت TLS و برنامه جداست.</figcaption></figure>
+      <div class="body"><p>در handshake، طرفین شماره‌های توالی را هماهنگ می‌کنند. پس از برقراری اتصال، ACK، window و retransmission در رفتار واقعی مهم‌اند. پایان graceful معمولاً FIN/ACKهای دوطرفه دارد، درحالی‌که RST اتصال را به‌صورت ناگهانی خاتمه می‌دهد.</p><ul><li>اگر SYN خارج می‌شود ولی SYN-ACK نمی‌آید، مسیر برگشت، ACL/firewall، listener و مقصد را بررسی کنید.</li><li>اگر TCP برقرار است اما وب کار نمی‌کند، TLS certificate/time، HTTP status و لاگ برنامه را جدا بررسی کنید.</li></ul></div>
+    </article>
+    <article>
+      <h2>۱۴. VLAN، Access و Trunk</h2>
+      <figure><img src="vlan_trunk.svg" alt="دو کلاینت در VLANهای متفاوت روی access port و عبور تگ 802.1Q از trunk بین سوئیچ‌ها تا gateway لایهٔ سه" loading="lazy"><figcaption>Trunk چند VLAN را حمل می‌کند؛ به‌خودی‌خود inter-VLAN routing ایجاد نمی‌کند.</figcaption></figure>
+      <div class="body"><p>Access port یک VLAN را به پورت کلاینت نسبت می‌دهد؛ فریم سمت میزبان در سناریوی متداول بی‌تگ است. Trunk با 802.1Q شناسهٔ VLAN را برای VLANهای مجاز حمل می‌کند. Native VLAN و allowed VLAN list باید با طراحی هر دو سمت سازگار باشند.</p><p>آزمایش: پیکربندی دو سمت trunk، MAC table/VLAN membership و gateway را بررسی کنید؛ سپس ارتباط درون VLAN و بین VLANها را جداگانه تأیید کنید.</p></div>
+    </article>
+    <article>
+      <h2>۱۵. NAT و PAT؛ ترجمهٔ آدرس و پورت</h2>
+      <figure><img src="nat_pat.svg" alt="دو میزبان خصوصی با پورت یکسان که در روتر به یک IP عمومی و پورت‌های متفاوت ترجمه می‌شوند" loading="lazy"><figcaption>NAT ترجمه است، نه رمزنگاری؛ و به‌تنهایی سیاست امنیتی کامل نیست.</figcaption></figure>
+      <div class="body"><p>PAT جریان‌ها را با آدرس/پورت مبدأ ترجمه‌شده و state اتصال از هم تفکیک می‌کند. پاسخ باید با state و مسیر برگشت سازگار باشد. Double NAT یا CGNAT می‌تواند انتشار سرویس و inbound connectivity را پیچیده کند.</p><p>برای عیب‌یابی، جدول translation/conntrack، WAN IP، default route، policy firewall و مسیر برگشت را بررسی کنید؛ قبل از تغییر Port Forwarding وضعیت مالکیت public IP را تأیید کنید.</p></div>
+    </article>
+    <article>
+      <h2>۱۶. Stateful Firewall؛ چرا پاسخ یک اتصال با اتصال جدید فرق دارد؟</h2>
+      <figure><img src="firewall_state.svg" alt="جریان بسته از interface و connection tracking به بررسی policy، سپس allow یا drop و ثبت شواهد" loading="lazy"><figcaption>قانون مجازکنندهٔ اتصال جدید با state مربوط به پاسخ اتصال برقرارشده یکسان نیست.</figcaption></figure>
+      <div class="body"><p>Firewall ممکن است zone/interface، tuple اتصال، state پروتکل، ترتیب rule، NAT و سیاست را با هم ارزیابی کند. ترافیک برگشتی یک جریان مجاز گاهی به دلیل state پذیرفته می‌شود؛ این موضوع مجوز عمومی برای اتصال جدید نیست.</p><p>در lab ایزوله، یک قانون را تغییر دهید، counters/log/conntrack را قبل و بعد مقایسه کنید و rollback را آماده نگه دارید. NAT و firewall را به‌عنوان دو نقش مرتبط اما متفاوت بررسی کنید.</p></div>
+    </article>
+    <article>
+      <h2>۱۷. همگرایی OSPF؛ از Hello تا FIB</h2>
+      <figure><img src="ospf_path_selection.svg" alt="توالی Hello، تشکیل adjacency، انتشار LSA، ساخت LSDB، اجرای SPF و نصب route در RIB و FIB" loading="lazy"><figcaption>وجود همسایه به معنی نصب مسیر مطلوب یا ارسال موفق بسته نیست.</figcaption></figure>
+      <div class="body"><p>Hello همسایه را شناسایی می‌کند؛ adjacency و تبادل/flood اطلاعات لینک‌استیت پایگاه LSDB را همگرا می‌کنند. سپس الگوریتم SPF مسیرها را محاسبه می‌کند و نتیجه پس از قواعد انتخاب route در RIB و صفحهٔ forwarding نصب می‌شود.</p><p>عیب‌یابی را مرحله‌ای انجام دهید: neighbor state، area/timers/authentication، LSDB، SPF/RIB، next-hop resolution، FIB و شمارنده‌های interface. جزئیات وابسته به area، network type و پیاده‌سازی است.</p></div>
+    </article>
+    <article>
+      <h2>۱۸. محل درست Packet Capture در مسیر</h2>
+      <figure><img src="packet_capture_points.svg" alt="نقاط capture از کلاینت و Wi-Fi تا SPAN سوئیچ، روتر/فایروال، WAN و سرور مقصد" loading="lazy"><figcaption>دو capture هم‌زمان یا نزدیک به هم می‌تواند مشخص کند بسته در کدام مرز ناپدید می‌شود.</figcaption></figure>
+      <div class="body"><p>ثبت packet از یک نقطه فقط همان دید محلی را نشان می‌دهد. اگر بسته در کلاینت دیده شود ولی در mirror port نباشد، لایهٔ دسترسی، VLAN، پورت mirror و dropهای محلی را بررسی کنید؛ اگر از WAN خارج شود اما پاسخی نرسد، upstream و مسیر برگشت را دنبال کنید.</p><p>زمان، interface، فیلتر، نرخ packet loss، offload و محدودیت‌های مشاهدهٔ TLS را در گزارش ثبت کنید؛ capture را بدون مجوز یا ضرورت از محتوای حساس تهیه نکنید.</p></div>
+    </article>
+    <article>
+      <h2>۱۹. درخت تصمیم عیب‌یابی شبکه</h2>
+      <figure><img src="network_troubleshooting.svg" alt="مسیر عیب‌یابی از لینک و Wi-Fi، VLAN و همسایه، IP و route، DNS و firewall، تا TCP، TLS و برنامه" loading="lazy"><figcaption>از لایه‌های پایین به بالا حرکت کنید و برای هر فرضیه آزمون تمایزبخش داشته باشید.</figcaption></figure>
+      <div class="body"><p>رویهٔ قابل تکرار: symptom → evidence → hypothesis → discriminating test → root cause → low-risk remediation → independent verification. ابتدا شواهد و baseline را ثبت کنید؛ هم‌زمان چند متغیر را تغییر ندهید.</p><p>ابزار مناسب به پلتفرم بستگی دارد: <code>Test-NetConnection</code>، <code>ipconfig /all</code>، <code>ip route</code>، <code>resolvectl</code>، جدول MAC/Route و packet capture. خروجی هر فرمان باید تفسیر شود، نه فقط اجرا.</p></div>
+    </article>
+    <article>
+      <h2>۲۰. مودم، ONT و حالت Bridge در برابر Router</h2>
+      <figure><img src="modem_bridge_router.svg" alt="مقایسهٔ bridge mode که در آن روتر خود کاربر WAN را کنترل می‌کند، router mode روی CPE و حالت Double NAT" loading="lazy"><figcaption>ONT رسانهٔ فیبر را خاتمه می‌دهد؛ ممکن است روتر و Wi-Fi هم در همان دستگاه یکپارچه باشند.</figcaption></figure>
+      <div class="body"><p>در Bridge mode، تجهیزات کاربر معمولاً اتصال WAN مثل PPPoE، route و NAT را انجام می‌دهند. در Router mode، CPE می‌تواند DHCP، NAT، firewall و Wi-Fi را خودش مدیریت کند. قرار گرفتن یک روتر پشت روتر دیگر ممکن است Double NAT بسازد.</p><p>برای تشخیص، WAN IP، default route، DHCP server، bridge/VLAN، PPPoE و conntrack را بررسی کنید. تغییر حالت دستگاه ممکن است دسترسی مدیریت و سرویس را قطع کند؛ تنظیم فعلی و روش بازگشت را قبل از تغییر ثبت کنید.</p></div>
+    </article>
+
   <footer>NetworkAll · اینفوگرافیک‌های برداری آفلاین · قابل استفاده در ویندوز و اندروید · منابع و آزمایشگاه‌های تفصیلی در درس‌های مرتبط قرار می‌گیرند.</footer>
 </main>
 </body>
