@@ -232,19 +232,21 @@ class MainActivity : AppCompatActivity() {
                     var invalid = 0
                     var applyRejected = 0
                     var start = 0
-                    // Bound the serialized UTF-8 request size as well as record count.
-                    // Record sizes vary widely for lessons and notes, so a fixed batch
-                    // of 25 records can exceed Flask's 8 MiB request limit.
+                    // Bound the actual UTF-8 request size as well as record count.
+                    // Notes and lessons vary widely; 25 large records can exceed Flask's 8 MiB cap.
                     val maxBatchBytes = 7 * 1024 * 1024
                     while (start < pushArr.length()) {
                         val batch = org.json.JSONArray()
-                        // Include the JSON envelope and leave headroom for brackets/commas.
-                        var serializedBytes = """{"records":[]}""".toByteArray(Charsets.UTF_8).size
                         while (start < pushArr.length() && batch.length() < 25) {
-                            val record = pushArr.get(start)
-                            val recordBytes = record.toString().toByteArray(Charsets.UTF_8).size
-                            val additionalBytes = recordBytes + if (batch.length() == 0) 0 else 1
-                            if (serializedBytes + additionalBytes > maxBatchBytes) {
+                            batch.put(pushArr.get(start))
+                            val requestBytes = org.json.JSONObject()
+                                .put("records", batch)
+                                .toString()
+                                .toByteArray(Charsets.UTF_8)
+                                .size
+                            if (requestBytes > maxBatchBytes) {
+                                // Keep this record for the next batch and measure it alone.
+                                batch.remove(batch.length() - 1)
                                 if (batch.length() == 0) {
                                     throw IllegalStateException(
                                         "یک رکورد همگام‌سازی از سقف امن ۷ MiB بزرگ‌تر است؛ انتقال متوقف شد تا درخواست ردشده یا ناقص ارسال نشود."
@@ -252,8 +254,6 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 break
                             }
-                            batch.put(record)
-                            serializedBytes += additionalBytes
                             start++
                         }
                         val pushBody = withContext(Dispatchers.IO) { c.push(batch) }
