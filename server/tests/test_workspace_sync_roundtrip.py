@@ -7,12 +7,17 @@ The tests use a temporary SQLite database and never touch the user's real data.
 """
 from __future__ import annotations
 
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-import workspace_routes
+SERVER_DIR = Path(__file__).resolve().parents[1]
+if str(SERVER_DIR) not in sys.path:
+    sys.path.insert(0, str(SERVER_DIR))
+
+import workspace_routes  # noqa: E402
 
 
 class WorkspaceSyncRoundTripTests(unittest.TestCase):
