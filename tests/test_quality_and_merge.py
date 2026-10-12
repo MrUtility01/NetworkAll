@@ -598,6 +598,49 @@ class SyncApiContractTests(unittest.TestCase):
             db.conn.close()
 
 
+    def test_sync_push_rejects_malformed_task_fields_instead_of_coercing(self):
+        with tempfile.TemporaryDirectory() as td:
+            db = WebDB(Path(td) / "sync-invalid-task.sqlite")
+            payload = {
+                "records": [
+                    {"uid": "task-bad-priority", "entity": "task", "title": "Bad priority",
+                     "body": "", "done": False, "priority": 4, "due_at": "",
+                     "last_updated": "2026-10-12T04:00:00Z", "device_id": "android-test"},
+                    {"uid": "task-bad-date", "entity": "task", "title": "Bad date",
+                     "body": "", "done": False, "priority": 2, "due_at": "2026-99-99",
+                     "last_updated": "2026-10-12T04:00:00Z", "device_id": "android-test"},
+                    {"uid": "task-bad-done", "entity": "task", "title": "Bad done flag",
+                     "body": "", "done": "false", "priority": 2, "due_at": "",
+                     "last_updated": "2026-10-12T04:00:00Z", "device_id": "android-test"},
+                    {"uid": "task-bad-delete", "entity": "task", "title": "Bad delete flag",
+                     "body": "", "done": False, "priority": 2, "due_at": "",
+                     "deleted": "yes", "last_updated": "2026-10-12T04:00:00Z",
+                     "device_id": "android-test"},
+                ]
+            }
+            try:
+                with (
+                    patch.object(server_app, "db", return_value=db),
+                    patch.object(server_app, "require_token", return_value=None),
+                    patch.object(workspace_routes, "_db_path", return_value=db.path),
+                ):
+                    client = server_app.app.test_client()
+                    response = client.post("/api/sync/push", json=payload)
+                    self.assertEqual(response.status_code, 200)
+                    body = response.get_json()
+                    self.assertEqual(body["accepted"], 0)
+                    self.assertEqual(body["invalid"], 4)
+                    self.assertEqual(
+                        body["invalid_uids"],
+                        ["task-bad-priority", "task-bad-date", "task-bad-done", "task-bad-delete"],
+                    )
+                    manifest = client.get("/api/sync/manifest").get_json()
+                    self.assertFalse(
+                        any(item["uid"].startswith("task-bad-") for item in manifest["items"])
+                    )
+            finally:
+                db.conn.close()
+
     def test_sync_push_does_not_claim_success_when_storage_rejects_existing_lesson(self):
         with tempfile.TemporaryDirectory() as td:
             db = WebDB(Path(td) / "sync-reject.sqlite")
