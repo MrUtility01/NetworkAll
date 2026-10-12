@@ -15,9 +15,20 @@ def clean_topic(title: str) -> str:
     return t.strip() or (title or "موضوع")
 
 def _contains_any(title: str, terms: tuple[str, ...]) -> bool:
-    """Case-insensitive dispatch while preserving the existing substring matching rules."""
+    """Case-insensitive topic dispatch without matching short acronyms inside unrelated words."""
     haystack = (title or "").casefold()
-    return any(str(term).casefold() in haystack for term in terms)
+    for term in terms:
+        needle = str(term).casefold().strip()
+        if not needle:
+            continue
+        # Short Latin acronyms (TTL, ARP, AP, RAM, etc.) must be standalone tokens.
+        # This prevents e.g. "TTL" from matching the letters inside "Bottleneck".
+        if len(needle) <= 3 and needle.isascii() and needle.isalpha():
+            if re.search(rf"(?<![a-z0-9]){re.escape(needle)}(?![a-z0-9])", haystack):
+                return True
+        elif needle in haystack:
+            return True
+    return False
 
 
 def _fmt_cmds(pairs):
