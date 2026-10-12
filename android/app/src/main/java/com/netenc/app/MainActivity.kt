@@ -18,6 +18,7 @@ import com.netenc.app.data.WorkspaceSyncRepository
 import com.netenc.app.data.ScenarioSyncRepository
 import com.netenc.app.data.StudySyncRepository
 import com.netenc.app.reminder.ReminderScheduler
+import com.netenc.app.reminder.TaskReminderScheduler
 import com.netenc.app.sync.SyncClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         tokenInput.setText(prefs.getString("token", SettingsActivity.DEFAULT_TOKEN) ?: "")
 
         ReminderScheduler.scheduleHourly(this)
+        lifecycleScope.launch { TaskReminderScheduler.reconcileAll(this@MainActivity) }
 
         findViewById<Button>(R.id.btnStudyHub).setOnClickListener {
             startActivity(Intent(this, StudyHubActivity::class.java))
@@ -214,6 +216,8 @@ class MainActivity : AppCompatActivity() {
                     pulled += withContext(Dispatchers.IO) { scenarioSyncRepo.upsertFromPullJson(body) }
                     pulled += withContext(Dispatchers.IO) { studySyncRepo.upsertFromPullJson(body) }
                 }
+                // Pulled tasks may contain a reminder created on Windows; schedule it locally now.
+                TaskReminderScheduler.reconcileAll(this@MainActivity)
                 val pushArr = withContext(Dispatchers.IO) {
                     val combined = repo.buildPushArray(since)
                     val workspace = workspaceSyncRepo.buildPushArray()
