@@ -278,7 +278,7 @@ class DeepFallbackTests(unittest.TestCase):
         self.assertGreaterEqual(len(qids), 10)
         self.assertEqual(len(qids), len(set(qids)))
         self.assertEqual(set(qids), set(aids))
-        self.assertIn("RAM میز کار است", lesson["full_content"])
+        self.assertIn("Fetch → Decode → Execute → Write-back", lesson["full_content"])
         self.assertIn("## واژه‌نامهٔ تخصصی", lesson["full_content"])
         self.assertIn("## خروجی مورد انتظار و معیار قبولی", lesson["full_content"])
         self.assertTrue(lesson.get("official_sources"))
