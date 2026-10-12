@@ -37,7 +37,8 @@
   "content_quality": {
     "status": "review_required",
     "lab_status": "designed_not_executed",
-    "note_fa": "ساختار JSON و مسیر آموزشی تولید شده؛ آزمایش دستورات باید روی نسخه/مدل هدف و با شواهد اجرا تکمیل شود."
+    "note_fa": "ساختار JSON و مسیر آموزشی تولید شده؛ آزمایش دستورات باید روی نسخه/مدل هدف و با شواهد اجرا تکمیل شود.",
+    "notes_fa": "دو رکورد هم‌UID برای show router static ادغام شدند؛ عنوان جایگزین در رکورد اصلی حفظ شد. CLI باید با نسخهٔ FortiOS هدف تطبیق داده شود."
   },
   "commands": [
     {
@@ -730,7 +731,10 @@
       "title_fa": "نمایش پیکربندی Static Route",
       "title_en": "show router static",
       "command": "show router static",
-      "aliases": [],
+      "aliases": [
+        "نمایش Static Route config",
+        "show router static"
+      ],
       "syntax": "show router static",
       "arguments": [],
       "when_to_use_fa": "بازبینی config source برای مسیرهای static و interface/target",
@@ -796,7 +800,7 @@
         ]
       },
       "scenario_fa": "**سناریوی آزمایشگاهی:** config را با جدول route نصب‌شده مقایسه کن؛ static route نامعتبر یا disabled ممکن است در RIB فعال نباشد.\n**هدف:** بازبینی config source برای مسیرهای static و interface/target\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
-      "full_content": "# نمایش پیکربندی Static Route\n\n**دستور:** `show router static`\n\n**هدف عملیاتی:** بازبینی config source برای مسیرهای static و interface/target\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. config را با جدول route نصب‌شده مقایسه کن؛ static route نامعتبر یا disabled ممکن است در RIB فعال نباشد.\n\n## نمونه خروجی\n\n```text\n\nconfig router static\n edit 1\n  set dst 0.0.0.0 0.0.0.0\n  set gateway 10.20.30.1\n next\nend\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nپیش از ارسال config، gatewayها و شبکه‌های داخلی را پوشانده و backup امن نگه دار. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get router info routing-table all`، `show system interface`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
+      "full_content": "# نمایش پیکربندی Static Route\n\n**دستور:** `show router static`\n\n**هدف عملیاتی:** بازبینی config source برای مسیرهای static و interface/target\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. config را با جدول route نصب‌شده مقایسه کن؛ static route نامعتبر یا disabled ممکن است در RIB فعال نباشد.\n\n## نمونه خروجی\n\n```text\n\nconfig router static\n edit 1\n  set dst 0.0.0.0 0.0.0.0\n  set gateway 10.20.30.1\n next\nend\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nپیش از ارسال config، gatewayها و شبکه‌های داخلی را پوشانده و backup امن نگه دار. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get router info routing-table all`، `show system interface`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)\n\n## عنوان جایگزین\nنمایش Static Route config\n",
       "official_sources": [
         {
           "title": "Fortinet Documentation — FortiOS",
@@ -2498,91 +2502,6 @@
       },
       "scenario_fa": "**سناریوی آزمایشگاهی:** پیکربندی را با VLAN/subnet واقعی و DHCP relay تطبیق بده؛ روی gateway و DNS دقیق شو.\n**هدف:** مرور scope range، gateway، DNS، interface و lease time\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
       "full_content": "# نمایش DHCP server configuration\n\n**دستور:** `show system dhcp server`\n\n**هدف عملیاتی:** مرور scope range، gateway، DNS، interface و lease time\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. پیکربندی را با VLAN/subnet واقعی و DHCP relay تطبیق بده؛ روی gateway و DNS دقیق شو.\n\n## نمونه خروجی\n\n```text\n\nconfig system dhcp server\n edit 1\n  set interface \"port2\"\n  set default-gateway 10.20.30.1\n next\nend\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخطا در scope یا interface می‌تواند به کاربران subnet اشتباه IP بدهد. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`execute dhcp lease-list`، `get system interface`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
-      "official_sources": [
-        {
-          "title": "Fortinet Documentation — FortiOS",
-          "url": "https://docs.fortinet.com/product/fortigate/7.4"
-        }
-      ],
-      "source_status": "review_required"
-    },
-    {
-      "uid": "cmd:fortigate:static-route:show-router-static",
-      "vendor": "fortigate",
-      "platform": "FortiOS 7.x CLI",
-      "category": "routing",
-      "subcategory": "static-route",
-      "level": "L1",
-      "title_fa": "نمایش Static Route config",
-      "title_en": "show router static",
-      "command": "show router static",
-      "aliases": [],
-      "syntax": "show router static",
-      "arguments": [],
-      "when_to_use_fa": "بازبینی تمام static routeها و next hopها در CLI config",
-      "prerequisites_fa": [],
-      "steps_fa": [
-        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
-        "هدف دستور را با سناریوی مشخص تطبیق بده: بازبینی تمام static routeها و next hopها در CLI config",
-        "فرمان را در محیط آزمایشگاهی اجرا کن: show router static",
-        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
-        "آزمایش بازگشت/پاکسازی: با RIB و policy routes مقایسه کن تا تفاوت config با route فعال مشخص شود."
-      ],
-      "sample_output": "set dst 0.0.0.0 0.0.0.0\nset gateway 10.20.30.1\nset device \"port1\"",
-      "output_fields_fa": [],
-      "related_commands": [
-        "get router info routing-table all",
-        "show router policy"
-      ],
-      "common_mistakes_fa": [
-        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
-        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
-      ],
-      "lab_hint_fa": "با RIB و policy routes مقایسه کن تا تفاوت config با route فعال مشخص شود.",
-      "security_notes_fa": "پیش از تغییر مسیر، backup و آزمون مسیر برگشت داشته باش.",
-      "search_keywords": [
-        "show router static",
-        "show router static",
-        "نمایش Static Route config",
-        "fortigate",
-        "FortiOS 7.x CLI",
-        "routing",
-        "static-route"
-      ],
-      "flashcards": [
-        {
-          "front": "فرمان `show router static` چه هدفی دارد؟",
-          "back": "بازبینی تمام static routeها و next hopها در CLI config"
-        },
-        {
-          "front": "قبل از استفاده عملی از «نمایش Static Route config» چه نکته‌ای را کنترل کنیم؟",
-          "back": "پیش از تغییر مسیر، backup و آزمون مسیر برگشت داشته باش."
-        }
-      ],
-      "assessment": {
-        "questions": [
-          {
-            "id": "q030",
-            "prompt": "برای این هدف، «بازبینی تمام static routeها و next hopها در CLI config»، کدام دستور در این رکورد معرفی شده است؟",
-            "options": [
-              "show router static",
-              "get router info routing-table all",
-              "show router policy",
-              "show system status"
-            ],
-            "type": "mcq"
-          }
-        ],
-        "answer_key": [
-          {
-            "id": "q030",
-            "correct_index": 0,
-            "explain_fa": "`show router static` برای بازبینی تمام static routeها و next hopها در CLI config. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
-          }
-        ]
-      },
-      "scenario_fa": "**سناریوی آزمایشگاهی:** با RIB و policy routes مقایسه کن تا تفاوت config با route فعال مشخص شود.\n**هدف:** بازبینی تمام static routeها و next hopها در CLI config\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
-      "full_content": "# نمایش Static Route config\n\n**دستور:** `show router static`\n\n**هدف عملیاتی:** بازبینی تمام static routeها و next hopها در CLI config\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. با RIB و policy routes مقایسه کن تا تفاوت config با route فعال مشخص شود.\n\n## نمونه خروجی\n\n```text\n\nset dst 0.0.0.0 0.0.0.0\nset gateway 10.20.30.1\nset device \"port1\"\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nپیش از تغییر مسیر، backup و آزمون مسیر برگشت داشته باش. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`get router info routing-table all`، `show router policy`\n\n## منابع رسمی\n\n[Fortinet Documentation — FortiOS](https://docs.fortinet.com/product/fortigate/7.4)",
       "official_sources": [
         {
           "title": "Fortinet Documentation — FortiOS",
