@@ -27,6 +27,10 @@ class LessonRepository(context: Context) {
             // Manifest pulls also contain scenarios, tasks, and notes. Never coerce
             // those rows into the lessons table.
             if (uid.isBlank() || r.optString("entity", "lesson") != "lesson") continue
+            // A sync payload may omit the Android-only hierarchy columns. Room's
+            // REPLACE strategy replaces the whole row, so preserve existing tree metadata
+            // rather than silently moving a lesson into the "no chapter" bucket.
+            val previous = dao.byUid(uid)
             list.add(
                 LessonEntity(
                     uid = uid,
@@ -46,7 +50,11 @@ class LessonRepository(context: Context) {
                     lastUpdated = r.optString("last_updated", ""),
                     contentHash = r.optString("content_hash", ""),
                     deviceId = r.optString("device_id", ""),
-                    deleted = r.optBoolean("deleted", false)
+                    deleted = r.optBoolean("deleted", false),
+                    chapterOrder = r.optInt("chapter_order", r.optInt("chapterOrder", previous?.chapterOrder ?: 0)),
+                    chapterTitle = r.optString("chapter_title", r.optString("chapterTitle", previous?.chapterTitle ?: "")),
+                    subTitle = r.optString("sub_title", r.optString("subTitle", previous?.subTitle ?: "")),
+                    lessonOrder = r.optInt("lesson_order", r.optInt("lessonOrder", previous?.lessonOrder ?: 0))
                 )
             )
         }
