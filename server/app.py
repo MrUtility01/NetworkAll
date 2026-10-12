@@ -15,7 +15,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from flask import Flask, jsonify, render_template, request, send_from_directory
+from flask import Flask, jsonify, render_template, request, send_from_directory, session, redirect
 
 from core.db import WebDB
 from core.study import study_sync_apply, study_sync_index, study_sync_pull
@@ -71,6 +71,78 @@ BASE = Path(__file__).resolve().parent
 app = Flask(__name__, template_folder=str(BASE / "templates"), static_folder=str(BASE / "static"))
 app.config["JSON_AS_ASCII"] = False
 app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024
+
+# App-entry PIN for the local Windows UI. Override with NETENC_APP_PASSWORD if desired.
+# The built-in value is stored only as PBKDF2-HMAC-SHA256 (200k rounds), never as plaintext.
+_APP_PIN_SALT = bytes.fromhex("5f3a9c71d8e2046bb6f9012ac48d735e")
+_APP_PIN_HASH = bytes.fromhex("b3bcd73dc2fa994ab21c0af7f4353e6355fb260d1220ba45fb054176bb3a2f76")
+_APP_PIN_ITERATIONS = 200_000
+_SESSION_KEY_PATH = BASE / "data" / "session.key"
+_SESSION_KEY_PATH.parent.mkdir(parents=True, exist_ok=True)
+if not _SESSION_KEY_PATH.exists():
+    try:
+        _SESSION_KEY_PATH.write_bytes(os.urandom(32))
+    except OSError:
+        pass
+try:
+    _session_key = _SESSION_KEY_PATH.read_bytes()
+    if len(_session_key) < 32:
+        raise ValueError("session key too short")
+except Exception:
+    # Do not silently create a predictable key; login sessions will be invalidated on restart.
+    _session_key = os.urandom(32)
+app.secret_key = _session_key
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+    PERMANENT_SESSION_LIFETIME=12 * 60 * 60,
+)
+
+def _verify_app_pin(candidate: str) -> bool:
+    override = os.environ.get("NETENC_APP_PASSWORD")
+    if override is not None:
+        return hmac.compare_digest(candidate, override)
+    if not candidate or len(candidate) > 128:
+        return False
+    derived = hashlib.pbkdf2_hmac("sha256", candidate.encode("utf-8"), _APP_PIN_SALT, _APP_PIN_ITERATIONS, dklen=32)
+    return hmac.compare_digest(derived, _APP_PIN_HASH)
+
+_APP_LOGIN_HTML = """<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>ورود به برنامه</title>
+<style>body{font-family:Tahoma,sans-serif;background:#0f172a;color:#e2e8f0;display:grid;place-items:center;min-height:95vh}
+form{background:#1e293b;padding:28px;border-radius:14px;width:min(360px,88vw)}input,button{box-sizing:border-box;width:100%;padding:12px;margin:8px 0;border:0;border-radius:8px}
+button{background:#2563eb;color:white;font-weight:bold}.err{color:#fca5a5}</style>
+<form method="post"><h2>ورود به Engineer Jokar</h2><p>رمز ورود برنامه را وارد کنید.</p>
+<input type="password" name="pin" inputmode="numeric" autocomplete="current-password" autofocus required>
+{% if error %}<p class="err">{{ error }}</p>{% endif %}<button type="submit">ورود</button></form></html>"""
+
+@app.route("/app-login", methods=["GET", "POST"])
+def app_login():
+    if request.method == "POST":
+        pin = request.form.get("pin", "")
+        if _verify_app_pin(pin):
+            session.clear()
+            session["app_authenticated"] = True
+            session.permanent = True
+            return redirect(request.args.get("next") or "/")
+        return render_template_string(_APP_LOGIN_HTML, error="رمز ورود صحیح نیست."), 401
+    return render_template_string(_APP_LOGIN_HTML, error="")
+
+@app.get("/app-logout")
+def app_logout():
+    session.clear()
+    return redirect("/app-login")
+
+@app.before_request
+def require_app_entry_for_browser_ui():
+    path = request.path
+    if path in {"/app-login", "/app-logout"} or path.startswith("/api/") or path.startswith("/static/") or path.startswith("/infographics"):
+        return None
+    if path.startswith("/workspace/login"):
+        return None
+    if not session.get("app_authenticated"):
+        return redirect("/app-login?next=" + path)
+    return None
 
 _MODULE_STATUS = {"workspace": False, "study": False, "workspace_error": "", "study_error": ""}
 
@@ -138,6 +210,8 @@ def extract_token() -> str:
 
 
 def check_token() -> bool:
+    if session.get("app_authenticated"):
+        return True
     if REMOTE_BIND and len(SYNC_TOKEN) < 24:
         return False
     candidate = extract_token()
