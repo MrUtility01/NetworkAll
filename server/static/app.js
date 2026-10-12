@@ -5,6 +5,26 @@ const viewer = $("#viewer");
 const breadcrumb = $("#breadcrumb");
 const statsEl = $("#stats");
 
+// Theme preference is local to this browser/device; content and sync are unaffected.
+(function initTheme() {
+  const button = $("#btnTheme");
+  if (!button) return;
+  let theme = "light";
+  try { theme = localStorage.getItem("networkall-theme") || "light"; } catch (_) {}
+  applyTheme(theme);
+  button.addEventListener("click", () => {
+    const next = document.body.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(next);
+    try { localStorage.setItem("networkall-theme", next); } catch (_) {}
+  });
+  function applyTheme(value) {
+    if (value === "dark") document.body.dataset.theme = "dark";
+    else delete document.body.dataset.theme;
+    button.textContent = value === "dark" ? "حالت روشن" : "حالت تیره";
+    button.setAttribute("aria-pressed", value === "dark" ? "true" : "false");
+  }
+})();
+
 const state = {
   chapters: [],
   openCh: null,
