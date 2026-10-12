@@ -72,6 +72,32 @@ footer{color:#5f7188;text-align:center;margin-top:24px;font-size:.85rem}
       <div class="body"><ul><li>کلاینت اسکن، Authentication/Association و در شبکه‌های امن سازوکار امنیتی/کلید را طی می‌کند.</li><li>AP ترافیک را به VLAN/SSID درست نگاشت می‌کند؛ uplink ممکن است access یا trunk باشد.</li><li>DHCP، DNS، default gateway، ACL/firewall و مسیر WAN مراحل مجزایی‌اند؛ هرکدام باید جدا بررسی شوند.</li><li>در roaming، کلاینت بین APها جابه‌جا می‌شود؛ کیفیت RF، کانال، توان، تداخل، پوشش و احراز هویت مهم‌اند.</li></ul><p>عیب‌یابی را از لایهٔ رادیویی به بالا انجام دهید: Association → VLAN → DHCP → DNS → Gateway → Route/NAT → مقصد.</p></div>
     </article>
   </section>
+
+    <article>
+      <h2>۷. بوت Windows از UEFI تا Sign-in</h2>
+      <figure><img src="windows_boot.svg" alt="مراحل بوت Windows از UEFI و Secure Boot تا kernel، services و sign-in" loading="lazy"><figcaption>خطای بوت را به firmware، BCD/loader، kernel یا user mode محدود کنید.</figcaption></figure>
+      <div class="body"><p>زنجیرهٔ کلی شامل UEFI/POST، Windows Boot Manager، خواندن BCD، اجرای winload، راه‌اندازی kernel و سپس سرویس‌های user mode است. Secure Boot طبق policy firmware زنجیرهٔ بوت را اعتبارسنجی می‌کند.</p><p>برای عیب‌یابی، نقطهٔ شکست و کد خطا را ثبت کنید. تغییر BCD یا پارتیشن EFI فقط با شناخت سیستم، backup و رسانهٔ بازیابی انجام شود.</p></div>
+    </article>
+    <article>
+      <h2>۸. بوت Linux، initramfs و systemd</h2>
+      <figure><img src="linux_boot.svg" alt="مراحل بوت Linux از firmware تا kernel، initramfs، systemd و target" loading="lazy"><figcaption>بوت از چند مرز جدا عبور می‌کند؛ شکست هر مرز شواهد متفاوت دارد.</figcaption></figure>
+      <div class="body"><p>Firmware، bootloader، kernel/initramfs، mount شدن root filesystem و PID 1 مراحل اصلی مدل رایج‌اند. سیستم‌هایی که systemd ندارند یا معماری embedded خاص دارند، ممکن است مسیر متفاوتی داشته باشند.</p><p>برای شروع، خروجی <code>journalctl -b -1</code>، <code>systemctl --failed</code> و <code>findmnt /</code> را جمع کنید؛ پیش از بازسازی initramfs، نسخهٔ kernel و شناسهٔ root را تأیید کنید.</p></div>
+    </article>
+    <article>
+      <h2>۹. چرخهٔ Git؛ از تغییر تا Remote</h2>
+      <figure><img src="git_lifecycle.svg" alt="جریان working tree، staging index، commit محلی، remote branch و pull request" loading="lazy"><figcaption>Commit محلی به معنی push شدن یا انتشار روی GitHub نیست.</figcaption></figure>
+      <div class="body"><p>Working tree تغییرات فایل‌ها، index فهرست تغییراتی که قرار است commit شوند و commit یک snapshot قابل‌ارجاع است. Remote و pull request لایه‌های همکاری‌اند که پس از push قابل بازبینی می‌شوند.</p><p>برای عملیات خطرناک، <code>git status</code> و <code>git diff</code> را قبل و بعد ببینید؛ برای خنثی‌کردن commit مشترک غالباً <code>git revert</code> از بازنویسی تاریخچه امن‌تر است.</p></div>
+    </article>
+    <article>
+      <h2>۱۰. PowerShell Pipeline و Objectها</h2>
+      <figure><img src="powershell_pipeline.svg" alt="انتقال objectها در PowerShell pipeline از Get-Process تا Where-Object، Sort-Object، Select-Object و Export-Csv" loading="lazy"><figcaption>Pipeline معمولاً object منتقل می‌کند؛ Format-* را برای آخر مسیر نمایش نگه دارید.</figcaption></figure>
+      <div class="body"><p>Pipeline اجازه می‌دهد objectها فیلتر، مرتب، انتخاب و ذخیره شوند؛ این روش از parse کردن متن خروجی فرمان‌ها پایدارتر است. در automation، خطا، نوع داده، ورودی نامعتبر و نتیجهٔ قابل‌راستی‌آزمایی را جدا مدیریت کنید.</p><p>برای خروجی machine-readable از <code>Export-Csv</code> یا JSON متناسب با مصرف‌کننده استفاده کنید؛ <code>Format-Table</code> داده را برای نمایش قالب‌بندی می‌کند و نباید پیش از export قرار گیرد.</p></div>
+    </article>
+    <article>
+      <h2>۱۱. Backup، Restore و معیار بازیابی</h2>
+      <figure><img src="backup_recovery.svg" alt="چرخهٔ طراحی backup با RPO/RTO، نسخهٔ مستقل و immutable، آزمون restore و ثبت شواهد" loading="lazy"><figcaption>Backup موفق هنوز ثابت نمی‌کند که سرویس قابل بازیابی است.</figcaption></figure>
+      <div class="body"><p>RPO میزان از دست‌رفتن دادهٔ قابل‌قبول و RTO زمان هدف برای برگشت سرویس است. نسخهٔ آفلاین یا immutable باید از اعتبارنامهٔ معمول و دامنهٔ خرابی/نفوذ جدا محافظت شود.</p><p>Restore را در محیط ایزوله انجام دهید و صحت داده، وابستگی‌ها و کارکرد برنامه را بسنجید. زمان بازیابی واقعی و خطاهای آزمون را ثبت کنید و runbook را به‌روز نگه دارید.</p></div>
+    </article>
   <footer>NetworkAll · اینفوگرافیک‌های برداری آفلاین · قابل استفاده در ویندوز و اندروید · منابع و آزمایشگاه‌های تفصیلی در درس‌های مرتبط قرار می‌گیرند.</footer>
 </main>
 </body>
