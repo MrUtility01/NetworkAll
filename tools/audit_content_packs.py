@@ -27,6 +27,13 @@ LAB_RE = re.compile(r"\b(lab|laboratory|verify|verification|expected output|clea
 SCENARIO_RE = re.compile(r"scenario|incident|root cause|symptom|سناریو|علائم|علت ریشه.?ای", re.I)
 ANSWER_RE = re.compile(r"answer[_ -]?key|correct[_ -]?answer|پاسخ.?نامه|کلید پاسخ", re.I)
 SOURCE_RE = re.compile(r"official source|references?|rfc\s*\d|منابع رسمی|منبع:", re.I)
+EXPECTED_OUTPUT_RE = re.compile(r"expected (?:result|output)|sample output|output:\\s|خروجی مورد انتظار|خروجی نمونه|نتیجهٔ مورد انتظار|معیار قبولی", re.I)
+TROUBLESHOOT_RE = re.compile(r"troubleshoot|root cause|diagnos|عیب.?یابی|علت ریشه|درخت تصمیم|نشانه.*علت", re.I)
+SECURITY_RE = re.compile(r"security|hardening|threat model|rollback|recovery|امنیت|سخت.?سازی|تهدید|بازگشت|بازیابی|پاک.?سازی", re.I)
+GLOSSARY_RE = re.compile(r"glossary|vocabulary|واژه.?نامه|اصطلاحات کلیدی", re.I)
+DEPTH_LEVEL_RE = re.compile(r"(?i)(?:\\[\\s*(L[0-4])\\s*\\]|(?<![A-Za-z0-9])L([0-4])(?![A-Za-z0-9]))")
+WORD_RE = re.compile(r"(?u)\\b[\\w]+\\b")
+DEPTH_WORD_FLOORS = {"L0": 600, "L1": 800, "L2": 1200, "L3": 1600, "L4": 2200}
 NETWORK_TERMS = re.compile(r"\b(vlan|trunk|stp|ospf|bgp|router|switch|subnet|routing|ethernet|tcp/ip|network|networking|ipv4|ipv6|ip address|addressing|configure terminal|show running-config|show startup-config|show ip interface brief|switchport|etherchannel|port-channel|spanning[- ]tree|access-list|ip helper-address|router ospf|router bgp|ip route|no shutdown|copy running-config|write memory|cisco ios(?:-xe)?|catalyst|nexus|line vty|enable secret)\b|سوئیچ|روتر|مسیریابی|شبکه|آی.?پی|آدرس", re.I)
 
 
@@ -109,10 +116,12 @@ def record_blob(item):
     keys = (
         "title_fa", "title_en", "title", "command", "summary", "content",
         "full_content", "explanation", "steps", "steps_fa", "examples",
-        "sample_output", "expected_result", "lab", "lab_hint_fa", "scenario",
-        "tasks", "solution", "verification", "notes", "references",
-        "official_sources", "assessment", "questions", "answer_key",
-        "meta", "meta_json", "metaJson",
+        "sample_output", "expected_output", "expected_result", "lab", "lab_steps",
+        "lab_hint_fa", "scenario", "tasks", "solution", "verification",
+        "troubleshooting", "troubleshooting_steps", "security", "rollback",
+        "recovery", "glossary", "notes", "references", "official_sources",
+        "assessment", "questions", "answer_key", "learning_objectives",
+        "objectives", "meta", "meta_json", "metaJson",
         "prerequisites", "prerequisites_fa", "commands",
     )
     return "\n".join(text(item.get(k)) for k in keys if k in item)
@@ -174,9 +183,28 @@ def metadata_dicts(item):
     return found
 
 
+def infer_depth_level(item, title):
+    """Read an explicit L0-L4 tag from structured metadata or a level-prefixed title."""
+    for node in metadata_dicts(item):
+        for key in ("depth_level", "learning_level", "level", "difficulty"):
+            value = text(node.get(key)).strip()
+            match = DEPTH_LEVEL_RE.search(value)
+            if match:
+                return (match.group(1) or "L" + match.group(2)).upper()
+    match = DEPTH_LEVEL_RE.search(title)
+    if match:
+        return (match.group(1) or "L" + match.group(2)).upper()
+    return ""
+
+
 def inspect_record(path, item, index, min_chars):
     title = text(item.get("title_fa") or item.get("title_en") or item.get("title") or item.get("command") or f"item-{index}")
     blob = record_blob(item)
+    word_count = len(WORD_RE.findall(blob))
+    depth_level = infer_depth_level(item, title)
+    has_long_form = any(item.get(key) for key in ("full_content", "content", "explanation"))
+    is_command_reference = bool(item.get("command")) and not has_long_form
+    word_floor = 250 if is_command_reference else DEPTH_WORD_FLOORS.get(depth_level)
     is_network_topic = bool(NETWORK_TERMS.search(title))
     generic_terms = (
         "vlan", "trunk", "stp", "show running-config", "configure terminal",
@@ -200,8 +228,14 @@ def inspect_record(path, item, index, min_chars):
     checks = {
         "needs_human_review": any(flag in status for flag in ("review_required", "draft", "seeded", "todo")),
         "shallow": len(blob.strip()) < min_chars,
+        "missing_depth_level": not depth_level and not is_command_reference,
+        "below_depth_word_floor": word_floor is not None and word_count < word_floor,
         "missing_lab_marker": not LAB_RE.search(blob),
         "missing_scenario_marker": not SCENARIO_RE.search(blob),
+        "missing_expected_output": not EXPECTED_OUTPUT_RE.search(blob) and not item.get("sample_output") and not item.get("expected_result") and not item.get("expected_output"),
+        "missing_troubleshooting": not TROUBLESHOOT_RE.search(blob),
+        "missing_security_rollback": not SECURITY_RE.search(blob),
+        "missing_glossary": not GLOSSARY_RE.search(blob),
         "missing_answer_key_marker": not ANSWER_RE.search(blob),
         "missing_source_marker": not SOURCE_RE.search(blob),
         "generic_network_boilerplate": generic_network_boilerplate,
@@ -209,6 +243,20 @@ def inspect_record(path, item, index, min_chars):
     }
     uid = text(item.get("uid") or item.get("id") or item.get("code")).strip()
     context = item.get("_audit_context") if isinstance(item.get("_audit_context"), dict) else {}
+    field_presence = {
+        "summary": bool(item.get("summary")),
+        "content": bool(item.get("full_content") or item.get("content") or item.get("explanation")),
+        "examples": bool(item.get("examples") or item.get("sample_output")),
+        "commands_or_steps": bool(item.get("commands") or item.get("steps") or item.get("steps_fa") or item.get("command")),
+        "expected_output": bool(item.get("sample_output") or item.get("expected_output") or item.get("expected_result") or EXPECTED_OUTPUT_RE.search(blob)),
+        "lab": bool(LAB_RE.search(blob)),
+        "troubleshooting": bool(TROUBLESHOOT_RE.search(blob)),
+        "security_or_rollback": bool(SECURITY_RE.search(blob)),
+        "glossary": bool(GLOSSARY_RE.search(blob)),
+        "assessment": bool(has_assessment),
+        "answer_key": bool(has_answer_key),
+        "sources": bool(item.get("official_sources") or item.get("references") or SOURCE_RE.search(blob)),
+    }
     return {
         "file": str(path.relative_to(ROOT)).replace("\\", "/"),
         "index": index,
@@ -217,19 +265,14 @@ def inspect_record(path, item, index, min_chars):
         "chapter_order": context.get("chapter_order"),
         "chapter_title": context.get("chapter_title", ""),
         "subchapter_title": context.get("subchapter_title", ""),
+        "depth_level": depth_level or "unclassified",
+        "record_kind": "command_reference" if is_command_reference else "instructional_lesson",
+        "word_count": word_count,
+        "minimum_word_guideline": word_floor,
         "content_chars": len(blob),
         "checks": [k for k, value in checks.items() if value],
-        "field_presence": {
-            "summary": bool(item.get("summary")),
-            "content": bool(item.get("full_content") or item.get("content") or item.get("explanation")),
-            "examples": bool(item.get("examples") or item.get("sample_output")),
-            "commands_or_steps": bool(item.get("commands") or item.get("steps") or item.get("steps_fa")),
-            "assessment": bool(has_assessment),
-            "answer_key": bool(has_answer_key),
-            "sources": bool(item.get("official_sources") or item.get("references") or SOURCE_RE.search(blob)),
-        },
+        "field_presence": field_presence,
     }
-
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
@@ -246,6 +289,9 @@ def main():
         "min_chars": args.min_chars,
         "files_scanned": 0,
         "records_scanned": 0,
+        "depth_level_counts": {},
+        "record_kind_counts": {},
+        "word_count_guidelines": DEPTH_WORD_FLOORS,
         "parse_errors": [],
         "file_summaries": [],
         "items": [],
@@ -254,6 +300,7 @@ def main():
         "notes": [
             "No file is modified or deleted.",
             "Length and marker checks do not establish technical correctness.",
+            "Level word counts and field markers are triage guidelines, not automatic approval criteria.",
             "Review false positives; some command-reference records are intentionally concise.",
         ],
     }
@@ -321,6 +368,8 @@ def main():
     ]
     counts = Counter(check for item in report["items"] for check in item["checks"])
     report["warning_counts"] = dict(sorted(counts.items()))
+    report["depth_level_counts"] = dict(sorted(Counter(item["depth_level"] for item in report["items"]).items()))
+    report["record_kind_counts"] = dict(sorted(Counter(item["record_kind"] for item in report["items"]).items()))
     report["summary"] = {
         "files_found": len(files),
         "files_scanned": report["files_scanned"],
@@ -328,6 +377,10 @@ def main():
         "parse_errors": len(report["parse_errors"]),
         "duplicate_ids": len(report["duplicate_ids"]),
         "items_with_any_warning": sum(bool(x["checks"]) for x in report["items"]),
+        "depth_levels": report["depth_level_counts"],
+        "record_kinds": report["record_kind_counts"],
+        "below_depth_word_floor": counts.get("below_depth_word_floor", 0),
+        "missing_depth_level": counts.get("missing_depth_level", 0),
     }
 
     print("=== NetworkAll content-pack audit (non-destructive) ===")
