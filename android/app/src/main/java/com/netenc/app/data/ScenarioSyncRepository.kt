@@ -12,7 +12,7 @@ class ScenarioSyncRepository(context: Context) {
 
     suspend fun upsertFromPullJson(recordsJson: String): Int {
         val arr = JSONObject(recordsJson).optJSONArray("records") ?: JSONArray()
-        val existing = dao.all().associateBy { it.code }
+        val existing = dao.allForSync().associateBy { it.code }
         val updates = mutableListOf<ScenarioEntity>()
         for (i in 0 until arr.length()) {
             val r = arr.optJSONObject(i) ?: continue
