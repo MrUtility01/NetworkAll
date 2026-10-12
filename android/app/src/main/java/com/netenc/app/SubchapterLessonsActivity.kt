@@ -59,7 +59,7 @@ class SubchapterLessonsActivity : AppCompatActivity() {
                         .byChapter(chapterOrder)
                         .filter { it.subTitle == subTitle }
                 }
-                header.text = "$chapterTitle  ›  $subDisplayTitle  (\${lessons.size} درس)"
+                header.text = "$chapterTitle  ›  $subDisplayTitle  (${lessons.size} درس)"
                 list.adapter = ArrayAdapter(
                     this@SubchapterLessonsActivity,
                     android.R.layout.simple_list_item_1,
@@ -76,7 +76,7 @@ class SubchapterLessonsActivity : AppCompatActivity() {
                     )
                 }
             } catch (e: Exception) {
-                header.text = "خطا در بارگذاری درس‌ها: \${e.message ?: "خطای نامشخص"}"
+                header.text = "خطا در بارگذاری درس‌ها: ${e.message ?: "خطای نامشخص"}"
             }
         }
     }
