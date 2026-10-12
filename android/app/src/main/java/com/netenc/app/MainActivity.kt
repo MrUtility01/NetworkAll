@@ -85,6 +85,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnScenarios).setOnClickListener {
             startActivity(Intent(this, ScenarioListActivity::class.java))
         }
+        findViewById<Button>(R.id.btnInfographics).setOnClickListener {
+            startActivity(Intent(this, InfographicsActivity::class.java))
+        }
         findViewById<Button>(R.id.btnStats).setOnClickListener { showStats() }
         findViewById<Button>(R.id.btnApi).setOnClickListener {
             startActivity(Intent(this, ApiExplorerActivity::class.java))
