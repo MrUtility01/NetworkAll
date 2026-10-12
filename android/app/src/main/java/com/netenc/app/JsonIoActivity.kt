@@ -118,7 +118,9 @@ class JsonIoActivity : AppCompatActivity() {
                 val scenarios = withContext(Dispatchers.IO) { db.scenarioDao().all() }
                 val root = JSONObject()
                 root.put("app", "EngineerJokar-NetEnc")
-                root.put("version", 2)
+                root.put("version", 3)
+                root.put("backup_type", "portable-personal-backup")
+                root.put("created_at", java.time.Instant.now().toString())
                 val arr = JSONArray()
                 for (e in lessons) {
                     arr.put(JSONObject().apply {
@@ -147,6 +149,39 @@ class JsonIoActivity : AppCompatActivity() {
                     })
                 }
                 root.put("scenarios", scArr)
+
+                // Portable personal data backup. Vault secrets are deliberately excluded:
+                // Android Keystore and Windows DPAPI keys are device-bound and cannot be copied safely.
+                val workspaceDao = db.workspaceDao()
+                val tasks = withContext(Dispatchers.IO) { workspaceDao.allTasksForSync() }
+                val notes = withContext(Dispatchers.IO) { workspaceDao.allNotesForSync() }
+                val studyRows = withContext(Dispatchers.IO) { db.studyDao().allForSync() }
+
+                root.put("tasks", JSONArray().apply {
+                    tasks.forEach { t -> put(JSONObject().apply {
+                        put("uid", t.uid); put("title", t.title); put("body", t.body)
+                        put("done", t.done); put("due_at", t.dueAt); put("priority", t.priority)
+                        put("last_updated", t.lastUpdated); put("device_id", t.deviceId)
+                        put("deleted", t.deleted); put("remind_at", t.remindAt)
+                        // remindedAt is local delivery history; it must not move between devices.
+                    }) }
+                })
+                root.put("notes", JSONArray().apply {
+                    notes.forEach { n -> put(JSONObject().apply {
+                        put("uid", n.uid); put("title", n.title); put("body", n.body)
+                        put("tags", n.tags); put("last_updated", n.lastUpdated)
+                        put("device_id", n.deviceId); put("deleted", n.deleted)
+                    }) }
+                })
+                root.put("study_progress", JSONArray().apply {
+                    studyRows.forEach { s -> put(JSONObject().apply {
+                        put("lesson_uid", s.lessonUid); put("status", s.status); put("ease", s.ease)
+                        put("interval_hours", s.intervalHours); put("last_studied", s.lastStudied)
+                        put("next_review", s.nextReview); put("times_studied", s.timesStudied)
+                        put("notes", s.notes); put("last_updated", s.lastUpdated)
+                        put("device_id", s.deviceId); put("deleted", s.deleted)
+                    }) }
+                })
                 val f = exportFile()
                 withContext(Dispatchers.IO) { f.writeText(root.toString()) }
                 log.text = "ذخیره شد:\n${f.absolutePath}\n\nدروس: ${lessons.size}\nسناریو: ${scenarios.size}\nحجم: ${f.length()} بایت\n\nدکمه «باز کردن مسیر» را بزنید."
@@ -193,7 +228,73 @@ class JsonIoActivity : AppCompatActivity() {
                     }
                 }
                 if (batch.isNotEmpty()) withContext(Dispatchers.IO) { dao.upsertAll(batch) }
-                log.text = "Import OK — ${arr.length()} از\n${f.absolutePath}"
+
+                val backupType = root.optString("backup_type", "")
+                if (backupType == "portable-personal-backup") {
+                    val workspaceDao = AppDatabase.get(this@JsonIoActivity).workspaceDao()
+                    val tasks = root.optJSONArray("tasks") ?: JSONArray()
+                    var restoredTasks = 0
+                    for (i in 0 until tasks.length()) {
+                        val o = tasks.optJSONObject(i) ?: continue
+                        val uid = o.optString("uid", "").trim()
+                        val title = o.optString("title", "").trim()
+                        if (uid.isEmpty() || title.isEmpty()) continue
+                        val old = withContext(Dispatchers.IO) { workspaceDao.taskByUid(uid) }
+                        val incomingUpdated = o.optString("last_updated", "")
+                        // Restore is a merge: never overwrite a newer local version.
+                        if (old != null && old.lastUpdated >= incomingUpdated) continue
+                        workspaceDao.upsertTask(com.netenc.app.data.TaskEntity(
+                            uid = uid, title = title, body = o.optString("body", ""),
+                            done = o.optBoolean("done", false), dueAt = o.optString("due_at", ""),
+                            priority = o.optInt("priority", 1).coerceIn(1, 3),
+                            lastUpdated = incomingUpdated, deviceId = o.optString("device_id", "restore"),
+                            deleted = o.optBoolean("deleted", false), remindAt = o.optString("remind_at", ""),
+                            remindedAt = ""
+                        ))
+                        restoredTasks++
+                    }
+                    val notes = root.optJSONArray("notes") ?: JSONArray()
+                    var restoredNotes = 0
+                    for (i in 0 until notes.length()) {
+                        val o = notes.optJSONObject(i) ?: continue
+                        val uid = o.optString("uid", "").trim()
+                        val title = o.optString("title", "").trim()
+                        if (uid.isEmpty() || title.isEmpty()) continue
+                        val old = withContext(Dispatchers.IO) { workspaceDao.noteByUid(uid) }
+                        val incomingUpdated = o.optString("last_updated", "")
+                        if (old != null && old.lastUpdated >= incomingUpdated) continue
+                        workspaceDao.upsertNote(com.netenc.app.data.NoteEntity(
+                            uid = uid, title = title, body = o.optString("body", ""),
+                            tags = o.optString("tags", ""), lastUpdated = incomingUpdated,
+                            deviceId = o.optString("device_id", "restore"), deleted = o.optBoolean("deleted", false)
+                        ))
+                        restoredNotes++
+                    }
+                    val study = root.optJSONArray("study_progress") ?: JSONArray()
+                    var restoredStudy = 0
+                    for (i in 0 until study.length()) {
+                        val o = study.optJSONObject(i) ?: continue
+                        val uid = o.optString("lesson_uid", "").trim()
+                        if (uid.isEmpty()) continue
+                        val old = withContext(Dispatchers.IO) { AppDatabase.get(this@JsonIoActivity).studyDao().byUid(uid) }
+                        val incomingUpdated = o.optString("last_updated", "")
+                        if (old != null && old.lastUpdated >= incomingUpdated) continue
+                        val status = o.optString("status", "new")
+                        if (status !in setOf("new", "learning", "known", "review")) continue
+                        AppDatabase.get(this@JsonIoActivity).studyDao().upsert(com.netenc.app.data.StudyEntity(
+                            lessonUid = uid, status = status, ease = o.optDouble("ease", 2.5).coerceIn(1.0, 4.0),
+                            intervalHours = o.optInt("interval_hours", 1).coerceIn(0, 8760),
+                            lastStudied = o.optString("last_studied", ""), nextReview = o.optString("next_review", ""),
+                            timesStudied = o.optInt("times_studied", 0).coerceAtLeast(0),
+                            notes = o.optString("notes", ""), lastUpdated = incomingUpdated,
+                            deviceId = o.optString("device_id", "restore"), deleted = o.optBoolean("deleted", false)
+                        ))
+                        restoredStudy++
+                    }
+                    log.text = "بازیابی ادغامی انجام شد.\nدرس‌ها: ${arr.length()}\nکارها: $restoredTasks\nیادداشت‌ها: $restoredNotes\nپیشرفت مطالعه: $restoredStudy\n\nVault عمداً در بکاپ قابل‌انتقال نیست.\n${f.absolutePath}"
+                } else {
+                    log.text = "Import محتوای آموزشی انجام شد — ${arr.length()} درس\nاین فایل بکاپ کامل داده‌های شخصی نیست."
+                }
             } catch (e: Exception) {
                 log.text = "خطا import: ${e.message}"
             }
