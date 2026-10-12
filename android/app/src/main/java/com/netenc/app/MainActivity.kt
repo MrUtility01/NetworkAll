@@ -1,6 +1,10 @@
 package com.netenc.app
 
 import android.content.Intent
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.content.ContextCompat
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
@@ -18,6 +22,7 @@ import com.netenc.app.data.WorkspaceSyncRepository
 import com.netenc.app.data.ScenarioSyncRepository
 import com.netenc.app.data.StudySyncRepository
 import com.netenc.app.reminder.ReminderScheduler
+import com.netenc.app.reminder.TaskReminderScheduler
 import com.netenc.app.reminder.TaskReminderScheduler
 import com.netenc.app.sync.SyncClient
 import kotlinx.coroutines.Dispatchers
@@ -54,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         tokenInput.setText(prefs.getString("token", SettingsActivity.DEFAULT_TOKEN) ?: "")
 
         ReminderScheduler.scheduleHourly(this)
+        requestNotificationPermissionIfNeeded()
         lifecycleScope.launch { TaskReminderScheduler.reconcileAll(this@MainActivity) }
 
         findViewById<Button>(R.id.btnStudyHub).setOnClickListener {
@@ -115,8 +121,30 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch { seedAll(force = false) }
+        lifecycleScope.launch {
+            runCatching { TaskReminderScheduler.reconcileAll(this@MainActivity) }
+                .onFailure { log("یادآوری کارها: ${it.message}") }
+        }
         if (prefs.getBoolean("auto_sync", false) && !prefs.getString("host", "").isNullOrBlank()) {
             hostInput.postDelayed({ sync() }, 2500)
+        }
+    }
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= 33 &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 7102)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (::repo.isInitialized) {
+            lifecycleScope.launch {
+                runCatching { TaskReminderScheduler.reconcileAll(this@MainActivity) }
+                    .onFailure { log("یادآوری کارها: ${it.message}") }
+            }
         }
     }
 
@@ -285,6 +313,7 @@ class MainActivity : AppCompatActivity() {
                 // sync. This prevents edits made during sync from falling behind the cursor.
                 val cursor = m.generated_at?.takeIf { it.isNotBlank() } ?: Instant.now().toString()
                 withContext(Dispatchers.IO) { repo.setLastSync(cursor) }
+                TaskReminderScheduler.reconcileAll(this@MainActivity)
                 log("✓ sync pull=$pulled $pushSummary")
             } catch (e: Exception) { log("sync: ${e.message}") }
         }
