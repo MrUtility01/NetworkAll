@@ -14,6 +14,8 @@ import com.netenc.app.data.LessonRepository
 import com.netenc.app.data.OfflineSeeder
 import com.netenc.app.data.ScenarioSeeder
 import com.netenc.app.data.StudyRepository
+import com.netenc.app.data.WorkspaceSyncRepository
+import com.netenc.app.data.ScenarioSyncRepository
 import com.netenc.app.reminder.ReminderScheduler
 import com.netenc.app.sync.SyncClient
 import kotlinx.coroutines.Dispatchers
@@ -26,11 +28,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tokenInput: EditText
     private lateinit var logView: TextView
     private lateinit var repo: LessonRepository
+    private lateinit var workspaceSyncRepo: WorkspaceSyncRepository
+    private lateinit var scenarioSyncRepo: ScenarioSyncRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         repo = LessonRepository(this)
+        workspaceSyncRepo = WorkspaceSyncRepository(this)
+        scenarioSyncRepo = ScenarioSyncRepository(this)
         hostInput = findViewById(R.id.hostInput)
         tokenInput = findViewById(R.id.tokenInput)
         logView = findViewById(R.id.logView)
@@ -200,8 +206,15 @@ class MainActivity : AppCompatActivity() {
                 for (chunk in m.items.map { it.uid }.chunked(80)) {
                     val body = withContext(Dispatchers.IO) { c.pull(chunk) }
                     pulled += withContext(Dispatchers.IO) { repo.upsertFromPullJson(body) }
+                    pulled += withContext(Dispatchers.IO) { workspaceSyncRepo.upsertFromPullJson(body) }
+                    pulled += withContext(Dispatchers.IO) { scenarioSyncRepo.upsertFromPullJson(body) }
                 }
-                val pushArr = withContext(Dispatchers.IO) { repo.buildPushArray() }
+                val pushArr = withContext(Dispatchers.IO) {
+                    val combined = repo.buildPushArray()
+                    val workspace = workspaceSyncRepo.buildPushArray()
+                    for (i in 0 until workspace.length()) combined.put(workspace.get(i))
+                    combined
+                }
                 var pushSummary = "push=0"
                 if (pushArr.length() > 0) {
                     val pushBody = withContext(Dispatchers.IO) { c.push(pushArr) }
