@@ -1,0 +1,295 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-12",
+  "purpose": "Progressive L0-L4 MikroTik monitoring, logging, Zabbix integration and evidence-driven troubleshooting course. Labs are designed; production and device execution remain pending.",
+  "scope": {
+    "chapter_order": 22,
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lesson_count": 5,
+    "topics": [
+      {
+        "id": "routeros-monitoring-logging-zabbix",
+        "title_fa": "پایش، لاگ‌برداری و Zabbix برای MikroTik",
+        "title_en": "MikroTik Monitoring, Logging and Zabbix"
+      }
+    ]
+  },
+  "instructional_contract": {
+    "level_floors": {
+      "L0": 600,
+      "L1": 800,
+      "L2": 1200,
+      "L3": 1600,
+      "L4": 2200
+    },
+    "volume_rule": "Depth follows unique failure modes, evidence interpretation, version differences and repeatable lab outcomes.",
+    "lab_status": "designed_not_executed",
+    "answer_key_separate": true
+  },
+  "content_quality": {
+    "status": "review_required",
+    "reason": "Runbooks and assessment keys are authored; Zabbix import validation, real RouterOS captures and lab execution remain pending."
+  },
+  "compatibility": {
+    "routeros_v6_v7": "Confirm menu paths and command syntax on the target RouterOS release. Zabbix XML compatibility depends on the exact server version."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch22:monitoring-logging-zabbix:l0",
+      "entity": "lesson",
+      "chapter_order": 22,
+      "subchapter_order": 1,
+      "lesson_order": 1,
+      "subchapter_title_fa": "۲۲.۱ مبانی مشاهده‌پذیری",
+      "topic": "routeros-monitoring-logging-zabbix",
+      "domain": "mikrotik-routeros",
+      "level": "L0",
+      "title_fa": "[L0] پایش و لاگ‌برداری؛ از رخداد تا شاهد",
+      "title_en": "Monitoring and Logging Fundamentals",
+      "tags": [
+        "MikroTik",
+        "RouterOS",
+        "monitoring",
+        "logging",
+        "Zabbix",
+        "L0"
+      ],
+      "summary": "تفاوت metric، log، alert و evidence",
+      "full_content": "# پایش و لاگ‌برداری؛ از رخداد تا شاهد\n\nپایش (monitoring) پاسخ می‌دهد «الان چه وضعیتی داریم؟»؛ لاگ‌برداری (logging) ثبت می‌کند «چه رخدادی، چه زمانی و با چه زمینه‌ای رخ داده؟»؛ هشدار (alert) می‌گوید «کدام شرط عملیاتی از آستانه عبور کرده؟» و عیب‌یابی (troubleshooting) با شواهد قابل بازتولید علت را محدود می‌کند. هیچ‌کدام به‌تنهایی جای دیگری را نمی‌گیرد.\n\n## چهار نوع داده\n- **Metric**: مقدار عددی زمان‌مند، مانند CPU، حافظه، interface traffic، packet loss یا latency.\n- **Event/log**: رخداد با timestamp، severity، topic، message و هویت دستگاه.\n- **State**: وضعیت فعلی، مانند route فعال، interface running یا VPN connected.\n- **Synthetic check**: آزمون مستقل از دید کلاینت، مانند TCP connect به سرویس یا ping از یک نقطه مشخص.\n\n## اصل هم‌بستگی\nبرای incident شناسه یا پنجره زمانی مشترک بساز: نام میزبان، IP، ساعت هماهنگ، سرویس، interface، source/destination، نتیجه مورد انتظار و نتیجه واقعی. ساعت ناهماهنگ می‌تواند ترتیب رخدادها را غلط نشان دهد. NTP را هم روی روتر و هم سرور مانیتورینگ بررسی کن.\n\n## جمع‌آوری کمینه و امن\nقبل از فعال‌کردن debug یا ثبت همه packetها، ظرفیت CPU، نرخ پیام، فضای دیسک، retention و دسترسی فایل‌ها را ارزیابی کن. لاگ‌ها ممکن است نام کاربری، IP عمومی، نام میزبان یا جزئیات توپولوژی داشته باشند. دسترسی، انتقال و نگهداری باید محدود باشد. از فرستادن رمز، token یا export کامل پیکربندی در ticket عمومی خودداری کن.\n\n## فرمان‌های مشاهده‌ای\n```routeros\n/system resource print\n/system clock print\n/system ntp client print\n/log print without-paging\n/log print where topics~\"warning|error|critical\"\n/interface print stats\n```\nخروجی این فرمان‌ها نمونه‌ای از وضعیت لحظه‌ای است، نه تاریخچه کامل. نام menu و فیلتر topics را روی نسخه هدف بررسی کن. خروجی واقعی را با زمان اجرا و نسخه RouterOS ذخیره کن و مقادیر حساس را قبل از اشتراک‌گذاری حذف کن.\n\n## تشخیص اولیه\nاگر interface down است، ابتدا link state و طرف مقابل را بررسی کن؛ اگر interface up اما throughput صفر است، route، traffic واقعی و نقطه مشاهده را بررسی کن. اگر log دریافت نمی‌شود، از «روتر چیزی تولید نکرده» نتیجه نگیر: مقصد syslog، firewall، UDP path، ساعت، فیلتر و parser هم می‌توانند علت باشند.\n\n## معیار تکمیل\nیک داشبورد زمانی قابل اعتماد است که hostname/IP یکتا، timestamp قابل مقایسه، واحد اندازه‌گیری، بازه نمونه‌برداری، retention و روش آزمون داشته باشد. هشدار باید owner، severity، runbook و شرط بازیابی داشته باشد؛ هشدار بدون اقدام مشخص فقط نویز ایجاد می‌کند.",
+      "commands": "/system resource print; /system clock print; /system ntp client print; /log print without-paging; /interface print stats",
+      "examples": "ثبت baseline قبل از تغییر و مقایسه با همان دستگاه در پنجره زمانی مشابه.",
+      "notes": "lab_status=designed_not_executed; verify commands on target RouterOS.",
+      "learning_objectives": [
+        "تفاوت metric، event، state و synthetic check را توضیح دهد",
+        "timestamp و هویت میزبان را در گزارش ثبت کند",
+        "میان نبود رخداد و خرابی مسیر لاگ تفاوت بگذارد"
+      ],
+      "prerequisites": [],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch22-l0-1\",\"prompt\":\"Metric و log چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"ch22-l0-2\",\"prompt\":\"چرا هم‌زمان‌سازی ساعت مهم است؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"ch22-l0-3\",\"prompt\":\"دریافت‌نشدن syslog چه چیزی را به‌تنهایی ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"ch22-l0-1\",\"answer\":\"Metric مقدار زمان‌مند عددی است؛ log رخداد توصیفی دارای زمینه و timestamp است.\",\"rationale\":\"برای تحلیل حادثه معمولاً هر دو لازم‌اند.\"},{\"id\":\"ch22-l0-2\",\"answer\":\"برای ترتیب‌دادن رخدادهای چند دستگاه و هم‌بستگی زمانی.\",\"rationale\":\"ساعت ناهماهنگ می‌تواند RCA را منحرف کند.\"},{\"id\":\"ch22-l0-3\",\"answer\":\"ثابت نمی‌کند روتر رخدادی تولید نکرده؛ مسیر UDP، مقصد، فیلتر، ساعت یا parser ممکن است مشکل داشته باشد.\",\"rationale\":\"باید مسیر انتهابه‌انتها بررسی شود.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "MikroTik Logging",
+          "url": "https://help.mikrotik.com/docs/"
+        },
+        {
+          "title": "Zabbix Documentation",
+          "url": "https://www.zabbix.com/documentation/current/en/manual"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch22:monitoring-logging-zabbix:l1",
+      "entity": "lesson",
+      "chapter_order": 22,
+      "subchapter_order": 2,
+      "lesson_order": 2,
+      "subchapter_title_fa": "۲۲.۲ Syslog امن و قابل‌عیب‌یابی",
+      "topic": "routeros-monitoring-logging-zabbix",
+      "domain": "mikrotik-routeros",
+      "level": "L1",
+      "title_fa": "[L1] طراحی مسیر Syslog از RouterOS تا سرور",
+      "title_en": "Syslog Pipeline and Validation",
+      "tags": [
+        "syslog",
+        "rsyslog",
+        "UDP514",
+        "RouterOS",
+        "L1"
+      ],
+      "summary": "تفکیک تولید، انتقال، ذخیره‌سازی و parsing",
+      "full_content": "# طراحی مسیر Syslog از RouterOS تا سرور\n\nمسیر را به چهار مرز مستقل تقسیم کن: (۱) تولید پیام در RouterOS، (۲) ارسال به مقصد و پورت تعریف‌شده، (۳) رسیدن datagram به NIC و سرویس rsyslog، (۴) نوشتن فایل و خواندن آن توسط Zabbix Agent. موفقیت در یک مرز، مرز بعدی را تضمین نمی‌کند.\n\n## طراحی مقصد\nیک IP ثابت برای collector، UDP/514 فقط از IPهای روترهای مجاز و مسیر برگشت مدیریتی تعریف کن. UDP تأیید تحویل انتهابه‌انتها ندارد؛ packet capture یا شمارنده‌ها برای تفکیک مسیر لازم‌اند. در شبکه‌های حساس، محدودیت شبکه، VPN یا روش امن‌تر متناسب با پشتیبانی تجهیزات را ارزیابی کن. هیچ‌گاه پورت syslog را بی‌دلیل به اینترنت باز نکن.\n\n## پیکربندی روتر\nدر RouterOS از System > Logging، یک action از نوع remote با آدرس collector و پورت مصوب بساز و ruleهای لازم را به آن action متصل کن. قبل از افزودن ruleهای گسترده، یک topic کم‌حجم مثل warning را در پنجره آزمایشی انتخاب کن. مسیر menu و syntax دقیق را در نسخه هدف تأیید کن؛ export تنظیمات را بدون حذف secretها منتشر نکن.\n\n## سمت Linux\n- پورت UDP را فقط روی interface لازم bind کن؛ firewall فقط IPهای مدیریت/روترهای مشخص را مجاز کند.\n- برای هر دستگاه فایل مجزا یا نام‌گذاری قابل پیش‌بینی داشته باش؛ از hostname/IP کنترل‌شده استفاده کن، نه رشته خام غیرقابل اعتماد در مسیر فایل.\n- rotation و retention را تنظیم و آزمایش کن؛ Agent باید بتواند فایل‌ها را بخواند، اما کاربران غیرمجاز نباید دسترسی داشته باشند.\n- نرخ پیام، disk usage و افت داده را پایش کن.\n\n## تست لایه‌به‌لایه\n1. زمان و IP منبع را ثبت کن.\n2. از روتر یک رخداد کم‌خطر و قابل پیش‌بینی تولید کن.\n3. روی collector با `tcpdump -ni any udp port 514` مشاهده کن؛ فقط در پنجره محدود و با مجوز.\n4. سرویس و ruleهای rsyslog را بررسی کن: `sudo systemctl status rsyslog --no-pager` و `sudo journalctl -u rsyslog --since '10 minutes ago'`.\n5. فایل هدف را با `stat` و `tail` بررسی کن.\n6. دسترسی کاربر Agent و خواندن logrt را جدا آزمایش کن.\n\n## تفسیر شواهد\nاگر tcpdump packet نمی‌بیند، مسیر شبکه، مقصد، VLAN/ACL و rule ارسال روتر را بررسی کن. اگر packet می‌رسد اما فایل تغییر نمی‌کند، listener، facility/severity، rule order، SELinux/AppArmor و مجوز فایل مطرح‌اند. اگر فایل تغییر می‌کند اما Zabbix item خالی است، کلید item، user parameter، agent config، log rotation و permission را بررسی کن. هر فرضیه باید آزمون متمایزکننده داشته باشد.",
+      "commands": "tcpdump -ni any udp port 514; systemctl status rsyslog --no-pager; journalctl -u rsyslog --since '10 minutes ago'; stat /var/log/mikrotik/DEVICE.log; tail -n 50 /var/log/mikrotik/DEVICE.log",
+      "examples": "با یک روتر آزمایشی و یک پیام کم‌خطر، مشاهده packet، فایل و item را با timestamp واحد تطبیق بده.",
+      "notes": "Do not treat UDP capture as proof of durable storage; test file writes and Zabbix ingestion separately.",
+      "learning_objectives": [
+        "چهار مرز pipeline را جدا عیب‌یابی کند",
+        "محدودسازی منبع UDP/514 را طراحی کند",
+        "برای هر فرضیه شاهد متمایزکننده تعیین کند"
+      ],
+      "prerequisites": [
+        "مبانی Linux service، firewall و IP networking"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch22-l1-1\",\"prompt\":\"tcpdump packet را می‌بیند اما فایل log رشد نمی‌کند؛ دو فرضیه و آزمون بده.\",\"type\":\"scenario\",\"level\":\"L1\"},{\"id\":\"ch22-l1-2\",\"prompt\":\"چرا UDP capture تضمین ذخیره‌شدن log نیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"ch22-l1-1\",\"answer\":\"listener/rule rsyslog و permission/SELinux را بررسی؛ status/journal سرویس و write test کنترل‌شده را اجرا کن.\",\"rationale\":\"رسیدن packet فقط مرز شبکه را ثابت می‌کند.\"},{\"id\":\"ch22-l1-2\",\"answer\":\"چون capture پیش از parsing و disk write است و UDP تحویل پایدار را تضمین نمی‌کند.\",\"rationale\":\"فایل و ingestion باید مستقل تأیید شوند.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "rsyslog documentation",
+          "url": "https://www.rsyslog.com/doc/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch22:monitoring-logging-zabbix:l2",
+      "entity": "lesson",
+      "chapter_order": 22,
+      "subchapter_order": 3,
+      "lesson_order": 3,
+      "subchapter_title_fa": "۲۲.۳ مدل‌سازی Zabbix",
+      "topic": "routeros-monitoring-logging-zabbix",
+      "domain": "monitoring-zabbix",
+      "level": "L2",
+      "title_fa": "[L2] طراحی Template، Item، Trigger و Tag",
+      "title_en": "Zabbix Template Engineering",
+      "tags": [
+        "Zabbix",
+        "Template",
+        "Item",
+        "Trigger",
+        "Tag",
+        "L2"
+      ],
+      "summary": "مدل قابل نگهداری برای metric و syslog",
+      "full_content": "# طراحی Template، Item، Trigger و Tag\n\nTemplate باید داده، تشخیص و عملیات را به هم متصل کند. Item داده خام یا مشتق‌شده را جمع می‌کند؛ preprocessing آن را normalize می‌کند؛ trigger یک شرط عملیاتی را ارزیابی می‌کند؛ tag برای route کردن event و تحلیل incident استفاده می‌شود؛ action اعلان را به مالک مناسب می‌رساند. Dashboard صرفاً نمایش است و جای trigger یا runbook را نمی‌گیرد.\n\n## نام‌گذاری و هویت\nنام host را پایدار و یکتا انتخاب کن؛ IP مدیریت را به interface صحیح متصل کن و inventory را با نام سایت/نقش تکمیل کن. نام دستگاه در syslog، host name در Zabbix و شناسه در مستندات باید قابل نگاشت باشند. از ساخت چند host برای یک روتر به علت تفاوت spelling خودداری کن.\n\n## طراحی itemهای Syslog\nبرای Agent log monitoring از `logrt[]` فقط پس از تأیید نسخه Agent، مسیر فایل، مجوز خواندن و rotation استفاده کن. کلیدها باید با syntax رسمی همان نسخه ساخته شوند؛ عبارت منظم را ابتدا روی نمونه‌های کنترل‌شده آزمایش کن. برای جلوگیری از event flood، فقط الگوهای ارزشمند مثل link state، login failure یا routing adjacency را انتخاب کن. متن آزاد log را بدون normalization مستقیماً به tagهای پرکاردینالیتی تبدیل نکن.\n\n## Trigger و severity\nهر trigger باید تعریف کند: شرط، بازه زمانی، severity، وابستگی‌ها، tagها، روش recovery و runbook. «عدم دریافت log» را فقط وقتی هشدار بده که تولید heartbeat/test event یا حجم مورد انتظار تعریف شده باشد؛ وگرنه silence ممکن است طبیعی باشد. Triggerهای وابسته را طوری طراحی کن که قطع collector ده‌ها هشدار ثانویه ایجاد نکند.\n\n## نگهداری و ظرفیت\nقبل از rollout، تعداد hostها، نرخ پیام، history/trend retention، حجم database و نرخ event را برآورد کن. Regex گران، debug log و triggerهای پرنوسان بار را بالا می‌برند. برای هر item، interval و value type مناسب انتخاب کن؛ اطلاعاتی که هر ثانیه تغییر نمی‌کند نیازمند polling سریع نیست.\n\n## Import و نسخه\nXML export/import بین نسخه‌های Zabbix ممکن است به دلیل schema، UUID، نوع item یا key ناسازگار شود. فایل را ابتدا روی instance آزمایشی همان نسخه import کن، validation خطاها را ثبت کن و سپس template را به یک host آزمایشی متصل کن. هیچ ادعای «import موفق» بدون اجرای واقعی معتبر نیست.\n\n## پذیرش\nبرای هر item یک مقدار شناخته‌شده یا نمونه fixture، برای هر trigger یک positive و negative case، و برای هر action یک test notification تعیین کن. بعد از import، latest data، event list، permission و log rotation را بررسی کن. نسخه Zabbix، Agent، template revision و زمان آزمون در گزارش ثبت شود.",
+      "commands": "zabbix_get -s AGENT_IP -k agent.ping; zabbix_get -s AGENT_IP -k 'logrt[\"/var/log/mikrotik/DEVICE.log\"]' (only if the configured key is supported and authorized)",
+      "examples": "Trigger test: inject a known fixture in a lab file, verify one expected event, then verify a benign line creates no event.",
+      "notes": "Do not claim XML import compatibility before testing against the exact Zabbix version.",
+      "learning_objectives": [
+        "Template و item/trigger/action را تفکیک کند",
+        "برای trigger مثبت و منفی طراحی کند",
+        "هزینه نرخ log و retention را تخمین بزند"
+      ],
+      "prerequisites": [
+        "Zabbix host/template/item basics"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch22-l2-1\",\"prompt\":\"برای هشدار نبود log چه پیش‌شرطی لازم است؟\",\"type\":\"scenario\",\"level\":\"L2\"},{\"id\":\"ch22-l2-2\",\"prompt\":\"چرا trigger روی هر خط log خطرناک است؟\",\"type\":\"short_answer\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"ch22-l2-1\",\"answer\":\"heartbeat یا نرخ/رخداد مورد انتظار و پنجره زمانی تعریف‌شده، به همراه بررسی سلامت collector.\",\"rationale\":\"بدون آن silence طبیعی از outage قابل تفکیک نیست.\"},{\"id\":\"ch22-l2-2\",\"answer\":\"event flood، بار database، نویز اعلان و هزینه نگهداری ایجاد می‌کند.\",\"rationale\":\"الگوهای معنادار و suppression/dependency لازم‌اند.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "Zabbix documentation",
+          "url": "https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/log_items"
+        },
+        {
+          "title": "Zabbix templates",
+          "url": "https://www.zabbix.com/documentation/current/en/manual/config/templates"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch22:monitoring-logging-zabbix:l3",
+      "entity": "lesson",
+      "chapter_order": 22,
+      "subchapter_order": 4,
+      "lesson_order": 4,
+      "subchapter_title_fa": "۲۲.۴ سناریوهای عیب‌یابی مبتنی بر شواهد",
+      "topic": "routeros-monitoring-logging-zabbix",
+      "domain": "network-troubleshooting",
+      "level": "L3",
+      "title_fa": "[L3] Runbook عیب‌یابی Monitoring و Syslog",
+      "title_en": "Evidence-driven Troubleshooting",
+      "tags": [
+        "RCA",
+        "runbook",
+        "syslog",
+        "Zabbix",
+        "L3"
+      ],
+      "summary": "از symptom تا root cause با آزمون تفکیک‌کننده",
+      "full_content": "# Runbook عیب‌یابی مبتنی بر شواهد\n\nهر incident را با symptom دقیق، دامنه، زمان شروع، تغییر اخیر، اثر کاربر و baseline آغاز کن. «Zabbix خراب است» symptom قابل‌آزمون نیست؛ «از ساعت 14:05 host X دیگر log جدید ندارد، اما ICMP و SNMP پاسخ می‌دهند» فرضیه‌ها را محدود می‌کند.\n\n## سناریو A: Host unreachable\n1. از سرور Zabbix، مسیر و packet loss را به IP مدیریت بررسی کن.\n2. دسترسی TCP/UDP موردنیاز را جداگانه تست کن؛ ping موفق به معنی بازبودن agent port نیست.\n3. روی روتر interface، route، firewall و CPU را مشاهده کن.\n4. مشخص کن مشکل همه hostهاست یا فقط یک host/site؛ این تفکیک server/collector را از edge جدا می‌کند.\n5. نتیجه و timestamp را قبل از هر تغییر ثبت کن.\n\n## سناریو B: Syslog قطع، SNMP سالم\n1. یک پیام آزمایشی کم‌خطر تولید کن.\n2. روی collector با tcpdump وجود datagram را بسنج.\n3. اگر packet غایب است، destination، source address، route و ACL را بررسی کن.\n4. اگر packet هست، rsyslog listener/rule و فایل هدف را بررسی کن.\n5. اگر فایل رشد می‌کند، permission، Agent item، logrt rotation و preprocessing را بررسی کن.\n\n## سناریو C: CPU بالا یا افزایش latency\nBaseline و بازه نمونه‌برداری را ثبت کن؛ CPU، memory، interface errors/drops، queueing و log rate را مقایسه کن. هم‌زمانی دو metric علت را ثابت نمی‌کند. در زمان incident، یک آزمون تفکیک‌کننده انتخاب کن؛ برای مثال بررسی نرخ log در کنار CPU و مقایسه با پنجره هم‌ترافیک قبلی.\n\n## سناریو D: Trigger کاذب\nمقدار خام item، timestamp، preprocessing، macro، unit، nodata window، timezone و وابستگی‌ها را بررسی کن. Trigger را بدون تغییر خاموش نکن؛ ابتدا شرطی بساز که fixture مثبت و منفی داشته باشد. پس از اصلاح، incident مشابه را replay کن.\n\n## قالب RCA\n- Symptom / impact / start time:\n- Scope and baseline:\n- Recent changes:\n- Evidence with timestamps:\n- Hypotheses and discriminating tests:\n- Confirmed root cause (or unknown):\n- Corrective action / rollback:\n- Positive and negative verification:\n- Prevention / owner / due date:\n\n## خروجی مورد انتظار\nRCA خوب، نتیجه را از شواهد جدا می‌کند. اگر هیچ آزمونی فرضیه را قطعی نکرد، root cause را «نامشخص» ثبت کن و داده بعدی موردنیاز را تعیین کن. اصلاح موفق باید با همان تستی که پیش‌تر شکست می‌خورد و با یک کنترل منفی تأیید شود.",
+      "commands": "ip route get ROUTER_IP; ping -c 4 ROUTER_IP; sudo tcpdump -ni any udp port 514; sudo journalctl -u rsyslog --since '15 minutes ago'; tail -n 50 /var/log/mikrotik/DEVICE.log",
+      "examples": "ماتریس سه‌لایه: router→collector packet, collector→file write, file→Zabbix latest data.",
+      "notes": "Commands are Linux-side examples; adapt to OS and approved change procedures.",
+      "learning_objectives": [
+        "علت احتمالی را از علت تأییدشده تفکیک کند",
+        "آزمون تفکیک‌کننده انتخاب کند",
+        "RCA قابل بازبینی بنویسد"
+      ],
+      "prerequisites": [
+        "TCP/IP, Linux logs and Zabbix fundamentals"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch22-l3-1\",\"prompt\":\"SNMP سالم است ولی syslog نیست؛ مسیر تشخیص را به ترتیب شرح بده.\",\"type\":\"scenario\",\"level\":\"L3\"},{\"id\":\"ch22-l3-2\",\"prompt\":\"چه زمانی root cause باید نامشخص بماند؟\",\"type\":\"short_answer\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"ch22-l3-1\",\"answer\":\"تولید پیام، tcpdump روی collector، listener/rule rsyslog، نوشتن فایل، permission و سپس Zabbix item/rotation.\",\"rationale\":\"هر مرحله مرز مستقلی است و نتیجه مرحله قبل جای مرحله بعد را نمی‌گیرد.\"},{\"id\":\"ch22-l3-2\",\"answer\":\"وقتی شواهد و آزمون تفکیک‌کننده فرضیه را تأیید نکرده‌اند.\",\"rationale\":\"فرض قطعی بدون شواهد باعث تکرار incident می‌شود.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "Zabbix troubleshooting",
+          "url": "https://www.zabbix.com/documentation/current/en/manual"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch22:monitoring-logging-zabbix:l4",
+      "entity": "lesson",
+      "chapter_order": 22,
+      "subchapter_order": 5,
+      "lesson_order": 5,
+      "subchapter_title_fa": "۲۲.۵ عملیات، امنیت و آزمون پذیرش",
+      "topic": "routeros-monitoring-logging-zabbix",
+      "domain": "network-operations",
+      "level": "L4",
+      "title_fa": "[L4] استاندارد عملیاتی، ظرفیت و پذیرش تغییر",
+      "title_en": "Operational Readiness and Acceptance",
+      "tags": [
+        "SLO",
+        "capacity",
+        "security",
+        "change-management",
+        "L4"
+      ],
+      "summary": "آستانه، ظرفیت، rollback و شواهد قابل ممیزی",
+      "full_content": "# استاندارد عملیاتی و پذیرش\n\nمانیتورینگ باید به تصمیم عملیاتی کمک کند، نه فقط نمودار بسازد. برای هر سرویس، SLI را مشخص کن (مثلاً درصد نمونه‌های موفق)، SLO را با owner توافق کن و alert threshold را از بودجه خطا و الگوی واقعی بار استخراج کن. آستانه ثابت بدون baseline می‌تواند در شبکه‌های متفاوت هشدار کاذب تولید کند.\n\n## ظرفیت‌سنجی\nبرآورد اولیه نرخ پیام برابر است با تعداد روترها × متوسط پیام بر ثانیه هر روتر. حجم روزانه تقریبی را با اندازه متوسط پیام و retention محاسبه کن؛ burstها و overhead index/database را جدا در نظر بگیر. در rollout واقعی، نرخ peak و نه فقط میانگین را اندازه بگیر. rotation و disk-full alert باید پیش از تولید داده فعال باشند.\n\n## امنیت و حریم داده\nUDP/514 را به منابع شناخته‌شده محدود کن؛ اگر شبکه مشترک یا غیرقابل اعتماد است، از segmentation یا تونل امن استفاده کن. Agent فقط مجوز read لازم را داشته باشد. دسترسی به تاریخچه و exportها محدود شود؛ log ممکن است IP و نام حساب را افشا کند. رازها در Git، template، screenshot و incident report قرار نگیرند.\n\n## تغییر کنترل‌شده\nقبل از rollout: نسخه‌ها، backup، config diff، maintenance window، owner، rollback trigger و مسیر دسترسی جایگزین را ثبت کن. ابتدا یک روتر غیرحیاتی را اضافه کن، صحت دریافت، rotation، latest data و event را بسنج؛ سپس گسترش مرحله‌ای انجام بده. پس از هر مرحله، نرخ خطا و بار collector را با baseline مقایسه کن.\n\n## معیارهای پذیرش\n- روتر آزمایشی شناسه یکتا و ساعت معتبر دارد.\n- پیام کنترل‌شده در collector و فایل صحیح دیده می‌شود.\n- Zabbix item پیام یا metric را با timestamp صحیح دریافت می‌کند.\n- trigger مثبت فعال و trigger منفی بی‌دلیل فعال نمی‌شود.\n- logrotate و restart سرویس باعث از دست رفتن بی‌صدای داده نمی‌شود.\n- disk, queue, agent health و collector health هشدار دارند.\n- rollback آزمایش و مستند شده است.\n\n## وضعیت آزمون\nFixtureهای آموزشی فقط برای تمرین parser و trigger هستند؛ آن‌ها خروجی واقعی روتر یا نتیجه اجرای Zabbix نیستند. تا وقتی آزمون روی RouterOS و نسخه مشخص Zabbix اجرا نشده، وضعیت باید `designed_not_executed` باقی بماند. ثبت `passed` بدون log آزمون، timestamp و نسخه قابل قبول نیست.",
+      "commands": "df -h; systemctl status rsyslog --no-pager; zabbix_server -V; zabbix_agentd -V (or zabbix_agent2 -V, depending on installation)",
+      "examples": "Pilot: one non-critical router → confirm packet/file/item/trigger → test rotation/restart → record evidence → staged rollout.",
+      "notes": "Never report tests as executed unless evidence exists; keep credentials and private topology out of repository.",
+      "learning_objectives": [
+        "نرخ log و retention را برآورد کند",
+        "معیار پذیرش و rollback بنویسد",
+        "شواهد آزمون و وضعیت اجرا را دقیق ثبت کند"
+      ],
+      "prerequisites": [
+        "Monitoring design, change management and basic security"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch22-l4-1\",\"prompt\":\"چه شواهدی برای علامت‌زدن آزمون به‌عنوان passed لازم است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch22-l4-2\",\"prompt\":\"چرا rollout باید مرحله‌ای باشد؟\",\"type\":\"short_answer\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"ch22-l4-1\",\"answer\":\"نسخه و محیط، زمان، دستور/fixture، خروجی واقعی، نتیجه مورد انتظار و واقعی، و کنترل منفی.\",\"rationale\":\"وضعیت بدون evidence قابل ممیزی نیست.\"},{\"id\":\"ch22-l4-2\",\"answer\":\"برای محدودکردن blast radius، مشاهده بار واقعی و امکان rollback قبل از گسترش.\",\"rationale\":\"موفقیت یک host لزوماً ظرفیت و سازگاری همه شبکه را ثابت نمی‌کند.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "Zabbix documentation",
+          "url": "https://www.zabbix.com/documentation/current/en/manual"
+        },
+        {
+          "title": "rsyslog documentation",
+          "url": "https://www.rsyslog.com/doc/"
+        }
+      ],
+      "source_status": "review_required"
+    }
+  ],
+  "test_fixtures": [
+    {
+      "id": "fixture-syslog-link-down",
+      "kind": "synthetic_fixture_not_real_device_output",
+      "input": "Oct 12 10:15:00 router-lab interface,warning ether2 link down",
+      "expected": {
+        "category": "interface",
+        "severity": "warning",
+        "event_expected": true
+      },
+      "purpose": "Validate parser and trigger positive case; not evidence of a real incident."
+    },
+    {
+      "id": "fixture-syslog-benign",
+      "kind": "synthetic_fixture_not_real_device_output",
+      "input": "Oct 12 10:16:00 router-lab system,info configuration backup completed",
+      "expected": {
+        "category": "system",
+        "severity": "info",
+        "event_expected": false
+      },
+      "purpose": "Negative control; ensure benign message does not open incident."
+    },
+    {
+      "id": "fixture-no-data",
+      "kind": "synthetic_fixture_not_real_device_output",
+      "input": null,
+      "expected": {
+        "event_expected": "only_if_heartbeat_or_expected_rate_is_defined"
+      },
+      "purpose": "Silence is not a failure unless expected telemetry is specified."
+    }
+  ]
+}
