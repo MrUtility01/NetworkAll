@@ -98,11 +98,20 @@
               "level": "L0"
             }
           ],
-          "answer_key": {
-            "dns-l0-1": "NXDOMAIN پاسخ صریح است که نام وجود ندارد؛ timeout یعنی در مهلت تعیین‌شده پاسخی دریافت نشده و علت هنوز مشخص نیست.",
-            "dns-l0-2": "DNS فقط دادهٔ نام را resolve می‌کند؛ route، TCP 443، TLS، گواهی و سرویس HTTP مستقل‌اند.",
-            "dns-l0-3": "resolver می‌تواند پاسخ را تا TTL در cache نگه دارد؛ تغییر رکورد ممکن است تا پایان cache یا پاکسازی مجاز دیده نشود."
-          }
+          "answer_key": [
+            {
+              "question_id": "dns-l0-1",
+              "answer": "NXDOMAIN پاسخ صریح است که نام وجود ندارد؛ timeout یعنی در مهلت تعیین‌شده پاسخی دریافت نشده و علت هنوز مشخص نیست."
+            },
+            {
+              "question_id": "dns-l0-2",
+              "answer": "DNS فقط دادهٔ نام را resolve می‌کند؛ route، TCP 443، TLS، گواهی و سرویس HTTP مستقل‌اند."
+            },
+            {
+              "question_id": "dns-l0-3",
+              "answer": "resolver می‌تواند پاسخ را تا TTL در cache نگه دارد؛ تغییر رکورد ممکن است تا پایان cache یا پاکسازی مجاز دیده نشود."
+            }
+          ]
         }
       },
       "source_status": "review_required"
@@ -166,11 +175,20 @@
               "level": "L1"
             }
           ],
-          "answer_key": {
-            "dhcp-l1-1": "Discover، Offer، Request، Acknowledgment.",
-            "dhcp-l1-2": "وقتی کلاینت و سرور در subnetهای جدا هستند و broadcast اولیه به‌طور معمول از روتر عبور نمی‌کند.",
-            "dhcp-l1-3": "ممکن است mask، gateway یا DNS option نادرست باشد؛ lease صرفاً تخصیص آدرس را نشان می‌دهد."
-          }
+          "answer_key": [
+            {
+              "question_id": "dhcp-l1-1",
+              "answer": "Discover، Offer، Request، Acknowledgment."
+            },
+            {
+              "question_id": "dhcp-l1-2",
+              "answer": "وقتی کلاینت و سرور در subnetهای جدا هستند و broadcast اولیه به‌طور معمول از روتر عبور نمی‌کند."
+            },
+            {
+              "question_id": "dhcp-l1-3",
+              "answer": "ممکن است mask، gateway یا DNS option نادرست باشد؛ lease صرفاً تخصیص آدرس را نشان می‌دهد."
+            }
+          ]
         }
       },
       "source_status": "review_required"
@@ -241,12 +259,24 @@
               "level": "L2"
             }
           ],
-          "answer_key": {
-            "ops-l2-1": "NXDOMAIN پاسخ منفی معتبر است؛ timeout نشان‌دهندهٔ عدم دریافت پاسخ در مهلت است.",
-            "ops-l2-2": "DNS از TCP 53 نیز برای برخی پاسخ‌های بزرگ و عملیات مشخص استفاده می‌کند؛ فقط UDP کافی نیست.",
-            "ops-l2-3": "IP و mask کلاینت، VLAN، DHCP server identifier، scope، relay/helper، packet capture و log سرور.",
-            "ops-l2-4": "ابتدا DNS را با resolver مشخص بررسی کنید، سپس route و اتصال IP/port را جدا آزمایش کنید و بعد TLS/HTTP را بررسی کنید."
-          }
+          "answer_key": [
+            {
+              "question_id": "ops-l2-1",
+              "answer": "NXDOMAIN پاسخ منفی معتبر است؛ timeout نشان‌دهندهٔ عدم دریافت پاسخ در مهلت است."
+            },
+            {
+              "question_id": "ops-l2-2",
+              "answer": "DNS از TCP 53 نیز برای برخی پاسخ‌های بزرگ و عملیات مشخص استفاده می‌کند؛ فقط UDP کافی نیست."
+            },
+            {
+              "question_id": "ops-l2-3",
+              "answer": "IP و mask کلاینت، VLAN، DHCP server identifier، scope، relay/helper، packet capture و log سرور."
+            },
+            {
+              "question_id": "ops-l2-4",
+              "answer": "ابتدا DNS را با resolver مشخص بررسی کنید، سپس route و اتصال IP/port را جدا آزمایش کنید و بعد TLS/HTTP را بررسی کنید."
+            }
+          ]
         }
       },
       "source_status": "review_required"
@@ -316,12 +346,24 @@
               "level": "L3"
             }
           ],
-          "answer_key": {
-            "sec-l3-1": "DNSSEC اصالت و تمامیت دادهٔ DNS را از طریق امضاها اعتبارسنجی می‌کند؛ محرمانگی، دسترس‌پذیری یا امنیت خود برنامه را تضمین نمی‌کند.",
-            "sec-l3-2": "DNSSEC اعتبار دادهٔ DNS را بررسی می‌کند؛ DoT/DoH ارتباط کلاینت تا resolver را رمزگذاری می‌کنند. هدف و مرز اعتمادشان متفاوت است.",
-            "sec-l3-3": "ممکن است برای amplification سوءاستفاده شود و منابع resolver را مصرف کند؛ recursion باید به کلاینت‌های مجاز محدود شود.",
-            "sec-l3-4": "split DNS، TTL، cache، VPN و resolverهای متفاوت می‌توانند پاسخ قانونی متفاوت ایجاد کنند؛ شواهد بیشتری لازم است."
-          }
+          "answer_key": [
+            {
+              "question_id": "sec-l3-1",
+              "answer": "DNSSEC اصالت و تمامیت دادهٔ DNS را از طریق امضاها اعتبارسنجی می‌کند؛ محرمانگی، دسترس‌پذیری یا امنیت خود برنامه را تضمین نمی‌کند."
+            },
+            {
+              "question_id": "sec-l3-2",
+              "answer": "DNSSEC اعتبار دادهٔ DNS را بررسی می‌کند؛ DoT/DoH ارتباط کلاینت تا resolver را رمزگذاری می‌کنند. هدف و مرز اعتمادشان متفاوت است."
+            },
+            {
+              "question_id": "sec-l3-3",
+              "answer": "ممکن است برای amplification سوءاستفاده شود و منابع resolver را مصرف کند؛ recursion باید به کلاینت‌های مجاز محدود شود."
+            },
+            {
+              "question_id": "sec-l3-4",
+              "answer": "split DNS، TTL، cache، VPN و resolverهای متفاوت می‌توانند پاسخ قانونی متفاوت ایجاد کنند؛ شواهد بیشتری لازم است."
+            }
+          ]
         }
       },
       "source_status": "review_required"
