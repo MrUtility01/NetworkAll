@@ -23,6 +23,7 @@ import java.io.File
 
 class JsonIoActivity : AppCompatActivity() {
     private lateinit var log: TextView
+    private var pendingMarkdownExport: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +48,10 @@ class JsonIoActivity : AppCompatActivity() {
             text = "بازیابی بکاپ JSON از فایل یا دستگاه دیگر"
             setOnClickListener { openImportPicker() }
         }
+        val exportContentBtn = Button(this).apply {
+            text = "خروجی مطالب آموزشی به Markdown"
+            setOnClickListener { exportContentMarkdown() }
+        }
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutDirection = android.view.View.LAYOUT_DIRECTION_RTL
@@ -60,6 +65,7 @@ class JsonIoActivity : AppCompatActivity() {
             addView(openBtn)
             addView(shareBtn)
             addView(importBtn)
+            addView(exportContentBtn)
             addView(ScrollView(this@JsonIoActivity).apply { addView(log) },
                 LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f))
         }
@@ -201,9 +207,64 @@ class JsonIoActivity : AppCompatActivity() {
         startActivityForResult(intent, 7301)
     }
 
-    @Deprecated("Use Activity Result APIs; retained for compatibility with current activity")
+    private fun exportContentMarkdown() {
+        lifecycleScope.launch {
+            try {
+                val lessons = withContext(Dispatchers.IO) { AppDatabase.get(this@JsonIoActivity).lessonDao().allActive() }
+                if (lessons.isEmpty()) {
+                    log.text = "محتوایی برای خروجی وجود ندارد؛ ابتدا بازسازی محتوا را اجرا کنید."
+                    return@launch
+                }
+                val markdown = buildString {
+                    append("# NetworkAll — خروجی محتوای آموزشی\n\n")
+                    append("تاریخ خروجی: ").append(java.time.Instant.now()).append("\n\n")
+                    var lastChapter = ""
+                    var lastSub = ""
+                    lessons.forEach { lesson ->
+                        val chapter = lesson.chapterTitle.ifBlank { if (lesson.chapterOrder > 0) "فصل ${lesson.chapterOrder}" else "فصل‌بندی نشده" }
+                        val sub = lesson.subTitle.ifBlank { "عمومی" }
+                        if (chapter != lastChapter) { append("\n## ").append(chapter).append("\n\n"); lastChapter = chapter; lastSub = "" }
+                        if (sub != lastSub) { append("### ").append(sub).append("\n\n"); lastSub = sub }
+                        append("#### ").append(lesson.titleFa.ifBlank { lesson.uid }).append("\n\n")
+                        if (lesson.summary.isNotBlank()) append("**خلاصه:** ").append(lesson.summary).append("\n\n")
+                        if (lesson.fullContent.isNotBlank()) append(lesson.fullContent).append("\n\n")
+                        if (lesson.commands.isNotBlank()) append("**دستورات:**\n\n").append(lesson.commands).append("\n\n")
+                        if (lesson.examples.isNotBlank()) append("**مثال و آزمایشگاه:**\n\n").append(lesson.examples).append("\n\n")
+                        if (lesson.notes.isNotBlank()) append("**نکات:**\n\n").append(lesson.notes).append("\n\n")
+                        append("---\n\n")
+                    }
+                }
+                pendingMarkdownExport = markdown
+                val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "text/markdown"
+                    putExtra(Intent.EXTRA_TITLE, "NetworkAll-learning-content.md")
+                }
+                startActivityForResult(intent, 7302)
+                log.text = "${lessons.size} درس آمادهٔ خروجی است؛ محل ذخیره را انتخاب کنید."
+            } catch (e: Exception) { log.text = "خطا در آماده‌سازی خروجی: ${e.message}" }
+        }
+    }
+
+    @Deprecated("Uses Activity callbacks for compatibility with the current app")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 7302) {
+            val markdown = pendingMarkdownExport
+            pendingMarkdownExport = null
+            if (resultCode != Activity.RESULT_OK || data?.data == null || markdown == null) return
+            lifecycleScope.launch {
+                try {
+                    withContext(Dispatchers.IO) {
+                        contentResolver.openOutputStream(data.data!!)?.bufferedWriter(Charsets.UTF_8)?.use { it.write(markdown) }
+                            ?: throw IllegalStateException("فایل مقصد قابل نوشتن نیست")
+                    }
+                    log.text = "خروجی Markdown ذخیره شد؛ فایل را می‌توانید در Joplin، Obsidian یا ویرایشگر متن باز کنید."
+                    Toast.makeText(this@JsonIoActivity, "خروجی مطالب ذخیره شد", Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) { log.text = "خطا در ذخیره خروجی: ${e.message}" }
+            }
+            return
+        }
         if (requestCode != 7301 || resultCode != Activity.RESULT_OK) return
         val uri = data?.data ?: return
         lifecycleScope.launch {
