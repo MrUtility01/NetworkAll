@@ -18,6 +18,7 @@ if str(REPO_ROOT) not in sys.path:
 from flask import Flask, jsonify, render_template, request
 
 from core.db import WebDB
+from core.study import study_sync_apply, study_sync_index, study_sync_pull
 
 try:
     from shared.sync_engine import SCHEMA_VERSION, build_manifest, compare_lww, content_hash, utc_now
@@ -345,9 +346,11 @@ def sync_manifest():
     if denied:
         return denied
     since = request.args.get("since") or None
-    records = db().sync_index()
+    d = db()
+    records = d.sync_index()
     if _MODULE_STATUS["workspace"]:
         records.extend(workspace_sync_index())
+    records.extend(study_sync_index(d.conn))
     return jsonify(build_manifest(records, since=since))
 
 
@@ -360,9 +363,11 @@ def sync_pull():
     uids = body.get("uids") or []
     if not isinstance(uids, list):
         return jsonify({"error": "uids must be a list"}), 400
-    records = db().sync_pull(uids)
+    d = db()
+    records = d.sync_pull(uids)
     if _MODULE_STATUS["workspace"]:
         records.extend(workspace_sync_pull(uids))
+    records.extend(study_sync_pull(d.conn, uids))
     return jsonify({"records": records, "count": len(records), "generated_at": utc_now()})
 
 
@@ -382,16 +387,20 @@ def sync_push():
     unsupported_uids = []
     missing_target_uids = []
     index = {}
-    for row in db().sync_index():
+    d = db()
+    for row in d.sync_index():
         index[(row["uid"], row.get("entity", "lesson"))] = row
     if _MODULE_STATUS["workspace"]:
         for row in workspace_sync_index():
             index[(row["uid"], row.get("entity", ""))] = row
+    for row in study_sync_index(d.conn):
+        index[(row["uid"], row.get("entity", ""))] = row
     curriculum_to_apply = []
     workspace_to_apply = []
+    study_to_apply = []
     # Vault entries are deliberately excluded: they require key-aware, encrypted
     # transfer and must never be treated as ordinary notes or task records.
-    allowed_entities = {"lesson", "scenario", "task", "note"}
+    allowed_entities = {"lesson", "scenario", "task", "note", "study"}
     for item in records:
         if not isinstance(item, dict):
             kept += 1
@@ -421,7 +430,12 @@ def sync_push():
             continue
         decision = compare_lww(server, item) if server else "accept_client"
         if decision == "accept_client":
-            (workspace_to_apply if entity in ("task", "note") else curriculum_to_apply).append(item)
+            if entity in ("task", "note"):
+                workspace_to_apply.append(item)
+            elif entity == "study":
+                study_to_apply.append(item)
+            else:
+                curriculum_to_apply.append(item)
             accepted += 1
         elif decision == "conflict":
             conflicts += 1
@@ -430,13 +444,19 @@ def sync_push():
         else:
             kept += 1
     if curriculum_to_apply:
-        db().sync_apply(curriculum_to_apply)
+        d.sync_apply(curriculum_to_apply)
     if workspace_to_apply:
         applied_workspace = workspace_sync_apply(workspace_to_apply)
         if applied_workspace < len(workspace_to_apply):
             rejected_workspace = len(workspace_to_apply) - applied_workspace
             accepted -= rejected_workspace
             kept += rejected_workspace
+    if study_to_apply:
+        applied_study = study_sync_apply(d.conn, study_to_apply)
+        if applied_study < len(study_to_apply):
+            rejected_study = len(study_to_apply) - applied_study
+            accepted -= rejected_study
+            kept += rejected_study
     return jsonify({
         "accepted": accepted,
         "kept": kept,
