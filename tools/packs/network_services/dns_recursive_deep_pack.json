@@ -1,0 +1,340 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-12",
+  "purpose": "Progressive L0-L4 recursive DNS course mapped to existing Chapter 10 Recursive Query titles.",
+  "scope": {
+    "chapter_order": 10,
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lesson_count": 5,
+    "topics": [
+      {
+        "id": "recursive-query",
+        "title_fa": "Recursive Query",
+        "title_en": "Recursive DNS Query"
+      }
+    ]
+  },
+  "instructional_contract": {
+    "level_floors": {
+      "L0": 600,
+      "L1": 800,
+      "L2": 1200,
+      "L3": 1600,
+      "L4": 2200
+    },
+    "volume_rule": "Competency and unique failure-mode driven; no arbitrary global record cap.",
+    "lab_status": "designed_not_executed",
+    "separate_answer_key": true
+  },
+  "content_quality": {
+    "status": "review_required",
+    "reason": "Lessons and assessment pairs authored; isolated labs, DNSSEC and transport behavior must be executed/reviewed before verification."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch10:recursive-query:l0",
+      "entity": "lesson",
+      "chapter_order": 10,
+      "subchapter_order": 1,
+      "lesson_order": 1,
+      "topic": "recursive-query",
+      "domain": "network-services",
+      "level": "L0",
+      "title_fa": "[L0] Recursive Query — آشنایی",
+      "title_en": "[L0] Recursive DNS Query — آشنایی",
+      "tags": [
+        "DNS",
+        "recursive-resolver",
+        "authoritative",
+        "cache",
+        "L0"
+      ],
+      "summary": "فرق recursive و iterative را توضیح دهد؛ نقش resolver و authoritative server را تشخیص دهد؛ TTL و cache را با مثال شرح دهد",
+      "full_content": "# Recursive Query — آشنایی\n\n## DNS چه مسئله‌ای را حل می‌کند؟\nبرنامه‌ها معمولاً با نام‌هایی مانند portal.example.net کار می‌کنند، درحالی‌که ارتباط IP به آدرس عددی نیاز دارد. DNS سامانه‌ای توزیع‌شده برای نگاشت نام‌ها به داده‌هایی مثل IPv4، IPv6، mail exchanger و رکوردهای سرویس است. DNS یک فایل مرکزی روی یک سرور نیست؛ داده‌ها در zoneها و سرورهای متعددی نگهداری می‌شوند و پاسخ می‌تواند cache شده یا از مسیر delegation دریافت شود.\n\n## Resolver و نقش سرورها\nStub resolver در سیستم‌عامل یا برنامه درخواست را به resolver پیکربندی‌شده می‌فرستد. Recursive resolver معمولاً مسئول رسیدن به پاسخ نهایی برای client است: اگر پاسخ معتبر و تازه در cache داشته باشد همان را برمی‌گرداند؛ اگر نه، خودش با سرورهای دیگر پرس‌وجو می‌کند. در مقابل، iterative query به پرس‌وجوکننده اجازه می‌دهد referral بگیرد و خودش مرحلهٔ بعدی را دنبال کند. این دو اصطلاح شیوهٔ همکاری را توصیف می‌کنند، نه دو نوع IP.\n\n## یک مسیر نمونه\nفرض کن نام www.example.test در cache وجود ندارد. Resolver ممکن است از root server راهنمای TLD را بگیرد، از TLD راهنمای authoritative server دامنه را دریافت کند و از authoritative server رکورد A/AAAA یا زنجیرهٔ CNAME را بپرسد. Root معمولاً IP نهایی هر وب‌سرور را نمی‌داند؛ نقش آن هدایت پرس‌وجو به سطح بعدی namespace است. TLD نیز معمولاً authoritative server دامنه را معرفی می‌کند. Authoritative server دادهٔ zone تحت اختیارش را ارائه می‌دهد.\n\n## TTL و cache\nپاسخ DNS معمولاً TTL دارد که بیان می‌کند cache تا چه مدت می‌تواند پاسخ را نگه دارد. پایان TTL به معنی خرابی DNS نیست؛ resolver باید دوباره پرس‌وجو کند. تغییر رکورد در zone لزوماً فوراً در همهٔ cacheها دیده نمی‌شود، زیرا cacheهای موجود طبق TTL خود عمل می‌کنند. Negative caching نیز می‌تواند پاسخ ناموجود بودن رکورد را برای زمان مشخص cache کند.\n\n## مثال عملی\nدر Windows از nslookup یا Resolve-DnsName استفاده کن؛ در Linux از dig، host یا resolvectl. نام، نوع رکورد، resolver و TTL را ثبت کن. اگر نام به IP resolve شد، این فقط بخش DNS را بررسی کرده؛ TCP، TLS و خود برنامه هنوز باید جداگانه آزمایش شوند.\n\n## تمرین و خطاهای رایج\nدر محیط مجاز یک نام را پرس‌وجو کن، پاسخ A/AAAA، TTL و resolver را ثبت کن و همان پرس‌وجو را دوباره تکرار کن. از یک نتیجه به‌تنهایی نتیجه نگیر که حتماً cache استفاده شده؛ ابزار و resolver باید شناخته شوند. DNS فقط IPv4 نیست؛ AAAA و رکوردهای سرویس هم وجود دارند. Recursive resolver و authoritative server نقش یکسان ندارند. موفقیت DNS اتصال TCP را ثابت نمی‌کند و شکست ping نیز لزوماً شکست DNS نیست.\n\n## واژه‌نامه\nZone بخشی از namespace تحت مدیریت authoritative است؛ delegation اختیار زیردامنه را منتقل می‌کند؛ TTL مدت cache است؛ CNAME یک نام را به نام دیگر ارجاع می‌دهد؛ NXDOMAIN و NODATA پاسخ‌های منفی متفاوت‌اند.",
+      "commands": "Windows: nslookup; Resolve-DnsName. Linux: dig; host; resolvectl. Record QNAME/QTYPE, resolver, RCODE, answer/authority, TTL, timestamp and transport.",
+      "examples": "Use an isolated DNS zone and a controlled test domain. Do not modify public or organizational authoritative zones during labs.",
+      "notes": "source=tools/packs/network_services/dns_recursive_deep_pack.json; status=review_required; lab_execution=not_yet_run; infographic=shared/infographics/dns_lookup.svg",
+      "learning_objectives": [
+        "فرق recursive و iterative را توضیح دهد",
+        "نقش resolver و authoritative server را تشخیص دهد",
+        "TTL و cache را با مثال شرح دهد"
+      ],
+      "prerequisites": [],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"dns-l0-1\",\"prompt\":\"Recursive resolver چه تفاوتی با authoritative server دارد؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"dns-l0-2\",\"prompt\":\"Iterative query ممکن است چه چیزی برگرداند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"dns-l0-3\",\"prompt\":\"TTL چه کاری می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"dns-l0-4\",\"prompt\":\"NXDOMAIN و NODATA چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"dns-l0-5\",\"prompt\":\"چرا CNAME ممکن است query اضافی نیاز داشته باشد؟\",\"type\":\"short_answer\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"dns-l0-1\",\"answer\":\"Recursive resolver از سوی client پاسخ را دنبال می‌کند؛ authoritative server دادهٔ zone را ارائه می‌کند.\",\"rationale\":\"این نقش‌ها ممکن است روی یک محصول باشند اما مسئولیت منطقی‌شان متفاوت است.\"},{\"id\":\"dns-l0-2\",\"answer\":\"Referral به nameserverهای سطح بعدی.\",\"rationale\":\"Referral لزوماً answer نهایی نیست.\"},{\"id\":\"dns-l0-3\",\"answer\":\"مدت مجاز cache کردن پاسخ/RRset را مشخص می‌کند.\",\"rationale\":\"TTL propagation هم‌زمان همهٔ cacheها را تضمین نمی‌کند.\"},{\"id\":\"dns-l0-4\",\"answer\":\"NXDOMAIN یعنی نام وجود ندارد؛ NODATA یعنی نام هست اما نوع رکورد خواسته‌شده نیست.\",\"rationale\":\"Negative caching آن‌ها باید جدا تفسیر شود.\"},{\"id\":\"dns-l0-5\",\"answer\":\"چون نام مقصد alias باید resolve شود.\",\"rationale\":\"TTLها و chain را باید دنبال کرد.\"}]},\"related_infographics\":[\"dns_lookup.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 1034 — Domain Names: Concepts and Facilities",
+          "url": "https://www.rfc-editor.org/rfc/rfc1034.html"
+        },
+        {
+          "title": "RFC 1035 — Domain Names: Implementation and Specification",
+          "url": "https://www.rfc-editor.org/rfc/rfc1035.html"
+        },
+        {
+          "title": "RFC 2308 — Negative Caching of DNS Queries",
+          "url": "https://www.rfc-editor.org/rfc/rfc2308.html"
+        },
+        {
+          "title": "RFC 4033 — DNS Security Introduction and Requirements",
+          "url": "https://www.rfc-editor.org/rfc/rfc4033.html"
+        },
+        {
+          "title": "RFC 7858 — DNS over Transport Layer Security",
+          "url": "https://www.rfc-editor.org/rfc/rfc7858.html"
+        },
+        {
+          "title": "RFC 8484 — DNS Queries over HTTPS",
+          "url": "https://www.rfc-editor.org/rfc/rfc8484.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch10:recursive-query:l1",
+      "entity": "lesson",
+      "chapter_order": 10,
+      "subchapter_order": 1,
+      "lesson_order": 2,
+      "topic": "recursive-query",
+      "domain": "network-services",
+      "level": "L1",
+      "title_fa": "[L1] Recursive Query — مقدماتی",
+      "title_en": "[L1] Recursive DNS Query — مقدماتی",
+      "tags": [
+        "DNS",
+        "recursive-resolver",
+        "authoritative",
+        "cache",
+        "L1"
+      ],
+      "summary": "مسیر recursion را مرحله‌ای ترسیم کند؛ referral و پاسخ نهایی را در خروجی تشخیص دهد؛ TTL و cache را در یک آزمایش مشاهده کند",
+      "full_content": "# Recursive Query — مقدماتی\n\n## ساختار درخواست\nClient یا stub resolver پرس‌وجویی شامل QNAME، QTYPE و class می‌سازد. Resolver پیکربندی‌شده اگر پاسخ cache ندارد، resolution را دنبال می‌کند. در مسیر iterative، root server referral به سرورهای TLD می‌دهد؛ TLD authoritative nameserverهای دامنه را معرفی می‌کند؛ authoritative server رکورد موردنیاز را برمی‌گرداند. نام واقعی ممکن است چند delegation یا CNAME داشته باشد. Recursive resolver این مراحل را به نیابت از client طی می‌کند و پاسخ را cache می‌کند.\n\nپاسخ DNS فقط یک IP نیست: RCODE، flags، question، answer، authority، additional و TTL هم مهم‌اند. Referral در authority section می‌تواند مسیر مرحلهٔ بعدی را نشان دهد ولی لزوماً answer نهایی نیست. A پاسخ IPv4، AAAA پاسخ IPv6 و CNAME نام جایگزین است. وقتی CNAME دیده می‌شود، resolution معمولاً نام هدف را هم دنبال می‌کند.\n\n## ابزار و روش\nدر Windows از nslookup برای دیدن resolver و پاسخ استفاده کن؛ Resolve-DnsName اطلاعات بیشتری دربارهٔ رکورد و نوع query می‌دهد. در Linux ابزار dig بخش‌های answer/authority و flagها را روشن‌تر نشان می‌دهد. سه آزمایش را جدا انجام بده: پرس‌وجوی resolver پیش‌فرض، پرس‌وجوی نوع رکورد مشخص، و پرس‌وجو به resolver سازمانی دیگری که مجاز است. برای تمرین، root/TLD را مستقیماً به‌عنوان resolver عادی کلاینت فرض نکن؛ این روش اغلب مسیر عادی سازمانی را دور می‌زند.\n\n## Positive و Negative caching\nPositive cache رکورد موجود را تا TTL نگه می‌دارد. Negative caching می‌تواند NXDOMAIN (نام وجود ندارد) یا NODATA (نام هست ولی نوع رکورد موجود نیست) را نگه دارد. اگر رکورد تغییر کرد ولی client هنوز پاسخ قدیمی می‌گیرد، authoritative answer، TTL و cache را مقایسه کن؛ پاک‌کردن cache اولین اقدام نیست، چون شواهد را حذف می‌کند و ممکن است query load ناگهانی ایجاد کند.\n\n## تمرین\n1. QNAME و QTYPE را ثبت کن.\n2. پاسخ A/AAAA/CNAME، TTL و RCODE را بخوان.\n3. پرس‌وجو را دوباره تکرار و نقش cache را با شواهد بررسی کن.\n4. اگر مجاز است از resolver سازمانی دیگری پرس‌وجو کن.\n5. اختلاف را با cache، split-horizon، policy یا delegation تحلیل کن.\n\n## معیار قبولی\nباید بتوانی مشخص کنی کدام پاسخ final answer است و کدام referral، چرا TTL با تغییر رکورد مرتبط است و چرا DNS موفق هنوز HTTPS را ثابت نمی‌کند. هیچ cache یا zone سازمانی را برای تمرین flush یا تغییر نده.",
+      "commands": "Windows: nslookup; Resolve-DnsName. Linux: dig; host; resolvectl. Record QNAME/QTYPE, resolver, RCODE, answer/authority, TTL, timestamp and transport.",
+      "examples": "Use an isolated DNS zone and a controlled test domain. Do not modify public or organizational authoritative zones during labs.",
+      "notes": "source=tools/packs/network_services/dns_recursive_deep_pack.json; status=review_required; lab_execution=not_yet_run; infographic=shared/infographics/dns_lookup.svg",
+      "learning_objectives": [
+        "مسیر recursion را مرحله‌ای ترسیم کند",
+        "referral و پاسخ نهایی را در خروجی تشخیص دهد",
+        "TTL و cache را در یک آزمایش مشاهده کند"
+      ],
+      "prerequisites": [
+        "DNS names, A/AAAA/CNAME, IP addressing and client/server roles"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"dns-l1-1\",\"prompt\":\"Recursive resolver چه تفاوتی با authoritative server دارد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dns-l1-2\",\"prompt\":\"Iterative query ممکن است چه چیزی برگرداند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dns-l1-3\",\"prompt\":\"TTL چه کاری می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dns-l1-4\",\"prompt\":\"NXDOMAIN و NODATA چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dns-l1-5\",\"prompt\":\"چرا CNAME ممکن است query اضافی نیاز داشته باشد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dns-l1-6\",\"prompt\":\"DNS موفق چه چیزی را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dns-l1-7\",\"prompt\":\"DNSSEC چه می‌کند و چه چیزی را نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dns-l1-8\",\"prompt\":\"چرا پاسخ DNS بزرگ ممکن است متفاوت رفتار کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"dns-l1-1\",\"answer\":\"Recursive resolver از سوی client پاسخ را دنبال می‌کند؛ authoritative server دادهٔ zone را ارائه می‌کند.\",\"rationale\":\"این نقش‌ها ممکن است روی یک محصول باشند اما مسئولیت منطقی‌شان متفاوت است.\"},{\"id\":\"dns-l1-2\",\"answer\":\"Referral به nameserverهای سطح بعدی.\",\"rationale\":\"Referral لزوماً answer نهایی نیست.\"},{\"id\":\"dns-l1-3\",\"answer\":\"مدت مجاز cache کردن پاسخ/RRset را مشخص می‌کند.\",\"rationale\":\"TTL propagation هم‌زمان همهٔ cacheها را تضمین نمی‌کند.\"},{\"id\":\"dns-l1-4\",\"answer\":\"NXDOMAIN یعنی نام وجود ندارد؛ NODATA یعنی نام هست اما نوع رکورد خواسته‌شده نیست.\",\"rationale\":\"Negative caching آن‌ها باید جدا تفسیر شود.\"},{\"id\":\"dns-l1-5\",\"answer\":\"چون نام مقصد alias باید resolve شود.\",\"rationale\":\"TTLها و chain را باید دنبال کرد.\"},{\"id\":\"dns-l1-6\",\"answer\":\"TCP/TLS یا سلامت application را ثابت نمی‌کند.\",\"rationale\":\"resolution و transport/application مراحل جدا هستند.\"},{\"id\":\"dns-l1-7\",\"answer\":\"صحت/اصالت داده را با امضا بررسی می‌کند، اما query را رمزنگاری نمی‌کند.\",\"rationale\":\"DoT/DoH مسئلهٔ transport privacy را حل می‌کنند.\"},{\"id\":\"dns-l1-8\",\"answer\":\"EDNS، truncation/TCP fallback، fragmentation، MTU و ACL ممکن است مؤثر باشند.\",\"rationale\":\"اندازه و transport باید جدا آزمایش شوند.\"}]},\"related_infographics\":[\"dns_lookup.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 1034 — Domain Names: Concepts and Facilities",
+          "url": "https://www.rfc-editor.org/rfc/rfc1034.html"
+        },
+        {
+          "title": "RFC 1035 — Domain Names: Implementation and Specification",
+          "url": "https://www.rfc-editor.org/rfc/rfc1035.html"
+        },
+        {
+          "title": "RFC 2308 — Negative Caching of DNS Queries",
+          "url": "https://www.rfc-editor.org/rfc/rfc2308.html"
+        },
+        {
+          "title": "RFC 4033 — DNS Security Introduction and Requirements",
+          "url": "https://www.rfc-editor.org/rfc/rfc4033.html"
+        },
+        {
+          "title": "RFC 7858 — DNS over Transport Layer Security",
+          "url": "https://www.rfc-editor.org/rfc/rfc7858.html"
+        },
+        {
+          "title": "RFC 8484 — DNS Queries over HTTPS",
+          "url": "https://www.rfc-editor.org/rfc/rfc8484.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch10:recursive-query:l2",
+      "entity": "lesson",
+      "chapter_order": 10,
+      "subchapter_order": 1,
+      "lesson_order": 3,
+      "topic": "recursive-query",
+      "domain": "network-services",
+      "level": "L2",
+      "title_fa": "[L2] Recursive Query — ادمین",
+      "title_en": "[L2] Recursive DNS Query — ادمین",
+      "tags": [
+        "DNS",
+        "recursive-resolver",
+        "authoritative",
+        "cache",
+        "L2"
+      ],
+      "summary": "cache، referral و zone را عیب‌یابی کند؛ DNS را از TCP/TLS جدا کند؛ آزمایش امن و قابل‌تکرار طراحی کند",
+      "full_content": "# Recursive Query — ادمین\n\n## قرارداد تشخیص\nپیش از تشخیص DNS، hostname کامل، QTYPE، resolver واقعی، timestamp و source network را ثبت کن. سیستم‌عامل، browser، VPN client، proxy، DoH/DoT و application cache ممکن است resolverهای متفاوتی به‌کار ببرند. موفقیت nslookup الزاماً اثبات نمی‌کند browser همان server را پرسیده است. بدون اجازهٔ سازمانی DoH یا VPN را خاموش نکن.\n\n## Resolution در جزئیات\nResolver ابتدا cache را بررسی می‌کند؛ cache باید با QNAME/QTYPE، alias chain، TTL و پاسخ منفی مرتبط باشد. اگر پاسخ ندارد، root hints و delegation chain به‌کار می‌آیند. Authoritative server می‌تواند referral برای child zone بدهد؛ glue record در برخی delegationها از حلقهٔ وابستگی ناممکن جلوگیری می‌کند. CNAME نام هدف را وارد resolution می‌کند. نام واحد می‌تواند A و AAAA داشته باشد و client بر اساس سیاست سیستم‌عامل/برنامه مسیر IPv4 یا IPv6 را انتخاب کند.\n\nDNS معمولاً از UDP/53 پاسخ می‌دهد و TCP/53 نیز لازم است، از جمله برای پاسخ‌های بزرگ یا بعضی عملیات. فرض «DNS همیشه UDP است» درست نیست. EDNS(0) برخی قابلیت‌ها از جمله اندازهٔ پیام UDP را مذاکره می‌کند؛ fragmentation یا فیلتر شبکه می‌تواند سبب شود پاسخ کوچک موفق و پاسخ بزرگ ناموفق شود. DNSSEC ممکن است پاسخ را حجیم کند. DoT/DoH نیز transport را تغییر می‌دهند؛ بنابراین نبود UDP/53 در capture الزاماً نبود DNS نیست.\n\n## RCODE و پاسخ منفی\nNOERROR همراه answer خالی ممکن است NODATA باشد؛ NXDOMAIN معنی متفاوتی دارد. SERVFAIL می‌تواند از delegation خراب، DNSSEC validation یا خطای resolver ناشی شود؛ REFUSED بیشتر به policy اشاره می‌کند، هرچند جزئیات پیاده‌سازی مهم است. Timeout ثابت نمی‌کند authoritative server خاموش است؛ routing، ACL، rate limit و مسیر برگشت هم علت‌اند.\n\n## Lab تشخیصی\n- resolver پیش‌فرض و source network را ثبت کن.\n- نام موجود و نوع رکورد موجود، سپس type ناموجود همان نام را پرس‌وجو کن و NXDOMAIN/NODATA را مقایسه کن.\n- TTL و authority section را ثبت کن.\n- یک CNAME chain را بررسی کن.\n- در DNS server آزمایشگاهی، cache و TTL را تغییر بده؛ zone عمومی یا سازمانی را دستکاری نکن.\n- در صورت بررسی transport، DNS query را با capture در دو نقطه، protocol/port و timestamp مشخص مشاهده کن.\n\n## عیب‌یابی سازمانی\nنام داخلی به IP عمومی resolve می‌شود: split-horizon zone، search suffix، VPN route یا resolver انتخاب‌شده را بررسی کن. رکورد تازه قدیمی دیده می‌شود: authoritative data، TTL cache، negative cache و delegation را مقایسه کن. فقط برخی شبکه‌ها مشکل دارند: resolver path، anycast instance، source policy یا VPN ممکن است متفاوت باشد. نام resolve می‌شود اما سرویس کار نمی‌کند: اتصال IP مستقیم به پورت و سپس TLS/application را جدا بررسی کن.\n\n## امنیت و تغییر\nRecursive resolver نباید ناخواسته open resolver عمومی شود. ACL recursion، source networks، rate limiting، logging، DNSSEC validation و patching به platform وابسته‌اند. تغییر forwarder یا zone می‌تواند کاربران زیادی را متاثر کند؛ baseline، rollback و آزمون داخلی/خارجی لازم است. DNSSEC صحت داده را اعتبارسنجی می‌کند ولی query را رمزنگاری نمی‌کند. DoH/DoT برای انتقال رمزگذاری‌شده‌اند اما trust و policy endpoint همچنان لازم است.",
+      "commands": "Windows: nslookup; Resolve-DnsName. Linux: dig; host; resolvectl. Record QNAME/QTYPE, resolver, RCODE, answer/authority, TTL, timestamp and transport.",
+      "examples": "Use an isolated DNS zone and a controlled test domain. Do not modify public or organizational authoritative zones during labs.",
+      "notes": "source=tools/packs/network_services/dns_recursive_deep_pack.json; status=review_required; lab_execution=not_yet_run; infographic=shared/infographics/dns_lookup.svg",
+      "learning_objectives": [
+        "cache، referral و zone را عیب‌یابی کند",
+        "DNS را از TCP/TLS جدا کند",
+        "آزمایش امن و قابل‌تکرار طراحی کند"
+      ],
+      "prerequisites": [
+        "DNS names, A/AAAA/CNAME, IP addressing and client/server roles"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"dns-l2-1\",\"prompt\":\"Recursive resolver چه تفاوتی با authoritative server دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dns-l2-2\",\"prompt\":\"Iterative query ممکن است چه چیزی برگرداند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dns-l2-3\",\"prompt\":\"TTL چه کاری می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dns-l2-4\",\"prompt\":\"NXDOMAIN و NODATA چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dns-l2-5\",\"prompt\":\"چرا CNAME ممکن است query اضافی نیاز داشته باشد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dns-l2-6\",\"prompt\":\"DNS موفق چه چیزی را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dns-l2-7\",\"prompt\":\"DNSSEC چه می‌کند و چه چیزی را نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dns-l2-8\",\"prompt\":\"چرا پاسخ DNS بزرگ ممکن است متفاوت رفتار کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dns-l2-9\",\"prompt\":\"چرا nslookup موفق، رفتار browser را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"dns-l2-10\",\"prompt\":\"چه اطلاعاتی برای diagnosis لازم است؟\",\"type\":\"short_answer\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"dns-l2-1\",\"answer\":\"Recursive resolver از سوی client پاسخ را دنبال می‌کند؛ authoritative server دادهٔ zone را ارائه می‌کند.\",\"rationale\":\"این نقش‌ها ممکن است روی یک محصول باشند اما مسئولیت منطقی‌شان متفاوت است.\"},{\"id\":\"dns-l2-2\",\"answer\":\"Referral به nameserverهای سطح بعدی.\",\"rationale\":\"Referral لزوماً answer نهایی نیست.\"},{\"id\":\"dns-l2-3\",\"answer\":\"مدت مجاز cache کردن پاسخ/RRset را مشخص می‌کند.\",\"rationale\":\"TTL propagation هم‌زمان همهٔ cacheها را تضمین نمی‌کند.\"},{\"id\":\"dns-l2-4\",\"answer\":\"NXDOMAIN یعنی نام وجود ندارد؛ NODATA یعنی نام هست اما نوع رکورد خواسته‌شده نیست.\",\"rationale\":\"Negative caching آن‌ها باید جدا تفسیر شود.\"},{\"id\":\"dns-l2-5\",\"answer\":\"چون نام مقصد alias باید resolve شود.\",\"rationale\":\"TTLها و chain را باید دنبال کرد.\"},{\"id\":\"dns-l2-6\",\"answer\":\"TCP/TLS یا سلامت application را ثابت نمی‌کند.\",\"rationale\":\"resolution و transport/application مراحل جدا هستند.\"},{\"id\":\"dns-l2-7\",\"answer\":\"صحت/اصالت داده را با امضا بررسی می‌کند، اما query را رمزنگاری نمی‌کند.\",\"rationale\":\"DoT/DoH مسئلهٔ transport privacy را حل می‌کنند.\"},{\"id\":\"dns-l2-8\",\"answer\":\"EDNS، truncation/TCP fallback، fragmentation، MTU و ACL ممکن است مؤثر باشند.\",\"rationale\":\"اندازه و transport باید جدا آزمایش شوند.\"},{\"id\":\"dns-l2-9\",\"answer\":\"Browser ممکن است DoH، cache، proxy یا resolver policy متفاوت داشته باشد.\",\"rationale\":\"مسیر resolverها می‌تواند فرق کند.\"},{\"id\":\"dns-l2-10\",\"answer\":\"QNAME/QTYPE، resolver، source network، timestamp، RCODE، TTL و answer/authority.\",\"rationale\":\"بدون context، cache و split-horizon از هم جدا نمی‌شوند.\"}]},\"related_infographics\":[\"dns_lookup.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 1034 — Domain Names: Concepts and Facilities",
+          "url": "https://www.rfc-editor.org/rfc/rfc1034.html"
+        },
+        {
+          "title": "RFC 1035 — Domain Names: Implementation and Specification",
+          "url": "https://www.rfc-editor.org/rfc/rfc1035.html"
+        },
+        {
+          "title": "RFC 2308 — Negative Caching of DNS Queries",
+          "url": "https://www.rfc-editor.org/rfc/rfc2308.html"
+        },
+        {
+          "title": "RFC 4033 — DNS Security Introduction and Requirements",
+          "url": "https://www.rfc-editor.org/rfc/rfc4033.html"
+        },
+        {
+          "title": "RFC 7858 — DNS over Transport Layer Security",
+          "url": "https://www.rfc-editor.org/rfc/rfc7858.html"
+        },
+        {
+          "title": "RFC 8484 — DNS Queries over HTTPS",
+          "url": "https://www.rfc-editor.org/rfc/rfc8484.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch10:recursive-query:l3",
+      "entity": "lesson",
+      "chapter_order": 10,
+      "subchapter_order": 1,
+      "lesson_order": 4,
+      "topic": "recursive-query",
+      "domain": "network-services",
+      "level": "L3",
+      "title_fa": "[L3] Recursive Query — مهندس",
+      "title_en": "[L3] Recursive DNS Query — مهندس",
+      "tags": [
+        "DNS",
+        "recursive-resolver",
+        "authoritative",
+        "cache",
+        "L3"
+      ],
+      "summary": "delegation و resolver path را با شواهد تحلیل کند؛ negative caching و transport edge case را تشخیص دهد؛ RCA قابل تکرار ارائه کند",
+      "full_content": "# Recursive Query — مهندس\n\n## از resolution chain تا evidence\nDNS incident باید با QNAME، QTYPE، source resolver، source subnet، timestamp/timezone و RCODE تعریف شود. یک نام ممکن است در host cache، browser cache، recursive cache و authoritative zone حالت‌های متفاوت داشته باشد. درخواست browser ممکن است از DoH، forward proxy یا VPN عبور کند؛ بنابراین UDP/53 در capture فقط یک بخش احتمالی از مسیر است.\n\n## Referral و delegation\nRecursive resolver برای نام cache نشده ممکن است root hints و referralها را دنبال کند. Referral به nameserverهای سطح بعدی اطلاعات مسیر در namespace می‌دهد؛ authoritative response دادهٔ zone را برمی‌گرداند. Delegation با NS records بیان می‌شود و بعضی الگوها به glue نیاز دارند تا resolver بتواند nameserver را resolve کند. Child delegation ناقص، lame delegation، ناسازگاری SOA/NS یا دسترسی نابرابر به authoritative server ممکن است فقط از برخی شبکه‌ها دیده شود.\n\nCNAME chain، wildcard، reverse lookup و split-horizon باعث می‌شوند نام یکسان لزوماً پاسخ یکسان ندهد. Trace باید chain و TTL هر RRset را ثبت کند. DNSSEC validation ممکن است SERVFAIL ایجاد کند اگر chain of trust یا signature معتبر ناقص/منقضی باشد؛ خاموش‌کردن validation برای حل سریع، عیب را پنهان می‌کند.\n\n## Cache و negative response\nTTL مثبت برای هر RRset مهم است. RFC 2308 negative caching را توصیف می‌کند. NXDOMAIN و NODATA نتیجهٔ یکسان ندارند و cache آن‌ها می‌تواند متفاوت باشد. TTL پایین به‌تنهایی propagation فوری را تضمین نمی‌کند؛ client cache و application cache نیز ممکن است نقش داشته باشند. برنامهٔ تغییر رکورد باید TTL قبلی، زمان propagation، rollback و اثر negative cache را لحاظ کند.\n\n## EDNS، TCP fallback و MTU\nDNS از UDP و TCP استفاده می‌کند. EDNS(0) امکان اعلام buffer size و قابلیت‌های اضافه را می‌دهد. پاسخ‌های بزرگ و DNSSEC records می‌توانند fragmentation یا fallback به TCP را درگیر کنند. اگر پاسخ کوچک کار می‌کند ولی DNSSEC query بزرگ timeout می‌شود، response size، truncation bit، TCP/53 reachability و ICMP/MTU را جدا بسنج. افزایش buffer بدون بررسی مسیر ممکن است علت را جابه‌جا کند.\n\nDoT و DoH query را در transport رمزگذاری‌شده منتقل می‌کنند. Resolver selection، certificate trust، endpoint، captive portal و proxy policy مهم‌اند. در چنین معماری‌ای مشاهده‌نشدن UDP/53 طبیعی است و باید نقطهٔ مشاهده و endpoint policy ثبت شود.\n\n## سه Lab برای failure mode متفاوت\nA — Delegation fault: در zone آزمایشگاهی NS/glue را تغییر بده و trace بگیر؛ رفتار نهایی ممکن است SERVFAIL یا timeout باشد و به cache/implementation وابسته است.\nB — Negative cache: ابتدا QNAME آزمایشی را وقتی وجود ندارد پرس‌وجو کن، سپس zone را اصلاح کن و زمان باقی‌ماندن پاسخ منفی را اندازه بگیر.\nC — Transport/size: پاسخ DNS آزمایشی بزرگ را بررسی کن و UDP response، TC bit، TCP fallback و packet size را مشاهده کن.\nهر Lab باید environment، version، expected/observed result، cleanup و rollback داشته باشد.\n\n## RCA\nاگر resolver A پاسخ می‌دهد و B نه، authoritative zone و cache را با source/instance و timestamp مقایسه کن. اگر resolverها SERVFAIL می‌دهند، delegation، DNSSEC validation، upstream و zone authority را بررسی کن. اگر فقط برخی clientها مشکل دارند، search suffix، NRPT، VPN، DoH/DoT، split DNS و cache متفاوت را استخراج کن. اگر DNS سالم اما endpoint unreachable است، DNS را از route/TCP/TLS/application جدا نگه دار.\n\n## معیار مهندسی\nRCA باید resolution trace، TTL/RRset، RCODE، source resolver، مسیر transport، علت تأییدشده، فرضیه‌های ردشده و verification پس از اصلاح را ثبت کند. اگر authoritative server در دسترس نیست، نتیجه incomplete می‌ماند؛ پاسخ cache شده شاهد مستقیم سلامت zone جاری نیست.",
+      "commands": "Windows: nslookup; Resolve-DnsName. Linux: dig; host; resolvectl. Record QNAME/QTYPE, resolver, RCODE, answer/authority, TTL, timestamp and transport.",
+      "examples": "Use an isolated DNS zone and a controlled test domain. Do not modify public or organizational authoritative zones during labs.",
+      "notes": "source=tools/packs/network_services/dns_recursive_deep_pack.json; status=review_required; lab_execution=not_yet_run; infographic=shared/infographics/dns_lookup.svg",
+      "learning_objectives": [
+        "delegation و resolver path را با شواهد تحلیل کند",
+        "negative caching و transport edge case را تشخیص دهد",
+        "RCA قابل تکرار ارائه کند"
+      ],
+      "prerequisites": [
+        "DNS names, A/AAAA/CNAME, IP addressing and client/server roles"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"dns-l3-1\",\"prompt\":\"Recursive resolver چه تفاوتی با authoritative server دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dns-l3-2\",\"prompt\":\"Iterative query ممکن است چه چیزی برگرداند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dns-l3-3\",\"prompt\":\"TTL چه کاری می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dns-l3-4\",\"prompt\":\"NXDOMAIN و NODATA چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dns-l3-5\",\"prompt\":\"چرا CNAME ممکن است query اضافی نیاز داشته باشد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dns-l3-6\",\"prompt\":\"DNS موفق چه چیزی را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dns-l3-7\",\"prompt\":\"DNSSEC چه می‌کند و چه چیزی را نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dns-l3-8\",\"prompt\":\"چرا پاسخ DNS بزرگ ممکن است متفاوت رفتار کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dns-l3-9\",\"prompt\":\"چرا nslookup موفق، رفتار browser را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dns-l3-10\",\"prompt\":\"چه اطلاعاتی برای diagnosis لازم است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dns-l3-11\",\"prompt\":\"چرا cache flush اولین اقدام نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"dns-l3-12\",\"prompt\":\"DoH/DoT چه اثری بر capture دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"dns-l3-1\",\"answer\":\"Recursive resolver از سوی client پاسخ را دنبال می‌کند؛ authoritative server دادهٔ zone را ارائه می‌کند.\",\"rationale\":\"این نقش‌ها ممکن است روی یک محصول باشند اما مسئولیت منطقی‌شان متفاوت است.\"},{\"id\":\"dns-l3-2\",\"answer\":\"Referral به nameserverهای سطح بعدی.\",\"rationale\":\"Referral لزوماً answer نهایی نیست.\"},{\"id\":\"dns-l3-3\",\"answer\":\"مدت مجاز cache کردن پاسخ/RRset را مشخص می‌کند.\",\"rationale\":\"TTL propagation هم‌زمان همهٔ cacheها را تضمین نمی‌کند.\"},{\"id\":\"dns-l3-4\",\"answer\":\"NXDOMAIN یعنی نام وجود ندارد؛ NODATA یعنی نام هست اما نوع رکورد خواسته‌شده نیست.\",\"rationale\":\"Negative caching آن‌ها باید جدا تفسیر شود.\"},{\"id\":\"dns-l3-5\",\"answer\":\"چون نام مقصد alias باید resolve شود.\",\"rationale\":\"TTLها و chain را باید دنبال کرد.\"},{\"id\":\"dns-l3-6\",\"answer\":\"TCP/TLS یا سلامت application را ثابت نمی‌کند.\",\"rationale\":\"resolution و transport/application مراحل جدا هستند.\"},{\"id\":\"dns-l3-7\",\"answer\":\"صحت/اصالت داده را با امضا بررسی می‌کند، اما query را رمزنگاری نمی‌کند.\",\"rationale\":\"DoT/DoH مسئلهٔ transport privacy را حل می‌کنند.\"},{\"id\":\"dns-l3-8\",\"answer\":\"EDNS، truncation/TCP fallback، fragmentation، MTU و ACL ممکن است مؤثر باشند.\",\"rationale\":\"اندازه و transport باید جدا آزمایش شوند.\"},{\"id\":\"dns-l3-9\",\"answer\":\"Browser ممکن است DoH، cache، proxy یا resolver policy متفاوت داشته باشد.\",\"rationale\":\"مسیر resolverها می‌تواند فرق کند.\"},{\"id\":\"dns-l3-10\",\"answer\":\"QNAME/QTYPE، resolver، source network، timestamp، RCODE، TTL و answer/authority.\",\"rationale\":\"بدون context، cache و split-horizon از هم جدا نمی‌شوند.\"},{\"id\":\"dns-l3-11\",\"answer\":\"شواهد را حذف می‌کند و ممکن است QPS ناگهانی ایجاد کند.\",\"rationale\":\"ابتدا authoritative answer، TTL و resolver ثبت شوند.\"},{\"id\":\"dns-l3-12\",\"answer\":\"Queryها در transport رمزگذاری‌شده می‌روند و ممکن است UDP/53 دیده نشود.\",\"rationale\":\"endpoint و policy باید مشخص شوند.\"}]},\"related_infographics\":[\"dns_lookup.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 1034 — Domain Names: Concepts and Facilities",
+          "url": "https://www.rfc-editor.org/rfc/rfc1034.html"
+        },
+        {
+          "title": "RFC 1035 — Domain Names: Implementation and Specification",
+          "url": "https://www.rfc-editor.org/rfc/rfc1035.html"
+        },
+        {
+          "title": "RFC 2308 — Negative Caching of DNS Queries",
+          "url": "https://www.rfc-editor.org/rfc/rfc2308.html"
+        },
+        {
+          "title": "RFC 4033 — DNS Security Introduction and Requirements",
+          "url": "https://www.rfc-editor.org/rfc/rfc4033.html"
+        },
+        {
+          "title": "RFC 7858 — DNS over Transport Layer Security",
+          "url": "https://www.rfc-editor.org/rfc/rfc7858.html"
+        },
+        {
+          "title": "RFC 8484 — DNS Queries over HTTPS",
+          "url": "https://www.rfc-editor.org/rfc/rfc8484.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch10:recursive-query:l4",
+      "entity": "lesson",
+      "chapter_order": 10,
+      "subchapter_order": 1,
+      "lesson_order": 5,
+      "topic": "recursive-query",
+      "domain": "network-services",
+      "level": "L4",
+      "title_fa": "[L4] Recursive Query — خبره",
+      "title_en": "[L4] Recursive DNS Query — خبره",
+      "tags": [
+        "DNS",
+        "recursive-resolver",
+        "authoritative",
+        "cache",
+        "L4"
+      ],
+      "summary": "معماری recursive/authoritative را طراحی کند؛ DNSSEC، cache و DoH/DoT را در trade-off تحلیل کند؛ benchmark و threat model ارائه کند",
+      "full_content": "# Recursive Query — خبره و طراحی معماری\n\n## Zone، delegation و مالکیت\nDNS یک درخت namespace است؛ zone واحد داده‌ای است که به‌صورت authoritative مدیریت می‌شود. طراحی enterprise باید مرز zone، delegation، مالکیت، change control، DNSSEC policy، forwarder policy و مسیر internal/external را مشخص کند. Split-horizon ممکن است آگاهانه پاسخ متفاوت به networkهای مختلف بدهد؛ تفاوت پاسخ تنها وقتی defect است که policy طراحی آن را منع کند. QNAME، QTYPE و source view بخشی از definition of incident هستند.\n\nRecursive resolver مسئول پیگیری پاسخ برای client است؛ authoritative server دادهٔ zone را می‌دهد. مرز مسئولیت باید روشن باشد: چه تیمی رکورد را تغییر می‌دهد، چه تیمی recursion را اداره می‌کند، چه مانیتورینگی delegation را بررسی می‌کند و چه SLA برای نشر یا rollback وجود دارد. Resolver ممکن است anycast، multiple views یا cache جدا داشته باشد؛ رفتار یک instance را به تمام resolverها تعمیم نده.\n\n## Resolution graph، cache و consistency\nبرای نام واقعی، resolution می‌تواند شامل CNAME chain، delegation، A/AAAA، SRV یا MX باشد. Trace باید RRsets، TTL، authoritative status، referral و endpointهای پرس‌وجوشده را همراه timestamp ثبت کند. TTL کنترل cache است، نه transaction mechanism. Negative caching طبق RFC 2308 می‌تواند NXDOMAIN/NODATA را پس از اصلاح authoritative zone نیز قابل مشاهده نگه دارد. برنامهٔ تغییر باید TTL فعلی/قبلی، cache در client/application، propagation، rollback و مدت باقی‌ماندن پاسخ منفی را لحاظ کند.\n\nبرای تغییر حساس، TTL را در برنامهٔ migration کنترل‌شده کم کن و پس از پایان window به مقدار مناسب برگردان؛ TTL بسیار پایین بار query را بالا می‌برد. Split DNS نیازمند acceptance مجزا برای هر source network است. پرس‌وجو باید با resolver انتخابی انجام شود، نه با فرض کردن location کلاینت.\n\n## DNSSEC، حریم خصوصی و transport\nDNSSEC امضا و زنجیرهٔ اعتماد را برای بررسی صحت داده فراهم می‌کند ولی query را رمزنگاری نمی‌کند. Resolver validating ممکن است پاسخ دارای chain of trust خراب یا signature منقضی را SERVFAIL اعلام کند؛ برای RCA، DS/DNSKEY chain، key rollover، signature expiration و ساعت سیستم بررسی شود. خاموش‌کردن validation نباید fix عمومی باشد.\n\nDoT و DoH query transport را رمزگذاری می‌کنند اما به endpoint policy، certificate trust، naming و monitoring نیاز دارند. DoH ممکن است روی HTTPS/443 عبور کند و در capture عادی با ترافیک web اشتباه شود. انتخاب resolver، split-horizon، endpoint policy و مدیریت سازمانی باید مستند شود. رمزگذاری انتقال به‌معنی معتبر بودن دادهٔ DNS یا سالم بودن application نیست؛ DNSSEC و TLS مکمل‌اند اما مسئلهٔ یکسانی حل نمی‌کنند.\n\n## EDNS، TCP fallback، fragmentation و MTU\nDNS پاسخ بزرگ ممکن است با EDNS(0)، truncation bit و TCP fallback سروکار داشته باشد. DNSSEC پاسخ را حجیم‌تر می‌کند. اگر firewall UDP fragments یا TCP/53 را فیلتر کند، resolver ممکن است intermittent failure ببیند؛ بازکردن بیش از حد سطح DNS هم exposure می‌سازد. آزمایش باید UDP response size، TC bit، TCP fallback، MTU/path، fragmentation، DNSSEC validation و packet loss را جدا اندازه بگیرد. پاسخ کوچک موفق همهٔ پاسخ‌های بزرگ را ثابت نمی‌کند.\n\n## Availability و ظرفیت resolver\nResolver availability از چند IP DNS در client به‌تنهایی حاصل نمی‌شود. Upstream reachability، anycast routing، network/provider diversity، cache warm-up، recursion policy، query rate، concurrency، retry/timeout، negative cache و capacity per second اهمیت دارند. Retry بیش از حد تهاجمی می‌تواند upstream معیوب را با query storm مواجه کند؛ timeout طولانی tail latency را بالا می‌برد. Benchmark باید cold/warm cache، positive/negative hit، CNAME depth، DNSSEC، large answer، UDP/TCP fallback، timeout و failover را جدا بررسی کند.\n\nMetricها می‌توانند resolution success rate، latency p50/p95/p99، SERVFAIL/NXDOMAIN/NODATA ratio، timeout، upstream QPS، cache hit/miss و response size باشند. Threshold باید از baseline و SLO همان سرویس استخراج شود. Logging باید data minimization داشته باشد؛ query name ممکن است metadata حساس کاربر باشد.\n\n## Threat model\nتهدیدها شامل cache poisoning attempts، open recursion، amplification abuse، DNSSEC misconfiguration، compromised registrar/authoritative updates، unauthorized zone transfer، tunneling/exfiltration، resolver hijack و stale records هستند. کنترل‌ها بنا بر معماری شامل محدود کردن recursion/AXFR، authenticated change process، DNSSEC signing/validation، rate limiting، logging/alerting، source ACL و patching هستند. feature و syntax را با release واقعی تطبیق بده.\n\n## Runbook RCA\n1. QNAME/QTYPE، source subnet، resolver/view و timestamp را ثبت کن.\n2. پاسخ client و resolver را با RCODE، flags، answer/authority و TTL مقایسه کن.\n3. cache را فقط بعد از ثبت شواهد بررسی/پاکسازی کن.\n4. delegation، authoritative server، DNSSEC chain و UDP/TCP transport را مستقل بسنج.\n5. پاسخ DNS را از route/TCP/TLS/application health جدا کن.\n6. پس از اثبات علت، تغییر کم‌خطر اعمال و acceptance suite را تکرار کن.\n7. برای rollback، رکورد قبلی، TTL، DNSSEC state و dependencyها را حفظ کن.\n\n## Definition of Done\nآمادگی معماری DNS وقتی ثابت می‌شود که zone/ownership، delegation، recursion/authority، cache/TTL، DNSSEC، DoH/DoT، TCP/UDP/MTU، alerting، privacy retention، rollback و test مثبت/منفی مستند و اجرا شده باشند. Labهای این Pack طراحی شده‌اند اما هنوز اجرا نشده‌اند؛ وضعیت review-required به معنی تکمیل نهایی نیست.",
+      "commands": "Windows: nslookup; Resolve-DnsName. Linux: dig; host; resolvectl. Record QNAME/QTYPE, resolver, RCODE, answer/authority, TTL, timestamp and transport.",
+      "examples": "Use an isolated DNS zone and a controlled test domain. Do not modify public or organizational authoritative zones during labs.",
+      "notes": "source=tools/packs/network_services/dns_recursive_deep_pack.json; status=review_required; lab_execution=not_yet_run; infographic=shared/infographics/dns_lookup.svg",
+      "learning_objectives": [
+        "معماری recursive/authoritative را طراحی کند",
+        "DNSSEC، cache و DoH/DoT را در trade-off تحلیل کند",
+        "benchmark و threat model ارائه کند"
+      ],
+      "prerequisites": [
+        "DNS names, A/AAAA/CNAME, IP addressing and client/server roles"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"dns-l4-1\",\"prompt\":\"Recursive resolver چه تفاوتی با authoritative server دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-2\",\"prompt\":\"Iterative query ممکن است چه چیزی برگرداند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-3\",\"prompt\":\"TTL چه کاری می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-4\",\"prompt\":\"NXDOMAIN و NODATA چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-5\",\"prompt\":\"چرا CNAME ممکن است query اضافی نیاز داشته باشد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-6\",\"prompt\":\"DNS موفق چه چیزی را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-7\",\"prompt\":\"DNSSEC چه می‌کند و چه چیزی را نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-8\",\"prompt\":\"چرا پاسخ DNS بزرگ ممکن است متفاوت رفتار کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-9\",\"prompt\":\"چرا nslookup موفق، رفتار browser را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-10\",\"prompt\":\"چه اطلاعاتی برای diagnosis لازم است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-11\",\"prompt\":\"چرا cache flush اولین اقدام نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-12\",\"prompt\":\"DoH/DoT چه اثری بر capture دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-13\",\"prompt\":\"چرا DNSSEC misconfiguration می‌تواند SERVFAIL بدهد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-14\",\"prompt\":\"کدام metricها ظرفیت resolver را نشان می‌دهند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"dns-l4-15\",\"prompt\":\"چه زمانی DNS incident verified است؟\",\"type\":\"short_answer\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"dns-l4-1\",\"answer\":\"Recursive resolver از سوی client پاسخ را دنبال می‌کند؛ authoritative server دادهٔ zone را ارائه می‌کند.\",\"rationale\":\"این نقش‌ها ممکن است روی یک محصول باشند اما مسئولیت منطقی‌شان متفاوت است.\"},{\"id\":\"dns-l4-2\",\"answer\":\"Referral به nameserverهای سطح بعدی.\",\"rationale\":\"Referral لزوماً answer نهایی نیست.\"},{\"id\":\"dns-l4-3\",\"answer\":\"مدت مجاز cache کردن پاسخ/RRset را مشخص می‌کند.\",\"rationale\":\"TTL propagation هم‌زمان همهٔ cacheها را تضمین نمی‌کند.\"},{\"id\":\"dns-l4-4\",\"answer\":\"NXDOMAIN یعنی نام وجود ندارد؛ NODATA یعنی نام هست اما نوع رکورد خواسته‌شده نیست.\",\"rationale\":\"Negative caching آن‌ها باید جدا تفسیر شود.\"},{\"id\":\"dns-l4-5\",\"answer\":\"چون نام مقصد alias باید resolve شود.\",\"rationale\":\"TTLها و chain را باید دنبال کرد.\"},{\"id\":\"dns-l4-6\",\"answer\":\"TCP/TLS یا سلامت application را ثابت نمی‌کند.\",\"rationale\":\"resolution و transport/application مراحل جدا هستند.\"},{\"id\":\"dns-l4-7\",\"answer\":\"صحت/اصالت داده را با امضا بررسی می‌کند، اما query را رمزنگاری نمی‌کند.\",\"rationale\":\"DoT/DoH مسئلهٔ transport privacy را حل می‌کنند.\"},{\"id\":\"dns-l4-8\",\"answer\":\"EDNS، truncation/TCP fallback، fragmentation، MTU و ACL ممکن است مؤثر باشند.\",\"rationale\":\"اندازه و transport باید جدا آزمایش شوند.\"},{\"id\":\"dns-l4-9\",\"answer\":\"Browser ممکن است DoH، cache، proxy یا resolver policy متفاوت داشته باشد.\",\"rationale\":\"مسیر resolverها می‌تواند فرق کند.\"},{\"id\":\"dns-l4-10\",\"answer\":\"QNAME/QTYPE، resolver، source network، timestamp، RCODE، TTL و answer/authority.\",\"rationale\":\"بدون context، cache و split-horizon از هم جدا نمی‌شوند.\"},{\"id\":\"dns-l4-11\",\"answer\":\"شواهد را حذف می‌کند و ممکن است QPS ناگهانی ایجاد کند.\",\"rationale\":\"ابتدا authoritative answer، TTL و resolver ثبت شوند.\"},{\"id\":\"dns-l4-12\",\"answer\":\"Queryها در transport رمزگذاری‌شده می‌روند و ممکن است UDP/53 دیده نشود.\",\"rationale\":\"endpoint و policy باید مشخص شوند.\"},{\"id\":\"dns-l4-13\",\"answer\":\"Resolver validating chain/key/signature نامعتبر را رد می‌کند.\",\"rationale\":\"خاموش‌کردن validation علت ریشه‌ای را لزوماً حل نمی‌کند.\"},{\"id\":\"dns-l4-14\",\"answer\":\"Success rate، latency percentile، timeout/SERVFAIL، QPS و cache hit/miss.\",\"rationale\":\"Threshold براساس baseline/SLO تعریف می‌شود.\"},{\"id\":\"dns-l4-15\",\"answer\":\"علت با شواهد مستقل ثبت، اصلاح و testهای همان query/transport بعد از change موفق باشند.\",\"rationale\":\"متن آموزشی یا sample output به‌تنهایی verification نیست.\"}]},\"related_infographics\":[\"dns_lookup.svg\",\"network_troubleshooting.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 1034 — Domain Names: Concepts and Facilities",
+          "url": "https://www.rfc-editor.org/rfc/rfc1034.html"
+        },
+        {
+          "title": "RFC 1035 — Domain Names: Implementation and Specification",
+          "url": "https://www.rfc-editor.org/rfc/rfc1035.html"
+        },
+        {
+          "title": "RFC 2308 — Negative Caching of DNS Queries",
+          "url": "https://www.rfc-editor.org/rfc/rfc2308.html"
+        },
+        {
+          "title": "RFC 4033 — DNS Security Introduction and Requirements",
+          "url": "https://www.rfc-editor.org/rfc/rfc4033.html"
+        },
+        {
+          "title": "RFC 7858 — DNS over Transport Layer Security",
+          "url": "https://www.rfc-editor.org/rfc/rfc7858.html"
+        },
+        {
+          "title": "RFC 8484 — DNS Queries over HTTPS",
+          "url": "https://www.rfc-editor.org/rfc/rfc8484.html"
+        }
+      ],
+      "source_status": "review_required"
+    }
+  ]
+}
