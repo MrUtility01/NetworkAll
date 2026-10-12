@@ -474,6 +474,13 @@ def sync_push():
                 invalid_uids.append(uid)
                 continue
 
+        if entity == "study" and not index.get((uid, "lesson")):
+            # Study progress is keyed by the canonical lesson UID. Never persist
+            # orphan progress that cannot be joined to a lesson on either client.
+            missing_targets += 1
+            missing_target_uids.append(f"study:{uid}")
+            continue
+
         server = index.get((uid, entity))
         if not server and entity in ("lesson", "scenario"):
             # Curriculum sync may update existing rows only; creating a lesson
