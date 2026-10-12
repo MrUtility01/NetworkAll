@@ -293,11 +293,44 @@ class ContentMergeTests(unittest.TestCase):
                 "level": "L1",
                 "assessment": assessment,
                 "learning_objectives": ["تفسیر خروجی"],
+                "scenario": {
+                    "title": "بررسی نسخه",
+                    "steps": ["دستور را در سوییچ آزمایشگاهی اجرا کن", "خروجی را ثبت کن"],
+                    "expected_result": "نسخه و uptime قابل مشاهده باشد",
+                },
+                "official_sources": [
+                    {"title": "Cisco command reference", "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-command-reference-list.html"}
+                ],
             }],
         }
         lesson = commands_to_lessons(pack, ROOT / "tools/packs/commands_encyclopedia/cisco_switching.json")[0]
         self.assertEqual(lesson["meta"]["assessment"], assessment)
         self.assertIn("EJ_ASSESSMENT", lesson["notes"])
+        self.assertIn("## سناریوی عملی مبتنی بر دستور", lesson["full_content"])
+        self.assertIn("بررسی نسخه", lesson["full_content"])
+        self.assertIn("expected_result", lesson["full_content"])
+        self.assertIn("https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-command-reference-list.html", lesson["full_content"])
+
+    def test_cisco_command_pack_gets_specific_scenario_and_versioned_official_sources(self):
+        pack = {
+            "chapter_order": 68,
+            "vendor": "Cisco",
+            "platform": "IOS XE",
+            "commands": [{
+                "command": "show ip interface brief",
+                "title_fa": "نمایش خلاصه وضعیت اینترفیس‌ها",
+                "when_to_use_fa": "برای تشخیص رابط‌های down و آدرس‌های IP",
+                "sample_output": "GigabitEthernet1/0/1  192.0.2.1  YES manual  up  up",
+            }],
+        }
+        lesson = commands_to_lessons(pack, ROOT / "tools/packs/commands_encyclopedia/cisco_switching.json")[0]
+        content = lesson["full_content"]
+        self.assertIn("## سناریوی عملی مبتنی بر دستور", content)
+        self.assertIn("show ip interface brief", content)
+        self.assertIn("معیار قبولی", content)
+        self.assertIn("شاهد خروجی برای مقایسه", content)
+        self.assertIn("https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-26/products-command-reference-list.html", content)
+        self.assertIn("https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-command-reference-list.html", content)
 
     def test_git_markdown_book_splits_into_level_lessons(self):
         markdown = """# فصل ۶۴
