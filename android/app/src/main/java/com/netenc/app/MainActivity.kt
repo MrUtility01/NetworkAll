@@ -9,6 +9,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import android.text.InputType
+import java.security.MessageDigest
+import javax.crypto.SecretKeyFactory
+import javax.crypto.spec.PBEKeySpec
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -40,6 +45,59 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        showPinGate()
+    }
+
+    /**
+     * Local app gate. PIN verification uses PBKDF2-HMAC-SHA256 and never stores
+     * the PIN in source or SharedPreferences. Re-open the gate on a new Activity.
+     */
+    private fun showPinGate() {
+        val pinInput = EditText(this).apply {
+            hint = "رمز ورود"
+            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            setSingleLine(true)
+            layoutDirection = android.view.View.LAYOUT_DIRECTION_RTL
+        }
+        AlertDialog.Builder(this)
+            .setTitle("ورود به Engineer Jokar")
+            .setMessage("برای ورود به برنامه رمز را وارد کنید.")
+            .setView(pinInput)
+            .setCancelable(false)
+            .setPositiveButton("ورود") { _, _ ->
+                if (verifyLocalPin(pinInput.text.toString())) {
+                    initializeMainUi()
+                } else {
+                    Toast.makeText(this, "رمز ورود نادرست است", Toast.LENGTH_SHORT).show()
+                    showPinGate()
+                }
+            }
+            .show()
+    }
+
+    private fun verifyLocalPin(candidate: String): Boolean {
+        if (candidate.isEmpty() || candidate.length > 128) return false
+        val salt = byteArrayOf(
+            0x5f, 0x3a, 0x9c.toByte(), 0x71, 0xd8.toByte(), 0xe2.toByte(), 0x04, 0x6b,
+            0xb6.toByte(), 0xf9.toByte(), 0x01, 0x2a, 0xc4.toByte(), 0x8d.toByte(), 0x73, 0x5e
+        )
+        val expected = hexToBytes("b3bcd73dc2fa994ab21c0af7f4353e6355fb260d1220ba45fb054176bb3a2f76")
+        val spec = PBEKeySpec(candidate.toCharArray(), salt, 200_000, 256)
+        return try {
+            val actual = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
+                .generateSecret(spec).encoded
+            MessageDigest.isEqual(expected, actual)
+        } catch (_: Exception) {
+            false
+        } finally {
+            spec.clearPassword()
+        }
+    }
+
+    private fun hexToBytes(value: String): ByteArray =
+        value.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
+
+    private fun initializeMainUi() {
         setContentView(R.layout.activity_main)
         repo = LessonRepository(this)
         workspaceSyncRepo = WorkspaceSyncRepository(this)
