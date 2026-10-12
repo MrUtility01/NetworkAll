@@ -16,7 +16,7 @@ import java.io.InputStreamReader
 import java.util.zip.GZIPInputStream
 
 object OfflineSeeder {
-    private const val META_SEEDED = "offline_seeded_v16"
+    private const val META_SEEDED = "offline_seeded_v17"
     private const val BATCH_SIZE = 50
     private val seedMutex = Mutex()
 
@@ -89,6 +89,17 @@ object OfflineSeeder {
                 if (uid.isBlank()) continue
 
                 lessonOrderCounter[0]++
+                // The canonical pack records repeat hierarchy metadata on each lesson.
+                // Prefer those fields: JSON object key order and older generated chapter
+                // wrappers must not decide whether Android can build the content tree.
+                val resolvedChapterOrder = lesson.optInt("chapter_order", chapterOrder).takeIf { it > 0 } ?: chapterOrder
+                val resolvedChapterTitle = lesson.optString("chapter_title_fa").ifBlank {
+                    lesson.optString("chapter_title").ifBlank { chapterTitle }
+                }
+                val resolvedSubTitle = lesson.optString("subchapter_title_fa").ifBlank {
+                    lesson.optString("subchapter_title").ifBlank { subTitle }
+                }
+                val resolvedLessonOrder = lesson.optInt("lesson_order", lessonOrderCounter[0]).coerceAtLeast(1)
                 batch.add(
                     LessonEntity(
                         uid = uid,
@@ -103,15 +114,17 @@ object OfflineSeeder {
                         metaJson = lesson.optString("meta_json", "{}"),
                         learningObjectives = lesson.optString("learning_objectives", ""),
                         sourceStatus = lesson.optString("source_status", "review_required"),
-                        lastUpdated = "2026-10-11T12:00:00Z",
-                        contentHash = "offline-v16-ch68",
+                        lastUpdated = lesson.optString("last_updated").ifBlank { "2026-10-12T00:00:00Z" },
+                        contentHash = "offline-v17-hierarchy",
                         deviceId = "android-offline",
                         // Preserve user soft-deletions when refreshing bundled content.
                         deleted = existingRows[uid]?.deleted ?: false,
-                        chapterOrder = chapterOrder,
-                        chapterTitle = chapterTitle,
-                        subTitle = subTitle,
-                        lessonOrder = lessonOrderCounter[0]
+                        chapterOrder = resolvedChapterOrder,
+                        chapterTitle = resolvedChapterTitle.ifBlank {
+                            if (resolvedChapterOrder > 0) "فصل $resolvedChapterOrder" else "بدون فصل‌بندی"
+                        },
+                        subTitle = resolvedSubTitle.ifBlank { "عمومی" },
+                        lessonOrder = resolvedLessonOrder
                     )
                 )
                 lessonCount++
