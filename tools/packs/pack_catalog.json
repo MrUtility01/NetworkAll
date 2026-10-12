@@ -13,21 +13,24 @@
       "review_required",
       "verified",
       "quarantined"
-    ]
+    ],
+    "depth_standard": "docs/CONTENT_DEPTH_STANDARD_FA.md",
+    "no_arbitrary_global_record_cap": true,
+    "require_level_l0_l4_for_instructional_lessons": true,
+    "derive_volume_from_competency_coverage": true
   },
   "required_lesson_components": [
-    "learning objectives",
-    "prerequisites",
-    "conceptual explanation",
-    "mechanism or architecture",
-    "worked example",
-    "practical lab with expected result",
-    "troubleshooting decision path",
-    "security and rollback notes",
-    "verification checklist",
-    "assessment questions",
-    "separate answer key with explanations",
-    "glossary and sources"
+    "stable UID, domain, depth level L0-L4 and measurable learning objectives",
+    "prerequisites and conceptual mental model",
+    "mechanism/architecture and cause-effect walkthrough",
+    "worked example with input, reasoning, expected output and interpretation",
+    "topic-specific repeatable lab with environment, setup, acceptance criteria and cleanup",
+    "troubleshooting decision path and root-cause branches",
+    "security, side effects, backup and rollback/recovery",
+    "independent verification checklist",
+    "level-appropriate assessment questions",
+    "separate answer key with matching IDs and explanatory rationales",
+    "glossary, related concepts, compatibility notes and official sources"
   ],
   "packs": [
     {
@@ -143,6 +146,69 @@
     "تمام JSONهای محتوایی در tools/packs نگهداری می‌شوند؛ پوشه‌های engineer_jokar_* فقط ابزار ساخت/اعتبارسنجی و مستندات موضوعی هستند.",
     "audit_pending به معنی ناقص بودن قطعی محتوا نیست؛ یعنی هنوز ممیزی خودکار و بازبینی فنی مستقل ثبت نشده است.",
     "طول متن به‌تنهایی شاخص عمق علمی نیست؛ صحت فرمان، نسخه، خروجی آزمایشگاه، منابع و جدایی پاسخ‌نامه نیز باید بررسی شود.",
-    "منابع quarantined حذف نمی‌شوند؛ تا زمان بازنویسی از محتوای فعال برنامه جدا می‌مانند."
-  ]
+    "منابع quarantined حذف نمی‌شوند؛ تا زمان بازنویسی از محتوای فعال برنامه جدا می‌مانند.",
+    "حجم و تعداد رکوردها سقف ثابت ندارند؛ ماتریس شایستگی‌ها و کیفیت هر رکورد حجم را تعیین می‌کند.",
+    "درس‌های مفهومی باید سطح L0 تا L4 و کف واژه/سؤال متناظر داشته باشند؛ مرجع فرمان، سناریو و فلش‌کارت معیارهای اختصاصی خودشان را دارند.",
+    "مقادیر استاندارد عمق راهنمای ممیزی‌اند و جایگزین اجرای لابراتوار، بررسی صحت فنی و منابع معتبر نیستند."
+  ],
+  "instructional_depth_model": {
+    "levels": [
+      {
+        "id": "L0",
+        "label_fa": "آشنایی و مبانی",
+        "minimum_words": 600,
+        "minimum_questions": 5
+      },
+      {
+        "id": "L1",
+        "label_fa": "مبتدی عملی",
+        "minimum_words": 800,
+        "minimum_questions": 8
+      },
+      {
+        "id": "L2",
+        "label_fa": "حرفه‌ای",
+        "minimum_words": 1200,
+        "minimum_questions": 10
+      },
+      {
+        "id": "L3",
+        "label_fa": "خبره",
+        "minimum_words": 1600,
+        "minimum_questions": 12
+      },
+      {
+        "id": "L4",
+        "label_fa": "فوق‌متخصص",
+        "minimum_words": 2200,
+        "minimum_questions": 15
+      }
+    ],
+    "command_reference": {
+      "minimum_words_guideline": 250,
+      "required_fields": [
+        "purpose",
+        "syntax",
+        "parameters",
+        "prerequisites_and_privileges",
+        "topic_specific_example",
+        "expected_output",
+        "interpretation",
+        "failure_modes",
+        "security_and_side_effects",
+        "verification",
+        "rollback_or_recovery",
+        "version_and_vendor_notes",
+        "official_sources"
+      ]
+    },
+    "volume_rule": "No global maximum. Count distinct competencies, practical procedures, platform/version variations, troubleshooting branches, labs, case studies, and assessed outcomes. Do not create duplicate or template-only records to inflate counts.",
+    "practical_labs": {
+      "L0_L1": "at least one repeatable practical exercise per practical skill",
+      "L2": "at least two materially different lab cases for complex practical skills",
+      "L3_L4": "include edge/failure testing and performance or capacity evidence where relevant"
+    },
+    "separate_answer_key": true,
+    "uid_per_topic_and_stable_cross_references": true
+  }
 }
