@@ -1,0 +1,232 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll / NetworkEncyclopedia",
+  "generated_on": "2026-10-12",
+  "purpose": "بستهٔ توسعهٔ عمیق DNS و DHCP شامل مفاهیم، آزمایشگاه، عیب‌یابی و امنیت؛ قبل از import باید UIDهای موجود تطبیق داده شوند.",
+  "scope": {
+    "chapter_order": 11,
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3"
+    ],
+    "lesson_count": 4,
+    "topics": [
+      {
+        "id": "dns-dhcp-engineering",
+        "title_fa": "DNS و DHCP؛ خدمات پایه و عیب‌یابی عملیاتی",
+        "title_en": "DNS and DHCP Engineering"
+      }
+    ]
+  },
+  "instructional_contract": [
+    "آموزش مفهومی و معماری",
+    "مثال حل‌شده و معیار قبولی",
+    "لابراتوار محلی و مجاز",
+    "عیب‌یابی شواهد محور",
+    "سؤال و answer_key جدا",
+    "عدم حذف یا تکرار رکورد در مرحلهٔ import"
+  ],
+  "content_quality": {
+    "target": "توسعه‌یافته",
+    "word_floor": 500,
+    "validation": "review_required; schema و importer باید در CI و دیتابیس آزمایشی بررسی شوند"
+  },
+  "lessons": [
+    {
+      "uid": "lesson:dns-dhcp:l0",
+      "chapter_order": 11,
+      "subchapter_order": 1,
+      "lesson_order": 1,
+      "topic": "dns-dhcp-engineering",
+      "domain": "network-services",
+      "level": "L0",
+      "title_fa": "[L0] DNS؛ از نام دامنه تا پاسخ resolver",
+      "title_en": "DNS resolution fundamentals",
+      "tags": [
+        "DNS",
+        "DHCP",
+        "network-services",
+        "troubleshooting",
+        "L0",
+        "deepened"
+      ],
+      "summary": "چرخهٔ resolution، cache، رکوردها و تفاوت timeout با پاسخ منفی را با مسیر عیب‌یابی آموزش می‌دهد.",
+      "full_content": "# DNS؛ از نام دامنه تا پاسخ resolver\n\nDNS سامانهٔ نام‌گذاری توزیع‌شده است؛ نامی مانند host.example را به مجموعه‌ای از رکوردها تبدیل می‌کند. DNS الزاماً فقط IP برنمی‌گرداند: A برای IPv4، AAAA برای IPv6، CNAME برای نام مستعار، MX برای تبادل ایمیل، NS برای name server و TXT برای دادهٔ متنی به‌کار می‌روند. DNS به‌تنهایی اتصال TCP، اعتبار گواهی TLS یا در دسترس‌بودن برنامه را تضمین نمی‌کند.\n\n## مسیر resolution\nبرنامه معمولاً از resolver سیستم‌عامل استفاده می‌کند. cache محلی یا resolver بازگشتی ممکن است پاسخ را داشته باشد؛ در غیر این صورت resolver می‌تواند از سلسله‌مراتب DNS برای رسیدن به authoritative server استفاده کند. TTL تعیین می‌کند پاسخ cache تا چه زمانی قابل استفاده باشد؛ تغییر رکورد الزاماً فوراً در همهٔ cacheها دیده نمی‌شود. Negative caching نیز ممکن است پاسخ نبود رکورد را برای مدتی نگه دارد.\n\n## پاسخ منفی با timeout فرق دارد\nNXDOMAIN یعنی نام مورد پرسش وجود ندارد، درحالی‌که NODATA معمولاً یعنی نام وجود دارد اما نوع رکورد خواسته‌شده موجود نیست. Timeout فقط می‌گوید پاسخ مورد انتظار در مهلت تعیین‌شده دریافت نشده؛ علت می‌تواند مسیر، ACL، فایروال، resolver خاموش، packet loss یا مشکل authoritative server باشد. خطای SERVFAIL نیز به معنای شکست resolver در تکمیل resolution است و با NXDOMAIN یکسان نیست.\n\n## مثال عیب‌یابی\nاگر وب‌سایت باز نمی‌شود، ابتدا نام را با resolver مشخص پرس‌وجو کنید و A و AAAA را جدا ببینید. سپس اتصال به IP، پورت 443، TLS و پاسخ HTTP را مستقل بررسی کنید. اگر DNS پاسخ درست می‌دهد ولی TCP برقرار نمی‌شود، تغییر رکورد DNS احتمالاً درمان مسئله نیست. اگر resolver داخلی پاسخ متفاوتی از resolver دیگر دارد، split DNS، cache، zone داخلی و مسیر پرس‌وجو را بررسی کنید.\n\n## ابزارها\nWindows: Resolve-DnsName example.com -Type A و ipconfig /displaydns.\nLinux: dig example.com A، dig example.com AAAA و resolvectl status.\nپرس‌وجو به resolver عمومی ممکن است سیاست سازمانی یا split DNS را دور بزند؛ در شبکهٔ سازمانی، resolver مجاز و تعریف‌شده را مبنا قرار دهید.\n\n## لابراتوار\nروی شبکهٔ آزمایش، یک نام کنترل‌شده را با دو نوع رکورد بررسی کنید. پاسخ، TTL، resolver مورد استفاده و زمان را ثبت کنید. سپس cache را تنها در محیط خود پاک کرده و مقایسه کنید. نتیجهٔ یک resolver را به تمام شبکه تعمیم ندهید.\n\n## ارزیابی\n1. تفاوت NXDOMAIN و timeout چیست؟\n2. چرا پاسخ DNS موفقیت HTTPS را ثابت نمی‌کند؟\n3. TTL چه اثری بر مشاهدهٔ تغییر رکورد دارد؟",
+      "commands": [
+        "Resolve-DnsName example.com -Type A",
+        "ipconfig /displaydns",
+        "dig example.com A",
+        "dig example.com AAAA"
+      ],
+      "examples": [
+        "تفاوت NXDOMAIN، NODATA، SERVFAIL و timeout با ثبت پاسخ و TTL."
+      ],
+      "notes": "آزمایش‌ها فقط روی دامنه، resolver و شبکهٔ مجاز اجرا شوند؛ پاک‌کردن cache پیش از جمع‌آوری شواهد ممکن است اطلاعات تشخیصی را از بین ببرد.",
+      "learning_objectives": [
+        "رکوردهای متداول DNS را تفکیک کند.",
+        "NXDOMAIN را از timeout جدا کند.",
+        "TTL و cache را در تحلیل لحاظ کند."
+      ],
+      "prerequisites": [],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"dns-l0-1\",\"prompt\":\"تفاوت NXDOMAIN و timeout چیست؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"dns-l0-2\",\"prompt\":\"چرا پاسخ DNS موفقیت HTTPS را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"dns-l0-3\",\"prompt\":\"TTL چه اثری بر تغییر رکورد دارد؟\",\"type\":\"short_answer\",\"level\":\"L0\"}]},\"word_floor\":500}"
+    },
+    {
+      "uid": "lesson:dns-dhcp:l1",
+      "chapter_order": 11,
+      "subchapter_order": 1,
+      "lesson_order": 2,
+      "topic": "dns-dhcp-engineering",
+      "domain": "network-services",
+      "level": "L1",
+      "title_fa": "[L1] DHCP؛ اجارهٔ آدرس و زنجیرهٔ پیکربندی",
+      "title_en": "DHCP leases and client configuration",
+      "tags": [
+        "DNS",
+        "DHCP",
+        "network-services",
+        "troubleshooting",
+        "L1",
+        "deepened"
+      ],
+      "summary": "فرایند DORA، lease، scope، relay، exclusions و عیب‌یابی آدرس‌دهی خودکار را پوشش می‌دهد.",
+      "full_content": "# DHCP؛ اجارهٔ آدرس و زنجیرهٔ پیکربندی\n\nDHCP به کلاینت اجازه می‌دهد تنظیمات IP را از سرویس‌دهنده دریافت کند. در IPv4، چرخهٔ مشهور DORA شامل Discover، Offer، Request و Acknowledgment است. این نام‌ها مسیر رایج تخصیص اولیه را خلاصه می‌کنند؛ تمدید lease و بعضی وضعیت‌های دیگر می‌توانند تبادل متفاوتی داشته باشند.\n\n## اجزای پیکربندی\nScope محدودهٔ آدرس‌های قابل تخصیص برای subnet است. Exclusion بخشی از محدوده را برای جلوگیری از تخصیص خودکار کنار می‌گذارد؛ reservation معمولاً آدرس ثابتی را بر اساس شناسهٔ کلاینت نگه می‌دارد. Optionها می‌توانند subnet mask، default gateway، DNS server و domain search suffix را تحویل دهند. وجود lease به‌تنهایی درستی همهٔ optionها را ثابت نمی‌کند.\n\n## DHCP در VLANهای مختلف\nپیام‌های اولیهٔ DHCP معمولاً broadcast محلی‌اند و روتر به‌طور عادی broadcast را به subnet دیگر forward نمی‌کند. برای subnet راه دور، DHCP relay یا IP helper در gateway می‌تواند درخواست را به سرور برساند. relay اشتباه، scope نامتناسب یا VLAN اشتباه ممکن است باعث شود کلاینت lease از محدودهٔ نامناسب بگیرد یا هیچ Offer دریافت نکند.\n\n## روش عیب‌یابی\nابتدا IP، mask، gateway، DNS، DHCP server و زمان lease را در کلاینت ثبت کنید. سپس بررسی کنید آیا Discover از VLAN درست خارج می‌شود، Offer برگشته، سرور برای همان subnet scope فعال دارد و relay/helper به سرور صحیح اشاره می‌کند. در Windows از ipconfig /all و Get-NetIPConfiguration استفاده کنید؛ در Linux از nmcli device show یا journal مربوط به سرویس شبکه استفاده کنید. برای renew روی سیستم راه دور احتیاط کنید؛ ممکن است اتصال مدیریتی قطع شود.\n\n## سناریوی حل‌شده\nکلاینت در VLAN 30 آدرس 192.168.10.45/24 می‌گیرد، درحالی‌که طرح VLAN 30 برابر 192.168.30.0/24 است. فرضیه‌ها شامل scope اشتباه، VLAN tagging نادرست، relay اشتباه یا سرور DHCP ناخواسته است. به‌جای تغییر دستی آدرس کلاینت، DHCP server identifier، VLAN پورت، relay و log سرور را تطبیق دهید؛ در غیر این صورت مشکل ریشه‌ای باقی می‌ماند.\n\n## امنیت\nDHCP ناشناس می‌تواند تنظیمات gateway یا DNS ناخواسته توزیع کند. در سوئیچ‌های پشتیبانی‌کننده، DHCP snooping و سیاست‌های trusted/untrusted را طبق طراحی اجرا کنید؛ فعال‌سازی بدون شناخت توپولوژی می‌تواند DHCP معتبر را مختل کند.\n\n## ارزیابی\n1. چهار مرحلهٔ DORA چیست؟\n2. چه زمانی DHCP relay لازم می‌شود؟\n3. چرا دریافت lease درست به‌تنهایی درستی DNS و gateway را تضمین نمی‌کند؟",
+      "commands": [
+        "ipconfig /all",
+        "Get-NetIPConfiguration",
+        "nmcli device show"
+      ],
+      "examples": [
+        "سناریوی DHCP با scope یا relay اشتباه در VLAN آزمایشی."
+      ],
+      "notes": "آزمایش‌ها فقط روی دامنه، resolver و شبکهٔ مجاز اجرا شوند؛ پاک‌کردن cache پیش از جمع‌آوری شواهد ممکن است اطلاعات تشخیصی را از بین ببرد.",
+      "learning_objectives": [
+        "DORA را شرح دهد.",
+        "scope، option و relay را بررسی کند.",
+        "ریسک DHCP ناخواسته را توضیح دهد."
+      ],
+      "prerequisites": [
+        "lesson:dns-dhcp:l0"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"dhcp-l1-1\",\"prompt\":\"چهار مرحلهٔ DORA چیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dhcp-l1-2\",\"prompt\":\"چه زمانی DHCP relay لازم می‌شود؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"dhcp-l1-3\",\"prompt\":\"چرا دریافت lease درستی همهٔ optionها را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"}]},\"word_floor\":500}"
+    },
+    {
+      "uid": "lesson:dns-dhcp:l2",
+      "chapter_order": 11,
+      "subchapter_order": 1,
+      "lesson_order": 3,
+      "topic": "dns-dhcp-engineering",
+      "domain": "network-services",
+      "level": "L2",
+      "title_fa": "[L2] DNS و DHCP در شبکهٔ عملیاتی؛ تشخیص ریشه‌ای",
+      "title_en": "Operational DNS and DHCP troubleshooting",
+      "tags": [
+        "DNS",
+        "DHCP",
+        "network-services",
+        "troubleshooting",
+        "L2",
+        "deepened"
+      ],
+      "summary": "تفکیک خطاهای نام، پیکربندی کلاینت، route، UDP/TCP 53، DHCP relay و cache را به روش شواهد محور آموزش می‌دهد.",
+      "full_content": "# DNS و DHCP در شبکهٔ عملیاتی؛ تشخیص ریشه‌ای\n\n## اصل عیب‌یابی\nاز علامت ظاهری مانند «اینترنت قطع است» مستقیم به تغییر DNS نروید. مشخص کنید مشکل یک دستگاه، یک VLAN، یک resolver یا یک سرویس است. IP، prefix، gateway، DNS server، lease و زمان رخداد را ثبت کنید. هر آزمون باید یک فرضیه را بررسی کند و نتیجهٔ مثبت یا منفی آن ثبت شود.\n\n## تشخیص DNS\n1. نام را با resolver تعریف‌شدهٔ سیستم پرس‌وجو کنید.\n2. A و AAAA را جدا بررسی کنید و پاسخ، TTL و کد وضعیت را ثبت کنید.\n3. اگر پاسخ صحیح است، route به IP و اتصال پورت برنامه را آزمایش کنید.\n4. اگر فقط بعضی کلاینت‌ها پاسخ متفاوت می‌گیرند، cache، split DNS، VPN و resolver پیکربندی‌شده را مقایسه کنید.\n5. اگر پرس‌وجو timeout می‌شود، مسیر به resolver، ACL، فایروال و سرویس DNS را بررسی کنید؛ timeout اثبات نمی‌کند رکورد وجود ندارد.\n\nDNS معمولاً از UDP پورت 53 استفاده می‌کند، اما TCP 53 نیز برای شرایطی مانند پاسخ‌های بزرگ و عملیات zone transfer اهمیت دارد. مسدودبودن TCP 53 می‌تواند بعضی سناریوها را مختل کند؛ محدودکردن تحلیل به UDP همیشه کافی نیست.\n\n## تشخیص DHCP\nاگر کلاینت آدرس خودکار نامعتبر یا APIPA می‌گیرد، بررسی کنید Discover از VLAN درست خارج می‌شود، Offer دریافت می‌شود و relay و scope با subnet تطبیق دارند. اگر IP درست است اما نام‌ها resolve نمی‌شوند، DHCP option مربوط به DNS، دسترسی به resolver و خود DNS را بررسی کنید؛ تعویض تصادفی scope ممکن است خطای جدید ایجاد کند.\n\n## ماتریس شاهد\n- پیکربندی کلاینت: IP، prefix، gateway، DNS، lease.\n- Route: مقصد resolver و next hop انتخاب‌شده.\n- Packet capture: درخواست و پاسخ DNS/DHCP در رابط صحیح.\n- Server logs: درخواست، scope انتخاب‌شده، خطا و پاسخ.\n- آزمون برنامه: اتصال به IP و پورت، سپس نام و TLS.\nنبود بسته در یک capture به‌تنهایی اثبات نمی‌کند بسته از شبکه عبور نکرده؛ رابط اشتباه، offload یا drop ابزار ممکن است دخیل باشد.\n\n## لابراتوار\nدر دو VM و یک شبکهٔ host-only، یک DHCP scope آزمایشی و DNS resolver قابل کنترل تنظیم کنید. baseline سالم را ثبت کنید، سپس فقط یک گزینهٔ DNS اشتباه در آزمایش اعمال کنید. پیش‌بینی کنید کدام آزمون‌ها باید موفق و کدام ناموفق باشند؛ سپس تنظیم را بازگردانید. از جعل DHCP یا اختلال عمدی در شبکهٔ دیگران خودداری کنید.\n\n## ارزیابی\n1. چرا timeout DNS با NXDOMAIN متفاوت است؟\n2. چرا TCP 53 را نباید در تمام طراحی‌ها نادیده گرفت؟\n3. برای تشخیص DHCP از scope اشتباه چه شواهدی لازم است؟\n4. ترتیب تفکیک DNS از خرابی مسیر و برنامه چیست؟",
+      "commands": [
+        "Resolve-DnsName example.com",
+        "Test-NetConnection 192.0.2.10 -Port 443",
+        "dig example.com A"
+      ],
+      "examples": [
+        "ماتریس عیب‌یابی DNS/DHCP با capture سمت کلاینت و log سرور."
+      ],
+      "notes": "آزمایش‌ها فقط روی دامنه، resolver و شبکهٔ مجاز اجرا شوند؛ پاک‌کردن cache پیش از جمع‌آوری شواهد ممکن است اطلاعات تشخیصی را از بین ببرد.",
+      "learning_objectives": [
+        "شواهد کلاینت، capture و log را کنار هم بگذارد.",
+        "DNS را از route و برنامه تفکیک کند.",
+        "گزارش تکرارپذیر تهیه کند."
+      ],
+      "prerequisites": [
+        "lesson:dns-dhcp:l0",
+        "lesson:dns-dhcp:l1"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ops-l2-1\",\"prompt\":\"چرا timeout DNS با NXDOMAIN متفاوت است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ops-l2-2\",\"prompt\":\"چرا TCP 53 را نباید نادیده گرفت؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ops-l2-3\",\"prompt\":\"برای تشخیص scope اشتباه DHCP چه شواهدی لازم است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ops-l2-4\",\"prompt\":\"چگونه DNS را از خرابی مسیر و برنامه تفکیک می‌کنید؟\",\"type\":\"short_answer\",\"level\":\"L2\"}]},\"word_floor\":500}"
+    },
+    {
+      "uid": "lesson:dns-dhcp:l3",
+      "chapter_order": 11,
+      "subchapter_order": 1,
+      "lesson_order": 4,
+      "topic": "dns-dhcp-engineering",
+      "domain": "network-services",
+      "level": "L3",
+      "title_fa": "[L3] DNS امنیتی؛ Split Horizon، DNSSEC و ریسک‌های عملیاتی",
+      "title_en": "DNS security, split horizon and DNSSEC",
+      "tags": [
+        "DNS",
+        "DHCP",
+        "network-services",
+        "troubleshooting",
+        "L3",
+        "deepened"
+      ],
+      "summary": "Split DNS، DNSSEC، cache poisoning، کنترل recursion، logging و محدودیت‌های امنیتی را در چارچوب عملیاتی بررسی می‌کند.",
+      "full_content": "# DNS امنیتی؛ Split Horizon، DNSSEC و ریسک‌های عملیاتی\n\n## Split DNS و دامنهٔ اعتماد\nدر Split DNS، یک نام ممکن است بسته به resolver داخلی یا بیرونی پاسخ متفاوتی داشته باشد؛ مثلاً نام سرویس داخلی در resolver سازمان به آدرس خصوصی برسد. این رفتار الزاماً خطا نیست، اما VPN، کلاینت موبایل و resolver عمومی می‌توانند باعث نتیجهٔ متفاوت شوند. مستند کنید کدام zoneها داخلی‌اند، کدام resolverها مجازند و هنگام اتصال VPN کدام سیاست اعمال می‌شود.\n\n## DNSSEC چه چیزی را حل می‌کند؟\nDNSSEC با امضاهای رمزنگاری‌شده امکان اعتبارسنجی اصالت و تمامیت داده‌های DNS را فراهم می‌کند. DNSSEC محتوای همهٔ ارتباطات برنامه را رمزنگاری نمی‌کند، نام میزبان را از دید ناظران پنهان نمی‌کند و در دسترس‌بودن سرویس را تضمین نمی‌کند. DNS over TLS یا DNS over HTTPS مسیر کلاینت تا resolver را رمزگذاری می‌کند، اما این فناوری‌ها با DNSSEC یک هدف یکسان ندارند. هرکدام تهدیدها و اعتمادگاه متفاوتی دارند.\n\n## کنترل recursion و پاسخ‌دهی\nResolver بازگشتی نباید بدون نیاز به کل اینترنت برای هر مبدأ ناشناس باز باشد؛ open resolver می‌تواند در حملات amplification سوءاستفاده شود. recursion را به کلاینت‌های مجاز محدود کنید، rate limiting و logging متناسب داشته باشید و پاسخ‌های غیرعادی را پایش کنید. در عین حال، محدودسازی بیش از حد ممکن است کلاینت‌های مجاز یا سرویس‌های وابسته را مختل کند؛ تغییرات را مرحله‌ای و قابل بازگشت اعمال کنید.\n\n## Cache و رخداد امنیتی\nاگر دو کلاینت پاسخ متفاوت می‌گیرند، ابتدا resolver، TTL، cache و split DNS را مقایسه کنید؛ اختلاف به‌تنهایی اثبات cache poisoning نیست. در رخداد مشکوک، زمان، نام، نوع رکورد، resolver، پاسخ کامل، TTL و logهای مربوط را نگه دارید. پاک‌کردن cache پیش از جمع‌آوری شواهد ممکن است بخشی از دادهٔ تشخیصی را از بین ببرد.\n\n## چک‌لیست امن‌سازی\n- recursion فقط برای شبکه‌ها و کلاینت‌های مجاز.\n- به‌روزرسانی resolver و مدیریت امن zone و کلیدها.\n- محدودسازی دسترسی مدیریتی و zone transfer.\n- پایش NXDOMAINهای غیرعادی، نرخ پرس‌وجو و پاسخ‌های غیرمنتظره.\n- مستندسازی split DNS و سیاست VPN.\n- آزمون بازیابی و ثبت تغییرات DNS.\n- تفکیک دسترسی به DNS از مجوز دسترسی به خود برنامه.\n\n## ارزیابی\n1. DNSSEC چه چیزی را اعتبارسنجی می‌کند و چه چیزی را تضمین نمی‌کند؟\n2. تفاوت هدف DNSSEC و DoT/DoH چیست؟\n3. چرا resolver بازگشتی عمومی می‌تواند ریسک داشته باشد؟\n4. چرا پاسخ متفاوت دو resolver به‌تنهایی اثبات حمله نیست؟",
+      "commands": [
+        "dig +dnssec example.com",
+        "dig +tcp example.com"
+      ],
+      "examples": [
+        "بازبینی recursion، split DNS، DNSSEC و سیاست دسترسی در محیط آزمایش."
+      ],
+      "notes": "آزمایش‌ها فقط روی دامنه، resolver و شبکهٔ مجاز اجرا شوند؛ پاک‌کردن cache پیش از جمع‌آوری شواهد ممکن است اطلاعات تشخیصی را از بین ببرد.",
+      "learning_objectives": [
+        "DNSSEC را از DoT/DoH تفکیک کند.",
+        "ریسک open resolver را توضیح دهد.",
+        "Split DNS و cache را ایمن عیب‌یابی کند."
+      ],
+      "prerequisites": [
+        "lesson:dns-dhcp:l0",
+        "lesson:dns-dhcp:l2"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"sec-l3-1\",\"prompt\":\"DNSSEC چه چیزی را اعتبارسنجی می‌کند و چه چیزی را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"sec-l3-2\",\"prompt\":\"تفاوت هدف DNSSEC و DoT/DoH چیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"sec-l3-3\",\"prompt\":\"چرا open resolver ریسک دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"sec-l3-4\",\"prompt\":\"چرا پاسخ متفاوت دو resolver به‌تنهایی اثبات حمله نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"}]},\"word_floor\":500}"
+    }
+  ],
+  "answer_key": {
+    "dns-l0-1": "NXDOMAIN پاسخ صریح است که نام وجود ندارد؛ timeout یعنی در مهلت تعیین‌شده پاسخی دریافت نشده و علت هنوز مشخص نیست.",
+    "dns-l0-2": "DNS فقط دادهٔ نام را resolve می‌کند؛ route، TCP 443، TLS، گواهی و سرویس HTTP مستقل‌اند.",
+    "dns-l0-3": "resolver می‌تواند پاسخ را تا TTL در cache نگه دارد؛ تغییر رکورد ممکن است تا پایان cache یا پاکسازی مجاز دیده نشود.",
+    "dhcp-l1-1": "Discover، Offer، Request، Acknowledgment.",
+    "dhcp-l1-2": "وقتی کلاینت و سرور در subnetهای جدا هستند و broadcast اولیه به‌طور معمول از روتر عبور نمی‌کند.",
+    "dhcp-l1-3": "ممکن است mask، gateway یا DNS option نادرست باشد؛ lease صرفاً تخصیص آدرس را نشان می‌دهد.",
+    "ops-l2-1": "NXDOMAIN پاسخ منفی معتبر است؛ timeout نشان‌دهندهٔ عدم دریافت پاسخ در مهلت است.",
+    "ops-l2-2": "DNS از TCP 53 نیز برای برخی پاسخ‌های بزرگ و عملیات مشخص استفاده می‌کند؛ فقط UDP کافی نیست.",
+    "ops-l2-3": "IP و mask کلاینت، VLAN، DHCP server identifier، scope، relay/helper، packet capture و log سرور.",
+    "ops-l2-4": "ابتدا DNS را با resolver مشخص بررسی کنید، سپس route و اتصال IP/port را جدا آزمایش کنید و بعد TLS/HTTP را بررسی کنید.",
+    "sec-l3-1": "DNSSEC اصالت و تمامیت دادهٔ DNS را از طریق امضاها اعتبارسنجی می‌کند؛ محرمانگی، دسترس‌پذیری یا امنیت خود برنامه را تضمین نمی‌کند.",
+    "sec-l3-2": "DNSSEC اعتبار دادهٔ DNS را بررسی می‌کند؛ DoT/DoH ارتباط کلاینت تا resolver را رمزگذاری می‌کنند. هدف و مرز اعتمادشان متفاوت است.",
+    "sec-l3-3": "ممکن است برای amplification سوءاستفاده شود و منابع resolver را مصرف کند؛ recursion باید به کلاینت‌های مجاز محدود شود.",
+    "sec-l3-4": "split DNS، TTL، cache، VPN و resolverهای متفاوت می‌توانند پاسخ قانونی متفاوت ایجاد کنند؛ شواهد بیشتری لازم است."
+  },
+  "sources": [
+    {
+      "title": "RFC 1034 — Domain Names: Concepts and Facilities",
+      "url": "https://www.rfc-editor.org/rfc/rfc1034"
+    },
+    {
+      "title": "RFC 1035 — Domain Names: Implementation and Specification",
+      "url": "https://www.rfc-editor.org/rfc/rfc1035"
+    },
+    {
+      "title": "RFC 2131 — Dynamic Host Configuration Protocol",
+      "url": "https://www.rfc-editor.org/rfc/rfc2131"
+    },
+    {
+      "title": "RFC 4033 — DNS Security Introduction and Requirements",
+      "url": "https://www.rfc-editor.org/rfc/rfc4033"
+    },
+    {
+      "title": "RFC 7858 — DNS over TLS",
+      "url": "https://www.rfc-editor.org/rfc/rfc7858"
+    }
+  ]
+}
