@@ -43,7 +43,10 @@ class WorkspaceSyncRepository(context: Context) {
                             priority = record.optInt("priority", 1).coerceIn(1, 3),
                             lastUpdated = remoteUpdated,
                             deviceId = deviceId,
-                            deleted = deleted
+                            deleted = deleted,
+                            remindAt = record.optString("remind_at", record.optString("remindAt", "")),
+                            // Delivery acknowledgements belong to this device only.
+                            remindedAt = ""
                         )
                     )
                     applied++
@@ -83,6 +86,7 @@ class WorkspaceSyncRepository(context: Context) {
                     .put("done", task.done)
                     .put("due_at", task.dueAt)
                     .put("priority", task.priority)
+                    .put("remind_at", task.remindAt)
                     .put("last_updated", task.lastUpdated)
                     .put("device_id", task.deviceId)
                     .put("deleted", task.deleted)
