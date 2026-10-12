@@ -782,7 +782,9 @@ def main():
         if "ospf" in name or "bgp" in name or "redistribution" in name or "routing_deep" in name:
             routing_extra.extend(remap_lessons_to_chapter(lessons, 66))
             continue
-        if "vpn" in name or "ipsec" in name:
+        # The chapter-scoped MPLS/VRF/L3VPN pack is intentionally authored
+        # for chapter 15; legacy VPN packs still remap to chapter 67.
+        if ("vpn" in name or "ipsec" in name) and "/chapter15/" not in name:
             vpn_extra.extend(remap_lessons_to_chapter(lessons, 67))
             continue
 
