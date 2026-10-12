@@ -426,5 +426,51 @@ class SyncApiContractTests(unittest.TestCase):
             db.conn.close()
 
 
+    def test_sync_push_does_not_claim_success_when_storage_rejects_existing_lesson(self):
+        with tempfile.TemporaryDirectory() as td:
+            db = WebDB(Path(td) / "sync-reject.sqlite")
+            chapter_id = db.conn.execute(
+                "INSERT INTO chapters(order_index, title_fa, title_en) VALUES(1, ?, ?)",
+                ("آزمایشی", "Test"),
+            ).lastrowid
+            level_id = db.conn.execute(
+                "INSERT INTO levels(chapter_id, order_index, title_fa, title_en) VALUES(?, 1, ?, ?)",
+                (chapter_id, "بخش آزمایشی", "Test level"),
+            ).lastrowid
+            db.conn.execute(
+                "INSERT INTO lessons(level_id, order_index, title_fa, last_updated) VALUES(?, 1, ?, ?)",
+                (level_id, "درس آزمایشی", "2026-10-11T00:00:00Z"),
+            )
+            db.conn.commit()
+            db.ensure_sync_columns()
+            uid = db.conn.execute("SELECT uid FROM lessons LIMIT 1").fetchone()["uid"]
+            payload = {
+                "records": [{
+                    "uid": uid, "entity": "lesson", "title_fa": "درس ویرایش‌شده",
+                    "full_content": "متن درس", "last_updated": "2026-10-12T00:00:00Z",
+                    "device_id": "android-test",
+                }]
+            }
+            original_apply = db.sync_apply
+            self.assertEqual(original_apply(payload["records"]), 1)
+
+            # Simulate a race where the target disappears between index and apply.
+            db.conn.execute("UPDATE lessons SET last_updated=? WHERE uid=?", ("2026-10-11T00:00:00Z", uid))
+            db.conn.commit()
+            db.sync_apply = lambda records: 0
+            try:
+                with (
+                    patch.object(server_app, "db", return_value=db),
+                    patch.object(server_app, "require_token", return_value=None),
+                ):
+                    response = server_app.app.test_client().post("/api/sync/push", json=payload)
+                    body = response.get_json()
+                    self.assertEqual(response.status_code, 200)
+                    self.assertEqual(body["accepted"], 0)
+                    self.assertEqual(body["apply_rejected"], 1)
+            finally:
+                db.conn.close()
+
+
 if __name__ == "__main__":
     unittest.main()
