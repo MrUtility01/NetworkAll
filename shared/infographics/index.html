@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>اینفوگرافیک‌های آموزشی | NetworkAll</title>
+<style>
+:root{font-family:Tahoma,"Segoe UI",sans-serif;color:#10233f;background:#edf3fa;line-height:1.85}
+*{box-sizing:border-box}
+body{margin:0}
+header{background:linear-gradient(120deg,#061b3a,#075b9f 65%,#0b8bb8);color:#fff;padding:28px max(20px,calc((100vw - 1320px)/2))}
+header h1{margin:0;font-size:clamp(1.45rem,3vw,2.3rem)}
+header p{max-width:900px;margin:8px 0 0;color:#d9efff}
+main{max-width:1320px;margin:22px auto;padding:0 16px 36px}
+.intro{background:#fff;border:1px solid #d5e2f0;border-radius:16px;padding:15px 18px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+article{min-width:0;background:#fff;border:1px solid #d6e2ef;border-radius:16px;overflow:hidden;box-shadow:0 6px 18px #163b6510}
+article h2{font-size:1.12rem;margin:0;padding:12px 16px;background:#e8f3ff;border-bottom:1px solid #d6e2ef}
+figure{margin:0;background:#f8fbff;padding:10px}
+figure img{display:block;width:100%;height:auto;max-height:440px;object-fit:contain}
+figcaption{font-size:.8rem;color:#526781;padding:4px 8px}
+article .body{padding:4px 18px 18px}
+article p{margin:10px 0}
+article ul{margin:8px 0;padding-right:22px}
+article li{margin:4px 0}
+.key{display:inline-block;background:#eef6ff;border:1px solid #d5e7fa;border-radius:7px;padding:2px 8px;font-size:.82rem}
+footer{color:#5f7188;text-align:center;margin-top:24px;font-size:.85rem}
+@media(max-width:850px){.grid{grid-template-columns:1fr}main{margin-top:12px}header{padding:22px 18px}}
+@media print{body{background:#fff}article{break-inside:avoid;box-shadow:none}.grid{grid-template-columns:1fr 1fr}header{background:#fff;color:#10233f;border-bottom:2px solid #0b6fae}header p{color:#526781}}
+</style>
+</head>
+<body>
+<header>
+  <h1>NetworkAll · گالری اینفوگرافیک شبکه و فناوری</h1>
+  <p>نمودارهای مرحله‌به‌مرحله برای فهم جریان واقعی داده، رفتار پروتکل‌ها و عیب‌یابی؛ از مدل ذهنی مبتدی تا نکته‌های عملیاتی پیشرفته.</p>
+</header>
+<main>
+  <section class="intro">
+    <strong>روش مطالعه:</strong> ابتدا مسیر یا توالی را دنبال کنید؛ سپس توضیح زیر نمودار را بخوانید و در پایان آن را با خروجی ابزارهای واقعی مثل Wireshark، جدول MAC، جدول Route، لاگ DHCP/DNS یا تنظیمات VLAN تطبیق دهید.
+    <p>این نمودارها مدل آموزشی‌اند؛ در شبکهٔ واقعی ممکن است مودم، ONT، روتر، سوئیچ و Access Point در یک دستگاه ادغام شده باشند. همیشه مسیر فیزیکی را از پیکربندی و شواهد همان شبکه تأیید کنید.</p>
+  </section>
+  <section class="grid" aria-label="نمودارهای آموزشی">
+    <article>
+      <h2>۱. مسیر یک Packet از کلاینت تا سرور</h2>
+      <figure><img src="packet_path.svg" alt="مسیر داده از کلاینت وایرلس تا اکسس‌پوینت، سوئیچ، روتر، مودم یا ONT، شبکه ISP و سرور مقصد" loading="lazy"><figcaption>نکتهٔ کلیدی: فریم لایهٔ ۲ در هر لینک عوض می‌شود؛ روتر بر اساس IP مسیریابی می‌کند.</figcaption></figure>
+      <div class="body"><p>کلاینت مقصد IP را بررسی می‌کند. اگر مقصد خارج از subnet محلی باشد، بسته را به MAC آدرس Default Gateway می‌فرستد؛ برای یافتن MAC مقصد محلی/دروازه معمولاً ARP یا Neighbor Discovery به‌کار می‌رود.</p><ul><li><strong>Access Point:</strong> پل‌زدن ترافیک WLAN به LAN در حالت رایج.</li><li><strong>Switch:</strong> ارسال فریم بر پایهٔ MAC و VLAN.</li><li><strong>Router/Firewall:</strong> بررسی جدول Route، اعمال سیاست، کم‌کردن TTL/Hop Limit و ساخت سربرگ لایهٔ پیوندِ خروجی جدید.</li><li><strong>ONT/Modem:</strong> تبدیل/انتقال رسانهٔ دسترسی؛ در دستگاه‌های یکپارچه ممکن است نقش روتر هم داشته باشد.</li></ul><p><span class="key">NAT فقط در صورت پیکربندی و نیاز مسیر رخ می‌دهد.</span> مسیر برگشت معمولاً برعکس است، اما الزاماً همان مسیر فیزیکی را طی نمی‌کند.</p></div>
+    </article>
+    <article>
+      <h2>۲. تفاوت Switch و Router</h2>
+      <figure><img src="switch_router.svg" alt="مقایسهٔ سوئیچ لایهٔ دو و روتر لایهٔ سه" loading="lazy"><figcaption>Switch در دامنهٔ لایهٔ ۲ تصمیم می‌گیرد؛ Router بین شبکه‌های IP تصمیم می‌گیرد.</figcaption></figure>
+      <div class="body"><ul><li>سوئیچ از Source MAC ورودی جدول MAC/CAM را یاد می‌گیرد و با Destination MAC در VLAN مربوطه تصمیم می‌گیرد.</li><li>اگر مقصد MAC ناشناخته باشد، فریم در همان VLAN روی پورت‌های مناسب flood می‌شود؛ broadcast هم در دامنهٔ VLAN محدود است.</li><li>روتر با آدرس مقصد IP، longest-prefix match و next hop/interface را انتخاب می‌کند؛ هر اینترفیس لایهٔ ۳ یک مرز مسیریابی است.</li><li>VLANها را با trunk/access و تنظیمات gateway به هم متصل کنید؛ صرف ساختن VLANها ارتباط بین آن‌ها ایجاد نمی‌کند.</li></ul><p><span class="key">آزمایش:</span> جدول MAC، VLAN membership، جدول Route، ARP/neighbor و شمارنده‌های interface را با هم مقایسه کنید.</p></div>
+    </article>
+    <article>
+      <h2>۳. Encapsulation از داده تا بیت</h2>
+      <figure><img src="osi_encapsulation.svg" alt="فرایند کپسوله‌سازی از دادهٔ برنامه به TCP یا UDP، بستهٔ IP، فریم Ethernet و بیت‌ها" loading="lazy"><figcaption>هر لایه اطلاعات کنترلی خودش را اضافه می‌کند؛ دریافت‌کننده فرایند را به‌ترتیب معکوس می‌کند.</figcaption></figure>
+      <div class="body"><ul><li>Application: دادهٔ برنامه مثل درخواست HTTP.</li><li>Transport: پورت‌های TCP/UDP؛ TCP علاوه بر پورت‌ها شمارهٔ توالی، ACK و کنترل جریان/ازدحام دارد.</li><li>Network: آدرس IP مبدأ/مقصد و TTL یا Hop Limit.</li><li>Link: آدرس MAC محلی، EtherType و FCS برای تشخیص خطای فریم در Ethernet.</li><li>Physical: نمایش بیت‌ها روی رسانهٔ فیزیکی یا امواج رادیویی.</li></ul><p>در هر hop، روتر معمولاً فریم جدیدی می‌سازد؛ IP مبدأ/مقصد غالباً باقی می‌ماند مگر NAT، تونل، پراکسی یا سازوکار دیگری آن را تغییر دهد.</p></div>
+    </article>
+    <article>
+      <h2>۴. دریافت IP با DHCP (DORA)</h2>
+      <figure><img src="dhcp_dora.svg" alt="چهار گام DHCP Discover Offer Request Acknowledge بین کلاینت و سرور" loading="lazy"><figcaption>DORA: Discover → Offer → Request → Acknowledge</figcaption></figure>
+      <div class="body"><ul><li><strong>Discover:</strong> کلاینتی که هنوز IP ندارد، برای یافتن DHCP Server پیام می‌فرستد.</li><li><strong>Offer:</strong> سرور یک lease پیشنهادی با IP و optionها اعلام می‌کند.</li><li><strong>Request:</strong> کلاینت پیشنهاد موردنظرش را درخواست می‌کند.</li><li><strong>ACK:</strong> سرور lease را تأیید می‌کند؛ کلاینت باید تنظیمات و مسیر را اعتبارسنجی کند.</li></ul><p>علاوه بر IP، subnet mask/prefix، default gateway، DNS و lease time اهمیت دارند. در شبکهٔ دارای VLAN، DHCP relay/IP helper می‌تواند درخواست broadcast را به سرور دیگر برساند.</p></div>
+    </article>
+    <article>
+      <h2>۵. DNS؛ از نام تا آدرس</h2>
+      <figure><img src="dns_lookup.svg" alt="مسیر پرس‌وجوی DNS از دستگاه و resolver بازگشتی تا Root، TLD و authoritative name server" loading="lazy"><figcaption>Resolver بازگشتی پاسخ‌ها را کش می‌کند؛ هر پرس‌وجو لزوماً به همهٔ سرورها نمی‌رود.</figcaption></figure>
+      <div class="body"><ul><li>برنامه معمولاً از stub resolver سیستم‌عامل درخواست می‌کند؛ cache محلی/سازمانی ممکن است پاسخ دهد.</li><li>Resolver بازگشتی در صورت cache miss زنجیرهٔ delegation را دنبال می‌کند: Root، TLD و authoritative.</li><li>TTL مدت مجاز cache را مشخص می‌کند. A برای IPv4 و AAAA برای IPv6 است؛ CNAME نام مستعار تعریف می‌کند.</li><li>اختلال DNS را از مشکل اتصال IP جدا کنید: بررسی resolver، پاسخ، TTL، split DNS، پورت ۵۳/DoT/DoH و suffix جست‌وجو.</li></ul><p><span class="key">آزمایش:</span> خروجی `nslookup` یا `dig +trace` را با cache، رکورد authoritative و مسیر شبکه مقایسه کنید.</p></div>
+    </article>
+    <article>
+      <h2>۶. اتصال Wi‑Fi سازمانی و عبور ترافیک</h2>
+      <figure><img src="wifi_enterprise.svg" alt="کلاینت بی‌سیم، احراز هویت و Association با اکسس پوینت، VLAN سوییچ، DHCP، دروازه و اینترنت" loading="lazy"><figcaption>وصل‌شدن رادیویی به AP معادل داشتن IP معتبر یا دسترسی اینترنت نیست.</figcaption></figure>
+      <div class="body"><ul><li>کلاینت اسکن، Authentication/Association و در شبکه‌های امن سازوکار امنیتی/کلید را طی می‌کند.</li><li>AP ترافیک را به VLAN/SSID درست نگاشت می‌کند؛ uplink ممکن است access یا trunk باشد.</li><li>DHCP، DNS، default gateway، ACL/firewall و مسیر WAN مراحل مجزایی‌اند؛ هرکدام باید جدا بررسی شوند.</li><li>در roaming، کلاینت بین APها جابه‌جا می‌شود؛ کیفیت RF، کانال، توان، تداخل، پوشش و احراز هویت مهم‌اند.</li></ul><p>عیب‌یابی را از لایهٔ رادیویی به بالا انجام دهید: Association → VLAN → DHCP → DNS → Gateway → Route/NAT → مقصد.</p></div>
+    </article>
+  </section>
+  <footer>NetworkAll · اینفوگرافیک‌های برداری آفلاین · قابل استفاده در ویندوز و اندروید · منابع و آزمایشگاه‌های تفصیلی در درس‌های مرتبط قرار می‌گیرند.</footer>
+</main>
+</body>
+</html>
