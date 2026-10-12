@@ -98,6 +98,47 @@ class ContentAuditMetadataTests(unittest.TestCase):
                 self.assertNotIn("missing_answer_key_marker", result["checks"])
 
 
+    def test_level_aware_audit_reports_depth_floor_and_command_reference_kind(self):
+        path = ROOT / "tools/packs/audit-test.json"
+        short_l4 = inspect_record(
+            path,
+            {
+                "uid": "short-l4",
+                "title_fa": "[L4] تحلیل پیشرفتهٔ مسیریابی",
+                "full_content": "شرح کوتاه",
+                "meta": {"depth_level": "L4"},
+            },
+            1,
+            0,
+        )
+        self.assertEqual(short_l4["depth_level"], "L4")
+        self.assertEqual(short_l4["minimum_word_guideline"], 2200)
+        self.assertIn("below_depth_word_floor", short_l4["checks"])
+        self.assertIn("missing_troubleshooting", short_l4["checks"])
+
+        command = inspect_record(
+            path,
+            {"uid": "cmd-reference", "command": "Get-Service", "summary": "نمونهٔ کوتاه"},
+            2,
+            0,
+        )
+        self.assertEqual(command["record_kind"], "command_reference")
+        self.assertEqual(command["minimum_word_guideline"], 250)
+        self.assertNotIn("missing_depth_level", command["checks"])
+
+
+class InfographicRouteTests(unittest.TestCase):
+    def test_shared_infographic_gallery_and_packet_diagram_are_served(self):
+        client = server_app.app.test_client()
+        page = client.get("/infographics")
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("packet_path.svg", page.get_data(as_text=True))
+        diagram = client.get("/infographics/packet_path.svg")
+        self.assertEqual(diagram.status_code, 200)
+        self.assertIn("<svg", diagram.get_data(as_text=True))
+        self.assertIn("ROUTER / FW", diagram.get_data(as_text=True))
+
+
 class DeepFallbackTests(unittest.TestCase):
     def test_hardware_fallback_uses_hardware_specific_lab_and_answer_key(self):
         lesson = build_deep_fallback("[L1] CPU چیست و چگونه کار می‌کند", "CPU fundamentals")
