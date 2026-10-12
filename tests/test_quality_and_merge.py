@@ -23,6 +23,7 @@ from core.db import WebDB
 from core.deep_fallback import build_deep_fallback
 import app as server_app
 import workspace_routes
+from core.study import study_sync_apply, study_sync_index, study_sync_pull
 
 
 class DeepFallbackTests(unittest.TestCase):
@@ -311,6 +312,51 @@ class ContentMergeTests(unittest.TestCase):
         self.assertTrue(result["has_questions"])
         self.assertTrue(result["has_answer_key"])
         self.assertFalse(result["answer_key_ids_match"])
+
+
+class StudySyncMigrationTests(unittest.TestCase):
+    def test_old_study_table_is_migrated_without_losing_progress_and_can_sync(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "legacy-study.sqlite"
+            conn = sqlite3.connect(str(path))
+            conn.row_factory = sqlite3.Row
+            conn.execute(
+                """CREATE TABLE study_progress (
+                    lesson_uid TEXT PRIMARY KEY, status TEXT DEFAULT 'new',
+                    ease REAL DEFAULT 2.5, interval_hours INTEGER DEFAULT 1,
+                    last_studied TEXT, next_review TEXT, times_studied INTEGER DEFAULT 0,
+                    notes TEXT DEFAULT ''
+                )"""
+            )
+            stamp = "2026-10-10T15:00:00Z"
+            conn.execute(
+                """INSERT INTO study_progress
+                   (lesson_uid,status,ease,interval_hours,last_studied,next_review,times_studied,notes)
+                   VALUES(?,?,?,?,?,?,?,?)""",
+                ("lesson:legacy", "learning", 2.7, 24, stamp, "2026-10-11T15:00:00Z", 4, "preserve this"),
+            )
+            conn.commit()
+
+            manifest = study_sync_index(conn)
+            item = next(row for row in manifest if row["uid"] == "lesson:legacy")
+            self.assertEqual(item["last_updated"], stamp)
+            pulled = study_sync_pull(conn, ["lesson:legacy"])
+            self.assertEqual(pulled[0]["notes"], "preserve this")
+            self.assertEqual(pulled[0]["times_studied"], 4)
+
+            incoming = {
+                "uid": "lesson:new-progress", "entity": "study", "status": "known",
+                "ease": 2.8, "interval_hours": 72, "last_studied": stamp,
+                "next_review": "2026-10-13T15:00:00Z", "times_studied": 3,
+                "notes": "synced from Android", "last_updated": "2026-10-12T04:00:00Z",
+                "device_id": "android-test", "deleted": False,
+            }
+            self.assertEqual(study_sync_apply(conn, [incoming]), 1)
+            remote = {row["uid"]: row for row in study_sync_pull(conn, ["lesson:new-progress"])}
+            self.assertEqual(remote["lesson:new-progress"]["status"], "known")
+            self.assertEqual(remote["lesson:new-progress"]["device_id"], "android-test")
+            self.assertEqual(remote["lesson:new-progress"]["notes"], "synced from Android")
+            conn.close()
 
 
 class SyncApiContractTests(unittest.TestCase):
