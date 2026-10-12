@@ -1110,6 +1110,8 @@ Symptom → Scope (کجا؟) → Evidence (دستور) → Hypothesis → Test �
 
 {_scenario_output_block(topic, cat, level)}
 
+{_expected_output_block(topic, cat, level)}
+
 {_glossary_block(topic, cat)}
 """
 

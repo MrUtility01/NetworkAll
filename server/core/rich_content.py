@@ -183,9 +183,9 @@ def _dense_support_sections(dense_content: str, candidate_content: str) -> list[
         "## ۷) چک‌لیست Production": ("چک‌لیست production", "production checklist", "قبل از apply"),
         "## ۹) خودآزمایی و پاسخ‌نامه": ("پاسخ‌نامه", "answer key", "self assessment", "خودآزمایی", "assessment"),
         "## ۱۰) منابع رسمی و مراجع": ("منابع رسمی", "official sources", "مراجع", "references"),
-        "## واژه‌نامهٔ تخصصی": ("واژه‌نامه", "glossary", "اصطلاحات کلیدی"),
-        "## خروجی مورد انتظار و معیار قبولی": ("خروجی مورد انتظار", "expected output", "معیار قبولی"),
-        "## سناریوی عملی و Lab acceptance": ("سناریوی عملی", "scenario", "lab acceptance"),
+        "## واژه‌نامهٔ تخصصی": ("## واژه‌نامهٔ تخصصی", "## glossary", "## اصطلاحات کلیدی"),
+        "## خروجی مورد انتظار و معیار قبولی": ("## خروجی مورد انتظار", "## expected output"),
+        "## سناریوی عملی و Lab acceptance": ("## سناریوی عملی", "## scenario"),
     }
     body_lower = (candidate_content or "").casefold()
     blocks: list[str] = []

@@ -16,6 +16,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build the same merged curriculum index used by Android
+        run: |
+          set -e
+          python3 scripts/export_android_index.py
+          python3 scripts/merge_content_packs_into_android.py
+          mkdir -p shared
+          cp android/app/src/main/assets/curriculum_index.json.gz shared/curriculum_index.json.gz
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          path = Path("shared/curriculum_index.json.gz")
+          data = json.loads(gzip.open(path, "rt", encoding="utf-8").read())
+          orders = [int(ch["order"]) for ch in data["chapters"]]
+          assert len(orders) == 68 and len(set(orders)) == 68, "Windows shared curriculum must contain 68 unique chapters"
+          assert int(data.get("lesson_count") or 0) > 8000, "Merged curriculum is unexpectedly incomplete"
+          print("Windows shared curriculum:", len(orders), "chapters;", data["lesson_count"], "lessons;", path.stat().st_size, "compressed bytes")
+          PY
       - name: Assemble portable Windows server package
         run: |
           set -e

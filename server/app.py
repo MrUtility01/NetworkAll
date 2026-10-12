@@ -195,6 +195,14 @@ def db() -> WebDB:
         elif not _db.is_seeded():
             print(f"WARNING: partial curriculum detected ({count} chapters); data preserved, no automatic destructive reseed.")
         _db.ensure_sync_columns()
+        try:
+            from core.curriculum_import import sync_canonical_curriculum
+            curriculum_result = sync_canonical_curriculum(_db)
+            if not curriculum_result.get("skipped"):
+                print("shared curriculum refresh:", curriculum_result)
+        except Exception as exc:
+            # Import is transactional; the existing database remains intact on failure.
+            print("WARNING: shared curriculum refresh was not applied:", exc)
     return _db
 
 

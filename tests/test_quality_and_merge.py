@@ -2,6 +2,7 @@
 """Regression tests for content merging and assessment checks."""
 from __future__ import annotations
 
+import gzip
 import json
 import re
 import sqlite3
@@ -22,11 +23,97 @@ from sync_engine import compare_lww, content_hash, merge_push
 from audit_content import _item_quality
 from audit_content_packs import extract_items, inspect_record, review_sort_key
 from core.db import WebDB
+from core.curriculum_import import sync_canonical_curriculum
 from core.deep_fallback import build_deep_fallback
 from core.rich_content import _contains_any, build_rich_lesson
 import app as server_app
 import workspace_routes
 from core.study import study_sync_apply, study_sync_index, study_sync_pull
+
+
+class CanonicalCurriculumImportTests(unittest.TestCase):
+    def test_import_updates_matching_lesson_migrates_progress_and_is_idempotent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            db = WebDB(tmp_path / "test.db")
+            try:
+                chapter_id = db.conn.execute(
+                    "INSERT INTO chapters(order_index,title_fa,title_en) VALUES(1,?,?)",
+                    ("فصل یک", "Chapter One"),
+                ).lastrowid
+                level_id = db.conn.execute(
+                    "INSERT INTO levels(chapter_id,order_index,title_fa) VALUES(1,1,?)",
+                    ("مبانی",),
+                ).lastrowid
+                db.conn.execute(
+                    """INSERT INTO lessons(level_id,order_index,title_fa,title_en,summary,full_content,notes,last_updated)
+                       VALUES(?,?,?,?,?,?,?,?)""",
+                    (level_id, 1, "[L0] Lesson One", "Lesson One", "old summary", "old body", "old content note", "2025-01-01T00:00:00Z"),
+                )
+                db.conn.commit()
+                db.ensure_sync_columns()
+                old_uid = db.conn.execute("SELECT uid FROM lessons LIMIT 1").fetchone()["uid"]
+                from core.study import ensure_study_table
+                ensure_study_table(db.conn)
+                db.conn.execute(
+                    """INSERT INTO study_progress(lesson_uid,status,ease,interval_hours,last_studied,
+                       next_review,times_studied,notes,last_updated,device_id,deleted,content_hash)
+                       VALUES(?,?,?,?,?,?,?,?,?,?,?,?)""",
+                    (old_uid, "known", 2.8, 96, "2025-01-02T00:00:00Z", "2025-01-06T00:00:00Z", 7, "یادداشت شخصی", "2025-01-02T00:00:00Z", "test-device", 0, ""),
+                )
+                db.conn.commit()
+
+                asset = tmp_path / "curriculum_index.json.gz"
+                payload = {
+                    "version": 11,
+                    "lesson_count": 1,
+                    "chapters": [{
+                        "order": 1, "title_fa": "فصل یک", "title_en": "Chapter One",
+                        "subchapters": [{
+                            "title_fa": "مبانی",
+                            "lessons": [{
+                                "uid": "lesson:ch01:s001:l0000",
+                                "chapter_order": 1, "subchapter_order": 1, "lesson_order": 1,
+                                "title_fa": "[L0] Lesson One", "title_en": "Lesson One", "level": "L0",
+                                "summary": "new summary", "full_content": "new deep content",
+                                "commands": "verify", "examples": "expected output",
+                                "notes": "curriculum note", "meta_json": '{"assessment":{"questions":[],"answer_key":[]}}',
+                                "learning_objectives": "understand;verify", "source_status": "review_required",
+                            }],
+                        }],
+                    }],
+                }
+                def write_asset(data):
+                    raw = json.dumps(data, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+                    asset.write_bytes(gzip.compress(raw, mtime=0))
+                write_asset(payload)
+
+                first = sync_canonical_curriculum(db, asset)
+                self.assertFalse(first["skipped"])
+                self.assertEqual(first["updated"], 1)
+                self.assertEqual(db.conn.execute("SELECT COUNT(*) FROM lessons").fetchone()[0], 1)
+                lesson = db.conn.execute("SELECT * FROM lessons LIMIT 1").fetchone()
+                self.assertEqual(lesson["uid"], "lesson:ch01:s001:l0000")
+                self.assertEqual(lesson["full_content"], "new deep content")
+                self.assertEqual(lesson["notes"], "curriculum note")
+                progress = db.conn.execute("SELECT * FROM study_progress LIMIT 1").fetchone()
+                self.assertEqual(progress["lesson_uid"], "lesson:ch01:s001:l0000")
+                self.assertEqual(progress["notes"], "یادداشت شخصی")
+                self.assertEqual(progress["times_studied"], 7)
+                self.assertTrue(Path(first["backup"]).is_file())
+
+                second = sync_canonical_curriculum(db, asset)
+                self.assertTrue(second["skipped"])
+                self.assertEqual(db.conn.execute("SELECT COUNT(*) FROM lessons").fetchone()[0], 1)
+
+                payload["chapters"][0]["subchapters"][0]["lessons"][0]["full_content"] = "revised deep content"
+                write_asset(payload)
+                third = sync_canonical_curriculum(db, asset)
+                self.assertFalse(third["skipped"])
+                self.assertEqual(db.conn.execute("SELECT full_content FROM lessons LIMIT 1").fetchone()[0], "revised deep content")
+                self.assertTrue(Path(third["backup"]).is_file())
+            finally:
+                db.conn.close()
 
 
 class ContentAuditMetadataTests(unittest.TestCase):
