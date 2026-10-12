@@ -26,7 +26,8 @@ interface LessonDao {
     @Query("SELECT COUNT(*) FROM lessons WHERE deleted = 0 AND chapterOrder > 0 AND length(trim(chapterTitle)) > 0 AND length(trim(subTitle)) > 0")
     suspend fun countTreeReady(): Int
 
-    @Query("SELECT * FROM lessons WHERE deleted = 0")
+    /** Include tombstones; otherwise deleting a lesson never propagates to the server. */
+    @Query("SELECT * FROM lessons")
     suspend fun allForPush(): List<LessonEntity>
 
     @Query("SELECT uid, deleted FROM lessons")
