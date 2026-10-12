@@ -652,9 +652,20 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
              or sub.get("title_fa") == f"زیرفصل {si}"),
             None,
         )
+        requested_subtitle = next(
+            (str(source.get("subchapter_title_fa") or "").strip()
+             for source in incoming if str(source.get("subchapter_title_fa") or "").strip()),
+            "",
+        )
         if target_sub is None:
-            target_sub = {"order": si, "title_fa": f"زیرفصل {si}", "lessons": []}
+            target_sub = {
+                "order": si,
+                "title_fa": requested_subtitle or f"زیرفصل {si}",
+                "lessons": [],
+            }
             chapter["subchapters"].append(target_sub)
+        elif requested_subtitle and str(target_sub.get("title_fa") or "").strip() == f"زیرفصل {si}":
+            target_sub["title_fa"] = requested_subtitle
         target_sub.setdefault("lessons", []).extend(incoming)
         existing_by_identity.update(pending_by_identity)
 
