@@ -498,7 +498,12 @@ def sync_push():
             kept += 1
     apply_rejected = 0
     if curriculum_to_apply:
-        d.sync_apply(curriculum_to_apply)
+        applied_curriculum = d.sync_apply(curriculum_to_apply)
+        if applied_curriculum < len(curriculum_to_apply):
+            rejected_curriculum = len(curriculum_to_apply) - applied_curriculum
+            accepted -= rejected_curriculum
+            kept += rejected_curriculum
+            apply_rejected += rejected_curriculum
     if workspace_to_apply:
         applied_workspace = workspace_sync_apply(workspace_to_apply)
         if applied_workspace < len(workspace_to_apply):
