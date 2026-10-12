@@ -106,6 +106,88 @@ def commands_to_lessons(data: dict, source_path: Path | None = None) -> list:
         prereq = c.get("prerequisites_fa") or []
         prereq_txt = "\n".join(f"- {x}" for x in prereq) if isinstance(prereq, list) else str(prereq)
 
+        # Preserve supplied scenario/source metadata; when absent, add a command-specific
+        # validation scenario and only vendor-level documentation landing pages.
+        raw_scenario = c.get("scenario") or c.get("scenario_fa") or c.get("lab_scenario") or ""
+        if isinstance(raw_scenario, dict):
+            scenario_lines = []
+            for key, value in raw_scenario.items():
+                if value not in (None, "", [], {}):
+                    scenario_lines.append(f"- **{key}:** {value}")
+            scenario_txt = "\n".join(scenario_lines)
+        elif isinstance(raw_scenario, list):
+            scenario_txt = "\n".join(f"- {value}" for value in raw_scenario if value not in (None, ""))
+        else:
+            scenario_txt = str(raw_scenario).strip()
+
+        if not scenario_txt:
+            use_case = str(c.get("when_to_use_fa") or c.get("description_fa") or title_fa).strip()
+            sample = str(c.get("sample_output") or c.get("expected_output") or "").strip()
+            cmd_l = str(cmd).strip().lower()
+            read_only = bool(re.match(r"^(show|ping|traceroute|trace|display|dir|ls|inspect)\b", cmd_l))
+            tick = chr(96)
+            if read_only:
+                scenario_txt = (
+                    f"**موقعیت:** هنگام بررسی «{use_case}»، اپراتور باید بدون تغییر پیکربندی، "
+                    f"وضعیت دستگاه آزمایشی را با دستور {tick}{cmd}{tick} مشاهده کند.\n\n"
+                    f"**روش اجرا:** دستور را در لابراتوار سازگار اجرا کن؛ خروجی را ذخیره کن و "
+                    f"آن را با baseline پیش از آزمایش مقایسه کن.\n\n"
+                    f"**معیار قبولی:** خروجی باید با هدف «{use_case}» سازگار باشد؛ "
+                    f"اگر نتیجه متفاوت است، نسخهٔ سیستم‌عامل، سطح دسترسی و context اجرای دستور را ثبت کن."
+                )
+            else:
+                scenario_txt = (
+                    f"**موقعیت:** در یک لابراتوار ایزوله باید کاربرد «{use_case}» را با دستور {tick}{cmd}{tick} "
+                    f"بررسی یا تمرین کنی. این آزمایش روی تجهیزات عملیاتی اجرا نشود.\n\n"
+                    f"**پیش از اجرا:** پیکربندی فعلی و نقطهٔ بازگشت را ثبت کن؛ اثر دستور و privilege موردنیاز "
+                    f"را با مستندات همان پلتفرم تأیید کن.\n\n"
+                    f"**معیار قبولی:** دستور در context صحیح اجرا شود و خروجی/تغییر قابل مشاهده با هدف "
+                    f"«{use_case}» مطابقت داشته باشد. در صورت تغییر ناخواسته، تغییر را طبق baseline ثبت‌شده برگردان."
+                )
+            if sample:
+                scenario_txt += f"\n\n**شاهد خروجی برای مقایسه:**\n{tick*3}text\n{sample[:3000]}\n{tick*3}"
+            elif c.get("lab_hint_fa"):
+                scenario_txt += f"\n\n**راهنمای لابراتوار:** {c.get('lab_hint_fa')}"
+
+        raw_sources = c.get("official_sources") or c.get("references") or c.get("sources") or c.get("source_url") or []
+        if isinstance(raw_sources, (str, dict)):
+            raw_sources = [raw_sources]
+        source_items = []
+        for source in raw_sources if isinstance(raw_sources, list) else []:
+            if isinstance(source, dict):
+                url = str(source.get("url") or source.get("href") or "").strip()
+                label = str(source.get("title") or source.get("name") or source.get("label") or url).strip()
+                if url:
+                    source_items.append((label or url, url))
+                elif label:
+                    source_items.append((label, ""))
+            elif isinstance(source, str) and source.strip():
+                value = source.strip()
+                if re.match(r"^https?://", value, re.I):
+                    source_items.append((value, value))
+                else:
+                    source_items.append((value, ""))
+        source_hint = " ".join([
+            str(data.get("vendor") or ""),
+            str(data.get("manufacturer") or ""),
+            str(data.get("platform") or ""),
+            str(source_path or ""),
+        ]).lower()
+        if not source_items and "cisco" in source_hint:
+            source_items = [
+                ("Cisco IOS XE 26 — فهرست مرجع رسمی دستورات", "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-26/products-command-reference-list.html"),
+                ("Cisco IOS XE 17 — فهرست مرجع رسمی دستورات", "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-command-reference-list.html"),
+            ]
+        if not source_items and ("mikrotik" in source_hint or "routeros" in source_hint):
+            source_items = [("MikroTik Documentation", "https://help.mikrotik.com/docs/")]
+        source_txt = "\n".join(
+            f"- [{label}]({url})" if url else f"- {label}"
+            for label, url in source_items
+        ) or "- منبع اختصاصی برای این رکورد در بسته ثبت نشده است؛ مستندات رسمیِ نسخه/مدل هدف را پیش از اجرا پیدا و ثبت کن."
+
+        supplied_detail = str(c.get("full_content") or c.get("content") or c.get("explanation") or "").strip()
+        detail_section = f"\n\n## شرح تکمیلیِ منبع بسته\n{supplied_detail}" if supplied_detail else ""
+
         full = (
             f"# {c.get('title_fa') or cmd}\n\n"
             f"## دستور\n```text\n{cmd}\n```\n"
@@ -120,6 +202,9 @@ def commands_to_lessons(data: dict, source_path: Path | None = None) -> list:
             f"## اشتباهات رایج\n{mist_txt or '- —'}\n\n"
             f"## Lab\n{c.get('lab_hint_fa') or ''}\n\n"
             f"## امنیت\n{c.get('security_notes_fa') or ''}\n\n"
+            f"## سناریوی عملی مبتنی بر دستور\n{scenario_txt}\n\n"
+            f"## منابع رسمی / مراجع\n{source_txt}\n"
+            f"{detail_section}\n\n"
             f"## کلیدواژه جستجو\n{kw_txt}\n"
         )
         notes = ""
