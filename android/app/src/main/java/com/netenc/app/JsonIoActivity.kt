@@ -1,6 +1,7 @@
 package com.netenc.app
 
 import android.content.Intent
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -44,7 +45,7 @@ class JsonIoActivity : AppCompatActivity() {
         }
         val importBtn = Button(this).apply {
             text = "ورودی JSON از همان مسیر"
-            setOnClickListener { importJson() }
+            setOnClickListener { openImportPicker() }
         }
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -188,6 +189,33 @@ class JsonIoActivity : AppCompatActivity() {
                 Toast.makeText(this@JsonIoActivity, "Export OK", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 log.text = "خطا: ${e.message}"
+            }
+        }
+    }
+
+    private fun openImportPicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/json"
+        }
+        startActivityForResult(intent, 7301)
+    }
+
+    @Deprecated("Use Activity Result APIs; retained for compatibility with current activity")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != 7301 || resultCode != Activity.RESULT_OK) return
+        val uri = data?.data ?: return
+        lifecycleScope.launch {
+            try {
+                val text = withContext(Dispatchers.IO) {
+                    contentResolver.openInputStream(uri)?.bufferedReader(Charsets.UTF_8)?.use { it.readText() }
+                        ?: throw IllegalStateException("فایل انتخاب‌شده قابل خواندن نیست")
+                }
+                // Keep the selected source unchanged; importJsonText performs a validated merge.
+                importJsonText(text)
+            } catch (e: Exception) {
+                log.text = "خطا در خواندن فایل: ${e.message}"
             }
         }
     }
