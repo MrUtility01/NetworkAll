@@ -148,6 +148,195 @@
           "NAT"
         ]
       }
+    },
+    {
+      "uid": "packet-path-l1",
+      "chapter_order": 1,
+      "subchapter_order": 2,
+      "lesson_order": 1,
+      "level": "L1",
+      "depth_level": "L1",
+      "record_kind": "instructional_lesson",
+      "title_fa": "[L1] تصمیم میزبان، ARP/ND، VLAN و یادگیری MAC",
+      "title_en": "Host Forwarding, ARP/ND and VLAN",
+      "summary": "تشخیص next hop، فرایند Neighbor Resolution و تصمیم سوئیچ بر اساس MAC/VLAN همراه با آزمایش عملی.",
+      "prerequisites": [
+        "درس L0 مسیر Packet",
+        "مبانی IPv4 و subnet"
+      ],
+      "learning_objectives": [
+        "تحلیل route محلی و next hop",
+        "توضیح ARP و IPv6 ND",
+        "تفسیر MAC table و VLAN",
+        "اجرای مسیر عیب‌یابی مبتنی بر شواهد"
+      ],
+      "full_content": "# MAC وARP/ND والبوابة الافتراضية: قرار المضيف قبل الإرسال — المستوى L1\n\n## الأهداف والمتطلبات\nافهم كيف ينتقل المضيف من عنوان IP للوجهة إلى next hop، وكيف يرتبط IP بـ MAC على وصلة واحدة، وكيف يتعلم السويتش المواقع داخل VLAN. المتطلبات: قراءة IPv4/prefix بسيط ومعرفة الفرق بين عنوان الجهاز وعنوان الشبكة. يجب أن تستطيع بعد الدرس توقع عنوان MAC المستخدم، لا أن تحفظ جواباً خاصاً بجهاز واحد.\n\n## خوارزمية القرار لدى المضيف\nعند إرسال بيانات، يستخرج المضيف عنوان IP الوجهة من الاتصال أو اسم النطاق بعد DNS resolution. يبحث في جدول التوجيه المحلي عن أفضل مسار مطابق، بما في ذلك connected routes وdefault route. إذا كانت الوجهة ضمن subnet مباشر، يختار الوجهة كـ next hop. وإلا يختار next hop من route أكثر تحديداً أو default gateway. بعد ذلك يحتاج إلى عنوان الطبقة الثانية الخاص بالـ next hop على الواجهة المناسبة.\n\nفي IPv4 يرسل المضيف ARP request على broadcast في نطاق L2 المحلي عندما لا يملك mapping صالحاً في ARP cache. يرد الجهاز صاحب IPv4 المستهدف بعنوان MAC الخاص به. لا يعبر ARP broadcast الراوتر عادةً؛ لذلك يحتاج المضيف في الشبكة البعيدة إلى MAC البوابة، وليس إلى MAC المضيف البعيد. قد يستخدم الراوتر Proxy ARP في تصاميم معينة، لكن لا ينبغي افتراض ذلك دون إعدادات وشواهد.\n\nفي IPv6 تؤدي Neighbor Discovery وظائف مرتبطة باستخدام ICMPv6، وتدخل فيها Neighbor Solicitation/Advertisement واكتشاف الموجهين. هذه ليست نسخة حرفية من ARP؛ فهي تعمل ضمن آليات IPv6 وقد تتفاعل مع SLAAC وRouter Advertisements. حجب ICMPv6 عشوائياً يمكن أن يعطل وظائف أساسية مثل Path MTU Discovery وNeighbor Discovery. إذا كان المضيف يملك IPv6 address لكن الاتصال يتعطل، تحقق من neighbor state وRA وroute قبل تعطيل IPv6 كحل حدسي.\n\n## كيف يقرر السويتش؟\nيقرأ السويتش Source MAC من كل frame وارد ويتعلم اقتران MAC بالمنفذ وVLAN. عندما يأتي frame إلى وجهة MAC معروفة في VLAN نفسها، يرسله إلى المنفذ المناسب. إذا كانت الوجهة غير معروفة، فقد يقوم unknown-unicast flooding إلى منافذ VLAN المناسبة، باستثناء منفذ الدخول ومنافذ ذات قيود. أما broadcast فينتشر ضمن broadcast domain ذاته. VLAN مختلفة تمثل مجال L2 مستقلاً؛ وجود trunk بين سويتشين ينقل VLAN محددة لكنه لا ينشئ تلقائياً routing بين شبكات IP.\n\nجدول MAC متغير بمرور الوقت بسبب aging، الانتقال بين المنافذ، topology changes وتعلّم جديد. وجود MAC على منفذ غير متوقع قد يشير إلى وصلة خاطئة أو loop أو host roaming، لكنه يحتاج إلى corroboration. في شبكات access، يغير وضع access/trunk وPVID أو native VLAN تفسير الإطار؛ يجب فحص VLAN الفعلية على المدخل، لا الاكتفاء باسم الشبكة في واجهة المستخدم.\n\n## مختبر: ثلاثة أجهزة وشبكتان\nاستخدم بيئة محاكاة أو مختبراً معزولاً. أنشئ VLAN 10: Host A = 192.168.10.25/24، Gateway = 192.168.10.1، وHost B = 192.168.10.30/24. ثم أضف Host C = 192.168.20.30/24 في VLAN 20. اختبر A إلى B ثم A إلى C، وسجل ARP cache وMAC table وroute table.\n\nقبل الاتصال، قد لا يكون MAC الخاص بـ B في cache. بعد أول اتصال، ينبغي أن يظهر mapping إن نجح ARP وتبادلت الأجهزة الحركة. على السويتش، ينبغي أن تتعلم MACs على منافذها وفي VLAN الصحيحة. عند الاتصال بـ C، يرسل A الإطار إلى MAC البوابة، لأن الشبكتين مختلفتان. إذا لم تكن هناك واجهة L3/gateway لـ VLAN 20 أو كان routing ممنوعاً، فإن وجود trunk لا يكفي.\n\n### النتيجة المتوقعة\n- قبل أول تواصل مع Host B قد تظهر ARP entry ناقصة؛ بعد نجاح ARP يظهر mapping صالح.\n- MAC الخاص بـ A يُتعلم في VLAN 10، وليس كمدخل عابر لكل VLAN في الشبكة.\n- الاتصال إلى C يستخدم البوابة؛ عنوان Ethernet destination في فريم A هو MAC البوابة.\n- إذا كان trunk لا يسمح بـ VLAN 20 أو SVI الخاصة بها down، فسيفشل جزء من الاختبار رغم أن الكابل/الوصلة قد يكونان up.\n\n## أوامر جمع الشواهد\nWindows:\n- ipconfig /all — الواجهة، DHCP، gateway وDNS.\n- route print — جدول المسارات المحلي.\n- arp -a — cache IPv4.\n- tracert 192.168.20.30 — مسار TTL تقريبي.\n\nLinux:\n- ip -br address\n- ip route get 192.168.20.30\n- ip neigh show\n- tcpdump -ni eth0 'arp or icmp'\n\nCisco IOS-like lab:\n- show mac address-table dynamic\n- show vlan brief\n- show interfaces trunk\n- show ip arp\n- show ip route\n\nتختلف الأوامر بين الأنظمة والإصدارات؛ تحقق من CLI المرجعي للجهاز. لا تنفذ أوامر تغيير على شبكة تشغيل دون تصريح وbackup.\n\n## مسار قرار عيب‌یابی\n1. لا توجد Link/Association: ابدأ بالطبقة الفيزيائية أو لاسلكية قبل ARP.\n2. الواجهة Up لكن لا يوجد IP/prefix: افحص DHCP lease أو الإعداد الثابت وتكرار IP.\n3. الوجهة محلية ولا يوجد neighbor mapping: افحص VLAN، عنوان القناع، ARP/ND، port security وACL.\n4. mapping موجود لكن frame لا يصل: افحص MAC learning، trunk/allowed VLAN، STP، port errors وcapture على المنفذ.\n5. الوجهة بعيدة: تأكد من نتيجة route lookup، gateway الصحيح، ولدى gateway routes إلى الشبكة الأخرى.\n6. الاتصال عبر IP ينجح واسم المضيف يفشل: انتقل إلى DNS ولا تغيّر VLAN دون دليل.\n\n## تأثيرات أمنية وتشغيلية\nMAC spoofing وARP poisoning وVLAN hopping وDHCP spoofing مخاطر مختلفة؛ لا تعالج كلها بقاعدة واحدة. في مختبر دفاعي، راقب تغيّر mappings، واختبر DHCP Snooping/DAI/port-security حيث تدعمها البيئة، وراجع حدود الثقة بين access وtrunk. هذه الضوابط تحتاج خطة تشغيل حتى لا تمنع أجهزة مشروعة أو هواتف IP.\n\n## ناتج متوقع ومعيار قبولي\nفي VLAN واحدة، يجب أن ترى MAC المصدر يتعلم على منفذ صحيح وأن يكون next hop للمضيف المحلي هو الوجهة نفسها. بين VLANs، يجب أن يستخدم المضيف بوابته ويظهر على الراوتر قرار Route إلى VLAN الوجهة. إذا كانت النتيجة مختلفة، احتفظ بمخرجات الأوامر قبل إجراء أي إصلاح. بعد التغيير أعد الاختبارات من الاتجاهين وتأكد من عدم فقد اتصال الأجهزة المجاورة.\n\n## مرجع المصطلحات\n- **ARP cache / Neighbor cache:** تخزين مؤقت لربط عناوين الجيران؛ ليس جدول توجيه.\n- **CAM/MAC table:** ربط MAC بمنفذ وVLAN داخل السويتش.\n- **Access port:** منفذ عضو في VLAN واحدة في التصميم الشائع.\n- **Trunk:** رابط يحمل VLANs متعدّدة وفق قائمة وإعدادات tagging.\n- **SVI / Routed Interface:** واجهة طبقة 3 توفر بوابة أو نقطة توجيه.\n- **Unknown unicast:** وجهة MAC غير موجودة في الجدول، وقد يحدث flooding محدود.\n- **Default route:** fallback للوجهات التي لا تطابق route أكثر تحديداً.\n\nالنجاح المهني يعني إرفاق تفسير بالـ output: أي MAC تم تعلمه؟ ضمن أي VLAN؟ ما next hop الذي اختاره المضيف؟ وما الشاهد الذي يؤكد أن المشكلة في L2 وليس DNS أو WAN؟",
+      "commands": "ipconfig /all\nroute print\narp -a\nip route get <destination>\nshow mac address-table dynamic\nshow vlan brief\nshow interfaces trunk",
+      "examples": "Host A در 192.168.10.0/24 به Host B همان VLAN فریم را به MAC B می‌فرستد؛ برای Host C در VLAN/subnet دیگر از MAC Gateway استفاده می‌کند.",
+      "notes": "سطح L1؛ آزمایشگاه نیاز به محیط مجاز/ایزوله دارد؛ answer_key در meta.assessment مجزا است.",
+      "official_sources": [
+        {
+          "title": "RFC 826 — ARP",
+          "url": "https://www.rfc-editor.org/rfc/rfc826"
+        },
+        {
+          "title": "RFC 4861 — Neighbor Discovery for IPv6",
+          "url": "https://www.rfc-editor.org/rfc/rfc4861"
+        },
+        {
+          "title": "IEEE 802.1Q overview",
+          "url": "https://1.ieee802.org/maintenance/802-1q/"
+        }
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "depth_level": "L1",
+        "record_kind": "instructional_lesson",
+        "assessment": {
+          "questions": [
+            {
+              "id": "packet-path-l1-q01",
+              "prompt": "وقتی مقصد IP در subnet محلی نیست، فریم معمولاً به کدام MAC می‌رود؟",
+              "options": [
+                "MAC مقصد نهایی",
+                "MAC Gateway محلی",
+                "MAC DNS در همه شرایط",
+                "MAC اولین switch"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l1-q02",
+              "prompt": "هدف ARP در IPv4 چیست؟",
+              "options": [
+                "نام به IP",
+                "یافتن MAC متناظر با IPv4 روی لینک محلی",
+                "محاسبه BGP metric",
+                "رمزنگاری WLAN"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l1-q03",
+              "prompt": "در IPv6 کدام سازوکار همسایه را پیدا می‌کند؟",
+              "options": [
+                "ARP",
+                "Neighbor Discovery مبتنی بر ICMPv6",
+                "DHCPv4 DORA",
+                "STP"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l1-q04",
+              "prompt": "سوئیچ Source MAC را از کجا یاد می‌گیرد؟",
+              "options": [
+                "Source MAC فریم ورودی",
+                "Destination IP",
+                "DNS TTL",
+                "TCP port"
+              ],
+              "correct_index": 0
+            },
+            {
+              "id": "packet-path-l1-q05",
+              "prompt": "Broadcast یک VLAN معمولاً تا کجا گسترش می‌یابد؟",
+              "options": [
+                "همه VLANهای تمام شبکه",
+                "پورت‌های مناسب همان VLAN، جز پورت ورودی",
+                "فقط DNS Server",
+                "تمام اینترنت"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l1-q06",
+              "prompt": "کدام مورد ثابت می‌کند Wi-Fi کاملاً اینترنت دارد؟",
+              "options": [
+                "نمایش SSID",
+                "Association موفق به‌تنهایی کافی نیست؛ IP، gateway، DNS و مقصد باید بررسی شوند",
+                "چراغ AP سبز است",
+                "MAC client شناخته شده"
+              ],
+              "correct_index": 1
+            },
+            {
+              "id": "packet-path-l1-q07",
+              "prompt": "چرا ping به gateway ممکن است موفق باشد ولی سایت با نام باز نشود؟",
+              "options": [
+                "DNS می‌تواند مستقل از مسیر IP gateway خراب باشد",
+                "MAC table همیشه خراب است",
+                "MTU هرگز مؤثر نیست",
+                "موفقیت ping همه سرویس‌ها را ثابت می‌کند"
+              ],
+              "correct_index": 0
+            },
+            {
+              "id": "packet-path-l1-q08",
+              "prompt": "کدام ترتیب عیب‌یابی فرض کمتری دارد؟",
+              "options": [
+                "تغییر VLAN، DNS و NAT هم‌زمان",
+                "بررسی link/association، سپس IP، neighbor، route، DNS و برنامه",
+                "تعویض روتر ابتدا",
+                "غیرفعال‌کردن همه Firewallها"
+              ],
+              "correct_index": 1
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "packet-path-l1-q01",
+              "correct_index": 1,
+              "explanation": "IP مقصد نهایی باقی می‌ماند، اما مقصد Ethernet روی لینک محلی next hop است."
+            },
+            {
+              "id": "packet-path-l1-q02",
+              "correct_index": 1,
+              "explanation": "ARP نگاشت IPv4 به آدرس لایه پیوند همسایه را برای همان لینک پیدا می‌کند."
+            },
+            {
+              "id": "packet-path-l1-q03",
+              "correct_index": 1,
+              "explanation": "IPv6 از Neighbor Discovery استفاده می‌کند؛ ARP متعلق به IPv4 است."
+            },
+            {
+              "id": "packet-path-l1-q04",
+              "correct_index": 0,
+              "explanation": "یادگیری MAC از مبدأ فریم و بافت VLAN/پورت ورودی انجام می‌شود."
+            },
+            {
+              "id": "packet-path-l1-q05",
+              "correct_index": 1,
+              "explanation": "VLAN مرز broadcast domain لایه ۲ است."
+            },
+            {
+              "id": "packet-path-l1-q06",
+              "correct_index": 1,
+              "explanation": "اتصال رادیویی فقط یکی از مراحل پیش‌نیاز است."
+            },
+            {
+              "id": "packet-path-l1-q07",
+              "correct_index": 0,
+              "explanation": "Ping gateway صحت DNS و HTTPS تا مقصد را ثابت نمی‌کند."
+            },
+            {
+              "id": "packet-path-l1-q08",
+              "correct_index": 1,
+              "explanation": "پیشروی لایه‌به‌لایه دامنه خرابی را با شواهد محدود می‌کند."
+            }
+          ]
+        },
+        "glossary": [
+          "ARP",
+          "NDP",
+          "CAM",
+          "MAC table",
+          "VLAN",
+          "Trunk",
+          "SVI",
+          "Default Route"
+        ]
+      }
     }
   ]
 }
