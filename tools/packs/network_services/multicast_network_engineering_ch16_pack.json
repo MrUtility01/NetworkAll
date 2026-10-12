@@ -1,0 +1,306 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-12",
+  "purpose": "Chapter 16 progressive multicast lessons; existing curriculum preserved.",
+  "scope": {
+    "chapter_order": 16,
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lesson_count": 5,
+    "subchapter_order": 4,
+    "subchapter_title_fa": "۱۶.۴ مهندسی Multicast و توزیع رسانه",
+    "topic": "multicast-network-engineering"
+  },
+  "instructional_contract": {
+    "level_floors": {
+      "L0": 600,
+      "L1": 800,
+      "L2": 1200,
+      "L3": 1600,
+      "L4": 2200
+    },
+    "volume_rule": "Competency and observable failure-mode driven; no arbitrary global record cap.",
+    "separate_answer_key": true,
+    "lab_status": "designed_not_executed"
+  },
+  "content_quality": {
+    "status": "review_required",
+    "reason": "Lessons authored; multicast labs and vendor-specific counters require real execution/review."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch16:multicast-network-engineering:l0",
+      "entity": "lesson",
+      "chapter_order": 16,
+      "subchapter_order": 4,
+      "lesson_order": 1,
+      "topic": "multicast-network-engineering",
+      "domain": "multicast",
+      "level": "L0",
+      "title_fa": "[L0] Multicast — آشنایی",
+      "title_en": "[L0] Multicast Network Engineering — Orientation",
+      "subchapter_title_fa": "۱۶.۴ مهندسی Multicast و توزیع رسانه",
+      "tags": [
+        "multicast",
+        "IGMP",
+        "PIM",
+        "RPF",
+        "IPTV",
+        "L0"
+      ],
+      "summary": "درس آشنایی دربارهٔ membership، switching، routing و delivery multicast",
+      "full_content": "# Multicast — آشنایی\n\n## چرا Multicast؟\n\nدر unicast، فرستنده معمولاً برای هر گیرنده جریان جدا می‌فرستد؛ در broadcast، packet در broadcast domain مربوط منتشر می‌شود. Multicast برای یک گروه از گیرندگان طراحی شده و شبکه می‌تواند packet را روی شاخه‌های لازم توزیع کند. IPTV، توزیع ویدئو و بعضی feedهای داده از کاربردهای رایج‌اند.\n\n## عضویت گروه\n\nآدرس multicast به گروه اشاره می‌کند، نه یک میزبان واحد. IGMP در IPv4 برای اعلام عضویت گروه استفاده می‌شود؛ در IPv6 نقش مشابه با MLD است. Sender جریان می‌فرستد، receiver عضو می‌شود، switch با IGMP snooping می‌تواند پورت‌های عضو را پیدا کند و multicast router مسیر لایهٔ ۳ را می‌سازد.\n\n## سه مفهوم جدا\n\nIGMP snooping معمولاً رفتار forwarding لایهٔ ۲ را هدف می‌گیرد؛ PIM routing multicast بین subnetها را مدیریت می‌کند. IGMP join به معنی وجود مسیر تا source نیست. اگر snooping یا querier درست نباشد، multicast ممکن است flood شود یا به گیرنده نرسد.\n\n## مثال\n\nدر IPTV چند receiver یک کانال را می‌خواهند. عضویت هر receiver، state سوئیچ، multicast route و source traffic باید برقرار باشد. فقط داشتن آدرس گروه یا یک IGMP report سلامت stream را ثابت نمی‌کند.\n\n## وضعیت آزمون\nتوپولوژی، source/group، نسخه، زمان، نقطهٔ capture، معیار قبولی و rollback باید ثبت شوند. Labها تا زمان اجرای واقعی review_required هستند؛ نمودار یا پیکربندی نمونه به‌جای evidence اجراشده پذیرفته نیست.",
+      "commands": "Verify per release: host IGMP/MLD membership, switch snooping/querier table, multicast RIB (*,G)/(S,G), PIM neighbor, RP, RPF interface, OIL and counters.",
+      "examples": "Controlled lab: one source, receivers on separate subnets, VLAN-aware switches, multicast router, optional RP for ASM, and source/group inventory.",
+      "notes": "content_status=review_required; lab_execution=not_yet_run; answer_key=separate; supplementary_chapter=16",
+      "learning_objectives": [
+        "تفکیک IGMP/MLD، snooping، querier و PIM",
+        "عیب‌یابی source/group/RPF/OIL با شواهد",
+        "طراحی ظرفیت، امنیت و recovery"
+      ],
+      "prerequisites": [],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch16-l0-1\",\"prompt\":\"Multicast چه فرقی با unicast و broadcast دارد؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"ch16-l0-2\",\"prompt\":\"IGMP چه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"ch16-l0-3\",\"prompt\":\"IGMP snooping چه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"ch16-l0-4\",\"prompt\":\"PIM چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"ch16-l0-5\",\"prompt\":\"RPF چه چیزی را می‌سنجد؟\",\"type\":\"short_answer\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"ch16-l0-1\",\"answer\":\"به گروه گیرندگان می‌فرستد و شبکه شاخه‌های لازم را توزیع می‌کند.\",\"rationale\":\"broadcast در دامنه پخش می‌شود و unicast مقصد مشخص دارد.\"},{\"id\":\"ch16-l0-2\",\"answer\":\"عضویت میزبان IPv4 در گروه multicast را اعلام می‌کند.\",\"rationale\":\"IGMP به‌تنهایی routing end-to-end نیست.\"},{\"id\":\"ch16-l0-3\",\"answer\":\"Switch membership را برای هدایت به پورت‌های لازم دنبال می‌کند.\",\"rationale\":\"Querier/state و پیاده‌سازی مهم‌اند.\"},{\"id\":\"ch16-l0-4\",\"answer\":\"Routing multicast بین روترها را مدیریت می‌کند.\",\"rationale\":\"با IGMP فرق دارد.\"},{\"id\":\"ch16-l0-5\",\"answer\":\"درستی incoming interface نسبت به source و مسیر مورد انتظار.\",\"rationale\":\"route نامناسب می‌تواند multicast را drop کند.\"}]},\"source_refs\":[\"https://www.rfc-editor.org/rfc/rfc1112.html\",\"https://www.rfc-editor.org/rfc/rfc3376.html\",\"https://www.rfc-editor.org/rfc/rfc7761.html\",\"https://www.rfc-editor.org/rfc/rfc4607.html\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"subchapter_title_fa\":\"۱۶.۴ مهندسی Multicast و توزیع رسانه\"}",
+      "official_sources": [
+        {
+          "title": "RFC 1112 — IP Multicasting",
+          "url": "https://www.rfc-editor.org/rfc/rfc1112.html"
+        },
+        {
+          "title": "RFC 3376 — IGMPv3",
+          "url": "https://www.rfc-editor.org/rfc/rfc3376.html"
+        },
+        {
+          "title": "RFC 7761 — PIM Sparse Mode",
+          "url": "https://www.rfc-editor.org/rfc/rfc7761.html"
+        },
+        {
+          "title": "RFC 4607 — Source-Specific Multicast",
+          "url": "https://www.rfc-editor.org/rfc/rfc4607.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch16:multicast-network-engineering:l1",
+      "entity": "lesson",
+      "chapter_order": 16,
+      "subchapter_order": 4,
+      "lesson_order": 2,
+      "topic": "multicast-network-engineering",
+      "domain": "multicast",
+      "level": "L1",
+      "title_fa": "[L1] Multicast — مقدماتی",
+      "title_en": "[L1] Multicast Network Engineering — Beginner",
+      "subchapter_title_fa": "۱۶.۴ مهندسی Multicast و توزیع رسانه",
+      "tags": [
+        "multicast",
+        "IGMP",
+        "PIM",
+        "RPF",
+        "IPTV",
+        "L1"
+      ],
+      "summary": "درس مقدماتی دربارهٔ membership، switching، routing و delivery multicast",
+      "full_content": "# Multicast — مقدماتی\n\n## عضویت و forwarding\n\nIGMPv2 عضویت گروهی را اعلام می‌کند؛ IGMPv3 برای source filtering مناسب است. IGMP snooping switch پیام‌های membership را می‌خواند تا state گروه و پورت بسازد. Querier queryهای دوره‌ای می‌فرستد تا state تازه بماند. نبودن querier مناسب ممکن است باعث شود membership پس از پایان timer حذف شود؛ رفتار دقیق به platform وابسته است.\n\n## مسیریابی چندپخشی\n\nبرای عبور بین subnetها به multicast routing table نیاز است. PIM Sparse Mode در مدل ASM از Rendezvous Point و shared tree استفاده می‌کند. Source-Specific Multicast یا SSM گیرنده را به source مشخص پیوند می‌دهد و مدل متفاوتی دارد. Reverse Path Forwarding یا RPF بررسی می‌کند packet از مسیر مورد انتظار نسبت به source می‌آید یا نه.\n\n## Lab\n\nدر شبیه‌ساز یک source و دو subnet گیرنده بساز. membership host، snooping table و multicast route را جدا مشاهده کن. سپس source را فعال و delivery را در receiver تأیید کن. از groupهای production یا شبکه‌های دیگر استفاده نکن.\n\n## معیار قبولی\n\nبتوانی IGMP، snooping، querier، PIM، RP و RPF را از هم تشخیص دهی و مرحلهٔ مسئول هر کدام را روی نمودار مشخص کنی.\n\n## وضعیت آزمون\nتوپولوژی، source/group، نسخه، زمان، نقطهٔ capture، معیار قبولی و rollback باید ثبت شوند. Labها تا زمان اجرای واقعی review_required هستند؛ نمودار یا پیکربندی نمونه به‌جای evidence اجراشده پذیرفته نیست.",
+      "commands": "Verify per release: host IGMP/MLD membership, switch snooping/querier table, multicast RIB (*,G)/(S,G), PIM neighbor, RP, RPF interface, OIL and counters.",
+      "examples": "Controlled lab: one source, receivers on separate subnets, VLAN-aware switches, multicast router, optional RP for ASM, and source/group inventory.",
+      "notes": "content_status=review_required; lab_execution=not_yet_run; answer_key=separate; supplementary_chapter=16",
+      "learning_objectives": [
+        "تفکیک IGMP/MLD، snooping، querier و PIM",
+        "عیب‌یابی source/group/RPF/OIL با شواهد",
+        "طراحی ظرفیت، امنیت و recovery"
+      ],
+      "prerequisites": [
+        "IPv4/IPv6 routing, UDP, VLAN and switch forwarding basics"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch16-l1-1\",\"prompt\":\"Multicast چه فرقی با unicast و broadcast دارد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch16-l1-2\",\"prompt\":\"IGMP چه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch16-l1-3\",\"prompt\":\"IGMP snooping چه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch16-l1-4\",\"prompt\":\"PIM چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch16-l1-5\",\"prompt\":\"RPF چه چیزی را می‌سنجد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch16-l1-6\",\"prompt\":\"RP در PIM-SM ASM چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch16-l1-7\",\"prompt\":\"IGMPv3 چه قابلیت مهمی می‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"ch16-l1-8\",\"prompt\":\"چرا join موفق تحویل stream را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"ch16-l1-1\",\"answer\":\"به گروه گیرندگان می‌فرستد و شبکه شاخه‌های لازم را توزیع می‌کند.\",\"rationale\":\"broadcast در دامنه پخش می‌شود و unicast مقصد مشخص دارد.\"},{\"id\":\"ch16-l1-2\",\"answer\":\"عضویت میزبان IPv4 در گروه multicast را اعلام می‌کند.\",\"rationale\":\"IGMP به‌تنهایی routing end-to-end نیست.\"},{\"id\":\"ch16-l1-3\",\"answer\":\"Switch membership را برای هدایت به پورت‌های لازم دنبال می‌کند.\",\"rationale\":\"Querier/state و پیاده‌سازی مهم‌اند.\"},{\"id\":\"ch16-l1-4\",\"answer\":\"Routing multicast بین روترها را مدیریت می‌کند.\",\"rationale\":\"با IGMP فرق دارد.\"},{\"id\":\"ch16-l1-5\",\"answer\":\"درستی incoming interface نسبت به source و مسیر مورد انتظار.\",\"rationale\":\"route نامناسب می‌تواند multicast را drop کند.\"},{\"id\":\"ch16-l1-6\",\"answer\":\"نقطهٔ rendezvous برای اشتراک مسیر source/receiver است.\",\"rationale\":\"در SSM مدل متفاوتی اعمال می‌شود.\"},{\"id\":\"ch16-l1-7\",\"answer\":\"Source filtering و عضویت source-specific.\",\"rationale\":\"برای SSM کاربرد دارد.\"},{\"id\":\"ch16-l1-8\",\"answer\":\"Source traffic، PIM/RPF، OIL، ACL و مسیر خروجی هم لازم‌اند.\",\"rationale\":\"چند state جدا وجود دارد.\"}]},\"source_refs\":[\"https://www.rfc-editor.org/rfc/rfc1112.html\",\"https://www.rfc-editor.org/rfc/rfc3376.html\",\"https://www.rfc-editor.org/rfc/rfc7761.html\",\"https://www.rfc-editor.org/rfc/rfc4607.html\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"subchapter_title_fa\":\"۱۶.۴ مهندسی Multicast و توزیع رسانه\"}",
+      "official_sources": [
+        {
+          "title": "RFC 1112 — IP Multicasting",
+          "url": "https://www.rfc-editor.org/rfc/rfc1112.html"
+        },
+        {
+          "title": "RFC 3376 — IGMPv3",
+          "url": "https://www.rfc-editor.org/rfc/rfc3376.html"
+        },
+        {
+          "title": "RFC 7761 — PIM Sparse Mode",
+          "url": "https://www.rfc-editor.org/rfc/rfc7761.html"
+        },
+        {
+          "title": "RFC 4607 — Source-Specific Multicast",
+          "url": "https://www.rfc-editor.org/rfc/rfc4607.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch16:multicast-network-engineering:l2",
+      "entity": "lesson",
+      "chapter_order": 16,
+      "subchapter_order": 4,
+      "lesson_order": 3,
+      "topic": "multicast-network-engineering",
+      "domain": "multicast",
+      "level": "L2",
+      "title_fa": "[L2] Multicast — ادمین",
+      "title_en": "[L2] Multicast Network Engineering — Administrator",
+      "subchapter_title_fa": "۱۶.۴ مهندسی Multicast و توزیع رسانه",
+      "tags": [
+        "multicast",
+        "IGMP",
+        "PIM",
+        "RPF",
+        "IPTV",
+        "L2"
+      ],
+      "summary": "درس ادمین دربارهٔ membership، switching، routing و delivery multicast",
+      "full_content": "# Multicast — ادمین\n\n## Stateهای مستقل جریان\n\nبرای یک multicast flow دست‌کم membership میزبان، L2 snooping membership، L3 multicast routing و source traffic را جدا بررسی کن. اگر یکی غایب باشد، نتیجه ممکن است از flood غیرضروری تا drop کامل متفاوت باشد. IGMP querier به تازه‌ماندن membership کمک می‌کند؛ بعضی switchها در نبود querier رفتار platform-specific دارند.\n\n## PIM و RPF\n\nPIM برای multicast routing استفاده می‌شود. RPF check به unicast route یا topology مربوط به source وابسته است. اگر مسیر unicast به source از interface دیگری انتخاب شود، multicast packet ممکن است drop شود حتی اگر receiver عضو گروه باشد. PIM Sparse Mode در ASM از RP/Join behavior استفاده می‌کند؛ SSM source مشخص را هدف می‌گیرد.\n\n## سناریوی عیب‌یابی\n\nReceiver گروه را join کرده اما stream نمی‌رسد: membership روی host و switch را بررسی کن؛ سپس querier و VLAN، source traffic، multicast route، incoming interface/RPF، PIM neighbor و RP mapping را دنبال کن. ACL، TTL، counters و capture هم باید بررسی شوند. هر بار یک فرضیه را آزمایش کن.\n\n## Lab\n\nیک source، دو receiver subnet و یک router/PIM node در شبیه‌ساز بساز. failureهای کنترل‌شده: querier غایب، RP اشتباه، RPF mismatch یا multicast ACL. قبل از هر اجرا پیش‌بینی کن کدام state باید تغییر کند؛ سپس rollback و delivery را تأیید کن.\n\n## وضعیت آزمون\nتوپولوژی، source/group، نسخه، زمان، نقطهٔ capture، معیار قبولی و rollback باید ثبت شوند. Labها تا زمان اجرای واقعی review_required هستند؛ نمودار یا پیکربندی نمونه به‌جای evidence اجراشده پذیرفته نیست.",
+      "commands": "Verify per release: host IGMP/MLD membership, switch snooping/querier table, multicast RIB (*,G)/(S,G), PIM neighbor, RP, RPF interface, OIL and counters.",
+      "examples": "Controlled lab: one source, receivers on separate subnets, VLAN-aware switches, multicast router, optional RP for ASM, and source/group inventory.",
+      "notes": "content_status=review_required; lab_execution=not_yet_run; answer_key=separate; supplementary_chapter=16",
+      "learning_objectives": [
+        "تفکیک IGMP/MLD، snooping، querier و PIM",
+        "عیب‌یابی source/group/RPF/OIL با شواهد",
+        "طراحی ظرفیت، امنیت و recovery"
+      ],
+      "prerequisites": [
+        "IPv4/IPv6 routing, UDP, VLAN and switch forwarding basics"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch16-l2-1\",\"prompt\":\"Multicast چه فرقی با unicast و broadcast دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch16-l2-2\",\"prompt\":\"IGMP چه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch16-l2-3\",\"prompt\":\"IGMP snooping چه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch16-l2-4\",\"prompt\":\"PIM چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch16-l2-5\",\"prompt\":\"RPF چه چیزی را می‌سنجد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch16-l2-6\",\"prompt\":\"RP در PIM-SM ASM چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch16-l2-7\",\"prompt\":\"IGMPv3 چه قابلیت مهمی می‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch16-l2-8\",\"prompt\":\"چرا join موفق تحویل stream را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch16-l2-9\",\"prompt\":\"چرا multicast ممکن است flood شود؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"ch16-l2-10\",\"prompt\":\"چرا multicast route را جدا از unicast RIB بررسی می‌کنیم؟\",\"type\":\"short_answer\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"ch16-l2-1\",\"answer\":\"به گروه گیرندگان می‌فرستد و شبکه شاخه‌های لازم را توزیع می‌کند.\",\"rationale\":\"broadcast در دامنه پخش می‌شود و unicast مقصد مشخص دارد.\"},{\"id\":\"ch16-l2-2\",\"answer\":\"عضویت میزبان IPv4 در گروه multicast را اعلام می‌کند.\",\"rationale\":\"IGMP به‌تنهایی routing end-to-end نیست.\"},{\"id\":\"ch16-l2-3\",\"answer\":\"Switch membership را برای هدایت به پورت‌های لازم دنبال می‌کند.\",\"rationale\":\"Querier/state و پیاده‌سازی مهم‌اند.\"},{\"id\":\"ch16-l2-4\",\"answer\":\"Routing multicast بین روترها را مدیریت می‌کند.\",\"rationale\":\"با IGMP فرق دارد.\"},{\"id\":\"ch16-l2-5\",\"answer\":\"درستی incoming interface نسبت به source و مسیر مورد انتظار.\",\"rationale\":\"route نامناسب می‌تواند multicast را drop کند.\"},{\"id\":\"ch16-l2-6\",\"answer\":\"نقطهٔ rendezvous برای اشتراک مسیر source/receiver است.\",\"rationale\":\"در SSM مدل متفاوتی اعمال می‌شود.\"},{\"id\":\"ch16-l2-7\",\"answer\":\"Source filtering و عضویت source-specific.\",\"rationale\":\"برای SSM کاربرد دارد.\"},{\"id\":\"ch16-l2-8\",\"answer\":\"Source traffic، PIM/RPF، OIL، ACL و مسیر خروجی هم لازم‌اند.\",\"rationale\":\"چند state جدا وجود دارد.\"},{\"id\":\"ch16-l2-9\",\"answer\":\"Snooping/querier state یا policy unknown multicast ممکن است مناسب نباشد.\",\"rationale\":\"رفتار دقیق vendor-specific است.\"},{\"id\":\"ch16-l2-10\",\"answer\":\"Multicast state به source/group و RPF/OIL وابسته است.\",\"rationale\":\"unicast route تمام forwarding multicast را نشان نمی‌دهد.\"}]},\"source_refs\":[\"https://www.rfc-editor.org/rfc/rfc1112.html\",\"https://www.rfc-editor.org/rfc/rfc3376.html\",\"https://www.rfc-editor.org/rfc/rfc7761.html\",\"https://www.rfc-editor.org/rfc/rfc4607.html\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"subchapter_title_fa\":\"۱۶.۴ مهندسی Multicast و توزیع رسانه\"}",
+      "official_sources": [
+        {
+          "title": "RFC 1112 — IP Multicasting",
+          "url": "https://www.rfc-editor.org/rfc/rfc1112.html"
+        },
+        {
+          "title": "RFC 3376 — IGMPv3",
+          "url": "https://www.rfc-editor.org/rfc/rfc3376.html"
+        },
+        {
+          "title": "RFC 7761 — PIM Sparse Mode",
+          "url": "https://www.rfc-editor.org/rfc/rfc7761.html"
+        },
+        {
+          "title": "RFC 4607 — Source-Specific Multicast",
+          "url": "https://www.rfc-editor.org/rfc/rfc4607.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch16:multicast-network-engineering:l3",
+      "entity": "lesson",
+      "chapter_order": 16,
+      "subchapter_order": 4,
+      "lesson_order": 4,
+      "topic": "multicast-network-engineering",
+      "domain": "multicast",
+      "level": "L3",
+      "title_fa": "[L3] Multicast — مهندس",
+      "title_en": "[L3] Multicast Network Engineering — Engineer",
+      "subchapter_title_fa": "۱۶.۴ مهندسی Multicast و توزیع رسانه",
+      "tags": [
+        "multicast",
+        "IGMP",
+        "PIM",
+        "RPF",
+        "IPTV",
+        "L3"
+      ],
+      "summary": "درس مهندس دربارهٔ membership، switching، routing و delivery multicast",
+      "full_content": "# Multicast — مهندس\n\n## ASM، SSM و PIM-SM\n\nدر ASM، receiver گروه را انتخاب می‌کند و شبکه ممکن است با RP از shared tree استفاده کند و سپس به source-specific tree تغییر کند. در SSM، source نیز مشخص است و receiver/source membership از IGMPv3 پشتیبانی می‌گیرد. انتخاب میان ASM و SSM باید با نیاز application، addressing، receiver support و complexity عملیاتی هماهنگ باشد.\n\n## RPF و multicast forwarding\n\nروتر باید تعیین کند packet نسبت به source از interface مورد انتظار دریافت شده است. در شبکهٔ چندمسیره، PBR، VRF یا ECMP می‌تواند RPF expectation را پیچیده کند. Multicast state بر اساس source/group یا shared-tree ساخته می‌شود؛ destination group به‌تنهایی برای تحلیل کافی نیست. incoming interface، outgoing interface list، RPF neighbor، RP و counters را ثبت کن.\n\n## Snooping در L2\n\nSnooping state را از membership می‌سازد و querier آن را تازه می‌کند. اگر querier یا multicast router port detection نادرست باشد، ترافیک به subset اشتباه می‌رسد یا flood می‌شود. رفتار unknown multicast وابسته به platform است. VLAN، port-channel و topology افزونه را نیز بررسی کن.\n\n## Lab مهندسی\n\nسناریوها: source غایب، RP mapping نادرست، RPF mismatch، outgoing interface حذف‌شده، IGMP querier غایب و ACL/TTL error. برای هر کدام پیش‌بینی کن membership، multicast RIB و capture کدام نقطه تغییر می‌کند. Positive control و receiver غیرعضو را برای سنجش عدم flood اضافه کن.\n\n## وضعیت آزمون\nتوپولوژی، source/group، نسخه، زمان، نقطهٔ capture، معیار قبولی و rollback باید ثبت شوند. Labها تا زمان اجرای واقعی review_required هستند؛ نمودار یا پیکربندی نمونه به‌جای evidence اجراشده پذیرفته نیست.",
+      "commands": "Verify per release: host IGMP/MLD membership, switch snooping/querier table, multicast RIB (*,G)/(S,G), PIM neighbor, RP, RPF interface, OIL and counters.",
+      "examples": "Controlled lab: one source, receivers on separate subnets, VLAN-aware switches, multicast router, optional RP for ASM, and source/group inventory.",
+      "notes": "content_status=review_required; lab_execution=not_yet_run; answer_key=separate; supplementary_chapter=16",
+      "learning_objectives": [
+        "تفکیک IGMP/MLD، snooping، querier و PIM",
+        "عیب‌یابی source/group/RPF/OIL با شواهد",
+        "طراحی ظرفیت، امنیت و recovery"
+      ],
+      "prerequisites": [
+        "IPv4/IPv6 routing, UDP, VLAN and switch forwarding basics"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch16-l3-1\",\"prompt\":\"Multicast چه فرقی با unicast و broadcast دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch16-l3-2\",\"prompt\":\"IGMP چه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch16-l3-3\",\"prompt\":\"IGMP snooping چه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch16-l3-4\",\"prompt\":\"PIM چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch16-l3-5\",\"prompt\":\"RPF چه چیزی را می‌سنجد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch16-l3-6\",\"prompt\":\"RP در PIM-SM ASM چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch16-l3-7\",\"prompt\":\"IGMPv3 چه قابلیت مهمی می‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch16-l3-8\",\"prompt\":\"چرا join موفق تحویل stream را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch16-l3-9\",\"prompt\":\"چرا multicast ممکن است flood شود؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch16-l3-10\",\"prompt\":\"چرا multicast route را جدا از unicast RIB بررسی می‌کنیم؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch16-l3-11\",\"prompt\":\"ASM و SSM چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"ch16-l3-12\",\"prompt\":\"چه چیزی RPF mismatch را نشان می‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"ch16-l3-1\",\"answer\":\"به گروه گیرندگان می‌فرستد و شبکه شاخه‌های لازم را توزیع می‌کند.\",\"rationale\":\"broadcast در دامنه پخش می‌شود و unicast مقصد مشخص دارد.\"},{\"id\":\"ch16-l3-2\",\"answer\":\"عضویت میزبان IPv4 در گروه multicast را اعلام می‌کند.\",\"rationale\":\"IGMP به‌تنهایی routing end-to-end نیست.\"},{\"id\":\"ch16-l3-3\",\"answer\":\"Switch membership را برای هدایت به پورت‌های لازم دنبال می‌کند.\",\"rationale\":\"Querier/state و پیاده‌سازی مهم‌اند.\"},{\"id\":\"ch16-l3-4\",\"answer\":\"Routing multicast بین روترها را مدیریت می‌کند.\",\"rationale\":\"با IGMP فرق دارد.\"},{\"id\":\"ch16-l3-5\",\"answer\":\"درستی incoming interface نسبت به source و مسیر مورد انتظار.\",\"rationale\":\"route نامناسب می‌تواند multicast را drop کند.\"},{\"id\":\"ch16-l3-6\",\"answer\":\"نقطهٔ rendezvous برای اشتراک مسیر source/receiver است.\",\"rationale\":\"در SSM مدل متفاوتی اعمال می‌شود.\"},{\"id\":\"ch16-l3-7\",\"answer\":\"Source filtering و عضویت source-specific.\",\"rationale\":\"برای SSM کاربرد دارد.\"},{\"id\":\"ch16-l3-8\",\"answer\":\"Source traffic، PIM/RPF، OIL، ACL و مسیر خروجی هم لازم‌اند.\",\"rationale\":\"چند state جدا وجود دارد.\"},{\"id\":\"ch16-l3-9\",\"answer\":\"Snooping/querier state یا policy unknown multicast ممکن است مناسب نباشد.\",\"rationale\":\"رفتار دقیق vendor-specific است.\"},{\"id\":\"ch16-l3-10\",\"answer\":\"Multicast state به source/group و RPF/OIL وابسته است.\",\"rationale\":\"unicast route تمام forwarding multicast را نشان نمی‌دهد.\"},{\"id\":\"ch16-l3-11\",\"answer\":\"ASM معمولاً RP/shared tree دارد؛ SSM source را مشخص می‌کند.\",\"rationale\":\"Receiver/application support مهم است.\"},{\"id\":\"ch16-l3-12\",\"answer\":\"Incoming interface و RPF expectation/counter را با route به source مقایسه می‌کنیم.\",\"rationale\":\"مسیر به source مهم است.\"}]},\"source_refs\":[\"https://www.rfc-editor.org/rfc/rfc1112.html\",\"https://www.rfc-editor.org/rfc/rfc3376.html\",\"https://www.rfc-editor.org/rfc/rfc7761.html\",\"https://www.rfc-editor.org/rfc/rfc4607.html\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"subchapter_title_fa\":\"۱۶.۴ مهندسی Multicast و توزیع رسانه\"}",
+      "official_sources": [
+        {
+          "title": "RFC 1112 — IP Multicasting",
+          "url": "https://www.rfc-editor.org/rfc/rfc1112.html"
+        },
+        {
+          "title": "RFC 3376 — IGMPv3",
+          "url": "https://www.rfc-editor.org/rfc/rfc3376.html"
+        },
+        {
+          "title": "RFC 7761 — PIM Sparse Mode",
+          "url": "https://www.rfc-editor.org/rfc/rfc7761.html"
+        },
+        {
+          "title": "RFC 4607 — Source-Specific Multicast",
+          "url": "https://www.rfc-editor.org/rfc/rfc4607.html"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch16:multicast-network-engineering:l4",
+      "entity": "lesson",
+      "chapter_order": 16,
+      "subchapter_order": 4,
+      "lesson_order": 5,
+      "topic": "multicast-network-engineering",
+      "domain": "multicast",
+      "level": "L4",
+      "title_fa": "[L4] Multicast — خبره",
+      "title_en": "[L4] Multicast Network Engineering — Architect",
+      "subchapter_title_fa": "۱۶.۴ مهندسی Multicast و توزیع رسانه",
+      "tags": [
+        "multicast",
+        "IGMP",
+        "PIM",
+        "RPF",
+        "IPTV",
+        "L4"
+      ],
+      "summary": "درس خبره دربارهٔ membership، switching، routing و delivery multicast",
+      "full_content": "# Multicast — خبره و طراحی معماری\n\n## انتخاب مدل توزیع\n\nطراحی multicast باید میان ASM و SSM، shared tree و source-specific shortest path، تعداد source/group، stream bitrate و complexity کنترل‌پلین تصمیم بگیرد. ASM می‌تواند RP و state بیشتری نیاز داشته باشد؛ SSM receiver را به source مشخص مقید می‌کند و نیاز application به شناخت source دارد. انتخاب باید با addressing، receiver، security و operational cost سازگار باشد.\n\n## ظرفیت و replication\n\nBandwidth در هر لینک به گروه‌ها و شاخه‌های لازم وابسته است، اما replication، multicast state، packet-per-second، burst و queue loss اهمیت دارند. برای IPTV تعداد stream، bitrate، join/leave churn و table capacity را اندازه‌گیری کن. Snooping یا route state اشتباه می‌تواند multicast را به پورت‌های غیرعضو flood کند. Benchmark باید بار ثابت و تغییر سریع membership را پوشش دهد.\n\n## Resilience و security\n\nRP redundancy، PIM adjacency، IGP reachability، RPF consistency و querier availability را با stream واقعی آزمایش کن. Group address به‌تنهایی احراز هویت نمی‌کند؛ source authorization، ACL group/source، interface scope و segmentation لازم‌اند. IGMP snooping فقط forwarding را کنترل می‌کند و authentication نیست.\n\n## Observability\n\nشاخص‌ها شامل active (*,G)/(S,G)، group count، join latency، packet loss/jitter، RPF drops، PIM health، OIL consistency و multicast-table pressure هستند. SLO برنامه باید join-to-play time و loss/jitter را از دید گیرنده بسنجد، نه فقط روتر.\n\n## Runbook\n\nGroup/source/receiver را مشخص کن؛ membership و querier را ببین؛ snooping table را بررسی کن؛ PIM neighbor، RP، RPF و route را بخوان؛ capture source/L3/receiver را هم‌بسته کن؛ ACL، TTL و application counters را بسنج؛ پس از اصلاح، join/leave، failover و receiver غیرعضو را دوباره آزمایش کن.\n\n## وضعیت آزمون\nتوپولوژی، source/group، نسخه، زمان، نقطهٔ capture، معیار قبولی و rollback باید ثبت شوند. Labها تا زمان اجرای واقعی review_required هستند؛ نمودار یا پیکربندی نمونه به‌جای evidence اجراشده پذیرفته نیست.",
+      "commands": "Verify per release: host IGMP/MLD membership, switch snooping/querier table, multicast RIB (*,G)/(S,G), PIM neighbor, RP, RPF interface, OIL and counters.",
+      "examples": "Controlled lab: one source, receivers on separate subnets, VLAN-aware switches, multicast router, optional RP for ASM, and source/group inventory.",
+      "notes": "content_status=review_required; lab_execution=not_yet_run; answer_key=separate; supplementary_chapter=16",
+      "learning_objectives": [
+        "تفکیک IGMP/MLD، snooping، querier و PIM",
+        "عیب‌یابی source/group/RPF/OIL با شواهد",
+        "طراحی ظرفیت، امنیت و recovery"
+      ],
+      "prerequisites": [
+        "IPv4/IPv6 routing, UDP, VLAN and switch forwarding basics"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"ch16-l4-1\",\"prompt\":\"Multicast چه فرقی با unicast و broadcast دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-2\",\"prompt\":\"IGMP چه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-3\",\"prompt\":\"IGMP snooping چه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-4\",\"prompt\":\"PIM چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-5\",\"prompt\":\"RPF چه چیزی را می‌سنجد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-6\",\"prompt\":\"RP در PIM-SM ASM چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-7\",\"prompt\":\"IGMPv3 چه قابلیت مهمی می‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-8\",\"prompt\":\"چرا join موفق تحویل stream را ثابت نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-9\",\"prompt\":\"چرا multicast ممکن است flood شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-10\",\"prompt\":\"چرا multicast route را جدا از unicast RIB بررسی می‌کنیم؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-11\",\"prompt\":\"ASM و SSM چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-12\",\"prompt\":\"چه چیزی RPF mismatch را نشان می‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-13\",\"prompt\":\"Querier چه چیزی را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-14\",\"prompt\":\"Metricهای مهم IPTV multicast کدام‌اند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"ch16-l4-15\",\"prompt\":\"Multicast production-ready چه می‌خواهد؟\",\"type\":\"short_answer\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"ch16-l4-1\",\"answer\":\"به گروه گیرندگان می‌فرستد و شبکه شاخه‌های لازم را توزیع می‌کند.\",\"rationale\":\"broadcast در دامنه پخش می‌شود و unicast مقصد مشخص دارد.\"},{\"id\":\"ch16-l4-2\",\"answer\":\"عضویت میزبان IPv4 در گروه multicast را اعلام می‌کند.\",\"rationale\":\"IGMP به‌تنهایی routing end-to-end نیست.\"},{\"id\":\"ch16-l4-3\",\"answer\":\"Switch membership را برای هدایت به پورت‌های لازم دنبال می‌کند.\",\"rationale\":\"Querier/state و پیاده‌سازی مهم‌اند.\"},{\"id\":\"ch16-l4-4\",\"answer\":\"Routing multicast بین روترها را مدیریت می‌کند.\",\"rationale\":\"با IGMP فرق دارد.\"},{\"id\":\"ch16-l4-5\",\"answer\":\"درستی incoming interface نسبت به source و مسیر مورد انتظار.\",\"rationale\":\"route نامناسب می‌تواند multicast را drop کند.\"},{\"id\":\"ch16-l4-6\",\"answer\":\"نقطهٔ rendezvous برای اشتراک مسیر source/receiver است.\",\"rationale\":\"در SSM مدل متفاوتی اعمال می‌شود.\"},{\"id\":\"ch16-l4-7\",\"answer\":\"Source filtering و عضویت source-specific.\",\"rationale\":\"برای SSM کاربرد دارد.\"},{\"id\":\"ch16-l4-8\",\"answer\":\"Source traffic، PIM/RPF، OIL، ACL و مسیر خروجی هم لازم‌اند.\",\"rationale\":\"چند state جدا وجود دارد.\"},{\"id\":\"ch16-l4-9\",\"answer\":\"Snooping/querier state یا policy unknown multicast ممکن است مناسب نباشد.\",\"rationale\":\"رفتار دقیق vendor-specific است.\"},{\"id\":\"ch16-l4-10\",\"answer\":\"Multicast state به source/group و RPF/OIL وابسته است.\",\"rationale\":\"unicast route تمام forwarding multicast را نشان نمی‌دهد.\"},{\"id\":\"ch16-l4-11\",\"answer\":\"ASM معمولاً RP/shared tree دارد؛ SSM source را مشخص می‌کند.\",\"rationale\":\"Receiver/application support مهم است.\"},{\"id\":\"ch16-l4-12\",\"answer\":\"Incoming interface و RPF expectation/counter را با route به source مقایسه می‌کنیم.\",\"rationale\":\"مسیر به source مهم است.\"},{\"id\":\"ch16-l4-13\",\"answer\":\"وجود querier membership را تازه می‌کند اما PIM/RPF/source delivery را تضمین نمی‌کند.\",\"rationale\":\"هر state جدا آزموده شود.\"},{\"id\":\"ch16-l4-14\",\"answer\":\"Join latency، loss/jitter، group/source state، RPF drops و utilization.\",\"rationale\":\"SLO باید از دید application باشد.\"},{\"id\":\"ch16-l4-15\",\"answer\":\"Source/group inventory، ASM/SSM choice، RP/RPF، snooping/querier، ACL، capacity، failover و rollback.\",\"rationale\":\"کنترل‌پلین تنها کافی نیست.\"}]},\"source_refs\":[\"https://www.rfc-editor.org/rfc/rfc1112.html\",\"https://www.rfc-editor.org/rfc/rfc3376.html\",\"https://www.rfc-editor.org/rfc/rfc7761.html\",\"https://www.rfc-editor.org/rfc/rfc4607.html\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"subchapter_title_fa\":\"۱۶.۴ مهندسی Multicast و توزیع رسانه\"}",
+      "official_sources": [
+        {
+          "title": "RFC 1112 — IP Multicasting",
+          "url": "https://www.rfc-editor.org/rfc/rfc1112.html"
+        },
+        {
+          "title": "RFC 3376 — IGMPv3",
+          "url": "https://www.rfc-editor.org/rfc/rfc3376.html"
+        },
+        {
+          "title": "RFC 7761 — PIM Sparse Mode",
+          "url": "https://www.rfc-editor.org/rfc/rfc7761.html"
+        },
+        {
+          "title": "RFC 4607 — Source-Specific Multicast",
+          "url": "https://www.rfc-editor.org/rfc/rfc4607.html"
+        }
+      ],
+      "source_status": "review_required"
+    }
+  ]
+}
