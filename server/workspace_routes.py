@@ -259,6 +259,7 @@ def _workspace_record(row, entity):
             "done": bool(raw.get("done", 0)),
             "due_at": raw.get("due_at") or "",
             "priority": int(raw.get("priority") or 1),
+            "remind_at": raw.get("remind_at") or "",
             "last_updated": raw.get("last_updated") or "",
             "device_id": raw.get("device_id") or "",
             "deleted": bool(raw.get("deleted", 0)),
@@ -345,15 +346,19 @@ def sync_apply(records):
                 if priority not in (1, 2, 3):
                     priority = 1
                 due_at = str(record.get("due_at") or record.get("dueAt") or "")[:32]
+                remind_at = str(record.get("remind_at") or record.get("remindAt") or "")[:32]
                 done = 1 if record.get("done") is True or record.get("done") == 1 else 0
                 c.execute(
-                    """INSERT INTO ws_tasks(uid,title,body,done,last_updated,due_at,priority,device_id,deleted,content_hash)
-                       VALUES(?,?,?,?,?,?,?,?,?,?)
+                    """INSERT INTO ws_tasks(
+                           uid,title,body,done,last_updated,due_at,priority,remind_at,reminded_at,
+                           device_id,deleted,content_hash
+                       ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)
                        ON CONFLICT(uid) DO UPDATE SET title=excluded.title, body=excluded.body,
                        done=excluded.done, last_updated=excluded.last_updated, due_at=excluded.due_at,
-                       priority=excluded.priority, device_id=excluded.device_id, deleted=excluded.deleted,
+                       priority=excluded.priority, remind_at=excluded.remind_at, reminded_at='',
+                       device_id=excluded.device_id, deleted=excluded.deleted,
                        content_hash=excluded.content_hash""",
-                    (uid, title, body, done, updated, due_at, priority, device, deleted, digest),
+                    (uid, title, body, done, updated, due_at, priority, remind_at, "", device, deleted, digest),
                 )
             else:
                 tags = str(record.get("tags") or "")[:2000]
