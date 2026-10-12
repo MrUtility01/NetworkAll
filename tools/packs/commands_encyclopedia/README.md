@@ -1,9 +1,23 @@
-# JSON دانشنامه دستورات
+# فصل ۶۸ — دانشنامه جامع دستورات
 
-- cisco_switching.json
-- cisco_routing.json
-- mikrotik.json
-- fortigate.json
-- issabel.json
-- powershell.json
-- ALL.json
+این پوشه شامل بسته‌های مرجع فرمان‌هاست. بسته‌ها جداگانه نگهداری می‌شوند تا از شناسه‌های تکراری و ورود دوبارهٔ محتوای تجمیع‌شده جلوگیری شود.
+
+| فایل | محتوا | رکوردها |
+|---|---|---:|
+| cisco_switching.json | Cisco IOS/IOS-XE Switching | ۱۳۲۳ فرمان در نسخهٔ موجود |
+| ../routing_deep/chapter_68_cisco_routing_1600.json | Cisco Routing، ACL و NAT | بستهٔ مستقل موجود؛ شمارش و تکراری‌ها باید جدا ممیزی شود |
+| mikrotik.json | MikroTik RouterOS 7 | ۲۰ درس فرمان‌محور موجود؛ نیازمند توسعه برای پوشش گسترده‌تر |
+| powershell.json | PowerShell، شبکه، ویندوز و Active Directory | ۷۱ |
+| windows_cmd.json | CMD و Batch | ۳۸ |
+| fortigate.json | FortiOS CLI | ۳۳ |
+| issabel.json | Issabel / Asterisk CLI | ۳۳ |
+
+## ادغام
+
+اسکریپت scripts/merge_content_packs_into_android.py بسته‌های مجاز در tools/packs/ را هنگام ساخت شاخص مشترک ویندوز و اندروید به فصل ۶۸ تبدیل می‌کند. هر بسته باید در tools/packs/pack_catalog.json ثبت باشد.
+
+عمداً فایل تجمیعی ALL.json تولید نمی‌شود: ادغام‌کننده همهٔ JSONهای پوشه را جداگانه می‌خواند؛ یک فایل ALL شامل نسخه‌های قبلی، رکورد و UID تکراری ایجاد می‌کند.
+
+## وضعیت کیفیت
+
+بسته‌های تازه با وضعیت review_required علامت‌گذاری شده‌اند. مثال‌ها و لابراتوارها برای تمرین ایمن طراحی شده‌اند اما هنوز روی همهٔ نسخه‌ها و دستگاه‌های واقعی اجرا و تأیید نشده‌اند. پیش از اجرای دستور تغییردهنده روی تجهیزات عملیاتی، نسخه، مجوز، backup، اثر تغییر و rollback را بررسی کنید.
