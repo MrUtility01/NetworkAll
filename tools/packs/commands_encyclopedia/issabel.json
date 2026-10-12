@@ -1,0 +1,2851 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkEncyclopedia",
+  "generated_on": "2026-10-12",
+  "purpose": "commands encyclopedia - issabel asterisk",
+  "vendor_pack": "issabel",
+  "chapter_order": 68,
+  "chapter_title_fa": "دانشنامه جامع دستورات",
+  "vendor": "issabel",
+  "platform": "Asterisk CLI on Issabel PBX",
+  "scope": [
+    {
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "title": "Issabel و Asterisk برای VoIP، PJSIP، Dialplan و عیب‌یابی تماس",
+      "topics": [
+        "Asterisk CLI",
+        "PJSIP",
+        "SIP",
+        "Dialplan",
+        "Queues",
+        "CDR",
+        "Logging",
+        "DAHDI/PRI",
+        "systemd logs"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "content_quality": {
+    "status": "review_required",
+    "lab_status": "designed_not_executed",
+    "note_fa": "ساختار JSON و مسیر آموزشی تولید شده؛ آزمایش دستورات باید روی نسخه/مدل هدف و با شواهد اجرا تکمیل شود."
+  },
+  "commands": [
+    {
+      "uid": "cmd:issabel:asterisk-cli:asterisk-rvvv",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "voice",
+      "subcategory": "asterisk-cli",
+      "level": "L0",
+      "title_fa": "اتصال امن به Asterisk CLI",
+      "title_en": "asterisk -rvvv",
+      "command": "asterisk -rvvv",
+      "aliases": [],
+      "syntax": "asterisk -rvvv",
+      "arguments": [],
+      "when_to_use_fa": "ورود تعاملی به CLI برای مشاهدهٔ وضعیت و اجرای فرمان‌های تشخیصی مجاز",
+      "prerequisites_fa": [
+        "دسترسی shell به سرور Issabel/Asterisk؛ sudo policy سازمان."
+      ],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: ورود تعاملی به CLI برای مشاهدهٔ وضعیت و اجرای فرمان‌های تشخیصی مجاز",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: asterisk -rvvv",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: با یک کاربر ادمین مجاز و پنجرهٔ نگهداری وصل شو؛ ابتدا version و uptime را ثبت کن."
+      ],
+      "sample_output": "Asterisk 20.x\nConnected to Asterisk CLI\n*CLI>",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core show version",
+        "core show uptime"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "با یک کاربر ادمین مجاز و پنجرهٔ نگهداری وصل شو؛ ابتدا version و uptime را ثبت کن.",
+      "security_notes_fa": "دسترسی CLI می‌تواند کنترل کامل تماس‌ها و سرویس VoIP بدهد؛ فقط حساب مدیریتی مجاز استفاده کند.",
+      "search_keywords": [
+        "asterisk -rvvv",
+        "asterisk -rvvv",
+        "اتصال امن به Asterisk CLI",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "voice",
+        "asterisk-cli"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `asterisk -rvvv` چه هدفی دارد؟",
+          "back": "ورود تعاملی به CLI برای مشاهدهٔ وضعیت و اجرای فرمان‌های تشخیصی مجاز"
+        },
+        {
+          "front": "قبل از استفاده عملی از «اتصال امن به Asterisk CLI» چه نکته‌ای را کنترل کنیم؟",
+          "back": "دسترسی shell به سرور Issabel/Asterisk؛ sudo policy سازمان."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q001",
+            "prompt": "برای این هدف، «ورود تعاملی به CLI برای مشاهدهٔ وضعیت و اجرای فرمان‌های تشخیصی مجاز»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "asterisk -rvvv",
+              "core show version",
+              "core show uptime",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q001",
+            "correct_index": 0,
+            "explain_fa": "`asterisk -rvvv` برای ورود تعاملی به CLI برای مشاهدهٔ وضعیت و اجرای فرمان‌های تشخیصی مجاز. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** با یک کاربر ادمین مجاز و پنجرهٔ نگهداری وصل شو؛ ابتدا version و uptime را ثبت کن.\n**هدف:** ورود تعاملی به CLI برای مشاهدهٔ وضعیت و اجرای فرمان‌های تشخیصی مجاز\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# اتصال امن به Asterisk CLI\n\n**دستور:** `asterisk -rvvv`\n\n**هدف عملیاتی:** ورود تعاملی به CLI برای مشاهدهٔ وضعیت و اجرای فرمان‌های تشخیصی مجاز\n\n## روش اجرا\n\n1. پیش‌نیاز را تأیید کن: دسترسی shell به سرور Issabel/Asterisk؛ sudo policy سازمان.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. با یک کاربر ادمین مجاز و پنجرهٔ نگهداری وصل شو؛ ابتدا version و uptime را ثبت کن.\n\n## نمونه خروجی\n\n```text\n\nAsterisk 20.x\nConnected to Asterisk CLI\n*CLI>\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nدسترسی CLI می‌تواند کنترل کامل تماس‌ها و سرویس VoIP بدهد؛ فقط حساب مدیریتی مجاز استفاده کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core show version`، `core show uptime`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:version:core-show-version",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "version",
+      "level": "L0",
+      "title_fa": "نسخه Asterisk",
+      "title_en": "core show version",
+      "command": "core show version",
+      "aliases": [],
+      "syntax": "core show version",
+      "arguments": [],
+      "when_to_use_fa": "ثبت نسخه برای هم‌خوانی CLI command و module behavior",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: ثبت نسخه برای هم‌خوانی CLI command و module behavior",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: core show version",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: نسخه را با Issabel release و package manager تطبیق بده؛ syntax قدیمی chan_sip ممکن است در نسخه جدید نباشد."
+      ],
+      "sample_output": "Asterisk 20.x.x built by ...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core show uptime",
+        "module show"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "نسخه را با Issabel release و package manager تطبیق بده؛ syntax قدیمی chan_sip ممکن است در نسخه جدید نباشد.",
+      "security_notes_fa": "نام build و نسخه برای inventory؛ secret را در این خروجی ثبت نکن.",
+      "search_keywords": [
+        "core show version",
+        "core show version",
+        "نسخه Asterisk",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "version"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `core show version` چه هدفی دارد؟",
+          "back": "ثبت نسخه برای هم‌خوانی CLI command و module behavior"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نسخه Asterisk» چه نکته‌ای را کنترل کنیم؟",
+          "back": "نام build و نسخه برای inventory؛ secret را در این خروجی ثبت نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q002",
+            "prompt": "برای این هدف، «ثبت نسخه برای هم‌خوانی CLI command و module behavior»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "core show version",
+              "core show uptime",
+              "module show",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q002",
+            "correct_index": 0,
+            "explain_fa": "`core show version` برای ثبت نسخه برای هم‌خوانی CLI command و module behavior. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** نسخه را با Issabel release و package manager تطبیق بده؛ syntax قدیمی chan_sip ممکن است در نسخه جدید نباشد.\n**هدف:** ثبت نسخه برای هم‌خوانی CLI command و module behavior\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نسخه Asterisk\n\n**دستور:** `core show version`\n\n**هدف عملیاتی:** ثبت نسخه برای هم‌خوانی CLI command و module behavior\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. نسخه را با Issabel release و package manager تطبیق بده؛ syntax قدیمی chan_sip ممکن است در نسخه جدید نباشد.\n\n## نمونه خروجی\n\n```text\n\nAsterisk 20.x.x built by ...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nنام build و نسخه برای inventory؛ secret را در این خروجی ثبت نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core show uptime`، `module show`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:runtime:core-show-uptime",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "runtime",
+      "level": "L0",
+      "title_fa": "Uptime و بار هسته",
+      "title_en": "core show uptime",
+      "command": "core show uptime",
+      "aliases": [],
+      "syntax": "core show uptime",
+      "arguments": [],
+      "when_to_use_fa": "دیدن زمان اجرای Asterisk و restartهای اخیر",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: دیدن زمان اجرای Asterisk و restartهای اخیر",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: core show uptime",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: uptime را با زمان قطعی گزارش‌شده و service journal مقایسه کن."
+      ],
+      "sample_output": "System uptime: 3 hours, 12 minutes\nLast reload: ...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core show version",
+        "core show settings"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "uptime را با زمان قطعی گزارش‌شده و service journal مقایسه کن.",
+      "security_notes_fa": "restart شدن Asterisk ممکن است تمام تماس‌ها را قطع کند؛ این فرمان مشاهده‌ای است.",
+      "search_keywords": [
+        "core show uptime",
+        "core show uptime",
+        "Uptime و بار هسته",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "runtime"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `core show uptime` چه هدفی دارد؟",
+          "back": "دیدن زمان اجرای Asterisk و restartهای اخیر"
+        },
+        {
+          "front": "قبل از استفاده عملی از «Uptime و بار هسته» چه نکته‌ای را کنترل کنیم؟",
+          "back": "restart شدن Asterisk ممکن است تمام تماس‌ها را قطع کند؛ این فرمان مشاهده‌ای است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q003",
+            "prompt": "برای این هدف، «دیدن زمان اجرای Asterisk و restartهای اخیر»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "core show uptime",
+              "core show version",
+              "core show settings",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q003",
+            "correct_index": 0,
+            "explain_fa": "`core show uptime` برای دیدن زمان اجرای Asterisk و restartهای اخیر. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** uptime را با زمان قطعی گزارش‌شده و service journal مقایسه کن.\n**هدف:** دیدن زمان اجرای Asterisk و restartهای اخیر\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# Uptime و بار هسته\n\n**دستور:** `core show uptime`\n\n**هدف عملیاتی:** دیدن زمان اجرای Asterisk و restartهای اخیر\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. uptime را با زمان قطعی گزارش‌شده و service journal مقایسه کن.\n\n## نمونه خروجی\n\n```text\n\nSystem uptime: 3 hours, 12 minutes\nLast reload: ...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nrestart شدن Asterisk ممکن است تمام تماس‌ها را قطع کند؛ این فرمان مشاهده‌ای است. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core show version`، `core show settings`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:channels:core-show-channels",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "channels",
+      "level": "L1",
+      "title_fa": "نمایش تماس‌های فعال",
+      "title_en": "core show channels",
+      "command": "core show channels",
+      "aliases": [],
+      "syntax": "core show channels",
+      "arguments": [],
+      "when_to_use_fa": "بررسی کانال‌های فعال، تعداد تماس و وضعیت PBX",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی کانال‌های فعال، تعداد تماس و وضعیت PBX",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: core show channels",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: تعداد تماس‌ها را با CDR و SIP/PJSIP channel count مقایسه کن؛ channel orphan را با لاگ تحلیل کن."
+      ],
+      "sample_output": "Channel              Location             State\nPJSIP/1001-00000001   ...                  Up\n1 active channel",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core show channels concise",
+        "core show channel"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "تعداد تماس‌ها را با CDR و SIP/PJSIP channel count مقایسه کن؛ channel orphan را با لاگ تحلیل کن.",
+      "security_notes_fa": "شماره داخلی، trunk و مقصد تماس دادهٔ حساس هستند؛ خروجی را ناشناس‌سازی کن.",
+      "search_keywords": [
+        "core show channels",
+        "core show channels",
+        "نمایش تماس‌های فعال",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "channels"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `core show channels` چه هدفی دارد؟",
+          "back": "بررسی کانال‌های فعال، تعداد تماس و وضعیت PBX"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش تماس‌های فعال» چه نکته‌ای را کنترل کنیم؟",
+          "back": "شماره داخلی، trunk و مقصد تماس دادهٔ حساس هستند؛ خروجی را ناشناس‌سازی کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q004",
+            "prompt": "برای این هدف، «بررسی کانال‌های فعال، تعداد تماس و وضعیت PBX»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "core show channels",
+              "core show channels concise",
+              "core show channel",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q004",
+            "correct_index": 0,
+            "explain_fa": "`core show channels` برای بررسی کانال‌های فعال، تعداد تماس و وضعیت PBX. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** تعداد تماس‌ها را با CDR و SIP/PJSIP channel count مقایسه کن؛ channel orphan را با لاگ تحلیل کن.\n**هدف:** بررسی کانال‌های فعال، تعداد تماس و وضعیت PBX\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش تماس‌های فعال\n\n**دستور:** `core show channels`\n\n**هدف عملیاتی:** بررسی کانال‌های فعال، تعداد تماس و وضعیت PBX\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. تعداد تماس‌ها را با CDR و SIP/PJSIP channel count مقایسه کن؛ channel orphan را با لاگ تحلیل کن.\n\n## نمونه خروجی\n\n```text\n\nChannel              Location             State\nPJSIP/1001-00000001   ...                  Up\n1 active channel\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nشماره داخلی، trunk و مقصد تماس دادهٔ حساس هستند؛ خروجی را ناشناس‌سازی کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core show channels concise`، `core show channel`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:channels:core-show-channels-concise",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "channels",
+      "level": "L2",
+      "title_fa": "نمایش تماس‌ها به شکل قابل پردازش",
+      "title_en": "core show channels concise",
+      "command": "core show channels concise",
+      "aliases": [],
+      "syntax": "core show channels concise",
+      "arguments": [],
+      "when_to_use_fa": "خروجی فشرده کانال‌ها برای تحلیل اسکریپتی در محیط مجاز",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: خروجی فشرده کانال‌ها برای تحلیل اسکریپتی در محیط مجاز",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: core show channels concise",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: در لابراتوار، یک تماس تست بساز و کانال را قبل/حین/بعد از پایان مقایسه کن."
+      ],
+      "sample_output": "PJSIP/1001-00000001!context!exten!priority!Up!application!data",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core show channels",
+        "core show channel"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "در لابراتوار، یک تماس تست بساز و کانال را قبل/حین/بعد از پایان مقایسه کن.",
+      "security_notes_fa": "خروجی شامل شماره داخلی و مسیر تماس است؛ دسترسی محدود داشته باشد.",
+      "search_keywords": [
+        "core show channels concise",
+        "core show channels concise",
+        "نمایش تماس‌ها به شکل قابل پردازش",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "channels"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `core show channels concise` چه هدفی دارد؟",
+          "back": "خروجی فشرده کانال‌ها برای تحلیل اسکریپتی در محیط مجاز"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش تماس‌ها به شکل قابل پردازش» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خروجی شامل شماره داخلی و مسیر تماس است؛ دسترسی محدود داشته باشد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q005",
+            "prompt": "برای این هدف، «خروجی فشرده کانال‌ها برای تحلیل اسکریپتی در محیط مجاز»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "core show channels concise",
+              "core show channels",
+              "core show channel",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q005",
+            "correct_index": 0,
+            "explain_fa": "`core show channels concise` برای خروجی فشرده کانال‌ها برای تحلیل اسکریپتی در محیط مجاز. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** در لابراتوار، یک تماس تست بساز و کانال را قبل/حین/بعد از پایان مقایسه کن.\n**هدف:** خروجی فشرده کانال‌ها برای تحلیل اسکریپتی در محیط مجاز\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش تماس‌ها به شکل قابل پردازش\n\n**دستور:** `core show channels concise`\n\n**هدف عملیاتی:** خروجی فشرده کانال‌ها برای تحلیل اسکریپتی در محیط مجاز\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. در لابراتوار، یک تماس تست بساز و کانال را قبل/حین/بعد از پایان مقایسه کن.\n\n## نمونه خروجی\n\n```text\n\nPJSIP/1001-00000001!context!exten!priority!Up!application!data\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخروجی شامل شماره داخلی و مسیر تماس است؛ دسترسی محدود داشته باشد. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core show channels`، `core show channel`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:channel-detail:core-show-channel",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "troubleshoot",
+      "subcategory": "channel-detail",
+      "level": "L2",
+      "title_fa": "مشاهده یک Channel مشخص",
+      "title_en": "core show channel",
+      "command": "core show channel PJSIP/1001-00000001",
+      "aliases": [],
+      "syntax": "core show channel PJSIP/1001-00000001",
+      "arguments": [],
+      "when_to_use_fa": "بررسی bridge, application, codec و channel state یک تماس",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی bridge, application, codec و channel state یک تماس",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: core show channel PJSIP/1001-00000001",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: فقط channel جاری آزمایش را بررسی کن؛ نام channel بعد از پایان تماس دیگر معتبر نیست."
+      ],
+      "sample_output": "Channel: PJSIP/1001-00000001\nState: Up\nNativeFormats: (ulaw)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core show channels",
+        "pjsip show channelstats"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "فقط channel جاری آزمایش را بررسی کن؛ نام channel بعد از پایان تماس دیگر معتبر نیست.",
+      "security_notes_fa": "اطلاعات تماس و caller ID محرمانه است.",
+      "search_keywords": [
+        "core show channel",
+        "core show channel PJSIP/1001-00000001",
+        "مشاهده یک Channel مشخص",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "troubleshoot",
+        "channel-detail"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `core show channel PJSIP/1001-00000001` چه هدفی دارد؟",
+          "back": "بررسی bridge, application, codec و channel state یک تماس"
+        },
+        {
+          "front": "قبل از استفاده عملی از «مشاهده یک Channel مشخص» چه نکته‌ای را کنترل کنیم؟",
+          "back": "اطلاعات تماس و caller ID محرمانه است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q006",
+            "prompt": "برای این هدف، «بررسی bridge, application, codec و channel state یک تماس»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "core show channel PJSIP/1001-00000001",
+              "core show channels",
+              "pjsip show channelstats",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q006",
+            "correct_index": 0,
+            "explain_fa": "`core show channel PJSIP/1001-00000001` برای بررسی bridge, application, codec و channel state یک تماس. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** فقط channel جاری آزمایش را بررسی کن؛ نام channel بعد از پایان تماس دیگر معتبر نیست.\n**هدف:** بررسی bridge, application, codec و channel state یک تماس\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# مشاهده یک Channel مشخص\n\n**دستور:** `core show channel PJSIP/1001-00000001`\n\n**هدف عملیاتی:** بررسی bridge, application, codec و channel state یک تماس\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. فقط channel جاری آزمایش را بررسی کن؛ نام channel بعد از پایان تماس دیگر معتبر نیست.\n\n## نمونه خروجی\n\n```text\n\nChannel: PJSIP/1001-00000001\nState: Up\nNativeFormats: (ulaw)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاطلاعات تماس و caller ID محرمانه است. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core show channels`، `pjsip show channelstats`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:pjsip-endpoints:pjsip-show-endpoints",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "pjsip-endpoints",
+      "level": "L1",
+      "title_fa": "فهرست Endpointهای PJSIP",
+      "title_en": "pjsip show endpoints",
+      "command": "pjsip show endpoints",
+      "aliases": [],
+      "syntax": "pjsip show endpoints",
+      "arguments": [],
+      "when_to_use_fa": "بررسی وضعیت endpointها و identify/config overview",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی وضعیت endpointها و identify/config overview",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: pjsip show endpoints",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: endpoint configuration، AOR contact و registration را جدا بررسی کن؛ Not in use لزوماً خطا نیست."
+      ],
+      "sample_output": "Endpoint: 1001\nAor: 1001\nAuth: 1001\nStatus: Not in use",
+      "output_fields_fa": [],
+      "related_commands": [
+        "pjsip show endpoint",
+        "pjsip show contacts"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "endpoint configuration، AOR contact و registration را جدا بررسی کن؛ Not in use لزوماً خطا نیست.",
+      "security_notes_fa": "نام endpoint و داخلی‌ها را در public log mask کن.",
+      "search_keywords": [
+        "pjsip show endpoints",
+        "pjsip show endpoints",
+        "فهرست Endpointهای PJSIP",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "pjsip-endpoints"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `pjsip show endpoints` چه هدفی دارد؟",
+          "back": "بررسی وضعیت endpointها و identify/config overview"
+        },
+        {
+          "front": "قبل از استفاده عملی از «فهرست Endpointهای PJSIP» چه نکته‌ای را کنترل کنیم؟",
+          "back": "نام endpoint و داخلی‌ها را در public log mask کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q007",
+            "prompt": "برای این هدف، «بررسی وضعیت endpointها و identify/config overview»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "pjsip show endpoints",
+              "pjsip show endpoint",
+              "pjsip show contacts",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q007",
+            "correct_index": 0,
+            "explain_fa": "`pjsip show endpoints` برای بررسی وضعیت endpointها و identify/config overview. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** endpoint configuration، AOR contact و registration را جدا بررسی کن؛ Not in use لزوماً خطا نیست.\n**هدف:** بررسی وضعیت endpointها و identify/config overview\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# فهرست Endpointهای PJSIP\n\n**دستور:** `pjsip show endpoints`\n\n**هدف عملیاتی:** بررسی وضعیت endpointها و identify/config overview\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. endpoint configuration، AOR contact و registration را جدا بررسی کن؛ Not in use لزوماً خطا نیست.\n\n## نمونه خروجی\n\n```text\n\nEndpoint: 1001\nAor: 1001\nAuth: 1001\nStatus: Not in use\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nنام endpoint و داخلی‌ها را در public log mask کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`pjsip show endpoint`، `pjsip show contacts`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:pjsip-endpoints:pjsip-show-endpoint",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "troubleshoot",
+      "subcategory": "pjsip-endpoints",
+      "level": "L2",
+      "title_fa": "جزئیات یک PJSIP Endpoint",
+      "title_en": "pjsip show endpoint",
+      "command": "pjsip show endpoint 1001",
+      "aliases": [],
+      "syntax": "pjsip show endpoint 1001",
+      "arguments": [],
+      "when_to_use_fa": "بررسی auth, transport, codecs, context و endpoint options",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی auth, transport, codecs, context و endpoint options",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: pjsip show endpoint 1001",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: context, auth, aor و codecهای negotiated را با پروفایل extension و لاگ REGISTER تطبیق بده."
+      ],
+      "sample_output": "Endpoint: 1001\nContext: from-internal\nDisallow: all\nAllow: (ulaw,alaw)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "pjsip show endpoints",
+        "pjsip show aors",
+        "pjsip show auths"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "context, auth, aor و codecهای negotiated را با پروفایل extension و لاگ REGISTER تطبیق بده.",
+      "security_notes_fa": "خروجی می‌تواند context داخلی و codec policy را افشا کند؛ auth secret نباید چاپ یا share شود.",
+      "search_keywords": [
+        "pjsip show endpoint",
+        "pjsip show endpoint 1001",
+        "جزئیات یک PJSIP Endpoint",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "troubleshoot",
+        "pjsip-endpoints"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `pjsip show endpoint 1001` چه هدفی دارد؟",
+          "back": "بررسی auth, transport, codecs, context و endpoint options"
+        },
+        {
+          "front": "قبل از استفاده عملی از «جزئیات یک PJSIP Endpoint» چه نکته‌ای را کنترل کنیم؟",
+          "back": "خروجی می‌تواند context داخلی و codec policy را افشا کند؛ auth secret نباید چاپ یا share شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q008",
+            "prompt": "برای این هدف، «بررسی auth, transport, codecs, context و endpoint options»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "pjsip show endpoint 1001",
+              "pjsip show endpoints",
+              "pjsip show aors",
+              "pjsip show auths"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q008",
+            "correct_index": 0,
+            "explain_fa": "`pjsip show endpoint 1001` برای بررسی auth, transport, codecs, context و endpoint options. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** context, auth, aor و codecهای negotiated را با پروفایل extension و لاگ REGISTER تطبیق بده.\n**هدف:** بررسی auth, transport, codecs, context و endpoint options\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# جزئیات یک PJSIP Endpoint\n\n**دستور:** `pjsip show endpoint 1001`\n\n**هدف عملیاتی:** بررسی auth, transport, codecs, context و endpoint options\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. context, auth, aor و codecهای negotiated را با پروفایل extension و لاگ REGISTER تطبیق بده.\n\n## نمونه خروجی\n\n```text\n\nEndpoint: 1001\nContext: from-internal\nDisallow: all\nAllow: (ulaw,alaw)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nخروجی می‌تواند context داخلی و codec policy را افشا کند؛ auth secret نباید چاپ یا share شود. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`pjsip show endpoints`، `pjsip show aors`، `pjsip show auths`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:pjsip-registration:pjsip-show-contacts",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "pjsip-registration",
+      "level": "L1",
+      "title_fa": "وضعیت Contactهای PJSIP",
+      "title_en": "pjsip show contacts",
+      "command": "pjsip show contacts",
+      "aliases": [],
+      "syntax": "pjsip show contacts",
+      "arguments": [],
+      "when_to_use_fa": "مشاهده contact URI، status و RTT ثبت‌شده برای endpointها",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهده contact URI، status و RTT ثبت‌شده برای endpointها",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: pjsip show contacts",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: Contact را با IP تلفن، VLAN Voice و DHCP lease تطبیق بده؛ در صورت Unavail packet capture محدود بگیر."
+      ],
+      "sample_output": "Contact: 1001/sip:1001@10.20.30.25:5060\nStatus: Avail\nRTT: 12.3 ms",
+      "output_fields_fa": [],
+      "related_commands": [
+        "pjsip show endpoints",
+        "pjsip show registrations"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "Contact را با IP تلفن، VLAN Voice و DHCP lease تطبیق بده؛ در صورت Unavail packet capture محدود بگیر.",
+      "security_notes_fa": "آدرس تلفن و داخلی اطلاعات حساس‌اند؛ در خروجی عمومی mask کن.",
+      "search_keywords": [
+        "pjsip show contacts",
+        "pjsip show contacts",
+        "وضعیت Contactهای PJSIP",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "pjsip-registration"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `pjsip show contacts` چه هدفی دارد؟",
+          "back": "مشاهده contact URI، status و RTT ثبت‌شده برای endpointها"
+        },
+        {
+          "front": "قبل از استفاده عملی از «وضعیت Contactهای PJSIP» چه نکته‌ای را کنترل کنیم؟",
+          "back": "آدرس تلفن و داخلی اطلاعات حساس‌اند؛ در خروجی عمومی mask کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q009",
+            "prompt": "برای این هدف، «مشاهده contact URI، status و RTT ثبت‌شده برای endpointها»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "pjsip show contacts",
+              "pjsip show endpoints",
+              "pjsip show registrations",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q009",
+            "correct_index": 0,
+            "explain_fa": "`pjsip show contacts` برای مشاهده contact URI، status و RTT ثبت‌شده برای endpointها. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** Contact را با IP تلفن، VLAN Voice و DHCP lease تطبیق بده؛ در صورت Unavail packet capture محدود بگیر.\n**هدف:** مشاهده contact URI، status و RTT ثبت‌شده برای endpointها\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# وضعیت Contactهای PJSIP\n\n**دستور:** `pjsip show contacts`\n\n**هدف عملیاتی:** مشاهده contact URI، status و RTT ثبت‌شده برای endpointها\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. Contact را با IP تلفن، VLAN Voice و DHCP lease تطبیق بده؛ در صورت Unavail packet capture محدود بگیر.\n\n## نمونه خروجی\n\n```text\n\nContact: 1001/sip:1001@10.20.30.25:5060\nStatus: Avail\nRTT: 12.3 ms\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nآدرس تلفن و داخلی اطلاعات حساس‌اند؛ در خروجی عمومی mask کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`pjsip show endpoints`، `pjsip show registrations`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:sip-trunk:pjsip-show-registrations",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "troubleshoot",
+      "subcategory": "sip-trunk",
+      "level": "L2",
+      "title_fa": "وضعیت Registrationهای trunk",
+      "title_en": "pjsip show registrations",
+      "command": "pjsip show registrations",
+      "aliases": [],
+      "syntax": "pjsip show registrations",
+      "arguments": [],
+      "when_to_use_fa": "بررسی registration state و server URI برای trunkها",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی registration state و server URI برای trunkها",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: pjsip show registrations",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: در fail شدن registration، DNS، NTP، credential reference و SIP response code را مرحله‌ای بررسی کن."
+      ],
+      "sample_output": "Server URI: sip:provider.example\nClient URI: sip:lab@example\nStatus: Registered",
+      "output_fields_fa": [],
+      "related_commands": [
+        "pjsip show transports",
+        "pjsip show endpoint"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "در fail شدن registration، DNS، NTP، credential reference و SIP response code را مرحله‌ای بررسی کن.",
+      "security_notes_fa": "secret trunk را در CLI debug یا گزارش ticket چاپ نکن.",
+      "search_keywords": [
+        "pjsip show registrations",
+        "pjsip show registrations",
+        "وضعیت Registrationهای trunk",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "troubleshoot",
+        "sip-trunk"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `pjsip show registrations` چه هدفی دارد؟",
+          "back": "بررسی registration state و server URI برای trunkها"
+        },
+        {
+          "front": "قبل از استفاده عملی از «وضعیت Registrationهای trunk» چه نکته‌ای را کنترل کنیم؟",
+          "back": "secret trunk را در CLI debug یا گزارش ticket چاپ نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q010",
+            "prompt": "برای این هدف، «بررسی registration state و server URI برای trunkها»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "pjsip show registrations",
+              "pjsip show transports",
+              "pjsip show endpoint",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q010",
+            "correct_index": 0,
+            "explain_fa": "`pjsip show registrations` برای بررسی registration state و server URI برای trunkها. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** در fail شدن registration، DNS، NTP، credential reference و SIP response code را مرحله‌ای بررسی کن.\n**هدف:** بررسی registration state و server URI برای trunkها\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# وضعیت Registrationهای trunk\n\n**دستور:** `pjsip show registrations`\n\n**هدف عملیاتی:** بررسی registration state و server URI برای trunkها\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. در fail شدن registration، DNS، NTP، credential reference و SIP response code را مرحله‌ای بررسی کن.\n\n## نمونه خروجی\n\n```text\n\nServer URI: sip:provider.example\nClient URI: sip:lab@example\nStatus: Registered\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nsecret trunk را در CLI debug یا گزارش ticket چاپ نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`pjsip show transports`، `pjsip show endpoint`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:pjsip-transport:pjsip-show-transports",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "pjsip-transport",
+      "level": "L2",
+      "title_fa": "فهرست Transportهای PJSIP",
+      "title_en": "pjsip show transports",
+      "command": "pjsip show transports",
+      "aliases": [],
+      "syntax": "pjsip show transports",
+      "arguments": [],
+      "when_to_use_fa": "بررسی UDP/TCP/TLS listen transport و bind address",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی UDP/TCP/TLS listen transport و bind address",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: pjsip show transports",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: bind address، firewall و SIP ALG در مسیر را با تنظیمات شبکه مقایسه کن؛ برای TLS certificate details را جدا بررسی کن."
+      ],
+      "sample_output": "Transport: transport-udp\nProtocol: udp\nBind: 0.0.0.0:5060",
+      "output_fields_fa": [],
+      "related_commands": [
+        "pjsip show endpoints",
+        "core show settings"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "bind address، firewall و SIP ALG در مسیر را با تنظیمات شبکه مقایسه کن؛ برای TLS certificate details را جدا بررسی کن.",
+      "security_notes_fa": "Bind به همه interfaceها می‌تواند exposure ایجاد کند؛ طراحی و ACL را بررسی کن.",
+      "search_keywords": [
+        "pjsip show transports",
+        "pjsip show transports",
+        "فهرست Transportهای PJSIP",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "pjsip-transport"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `pjsip show transports` چه هدفی دارد؟",
+          "back": "بررسی UDP/TCP/TLS listen transport و bind address"
+        },
+        {
+          "front": "قبل از استفاده عملی از «فهرست Transportهای PJSIP» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Bind به همه interfaceها می‌تواند exposure ایجاد کند؛ طراحی و ACL را بررسی کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q011",
+            "prompt": "برای این هدف، «بررسی UDP/TCP/TLS listen transport و bind address»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "pjsip show transports",
+              "pjsip show endpoints",
+              "core show settings",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q011",
+            "correct_index": 0,
+            "explain_fa": "`pjsip show transports` برای بررسی UDP/TCP/TLS listen transport و bind address. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** bind address، firewall و SIP ALG در مسیر را با تنظیمات شبکه مقایسه کن؛ برای TLS certificate details را جدا بررسی کن.\n**هدف:** بررسی UDP/TCP/TLS listen transport و bind address\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# فهرست Transportهای PJSIP\n\n**دستور:** `pjsip show transports`\n\n**هدف عملیاتی:** بررسی UDP/TCP/TLS listen transport و bind address\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. bind address، firewall و SIP ALG در مسیر را با تنظیمات شبکه مقایسه کن؛ برای TLS certificate details را جدا بررسی کن.\n\n## نمونه خروجی\n\n```text\n\nTransport: transport-udp\nProtocol: udp\nBind: 0.0.0.0:5060\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nBind به همه interfaceها می‌تواند exposure ایجاد کند؛ طراحی و ACL را بررسی کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`pjsip show endpoints`، `core show settings`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:sip-debug:pjsip-set-logger-on",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "troubleshoot",
+      "subcategory": "sip-debug",
+      "level": "L3",
+      "title_fa": "فعال‌سازی PJSIP Logger محدود",
+      "title_en": "pjsip set logger on",
+      "command": "pjsip set logger on",
+      "aliases": [],
+      "syntax": "pjsip set logger on",
+      "arguments": [],
+      "when_to_use_fa": "فعال‌کردن SIP message logger برای یک بازهٔ کوتاه تست",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: فعال‌کردن SIP message logger برای یک بازهٔ کوتاه تست",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: pjsip set logger on",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: فقط روی lab یا در پنجرهٔ مصوب فعال کن؛ چند پیام را capture و سپس با `pjsip set logger off` خاموش کن."
+      ],
+      "sample_output": "PJSIP Logging enabled",
+      "output_fields_fa": [],
+      "related_commands": [
+        "pjsip set logger off",
+        "logger show channels"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "فقط روی lab یا در پنجرهٔ مصوب فعال کن؛ چند پیام را capture و سپس با `pjsip set logger off` خاموش کن.",
+      "security_notes_fa": "SIP log می‌تواند شماره‌ها، headerها و گاهی دادهٔ حساس session را آشکار کند؛ همیشه خاموش‌کردن را در checklist قرار بده.",
+      "search_keywords": [
+        "pjsip set logger on",
+        "pjsip set logger on",
+        "فعال‌سازی PJSIP Logger محدود",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "troubleshoot",
+        "sip-debug"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `pjsip set logger on` چه هدفی دارد؟",
+          "back": "فعال‌کردن SIP message logger برای یک بازهٔ کوتاه تست"
+        },
+        {
+          "front": "قبل از استفاده عملی از «فعال‌سازی PJSIP Logger محدود» چه نکته‌ای را کنترل کنیم؟",
+          "back": "SIP log می‌تواند شماره‌ها، headerها و گاهی دادهٔ حساس session را آشکار کند؛ همیشه خاموش‌کردن را در checklist قرار بده."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q012",
+            "prompt": "برای این هدف، «فعال‌کردن SIP message logger برای یک بازهٔ کوتاه تست»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "pjsip set logger on",
+              "pjsip set logger off",
+              "logger show channels",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q012",
+            "correct_index": 0,
+            "explain_fa": "`pjsip set logger on` برای فعال‌کردن SIP message logger برای یک بازهٔ کوتاه تست. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** فقط روی lab یا در پنجرهٔ مصوب فعال کن؛ چند پیام را capture و سپس با `pjsip set logger off` خاموش کن.\n**هدف:** فعال‌کردن SIP message logger برای یک بازهٔ کوتاه تست\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# فعال‌سازی PJSIP Logger محدود\n\n**دستور:** `pjsip set logger on`\n\n**هدف عملیاتی:** فعال‌کردن SIP message logger برای یک بازهٔ کوتاه تست\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. فقط روی lab یا در پنجرهٔ مصوب فعال کن؛ چند پیام را capture و سپس با `pjsip set logger off` خاموش کن.\n\n## نمونه خروجی\n\n```text\n\nPJSIP Logging enabled\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nSIP log می‌تواند شماره‌ها، headerها و گاهی دادهٔ حساس session را آشکار کند؛ همیشه خاموش‌کردن را در checklist قرار بده. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`pjsip set logger off`، `logger show channels`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:sip-debug:pjsip-set-logger-off",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "troubleshoot",
+      "subcategory": "sip-debug",
+      "level": "L1",
+      "title_fa": "غیرفعال کردن PJSIP Logger",
+      "title_en": "pjsip set logger off",
+      "command": "pjsip set logger off",
+      "aliases": [],
+      "syntax": "pjsip set logger off",
+      "arguments": [],
+      "when_to_use_fa": "خاموش‌کردن ثبت SIP پیام‌ها پس از پایان عیب‌یابی",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: خاموش‌کردن ثبت SIP پیام‌ها پس از پایان عیب‌یابی",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: pjsip set logger off",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: پس از capture تست اجرا و با یک تماس آزمایشی بررسی کن که SIP پیام‌ها دیگر dump نشوند."
+      ],
+      "sample_output": "PJSIP Logging disabled",
+      "output_fields_fa": [],
+      "related_commands": [
+        "pjsip set logger on",
+        "logger show channels"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "پس از capture تست اجرا و با یک تماس آزمایشی بررسی کن که SIP پیام‌ها دیگر dump نشوند.",
+      "security_notes_fa": "جاگذاشتن logger فعال در PBX پرترافیک risk اطلاعاتی و performance دارد.",
+      "search_keywords": [
+        "pjsip set logger off",
+        "pjsip set logger off",
+        "غیرفعال کردن PJSIP Logger",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "troubleshoot",
+        "sip-debug"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `pjsip set logger off` چه هدفی دارد؟",
+          "back": "خاموش‌کردن ثبت SIP پیام‌ها پس از پایان عیب‌یابی"
+        },
+        {
+          "front": "قبل از استفاده عملی از «غیرفعال کردن PJSIP Logger» چه نکته‌ای را کنترل کنیم؟",
+          "back": "جاگذاشتن logger فعال در PBX پرترافیک risk اطلاعاتی و performance دارد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q013",
+            "prompt": "برای این هدف، «خاموش‌کردن ثبت SIP پیام‌ها پس از پایان عیب‌یابی»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "pjsip set logger off",
+              "pjsip set logger on",
+              "logger show channels",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q013",
+            "correct_index": 0,
+            "explain_fa": "`pjsip set logger off` برای خاموش‌کردن ثبت SIP پیام‌ها پس از پایان عیب‌یابی. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** پس از capture تست اجرا و با یک تماس آزمایشی بررسی کن که SIP پیام‌ها دیگر dump نشوند.\n**هدف:** خاموش‌کردن ثبت SIP پیام‌ها پس از پایان عیب‌یابی\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# غیرفعال کردن PJSIP Logger\n\n**دستور:** `pjsip set logger off`\n\n**هدف عملیاتی:** خاموش‌کردن ثبت SIP پیام‌ها پس از پایان عیب‌یابی\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. پس از capture تست اجرا و با یک تماس آزمایشی بررسی کن که SIP پیام‌ها دیگر dump نشوند.\n\n## نمونه خروجی\n\n```text\n\nPJSIP Logging disabled\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nجاگذاشتن logger فعال در PBX پرترافیک risk اطلاعاتی و performance دارد. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`pjsip set logger on`، `logger show channels`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:dialplan:dialplan-show",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "dialplan",
+      "level": "L1",
+      "title_fa": "نمایش Dialplan",
+      "title_en": "dialplan show",
+      "command": "dialplan show",
+      "aliases": [],
+      "syntax": "dialplan show",
+      "arguments": [],
+      "when_to_use_fa": "مرور contextها، extensionها و priorityهای لودشده",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مرور contextها، extensionها و priorityهای لودشده",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: dialplan show",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: dialplan فعال را با تنظیمات Issabel GUI و context ورودی trunk تطبیق بده."
+      ],
+      "sample_output": "[ Context 'from-internal' created by ... ]\n'_XXX' => 1. Dial(...)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "dialplan show from-internal",
+        "core show settings"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "dialplan فعال را با تنظیمات Issabel GUI و context ورودی trunk تطبیق بده.",
+      "security_notes_fa": "Dialplan شامل شماره داخلی و مقصدهای تماس است؛ export را محدود کن.",
+      "search_keywords": [
+        "dialplan show",
+        "dialplan show",
+        "نمایش Dialplan",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "dialplan"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `dialplan show` چه هدفی دارد؟",
+          "back": "مرور contextها، extensionها و priorityهای لودشده"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش Dialplan» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Dialplan شامل شماره داخلی و مقصدهای تماس است؛ export را محدود کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q014",
+            "prompt": "برای این هدف، «مرور contextها، extensionها و priorityهای لودشده»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "dialplan show",
+              "dialplan show from-internal",
+              "core show settings",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q014",
+            "correct_index": 0,
+            "explain_fa": "`dialplan show` برای مرور contextها، extensionها و priorityهای لودشده. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** dialplan فعال را با تنظیمات Issabel GUI و context ورودی trunk تطبیق بده.\n**هدف:** مرور contextها، extensionها و priorityهای لودشده\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش Dialplan\n\n**دستور:** `dialplan show`\n\n**هدف عملیاتی:** مرور contextها، extensionها و priorityهای لودشده\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. dialplan فعال را با تنظیمات Issabel GUI و context ورودی trunk تطبیق بده.\n\n## نمونه خروجی\n\n```text\n\n[ Context 'from-internal' created by ... ]\n'_XXX' => 1. Dial(...)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nDialplan شامل شماره داخلی و مقصدهای تماس است؛ export را محدود کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`dialplan show from-internal`، `core show settings`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:dialplan:dialplan-show-from-internal",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "troubleshoot",
+      "subcategory": "dialplan",
+      "level": "L2",
+      "title_fa": "نمایش Context داخلی مشخص",
+      "title_en": "dialplan show from-internal",
+      "command": "dialplan show from-internal",
+      "aliases": [],
+      "syntax": "dialplan show from-internal",
+      "arguments": [],
+      "when_to_use_fa": "بررسی مسیر تماس‌های داخلی و match شدن patternها",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی مسیر تماس‌های داخلی و match شدن patternها",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: dialplan show from-internal",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: با داخلی آزمایشگاهی و شماره تست، مسیر انتخاب‌شده را از context تا application دنبال کن؛ از تماس اضطراری واقعی استفاده نکن."
+      ],
+      "sample_output": "[ Context 'from-internal' ... ]\n's_XXX' => ...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "dialplan show",
+        "core show channels"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "با داخلی آزمایشگاهی و شماره تست، مسیر انتخاب‌شده را از context تا application دنبال کن؛ از تماس اضطراری واقعی استفاده نکن.",
+      "security_notes_fa": "تغییر Dialplan می‌تواند تماس اضطراری، billing یا دسترسی بین‌شعبه را مختل کند.",
+      "search_keywords": [
+        "dialplan show from-internal",
+        "dialplan show from-internal",
+        "نمایش Context داخلی مشخص",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "troubleshoot",
+        "dialplan"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `dialplan show from-internal` چه هدفی دارد؟",
+          "back": "بررسی مسیر تماس‌های داخلی و match شدن patternها"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش Context داخلی مشخص» چه نکته‌ای را کنترل کنیم؟",
+          "back": "تغییر Dialplan می‌تواند تماس اضطراری، billing یا دسترسی بین‌شعبه را مختل کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q015",
+            "prompt": "برای این هدف، «بررسی مسیر تماس‌های داخلی و match شدن patternها»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "dialplan show from-internal",
+              "dialplan show",
+              "core show channels",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q015",
+            "correct_index": 0,
+            "explain_fa": "`dialplan show from-internal` برای بررسی مسیر تماس‌های داخلی و match شدن patternها. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** با داخلی آزمایشگاهی و شماره تست، مسیر انتخاب‌شده را از context تا application دنبال کن؛ از تماس اضطراری واقعی استفاده نکن.\n**هدف:** بررسی مسیر تماس‌های داخلی و match شدن patternها\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش Context داخلی مشخص\n\n**دستور:** `dialplan show from-internal`\n\n**هدف عملیاتی:** بررسی مسیر تماس‌های داخلی و match شدن patternها\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. با داخلی آزمایشگاهی و شماره تست، مسیر انتخاب‌شده را از context تا application دنبال کن؛ از تماس اضطراری واقعی استفاده نکن.\n\n## نمونه خروجی\n\n```text\n\n[ Context 'from-internal' ... ]\n's_XXX' => ...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nتغییر Dialplan می‌تواند تماس اضطراری، billing یا دسترسی بین‌شعبه را مختل کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`dialplan show`، `core show channels`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:modules:module-show",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "modules",
+      "level": "L1",
+      "title_fa": "فهرست Moduleهای لودشده",
+      "title_en": "module show",
+      "command": "module show like res_pjsip",
+      "aliases": [],
+      "syntax": "module show like res_pjsip",
+      "arguments": [],
+      "when_to_use_fa": "بررسی اینکه module مورد نیاز واقعاً load شده است",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی اینکه module مورد نیاز واقعاً load شده است",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: module show like res_pjsip",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: وضعیت module را با version و package dependencies تطبیق بده؛ قبل از load/unload تأثیر تماس فعال را بررسی کن."
+      ],
+      "sample_output": "Module                         Description\nres_pjsip.so                   PJSIP resource\n1 modules loaded",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core show version",
+        "core show settings"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "وضعیت module را با version و package dependencies تطبیق بده؛ قبل از load/unload تأثیر تماس فعال را بررسی کن.",
+      "security_notes_fa": "unload ماژول روی PBX فعال می‌تواند signaling و تماس‌ها را مختل کند.",
+      "search_keywords": [
+        "module show",
+        "module show like res_pjsip",
+        "فهرست Moduleهای لودشده",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "modules"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `module show like res_pjsip` چه هدفی دارد؟",
+          "back": "بررسی اینکه module مورد نیاز واقعاً load شده است"
+        },
+        {
+          "front": "قبل از استفاده عملی از «فهرست Moduleهای لودشده» چه نکته‌ای را کنترل کنیم؟",
+          "back": "unload ماژول روی PBX فعال می‌تواند signaling و تماس‌ها را مختل کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q016",
+            "prompt": "برای این هدف، «بررسی اینکه module مورد نیاز واقعاً load شده است»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "module show like res_pjsip",
+              "core show version",
+              "core show settings",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q016",
+            "correct_index": 0,
+            "explain_fa": "`module show like res_pjsip` برای بررسی اینکه module مورد نیاز واقعاً load شده است. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** وضعیت module را با version و package dependencies تطبیق بده؛ قبل از load/unload تأثیر تماس فعال را بررسی کن.\n**هدف:** بررسی اینکه module مورد نیاز واقعاً load شده است\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# فهرست Moduleهای لودشده\n\n**دستور:** `module show like res_pjsip`\n\n**هدف عملیاتی:** بررسی اینکه module مورد نیاز واقعاً load شده است\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. وضعیت module را با version و package dependencies تطبیق بده؛ قبل از load/unload تأثیر تماس فعال را بررسی کن.\n\n## نمونه خروجی\n\n```text\n\nModule                         Description\nres_pjsip.so                   PJSIP resource\n1 modules loaded\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nunload ماژول روی PBX فعال می‌تواند signaling و تماس‌ها را مختل کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core show version`، `core show settings`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:queues:queue-show",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "queues",
+      "level": "L1",
+      "title_fa": "وضعیت صف تماس",
+      "title_en": "queue show",
+      "command": "queue show",
+      "aliases": [],
+      "syntax": "queue show",
+      "arguments": [],
+      "when_to_use_fa": "بررسی اعضای Queue، انتظار callers و وضعیت memberها",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی اعضای Queue، انتظار callers و وضعیت memberها",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: queue show",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: یک تماس تست در queue ایجاد کن؛ تعداد انتظار و member penalty را با گزارش صف مقایسه کن."
+      ],
+      "sample_output": "Queue sales has 1 calls (max unlimited)\nMembers: Agent/1001 (In use)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "queue show sales",
+        "core show channels"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "یک تماس تست در queue ایجاد کن؛ تعداد انتظار و member penalty را با گزارش صف مقایسه کن.",
+      "security_notes_fa": "اطلاعات تماس و agent performance دادهٔ عملیاتی حساس است.",
+      "search_keywords": [
+        "queue show",
+        "queue show",
+        "وضعیت صف تماس",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "queues"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `queue show` چه هدفی دارد؟",
+          "back": "بررسی اعضای Queue، انتظار callers و وضعیت memberها"
+        },
+        {
+          "front": "قبل از استفاده عملی از «وضعیت صف تماس» چه نکته‌ای را کنترل کنیم؟",
+          "back": "اطلاعات تماس و agent performance دادهٔ عملیاتی حساس است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q017",
+            "prompt": "برای این هدف، «بررسی اعضای Queue، انتظار callers و وضعیت memberها»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "queue show",
+              "queue show sales",
+              "core show channels",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q017",
+            "correct_index": 0,
+            "explain_fa": "`queue show` برای بررسی اعضای Queue، انتظار callers و وضعیت memberها. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** یک تماس تست در queue ایجاد کن؛ تعداد انتظار و member penalty را با گزارش صف مقایسه کن.\n**هدف:** بررسی اعضای Queue، انتظار callers و وضعیت memberها\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# وضعیت صف تماس\n\n**دستور:** `queue show`\n\n**هدف عملیاتی:** بررسی اعضای Queue، انتظار callers و وضعیت memberها\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. یک تماس تست در queue ایجاد کن؛ تعداد انتظار و member penalty را با گزارش صف مقایسه کن.\n\n## نمونه خروجی\n\n```text\n\nQueue sales has 1 calls (max unlimited)\nMembers: Agent/1001 (In use)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاطلاعات تماس و agent performance دادهٔ عملیاتی حساس است. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`queue show sales`، `core show channels`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:queues:queue-show-sales",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "troubleshoot",
+      "subcategory": "queues",
+      "level": "L2",
+      "title_fa": "جزئیات صف مشخص",
+      "title_en": "queue show sales",
+      "command": "queue show sales",
+      "aliases": [],
+      "syntax": "queue show sales",
+      "arguments": [],
+      "when_to_use_fa": "بررسی callerها، agentها و state یک Queue مشخص",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی callerها، agentها و state یک Queue مشخص",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: queue show sales",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: اگر agent در دسترس دیده نمی‌شود، device state، pause reason، SIP registration و penalty را جدا کن."
+      ],
+      "sample_output": "Queue sales\nMembers: PJSIP/1001 (Not in use)\nCallers: 0",
+      "output_fields_fa": [],
+      "related_commands": [
+        "queue show",
+        "core show channels"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "اگر agent در دسترس دیده نمی‌شود، device state، pause reason، SIP registration و penalty را جدا کن.",
+      "security_notes_fa": "قبل از تغییر عضو یا penalty، اثر روی تماس‌های انتظار را بسنج.",
+      "search_keywords": [
+        "queue show sales",
+        "queue show sales",
+        "جزئیات صف مشخص",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "troubleshoot",
+        "queues"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `queue show sales` چه هدفی دارد؟",
+          "back": "بررسی callerها، agentها و state یک Queue مشخص"
+        },
+        {
+          "front": "قبل از استفاده عملی از «جزئیات صف مشخص» چه نکته‌ای را کنترل کنیم؟",
+          "back": "قبل از تغییر عضو یا penalty، اثر روی تماس‌های انتظار را بسنج."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q018",
+            "prompt": "برای این هدف، «بررسی callerها، agentها و state یک Queue مشخص»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "queue show sales",
+              "queue show",
+              "core show channels",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q018",
+            "correct_index": 0,
+            "explain_fa": "`queue show sales` برای بررسی callerها، agentها و state یک Queue مشخص. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** اگر agent در دسترس دیده نمی‌شود، device state، pause reason، SIP registration و penalty را جدا کن.\n**هدف:** بررسی callerها، agentها و state یک Queue مشخص\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# جزئیات صف مشخص\n\n**دستور:** `queue show sales`\n\n**هدف عملیاتی:** بررسی callerها، agentها و state یک Queue مشخص\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. اگر agent در دسترس دیده نمی‌شود، device state، pause reason، SIP registration و penalty را جدا کن.\n\n## نمونه خروجی\n\n```text\n\nQueue sales\nMembers: PJSIP/1001 (Not in use)\nCallers: 0\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nقبل از تغییر عضو یا penalty، اثر روی تماس‌های انتظار را بسنج. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`queue show`، `core show channels`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:settings:core-show-settings",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "settings",
+      "level": "L1",
+      "title_fa": "نمایش تنظیمات کلی Asterisk",
+      "title_en": "core show settings",
+      "command": "core show settings",
+      "aliases": [],
+      "syntax": "core show settings",
+      "arguments": [],
+      "when_to_use_fa": "بررسی paths، run user و تنظیمات runtime Asterisk",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی paths، run user و تنظیمات runtime Asterisk",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: core show settings",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: مسیرهای config/log را با service unit و مجوز فایل تطبیق بده؛ خروجی را در audit record ثبت کن."
+      ],
+      "sample_output": "Configuration directory: /etc/asterisk\nLog directory: /var/log/asterisk",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core show version",
+        "logger show channels"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "مسیرهای config/log را با service unit و مجوز فایل تطبیق بده؛ خروجی را در audit record ثبت کن.",
+      "security_notes_fa": "مسیر configها را عمومی نکن؛ فایل‌ها می‌توانند auth و trunk settings داشته باشند.",
+      "search_keywords": [
+        "core show settings",
+        "core show settings",
+        "نمایش تنظیمات کلی Asterisk",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "settings"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `core show settings` چه هدفی دارد؟",
+          "back": "بررسی paths، run user و تنظیمات runtime Asterisk"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش تنظیمات کلی Asterisk» چه نکته‌ای را کنترل کنیم؟",
+          "back": "مسیر configها را عمومی نکن؛ فایل‌ها می‌توانند auth و trunk settings داشته باشند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q019",
+            "prompt": "برای این هدف، «بررسی paths، run user و تنظیمات runtime Asterisk»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "core show settings",
+              "core show version",
+              "logger show channels",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q019",
+            "correct_index": 0,
+            "explain_fa": "`core show settings` برای بررسی paths، run user و تنظیمات runtime Asterisk. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** مسیرهای config/log را با service unit و مجوز فایل تطبیق بده؛ خروجی را در audit record ثبت کن.\n**هدف:** بررسی paths، run user و تنظیمات runtime Asterisk\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش تنظیمات کلی Asterisk\n\n**دستور:** `core show settings`\n\n**هدف عملیاتی:** بررسی paths، run user و تنظیمات runtime Asterisk\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. مسیرهای config/log را با service unit و مجوز فایل تطبیق بده؛ خروجی را در audit record ثبت کن.\n\n## نمونه خروجی\n\n```text\n\nConfiguration directory: /etc/asterisk\nLog directory: /var/log/asterisk\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nمسیر configها را عمومی نکن؛ فایل‌ها می‌توانند auth و trunk settings داشته باشند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core show version`، `logger show channels`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:logging:logger-show-channels",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "logging",
+      "level": "L1",
+      "title_fa": "وضعیت Loggerها",
+      "title_en": "logger show channels",
+      "command": "logger show channels",
+      "aliases": [],
+      "syntax": "logger show channels",
+      "arguments": [],
+      "when_to_use_fa": "بررسی مقصد/سطح logهای فعال در Asterisk",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی مقصد/سطح logهای فعال در Asterisk",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: logger show channels",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: سطح log مناسب برای عیب‌یابی و retention را با policy و فضای دیسک مقایسه کن."
+      ],
+      "sample_output": "Channel             Type     Status\n/var/log/asterisk/full File     Enabled",
+      "output_fields_fa": [],
+      "related_commands": [
+        "logger rotate",
+        "core show settings"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "سطح log مناسب برای عیب‌یابی و retention را با policy و فضای دیسک مقایسه کن.",
+      "security_notes_fa": "Debug logging سطح بالا ممکن است حجم فایل و sensitive data را زیاد کند.",
+      "search_keywords": [
+        "logger show channels",
+        "logger show channels",
+        "وضعیت Loggerها",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "logging"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `logger show channels` چه هدفی دارد؟",
+          "back": "بررسی مقصد/سطح logهای فعال در Asterisk"
+        },
+        {
+          "front": "قبل از استفاده عملی از «وضعیت Loggerها» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Debug logging سطح بالا ممکن است حجم فایل و sensitive data را زیاد کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q020",
+            "prompt": "برای این هدف، «بررسی مقصد/سطح logهای فعال در Asterisk»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "logger show channels",
+              "logger rotate",
+              "core show settings",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q020",
+            "correct_index": 0,
+            "explain_fa": "`logger show channels` برای بررسی مقصد/سطح logهای فعال در Asterisk. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** سطح log مناسب برای عیب‌یابی و retention را با policy و فضای دیسک مقایسه کن.\n**هدف:** بررسی مقصد/سطح logهای فعال در Asterisk\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# وضعیت Loggerها\n\n**دستور:** `logger show channels`\n\n**هدف عملیاتی:** بررسی مقصد/سطح logهای فعال در Asterisk\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. سطح log مناسب برای عیب‌یابی و retention را با policy و فضای دیسک مقایسه کن.\n\n## نمونه خروجی\n\n```text\n\nChannel             Type     Status\n/var/log/asterisk/full File     Enabled\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nDebug logging سطح بالا ممکن است حجم فایل و sensitive data را زیاد کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`logger rotate`، `core show settings`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:logging:logger-rotate",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "logging",
+      "level": "L2",
+      "title_fa": "چرخش لاگ Asterisk",
+      "title_en": "logger rotate",
+      "command": "logger rotate",
+      "aliases": [],
+      "syntax": "logger rotate",
+      "arguments": [],
+      "when_to_use_fa": "درخواست rotate برای log channelهای Asterisk طبق تنظیمات فعلی",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: درخواست rotate برای log channelهای Asterisk طبق تنظیمات فعلی",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: logger rotate",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: قبل از rotate بررسی کن logging فعال است و logrotate سیستم هم با Asterisk هماهنگ باشد؛ پس از آن فایل جدید را verify کن."
+      ],
+      "sample_output": "Rotated logs (پیام وابسته به نسخه و logger config است)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "logger show channels",
+        "journalctl -u asterisk"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "قبل از rotate بررسی کن logging فعال است و logrotate سیستم هم با Asterisk هماهنگ باشد؛ پس از آن فایل جدید را verify کن.",
+      "security_notes_fa": "rotate دستی نباید جایگزین retention و disk monitoring شود.",
+      "search_keywords": [
+        "logger rotate",
+        "logger rotate",
+        "چرخش لاگ Asterisk",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "logging"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `logger rotate` چه هدفی دارد؟",
+          "back": "درخواست rotate برای log channelهای Asterisk طبق تنظیمات فعلی"
+        },
+        {
+          "front": "قبل از استفاده عملی از «چرخش لاگ Asterisk» چه نکته‌ای را کنترل کنیم؟",
+          "back": "rotate دستی نباید جایگزین retention و disk monitoring شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q021",
+            "prompt": "برای این هدف، «درخواست rotate برای log channelهای Asterisk طبق تنظیمات فعلی»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "logger rotate",
+              "logger show channels",
+              "journalctl -u asterisk",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q021",
+            "correct_index": 0,
+            "explain_fa": "`logger rotate` برای درخواست rotate برای log channelهای Asterisk طبق تنظیمات فعلی. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** قبل از rotate بررسی کن logging فعال است و logrotate سیستم هم با Asterisk هماهنگ باشد؛ پس از آن فایل جدید را verify کن.\n**هدف:** درخواست rotate برای log channelهای Asterisk طبق تنظیمات فعلی\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# چرخش لاگ Asterisk\n\n**دستور:** `logger rotate`\n\n**هدف عملیاتی:** درخواست rotate برای log channelهای Asterisk طبق تنظیمات فعلی\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. قبل از rotate بررسی کن logging فعال است و logrotate سیستم هم با Asterisk هماهنگ باشد؛ پس از آن فایل جدید را verify کن.\n\n## نمونه خروجی\n\n```text\n\nRotated logs (پیام وابسته به نسخه و logger config است)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nrotate دستی نباید جایگزین retention و disk monitoring شود. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`logger show channels`، `journalctl -u asterisk`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:cdr:cdr-show-status",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "cdr",
+      "level": "L1",
+      "title_fa": "مشاهده وضعیت CDR",
+      "title_en": "cdr show status",
+      "command": "cdr show status",
+      "aliases": [],
+      "syntax": "cdr show status",
+      "arguments": [],
+      "when_to_use_fa": "بررسی backend و وضعیت Call Detail Records",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی backend و وضعیت Call Detail Records",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: cdr show status",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: یک تماس آزمایشی کوتاه بساز و پس از پایان، وجود رکورد CDR را با زمان و uniqueid کنترل کن."
+      ],
+      "sample_output": "CDR logging: Enabled\nCDR registered backend: ...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "cdr show active",
+        "core show channels"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "یک تماس آزمایشی کوتاه بساز و پس از پایان، وجود رکورد CDR را با زمان و uniqueid کنترل کن.",
+      "security_notes_fa": "CDR حاوی شماره تماس، زمان و اطلاعات billing است؛ دسترسی و retention را محدود کن.",
+      "search_keywords": [
+        "cdr show status",
+        "cdr show status",
+        "مشاهده وضعیت CDR",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "cdr"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `cdr show status` چه هدفی دارد؟",
+          "back": "بررسی backend و وضعیت Call Detail Records"
+        },
+        {
+          "front": "قبل از استفاده عملی از «مشاهده وضعیت CDR» چه نکته‌ای را کنترل کنیم؟",
+          "back": "CDR حاوی شماره تماس، زمان و اطلاعات billing است؛ دسترسی و retention را محدود کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q022",
+            "prompt": "برای این هدف، «بررسی backend و وضعیت Call Detail Records»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "cdr show status",
+              "cdr show active",
+              "core show channels",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q022",
+            "correct_index": 0,
+            "explain_fa": "`cdr show status` برای بررسی backend و وضعیت Call Detail Records. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** یک تماس آزمایشی کوتاه بساز و پس از پایان، وجود رکورد CDR را با زمان و uniqueid کنترل کن.\n**هدف:** بررسی backend و وضعیت Call Detail Records\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# مشاهده وضعیت CDR\n\n**دستور:** `cdr show status`\n\n**هدف عملیاتی:** بررسی backend و وضعیت Call Detail Records\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. یک تماس آزمایشی کوتاه بساز و پس از پایان، وجود رکورد CDR را با زمان و uniqueid کنترل کن.\n\n## نمونه خروجی\n\n```text\n\nCDR logging: Enabled\nCDR registered backend: ...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nCDR حاوی شماره تماس، زمان و اطلاعات billing است؛ دسترسی و retention را محدود کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`cdr show active`، `core show channels`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:cdr:cdr-show-active",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "cdr",
+      "level": "L2",
+      "title_fa": "CDRهای در حال نگهداری",
+      "title_en": "cdr show active",
+      "command": "cdr show active",
+      "aliases": [],
+      "syntax": "cdr show active",
+      "arguments": [],
+      "when_to_use_fa": "بررسی وضعیت فعال backendها و recordهای CDR در نسخه‌های پشتیبانی‌شده",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی وضعیت فعال backendها و recordهای CDR در نسخه‌های پشتیبانی‌شده",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: cdr show active",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: اگر فرمان در نسخه نصب‌شده پشتیبانی نشد، `core show help cdr` و تنظیمات CDR backend را بررسی کن."
+      ],
+      "sample_output": "Active CDR entries: (خروجی وابسته به backend/version)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "cdr show status",
+        "core show version"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "اگر فرمان در نسخه نصب‌شده پشتیبانی نشد، `core show help cdr` و تنظیمات CDR backend را بررسی کن.",
+      "security_notes_fa": "CLI commands تغییرپذیرند؛ پیش از اتکا روی production، در CLI help نسخه تأیید کن.",
+      "search_keywords": [
+        "cdr show active",
+        "cdr show active",
+        "CDRهای در حال نگهداری",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "cdr"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `cdr show active` چه هدفی دارد؟",
+          "back": "بررسی وضعیت فعال backendها و recordهای CDR در نسخه‌های پشتیبانی‌شده"
+        },
+        {
+          "front": "قبل از استفاده عملی از «CDRهای در حال نگهداری» چه نکته‌ای را کنترل کنیم؟",
+          "back": "CLI commands تغییرپذیرند؛ پیش از اتکا روی production، در CLI help نسخه تأیید کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q023",
+            "prompt": "برای این هدف، «بررسی وضعیت فعال backendها و recordهای CDR در نسخه‌های پشتیبانی‌شده»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "cdr show active",
+              "cdr show status",
+              "core show version",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q023",
+            "correct_index": 0,
+            "explain_fa": "`cdr show active` برای بررسی وضعیت فعال backendها و recordهای CDR در نسخه‌های پشتیبانی‌شده. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** اگر فرمان در نسخه نصب‌شده پشتیبانی نشد، `core show help cdr` و تنظیمات CDR backend را بررسی کن.\n**هدف:** بررسی وضعیت فعال backendها و recordهای CDR در نسخه‌های پشتیبانی‌شده\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# CDRهای در حال نگهداری\n\n**دستور:** `cdr show active`\n\n**هدف عملیاتی:** بررسی وضعیت فعال backendها و recordهای CDR در نسخه‌های پشتیبانی‌شده\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. اگر فرمان در نسخه نصب‌شده پشتیبانی نشد، `core show help cdr` و تنظیمات CDR backend را بررسی کن.\n\n## نمونه خروجی\n\n```text\n\nActive CDR entries: (خروجی وابسته به backend/version)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nCLI commands تغییرپذیرند؛ پیش از اتکا روی production، در CLI help نسخه تأیید کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`cdr show status`، `core show version`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:pri-telephony:pri-show-spans",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "troubleshoot",
+      "subcategory": "pri-telephony",
+      "level": "L2",
+      "title_fa": "وضعیت PRI Span",
+      "title_en": "pri show spans",
+      "command": "pri show spans",
+      "aliases": [],
+      "syntax": "pri show spans",
+      "arguments": [],
+      "when_to_use_fa": "بررسی spanهای PRI در سامانه‌هایی که DAHDI/PRI دارند",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی spanهای PRI در سامانه‌هایی که DAHDI/PRI دارند",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: pri show spans",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: فقط در نصب دارای کارت/درایور PRI اجرا کن؛ status را با alarmهای مخابراتی و log DAHDI تطبیق بده."
+      ],
+      "sample_output": "PRI span 1: Up, Active (نمایش بسته به DAHDI/driver)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core show channels",
+        "dahdi show status"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "فقط در نصب دارای کارت/درایور PRI اجرا کن؛ status را با alarmهای مخابراتی و log DAHDI تطبیق بده.",
+      "security_notes_fa": "در همهٔ VMها یا سیستم‌های بدون PRI این فرمان قابل اجرا نیست؛ absence فرمان به معنی خطای کل PBX نیست.",
+      "search_keywords": [
+        "pri show spans",
+        "pri show spans",
+        "وضعیت PRI Span",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "troubleshoot",
+        "pri-telephony"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `pri show spans` چه هدفی دارد؟",
+          "back": "بررسی spanهای PRI در سامانه‌هایی که DAHDI/PRI دارند"
+        },
+        {
+          "front": "قبل از استفاده عملی از «وضعیت PRI Span» چه نکته‌ای را کنترل کنیم؟",
+          "back": "در همهٔ VMها یا سیستم‌های بدون PRI این فرمان قابل اجرا نیست؛ absence فرمان به معنی خطای کل PBX نیست."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q024",
+            "prompt": "برای این هدف، «بررسی spanهای PRI در سامانه‌هایی که DAHDI/PRI دارند»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "pri show spans",
+              "core show channels",
+              "dahdi show status",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q024",
+            "correct_index": 0,
+            "explain_fa": "`pri show spans` برای بررسی spanهای PRI در سامانه‌هایی که DAHDI/PRI دارند. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** فقط در نصب دارای کارت/درایور PRI اجرا کن؛ status را با alarmهای مخابراتی و log DAHDI تطبیق بده.\n**هدف:** بررسی spanهای PRI در سامانه‌هایی که DAHDI/PRI دارند\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# وضعیت PRI Span\n\n**دستور:** `pri show spans`\n\n**هدف عملیاتی:** بررسی spanهای PRI در سامانه‌هایی که DAHDI/PRI دارند\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. فقط در نصب دارای کارت/درایور PRI اجرا کن؛ status را با alarmهای مخابراتی و log DAHDI تطبیق بده.\n\n## نمونه خروجی\n\n```text\n\nPRI span 1: Up, Active (نمایش بسته به DAHDI/driver)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nدر همهٔ VMها یا سیستم‌های بدون PRI این فرمان قابل اجرا نیست؛ absence فرمان به معنی خطای کل PBX نیست. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core show channels`، `dahdi show status`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:runtime:core-show-settings",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "runtime",
+      "level": "L1",
+      "title_fa": "نمایش تنظیمات زمان/Region",
+      "title_en": "core show settings",
+      "command": "core show settings",
+      "aliases": [],
+      "syntax": "core show settings",
+      "arguments": [],
+      "when_to_use_fa": "مرور timezone paths و تنظیمات مهم runtime برای تطبیق timestampها",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مرور timezone paths و تنظیمات مهم runtime برای تطبیق timestampها",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: core show settings",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: یک تماس test را در CDR، system journal و client log مقایسه کن؛ timezone هر سیستم را ثبت کن."
+      ],
+      "sample_output": "System name: ...\nConfiguration file: /etc/asterisk/asterisk.conf",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core show uptime",
+        "cdr show status"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "یک تماس test را در CDR، system journal و client log مقایسه کن؛ timezone هر سیستم را ثبت کن.",
+      "security_notes_fa": "timezone اشتباه correlation رخداد و billing را خراب می‌کند.",
+      "search_keywords": [
+        "core show settings",
+        "core show settings",
+        "نمایش تنظیمات زمان/Region",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "runtime"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `core show settings` چه هدفی دارد؟",
+          "back": "مرور timezone paths و تنظیمات مهم runtime برای تطبیق timestampها"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش تنظیمات زمان/Region» چه نکته‌ای را کنترل کنیم؟",
+          "back": "timezone اشتباه correlation رخداد و billing را خراب می‌کند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q025",
+            "prompt": "برای این هدف، «مرور timezone paths و تنظیمات مهم runtime برای تطبیق timestampها»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "core show settings",
+              "core show uptime",
+              "cdr show status",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q025",
+            "correct_index": 0,
+            "explain_fa": "`core show settings` برای مرور timezone paths و تنظیمات مهم runtime برای تطبیق timestampها. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** یک تماس test را در CDR، system journal و client log مقایسه کن؛ timezone هر سیستم را ثبت کن.\n**هدف:** مرور timezone paths و تنظیمات مهم runtime برای تطبیق timestampها\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش تنظیمات زمان/Region\n\n**دستور:** `core show settings`\n\n**هدف عملیاتی:** مرور timezone paths و تنظیمات مهم runtime برای تطبیق timestampها\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. یک تماس test را در CDR، system journal و client log مقایسه کن؛ timezone هر سیستم را ثبت کن.\n\n## نمونه خروجی\n\n```text\n\nSystem name: ...\nConfiguration file: /etc/asterisk/asterisk.conf\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\ntimezone اشتباه correlation رخداد و billing را خراب می‌کند. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core show uptime`، `cdr show status`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:diagnostic-level:core-set-verbose",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "troubleshoot",
+      "subcategory": "diagnostic-level",
+      "level": "L2",
+      "title_fa": "فعال‌سازی Verbose موقت",
+      "title_en": "core set verbose",
+      "command": "core set verbose 5",
+      "aliases": [],
+      "syntax": "core set verbose 5",
+      "arguments": [],
+      "when_to_use_fa": "افزایش verbosity CLI برای یک آزمایش کوتاه و کنترل‌شده",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: افزایش verbosity CLI برای یک آزمایش کوتاه و کنترل‌شده",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: core set verbose 5",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: قبل از اجرا سطح فعلی را ثبت کن، فقط تماس آزمایشگاهی را انجام بده و سپس سطح مناسب قبلی را برگردان."
+      ],
+      "sample_output": "Verbosity is now 5",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core set debug",
+        "logger show channels"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "قبل از اجرا سطح فعلی را ثبت کن، فقط تماس آزمایشگاهی را انجام بده و سپس سطح مناسب قبلی را برگردان.",
+      "security_notes_fa": "verbosity بالا ممکن است حجم log را زیاد کند؛ سطوح را بی‌دلیل روی production بالا نگه ندار.",
+      "search_keywords": [
+        "core set verbose",
+        "core set verbose 5",
+        "فعال‌سازی Verbose موقت",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "troubleshoot",
+        "diagnostic-level"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `core set verbose 5` چه هدفی دارد؟",
+          "back": "افزایش verbosity CLI برای یک آزمایش کوتاه و کنترل‌شده"
+        },
+        {
+          "front": "قبل از استفاده عملی از «فعال‌سازی Verbose موقت» چه نکته‌ای را کنترل کنیم؟",
+          "back": "verbosity بالا ممکن است حجم log را زیاد کند؛ سطوح را بی‌دلیل روی production بالا نگه ندار."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q026",
+            "prompt": "برای این هدف، «افزایش verbosity CLI برای یک آزمایش کوتاه و کنترل‌شده»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "core set verbose 5",
+              "core set debug",
+              "logger show channels",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q026",
+            "correct_index": 0,
+            "explain_fa": "`core set verbose 5` برای افزایش verbosity CLI برای یک آزمایش کوتاه و کنترل‌شده. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** قبل از اجرا سطح فعلی را ثبت کن، فقط تماس آزمایشگاهی را انجام بده و سپس سطح مناسب قبلی را برگردان.\n**هدف:** افزایش verbosity CLI برای یک آزمایش کوتاه و کنترل‌شده\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# فعال‌سازی Verbose موقت\n\n**دستور:** `core set verbose 5`\n\n**هدف عملیاتی:** افزایش verbosity CLI برای یک آزمایش کوتاه و کنترل‌شده\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. قبل از اجرا سطح فعلی را ثبت کن، فقط تماس آزمایشگاهی را انجام بده و سپس سطح مناسب قبلی را برگردان.\n\n## نمونه خروجی\n\n```text\n\nVerbosity is now 5\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nverbosity بالا ممکن است حجم log را زیاد کند؛ سطوح را بی‌دلیل روی production بالا نگه ندار. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core set debug`، `logger show channels`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:legacy-sip:sip-show-peers",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "legacy-sip",
+      "level": "L2",
+      "title_fa": "نمایش peerهای SIP قدیمی",
+      "title_en": "sip show peers",
+      "command": "sip show peers",
+      "aliases": [],
+      "syntax": "sip show peers",
+      "arguments": [],
+      "when_to_use_fa": "بررسی endpointها فقط در نصب‌هایی که chan_sip هنوز فعال است",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی endpointها فقط در نصب‌هایی که chan_sip هنوز فعال است",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: sip show peers",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: ابتدا `module show like chan_sip` را بررسی کن؛ در سیستم‌های PJSIP از `pjsip show endpoints` استفاده کن."
+      ],
+      "sample_output": "Name/username Host Dyn Forcerport Comedia ACL Port Status\n1001 ... OK",
+      "output_fields_fa": [],
+      "related_commands": [
+        "pjsip show endpoints",
+        "module show like chan_sip"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "ابتدا `module show like chan_sip` را بررسی کن؛ در سیستم‌های PJSIP از `pjsip show endpoints` استفاده کن.",
+      "security_notes_fa": "chan_sip در نسخه‌های جدید deprecated/حذف‌شده است؛ برای پیکربندی جدید از PJSIP استفاده کن.",
+      "search_keywords": [
+        "sip show peers",
+        "sip show peers",
+        "نمایش peerهای SIP قدیمی",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "legacy-sip"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `sip show peers` چه هدفی دارد؟",
+          "back": "بررسی endpointها فقط در نصب‌هایی که chan_sip هنوز فعال است"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش peerهای SIP قدیمی» چه نکته‌ای را کنترل کنیم؟",
+          "back": "chan_sip در نسخه‌های جدید deprecated/حذف‌شده است؛ برای پیکربندی جدید از PJSIP استفاده کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q027",
+            "prompt": "برای این هدف، «بررسی endpointها فقط در نصب‌هایی که chan_sip هنوز فعال است»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "sip show peers",
+              "pjsip show endpoints",
+              "module show like chan_sip",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q027",
+            "correct_index": 0,
+            "explain_fa": "`sip show peers` برای بررسی endpointها فقط در نصب‌هایی که chan_sip هنوز فعال است. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** ابتدا `module show like chan_sip` را بررسی کن؛ در سیستم‌های PJSIP از `pjsip show endpoints` استفاده کن.\n**هدف:** بررسی endpointها فقط در نصب‌هایی که chan_sip هنوز فعال است\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش peerهای SIP قدیمی\n\n**دستور:** `sip show peers`\n\n**هدف عملیاتی:** بررسی endpointها فقط در نصب‌هایی که chan_sip هنوز فعال است\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. ابتدا `module show like chan_sip` را بررسی کن؛ در سیستم‌های PJSIP از `pjsip show endpoints` استفاده کن.\n\n## نمونه خروجی\n\n```text\n\nName/username Host Dyn Forcerport Comedia ACL Port Status\n1001 ... OK\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nchan_sip در نسخه‌های جدید deprecated/حذف‌شده است؛ برای پیکربندی جدید از PJSIP استفاده کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`pjsip show endpoints`، `module show like chan_sip`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:performance:core-show-taskprocessors",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "performance",
+      "level": "L3",
+      "title_fa": "بررسی Task Processorها",
+      "title_en": "core show taskprocessors",
+      "command": "core show taskprocessors",
+      "aliases": [],
+      "syntax": "core show taskprocessors",
+      "arguments": [],
+      "when_to_use_fa": "مشاهدهٔ queue depth و high-water-mark task processorها برای تشخیص ازدحام",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: مشاهدهٔ queue depth و high-water-mark task processorها برای تشخیص ازدحام",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: core show taskprocessors",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: نمونه‌ها را در زمان بار و idle مقایسه کن؛ نتیجه را با CPU، packet loss و logهای SIP همبسته کن."
+      ],
+      "sample_output": "Processor: pjsip/... in_queue: 0 max_depth: ...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core show channels",
+        "core show uptime"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "نمونه‌ها را در زمان بار و idle مقایسه کن؛ نتیجه را با CPU، packet loss و logهای SIP همبسته کن.",
+      "security_notes_fa": "تفسیر queue depth به نسخه/module و workload وابسته است؛ بدون شواهد از restart پرهیز کن.",
+      "search_keywords": [
+        "core show taskprocessors",
+        "core show taskprocessors",
+        "بررسی Task Processorها",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "performance"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `core show taskprocessors` چه هدفی دارد؟",
+          "back": "مشاهدهٔ queue depth و high-water-mark task processorها برای تشخیص ازدحام"
+        },
+        {
+          "front": "قبل از استفاده عملی از «بررسی Task Processorها» چه نکته‌ای را کنترل کنیم؟",
+          "back": "تفسیر queue depth به نسخه/module و workload وابسته است؛ بدون شواهد از restart پرهیز کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q028",
+            "prompt": "برای این هدف، «مشاهدهٔ queue depth و high-water-mark task processorها برای تشخیص ازدحام»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "core show taskprocessors",
+              "core show channels",
+              "core show uptime",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q028",
+            "correct_index": 0,
+            "explain_fa": "`core show taskprocessors` برای مشاهدهٔ queue depth و high-water-mark task processorها برای تشخیص ازدحام. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** نمونه‌ها را در زمان بار و idle مقایسه کن؛ نتیجه را با CPU، packet loss و logهای SIP همبسته کن.\n**هدف:** مشاهدهٔ queue depth و high-water-mark task processorها برای تشخیص ازدحام\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# بررسی Task Processorها\n\n**دستور:** `core show taskprocessors`\n\n**هدف عملیاتی:** مشاهدهٔ queue depth و high-water-mark task processorها برای تشخیص ازدحام\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. نمونه‌ها را در زمان بار و idle مقایسه کن؛ نتیجه را با CPU، packet loss و logهای SIP همبسته کن.\n\n## نمونه خروجی\n\n```text\n\nProcessor: pjsip/... in_queue: 0 max_depth: ...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nتفسیر queue depth به نسخه/module و workload وابسته است؛ بدون شواهد از restart پرهیز کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core show channels`، `core show uptime`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:pjsip-auth:pjsip-show-auths",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "identity",
+      "subcategory": "pjsip-auth",
+      "level": "L2",
+      "title_fa": "نمایش Auth/Endpoint بدون secret",
+      "title_en": "pjsip show auths",
+      "command": "pjsip show auths",
+      "aliases": [],
+      "syntax": "pjsip show auths",
+      "arguments": [],
+      "when_to_use_fa": "بازبینی نام auth object و وجود تنظیمات auth در PJSIP",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بازبینی نام auth object و وجود تنظیمات auth در PJSIP",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: pjsip show auths",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: وجود object را با Endpoint->Auth و registration logs تطبیق بده؛ مقدار secret را در CLI یا ticket چاپ نکن."
+      ],
+      "sample_output": "Auth: 1001\nUsername: 1001\n(رمز عمداً نمایش داده نمی‌شود)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "pjsip show endpoint",
+        "pjsip show endpoints"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "وجود object را با Endpoint->Auth و registration logs تطبیق بده؛ مقدار secret را در CLI یا ticket چاپ نکن.",
+      "security_notes_fa": "از copy کردن config حاوی password/secret به گزارش‌ها خودداری کن.",
+      "search_keywords": [
+        "pjsip show auths",
+        "pjsip show auths",
+        "نمایش Auth/Endpoint بدون secret",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "identity",
+        "pjsip-auth"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `pjsip show auths` چه هدفی دارد؟",
+          "back": "بازبینی نام auth object و وجود تنظیمات auth در PJSIP"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش Auth/Endpoint بدون secret» چه نکته‌ای را کنترل کنیم؟",
+          "back": "از copy کردن config حاوی password/secret به گزارش‌ها خودداری کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q029",
+            "prompt": "برای این هدف، «بازبینی نام auth object و وجود تنظیمات auth در PJSIP»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "pjsip show auths",
+              "pjsip show endpoint",
+              "pjsip show endpoints",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q029",
+            "correct_index": 0,
+            "explain_fa": "`pjsip show auths` برای بازبینی نام auth object و وجود تنظیمات auth در PJSIP. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** وجود object را با Endpoint->Auth و registration logs تطبیق بده؛ مقدار secret را در CLI یا ticket چاپ نکن.\n**هدف:** بازبینی نام auth object و وجود تنظیمات auth در PJSIP\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش Auth/Endpoint بدون secret\n\n**دستور:** `pjsip show auths`\n\n**هدف عملیاتی:** بازبینی نام auth object و وجود تنظیمات auth در PJSIP\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. وجود object را با Endpoint->Auth و registration logs تطبیق بده؛ مقدار secret را در CLI یا ticket چاپ نکن.\n\n## نمونه خروجی\n\n```text\n\nAuth: 1001\nUsername: 1001\n(رمز عمداً نمایش داده نمی‌شود)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nاز copy کردن config حاوی password/secret به گزارش‌ها خودداری کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`pjsip show endpoint`، `pjsip show endpoints`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:pjsip-aor:pjsip-show-aors",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "pjsip-aor",
+      "level": "L2",
+      "title_fa": "نمایش AOR و Contact",
+      "title_en": "pjsip show aors",
+      "command": "pjsip show aors",
+      "aliases": [],
+      "syntax": "pjsip show aors",
+      "arguments": [],
+      "when_to_use_fa": "بررسی AOR, max_contacts و contact state برای endpointها",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی AOR, max_contacts و contact state برای endpointها",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: pjsip show aors",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: اگر تماس ورودی به endpoint نمی‌رسد، AOR/Contact را با REGISTER و NAT mapping تطبیق بده."
+      ],
+      "sample_output": "Aor: 1001\nMaxContact: 1\nContact: sip:1001@10.20.30.25:5060",
+      "output_fields_fa": [],
+      "related_commands": [
+        "pjsip show contacts",
+        "pjsip show endpoint"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "اگر تماس ورودی به endpoint نمی‌رسد، AOR/Contact را با REGISTER و NAT mapping تطبیق بده.",
+      "security_notes_fa": "Contact URI ممکن است IP داخلی تلفن باشد؛ پیش از ارسال گزارش mask کن.",
+      "search_keywords": [
+        "pjsip show aors",
+        "pjsip show aors",
+        "نمایش AOR و Contact",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "pjsip-aor"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `pjsip show aors` چه هدفی دارد؟",
+          "back": "بررسی AOR, max_contacts و contact state برای endpointها"
+        },
+        {
+          "front": "قبل از استفاده عملی از «نمایش AOR و Contact» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Contact URI ممکن است IP داخلی تلفن باشد؛ پیش از ارسال گزارش mask کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q030",
+            "prompt": "برای این هدف، «بررسی AOR, max_contacts و contact state برای endpointها»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "pjsip show aors",
+              "pjsip show contacts",
+              "pjsip show endpoint",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q030",
+            "correct_index": 0,
+            "explain_fa": "`pjsip show aors` برای بررسی AOR, max_contacts و contact state برای endpointها. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** اگر تماس ورودی به endpoint نمی‌رسد، AOR/Contact را با REGISTER و NAT mapping تطبیق بده.\n**هدف:** بررسی AOR, max_contacts و contact state برای endpointها\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# نمایش AOR و Contact\n\n**دستور:** `pjsip show aors`\n\n**هدف عملیاتی:** بررسی AOR, max_contacts و contact state برای endpointها\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. اگر تماس ورودی به endpoint نمی‌رسد، AOR/Contact را با REGISTER و NAT mapping تطبیق بده.\n\n## نمونه خروجی\n\n```text\n\nAor: 1001\nMaxContact: 1\nContact: sip:1001@10.20.30.25:5060\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nContact URI ممکن است IP داخلی تلفن باشد؛ پیش از ارسال گزارش mask کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`pjsip show contacts`، `pjsip show endpoint`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:cli-discovery:core-show-help",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "monitor",
+      "subcategory": "cli-discovery",
+      "level": "L0",
+      "title_fa": "جستجوی کمک CLI برای نسخه",
+      "title_en": "core show help",
+      "command": "core show help pjsip",
+      "aliases": [],
+      "syntax": "core show help pjsip",
+      "arguments": [],
+      "when_to_use_fa": "بررسی syntax دقیق فرمان‌های در دسترس در نسخه نصب‌شده",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: بررسی syntax دقیق فرمان‌های در دسترس در نسخه نصب‌شده",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: core show help pjsip",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: در ابتدای لابراتوار command availability را بررسی و نسخهٔ Asterisk را در یادداشت ثبت کن."
+      ],
+      "sample_output": "CLI command help for 'pjsip' (فرمان‌های موجود طبق version)",
+      "output_fields_fa": [],
+      "related_commands": [
+        "core show version",
+        "module show"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "در ابتدای لابراتوار command availability را بررسی و نسخهٔ Asterisk را در یادداشت ثبت کن.",
+      "security_notes_fa": "نام فرمان‌ها بین branchهای Asterisk تفاوت دارند؛ از اجرای blind script روی production اجتناب کن.",
+      "search_keywords": [
+        "core show help",
+        "core show help pjsip",
+        "جستجوی کمک CLI برای نسخه",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "monitor",
+        "cli-discovery"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `core show help pjsip` چه هدفی دارد؟",
+          "back": "بررسی syntax دقیق فرمان‌های در دسترس در نسخه نصب‌شده"
+        },
+        {
+          "front": "قبل از استفاده عملی از «جستجوی کمک CLI برای نسخه» چه نکته‌ای را کنترل کنیم؟",
+          "back": "نام فرمان‌ها بین branchهای Asterisk تفاوت دارند؛ از اجرای blind script روی production اجتناب کن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q031",
+            "prompt": "برای این هدف، «بررسی syntax دقیق فرمان‌های در دسترس در نسخه نصب‌شده»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "core show help pjsip",
+              "core show version",
+              "module show",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q031",
+            "correct_index": 0,
+            "explain_fa": "`core show help pjsip` برای بررسی syntax دقیق فرمان‌های در دسترس در نسخه نصب‌شده. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** در ابتدای لابراتوار command availability را بررسی و نسخهٔ Asterisk را در یادداشت ثبت کن.\n**هدف:** بررسی syntax دقیق فرمان‌های در دسترس در نسخه نصب‌شده\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# جستجوی کمک CLI برای نسخه\n\n**دستور:** `core show help pjsip`\n\n**هدف عملیاتی:** بررسی syntax دقیق فرمان‌های در دسترس در نسخه نصب‌شده\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. در ابتدای لابراتوار command availability را بررسی و نسخهٔ Asterisk را در یادداشت ثبت کن.\n\n## نمونه خروجی\n\n```text\n\nCLI command help for 'pjsip' (فرمان‌های موجود طبق version)\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nنام فرمان‌ها بین branchهای Asterisk تفاوت دارند؛ از اجرای blind script روی production اجتناب کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`core show version`، `module show`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:system-logs:journalctl-u-asterisk",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "troubleshoot",
+      "subcategory": "system-logs",
+      "level": "L2",
+      "title_fa": "مشاهده لاگ سرویس با systemd",
+      "title_en": "journalctl -u asterisk",
+      "command": "journalctl -u asterisk --since '30 minutes ago' --no-pager",
+      "aliases": [],
+      "syntax": "journalctl -u asterisk --since '30 minutes ago' --no-pager",
+      "arguments": [],
+      "when_to_use_fa": "تطبیق logهای سرویس Asterisk با زمان رخداد از systemd journal",
+      "prerequisites_fa": [
+        "Linux/systemd host و دسترسی journal."
+      ],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: تطبیق logهای سرویس Asterisk با زمان رخداد از systemd journal",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: journalctl -u asterisk --since '30 minutes ago' --no-pager",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: زمان رخداد SIP یا تماس تست را با بازهٔ journal محدود کن؛ اگر سرویس نام متفاوت دارد، systemctl status را بررسی کن."
+      ],
+      "sample_output": "Oct 12 18:45:00 pbx asterisk[...]: ...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "logger show channels",
+        "tail -n 100 /var/log/asterisk/full"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "زمان رخداد SIP یا تماس تست را با بازهٔ journal محدود کن؛ اگر سرویس نام متفاوت دارد، systemctl status را بررسی کن.",
+      "security_notes_fa": "لاگ می‌تواند شماره داخلی و IP را افشا کند؛ بازهٔ کوتاه و دسترسی محدود انتخاب کن.",
+      "search_keywords": [
+        "journalctl -u asterisk",
+        "journalctl -u asterisk --since '30 minutes ago' --no-pager",
+        "مشاهده لاگ سرویس با systemd",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "troubleshoot",
+        "system-logs"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `journalctl -u asterisk --since '30 minutes ago' --no-pager` چه هدفی دارد؟",
+          "back": "تطبیق logهای سرویس Asterisk با زمان رخداد از systemd journal"
+        },
+        {
+          "front": "قبل از استفاده عملی از «مشاهده لاگ سرویس با systemd» چه نکته‌ای را کنترل کنیم؟",
+          "back": "Linux/systemd host و دسترسی journal."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q032",
+            "prompt": "برای این هدف، «تطبیق logهای سرویس Asterisk با زمان رخداد از systemd journal»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "journalctl -u asterisk --since '30 minutes ago' --no-pager",
+              "logger show channels",
+              "tail -n 100 /var/log/asterisk/full",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q032",
+            "correct_index": 0,
+            "explain_fa": "`journalctl -u asterisk --since '30 minutes ago' --no-pager` برای تطبیق logهای سرویس Asterisk با زمان رخداد از systemd journal. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** زمان رخداد SIP یا تماس تست را با بازهٔ journal محدود کن؛ اگر سرویس نام متفاوت دارد، systemctl status را بررسی کن.\n**هدف:** تطبیق logهای سرویس Asterisk با زمان رخداد از systemd journal\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# مشاهده لاگ سرویس با systemd\n\n**دستور:** `journalctl -u asterisk --since '30 minutes ago' --no-pager`\n\n**هدف عملیاتی:** تطبیق logهای سرویس Asterisk با زمان رخداد از systemd journal\n\n## روش اجرا\n\n1. پیش‌نیاز را تأیید کن: Linux/systemd host و دسترسی journal.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. زمان رخداد SIP یا تماس تست را با بازهٔ journal محدود کن؛ اگر سرویس نام متفاوت دارد، systemctl status را بررسی کن.\n\n## نمونه خروجی\n\n```text\n\nOct 12 18:45:00 pbx asterisk[...]: ...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nلاگ می‌تواند شماره داخلی و IP را افشا کند؛ بازهٔ کوتاه و دسترسی محدود انتخاب کن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`logger show channels`، `tail -n 100 /var/log/asterisk/full`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:issabel:log-tail:tail-n-100-var-log-asterisk-full",
+      "vendor": "issabel",
+      "platform": "Asterisk CLI on Issabel PBX",
+      "category": "troubleshoot",
+      "subcategory": "log-tail",
+      "level": "L1",
+      "title_fa": "بررسی فایل لاگ انتهای خط",
+      "title_en": "tail -n 100 /var/log/asterisk/full",
+      "command": "tail -n 100 /var/log/asterisk/full",
+      "aliases": [],
+      "syntax": "tail -n 100 /var/log/asterisk/full",
+      "arguments": [],
+      "when_to_use_fa": "دیدن آخرین خطوط لاگ کامل برای تشخیص فوری در Linux",
+      "prerequisites_fa": [],
+      "steps_fa": [
+        "نسخه سیستم‌عامل/firmware و context دسترسی را ثبت کن.",
+        "هدف دستور را با سناریوی مشخص تطبیق بده: دیدن آخرین خطوط لاگ کامل برای تشخیص فوری در Linux",
+        "فرمان را در محیط آزمایشگاهی اجرا کن: tail -n 100 /var/log/asterisk/full",
+        "خروجی را با این معیار بررسی کن: نتیجه مورد انتظار و وضعیت موفقیت.",
+        "آزمایش بازگشت/پاکسازی: پیش از grep گسترده، 100 خط آخر را حفظ کن؛ سپس تماس کنترل‌شدهٔ جدید تولید و زمان/Call-ID را تطبیق بده."
+      ],
+      "sample_output": "[2026-10-12 18:45:00] NOTICE[...]: ...",
+      "output_fields_fa": [],
+      "related_commands": [
+        "journalctl -u asterisk",
+        "logger show channels"
+      ],
+      "common_mistakes_fa": [
+        "اجرای فرمان در پلتفرم/نسخه یا context دسترسی متفاوت از محیط هدف.",
+        "نتیجه گرفتن قطعی از یک خروجی منفرد بدون بررسی شواهد جانبی."
+      ],
+      "lab_hint_fa": "پیش از grep گسترده، 100 خط آخر را حفظ کن؛ سپس تماس کنترل‌شدهٔ جدید تولید و زمان/Call-ID را تطبیق بده.",
+      "security_notes_fa": "لاگ full ممکن است اطلاعات تماس و SIP headers داشته باشد؛ فایل را عمومی نکن.",
+      "search_keywords": [
+        "tail -n 100 /var/log/asterisk/full",
+        "tail -n 100 /var/log/asterisk/full",
+        "بررسی فایل لاگ انتهای خط",
+        "issabel",
+        "Asterisk CLI on Issabel PBX",
+        "troubleshoot",
+        "log-tail"
+      ],
+      "flashcards": [
+        {
+          "front": "فرمان `tail -n 100 /var/log/asterisk/full` چه هدفی دارد؟",
+          "back": "دیدن آخرین خطوط لاگ کامل برای تشخیص فوری در Linux"
+        },
+        {
+          "front": "قبل از استفاده عملی از «بررسی فایل لاگ انتهای خط» چه نکته‌ای را کنترل کنیم؟",
+          "back": "لاگ full ممکن است اطلاعات تماس و SIP headers داشته باشد؛ فایل را عمومی نکن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q033",
+            "prompt": "برای این هدف، «دیدن آخرین خطوط لاگ کامل برای تشخیص فوری در Linux»، کدام دستور در این رکورد معرفی شده است؟",
+            "options": [
+              "tail -n 100 /var/log/asterisk/full",
+              "journalctl -u asterisk",
+              "logger show channels",
+              "show system status"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q033",
+            "correct_index": 0,
+            "explain_fa": "`tail -n 100 /var/log/asterisk/full` برای دیدن آخرین خطوط لاگ کامل برای تشخیص فوری در Linux. گزینه‌های دیگر کارکرد متفاوت یا زمینهٔ عیب‌یابی مرتبط دارند."
+          }
+        ]
+      },
+      "scenario_fa": "**سناریوی آزمایشگاهی:** پیش از grep گسترده، 100 خط آخر را حفظ کن؛ سپس تماس کنترل‌شدهٔ جدید تولید و زمان/Call-ID را تطبیق بده.\n**هدف:** دیدن آخرین خطوط لاگ کامل برای تشخیص فوری در Linux\n**پذیرش:** خروجی ثبت شود، فرضیه با شواهد سنجیده شود و تغییرات موقت در پایان به حالت ثبت‌شده برگردند.",
+      "full_content": "# بررسی فایل لاگ انتهای خط\n\n**دستور:** `tail -n 100 /var/log/asterisk/full`\n\n**هدف عملیاتی:** دیدن آخرین خطوط لاگ کامل برای تشخیص فوری در Linux\n\n## روش اجرا\n\n1. نسخه و context اجرا را ثبت کن و مقصد را با سناریوی مجاز تطبیق بده.\n\n2. در محیط آزمایشگاهی دستور را دقیقاً همان‌طور که نوشته شده اجرا کن؛ اگر پشتیبانی نسخه مشکوک است، ابتدا راهنمای CLI یا Help همان نسخه را بخوان.\n\n3. خروجی را با نمونهٔ این رکورد مقایسه کن و تفاوت نسخه/مجوز/نام رابط را یادداشت کن.\n\n4. پیش از grep گسترده، 100 خط آخر را حفظ کن؛ سپس تماس کنترل‌شدهٔ جدید تولید و زمان/Call-ID را تطبیق بده.\n\n## نمونه خروجی\n\n```text\n\n[2026-10-12 18:45:00] NOTICE[...]: ...\n\n```\n\n## تحلیل و عیب‌یابی\n\nاگر نتیجه با انتظار یکی نیست، ابتدا context اجرا و دسترسی را بررسی کن؛ سپس نام رابط/دستگاه، بازه زمانی، DNS یا مسیر شبکه را بر اساس هدف همین فرمان محدود و مرحله‌ای بررسی کن.\n\n## امنیت و بازیابی\n\nلاگ full ممکن است اطلاعات تماس و SIP headers داشته باشد؛ فایل را عمومی نکن. هر فرمان تغییردهنده را ابتدا با backup، Change Plan و روش بازگشت مشخص در لابراتوار ایزوله آزمایش کن.\n\n## دستورات مرتبط\n\n`journalctl -u asterisk`، `logger show channels`\n\n## منابع رسمی\n\n[Asterisk Documentation — CLI commands](https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/)",
+      "official_sources": [
+        {
+          "title": "Asterisk Documentation — CLI commands",
+          "url": "https://docs.asterisk.org/Latest_API/API_Documentation/CLI_Commands/"
+        }
+      ],
+      "source_status": "review_required"
+    }
+  ]
+}
