@@ -448,27 +448,51 @@ def sync_push():
                 continue
 
         # Reject malformed workspace items before reporting them as accepted.
-        # Without this validation, sync_apply could reject them later while the
-        # client saw only "kept" and advanced its sync cursor.
+        # Coercing invalid task fields in sync_apply would silently change user data
+        # while still returning an "accepted" result to the originating device.
         if entity in ("task", "note"):
             title_value = item.get("title")
             body_value = item.get("body", "")
             tags_value = item.get("tags", "")
+            deleted_value = item.get("deleted", False)
             if body_value is None:
                 body_value = ""
             if tags_value is None:
                 tags_value = ""
+            valid_flag = lambda value: (
+                isinstance(value, bool) or (type(value) is int and value in (0, 1))
+            )
             invalid_item = (
                 not isinstance(title_value, str)
                 or not title_value.strip()
                 or len(title_value.strip()) > 300
                 or not isinstance(body_value, str)
                 or len(body_value) > 2_000_000
+                or not valid_flag(deleted_value)
                 or (
                     entity == "note"
                     and (not isinstance(tags_value, str) or len(tags_value) > 2_000)
                 )
             )
+            if entity == "task":
+                priority_value = item.get("priority", 1)
+                done_value = item.get("done", False)
+                due_value = item.get("due_at", item.get("dueAt", ""))
+                valid_due = isinstance(due_value, str) and len(due_value) <= 32
+                if valid_due and due_value:
+                    try:
+                        if len(due_value) == 10:
+                            datetime.strptime(due_value, "%Y-%m-%d")
+                        else:
+                            datetime.strptime(due_value, "%Y-%m-%dT%H:%M")
+                    except ValueError:
+                        valid_due = False
+                invalid_item = invalid_item or (
+                    type(priority_value) is not int
+                    or priority_value not in (1, 2, 3)
+                    or not valid_flag(done_value)
+                    or not valid_due
+                )
             if invalid_item:
                 invalid += 1
                 invalid_uids.append(uid)
