@@ -18,7 +18,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "shared"))
 
-from merge_content_packs_into_android import append_unmatched_as_extra, apply_fields, commands_to_lessons, git_markdown_to_lessons
+from merge_content_packs_into_android import append_unmatched_as_extra, apply_fields, commands_to_lessons, git_markdown_to_lessons, merge_by_title, unmatched_by_title
 from sync_engine import compare_lww, content_hash, merge_push
 from audit_content import _item_quality
 from audit_content_packs import extract_items, inspect_record, review_sort_key
@@ -373,6 +373,39 @@ class DeepFallbackTests(unittest.TestCase):
 
 
 class ContentMergeTests(unittest.TestCase):
+    def test_git_markdown_enriches_same_level_lesson_without_duplicate_uid(self):
+        existing_lesson = {
+            "uid": "lesson:ch64:s000:l0002",
+            "chapter_order": 64,
+            "title_fa": "[L2] Git و GitHub چه هستند و چه تفاوتی دارند — ادمین",
+            "title_en": "",
+            "tags": "L2",
+            "summary": "مبانی Git",
+            "full_content": "## آموزش اصلی\\nتوضیح مفهومی و راهنمای مرحله‌ای.",
+            "commands": "git status",
+            "examples": "Lab baseline",
+            "notes": "",
+        }
+        data = {"chapters": [{
+            "order": 64,
+            "title_fa": "فصل ۶۴: Git و GitHub",
+            "subchapters": [{"title_fa": "۶۴.۱ مبانی", "lessons": [existing_lesson]}],
+        }]}
+        markdown_lesson = {
+            "uid": "lesson:ch64:git:s01:example",
+            "chapter_order": 64,
+            "level": "L2",
+            "title_fa": "[L2] Git و GitHub چه هستند و چه تفاوتی دارند",
+            "full_content": "## سناریوی تخصصی Git\\nGit-specific merge marker.\\n## Lab\\ngit status",
+            "commands": "git log --oneline",
+            "examples": "Scenario: create a temporary repository.",
+        }
+        merged = merge_by_title(data, [markdown_lesson])
+        self.assertEqual(merged, 1)
+        self.assertEqual(existing_lesson["uid"], "lesson:ch64:s000:l0002")
+        self.assertIn("Git-specific merge marker", existing_lesson["full_content"])
+        self.assertEqual(unmatched_by_title(data, [markdown_lesson], 64), [])
+
     def test_empty_pack_assessment_does_not_erase_generated_quiz(self):
         questions = [
             {"id": f"base_{i}", "prompt": f"Generated question {i}", "options": ["A", "B", "C", "D"]}

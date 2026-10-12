@@ -555,24 +555,75 @@ def apply_fields(les, src):
     _merge_lesson_metadata(les, src)
 
 
+def _lesson_title_match_key(lesson):
+    """Normalize a lesson title while preserving its L0-L4 level."""
+    title = str(lesson.get("title_fa") or lesson.get("title") or "").strip()
+    match = re.match(r"^\[\s*(L[0-4])\s*\]\s*", title, flags=re.I)
+    level = (match.group(1).upper() if match else str(lesson.get("level") or ""))
+    if level not in {"L0", "L1", "L2", "L3", "L4"}:
+        tags = lesson.get("tags")
+        if isinstance(tags, (list, tuple)):
+            tags = " ".join(map(str, tags))
+        tag_match = re.search(r"(?<![A-Za-z0-9])L[0-4](?![A-Za-z0-9])", str(tags or ""), flags=re.I)
+        level = tag_match.group(0).upper() if tag_match else ""
+    title = re.sub(r"^\[\s*L[0-4]\s*\]\s*", "", title, flags=re.I)
+    title = re.sub(
+        r"\s*[—–-]\s*(?:آشنایی|مقدماتی|ادمین|مهندس|خبره(?:\s+و\s+معمار)?|Intro|Junior|Admin|Senior|Architect)\s*$",
+        "", title, flags=re.I,
+    )
+    title = title.replace("\u200c", " ")
+    title = re.sub(r"\s+", " ", title).strip().casefold()
+    return level, title
+
+
+def unmatched_by_title(data, lessons, chapter_order):
+    """Return only pack records not already represented by the same title and level."""
+    existing = set()
+    for chapter in data.get("chapters", []):
+        if int(chapter.get("order") or 0) != int(chapter_order):
+            continue
+        for sub in chapter.get("subchapters", []):
+            for lesson in sub.get("lessons", []):
+                key = _lesson_title_match_key(lesson)
+                if key[1]:
+                    existing.add(key)
+    return [
+        lesson for lesson in lessons
+        if int(lesson.get("chapter_order") or chapter_order) == int(chapter_order)
+        and _lesson_title_match_key(lesson)[1]
+        and _lesson_title_match_key(lesson) not in existing
+    ]
+
+
 def merge_by_title(data, lessons):
-    by = {}
+    """Merge by normalized title AND level so L2 source content cannot overwrite L4."""
+    by_key = {}
+    by_exact = {}
     for src in lessons:
-        title = (src.get("title_fa") or "").strip()
-        by[(src.get("chapter_order"), title)] = src
-        bare = re.sub(r"^\[L[0-4]\]\s*", "", title)
-        by[(src.get("chapter_order"), bare)] = src
+        try:
+            chapter_order = int(src.get("chapter_order") or 0)
+        except (TypeError, ValueError):
+            chapter_order = 0
+        key = _lesson_title_match_key(src)
+        if key[1]:
+            by_key[(chapter_order, key[0], key[1])] = src
+        exact_title = str(src.get("title_fa") or "").strip()
+        if exact_title:
+            by_exact[(chapter_order, exact_title)] = src
     n = 0
-    for ch in data["chapters"]:
+    for ch in data.get("chapters", []):
+        try:
+            chapter_order = int(ch.get("order") or 0)
+        except (TypeError, ValueError):
+            continue
         for sub in ch.get("subchapters", []):
-            for les in sub.get("lessons", []):
-                t = (les.get("title_fa") or "").strip()
-                src = by.get((ch.get("order"), t))
-                if not src:
-                    bare = re.sub(r"^\[L[0-4]\]\s*", "", t)
-                    src = by.get((ch.get("order"), bare))
-                if src:
-                    apply_fields(les, src)
+            for lesson in sub.get("lessons", []):
+                key = _lesson_title_match_key(lesson)
+                src = by_key.get((chapter_order, key[0], key[1])) if key[1] else None
+                if src is None:
+                    src = by_exact.get((chapter_order, str(lesson.get("title_fa") or "").strip()))
+                if src is not None:
+                    apply_fields(lesson, src)
                     n += 1
     return n
 
@@ -892,8 +943,12 @@ def main():
 
         if "git_chapter64" in name:
             n = merge_by_title(data, lessons)
-            print("   git title-merge", n)
-            git_extra.extend(lessons)
+            unmatched = unmatched_by_title(data, lessons, 64)
+            print("   git title-merge", n, "unmatched lessons", len(unmatched))
+            # Same-title L0-L4 Git lessons already exist in the dedicated teacher
+            # curriculum. Merge specialist prose into those rows; append only genuinely
+            # new topics to avoid publishing a second UID/title per lesson level.
+            git_extra.extend(unmatched)
             continue
 
         if d.get("commands") or "commands_encyclopedia" in name:
