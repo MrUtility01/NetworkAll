@@ -73,8 +73,17 @@ app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024
 
 _MODULE_STATUS = {"workspace": False, "study": False, "workspace_error": "", "study_error": ""}
 
+workspace_sync_index = lambda: []
+workspace_sync_pull = lambda uids: []
+workspace_sync_apply = lambda records: 0
+
 try:
-    from workspace_routes import bp as workspace_bp, set_auth_checker
+    from workspace_routes import (
+        bp as workspace_bp, set_auth_checker,
+        sync_index as workspace_sync_index,
+        sync_pull as workspace_sync_pull,
+        sync_apply as workspace_sync_apply,
+    )
     app.register_blueprint(workspace_bp)
     _MODULE_STATUS["workspace"] = True
 except Exception as _e:
@@ -337,6 +346,8 @@ def sync_manifest():
         return denied
     since = request.args.get("since") or None
     records = db().sync_index()
+    if _MODULE_STATUS["workspace"]:
+        records.extend(workspace_sync_index())
     return jsonify(build_manifest(records, since=since))
 
 
@@ -350,6 +361,8 @@ def sync_pull():
     if not isinstance(uids, list):
         return jsonify({"error": "uids must be a list"}), 400
     records = db().sync_pull(uids)
+    if _MODULE_STATUS["workspace"]:
+        records.extend(workspace_sync_pull(uids))
     return jsonify({"records": records, "count": len(records), "generated_at": utc_now()})
 
 
@@ -368,11 +381,17 @@ def sync_push():
     conflict_uids = []
     unsupported_uids = []
     missing_target_uids = []
-    index = {r["uid"]: r for r in db().sync_index()}
-    to_apply = []
-    # This endpoint currently persists curriculum records only. Do not report
-    # task/note/vault as accepted: sync_apply does not yet store those entities.
-    allowed_entities = {"lesson", "scenario"}
+    index = {}
+    for row in db().sync_index():
+        index[(row["uid"], row.get("entity", "lesson"))] = row
+    if _MODULE_STATUS["workspace"]:
+        for row in workspace_sync_index():
+            index[(row["uid"], row.get("entity", ""))] = row
+    curriculum_to_apply = []
+    workspace_to_apply = []
+    # Vault entries are deliberately excluded: they require key-aware, encrypted
+    # transfer and must never be treated as ordinary notes or task records.
+    allowed_entities = {"lesson", "scenario", "task", "note"}
     for item in records:
         if not isinstance(item, dict):
             kept += 1
@@ -382,7 +401,7 @@ def sync_push():
         if not uid or len(uid) > 128:
             kept += 1
             continue
-        if entity not in allowed_entities:
+        if entity not in allowed_entities or (entity in ("task", "note") and not _MODULE_STATUS["workspace"]):
             unsupported += 1
             unsupported_uids.append(uid)
             continue
@@ -393,16 +412,16 @@ def sync_push():
         except (TypeError, ValueError):
             kept += 1
             continue
-        server = index.get(uid)
-        if not server:
-            # Current sync_apply only updates existing curriculum rows; it does
-            # not create rows because chapter/level relations must be resolved.
+        server = index.get((uid, entity))
+        if not server and entity in ("lesson", "scenario"):
+            # Curriculum sync may update existing rows only; creating a lesson
+            # requires valid chapter/level foreign-key relations.
             missing_targets += 1
             missing_target_uids.append(uid)
             continue
-        decision = compare_lww(server, item)
+        decision = compare_lww(server, item) if server else "accept_client"
         if decision == "accept_client":
-            to_apply.append(item)
+            (workspace_to_apply if entity in ("task", "note") else curriculum_to_apply).append(item)
             accepted += 1
         elif decision == "conflict":
             conflicts += 1
@@ -410,8 +429,14 @@ def sync_push():
             kept += 1
         else:
             kept += 1
-    if to_apply:
-        db().sync_apply(to_apply)
+    if curriculum_to_apply:
+        db().sync_apply(curriculum_to_apply)
+    if workspace_to_apply:
+        applied_workspace = workspace_sync_apply(workspace_to_apply)
+        if applied_workspace < len(workspace_to_apply):
+            rejected_workspace = len(workspace_to_apply) - applied_workspace
+            accepted -= rejected_workspace
+            kept += rejected_workspace
     return jsonify({
         "accepted": accepted,
         "kept": kept,
