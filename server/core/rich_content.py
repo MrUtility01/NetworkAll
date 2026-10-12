@@ -215,9 +215,16 @@ def _ensure_dense(title_fa: str, title_en: str, level: str | None, candidate: Di
     if not candidate:
         return dense
 
-    # Long specialist lessons keep their own body; fallback fills structured fields only.
+    # Long specialist lessons remain primary, but the reading tab must also expose
+    # missing self-tests/answer keys and source/checklist sections from the deep fallback.
     if _content_len(candidate) >= 4000:
         out = dict(candidate)
+        candidate_body = str(out.get("full_content") or "").strip()
+        support = _dense_support_sections(str(dense.get("full_content") or ""), candidate_body)
+        if support:
+            pieces = [candidate_body] if candidate_body else []
+            pieces.extend(support)
+            out["full_content"] = "\n\n---\n\n".join(pieces)
         if not isinstance(out.get("assessment"), dict) or not out["assessment"].get("questions") or not out["assessment"].get("answer_key"):
             out["assessment"] = dense.get("assessment") or {}
         if not out.get("learning_objectives"):
