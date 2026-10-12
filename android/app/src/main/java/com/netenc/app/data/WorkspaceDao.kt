@@ -26,6 +26,9 @@ interface WorkspaceDao {
     @Query("SELECT * FROM notes WHERE deleted = 0 ORDER BY lastUpdated DESC")
     suspend fun allNotes(): List<NoteEntity>
 
+    @Query("SELECT * FROM notes WHERE uid = :uid LIMIT 1")
+    suspend fun noteByUid(uid: String): NoteEntity?
+
     /** Includes soft-deleted rows so tombstones are not lost during sync. */
     @Query("SELECT * FROM notes ORDER BY lastUpdated DESC")
     suspend fun allNotesForSync(): List<NoteEntity>
