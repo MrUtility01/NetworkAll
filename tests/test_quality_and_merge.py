@@ -122,6 +122,13 @@ class DeepFallbackTests(unittest.TestCase):
                 lesson = build_rich_lesson(title, title)
                 self.assertEqual(lesson["category"], expected_category)
                 self.assertIn(title.split("] ", 1)[-1], lesson["full_content"])
+                self.assertTrue(
+                    lesson["full_content"].lstrip().startswith("# "),
+                    "specialist explanation should lead the lesson body",
+                )
+                self.assertNotIn("## ۰) داستان واقعی سازمانی", lesson["full_content"])
+                self.assertIn("پاسخ‌نامه", lesson["full_content"])
+                self.assertIn("## ۱۰) منابع رسمی و مراجع", lesson["full_content"])
 
     def test_python_fallback_has_python_specific_troubleshooting(self):
         lesson = build_deep_fallback("[L2] Python exception handling", "Python exception handling")
