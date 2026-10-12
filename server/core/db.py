@@ -2,6 +2,7 @@
 """SQLite سبک برای نسخه وب — فصل‌های ۱–۶۸ با محتوای غنی."""
 from __future__ import annotations
 
+import gzip
 import json
 import sqlite3
 import re
@@ -161,6 +162,32 @@ class WebDB:
             self.conn.backup(destination)
         return target
 
+    def _load_merged_curriculum_index(self):
+        """Read the same merged curriculum index shipped to Windows and Android.
+
+        This is only used on a seed operation. Existing seeded databases return
+        early in seed_full(), preserving notes, progress, and synced user data.
+        """
+        package_root = BASE.parent
+        candidates = (
+            package_root / "shared" / "curriculum_index.json.gz",
+            package_root / "android" / "app" / "src" / "main" / "assets" / "curriculum_index.json.gz",
+        )
+        for path in candidates:
+            if not path.is_file():
+                continue
+            try:
+                with gzip.open(path, "rt", encoding="utf-8") as stream:
+                    payload = json.load(stream)
+                chapters = payload.get("chapters")
+                orders = {int(ch.get("order", 0)) for ch in chapters or [] if isinstance(ch, dict)}
+                if isinstance(chapters, list) and len(orders) >= 64 and 68 in orders:
+                    return payload
+                print(f"Ignoring incomplete curriculum index: {path}")
+            except (OSError, EOFError, ValueError, TypeError) as exc:
+                print(f"Could not load curriculum index {path}: {exc}")
+        return None
+
     def seed_full(self, force=False):
         """ساخت کامل فصل‌های ۱–۶۸ با محتوای غنی."""
         if self.is_seeded() and not force:
@@ -178,32 +205,105 @@ class WebDB:
                 "DELETE FROM lessons; DELETE FROM levels; DELETE FROM chapters; DELETE FROM scenarios;"
             )
 
-        curriculum = get_full_curriculum()
-        try:
-            from core.extra_chapters import ensure_chapters_1_to_68
-            curriculum = ensure_chapters_1_to_68(list(curriculum))
-        except Exception as e:
-            print("extra_chapters", e)
+        merged_index = self._load_merged_curriculum_index()
         n_ch = n_lv = n_les = 0
         now = datetime.now().isoformat()
 
-        for order, title_fa, title_en, levels in curriculum:
-            cur.execute(
-                "INSERT INTO chapters(order_index, title_fa, title_en) VALUES (?,?,?)",
-                (order, title_fa, title_en),
-            )
-            ch_id = cur.lastrowid
-            n_ch += 1
-            for li, (lv_title, lessons) in enumerate(levels, 1):
+        if merged_index:
+            # Fresh installs consume the exact same merged index packaged for Android.
+            for ch in sorted(merged_index.get("chapters") or [], key=lambda item: int(item.get("order", 0))):
+                order = int(ch.get("order", 0))
+                title_fa = str(ch.get("title_fa") or f"فصل {order}")
+                title_en = str(ch.get("title_en") or "")
                 cur.execute(
-                    "INSERT INTO levels(chapter_id, order_index, title_fa) VALUES (?,?,?)",
-                    (ch_id, li, lv_title),
+                    "INSERT INTO chapters(order_index, title_fa, title_en) VALUES (?,?,?)",
+                    (order, title_fa, title_en),
                 )
-                lv_id = cur.lastrowid
-                n_lv += 1
-                for oi, (lfa, len_) in enumerate(lessons, 1):
-                    insert_rich_lesson(cur, lv_id, oi, lfa, len_, now)
-                    n_les += 1
+                ch_id = cur.lastrowid
+                n_ch += 1
+                for li, sub in enumerate(ch.get("subchapters") or [], 1):
+                    sub_fa = str(sub.get("title_fa") or f"بخش {li}")
+                    sub_en = str(sub.get("title_en") or "")
+                    cur.execute(
+                        "INSERT INTO levels(chapter_id, order_index, title_fa, title_en) VALUES (?,?,?,?)",
+                        (ch_id, li, sub_fa, sub_en),
+                    )
+                    lv_id = cur.lastrowid
+                    n_lv += 1
+                    for oi, lesson in enumerate(sub.get("lessons") or [], 1):
+                        if not isinstance(lesson, dict):
+                            continue
+                        meta_raw = lesson.get("meta_json")
+                        if isinstance(meta_raw, dict):
+                            meta_value = json.dumps(meta_raw, ensure_ascii=False)
+                            meta_obj = meta_raw
+                        else:
+                            meta_value = str(meta_raw or "{}")
+                            try:
+                                meta_obj = json.loads(meta_value)
+                                if not isinstance(meta_obj, dict):
+                                    meta_obj = {}
+                            except (TypeError, ValueError):
+                                meta_obj = {}
+                                meta_value = "{}"
+                        objectives = lesson.get("learning_objectives") or ""
+                        if isinstance(objectives, (list, tuple)):
+                            objectives = "؛".join(str(value) for value in objectives)
+                        tags = " ".join(
+                            str(value) for value in (
+                                meta_obj.get("category"), meta_obj.get("topic"),
+                                meta_obj.get("level") or lesson.get("level"),
+                            ) if value
+                        )
+                        title = str(lesson.get("title_fa") or lesson.get("title_en") or f"درس {oi}")
+                        cur.execute(
+                            """INSERT INTO lessons(
+                                level_id, order_index, title_fa, title_en, tags, summary,
+                                full_content, commands, examples, notes, meta_json, search_query,
+                                learning_objectives, source_status, last_updated
+                            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                            (
+                                lv_id, oi, title, str(lesson.get("title_en") or ""), tags,
+                                str(lesson.get("summary") or ""), str(lesson.get("full_content") or ""),
+                                str(lesson.get("commands") or ""), str(lesson.get("examples") or ""),
+                                str(lesson.get("notes") or ""), meta_value,
+                                str(lesson.get("search_query") or ""), str(objectives),
+                                str(lesson.get("source_status") or "review_required"),
+                                str(lesson.get("last_updated") or now),
+                            ),
+                        )
+                        n_les += 1
+            if n_ch < 64 or n_les == 0:
+                raise RuntimeError(
+                    f"Merged curriculum index appears incomplete (chapters={n_ch}, lessons={n_les}); "
+                    "refusing to mark the database as seeded."
+                )
+            print(f"Seeded from shared merged curriculum index: chapters={n_ch}, lessons={n_les}")
+        else:
+            # Source-only/developer checkouts without the shared artifact use the core curriculum.
+            curriculum = get_full_curriculum()
+            try:
+                from core.extra_chapters import ensure_chapters_1_to_68
+                curriculum = ensure_chapters_1_to_68(list(curriculum))
+            except Exception as e:
+                print("extra_chapters", e)
+            for order, title_fa, title_en, levels in curriculum:
+                cur.execute(
+                    "INSERT INTO chapters(order_index, title_fa, title_en) VALUES (?,?,?)",
+                    (order, title_fa, title_en),
+                )
+                ch_id = cur.lastrowid
+                n_ch += 1
+                for li, (lv_title, lessons) in enumerate(levels, 1):
+                    cur.execute(
+                        "INSERT INTO levels(chapter_id, order_index, title_fa) VALUES (?,?,?)",
+                        (ch_id, li, lv_title),
+                    )
+                    lv_id = cur.lastrowid
+                    n_lv += 1
+                    for oi, (lfa, len_) in enumerate(lessons, 1):
+                        insert_rich_lesson(cur, lv_id, oi, lfa, len_, now)
+                        n_les += 1
 
         for sc in CAPSTONE_SCENARIOS:
             cur.execute(
