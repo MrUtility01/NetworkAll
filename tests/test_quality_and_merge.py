@@ -19,11 +19,36 @@ sys.path.insert(0, str(ROOT / "shared"))
 from merge_content_packs_into_android import append_unmatched_as_extra, apply_fields, commands_to_lessons, git_markdown_to_lessons
 from sync_engine import compare_lww, content_hash, merge_push
 from audit_content import _item_quality
+from audit_content_packs import inspect_record
 from core.db import WebDB
 from core.deep_fallback import build_deep_fallback
 import app as server_app
 import workspace_routes
 from core.study import study_sync_apply, study_sync_index, study_sync_pull
+
+
+class ContentAuditMetadataTests(unittest.TestCase):
+    def test_audit_recognizes_nested_assessment_and_answer_key_metadata(self):
+        assessment = {
+            "questions": [{"id": "q1", "prompt": "؟", "options": ["الف", "ب"]}],
+            "answer_key": [{"id": "q1", "correct_index": 0}],
+        }
+        variants = [
+            {"meta": {"assessment": assessment}},
+            {"meta_json": json.dumps({"assessment": assessment}, ensure_ascii=False)},
+        ]
+        for index, metadata in enumerate(variants, 1):
+            with self.subTest(index=index):
+                record = {
+                    "uid": f"audit-test-{index}",
+                    "title_fa": "آزمون ساختاریافته",
+                    "full_content": "## آزمایشگاه عملی\\n## سناریوی عملی\\nمتن تستی.",
+                    **metadata,
+                }
+                result = inspect_record(ROOT / "tools/packs/audit-test.json", record, index, 1)
+                self.assertTrue(result["field_presence"]["assessment"])
+                self.assertTrue(result["field_presence"]["answer_key"])
+                self.assertNotIn("missing_answer_key_marker", result["checks"])
 
 
 class DeepFallbackTests(unittest.TestCase):
