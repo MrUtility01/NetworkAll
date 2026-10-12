@@ -660,6 +660,29 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
              for source in incoming if str(source.get("subchapter_title_fa") or "").strip()),
             "",
         )
+
+        # Prefer an existing subchapter with the same descriptive title. If the
+        # requested order is already occupied by a different named topic, create
+        # a new subchapter instead of silently mixing two curriculum subjects.
+        if requested_subtitle:
+            named_sub = next(
+                (sub for sub in chapter["subchapters"]
+                 if str(sub.get("title_fa") or "").strip() == requested_subtitle),
+                None,
+            )
+            if named_sub is not None:
+                target_sub = named_sub
+                si = int(target_sub.get("order") or si)
+            elif target_sub is not None:
+                current_title = str(target_sub.get("title_fa") or "").strip()
+                generic_title = f"زیرفصل {si}"
+                if current_title and current_title not in (generic_title, requested_subtitle):
+                    existing_orders = [
+                        int(sub.get("order") or 0) for sub in chapter["subchapters"]
+                    ]
+                    si = max(existing_orders, default=0) + 1
+                    target_sub = None
+
         if target_sub is None:
             target_sub = {
                 "order": si,
@@ -669,6 +692,10 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
             chapter["subchapters"].append(target_sub)
         elif requested_subtitle and str(target_sub.get("title_fa") or "").strip() == f"زیرفصل {si}":
             target_sub["title_fa"] = requested_subtitle
+
+        # Keep the normalized lesson metadata aligned with the actual tree node.
+        for lesson in incoming:
+            lesson["subchapter_order"] = si
         target_sub.setdefault("lessons", []).extend(incoming)
         existing_by_identity.update(pending_by_identity)
 
