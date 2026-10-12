@@ -12,6 +12,36 @@ on:
     branches: [main]
 
 jobs:
+  windows-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble portable Windows server package
+        run: |
+          set -e
+          mkdir -p dist/NetworkAll-Windows
+          cp -a server shared tools scripts docs windows README.md INSTALL_FA.md README_FA.txt dist/NetworkAll-Windows/
+          cat > dist/NetworkAll-Windows/BUILD-INFO.txt <<'EOF'
+          NetworkAll Windows portable package
+          Build source: GitHub Actions
+          Launch: windows\\Start-NetworkAll.bat
+          This is a Python-based portable package, not a standalone EXE.
+          Do not distribute server/data/session.key or server/data/sync-token.txt.
+          EOF
+          cd dist
+          zip -qr NetworkAll-Windows-Portable.zip NetworkAll-Windows
+          sha256sum NetworkAll-Windows-Portable.zip > NetworkAll-Windows-Portable.zip.sha256
+          ls -lh NetworkAll-Windows-Portable.zip NetworkAll-Windows-Portable.zip.sha256
+      - name: Upload Windows portable package
+        uses: actions/upload-artifact@v4
+        with:
+          name: NetworkAll-Windows-Portable
+          path: |
+            dist/NetworkAll-Windows-Portable.zip
+            dist/NetworkAll-Windows-Portable.zip.sha256
+          if-no-files-found: error
+          retention-days: 30
+
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 90
