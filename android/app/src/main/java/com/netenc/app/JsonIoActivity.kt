@@ -32,7 +32,7 @@ class JsonIoActivity : AppCompatActivity() {
             setPadding(16, 16, 16, 16)
         }
         val exportBtn = Button(this).apply {
-            text = "خروجی JSON (دروس + سناریو)"
+            text = "ساخت بکاپ قابل‌انتقال (دروس، سناریو، کارها، یادداشت‌ها، پیشرفت)"
             setOnClickListener { exportJson() }
         }
         val openBtn = Button(this).apply {
@@ -40,11 +40,11 @@ class JsonIoActivity : AppCompatActivity() {
             setOnClickListener { openExport() }
         }
         val shareBtn = Button(this).apply {
-            text = "اشتراک‌گذاری فایل JSON"
+            text = "انتقال بکاپ به دستگاه دیگر"
             setOnClickListener { shareExport() }
         }
         val importBtn = Button(this).apply {
-            text = "ورودی JSON از همان مسیر"
+            text = "بازیابی بکاپ JSON از فایل یا دستگاه دیگر"
             setOnClickListener { openImportPicker() }
         }
         val root = LinearLayout(this).apply {
