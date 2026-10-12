@@ -118,6 +118,7 @@ class DeepFallbackTests(unittest.TestCase):
         cases = [
             ("[L2] systemd-boot", "boot"),
             ("[L1] journalctl پایه", "linux"),
+            ("[L1] سلسله‌مراتب FS", "linux"),
             ("[L2] Btrfs Snapshot", "linux_fs"),
             ("[L2] Network Bottleneck", "resource"),
         ]
@@ -137,6 +138,16 @@ class DeepFallbackTests(unittest.TestCase):
                     self.assertIn("copy-on-write", lesson["full_content"])
                     self.assertIn("btrfs subvolume snapshot", lesson["full_content"])
                     self.assertIn("جایگزین backup روی رسانه/سیستم جدا نیست", lesson["full_content"])
+                if "سلسله‌مراتب FS" in title:
+                    self.assertIn("Filesystem Hierarchy Standard", lesson["full_content"])
+                    self.assertIn("findmnt -T /var/log", lesson["full_content"])
+                    self.assertIn("df -i", lesson["full_content"])
+                    self.assertIn("/var/lib", lesson["full_content"])
+                if "Network Bottleneck" in title:
+                    self.assertIn("RTT median/p95", lesson["examples"])
+                    self.assertIn("Get-NetAdapterStatistics", lesson["commands"])
+                    self.assertIn("show interfaces counters errors", lesson["commands"])
+                    self.assertIn("معیار قبولی", lesson["full_content"])
 
     def test_python_fallback_has_python_specific_troubleshooting(self):
         lesson = build_deep_fallback("[L2] Python exception handling", "Python exception handling")
