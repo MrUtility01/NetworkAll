@@ -22,6 +22,7 @@ from audit_content import _item_quality
 from core.db import WebDB
 from core.deep_fallback import build_deep_fallback
 import app as server_app
+import workspace_routes
 
 
 class DeepFallbackTests(unittest.TestCase):
@@ -313,24 +314,49 @@ class ContentMergeTests(unittest.TestCase):
 
 
 class SyncApiContractTests(unittest.TestCase):
-    def test_push_does_not_claim_unsupported_entities_or_missing_lessons(self):
+    def test_sync_push_persists_tasks_notes_and_tombstones_but_rejects_missing_lessons(self):
         with tempfile.TemporaryDirectory() as td:
             db = WebDB(Path(td) / "sync-api.sqlite")
+            stamp = "2026-10-12T04:00:00Z"
             payload = {
                 "records": [
-                    {"uid": "task-1", "entity": "task", "title": "LAN sync test"},
+                    {"uid": "task-1", "entity": "task", "title": "LAN sync test",
+                     "body": "Created on Android", "done": False, "priority": 2,
+                     "due_at": "", "last_updated": stamp, "device_id": "android-test"},
+                    {"uid": "note-1", "entity": "note", "title": "OSPF notes",
+                     "body": "Neighbor state checklist", "tags": "routing",
+                     "last_updated": stamp, "device_id": "android-test", "deleted": True},
                     {"uid": "lesson:missing", "entity": "lesson", "title_fa": "درس ناشناخته"},
+                    {"uid": "vault-1", "entity": "vault", "title": "must not sync", "secret": "plaintext"},
                 ]
             }
-            with patch.object(server_app, "db", return_value=db), patch.object(server_app, "require_token", return_value=None):
-                response = server_app.app.test_client().post("/api/sync/push", json=payload)
-            self.assertEqual(response.status_code, 200)
-            body = response.get_json()
-            self.assertEqual(body["accepted"], 0)
-            self.assertEqual(body["unsupported"], 1)
-            self.assertEqual(body["unsupported_uids"], ["task-1"])
-            self.assertEqual(body["missing_targets"], 1)
-            self.assertEqual(body["missing_target_uids"], ["lesson:missing"])
+            with (
+                patch.object(server_app, "db", return_value=db),
+                patch.object(server_app, "require_token", return_value=None),
+                patch.object(workspace_routes, "_db_path", return_value=db.path),
+            ):
+                client = server_app.app.test_client()
+                response = client.post("/api/sync/push", json=payload)
+                self.assertEqual(response.status_code, 200)
+                body = response.get_json()
+                self.assertEqual(body["accepted"], 2)
+                self.assertEqual(body["unsupported"], 1)
+                self.assertEqual(body["unsupported_uids"], ["vault-1"])
+                self.assertEqual(body["missing_targets"], 1)
+                self.assertEqual(body["missing_target_uids"], ["lesson:missing"])
+
+                manifest = client.get("/api/sync/manifest").get_json()
+                by_uid = {item["uid"]: item for item in manifest["items"]}
+                self.assertIn("task-1", by_uid)
+                self.assertIn("note-1", by_uid)
+                self.assertTrue(by_uid["note-1"]["deleted"])
+
+                pulled = client.post("/api/sync/pull", json={"uids": ["task-1", "note-1"]}).get_json()
+                records = {item["uid"]: item for item in pulled["records"]}
+                self.assertEqual(records["task-1"]["title"], "LAN sync test")
+                self.assertEqual(records["task-1"]["device_id"], "android-test")
+                self.assertTrue(records["note-1"]["deleted"])
+                self.assertNotIn("secret", records["note-1"])
             db.conn.close()
 
 
