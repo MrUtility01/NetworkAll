@@ -91,6 +91,7 @@ def record_blob(item):
         "sample_output", "expected_result", "lab", "lab_hint_fa", "scenario",
         "tasks", "solution", "verification", "notes", "references",
         "official_sources", "assessment", "questions", "answer_key",
+        "meta", "meta_json", "metaJson",
         "prerequisites", "prerequisites_fa", "commands",
     )
     return "\n".join(text(item.get(k)) for k in keys if k in item)
@@ -117,6 +118,25 @@ def mark_template_heavy(rows, records):
             row["checks"].append("template_heavy")
 
 
+def metadata_dicts(item):
+    """Return top-level and nested assessment metadata in supported pack shapes."""
+    found = [item]
+    for key in ("meta", "meta_json", "metaJson"):
+        value = item.get(key)
+        if isinstance(value, str):
+            try:
+                value = json.loads(value)
+            except (TypeError, ValueError):
+                continue
+        if not isinstance(value, dict):
+            continue
+        found.append(value)
+        assessment = value.get("assessment")
+        if isinstance(assessment, dict):
+            found.append(assessment)
+    return found
+
+
 def inspect_record(path, item, index, min_chars):
     title = text(item.get("title_fa") or item.get("title_en") or item.get("title") or item.get("command") or f"item-{index}")
     blob = record_blob(item)
@@ -130,6 +150,15 @@ def inspect_record(path, item, index, min_chars):
         not is_network_topic
         and sum(term in blob.lower() for term in generic_terms) >= 4
     )
+    meta_nodes = metadata_dicts(item)
+    has_assessment = any(
+        node.get("assessment") or node.get("questions")
+        for node in meta_nodes
+    )
+    has_answer_key = any(
+        node.get("answer_key") or node.get("answers")
+        for node in meta_nodes
+    ) or bool(ANSWER_RE.search(blob))
     status = text(item.get("source_status") or item.get("status") or (item.get("meta") or {}).get("status")).lower()
     checks = {
         "needs_human_review": any(flag in status for flag in ("review_required", "draft", "seeded", "todo")),
@@ -154,8 +183,8 @@ def inspect_record(path, item, index, min_chars):
             "content": bool(item.get("full_content") or item.get("content") or item.get("explanation")),
             "examples": bool(item.get("examples") or item.get("sample_output")),
             "commands_or_steps": bool(item.get("commands") or item.get("steps") or item.get("steps_fa")),
-            "assessment": bool(item.get("assessment") or item.get("questions")),
-            "answer_key": bool(item.get("answer_key") or item.get("answers") or ANSWER_RE.search(blob)),
+            "assessment": bool(has_assessment),
+            "answer_key": bool(has_answer_key),
             "sources": bool(item.get("official_sources") or item.get("references") or SOURCE_RE.search(blob)),
         },
     }
