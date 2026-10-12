@@ -140,7 +140,7 @@ class PacketPathMasterclassTests(unittest.TestCase):
         for item in lessons:
             with self.subTest(uid=item["uid"]):
                 level = item["depth_level"]
-                word_count = len(re.findall(r"(?u)\\b[\\w]+\\b", item.get("full_content", "")))
+                word_count = len(re.findall(r"(?u)\b[\w]+\b", item.get("full_content", "")))
                 self.assertGreaterEqual(word_count, floors[level])
                 assessment = item.get("meta", {}).get("assessment", {})
                 questions = assessment.get("questions", [])
