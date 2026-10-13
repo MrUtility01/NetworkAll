@@ -36,7 +36,7 @@ android_settings = read("android/app/src/main/java/com/netenc/app/SettingsActivi
 git_teacher = read("tools/chapter_git_teacher.py")
 
 require("# NetworkAll" in readme and "NetworkAll v1.0.0" in readme, "README.md does not declare NetworkAll v1.0.0")
-require("Version: 1.0.0" in version and "Port: 86" in version, "VERSION.txt version/port mismatch")
+require("Version: 1.0.0" in version and ("Port: 86" in version or "Web/API port: TCP 86" in version), "VERSION.txt version/port mismatch")
 require('versionName = "1.0.0"' in gradle and re.search(r"versionCode = \d+", gradle), "Android Gradle version metadata missing")
 require('rootProject.name = "NetworkAll"' in settings, "Gradle root project name is not NetworkAll")
 require('android:label="NetworkAll"' in manifest, "Android launcher label is not NetworkAll")
