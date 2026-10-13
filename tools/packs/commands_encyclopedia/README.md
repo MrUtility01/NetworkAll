@@ -4,13 +4,14 @@
 
 ## بسته‌های مستقل افزوده‌شده در مرحله اول
 
-- `cisco_routing.json` — ۳۰ فرمان Cisco IOS-XE در حوزه routing، switching diagnostics، ACL، NAT و verification.
+- `cisco_routing.json` — ۳۰ فرمان Cisco IOS-XE در حوزه routing، ACL، NAT و verification.
+- `cisco_switching.json` — ۲۰ فرمان Cisco switching برای VLAN، STP، EtherChannel، PoE و عیب‌یابی لایه ۲.
 - `mikrotik_ops_addon.json` — ۲۰ فرمان افزایشی MikroTik RouterOS v7.
 - `powershell.json` — ۲۰ فرمان PowerShell برای شبکه، سرویس، لاگ، فایل و اتوماسیون.
 - `windows_batch.json` — ۲۰ نمونه Windows Batch/CMD برای کنترل خطا، فایل، logging و job.
 - `linux.json` — ۲۰ فرمان Linux برای شبکه، DNS، سرویس، storage، process و logs.
 
-مجموع این مرحله ۱۱۰ رکورد فرمان تازه است؛ این تعداد به معنی تکمیل کل دانشنامه نیست. هدف Cisco Routing برابر ۱۶۰۰ رکورد مستقل است و فعلاً ۳۰ رکورد از آن هدف ثبت شده است.
+مجموع این مرحله ۱۳۰ رکورد فرمان تازه است؛ این تعداد به معنی تکمیل کل دانشنامه نیست. هدف Cisco Routing برابر ۱۶۰۰ رکورد مستقل است و فعلاً ۳۰ رکورد از آن هدف ثبت شده است.
 
 ## فایل‌های جانبی آموزشی
 
