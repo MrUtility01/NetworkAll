@@ -20,8 +20,10 @@ REQUIRED = {
     "cisco_routing_addon_07.json": ("cisco_routing", 200),
     "cisco_routing_addon_08.json": ("cisco_routing", 49),
     "cisco_switching.json": ("cisco_switching", 20),
-    "mikrotik_ops_addon.json": ("mikrotik", 20),
-    "powershell.json": ("powershell", 20),
+    "mikrotik_ops_addon.json": ("mikrotik", 43),
+    "mikrotik_ops_addon_02.json": ("mikrotik", 100),
+    "powershell.json": ("powershell", 49),
+    "powershell_addon_01.json": ("powershell", 100),
     "windows_batch.json": ("windows_batch", 20),
     "linux.json": ("linux", 20),
 }
