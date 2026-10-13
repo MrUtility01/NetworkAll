@@ -1,38 +1,50 @@
-# NetworkEncyclopedia / ENGINEER JOKAR
+# NetworkAll — ENGINEER JOKAR
 
-دانشنامه آموزشی شبکه و زیرساخت IT — ویندوز (Flask) + اندروید (Kotlin) + همگام‌سازی LAN.
+دانشنامهٔ شخصی شبکه و زیرساخت IT برای ویندوز و اندروید: محتوای آفلاین، جست‌وجو، یادگیری مرحله‌ای و همگام‌سازی شبکهٔ محلی.
 
-## شروع سریع
+## وضعیت انتشار
 
-**ویندوز**
+**نسخهٔ ۱٫۰٫۰ هنوز کاندید انتشار است، نه نسخهٔ نهایی تأییدشده.** کارهای یکسان‌سازی محتوا، ساخت بستهٔ ویندوز، ممیزی APK و تنظیم توکن/پورت در [پیش‌نویس PR شمارهٔ ۵](https://github.com/MrUtility01/NetworkAll/pull/5) در حال بازبینی‌اند. تا زمانی که کنترل CI سبز نباشد و نصب واقعی روی دستگاه انجام نشود، از معرفی Artifact به‌عنوان نسخهٔ نهایی خودداری کنید.
+
+- مخزن رسمی: https://github.com/MrUtility01/NetworkAll
+- بررسی ساخت‌ها: https://github.com/MrUtility01/NetworkAll/actions
+- ممیزی و موارد باقی‌مانده: [docs/V1_RELEASE_AUDIT_FA.md در شاخهٔ کاندید](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/docs/V1_RELEASE_AUDIT_FA.md)
+
+## مسیر پیشنهادی برای کاندید v1
+
+برای بررسی تغییرهای نسخهٔ ۱، شاخهٔ کاری را دریافت کنید؛ هنوز با `main` یکی نشده است:
+
 ```bash
-git clone https://github.com/MrUtility01/NetworkEncyclopedia.git
-cd NetworkEncyclopedia/server
-python -m pip install -r requirements.txt
-set NETENC_TOKEN=change-me
-python app.py
+git clone https://github.com/MrUtility01/NetworkAll.git
+cd NetworkAll
+git fetch origin
+git switch codex/android-repair-port86-20261013
 ```
 
-**اندروید:** Actions → Build Android APK → نصب → در صورت نیاز Clear data.
+Artifact اندروید و ZIP ویندوز را فقط از یک اجرای موفق GitHub Actions دریافت کنید. ZIP ویندوز بستهٔ میزبان/سورس Python است و **EXE مستقل نیست**.
 
-## ساختار
-
-جزئیات کامل: [docs/REPO_LAYOUT_FA.md](docs/REPO_LAYOUT_FA.md)
+## معماری
 
 | مسیر | نقش |
-|------|-----|
-| `server/` | API + SQLite + وب |
-| `android/` | اپ آفلاین |
-| `tools/packs/` | JSON محتوای نهایی |
-| `scripts/merge_content_packs_into_android.py` | ادغام پک‌ها در asset |
-| `docs/` | معماری، Sync، وضعیت |
+|---|---|
+| `server/` | Flask، SQLite، وب و API |
+| `android/` | اپ Kotlin و پایگاه دادهٔ آفلاین |
+| `windows/` | راه‌انداز میزبان ویندوز |
+| `tools/packs/` | بسته‌های محتوای JSON |
+| `scripts/` | خروجی‌گیری، ادغام، اعتبارسنجی و بسته‌بندی |
+| `docs/` | معماری، Sync، ممیزی و محدودیت‌های شناخته‌شده |
 
-## محتوای جدید
+## قراردادهای کاندید v1
 
-1. JSON را در `tools/packs/<موضوع>/` بگذار  
-2. `python scripts/merge_content_packs_into_android.py`  
-3. commit + push + Actions  
+- نام محصول: **NetworkAll**
+- نسخهٔ هدف: **1.0.0**
+- پورت وب/API: TCP **86**
+- درخت هدف: **۶۸ فصل** با فهرست آموزشی ادغام‌شدهٔ مشترک
+- Windows: Python 3.11+ و بستهٔ ZIP
+- Android: APK از Artifact معتبر
 
-## امنیت
+در اجرای ویندوزی کاندید، توکن Sync باید مخصوص همان نصب باشد؛ توکن، فایل دیتابیس و بکاپ خصوصی را commit یا در URL قرار ندهید. سرور را مستقیماً به اینترنت عمومی expose نکنید.
 
-توکن پیش‌فرض را عوض کن: `NETENC_TOKEN`. مستند Sync: `docs/SYNC_PROTOCOL.md`.
+## نکات مهم
+
+وجود ۶۸ فصل یا ساخت موفق APK به معنی بازبینی علمی تمام درس‌ها نیست. برخی دیاگرام‌ها الگوهای SVG تولیدشده هستند؛ Sync دوطرفهٔ کامل Tasks/Notes/Study Progress، تقویم شمسی، یادآوری‌ها، Backup/Restore و آزمون روی دستگاه واقعی باید طبق ممیزی v1 تأیید شوند. برای استفادهٔ روزانه از داده‌های مهم، تا تکمیل این تست‌ها از آن‌ها بکاپ جداگانه بگیرید.
