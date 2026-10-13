@@ -3,7 +3,7 @@
 ## ویندوز (میزبان)
 
 ```bat
-git clone https://github.com/MrUtility01/NetworkEncyclopedia.git
+git clone https://github.com/MrUtility01/NetworkAll.git
 cd NetworkEncyclopedia
 ```
 
