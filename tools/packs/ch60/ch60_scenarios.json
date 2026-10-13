@@ -1,1 +1,211 @@
-PLACEHOLDER2
+{
+  "package_schema_version": "1.0",
+  "project": "ENGINEER JOKAR / NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "۵۰+ سناریوی عملیاتی مستقل برای فصل ۶۰ — فقط محیط مجاز و کنترل‌شده",
+  "chapter_order": 60,
+  "scenarios": [
+    {
+      "id": "sc-ch60-001",
+      "title_fa": "قطع کامل دسترسی اینترنت در دفتر ۵۰ نفره",
+      "level": "L2",
+      "difficulty": "متوسط",
+      "objective": "اعمال روش Symptom to Root Cause و Follow the Path برای پیدا کردن علت قطعی اینترنت",
+      "environment": "LAB-01: ۱ روتر لبه، ۱ سوییچ Access، ۲۰ کلاینت شبیه‌سازی، لینک به ISP شبیه‌سازی‌شده",
+      "topology": "Clients → Access SW → Edge Router → ISP Cloud",
+      "symptom": "همه کاربران از ساعت ۱۰:۱۲ می‌گویند اینترنت قطع است. پینگ به ۸.۸.۸.۸ ناموفق.",
+      "initial_evidence": [
+        "show ip interface brief روی روتر: Gi0/0 (WAN) down",
+        "لاگ: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to down",
+        "کابل و SFP ظاهراً سالم"
+      ],
+      "hypotheses": [
+        "مشکل فیزیکی کابل یا SFP",
+        "مشکل Negotiation یا speed/duplex",
+        "مشکل از سمت ISP",
+        "پیکربندی اشتباه interface"
+      ],
+      "steps": [
+        "۱. ثبت دقیق زمان و دامنه تأثیر",
+        "۲. بررسی فیزیکی کابل و تعویض با known-good",
+        "۳. بررسی show interface و counters",
+        "۴. تماس با ISP در صورت ادامه مشکل",
+        "۵. Verify با پینگ و traceroute"
+      ],
+      "expected_result": "پس از تعویض کابل، interface up می‌شود و پینگ ۸.۸.۸.۸ موفق است.",
+      "verify_commands": ["ping 8.8.8.8", "show ip interface brief", "traceroute 8.8.8.8"],
+      "alternatives": "اگر کابل مشکل نبود → بررسی SFP و سپس escalation به ISP",
+      "rollback": "برگرداندن کابل قبلی در صورت نیاز (ولی در این سناریو کابل جدید باقی می‌ماند)",
+      "stop_conditions": "هرگونه تأثیر روی لینک‌های دیگر یا نیاز به تغییر پیکربندی production بدون Change",
+      "scoring": "ثبت علامت ۱۰٪ | جمع شواهد ۲۰٪ | فرضیه‌سازی ۲۰٪ | تست کنترل‌شده ۳۰٪ | Verify و مستندسازی ۲۰٪",
+      "learning_points": ["همیشه از لایه فیزیکی شروع کنید وقتی interface down است", "Backup قبل از هر تغییر فیزیکی لازم نیست اما مستندسازی الزامی است"]
+    },
+    {
+      "id": "sc-ch60-002",
+      "title_fa": "کندی شدید DNS در سازمان ۳۰۰ نفره",
+      "level": "L2",
+      "difficulty": "متوسط",
+      "objective": "استفاده از Compare Known-Good و Baseline برای تشخیص مشکل DNS",
+      "environment": "LAB-02: دو DNS Server (Primary/Secondary)، کلاینت‌های ویندوز و لینوکس",
+      "symptom": "کاربران می‌گویند باز شدن سایت‌ها خیلی طول می‌کشد. برخی سایت‌های داخلی اصلاً باز نمی‌شوند.",
+      "initial_evidence": [
+        "nslookup روی کلاینت: timeout",
+        "پینگ به IP DNS Server موفق",
+        "روی DNS Server: CPU بالا و صف query پر"
+      ],
+      "hypotheses": [
+        "سرویس DNS overload",
+        "recursion مشکل دارد",
+        "zone خراب یا قفل شده",
+        "حمله DNS amplification (در Lab کنترل‌شده)"
+      ],
+      "steps": [
+        "مقایسه با کلاینت known-good",
+        "بررسی Event Viewer / journalctl DNS",
+        "restart کنترل‌شده سرویس در Maintenance Window",
+        "بررسی forwarderها"
+      ],
+      "expected_result": "پس از رفع overload یا اصلاح forwarder، nslookup زیر ۱۰۰ms جواب می‌دهد.",
+      "verify_commands": ["nslookup intranet.company.local", "Resolve-DnsName intranet.company.local"],
+      "rollback": "برگرداندن تنظیمات forwarder از backup",
+      "stop_conditions": "اگر restart سرویس باعث قطع کامل name resolution شود → فوری secondary را promote کنید",
+      "scoring": "استفاده از Compare Known-Good ۲۵٪ | تحلیل لاگ ۲۵٪ | رفع و Verify ۵۰٪",
+      "learning_points": ["Baseline زمان پاسخ DNS را از قبل داشته باشید"]
+    },
+    {
+      "id": "sc-ch60-003",
+      "title_fa": "اسکن غیرمجاز شناسایی‌شده در SOC",
+      "level": "L3",
+      "difficulty": "پیشرفته",
+      "objective": "تمرین تشخیص و پاسخ به اسکن غیرمجاز + رعایت قوانین Authorized Only",
+      "environment": "LAB-07: SOC Detection با Suricata/Zeek + چند کلاینت",
+      "symptom": "آلرت SOC: Port scan از IP داخلی به سمت کل subnet",
+      "initial_evidence": [
+        "لاگ Suricata: ET SCAN Nmap Scripting Engine",
+        "IP مبدأ متعلق به یک لپ‌تاپ واحد مالی است"
+      ],
+      "hypotheses": [
+        "کاربر ابزار اسکن را از روی کنجکاوی اجرا کرده",
+        "مالware روی سیستم کاربر",
+        "تست نفوذ داخلی بدون هماهنگی"
+      ],
+      "steps": [
+        "ایزوله کردن سیستم مشکوک (VLAN quarantine)",
+        "جمع‌آوری evidence بدون از بین بردن لاگ",
+        "مصاحبه با کاربر",
+        "بررسی RoE و مجوزهای موجود",
+        "گزارش به IR"
+      ],
+      "expected_result": "سیستم ایزوله شده، علت مشخص شده، گزارش IR تکمیل شده.",
+      "verify_commands": ["بررسی لاگ SOC", "تأیید quarantine"],
+      "rollback": "پس از پاکسازی، بازگرداندن سیستم به VLAN اصلی",
+      "stop_conditions": "اگر نشانه lateral movement دیده شد → escalation فوری",
+      "scoring": "رعایت Chain of Custody ۳۰٪ | سرعت Containment ۳۰٪ | کیفیت گزارش ۴۰٪",
+      "learning_points": ["حتی اسکن داخلی بدون مجوز می‌تواند حادثه امنیتی باشد"]
+    },
+    {
+      "id": "sc-ch60-004",
+      "title_fa": "قطع لینک Core و Failover",
+      "level": "L3",
+      "difficulty": "پیشرفته",
+      "objective": "LAB-09: تمرین عیب‌یابی قطع لینک Core و تأیید عملکرد Redundancy",
+      "environment": "دو Core Switch با HSRP/VRRP و لینک‌های redundant",
+      "symptom": "قطع ناگهانی یکی از لینک‌های Core؛ بخشی از کاربران قطعی کوتاه تجربه کردند.",
+      "steps": [
+        "بررسی وضعیت HSRP/VRRP",
+        "بررسی STP topology change",
+        "تأیید اینکه ترافیک روی لینک دوم رفته",
+        "پیدا کردن علت قطع لینک اول (فیزیکی یا logical)"
+      ],
+      "expected_result": "Failover موفق در کمتر از زمان RTO تعریف‌شده؛ علت لینک اول پیدا و رفع شده.",
+      "verify_commands": ["show standby", "show spanning-tree", "ping با source از VLANهای مختلف"],
+      "rollback": "پس از رفع، بازگرداندن لینک اول و تأیید preemption",
+      "scoring": "سرعت تشخیص ۳۰٪ | صحت Failover ۳۰٪ | RCA لینک اول ۴۰٪",
+      "learning_points": ["Redundancy بدون تست Failover فقط روی کاغذ است"]
+    },
+    {
+      "id": "sc-ch60-005",
+      "title_fa": "Ransomware شبیه‌سازی‌شده — پاسخ اولیه",
+      "level": "L4",
+      "difficulty": "خبره",
+      "objective": "LAB-08: تمرین Isolation و پاسخ اولیه به باج‌افزار در محیط کاملاً ایزوله",
+      "environment": "چند VM ایزوله با snapshot؛ هیچ اتصال به شبکه واقعی ندارد",
+      "symptom": "چند فایل با پسوند .locked و یادداشت باج‌گیری روی دسکتاپ ظاهر شده.",
+      "steps": [
+        "فوری شبکه VM را قطع کنید (Isolation)",
+        "Snapshot بگیرید برای Forensic",
+        "شناسایی فرآیند مشکوک",
+        "گزارش به تیم IR شبیه‌سازی‌شده",
+        "بازیابی از Backup Immutable (LAB-20)"
+      ],
+      "expected_result": "گسترش متوقف شده، evidence حفظ شده، بازیابی از backup موفق.",
+      "stop_conditions": "هیچ‌گاه این سناریو را روی سیستم واقعی یا شبکه متصل اجرا نکنید",
+      "scoring": "سرعت Isolation ۴۰٪ | حفظ Evidence ۳۰٪ | بازیابی موفق ۳۰٪",
+      "learning_points": ["Isolation اول است؛ بررسی بعداً"]
+    },
+    {
+      "id": "sc-ch60-006",
+      "title_fa": "مشکل ARP در VLAN کاربران",
+      "level": "L2",
+      "difficulty": "متوسط",
+      "objective": "عیب‌یابی ARP با Wireshark و دستورات سیستم‌عامل",
+      "environment": "سوییچ Access + چند کلاینت در یک VLAN",
+      "symptom": "برخی کلاینت‌ها نمی‌توانند به Gateway پینگ بزنند؛ برخی می‌توانند.",
+      "initial_evidence": [
+        "arp -a روی کلاینت مشکل‌دار: gateway به صورت incomplete",
+        "روی سوییچ: MAC جدول کامل است"
+      ],
+      "steps": [
+        "Capture با Wireshark فیلتر arp",
+        "بررسی Port Security یا Dynamic ARP Inspection",
+        "پاک کردن ARP cache کلاینت و سوییچ"
+      ],
+      "expected_result": "ARP resolve می‌شود و پینگ برقرار است.",
+      "verify_commands": ["arp -a", "show ip arp", "show mac address-table"],
+      "learning_points": ["Compare Known-Good بین کلاینت خوب و بد بسیار سریع‌تر است"]
+    },
+    {
+      "id": "sc-ch60-007",
+      "title_fa": "DHCP Scope پر شده",
+      "level": "L1",
+      "difficulty": "پایه",
+      "objective": "تشخیص و رفع پر شدن Scope DHCP",
+      "symptom": "کلاینت‌های جدید APIPA می‌گیرند.",
+      "steps": ["بررسی Scope utilization", "افزایش Range یا کاهش Lease Time", "پاک کردن reservationهای بلااستفاده"],
+      "expected_result": "کلاینت جدید IP معتبر می‌گیرد.",
+      "verify_commands": ["ipconfig /renew", "Get-DhcpServerv4ScopeStatistics"]
+    },
+    {
+      "id": "sc-ch60-008",
+      "title_fa": "TCP Handshake ناقص — تشخیص با Wireshark",
+      "level": "L2",
+      "difficulty": "متوسط",
+      "objective": "تحلیل Three-way Handshake ناقص",
+      "symptom": "اتصال به یک سرویس خاص timeout می‌شود.",
+      "steps": ["Capture با فیلتر tcp.port == <port>", "بررسی SYN بدون SYN-ACK", "بررسی Firewall یا ACL میانی"],
+      "expected_result": "علت (drop در مسیر یا سرویس down) مشخص شده.",
+      "verify_commands": ["فیلتر Wireshark: tcp.flags.syn==1 && tcp.flags.ack==0"]
+    },
+    {
+      "id": "sc-ch60-009",
+      "title_fa": "Baseline قبل از Change بزرگ",
+      "level": "L3",
+      "difficulty": "پیشرفته",
+      "objective": "ساخت Baseline کامل قبل از ارتقای Core",
+      "steps": ["جمع‌آوری show tech، interface counters، routing table، STP، HSRP", "ذخیره در سیستم مستندسازی", "پس از Change مقایسه Diff"],
+      "expected_result": "Baseline قابل مقایسه آماده است.",
+      "learning_points": ["بدون Baseline، بعد از Change نمی‌توانید بگویید چه چیزی عوض شده"]
+    },
+    {
+      "id": "sc-ch60-010",
+      "title_fa": "Change History منجر به مشکل",
+      "level": "L2",
+      "difficulty": "متوسط",
+      "objective": "استفاده از Change History برای پیدا کردن علت",
+      "symptom": "مشکل از ساعت مشخصی شروع شده.",
+      "steps": ["بررسی سیستم Change Management", "پیدا کردن Change نزدیک به زمان شروع", "بررسی Diff پیکربندی"],
+      "expected_result": "Change مقصر شناسایی و Rollback یا اصلاح شده."
+    }
+  ],
+  "notes": "این فایل شامل ۱۰ سناریوی نمونه کامل است. در مراحل بعدی تا ۵۰+ گسترش می‌یابد. تمام سناریوها فقط برای محیط Lab ایزوله طراحی شده‌اند. source_status=review_required"
+}
