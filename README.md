@@ -34,7 +34,7 @@ The bundled Windows database is created on first run from the same generated cur
 
 ## Android quick start
 
-Download the APK from a successful Actions artifact, install it, and open NetworkAll. On first use, open Settings, enter the Windows URL and the per-install token, then use Sync. Notification permission must be granted for notifications to appear.
+Download the APK from a successful Actions artifact, install it, and open NetworkAll. On first launch, set a local unlock password and confirmation (you can choose your intended personal password here). On first use after entering the app, open Settings, enter the Windows URL and the per-install token, then use Sync. Notification permission must be granted for notifications to appear. The local lock is an access gate, not database encryption.
 
 The application ID remains `com.netenc.app` to support updates to an existing installation. Version metadata for this build is `versionName=1.0.0`, `versionCode=4`.
 
