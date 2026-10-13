@@ -58,6 +58,17 @@
 | برنامه‌ریزی، یادآوری و همگام‌سازی | local persistence، time zone، due/remind، notifications، retries، tombstones، conflicts، offline edits، reconciliation و recovery | in_progress | یادآوری Windows/Android و sync باید در پایان با ساعت واقعی و restart تست شوند |
 | مستندسازی، آموزش و capstone | runbook، diagram-as-code، change plan، acceptance tests، incident report، design review و دفاع از trade-off | gap — مدرک پوشش نیازمند استخراج | برای هر حوزه پروژهٔ نهایی end-to-end و rubric مستقل تعریف شود |
 
+## وضعیت افزوده‌شدن فصل‌های ۲۸ و ۲۹ در شاخهٔ کاری
+
+این دو بسته به‌عنوان **محتوای در حال بازبینی** به مسیر مرجع `tools/packs/` افزوده شده‌اند. اضافه‌شدن به کاتالوگ یا عبور از آستانهٔ واژگان، به‌تنهایی پوشش تأییدشده محسوب نمی‌شود.
+
+| فصل | حوزه | مسیر بسته | اجزای موجود | وضعیت واقعی |
+|---|---|---|---|---|
+| ۲۸ | Active Directory، DNS/DC discovery، Group Policy، Kerberos/SPN، replication، LDAP و recovery | `tools/packs/windows_server/active_directory_domain_engineering_ch28_pack.json` | پنج سطح L0–L4؛ آزمون و پاسخ‌نامهٔ هم‌شناسه برای هر سطح؛ فرمان‌های عمدتاً خواندنی؛ منابع Microsoft Learn | `review_required`؛ لابراتوار نسخه‌محور و بازبینی فنی اجرا/ثبت نشده |
+| ۲۹ | SMB، Share و NTFS ACL، signing/encryption، audit، DFS Namespace/DFSR، FSRM، capacity و recovery | `tools/packs/windows_server/windows_file_services_smb_dfs_ch29_pack.json` | پنج سطح L0–L4؛ آزمون و پاسخ‌نامهٔ هم‌شناسه؛ سناریوهای مجوز، referral، backlog، hardening و restore؛ منابع Microsoft Learn | `review_required`؛ لابراتوار واقعی، تست سازگاری و آزمون بازیابی اجرا/ثبت نشده |
+
+دروازهٔ بعدی این دو فصل، اجرای اعتبارسنجی ساختاری، کنترل UIDها و کلیدهای پاسخ، ادغام در شاخص مشترک Windows/Android و سپس اجرای آزمایش‌ها روی نسخه‌ها و توپولوژی مشخص است. تا ثبت خروجی واقعی lab، وضعیت `verified` مجاز نیست.
+
 ## ۴. چطور تعداد رکورد واقعی را تعیین می‌کنیم؟
 
 حجم بر اساس واحدهای شایستگی تعیین می‌شود، نه عدد رُند یا پرکردن سهمیه. برای هر حوزه باید این شمارش ساخته شود:
