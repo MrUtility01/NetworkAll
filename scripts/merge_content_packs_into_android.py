@@ -85,7 +85,7 @@ def commands_to_lessons(data: dict, source_key: str = "pack") -> list:
         if not str(title_fa).startswith(f"[{collection}]"):
             title_fa = f"[{collection}] {title_fa}"
         sub = (c.get("subcategory") or c.get("category") or "general").strip().lower()
-        sub_order = collection_order + sub_map.get(sub, 10)
+        sub_order = collection_order * 100 + sub_map.get(sub, 10)
         args = c.get("arguments") or []
         arg_lines = []
         for a in args:
