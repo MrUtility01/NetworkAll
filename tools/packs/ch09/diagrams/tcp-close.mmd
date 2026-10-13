@@ -1,0 +1,6 @@
+flowchart TD
+ A[Connection active] --> B{Close behavior}
+ B -- orderly --> C[FIN and ACK exchange]
+ C --> D[Connection closes]
+ B -- abort/reset --> E[RST observed]
+ E --> F[Find origin in capture and logs]
