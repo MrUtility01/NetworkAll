@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "android/app/src/main/assets/diagrams"
+WEB_OUT = ROOT / "server/static/diagrams"
 TOPICS = [
 ("Ethernet و Switching", ["Frame ورودی", "بررسی MAC", "جدول CAM", "Forward / Flood"]),
 ("VLAN و Trunk", ["Access Port", "802.1Q Tag", "Allowed VLANs", "VLAN مقصد"]),
@@ -31,6 +32,7 @@ TOPICS = [
 ("Windows CMD/Batch", ["Validate Args", "ipconfig / netstat", "errorlevel", "Log / Exit"]),
 ]
 OUT.mkdir(parents=True, exist_ok=True)
+WEB_OUT.mkdir(parents=True, exist_ok=True)
 items=[]
 for gi,(group,stages) in enumerate(TOPICS):
     for variant in range(5):
@@ -65,7 +67,16 @@ for gi,(group,stages) in enumerate(TOPICS):
                 '</svg>']
         filename=f"diagram_{num:03d}.svg"
         (OUT/filename).write_text("\n".join(svg),encoding="utf-8")
+        (WEB_OUT/filename).write_text("\n".join(svg),encoding="utf-8")
         items.append({"id":num,"title_fa":title,"collection":group,"asset":filename,"stages":nodes})
-(OUT/"index.json").write_text(json.dumps({"version":1,"count":len(items),"diagrams":items},ensure_ascii=False,indent=2),encoding="utf-8")
-assert len(items)==100 and all((OUT/x["asset"]).is_file() for x in items)
-print(f"Generated {len(items)} NetworkAll diagrams at {OUT}; SVG total bytes={sum(p.stat().st_size for p in OUT.glob('*.svg'))}")
+index_text = json.dumps({"version": 1, "count": len(items), "diagrams": items}, ensure_ascii=False, indent=2)
+(OUT / "index.json").write_text(index_text, encoding="utf-8")
+(WEB_OUT / "index.json").write_text(index_text, encoding="utf-8")
+assert len(items) == 100
+assert all((OUT / x["asset"]).is_file() for x in items)
+assert all((WEB_OUT / x["asset"]).is_file() for x in items)
+print(
+    f"Generated {len(items)} NetworkAll diagrams for Android + Windows web; "
+    f"Android SVG bytes={sum(p.stat().st_size for p in OUT.glob('*.svg'))}; "
+    f"web SVG bytes={sum(p.stat().st_size for p in WEB_OUT.glob('*.svg'))}"
+)
