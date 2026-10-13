@@ -33,6 +33,7 @@ diagrams_page = read("server/templates/diagrams.html")
 server = read("server/app.py")
 launcher = read("windows/start.bat")
 android_settings = read("android/app/src/main/java/com/netenc/app/SettingsActivity.kt")
+git_teacher = read("tools/chapter_git_teacher.py")
 
 require("# NetworkAll" in readme and "NetworkAll v1.0.0" in readme, "README.md does not declare NetworkAll v1.0.0")
 require("Version: 1.0.0" in version and "Port: 86" in version, "VERSION.txt version/port mismatch")
@@ -47,6 +48,10 @@ require(
     "Windows launcher does not default to TCP/86",
 )
 require('const val DEFAULT_TOKEN = ""' in android_settings, "Android must not ship a hard-coded API token")
+require("2026-10-13" in git_teacher, "Git chapter must declare its source review date")
+require("https://git-scm.com/docs/git-restore" in git_teacher, "Git chapter is missing official git-restore documentation")
+require("2026-09-17" in git_teacher and "Workflow execution protections" in git_teacher, "Git chapter is missing recent GitHub Actions security guidance")
+require("gh attestation verify" in git_teacher, "Git chapter is missing artifact provenance verification guidance")
 
 runtime_paths = [
     "server/app.py",
