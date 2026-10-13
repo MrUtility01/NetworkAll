@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ExpandableListView
 import android.widget.LinearLayout
@@ -12,18 +13,22 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.netenc.app.data.AppDatabase
-import com.netenc.app.data.LessonEntity
+import com.netenc.app.data.LessonNavRow
+import com.netenc.app.data.OfflineSeeder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class TreeCatalogActivity : AppCompatActivity() {
-    data class SubNode(val title: String, val lessons: List<LessonEntity>)
+    data class SubNode(val title: String, val lessons: List<LessonNavRow>)
     data class ChapterNode(val order: Int, val title: String, val subs: List<SubNode>)
 
     private lateinit var list: ExpandableListView
     private lateinit var header: TextView
     private var tree: List<ChapterNode> = emptyList()
+    private var treeAdapter: BaseExpandableListAdapter? = null
+    private val visibleLessonCounts = mutableMapOf<Pair<Int, String>, Int>()
+    private val initialLessonPageSize = 30
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,22 +67,34 @@ class TreeCatalogActivity : AppCompatActivity() {
             }
             true
         }
-        lifecycleScope.launch { loadTree() }
+        lifecycleScope.launch {
+            try {
+                loadTree()
+            } catch (e: Exception) {
+                header.text = "بارگذاری فهرست ناموفق بود: ${e.message ?: "خطای ناشناخته"}"
+            }
+        }
     }
 
     private suspend fun loadTree() {
+        // Wait for the first seed to finish; the seeder is single-flight so this
+        // cannot race MainActivity or SyncClient and expose a partial curriculum.
         val lessons = withContext(Dispatchers.IO) {
-            AppDatabase.get(this@TreeCatalogActivity).lessonDao().allActive()
+            OfflineSeeder.ensureSeeded(this@TreeCatalogActivity)
+            AppDatabase.get(this@TreeCatalogActivity).lessonDao().navigationRows()
         }
         val byChapter = lessons.groupBy { it.chapterOrder to it.chapterTitle }
             .toSortedMap(compareBy({ it.first }, { it.second }))
-        tree = byChapter.map { (key, listL) ->
-            val subs = listL.groupBy { it.subTitle.ifBlank { "عمومی" } }
-                .map { (st, ls) -> SubNode(st, ls.sortedBy { it.lessonOrder }) }
+        tree = byChapter.map { (key, chapterLessons) ->
+            val subs = chapterLessons.groupBy { it.subTitle.ifBlank { "عمومی" } }
+                .map { (subTitle, subLessons) ->
+                    SubNode(subTitle, subLessons.sortedBy { it.lessonOrder })
+                }
+                .sortedBy { it.title }
             ChapterNode(key.first, key.second, subs)
         }
-        header.text = "${tree.size} فصل · ${lessons.size} درس"
-        list.setAdapter(object : BaseExpandableListAdapter() {
+        header.text = "${tree.size} فصل · ${lessons.size} درس · بارگذاری مرحله‌ای"
+        treeAdapter = object : BaseExpandableListAdapter() {
             override fun getGroupCount() = tree.size
             override fun getChildrenCount(g: Int) = tree[g].subs.size
             override fun getGroup(g: Int) = tree[g]
@@ -86,6 +103,7 @@ class TreeCatalogActivity : AppCompatActivity() {
             override fun getChildId(g: Int, c: Int) = (g * 10000 + c).toLong()
             override fun hasStableIds() = true
             override fun isChildSelectable(g: Int, c: Int) = true
+
             override fun getGroupView(g: Int, expanded: Boolean, convert: View?, parent: ViewGroup?): View {
                 val tv = (convert as? TextView) ?: TextView(this@TreeCatalogActivity).apply {
                     setPadding(32, 28, 32, 28)
@@ -97,22 +115,26 @@ class TreeCatalogActivity : AppCompatActivity() {
                 tv.setBackgroundColor(Ui.CARD)
                 return tv
             }
+
             override fun getChildView(g: Int, c: Int, last: Boolean, convert: View?, parent: ViewGroup?): View {
-                val sub = tree[g].subs[c]
+                val chapter = tree[g]
+                val sub = chapter.subs[c]
+                val key = chapter.order to sub.title
+                val limit = visibleLessonCounts[key] ?: initialLessonPageSize
                 val box = LinearLayout(this@TreeCatalogActivity).apply {
                     orientation = LinearLayout.VERTICAL
                     setPadding(48, 12, 24, 12)
                     setBackgroundColor(Ui.BG)
                 }
                 box.addView(TextView(this@TreeCatalogActivity).apply {
-                    text = "${sub.title} (${sub.lessons.size})"
+                    text = "${sub.title} (${sub.lessons.size} درس)"
                     setTextColor(Ui.ACCENT)
                     textSize = 14f
                     typeface = Ui.persianTypeface()
                 })
-                sub.lessons.take(80).forEach { les ->
+                sub.lessons.take(limit).forEach { lesson ->
                     box.addView(TextView(this@TreeCatalogActivity).apply {
-                        text = "  · ${les.titleFa}"
+                        text = "  · ${lesson.titleFa}"
                         setTextColor(Ui.TEXT)
                         textSize = 13f
                         setPadding(8, 10, 8, 10)
@@ -120,13 +142,26 @@ class TreeCatalogActivity : AppCompatActivity() {
                         setOnClickListener {
                             startActivity(
                                 Intent(this@TreeCatalogActivity, LessonDetailActivity::class.java)
-                                    .putExtra("uid", les.uid)
+                                    .putExtra("uid", lesson.uid)
                             )
+                        }
+                    })
+                }
+                val remaining = sub.lessons.size - minOf(limit, sub.lessons.size)
+                if (remaining > 0) {
+                    box.addView(Button(this@TreeCatalogActivity).apply {
+                        text = "نمایش 30 درس دیگر (باقی‌مانده: $remaining)"
+                        textSize = 12f
+                        typeface = Ui.persianTypeface()
+                        setOnClickListener {
+                            visibleLessonCounts[key] = limit + initialLessonPageSize
+                            treeAdapter?.notifyDataSetChanged()
                         }
                     })
                 }
                 return box
             }
-        })
+        }
+        list.setAdapter(treeAdapter)
     }
 }
