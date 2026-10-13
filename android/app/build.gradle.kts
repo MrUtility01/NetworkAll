@@ -39,7 +39,8 @@ android {
 val generateNetworkAllDiagrams by tasks.registering(Exec::class) {
     val repositoryRoot = rootProject.projectDir.parentFile
     workingDir(repositoryRoot)
-    commandLine("python3", "scripts/generate_android_diagrams.py")
+    val pythonCommand = if (System.getProperty("os.name").startsWith("Windows", ignoreCase = true)) "python" else "python3"
+    commandLine(pythonCommand, "scripts/generate_android_diagrams.py")
     inputs.file(repositoryRoot.resolve("scripts/generate_android_diagrams.py"))
     inputs.file(repositoryRoot.resolve("server/core/infographics.py"))
     inputs.files(fileTree(repositoryRoot.resolve("tools/packs")) {
