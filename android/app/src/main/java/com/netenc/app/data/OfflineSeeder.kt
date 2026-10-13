@@ -8,7 +8,7 @@ import java.io.BufferedInputStream
 import java.util.zip.GZIPInputStream
 
 object OfflineSeeder {
-    private const val META_SEEDED = "offline_seeded_v14"
+    private const val META_SEEDED = "offline_seeded_v15"
 
     suspend fun ensureSeeded(context: Context): Int = withContext(Dispatchers.IO) {
         val dao = AppDatabase.get(context).lessonDao()
