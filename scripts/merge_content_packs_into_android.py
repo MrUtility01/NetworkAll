@@ -325,6 +325,12 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
                 "commands": as_text(src.get("commands")),
                 "examples": as_text(src.get("examples")),
                 "notes": notes,
+                "meta": src.get("meta") if isinstance(src.get("meta"), dict) else {},
+                "learning_objectives": src.get("learning_objectives") or [],
+                "search_keywords": src.get("search_keywords") or [],
+                "search_query": src.get("search_query") or "",
+                "source_status": src.get("source_status") or "review_required",
+                "collection": src.get("collection") or sub_titles.get(si, f"زیرفصل {si}"),
             })
         out_subs.append({"title_fa": sub_titles.get(si, f"گروه دستورات {si}"), "lessons": les_out})
     data["chapters"].append({
