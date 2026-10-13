@@ -291,7 +291,7 @@ def sync_push():
 
 def main():
     host = BIND_HOST
-    port = int(os.environ.get("NETENC_PORT", "5050"))
+    port = int(os.environ.get("NETENC_PORT", os.environ.get("PORT", "86")))
     db()
     if register_study_routes:
         try:
@@ -300,7 +300,7 @@ def main():
         except Exception as e:
             _MODULE_STATUS["study_error"] = str(e)
             print("study routes", e)
-    print(f"NetEnc listening on http://{host}:{port}")
+    print(f"NetworkAll listening on http://{host}:{port}")
     print("  sync: /api/sync/hello | manifest | pull | push")
     print(f"  token_required={bool(SYNC_TOKEN)} default_token={SYNC_TOKEN == DEFAULT_DEV_TOKEN}")
     app.run(host=host, port=port, debug=False)
