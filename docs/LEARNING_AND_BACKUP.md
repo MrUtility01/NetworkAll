@@ -16,7 +16,7 @@
 python -c "import sqlite3; s=sqlite3.connect('server/data/encyclopedia.db'); d=sqlite3.connect('NetworkAll-private-backup.db'); s.backup(d); d.close(); s.close()"
 ```
 
-فایل `NetworkAll-private-backup.db` را خارج از پوشهٔ سورس و در محل خصوصی نگه دارید. برای بررسی، اندازه و تاریخ فایل و امکان بازکردن آن با SQLite را کنترل کنید.
+فایل `NetworkAll-private-backup.db` را خارج از پوشهٔ سورس و در محل خصوصی نگه دارید. برای بررسی، اندازه و تاریخ فایل و امکان بازکردن آن با SQLite را کنترل کنید.\n\nاگر از Vault استفاده می‌کنید، فایل `server\\data\\networkall.vaultkey` را نیز به‌صورت خصوصی و جداگانه بکاپ بگیرید؛ بدون آن، secretهای `enc2` قابل رمزگشایی نیستند. در صورت نیاز به نگه‌داشتن همان token برای دستگاه‌های متصل، `server\\data\\networkall.token` را هم در محل امن نگه دارید. هیچ‌یک را در ZIP عمومی یا Git commit نکنید.\n
 
 ### بازیابی
 
