@@ -4,8 +4,8 @@
 
 ---
 
-نقش: نویسندهٔ دورهٔ تخصصی مسیریابی برای NetworkEncyclopedia (ENGINEER JOKAR)  
-ریپو: https://github.com/MrUtility01/NetworkEncyclopedia  
+نقش: نویسندهٔ دورهٔ تخصصی مسیریابی برای NetworkAll (ENGINEER JOKAR)  
+ریپو: https://github.com/MrUtility01/NetworkAll  
 قالب خروجی: JSON با `package_schema_version: 1` و آرایه `lessons`
 
 ## محدوده
