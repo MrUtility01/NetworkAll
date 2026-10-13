@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Base64
 import android.view.Gravity
 import android.view.View
+import android.widget.ScrollView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -130,7 +131,7 @@ class SplashActivity : AppCompatActivity() {
             setPadding(0, 20, 0, 0)
         }, match(LinearLayout.LayoutParams.WRAP_CONTENT))
 
-        setContentView(root)
+        setContentView(ScrollView(this).apply {\n            isFillViewport = true\n            addView(root)\n        })
     }
 
     private fun match(height: Int) = LinearLayout.LayoutParams(
