@@ -284,6 +284,8 @@ class WorkspaceActivity : AppCompatActivity() {
                 hint = "تاریخ شمسی: ۱۴۰۵/۰۷/۲۱"
                 setText(dateText)
                 setSingleLine(true)
+                isFocusable = false
+                isClickable = false
             }
             val time = EditText(this@WorkspaceActivity).apply {
                 hint = "ساعت: ۱۴:۳۰"
@@ -314,7 +316,13 @@ class WorkspaceActivity : AppCompatActivity() {
                     else -> {
                         addView(Ui.text(this@WorkspaceActivity, "سررسید شمسی", 13f, Ui.MUTED))
                         addView(date)
+                        addView(actionButton("انتخاب تاریخ شمسی", Color.parseColor("#475569")) {
+                            openJalaliDatePicker(date)
+                        })
                         addView(time)
+                        addView(actionButton("انتخاب ساعت", Color.parseColor("#475569")) {
+                            openTimePicker(time)
+                        })
                         addView(reminder)
                         addView(Ui.text(this@WorkspaceActivity, "اولویت", 13f, Ui.MUTED))
                         addView(priority)
@@ -383,6 +391,58 @@ class WorkspaceActivity : AppCompatActivity() {
                     dialog.show()
                 }
         }
+    }
+
+    private fun openJalaliDatePicker(field: EditText) {
+        val current = JalaliDate.today().split("/")
+        val initial = field.text.toString().split("/")
+        val currentYear = current.getOrNull(0)?.toIntOrNull() ?: 1405
+        val year = initial.getOrNull(0)?.toIntOrNull() ?: currentYear
+        val month = initial.getOrNull(1)?.toIntOrNull()?.coerceIn(1, 12) ?: 1
+        val day = initial.getOrNull(2)?.toIntOrNull() ?: 1
+        val yearPicker = android.widget.NumberPicker(this).apply {
+            minValue = (currentYear - 2).coerceAtLeast(1300)
+            maxValue = currentYear + 8
+            value = year.coerceIn(minValue, maxValue)
+            wrapSelectorWheel = false
+        }
+        val monthPicker = android.widget.NumberPicker(this).apply {
+            minValue = 1
+            maxValue = 12
+            value = month
+            displayedValues = arrayOf("فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور",
+                "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند")
+            wrapSelectorWheel = false
+        }
+        val dayPicker = android.widget.NumberPicker(this).apply {
+            minValue = 1
+            maxValue = JalaliDate.daysInMonth(yearPicker.value, monthPicker.value)
+            value = day.coerceIn(1, maxValue)
+            wrapSelectorWheel = false
+        }
+        fun updateDayRange() {
+            val maxDay = JalaliDate.daysInMonth(yearPicker.value, monthPicker.value)
+            dayPicker.maxValue = maxDay
+            if (dayPicker.value > maxDay) dayPicker.value = maxDay
+        }
+        yearPicker.setOnValueChangedListener { _, _, _ -> updateDayRange() }
+        monthPicker.setOnValueChangedListener { _, _, _ -> updateDayRange() }
+        val row = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutDirection = View.LAYOUT_DIRECTION_RTL
+            addView(dayPicker, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+            addView(monthPicker, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+            addView(yearPicker, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+        }
+        AlertDialog.Builder(this)
+            .setTitle("انتخاب تاریخ شمسی")
+            .setView(row)
+            .setPositiveButton("انتخاب") { _, _ ->
+                field.setText("%04d/%02d/%02d".format(java.util.Locale.ROOT,
+                    yearPicker.value, monthPicker.value, dayPicker.value))
+            }
+            .setNegativeButton("لغو", null)
+            .show()
     }
 
     private fun openTimePicker(field: EditText) {
