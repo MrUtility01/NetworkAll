@@ -276,9 +276,9 @@ class WorkspaceActivity : AppCompatActivity() {
                 hint = "نام کاربری (اختیاری)"
                 setText(existingVault?.username.orEmpty())
             }
-            val dateText = existingTask?.dueAt?.takeIf { it.isNotBlank() }?.let { JalaliDate.formatStored(it).substringBefore(" · ") }
+            val dateText = existingTask?.dueAt?.takeIf { it.isNotBlank() }?.let { JalaliDate.datePartStored(it) }
                 ?: JalaliDate.today()
-            val timeText = existingTask?.dueAt?.takeIf { it.isNotBlank() }?.let { JalaliDate.formatStored(it).substringAfter(" · ", JalaliDate.currentTime()) }
+            val timeText = existingTask?.dueAt?.takeIf { it.isNotBlank() }?.let { JalaliDate.timePartStored(it) }
                 ?: JalaliDate.currentTime()
             val date = EditText(this@WorkspaceActivity).apply {
                 hint = "تاریخ شمسی: ۱۴۰۵/۰۷/۲۱"
