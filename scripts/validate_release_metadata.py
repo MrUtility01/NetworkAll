@@ -42,7 +42,10 @@ require('android:label="NetworkAll"' in manifest, "Android launcher label is not
 require('@app.get("/diagrams")' in server, "Windows web route /diagrams is missing")
 require('/static/diagrams/index.json' in diagrams_page, "Windows web diagram gallery is not wired to generated assets")
 require('os.environ.get("PORT", "86")' in server, "Flask default port is not TCP/86")
-require('set NETENC_PORT=86' in launcher, "Windows launcher does not default to TCP/86")
+require(
+    ('set NETENC_PORT=86' in launcher) or ('if not defined NETENC_PORT set NETENC_PORT=86' in launcher),
+    "Windows launcher does not default to TCP/86",
+)
 require('const val DEFAULT_TOKEN = ""' in android_settings, "Android must not ship a hard-coded API token")
 
 runtime_paths = [
