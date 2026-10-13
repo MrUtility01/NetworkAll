@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 val dao = AppDatabase.get(this@MainActivity).lessonDao()
-                dao.putMeta(com.netenc.app.data.SyncMetaEntity("offline_seeded_v18", "0"))
+                dao.putMeta(com.netenc.app.data.SyncMetaEntity("offline_seeded_v19", "0"))
             }
             seedAll(force = true)
         }
