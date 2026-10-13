@@ -382,6 +382,42 @@ class ContentMergeTests(unittest.TestCase):
         self.assertFalse(is_legacy_routing_pack(windows_style_chapter14_path))
         self.assertTrue(is_legacy_routing_pack(legacy_routing_pack))
 
+    def test_routeros_qos_vpn_ha_pack_has_android_mcqs_and_depth(self):
+        relative_path = "tools/packs/mikrotik/routeros_qos_vpn_ha_ch21_pack.json"
+        pack = json.loads((ROOT / relative_path).read_text(encoding="utf-8"))
+        catalog = json.loads((ROOT / "tools/packs/pack_catalog.json").read_text(encoding="utf-8"))
+        active_paths = {
+            item.get("path")
+            for item in catalog.get("packs", [])
+            if item.get("active_in_merge") is True
+        }
+        word_floors = {"L0": 600, "L1": 800, "L2": 1200, "L3": 1600, "L4": 2200}
+        question_floors = {"L0": 5, "L1": 8, "L2": 10, "L3": 12, "L4": 15}
+
+        self.assertIn(relative_path, active_paths)
+        self.assertEqual(len(pack.get("lessons", [])), 5)
+        for lesson in pack["lessons"]:
+            with self.subTest(uid=lesson.get("uid")):
+                level = lesson.get("level", "L0")
+                text = lesson.get("full_content", "")
+                self.assertGreaterEqual(len(re.findall(r"[\\w]+", text, flags=re.UNICODE)), word_floors[level])
+                metadata = json.loads(lesson.get("meta_json") or "{}")
+                assessment = metadata.get("assessment", {})
+                questions = assessment.get("questions", [])
+                answer_key = assessment.get("answer_key", [])
+                by_id = {answer.get("id"): answer for answer in answer_key}
+                mcqs = [
+                    question for question in questions
+                    if isinstance(question.get("options"), list) and len(question.get("options", [])) >= 2
+                ]
+                self.assertGreaterEqual(len(mcqs), question_floors[level])
+                for question in mcqs:
+                    answer = by_id.get(question.get("id"))
+                    self.assertIsNotNone(answer)
+                    options = question.get("options", [])
+                    self.assertTrue(0 <= answer.get("correct_index", -1) < len(options))
+                    self.assertTrue(answer.get("explanation") or answer.get("rationale"))
+
     def test_new_scenario_packs_are_catalogued_and_have_separate_assessment_keys(self):
         pack_paths = (
             ("tools/packs/chapter14/ospf_bgp_lab_scenarios_ch14_pack.json", 14, 11),
