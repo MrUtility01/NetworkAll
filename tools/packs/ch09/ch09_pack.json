@@ -1,0 +1,581 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "غنی‌سازی افزایشی فصل ۹: ARP ICMP TCP UDP",
+  "chapter_order": 9,
+  "chapter_title_fa": "ARP ICMP TCP UDP",
+  "vendor_pack": "network_protocols",
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "scope": [
+    {
+      "chapter_order": 9,
+      "subchapter_order": 1,
+      "title": "ARP ICMP TCP UDP",
+      "topics": [
+        "ARP and neighbor cache",
+        "Gratuitous and Proxy ARP",
+        "IPv6 Neighbor Discovery",
+        "ICMP Echo and errors",
+        "Traceroute TTL/Hop Limit",
+        "TCP handshake and state",
+        "TCP sequence/window/retransmission",
+        "UDP and applications",
+        "MTU and PMTUD",
+        "Packet capture and security"
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "uid": "ch09:arp:v1",
+      "chapter_order": 9,
+      "subchapter_order": 1,
+      "lesson_order": 1,
+      "level": "L0",
+      "title_fa": "[L0] ARP و نگاشت IP به MAC",
+      "title_en": "Address Resolution Protocol",
+      "topic": "ARP",
+      "summary": "ARP در IPv4 نگاشت IP محلی به MAC را می‌یابد؛ برای مقصد خارج subnet معمولاً MAC روتر next-hop لازم است.",
+      "full_content": "# ARP و نگاشت IP به MAC\n\n**English:** Address Resolution Protocol\n**سطح:** L0 — ARP\n\n## مدل ذهنی و مبانی\nARP Request معمولاً در broadcast domain محلی پخش می‌شود و دارنده IP با Reply پاسخ می‌دهد. ARP بسته IP را مسیریابی نمی‌کند و از روتر عبور نمی‌کند.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nARP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · ARP · L0",
+      "learning_objectives": [
+        "توضیح Address Resolution Protocol با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با ARP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای ARP و نگاشت IP به MAC چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:arp-cache:v1",
+      "chapter_order": 9,
+      "subchapter_order": 1,
+      "lesson_order": 2,
+      "level": "L1",
+      "title_fa": "[L1] کش ARP و وضعیت INCOMPLETE",
+      "title_en": "ARP Cache and Neighbor State",
+      "topic": "ARP",
+      "summary": "کش همسایه نگاشت‌های اخیر را ذخیره می‌کند تا هر بسته به ARP جدید نیاز نداشته باشد.",
+      "full_content": "# کش ARP و وضعیت INCOMPLETE\n\n**English:** ARP Cache and Neighbor State\n**سطح:** L1 — ARP\n\n## مدل ذهنی و مبانی\nدر Linux از ip neigh و در Windows از arp -a استفاده کن. INCOMPLETE/FAILED یعنی resolution کامل نشده، نه اینکه علت ریشه‌ای مشخص شده باشد. VLAN، subnet، لینک و مقصد را بررسی کن.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nARP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · ARP · L1",
+      "learning_objectives": [
+        "توضیح ARP Cache and Neighbor State با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با ARP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای کش ARP و وضعیت INCOMPLETE چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:arp-frame:v1",
+      "chapter_order": 9,
+      "subchapter_order": 1,
+      "lesson_order": 3,
+      "level": "L1",
+      "title_fa": "[L1] تحلیل فریم ARP",
+      "title_en": "ARP Packet Walkthrough",
+      "topic": "ARP",
+      "summary": "فیلدهای Ethernet و فیلدهای ARP را جدا بخوان؛ آدرس مقصد Ethernet با target hardware address یکی نیست.",
+      "full_content": "# تحلیل فریم ARP\n\n**English:** ARP Packet Walkthrough\n**سطح:** L1 — ARP\n\n## مدل ذهنی و مبانی\nدر capture به opcode، sender IP/MAC و target IP توجه کن. Request معمولاً broadcast و Reply اغلب unicast است. offload یا نقطه capture می‌تواند ظاهر مشاهده را تغییر دهد.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nARP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · ARP · L1",
+      "learning_objectives": [
+        "توضیح ARP Packet Walkthrough با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با ARP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای تحلیل فریم ARP چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:gratuitous:v1",
+      "chapter_order": 9,
+      "subchapter_order": 1,
+      "lesson_order": 4,
+      "level": "L2",
+      "title_fa": "[L2] Gratuitous ARP و تعارض IP",
+      "title_en": "Gratuitous ARP",
+      "topic": "ARP",
+      "summary": "Gratuitous ARP می‌تواند نگاشت را اعلام کند یا به تشخیص تعارض IP کمک کند.",
+      "full_content": "# Gratuitous ARP و تعارض IP\n\n**English:** Gratuitous ARP\n**سطح:** L2 — ARP\n\n## مدل ذهنی و مبانی\nچند MAC برای یک IP می‌تواند از duplicate IP، failover، teaming یا spoofing باشد. رخداد را با DHCP/IPAM، switch MAC table و زمان تغییرات تطبیق بده؛ خود این نشانه به تنهایی اثبات حمله نیست.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nARP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · ARP · L2",
+      "learning_objectives": [
+        "توضیح Gratuitous ARP با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با ARP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای Gratuitous ARP و تعارض IP چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:proxy-arp:v1",
+      "chapter_order": 9,
+      "subchapter_order": 1,
+      "lesson_order": 5,
+      "level": "L3",
+      "title_fa": "[L3] Proxy ARP و طراحی شبکه",
+      "title_en": "Proxy ARP",
+      "topic": "ARP",
+      "summary": "در Proxy ARP روتر به درخواست ARP برای آدرس دیگری پاسخ می‌دهد و میزبان فریم را به MAC روتر می‌فرستد.",
+      "full_content": "# Proxy ARP و طراحی شبکه\n\n**English:** Proxy ARP\n**سطح:** L3 — ARP\n\n## مدل ذهنی و مبانی\nاین قابلیت می‌تواند مرز subnet را مبهم کند. پیش از تغییر، mask میزبان، route table و نیاز واقعی را بررسی کن؛ آزمایش فقط در لاب و با rollback انجام شود.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nARP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · ARP · L3",
+      "learning_objectives": [
+        "توضیح Proxy ARP با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با ARP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای Proxy ARP و طراحی شبکه چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:ipv6-nd:v1",
+      "chapter_order": 9,
+      "subchapter_order": 1,
+      "lesson_order": 6,
+      "level": "L2",
+      "title_fa": "[L2] IPv6 Neighbor Discovery",
+      "title_en": "IPv6 Neighbor Discovery",
+      "topic": "IPv6",
+      "summary": "IPv6 به جای ARP از Neighbor Discovery مبتنی بر ICMPv6 استفاده می‌کند.",
+      "full_content": "# IPv6 Neighbor Discovery\n\n**English:** IPv6 Neighbor Discovery\n**سطح:** L2 — IPv6\n\n## مدل ذهنی و مبانی\nپیام‌های Neighbor Solicitation/Advertisement و multicastهای مربوط را بررسی کن. فیلتر blanket برای ICMPv6 می‌تواند ND و Path MTU Discovery را مختل کند. ip -6 neigh جدول همسایه IPv6 را نمایش می‌دهد.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nIPv6; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · IPv6 · L2",
+      "learning_objectives": [
+        "توضیح IPv6 Neighbor Discovery با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با IPv6"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای IPv6 Neighbor Discovery چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:icmp-role:v1",
+      "chapter_order": 9,
+      "subchapter_order": 2,
+      "lesson_order": 7,
+      "level": "L0",
+      "title_fa": "[L0] نقش ICMP",
+      "title_en": "ICMP Purpose and Limits",
+      "topic": "ICMP",
+      "summary": "ICMP پیام‌های کنترلی و خطای IP را حمل می‌کند؛ ping فقط کاربرد Echo آن است.",
+      "full_content": "# نقش ICMP\n\n**English:** ICMP Purpose and Limits\n**سطح:** L0 — ICMP\n\n## مدل ذهنی و مبانی\nموفقیت Echo تضمین‌کننده سلامت برنامه نیست و نبود Echo به معنی خاموش بودن میزبان نیست. policy، rate limiting و مسیر برگشت می‌توانند نتیجه را تغییر دهند.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nICMP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · ICMP · L0",
+      "learning_objectives": [
+        "توضیح ICMP Purpose and Limits با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با ICMP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای نقش ICMP چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:icmp-types:v1",
+      "chapter_order": 9,
+      "subchapter_order": 2,
+      "lesson_order": 8,
+      "level": "L1",
+      "title_fa": "[L1] Echo و Destination Unreachable",
+      "title_en": "ICMP Echo and Unreachable",
+      "topic": "ICMP",
+      "summary": "Echo برای آزمون اولیه و Destination Unreachable برای گزارش بعضی خطاهای شبکه/میزبان/پورت به کار می‌رود.",
+      "full_content": "# Echo و Destination Unreachable\n\n**English:** ICMP Echo and Unreachable\n**سطح:** L1 — ICMP\n\n## مدل ذهنی و مبانی\nنوع و کد پیام به IPv4/IPv6 وابسته است. آدرس فرستنده خطا و بسته اصلی نقل‌شده را بررسی و با route و ACL تطبیق بده.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nICMP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · ICMP · L1",
+      "learning_objectives": [
+        "توضیح ICMP Echo and Unreachable با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با ICMP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای Echo و Destination Unreachable چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:ping:v1",
+      "chapter_order": 9,
+      "subchapter_order": 2,
+      "lesson_order": 9,
+      "level": "L1",
+      "title_fa": "[L1] تفسیر ping و packet loss",
+      "title_en": "Ping, RTT and Loss",
+      "topic": "ICMP",
+      "summary": "ping زمان رفت‌وبرگشت Echo و درصد پاسخ‌ها را می‌سنجد؛ این معیار کیفیت کامل برنامه نیست.",
+      "full_content": "# تفسیر ping و packet loss\n\n**English:** Ping, RTT and Loss\n**سطح:** L1 — ICMP\n\n## مدل ذهنی و مبانی\nاز loopback و gateway شروع کن، سپس مقصد IP و نام را جدا آزمایش کن. RTT و loss را با زمان و مقصد ثبت کن و نتیجه کوتاه را به کل شبکه تعمیم نده.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nICMP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · ICMP · L1",
+      "learning_objectives": [
+        "توضیح Ping, RTT and Loss با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با ICMP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای تفسیر ping و packet loss چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:traceroute:v1",
+      "chapter_order": 9,
+      "subchapter_order": 2,
+      "lesson_order": 10,
+      "level": "L2",
+      "title_fa": "[L2] Traceroute و TTL/Hop Limit",
+      "title_en": "Traceroute and TTL",
+      "topic": "ICMP",
+      "summary": "Traceroute با افزایش TTL/Hop Limit پیام‌های Time Exceeded را از hopها دریافت می‌کند.",
+      "full_content": "# Traceroute و TTL/Hop Limit\n\n**English:** Traceroute and TTL\n**سطح:** L2 — ICMP\n\n## مدل ذهنی و مبانی\nستاره در یک hop اثبات قطع مسیر نیست؛ روتر ممکن است probe را فیلتر یا rate-limit کند و همچنان ترافیک را forward کند. چند probe و مقصد نهایی را مقایسه کن.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nICMP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · ICMP · L2",
+      "learning_objectives": [
+        "توضیح Traceroute and TTL با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با ICMP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای Traceroute و TTL/Hop Limit چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:tcp-udp:v1",
+      "chapter_order": 9,
+      "subchapter_order": 3,
+      "lesson_order": 11,
+      "level": "L0",
+      "title_fa": "[L0] مقایسه TCP و UDP",
+      "title_en": "TCP vs UDP",
+      "topic": "Transport",
+      "summary": "TCP جریان بایتی مرتب و قابل‌اعتماد ارائه می‌دهد؛ UDP datagramهای مستقل بدون تضمین تحویل و ترتیب دارد.",
+      "full_content": "# مقایسه TCP و UDP\n\n**English:** TCP vs UDP\n**سطح:** L0 — Transport\n\n## مدل ذهنی و مبانی\nTCP handshake، retransmission و کنترل ازدحام دارد. UDP ساده‌تر است اما برنامه باید reliability یا jitter buffering موردنیاز را مدیریت کند. انتخاب را بر اساس نیاز برنامه انجام بده.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nTransport; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · Transport · L0",
+      "learning_objectives": [
+        "توضیح TCP vs UDP با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با Transport"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای مقایسه TCP و UDP چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:tcp-handshake:v1",
+      "chapter_order": 9,
+      "subchapter_order": 3,
+      "lesson_order": 12,
+      "level": "L1",
+      "title_fa": "[L1] سه‌مرحله‌ای TCP",
+      "title_en": "TCP Three-Way Handshake",
+      "topic": "TCP",
+      "summary": "SYN، SYN-ACK و ACK برقراری اتصال TCP را هماهنگ می‌کنند.",
+      "full_content": "# سه‌مرحله‌ای TCP\n\n**English:** TCP Three-Way Handshake\n**سطح:** L1 — TCP\n\n## مدل ذهنی و مبانی\nSYN بدون SYN-ACK می‌تواند به فیلتر، مسیر، سرویس خاموش یا مسیر برگشت مربوط باشد. capture دو سمت و listener را بررسی کن؛ یک مشاهده علت قطعی نیست.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nTCP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · TCP · L1",
+      "learning_objectives": [
+        "توضیح TCP Three-Way Handshake با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با TCP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای سه‌مرحله‌ای TCP چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:tcp-state:v1",
+      "chapter_order": 9,
+      "subchapter_order": 3,
+      "lesson_order": 13,
+      "level": "L2",
+      "title_fa": "[L2] وضعیت TCP و listener",
+      "title_en": "TCP State and Listening Sockets",
+      "topic": "TCP",
+      "summary": "LISTEN، ESTABLISHED، TIME_WAIT و CLOSE_WAIT حالت‌های متفاوت چرخه اتصال‌اند.",
+      "full_content": "# وضعیت TCP و listener\n\n**English:** TCP State and Listening Sockets\n**سطح:** L2 — TCP\n\n## مدل ذهنی و مبانی\nاز ss -lntp در Linux یا Get-NetTCPConnection در PowerShell استفاده کن. نبود listener با firewall فرق دارد؛ bind address، port و process را بررسی کن.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nTCP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · TCP · L2",
+      "learning_objectives": [
+        "توضیح TCP State and Listening Sockets با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با TCP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای وضعیت TCP و listener چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:tcp-seq:v1",
+      "chapter_order": 9,
+      "subchapter_order": 3,
+      "lesson_order": 14,
+      "level": "L3",
+      "title_fa": "[L3] Sequence و بازانتقال",
+      "title_en": "TCP Sequence and Retransmission",
+      "topic": "TCP",
+      "summary": "TCP شماره توالی بایت‌ها و ACK را برای بازسازی جریان و تشخیص داده‌های دریافت‌شده به کار می‌برد.",
+      "full_content": "# Sequence و بازانتقال\n\n**English:** TCP Sequence and Retransmission\n**سطح:** L3 — TCP\n\n## مدل ذهنی و مبانی\nRetransmission می‌تواند از loss، congestion، reordering یا capture ناقص باشد. duplicate ACK، SACK و RTT را کنار هم بررسی کن؛ offload میزبان ممکن است ظاهر capture را تغییر دهد.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nTCP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · TCP · L3",
+      "learning_objectives": [
+        "توضیح TCP Sequence and Retransmission با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با TCP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای Sequence و بازانتقال چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:tcp-window:v1",
+      "chapter_order": 9,
+      "subchapter_order": 3,
+      "lesson_order": 15,
+      "level": "L3",
+      "title_fa": "[L3] Receive Window و کنترل جریان",
+      "title_en": "TCP Receive Window",
+      "topic": "TCP",
+      "summary": "Receive Window ظرفیت فعلی دریافت را اعلام می‌کند تا فرستنده گیرنده را اشباع نکند.",
+      "full_content": "# Receive Window و کنترل جریان\n\n**English:** TCP Receive Window\n**سطح:** L3 — TCP\n\n## مدل ذهنی و مبانی\nZero Window معمولاً نشان می‌دهد گیرنده موقتاً داده بیشتری نمی‌پذیرد. آن را با packet loss یکی ندان؛ برنامه و منابع میزبان گیرنده را بررسی کن.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nTCP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · TCP · L3",
+      "learning_objectives": [
+        "توضیح TCP Receive Window با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با TCP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای Receive Window و کنترل جریان چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:tcp-close:v1",
+      "chapter_order": 9,
+      "subchapter_order": 3,
+      "lesson_order": 16,
+      "level": "L2",
+      "title_fa": "[L2] FIN در برابر RST",
+      "title_en": "TCP FIN and RST",
+      "topic": "TCP",
+      "summary": "FIN پایان مرتب یک جهت جریان را اعلام می‌کند؛ RST اتصال را reset می‌کند.",
+      "full_content": "# FIN در برابر RST\n\n**English:** TCP FIN and RST\n**سطح:** L2 — TCP\n\n## مدل ذهنی و مبانی\nRST ممکن است از میزبان یا middlebox بیاید. tuple، capture دوطرفه و log برنامه را تطبیق بده؛ پیش از تغییر timeoutها علت را پیدا کن.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nTCP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · TCP · L2",
+      "learning_objectives": [
+        "توضیح TCP FIN and RST با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با TCP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای FIN در برابر RST چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:udp:v1",
+      "chapter_order": 9,
+      "subchapter_order": 4,
+      "lesson_order": 17,
+      "level": "L1",
+      "title_fa": "[L1] هدر و رفتار UDP",
+      "title_en": "UDP Datagram",
+      "topic": "UDP",
+      "summary": "UDP هدر ساده شامل پورت مبدأ/مقصد، طول و checksum دارد و تحویل یا ترتیب را تضمین نمی‌کند.",
+      "full_content": "# هدر و رفتار UDP\n\n**English:** UDP Datagram\n**سطح:** L1 — UDP\n\n## مدل ذهنی و مبانی\nUDP handshake ندارد. نبود پاسخ می‌تواند از برنامه، ACL/NAT، loss یا مسیر برگشت باشد؛ capture دو سمت محل ناپدیدشدن بسته را مشخص‌تر می‌کند.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nUDP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · UDP · L1",
+      "learning_objectives": [
+        "توضیح UDP Datagram با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با UDP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای هدر و رفتار UDP چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:udp-apps:v1",
+      "chapter_order": 9,
+      "subchapter_order": 4,
+      "lesson_order": 18,
+      "level": "L2",
+      "title_fa": "[L2] DNS و VoIP روی UDP",
+      "title_en": "UDP Applications",
+      "topic": "UDP",
+      "summary": "DNS اغلب از UDP/53 استفاده می‌کند و VoIP بلادرنگ غالباً از UDP بهره می‌برد؛ DNS در برخی شرایط از TCP نیز استفاده می‌کند.",
+      "full_content": "# DNS و VoIP روی UDP\n\n**English:** UDP Applications\n**سطح:** L2 — UDP\n\n## مدل ذهنی و مبانی\nبرای DNS query ID، response code و timeout را بررسی کن. برای صوت loss، jitter، QoS و NAT traversal را در هر دو سمت مقایسه کن.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nUDP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · UDP · L2",
+      "learning_objectives": [
+        "توضیح UDP Applications با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با UDP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای DNS و VoIP روی UDP چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:mtu-pmtud:v1",
+      "chapter_order": 9,
+      "subchapter_order": 5,
+      "lesson_order": 19,
+      "level": "L3",
+      "title_fa": "[L3] MTU و Path MTU Discovery",
+      "title_en": "MTU and PMTUD",
+      "topic": "ICMP",
+      "summary": "بسته بزرگ‌تر از MTU مسیر ممکن است به پیام ICMP Fragmentation Needed یا Packet Too Big نیاز داشته باشد.",
+      "full_content": "# MTU و Path MTU Discovery\n\n**English:** MTU and PMTUD\n**سطح:** L3 — ICMP\n\n## مدل ذهنی و مبانی\nمسدود شدن پیام‌های PMTUD می‌تواند انتقال بزرگ را مختل کند در حالی که بسته کوچک کار می‌کند. با capture و آزمون کنترل‌شده بررسی کن و MTU را کورکورانه تغییر نده.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nICMP; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · ICMP · L3",
+      "learning_objectives": [
+        "توضیح MTU and PMTUD با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با ICMP"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای MTU و Path MTU Discovery چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:capture:v1",
+      "chapter_order": 9,
+      "subchapter_order": 5,
+      "lesson_order": 20,
+      "level": "L3",
+      "title_fa": "[L3] گردش کار Wireshark/tcpdump",
+      "title_en": "Packet Capture Workflow",
+      "topic": "Analysis",
+      "summary": "تحلیل با سؤال مشخص، capture در نقطه مناسب، فیلتر و مقایسه دو سمت آغاز می‌شود.",
+      "full_content": "# گردش کار Wireshark/tcpdump\n\n**English:** Packet Capture Workflow\n**سطح:** L3 — Analysis\n\n## مدل ذهنی و مبانی\nCapture filter و display filter متفاوت‌اند. نمونه display filter: arp، icmp، tcp.flags.syn == 1 و udp.port == 53. پیش از اشتراک PCAP داده حساس را پالایش کن.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nAnalysis; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · Analysis · L3",
+      "learning_objectives": [
+        "توضیح Packet Capture Workflow با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با Analysis"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای گردش کار Wireshark/tcpdump چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:security:v1",
+      "chapter_order": 9,
+      "subchapter_order": 5,
+      "lesson_order": 21,
+      "level": "L4",
+      "title_fa": "[L4] امنیت ARP و TCP",
+      "title_en": "ARP Spoofing and TCP Abuse",
+      "topic": "Security",
+      "summary": "ARP احراز هویت ذاتی ندارد؛ segmentation، کنترل لایه ۲ و مانیتورینگ می‌توانند ریسک جعل را کاهش دهند.",
+      "full_content": "# امنیت ARP و TCP\n\n**English:** ARP Spoofing and TCP Abuse\n**سطح:** L4 — Security\n\n## مدل ذهنی و مبانی\nDynamic ARP Inspection و DHCP Snooping نیازمند پشتیبانی و binding صحیح‌اند. SYN flood را با baseline و نرخ handshake تحلیل کن؛ تغییر امنیتی باید change approval و rollback داشته باشد.\n\n## روش تحلیل مرحله‌ای\n1. نقطه مبدأ/مقصد، subnet، route و interface را ثبت کن.\n2. baseline، timestamp و نسخه ابزار را پیش از تغییر یادداشت کن.\n3. جدول همسایه، socket، packet capture و log را به‌عنوان شواهد مستقل جمع کن.\n4. فرضیه‌ای بنویس که بتوان با شاهد آن را رد یا تأیید کرد.\n5. فقط یک تغییر کنترل‌شده انجام بده و همان آزمون را دوباره اجرا کن.\n\n## مثال حل‌شده\nکلاینت `192.0.2.10/24` به gateway `192.0.2.1` دسترسی ندارد. ابتدا route و subnet را تأیید کن. اگر neighbor entry ناقص است، capture برای ARP و VLAN را بررسی کن؛ تا پیش از resolution موفق، نتیجه‌گیری درباره DNS یا TCP زودهنگام است. اگر ARP کامل است اما ping شکست می‌خورد، policy و مسیر برگشت را بررسی کن. هر مرحله باید خروجی قابل مشاهده داشته باشد.\n\n## لاب امن\nدر دو VM با شبکه داخلی/Host-only کار کن. قبل و بعد از هر آزمون جدول همسایه و capture محدود بگیر. فقط یک متغیر را تغییر بده. ARP spoofing، flood و تغییر MTU را روی شبکه عملیاتی اجرا نکن.\n\n## خروجی و تفسیر\nمتن خروجی به سیستم‌عامل، نسخه، interface و policy وابسته است. «پاسخی دریافت نشد» را با «میزبان خاموش است» یکی ندان. برای تحلیل transport، tuple، flags، RTT، retransmission و سمت تولیدکننده پیام را ثبت کن.\n\n## RCA، امنیت و rollback\nالگوی Symptom → Scope → Evidence → Hypothesis → Fix → Verify را رعایت کن. capture را کمینه و داده حساس را پاک‌سازی کن. پیش از تغییر firewall/MTU/DAI/timeout، پیکربندی قبلی و دسترسی out-of-band را حفظ کن؛ سپس rollback را اجرا و baseline را تکرار کن.\n\n## Checklist\n- [ ] لایه و نقطه مشاهده مشخص است.\n- [ ] baseline و timestamp ثبت شده‌اند.\n- [ ] حداقل یک فرضیه با شاهد مستقل بررسی شده است.\n- [ ] verify و rollback مستند هستند.\n\n## واژه‌نامه\nSecurity; packet; frame; endpoint; timeout; retransmission; route; capture; baseline.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · Security · L4",
+      "learning_objectives": [
+        "توضیح ARP Spoofing and TCP Abuse با واژگان فنی دقیق",
+        "جمع‌آوری شواهد و عیب‌یابی امن مرتبط با Security"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای امنیت ARP و TCP چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    }
+  ]
+}
