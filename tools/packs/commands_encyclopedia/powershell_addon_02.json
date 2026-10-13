@@ -1,0 +1,1568 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "PowerShell advanced networking and Windows diagnostics enrichment batch 2; additive records; review required",
+  "chapter_order": 68,
+  "chapter_title_fa": "دانشنامه جامع دستورات",
+  "vendor_pack": "powershell",
+  "vendor": "Microsoft",
+  "platform": "Windows PowerShell 5.1 / PowerShell 7+",
+  "scope": "DNS policy, effective firewall/IPsec, SMB, NetEvent tracing and NIC offload/QoS diagnostics",
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true
+  },
+  "commands": [
+    {
+      "uid": "cmd:powershell:admin:0150",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetIPInterface -AddressFamily IPv4 | Select-Object InterfaceAlias,InterfaceIndex,Dhcp,ConnectionState,InterfaceMetric,NlMtu",
+      "title_fa": "[L3] IPv4 interface metric و MTU",
+      "title_en": "IPv4 interface metric و MTU",
+      "syntax": "Get-NetIPInterface -AddressFamily IPv4 | Select-Object InterfaceAlias,InterfaceIndex,Dhcp,ConnectionState,InterfaceMetric,NlMtu",
+      "when_to_use_fa": "تحلیل انتخاب مسیر و MTU بدون تغییر پیکربندی",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetIPInterface -AddressFamily IPv4 | Select-Object InterfaceAlias,InterfaceIndex,Dhcp,ConnectionState,InterfaceMetric,NlMtu\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetIPInterface -AddressFamily IPv4 | Select-Object InterfaceAlias,InterfaceIndex,Dhcp,ConnectionState,InterfaceMetric,NlMtu",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "IPv4 interface metric و MTU",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "تحلیل انتخاب مسیر و MTU بدون تغییر پیکربندی و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0151",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "dns",
+      "command": "Get-DnsClientGlobalSetting | Format-List *",
+      "title_fa": "[L3] تنظیمات سراسری DNS Client",
+      "title_en": "تنظیمات سراسری DNS Client",
+      "syntax": "Get-DnsClientGlobalSetting | Format-List *",
+      "when_to_use_fa": "بررسی suffix search list و تنظیمات سراسری resolver",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-DnsClientGlobalSetting | Format-List *\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-DnsClientGlobalSetting | Format-List *",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "تنظیمات سراسری DNS Client",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "بررسی suffix search list و تنظیمات سراسری resolver و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0152",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "dns",
+      "command": "Get-DnsClientNrptPolicy -Effective | Format-List *",
+      "title_fa": "[L3] بررسی Name Resolution Policy Table",
+      "title_en": "بررسی Name Resolution Policy Table",
+      "syntax": "Get-DnsClientNrptPolicy -Effective | Format-List *",
+      "when_to_use_fa": "عیب‌یابی تفاوت resolution بر اساس namespace و policy",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-DnsClientNrptPolicy -Effective | Format-List *\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-DnsClientNrptPolicy -Effective | Format-List *",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "بررسی Name Resolution Policy Table",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "عیب‌یابی تفاوت resolution بر اساس namespace و policy و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0153",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetAdapterStatistics -Name 'Ethernet 2' | Format-List *",
+      "title_fa": "[L3] شمارنده‌های یک NIC مشخص",
+      "title_en": "شمارنده‌های یک NIC مشخص",
+      "syntax": "Get-NetAdapterStatistics -Name 'Ethernet 2' | Format-List *",
+      "when_to_use_fa": "ثبت counterهای interface در snapshotهای زمانی",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetAdapterStatistics -Name 'Ethernet 2' | Format-List *\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetAdapterStatistics -Name 'Ethernet 2' | Format-List *",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "شمارنده‌های یک NIC مشخص",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "ثبت counterهای interface در snapshotهای زمانی و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0154",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetAdapterBinding -Name 'Ethernet 2' -AllBindings",
+      "title_fa": "[L3] تمام bindingهای یک NIC",
+      "title_en": "تمام bindingهای یک NIC",
+      "syntax": "Get-NetAdapterBinding -Name 'Ethernet 2' -AllBindings",
+      "when_to_use_fa": "بررسی bindingهای فعال و غیرفعال در لاب",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetAdapterBinding -Name 'Ethernet 2' -AllBindings\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetAdapterBinding -Name 'Ethernet 2' -AllBindings",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "تمام bindingهای یک NIC",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "بررسی bindingهای فعال و غیرفعال در لاب و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0155",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "firewall",
+      "command": "Get-NetFirewallProfile -PolicyStore ActiveStore | Format-List *",
+      "title_fa": "[L3] سیاست مؤثر Windows Firewall",
+      "title_en": "سیاست مؤثر Windows Firewall",
+      "syntax": "Get-NetFirewallProfile -PolicyStore ActiveStore | Format-List *",
+      "when_to_use_fa": "بررسی policy مؤثر، نه فقط تنظیم محلی",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetFirewallProfile -PolicyStore ActiveStore | Format-List *\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetFirewallProfile -PolicyStore ActiveStore | Format-List *",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "سیاست مؤثر Windows Firewall",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "بررسی policy مؤثر، نه فقط تنظیم محلی و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0156",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "firewall",
+      "command": "Get-NetFirewallRule -PolicyStore ActiveStore -Enabled True -Direction Outbound | Select-Object DisplayName,Action,Profile",
+      "title_fa": "[L3] قواعد مؤثر خروجی فایروال",
+      "title_en": "قواعد مؤثر خروجی فایروال",
+      "syntax": "Get-NetFirewallRule -PolicyStore ActiveStore -Enabled True -Direction Outbound | Select-Object DisplayName,Action,Profile",
+      "when_to_use_fa": "ممیزی outbound ruleها از ActiveStore",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetFirewallRule -PolicyStore ActiveStore -Enabled True -Direction Outbound | Select-Object DisplayName,Action,Profile\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetFirewallRule -PolicyStore ActiveStore -Enabled True -Direction Outbound | Select-Object DisplayName,Action,Profile",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "قواعد مؤثر خروجی فایروال",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "ممیزی outbound ruleها از ActiveStore و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0157",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "firewall",
+      "command": "Get-NetFirewallAddressFilter -PolicyStore ActiveStore | Select-Object InstanceID,LocalAddress,RemoteAddress",
+      "title_fa": "[L3] فیلتر آدرس قواعد فایروال",
+      "title_en": "فیلتر آدرس قواعد فایروال",
+      "syntax": "Get-NetFirewallAddressFilter -PolicyStore ActiveStore | Select-Object InstanceID,LocalAddress,RemoteAddress",
+      "when_to_use_fa": "تحلیل scope آدرس برای قواعد مؤثر",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetFirewallAddressFilter -PolicyStore ActiveStore | Select-Object InstanceID,LocalAddress,RemoteAddress\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetFirewallAddressFilter -PolicyStore ActiveStore | Select-Object InstanceID,LocalAddress,RemoteAddress",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "فیلتر آدرس قواعد فایروال",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "تحلیل scope آدرس برای قواعد مؤثر و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0158",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "firewall",
+      "command": "Get-NetFirewallPortFilter -PolicyStore ActiveStore | Select-Object InstanceID,Protocol,LocalPort,RemotePort",
+      "title_fa": "[L3] فیلتر پورت قواعد فایروال",
+      "title_en": "فیلتر پورت قواعد فایروال",
+      "syntax": "Get-NetFirewallPortFilter -PolicyStore ActiveStore | Select-Object InstanceID,Protocol,LocalPort,RemotePort",
+      "when_to_use_fa": "تطبیق port/protocol با rule ID مربوطه",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetFirewallPortFilter -PolicyStore ActiveStore | Select-Object InstanceID,Protocol,LocalPort,RemotePort\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetFirewallPortFilter -PolicyStore ActiveStore | Select-Object InstanceID,Protocol,LocalPort,RemotePort",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "فیلتر پورت قواعد فایروال",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "تطبیق port/protocol با rule ID مربوطه و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0159",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "firewall",
+      "command": "Get-NetIPsecRule -PolicyStore ActiveStore | Select-Object DisplayName,Enabled,Profile,Mode",
+      "title_fa": "[L3] ممیزی قواعد IPsec مؤثر",
+      "title_en": "ممیزی قواعد IPsec مؤثر",
+      "syntax": "Get-NetIPsecRule -PolicyStore ActiveStore | Select-Object DisplayName,Enabled,Profile,Mode",
+      "when_to_use_fa": "بررسی ruleهای connection security",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetIPsecRule -PolicyStore ActiveStore | Select-Object DisplayName,Enabled,Profile,Mode\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetIPsecRule -PolicyStore ActiveStore | Select-Object DisplayName,Enabled,Profile,Mode",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "ممیزی قواعد IPsec مؤثر",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "بررسی ruleهای connection security و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0160",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "firewall",
+      "command": "Get-NetIPsecMainModeCryptoSet",
+      "title_fa": "[L3] بررسی مجموعه رمزنگاری Main Mode",
+      "title_en": "بررسی مجموعه رمزنگاری Main Mode",
+      "syntax": "Get-NetIPsecMainModeCryptoSet",
+      "when_to_use_fa": "تطبیق تنظیمات رمزنگاری IPsec با baseline سازمان",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetIPsecMainModeCryptoSet\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetIPsecMainModeCryptoSet",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "بررسی مجموعه رمزنگاری Main Mode",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "تطبیق تنظیمات رمزنگاری IPsec با baseline سازمان و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0161",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "firewall",
+      "command": "Get-NetIPsecQuickModeCryptoSet",
+      "title_fa": "[L3] بررسی مجموعه رمزنگاری Quick Mode",
+      "title_en": "بررسی مجموعه رمزنگاری Quick Mode",
+      "syntax": "Get-NetIPsecQuickModeCryptoSet",
+      "when_to_use_fa": "بررسی الگوریتم‌های داده IPsec در سیستم هدف",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetIPsecQuickModeCryptoSet\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetIPsecQuickModeCryptoSet",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "بررسی مجموعه رمزنگاری Quick Mode",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "بررسی الگوریتم‌های داده IPsec در سیستم هدف و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0162",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "services",
+      "command": "Get-SmbClientNetworkInterface | Format-Table InterfaceIndex,IPAddress,LinkSpeed,RdmaCapable -AutoSize",
+      "title_fa": "[L3] رابط‌های SMB Client",
+      "title_en": "رابط‌های SMB Client",
+      "syntax": "Get-SmbClientNetworkInterface | Format-Table InterfaceIndex,IPAddress,LinkSpeed,RdmaCapable -AutoSize",
+      "when_to_use_fa": "عیب‌یابی مسیر SMB و قابلیت‌های interface",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-SmbClientNetworkInterface | Format-Table InterfaceIndex,IPAddress,LinkSpeed,RdmaCapable -AutoSize\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-SmbClientNetworkInterface | Format-Table InterfaceIndex,IPAddress,LinkSpeed,RdmaCapable -AutoSize",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "رابط‌های SMB Client",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "عیب‌یابی مسیر SMB و قابلیت‌های interface و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0163",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "services",
+      "command": "Get-SmbMultichannelConnection | Format-List *",
+      "title_fa": "[L3] بررسی SMB Multichannel",
+      "title_en": "بررسی SMB Multichannel",
+      "syntax": "Get-SmbMultichannelConnection | Format-List *",
+      "when_to_use_fa": "تحلیل مسیرهای موازی SMB در نسخه‌های پشتیبانی‌شده",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-SmbMultichannelConnection | Format-List *\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-SmbMultichannelConnection | Format-List *",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "بررسی SMB Multichannel",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "تحلیل مسیرهای موازی SMB در نسخه‌های پشتیبانی‌شده و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0164",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "services",
+      "command": "Get-SmbMapping | Format-Table LocalPath,RemotePath,Status -AutoSize",
+      "title_fa": "[L3] ممیزی SMB Mappingها",
+      "title_en": "ممیزی SMB Mappingها",
+      "syntax": "Get-SmbMapping | Format-Table LocalPath,RemotePath,Status -AutoSize",
+      "when_to_use_fa": "بررسی mapهای جاری بدون نمایش credential",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-SmbMapping | Format-Table LocalPath,RemotePath,Status -AutoSize\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-SmbMapping | Format-Table LocalPath,RemotePath,Status -AutoSize",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "ممیزی SMB Mappingها",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "بررسی mapهای جاری بدون نمایش credential و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0165",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetEventSession",
+      "title_fa": "[L3] ممیزی نشست‌های NetEvent موجود",
+      "title_en": "ممیزی نشست‌های NetEvent موجود",
+      "syntax": "Get-NetEventSession",
+      "when_to_use_fa": "بررسی نشست‌های tracing شبکه پیش از ایجاد trace جدید",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetEventSession\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetEventSession",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "ممیزی نشست‌های NetEvent موجود",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "بررسی نشست‌های tracing شبکه پیش از ایجاد trace جدید و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0166",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetEventProvider",
+      "title_fa": "[L3] فهرست providerهای NetEvent",
+      "title_en": "فهرست providerهای NetEvent",
+      "syntax": "Get-NetEventProvider",
+      "when_to_use_fa": "انتخاب provider مناسب برای trace کنترل‌شده",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetEventProvider\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetEventProvider",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "فهرست providerهای NetEvent",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "انتخاب provider مناسب برای trace کنترل‌شده و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0167",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetEventPacketCaptureProvider",
+      "title_fa": "[L3] ممیزی provider ضبط packet",
+      "title_en": "ممیزی provider ضبط packet",
+      "syntax": "Get-NetEventPacketCaptureProvider",
+      "when_to_use_fa": "بررسی تنظیمات provider قبل از packet capture",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetEventPacketCaptureProvider\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetEventPacketCaptureProvider",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "ممیزی provider ضبط packet",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "بررسی تنظیمات provider قبل از packet capture و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0168",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetEventSession | Format-List Name,State,LocalFilePath",
+      "title_fa": "[L3] بررسی وضعیت و مسیر خروجی NetEvent",
+      "title_en": "بررسی وضعیت و مسیر خروجی NetEvent",
+      "syntax": "Get-NetEventSession | Format-List Name,State,LocalFilePath",
+      "when_to_use_fa": "یافتن trace فعال و محل فایل خروجی",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetEventSession | Format-List Name,State,LocalFilePath\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetEventSession | Format-List Name,State,LocalFilePath",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "بررسی وضعیت و مسیر خروجی NetEvent",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "یافتن trace فعال و محل فایل خروجی و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0169",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetQosPolicy | Format-Table Name,NetworkProfile,Precedence,ThrottleRateActionBitsPerSecond -AutoSize",
+      "title_fa": "[L3] ممیزی سیاست‌های QoS",
+      "title_en": "ممیزی سیاست‌های QoS",
+      "syntax": "Get-NetQosPolicy | Format-Table Name,NetworkProfile,Precedence,ThrottleRateActionBitsPerSecond -AutoSize",
+      "when_to_use_fa": "بررسی precedence و shaping policyهای مؤثر",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetQosPolicy | Format-Table Name,NetworkProfile,Precedence,ThrottleRateActionBitsPerSecond -AutoSize\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetQosPolicy | Format-Table Name,NetworkProfile,Precedence,ThrottleRateActionBitsPerSecond -AutoSize",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "ممیزی سیاست‌های QoS",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "بررسی precedence و shaping policyهای مؤثر و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0170",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetAdapterRss -Name 'Ethernet 2' | Format-List *",
+      "title_fa": "[L3] ممیزی Receive Side Scaling",
+      "title_en": "ممیزی Receive Side Scaling",
+      "syntax": "Get-NetAdapterRss -Name 'Ethernet 2' | Format-List *",
+      "when_to_use_fa": "بررسی RSS در عیب‌یابی throughput و CPU",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetAdapterRss -Name 'Ethernet 2' | Format-List *\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetAdapterRss -Name 'Ethernet 2' | Format-List *",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "ممیزی Receive Side Scaling",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "بررسی RSS در عیب‌یابی throughput و CPU و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0171",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetAdapterRsc -Name 'Ethernet 2' | Format-List *",
+      "title_fa": "[L3] ممیزی Receive Segment Coalescing",
+      "title_en": "ممیزی Receive Segment Coalescing",
+      "syntax": "Get-NetAdapterRsc -Name 'Ethernet 2' | Format-List *",
+      "when_to_use_fa": "ثبت وضعیت RSC در تحلیل packet offload",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetAdapterRsc -Name 'Ethernet 2' | Format-List *\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetAdapterRsc -Name 'Ethernet 2' | Format-List *",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "ممیزی Receive Segment Coalescing",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "ثبت وضعیت RSC در تحلیل packet offload و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0172",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetAdapterLso -Name 'Ethernet 2' | Format-List *",
+      "title_fa": "[L3] ممیزی Large Send Offload",
+      "title_en": "ممیزی Large Send Offload",
+      "syntax": "Get-NetAdapterLso -Name 'Ethernet 2' | Format-List *",
+      "when_to_use_fa": "مقایسه تنظیم LSO با نشانه‌های capture و driver",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetAdapterLso -Name 'Ethernet 2' | Format-List *\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetAdapterLso -Name 'Ethernet 2' | Format-List *",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "ممیزی Large Send Offload",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "مقایسه تنظیم LSO با نشانه‌های capture و driver و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0173",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetAdapterChecksumOffload -Name 'Ethernet 2' | Format-List *",
+      "title_fa": "[L3] ممیزی checksum offload",
+      "title_en": "ممیزی checksum offload",
+      "syntax": "Get-NetAdapterChecksumOffload -Name 'Ethernet 2' | Format-List *",
+      "when_to_use_fa": "بررسی offload در تحلیل checksumهای ظاهراً نادرست capture",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetAdapterChecksumOffload -Name 'Ethernet 2' | Format-List *\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetAdapterChecksumOffload -Name 'Ethernet 2' | Format-List *",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "ممیزی checksum offload",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "بررسی offload در تحلیل checksumهای ظاهراً نادرست capture و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0174",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Windows PowerShell 5.1; verify module/cmdlet and property availability on target Windows build",
+      "privilege": "Read-only diagnostics; elevation may be required",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetAdapterPowerManagement -Name 'Ethernet 2' | Format-List *",
+      "title_fa": "[L3] ممیزی مدیریت توان NIC",
+      "title_en": "ممیزی مدیریت توان NIC",
+      "syntax": "Get-NetAdapterPowerManagement -Name 'Ethernet 2' | Format-List *",
+      "when_to_use_fa": "بررسی تنظیمات power saving در قطع‌ووصلی‌های متناوب",
+      "prerequisites_fa": [
+        "نسخه Windows و PowerShell و ماژول NetTCPIP/NetSecurity/SmbShare را ثبت کن",
+        "دسترسی کمینه و بازه جمع‌آوری محدود باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در سیستم مجاز اجرا و timestamp را ثبت کن.",
+        "خروجی را با baseline و پیکربندی مورد انتظار مقایسه کن.",
+        "یافته را با log یا capture مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه فرمان:\nGet-NetAdapterPowerManagement -Name 'Ethernet 2' | Format-List *\nخروجی واقعی وابسته به نسخه و سیستم هدف است.",
+      "output_fields_fa": [
+        {
+          "field": "configuration/state/counters",
+          "meaning": "مقادیر مشاهده‌شده را با نسخه، interface و زمان ثبت‌شده تفسیر کن"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن وجود تمام cmdletها در همه نسخه‌ها.",
+        "تغییر offload یا firewall قبل از ثبت baseline و طرح بازگشت."
+      ],
+      "security_notes_fa": "خروجی می‌تواند آدرس‌ها، نام میزبان، سیاست امنیتی و مسیرهای داخلی را نشان دهد؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در VM یا NIC آزمایشگاهی، فقط یک پارامتر را در هر بار تغییر بده و قبل/بعد را ثبت کن.",
+      "verify_steps_fa": [
+        "Get-NetAdapterPowerManagement -Name 'Ethernet 2' | Format-List *",
+        "خروجی را با مستندات Microsoft برای build و module هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد فرمان خواندنی است؛ تغییرهای احتمالی بعدی را جداگانه، با change approval و rollback تست‌شده اجرا کن.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-NetAdapterStatistics",
+        "Get-WinEvent"
+      ],
+      "search_keywords": [
+        "ممیزی مدیریت توان NIC",
+        "PowerShell",
+        "Windows network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/",
+        "https://learn.microsoft.com/powershell/module/nettcpip/",
+        "https://learn.microsoft.com/powershell/module/netsecurity/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
+        "answer_key_fa": "بررسی تنظیمات power saving در قطع‌ووصلی‌های متناوب و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    }
+  ]
+}
