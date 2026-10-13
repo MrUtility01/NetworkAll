@@ -476,6 +476,62 @@ def build_ch65(lessons):
     }
 
 
+
+def append_unmatched_to_existing_chapter(data, lessons, order: int) -> int:
+    """Append new chapter-specific lessons without replacing the existing chapter."""
+    chapter = next((c for c in data.get("chapters", []) if int(c.get("order", -1)) == order), None)
+    if chapter is None:
+        print(f" skip chapter {order}: existing chapter not found")
+        return 0
+    existing_uids = {
+        str(lesson.get("uid") or "")
+        for sub in chapter.get("subchapters", [])
+        for lesson in sub.get("lessons", [])
+    }
+    existing_titles = {
+        str(lesson.get("title_fa") or "").strip()
+        for sub in chapter.get("subchapters", [])
+        for lesson in sub.get("lessons", [])
+    }
+    groups = defaultdict(list)
+    group_titles = {}
+    for src in lessons:
+        uid = str(src.get("uid") or "").strip()
+        title = str(src.get("title_fa") or "").strip()
+        if not uid or not title or uid in existing_uids or title in existing_titles:
+            continue
+        sub_order = int(src.get("subchapter_order") or 1)
+        topic = str(src.get("topic") or src.get("collection") or f"زیرفصل {sub_order}").strip()
+        group_titles[sub_order] = f"تکمیلی — {topic}"
+        meta = src.get("meta") if isinstance(src.get("meta"), dict) else {}
+        groups[sub_order].append({
+            "uid": uid,
+            "title_fa": title,
+            "title_en": src.get("title_en") or "",
+            "level": src.get("level") or "L0",
+            "summary": src.get("summary") or "",
+            "full_content": src.get("full_content") or "",
+            "commands": as_text(src.get("commands")),
+            "examples": as_text(src.get("examples")),
+            "notes": as_text(src.get("notes")),
+            "meta": meta,
+            "learning_objectives": src.get("learning_objectives") or [],
+            "search_keywords": src.get("search_keywords") or [],
+            "search_query": src.get("search_query") or "",
+            "source_status": src.get("source_status") or "review_required",
+            "collection": topic,
+        })
+        existing_uids.add(uid)
+        existing_titles.add(title)
+    for sub_order in sorted(groups):
+        rows = sorted(groups[sub_order], key=lambda row: (row.get("lesson_order", 0), row.get("title_fa", "")))
+        chapter.setdefault("subchapters", []).append({
+            "title_fa": group_titles[sub_order],
+            "lessons": rows,
+        })
+    added = sum(len(rows) for rows in groups.values())
+    return added
+
 def main():
     if not GZ.is_file():
         print("ERROR missing", GZ)
@@ -507,6 +563,11 @@ def main():
             continue
         n = merge_by_title(data, lessons)
         print("   title-merge", n)
+        # Chapter 3 has an explicit additive deepening pack: preserve its
+        # original lessons and append only new UIDs/titles as subchapters.
+        if p.name == "ch03_pack.json" and "/tools/packs/ch03/" in name:
+            added = append_unmatched_to_existing_chapter(data, lessons, 3)
+            print("   chapter-3 additive lessons", added)
         if "ospf" in name or "bgp" in name or "redistribution" in name or "routing_deep" in name:
             routing_extra.extend(lessons)
         if "vpn" in name or "ipsec" in name:
