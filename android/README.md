@@ -2,7 +2,7 @@
 
 ## نصب
 
-APK را فقط از Artifact یک اجرای موفق `NetworkAll Android APK (validated)` دریافت کنید. Application ID برابر `com.netenc.app` است؛ `versionName=1.0.0` و `versionCode=4`.
+APK را فقط از Artifact یک اجرای موفق `NetworkAll Android APK (validated)` دریافت کنید. Application ID برابر `com.netenc.app` است؛ `versionName=1.0.0` و `versionCode=4`. در اولین اجرا رمز ورود محلی را تنظیم کنید؛ رمز به‌صورت hash نمک‌دار در فضای خصوصی برنامه نگهداری می‌شود. این قفل جایگزین رمزگذاری دیتابیس نیست.
 
 ## اتصال به ویندوز
 
