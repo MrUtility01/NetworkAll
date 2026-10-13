@@ -1,5 +1,6 @@
 package com.netenc.app
 
+import android.icu.util.Calendar
 import android.icu.util.PersianCalendar
 import java.time.Instant
 import java.time.LocalDateTime
@@ -33,6 +34,17 @@ object JalaliDate {
         return c.getActualMaximum(PersianCalendar.DAY_OF_MONTH)
     }
 
+    fun datePartStored(value: String): String {
+        val local = parseStored(value)
+        val c = calendar()
+        c.timeInMillis = local.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        return "%04d/%02d/%02d".format(Locale.ROOT,
+            c.get(PersianCalendar.YEAR), c.get(PersianCalendar.MONTH) + 1,
+            c.get(PersianCalendar.DAY_OF_MONTH))
+    }
+
+    fun timePartStored(value: String): String = parseStored(value).format(timeFormatter)
+
     fun formatStored(value: String): String {
         if (value.isBlank()) return ""
         return try {
@@ -42,7 +54,8 @@ object JalaliDate {
             val date = "%04d/%02d/%02d".format(Locale.ROOT,
                 c.get(PersianCalendar.YEAR), c.get(PersianCalendar.MONTH) + 1,
                 c.get(PersianCalendar.DAY_OF_MONTH))
-            "$date · ${local.format(timeFormatter)}"
+            val weekday = c.getDisplayName(PersianCalendar.DAY_OF_WEEK, Calendar.LONG, Locale("fa", "IR")).orEmpty()
+            "$weekday $date · ${local.format(timeFormatter)}"
         } catch (_: Exception) { value }
     }
 
