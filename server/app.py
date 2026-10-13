@@ -85,7 +85,7 @@ def load_or_create_sync_token() -> str:
     except OSError:
         pass
     token = secrets.token_urlsafe(32)
-    token_file.write_text(token + "\\n", encoding="utf-8")
+    token_file.write_text(token + "\n", encoding="utf-8")
     try:
         os.chmod(token_file, 0o600)
     except OSError:
