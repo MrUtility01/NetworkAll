@@ -15,6 +15,7 @@ import com.netenc.app.data.AppDatabase
 import com.netenc.app.data.NoteEntity
 import com.netenc.app.data.TaskEntity
 import com.netenc.app.data.VaultEntity
+import com.netenc.app.reminder.TaskReminderScheduler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -90,7 +91,10 @@ class WorkspaceActivity : AppCompatActivity() {
                                 when (mode) {
                                     "notes" -> db.workspaceDao().deleteNote(uid)
                                     "vault" -> db.workspaceDao().deleteVault(uid)
-                                    else -> db.workspaceDao().deleteTask(uid)
+                                    else -> {
+                                        db.workspaceDao().deleteTask(uid)
+                                        TaskReminderScheduler.cancel(this@WorkspaceActivity, uid)
+                                    }
                                 }
                             }
                             refresh()
@@ -106,9 +110,15 @@ class WorkspaceActivity : AppCompatActivity() {
         val title = EditText(this).apply { hint = "عنوان" }
         val body = EditText(this).apply { hint = if (mode == "vault") "رمز / توضیحات" else "متن" }
         val user = EditText(this).apply { hint = "نام کاربری (اختیاری)" }
+        val due = EditText(this).apply {
+            hint = "زمان یادآوری (yyyy-MM-ddTHH:mm) — اختیاری"
+            inputType = android.text.InputType.TYPE_CLASS_DATETIME
+            if (mode == "tasks") setText("")
+        }
         val box = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             addView(title); addView(body)
+            if (mode == "tasks") addView(due)
             if (mode == "vault") addView(user)
         }
         AlertDialog.Builder(this)
@@ -131,9 +141,15 @@ class WorkspaceActivity : AppCompatActivity() {
                                     lastUpdated = now()
                                 )
                             )
-                            else -> db.workspaceDao().upsertTask(
-                                TaskEntity(id, t, body.text.toString(), lastUpdated = now())
-                            )
+                            else -> {
+                                val dueAt = due.text.toString().trim()
+                                db.workspaceDao().upsertTask(
+                                    TaskEntity(id, t, body.text.toString(), dueAt = dueAt, lastUpdated = now())
+                                )
+                                if (dueAt.isNotBlank()) TaskReminderScheduler.schedule(
+                                    this@WorkspaceActivity, id, t, body.text.toString(), dueAt
+                                )
+                            }
                         }
                     }
                     refresh()
@@ -150,7 +166,13 @@ class WorkspaceActivity : AppCompatActivity() {
                 db.workspaceDao().allTasks().find { it.uid == uid }
             } ?: return@launch
             withContext(Dispatchers.IO) {
-                db.workspaceDao().upsertTask(task.copy(done = !task.done, lastUpdated = now()))
+                val updated = task.copy(done = !task.done, lastUpdated = now())
+                db.workspaceDao().upsertTask(updated)
+                if (updated.done) {
+                    TaskReminderScheduler.cancel(this@WorkspaceActivity, uid)
+                } else if (updated.dueAt.isNotBlank()) {
+                    TaskReminderScheduler.schedule(this@WorkspaceActivity, uid, updated.title, updated.body, updated.dueAt)
+                }
             }
             refresh()
             Toast.makeText(this@WorkspaceActivity, if (!task.done) "انجام شد" else "باز شد", Toast.LENGTH_SHORT).show()
