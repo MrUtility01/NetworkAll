@@ -2,12 +2,13 @@
 """سرور وب + API همگام‌سازی LAN — قرارداد یکسان با اندروید (فاز ۱ و ۲)."""
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import os
 import socket
 import secrets
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request
@@ -53,6 +54,185 @@ except Exception:
 
 BASE = Path(__file__).resolve().parent
 app = Flask(__name__, template_folder=str(BASE / "templates"), static_folder=str(BASE / "static"))
+
+
+def load_web_session_secret() -> str:
+    """Persist a random secret so sessions survive a normal server restart."""
+    p = BASE / "data" / "web_session.key"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        current = p.read_text(encoding="utf-8").strip()
+        if len(current) >= 48:
+            return current
+    except OSError:
+        pass
+    value = secrets.token_urlsafe(48)
+    p.write_text(value + "\\n", encoding="utf-8")
+    try:
+        os.chmod(p, 0o600)
+    except OSError:
+        pass
+    return value
+
+
+app.secret_key = load_web_session_secret()
+app.config.update(
+    JSON_AS_ASCII=False,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+    SESSION_COOKIE_SECURE=os.environ.get("NETENC_HTTPS", "0") == "1",
+)
+app.permanent_session_lifetime = timedelta(hours=12)
+
+
+def _app_password_path() -> Path:
+    return BASE / "data" / "app_access.json"
+
+
+def _load_app_password():
+    p = _app_password_path()
+    if not p.exists():
+        return None
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+        if not isinstance(data, dict) or not data.get("salt") or not data.get("hash"):
+            return {}
+        return data
+    except Exception:
+        return {}
+
+
+def _save_app_password(password: str) -> None:
+    p = _app_password_path()
+    p.parent.mkdir(parents=True, exist_ok=True)
+    salt = secrets.token_bytes(16)
+    iterations = 240_000
+    digest = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, iterations, dklen=32)
+    data = {
+        "algorithm": "PBKDF2-HMAC-SHA256",
+        "iterations": iterations,
+        "salt": base64.b64encode(salt).decode("ascii"),
+        "hash": base64.b64encode(digest).decode("ascii"),
+        "created_at": utc_now(),
+    }
+    temp = p.with_suffix(".json.tmp")
+    temp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+    try:
+        os.chmod(temp, 0o600)
+    except OSError:
+        pass
+    temp.replace(p)
+
+
+def _verify_app_password(password: str) -> bool:
+    record = _load_app_password()
+    if not record:
+        return False
+    try:
+        salt = base64.b64decode(record["salt"], validate=True)
+        expected = base64.b64decode(record["hash"], validate=True)
+        iterations = int(record.get("iterations", 240_000))
+        if len(salt) < 16 or len(expected) != 32 or not 100_000 <= iterations <= 2_000_000:
+            return False
+        actual = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, iterations, dklen=32)
+        return secrets.compare_digest(actual, expected)
+    except Exception:
+        return False
+
+
+_LOGIN_TEMPLATE = r\'''<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ورود | NetworkAll</title>
+<style>
+body{font-family:Tahoma,Arial,sans-serif;background:#f3f6fb;color:#172033;display:grid;place-items:center;min-height:100vh;margin:0}
+main{background:#fff;border:1px solid #dde5f0;border-radius:16px;padding:28px;width:min(430px,calc(100% - 36px));box-sizing:border-box;box-shadow:0 16px 44px #0f172a12}
+h1{color:#1d4ed8;margin:0 0 8px;font-size:26px}p{line-height:1.9;color:#475569;font-size:14px}
+label{display:block;margin:14px 0 6px}input{box-sizing:border-box;width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font:inherit;direction:ltr}
+button{margin-top:18px;width:100%;padding:12px;border:0;border-radius:8px;background:#1d4ed8;color:white;font:inherit;cursor:pointer}
+.error{color:#b91c1c}small{display:block;color:#64748b;line-height:1.8;margin-top:16px}
+</style></head>
+<body><main>
+<h1>NetworkAll</h1>
+{% if setup_mode %}<p>برای اولین اجرا، رمز محلی ویندوز را بسازید. می‌توانید همان رمزی را وارد کنید که روی اندروید انتخاب می‌کنید.</p>
+{% else %}<p>برای دسترسی به دانشنامه، رمز محلی را وارد کنید.</p>{% endif %}
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+<form method="post" action="/login">
+<input type="hidden" name="next" value="{{ next_path }}">
+<label for="password">{% if setup_mode %}رمز جدید (حداقل ۸ نویسه){% else %}رمز ورود{% endif %}</label>
+<input id="password" name="password" type="password" autocomplete="{% if setup_mode %}new-password{% else %}current-password{% endif %}" minlength="{% if setup_mode %}8{% else %}1{% endif %}" required>
+{% if setup_mode %}<label for="confirmation">تأیید رمز</label><input id="confirmation" name="confirmation" type="password" autocomplete="new-password" minlength="8" required>{% endif %}
+<button type="submit">{% if setup_mode %}ثبت رمز و ورود{% else %}ورود{% endif %}</button>
+</form>
+<small>این قفل دسترسی رابط وب را محدود می‌کند؛ جایگزین HTTPS، توکن API، فایروال یا رمزگذاری دیتابیس نیست. برای میزبان LAN فقط شبکهٔ خصوصی و مورداعتماد را مجاز کنید.</small>
+</main></body></html>\'''
+
+
+@app.before_request
+def require_web_unlock():
+    path = request.path
+    if (
+        path == "/login"
+        or path == "/api/health"
+        or path == "/api/sync/hello"
+        or path.startswith("/api/sync/")
+        or path.startswith("/workspace/")
+        or path == "/api/workspace/export"
+        or path.startswith("/static/")
+    ):
+        return None
+    if session.get("networkall_unlocked") is True:
+        return None
+    if path.startswith("/api/"):
+        return jsonify({"ok": False, "error": "app_locked", "login_url": "/login"}), 401
+    return redirect("/login?next=" + path)
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    record = _load_app_password()
+    setup_mode = record is None
+    error = ""
+    next_path = request.args.get("next", "/")
+    if request.method == "POST":
+        next_path = request.form.get("next", "/")
+        if not next_path.startswith("/") or next_path.startswith("//") or "\\\\" in next_path:
+            next_path = "/"
+        password = request.form.get("password", "")
+        if setup_mode:
+            confirmation = request.form.get("confirmation", "")
+            if len(password) < 8:
+                error = "رمز باید دست‌کم ۸ نویسه داشته باشد."
+            elif password != confirmation:
+                error = "دو رمز یکسان نیستند."
+            else:
+                _save_app_password(password)
+                session.clear()
+                session["networkall_unlocked"] = True
+                session.permanent = True
+                return redirect(next_path)
+        elif _verify_app_password(password):
+            session.clear()
+            session["networkall_unlocked"] = True
+            session.permanent = True
+            return redirect(next_path)
+        else:
+            error = "رمز نادرست است یا فایل تنظیم رمز قابل خواندن نیست."
+    return render_template_string(
+        _LOGIN_TEMPLATE,
+        setup_mode=setup_mode,
+        error=error,
+        next_path=next_path,
+    )
+
+
+@app.get("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
+
+
 app.config["JSON_AS_ASCII"] = False
 
 _MODULE_STATUS = {"workspace": False, "study": False, "workspace_error": "", "study_error": ""}
