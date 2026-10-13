@@ -86,6 +86,12 @@ jobs:
           set -euo pipefail
           python3 scripts/merge_content_packs_into_android.py
 
+      - name: Validate Chapter 68 command packs
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/validate_ch68_command_packs.py
+          python3 scripts/validate_ch68_command_packs.py
+
       - name: Validate Chapter 1 pack and merged UID mapping
         run: |
           set -euo pipefail
