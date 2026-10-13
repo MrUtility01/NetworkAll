@@ -204,7 +204,7 @@ def commands_to_lessons(data: dict, source_key: str = "pack") -> list:
             notes += "\n\n<!-- EJ_FLASHCARDS\n" + json.dumps(flash, ensure_ascii=False) + "\n-->\n"
 
         source_slug = re.sub(r"[^a-zA-Z0-9_-]+", "_", source_key.lower()).strip("_")[:32] or "pack"
-        lesson_uid = f"lesson:ch{ch:02d}:cmd:{source_slug}:{i:04d}"
+        # Preserve an explicit source UID so examples/scenarios/questions can refer to the exact command lesson. Legacy packs without UID retain the stable generated pattern.\n        lesson_uid = str(c.get("uid") or f"lesson:ch{ch:02d}:cmd:{source_slug}:{i:04d}")
         out.append({
             "uid": lesson_uid,
             "chapter_order": ch,
