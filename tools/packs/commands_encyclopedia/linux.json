@@ -1,0 +1,1218 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "Chapter 68 Linux administration and troubleshooting commands; additive first batch",
+  "chapter_order": 68,
+  "chapter_title_fa": "دانشنامه جامع دستورات",
+  "vendor_pack": "linux",
+  "vendor": "Linux community",
+  "platform": "Linux / GNU utilities / systemd",
+  "scope": "Network, DNS, services, storage, process, files, logs and Bash syntax validation",
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true
+  },
+  "commands": [
+    {
+      "uid": "cmd:linux:admin:0001",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "networking",
+      "command": "ip -br address",
+      "title_fa": "[L1] خلاصه آدرس رابط‌ها",
+      "title_en": "خلاصه آدرس رابط‌ها",
+      "syntax": "ip -br address",
+      "when_to_use_fa": "network",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nنمایش سریع رابط و آدرس‌ها",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "eth0 UP 192.0.2.10/24"
+      ],
+      "rollback_fa": "با ip link و ip address show بررسی کنید",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "خلاصه آدرس رابط‌ها",
+        "Linux",
+        "ip -br address"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «ip -br address» بررسی می‌کنیم؟",
+        "answer_key_fa": "network؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0002",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "networking",
+      "command": "ip route get 192.0.2.80",
+      "title_fa": "[L1] انتخاب مسیر برای مقصد",
+      "title_en": "انتخاب مسیر برای مقصد",
+      "syntax": "ip route get 192.0.2.80",
+      "when_to_use_fa": "network",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nبررسی interface، source IP و gateway انتخابی kernel",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "192.0.2.80 via 192.0.2.1 dev eth0 src 192.0.2.10"
+      ],
+      "rollback_fa": "با ip rule و routing tables در محیط چندمسیره مقایسه کنید",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "انتخاب مسیر برای مقصد",
+        "Linux",
+        "ip route get 192.0.2.80"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «ip route get 192.0.2.80» بررسی می‌کنیم؟",
+        "answer_key_fa": "network؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0003",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "networking",
+      "command": "ss -lntup",
+      "title_fa": "[L1] فهرست socketهای listening",
+      "title_en": "فهرست socketهای listening",
+      "syntax": "ss -lntup",
+      "when_to_use_fa": "network",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nتشخیص پورت‌ها و processهای listener",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "tcp LISTEN 0 128 0.0.0.0:22 ..."
+      ],
+      "rollback_fa": "برخی process details به root نیاز دارند؛ listener الزاماً از بیرون قابل دسترسی نیست",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "فهرست socketهای listening",
+        "Linux",
+        "ss -lntup"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «ss -lntup» بررسی می‌کنیم؟",
+        "answer_key_fa": "network؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0004",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "networking",
+      "command": "ip neigh show",
+      "title_fa": "[L1] نمایش neighbor cache",
+      "title_en": "نمایش neighbor cache",
+      "syntax": "ip neigh show",
+      "when_to_use_fa": "network",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nعیب‌یابی ARP/NDP در همان لینک",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "192.0.2.1 dev eth0 lladdr aa:bb:cc:dd:ee:ff REACHABLE"
+      ],
+      "rollback_fa": "stateهای STALE/FAILED را در زمان و ترافیک واقعی تفسیر کنید",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "نمایش neighbor cache",
+        "Linux",
+        "ip neigh show"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «ip neigh show» بررسی می‌کنیم؟",
+        "answer_key_fa": "network؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0005",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "networking",
+      "command": "resolvectl status",
+      "title_fa": "[L1] وضعیت DNS در systemd-resolved",
+      "title_en": "وضعیت DNS در systemd-resolved",
+      "syntax": "resolvectl status",
+      "when_to_use_fa": "dns",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nبررسی DNS per-link و search domains",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "Link ... DNS Servers ..."
+      ],
+      "rollback_fa": "روی سیستم‌هایی که systemd-resolved ندارند فرمان در دسترس نیست",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "وضعیت DNS در systemd-resolved",
+        "Linux",
+        "resolvectl status"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «resolvectl status» بررسی می‌کنیم؟",
+        "answer_key_fa": "dns؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0006",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "networking",
+      "command": "getent ahosts example.com",
+      "title_fa": "[L1] حل نام از NSS",
+      "title_en": "حل نام از NSS",
+      "syntax": "getent ahosts example.com",
+      "when_to_use_fa": "dns",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nآزمون name resolution مشابه برنامه‌های NSS",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "آدرس‌های IPv4/IPv6"
+      ],
+      "rollback_fa": "با dig مقایسه کنید؛ این دو مسیر resolver یکسانی را تضمین نمی‌کنند",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "حل نام از NSS",
+        "Linux",
+        "getent ahosts example.com"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «getent ahosts example.com» بررسی می‌کنیم؟",
+        "answer_key_fa": "dns؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0007",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "services",
+      "command": "systemctl --failed",
+      "title_fa": "[L1] فهرست unitهای failed",
+      "title_en": "فهرست unitهای failed",
+      "syntax": "systemctl --failed",
+      "when_to_use_fa": "services",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nشروع عیب‌یابی سرویس‌های systemd",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "UNIT LOAD ACTIVE SUB DESCRIPTION"
+      ],
+      "rollback_fa": "با systemctl status و journalctl بررسی کنید",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "فهرست unitهای failed",
+        "Linux",
+        "systemctl --failed"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «systemctl --failed» بررسی می‌کنیم؟",
+        "answer_key_fa": "services؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0008",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "services",
+      "command": "journalctl -u ssh.service --since '2 hours ago' --no-pager",
+      "title_fa": "[L2] مشاهده لاگ سرویس",
+      "title_en": "مشاهده لاگ سرویس",
+      "syntax": "journalctl -u ssh.service --since '2 hours ago' --no-pager",
+      "when_to_use_fa": "logs",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nRCA رخدادهای سرویس در بازه زمانی",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "timestamp hostname sshd[pid]: ..."
+      ],
+      "rollback_fa": "نام unit در Debian/Ubuntu ممکن است ssh و در برخی توزیع‌ها sshd باشد",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "مشاهده لاگ سرویس",
+        "Linux",
+        "journalctl -u ssh.service --since '2 hours ago' --no-pager"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «journalctl -u ssh.service --since '2 hours ago' --no-pager» بررسی می‌کنیم؟",
+        "answer_key_fa": "logs؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0009",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "system",
+      "command": "df -hT",
+      "title_fa": "[L2] ظرفیت filesystemها",
+      "title_en": "ظرفیت filesystemها",
+      "syntax": "df -hT",
+      "when_to_use_fa": "storage",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nبررسی فضای آزاد و نوع filesystem",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "Filesystem Type Size Used Avail Use% Mounted on"
+      ],
+      "rollback_fa": "فضای block و inode متفاوت‌اند؛ df -i را هم بررسی کنید",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "ظرفیت filesystemها",
+        "Linux",
+        "df -hT"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «df -hT» بررسی می‌کنیم؟",
+        "answer_key_fa": "storage؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0010",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "system",
+      "command": "du -xhd1 /var/log",
+      "title_fa": "[L2] برآورد فضای پوشه‌های سطح اول",
+      "title_en": "برآورد فضای پوشه‌های سطح اول",
+      "syntax": "du -xhd1 /var/log",
+      "when_to_use_fa": "storage",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nیافتن دایرکتوری‌های حجیم روی یک filesystem",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "size /var/log/..."
+      ],
+      "rollback_fa": "دسترسی permission و mount boundaries روی نتیجه اثر دارند",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "برآورد فضای پوشه‌های سطح اول",
+        "Linux",
+        "du -xhd1 /var/log"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «du -xhd1 /var/log» بررسی می‌کنیم؟",
+        "answer_key_fa": "storage؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0011",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "system",
+      "command": "free -h",
+      "title_fa": "[L2] نمایش RAM و swap",
+      "title_en": "نمایش RAM و swap",
+      "syntax": "free -h",
+      "when_to_use_fa": "system",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nبررسی memory pressure با توجه به cache",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "Mem total used free shared buff/cache available"
+      ],
+      "rollback_fa": "available را با free خام اشتباه نگیرید",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "نمایش RAM و swap",
+        "Linux",
+        "free -h"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «free -h» بررسی می‌کنیم؟",
+        "answer_key_fa": "system؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0012",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "system",
+      "command": "ps -eo pid,ppid,comm,%cpu,%mem --sort=-%cpu | head",
+      "title_fa": "[L2] نمایش processهای پرمصرف CPU",
+      "title_en": "نمایش processهای پرمصرف CPU",
+      "syntax": "ps -eo pid,ppid,comm,%cpu,%mem --sort=-%cpu | head",
+      "when_to_use_fa": "process",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nنمونه‌برداری سریع برای شروع عیب‌یابی",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "PID PPID COMMAND %CPU %MEM"
+      ],
+      "rollback_fa": "یک نمونه لحظه‌ای معادل پروفایل زمانی نیست",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "نمایش processهای پرمصرف CPU",
+        "Linux",
+        "ps -eo pid,ppid,comm,%cpu,%mem --sort=-%cpu | head"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «ps -eo pid,ppid,comm,%cpu,%mem --sort=-%cpu | head» بررسی می‌کنیم؟",
+        "answer_key_fa": "process؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0013",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "files",
+      "command": "find /var/log -type f -name '*.log' -mtime -2 -print",
+      "title_fa": "[L2] یافتن logهای تغییرکرده در دو روز اخیر",
+      "title_en": "یافتن logهای تغییرکرده در دو روز اخیر",
+      "syntax": "find /var/log -type f -name '*.log' -mtime -2 -print",
+      "when_to_use_fa": "files",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\ninventory گرفتن بدون حذف یا تغییر فایل",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "/var/log/..."
+      ],
+      "rollback_fa": "از اجرای -delete بدون preview و policy retention خودداری کنید",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "یافتن logهای تغییرکرده در دو روز اخیر",
+        "Linux",
+        "find /var/log -type f -name '*.log' -mtime -2 -print"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «find /var/log -type f -name '*.log' -mtime -2 -print» بررسی می‌کنیم؟",
+        "answer_key_fa": "files؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0014",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "files",
+      "command": "grep -RIn --include='*.conf' 'Listen' /etc 2>/dev/null",
+      "title_fa": "[L2] جست‌وجوی directive در فایل‌های تنظیمات",
+      "title_en": "جست‌وجوی directive در فایل‌های تنظیمات",
+      "syntax": "grep -RIn --include='*.conf' 'Listen' /etc 2>/dev/null",
+      "when_to_use_fa": "files",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nیافتن محل تنظیمات سرویس",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "/etc/...:line:Listen ..."
+      ],
+      "rollback_fa": "خروجی ممکن است شامل مسیرهای داخلی باشد؛ فقط فایل‌های مجاز را جست‌وجو کنید",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "جست‌وجوی directive در فایل‌های تنظیمات",
+        "Linux",
+        "grep -RIn --include='*.conf' 'Listen' /etc 2>/dev/null"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «grep -RIn --include='*.conf' 'Listen' /etc 2>/dev/null» بررسی می‌کنیم؟",
+        "answer_key_fa": "files؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0015",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "files",
+      "command": "stat -c '%A %U:%G %a %n' /etc/ssh/sshd_config",
+      "title_fa": "[L2] بازبینی mode و مالکیت فایل",
+      "title_en": "بازبینی mode و مالکیت فایل",
+      "syntax": "stat -c '%A %U:%G %a %n' /etc/ssh/sshd_config",
+      "when_to_use_fa": "security",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nتأیید permission فایل حساس",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "-rw------- root:root 600 ..."
+      ],
+      "rollback_fa": "syntax گزینه -c مربوط به GNU stat است؛ BSD stat فرق دارد",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "بازبینی mode و مالکیت فایل",
+        "Linux",
+        "stat -c '%A %U:%G %a %n' /etc/ssh/sshd_config"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «stat -c '%A %U:%G %a %n' /etc/ssh/sshd_config» بررسی می‌کنیم؟",
+        "answer_key_fa": "security؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0016",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "files",
+      "command": "sha256sum artifact.tar.gz",
+      "title_fa": "[L3] محاسبه checksum SHA-256",
+      "title_en": "محاسبه checksum SHA-256",
+      "syntax": "sha256sum artifact.tar.gz",
+      "when_to_use_fa": "files",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nتأیید یکپارچگی artifact",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "hash  artifact.tar.gz"
+      ],
+      "rollback_fa": "checksum فقط وقتی اصالت را ثابت می‌کند که مرجع hash قابل اعتماد باشد",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "محاسبه checksum SHA-256",
+        "Linux",
+        "sha256sum artifact.tar.gz"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «sha256sum artifact.tar.gz» بررسی می‌کنیم؟",
+        "answer_key_fa": "files؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0017",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "backup",
+      "command": "tar -tzf backup.tar.gz | head -50",
+      "title_fa": "[L3] فهرست محتویات archive بدون استخراج",
+      "title_en": "فهرست محتویات archive بدون استخراج",
+      "syntax": "tar -tzf backup.tar.gz | head -50",
+      "when_to_use_fa": "backup",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nبازبینی archive پیش از restore",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "path entries ..."
+      ],
+      "rollback_fa": "مسیرهای archive را قبل از extract بررسی کنید تا path traversal و overwrite رخ ندهد",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "فهرست محتویات archive بدون استخراج",
+        "Linux",
+        "tar -tzf backup.tar.gz | head -50"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «tar -tzf backup.tar.gz | head -50» بررسی می‌کنیم؟",
+        "answer_key_fa": "backup؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0018",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "backup",
+      "command": "systemctl is-active NetworkManager",
+      "title_fa": "[L3] بررسی وضعیت سرویس شبکه در سیستم‌های دارای NetworkManager",
+      "title_en": "بررسی وضعیت سرویس شبکه در سیستم‌های دارای NetworkManager",
+      "syntax": "systemctl is-active NetworkManager",
+      "when_to_use_fa": "services",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nتشخیص active بودن سرویس مشخص",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "active یا inactive"
+      ],
+      "rollback_fa": "نام سرویس و مدیر شبکه با توزیع فرق دارد؛ systemd-networkd ممکن است استفاده شود",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "بررسی وضعیت سرویس شبکه در سیستم‌های دارای NetworkManager",
+        "Linux",
+        "systemctl is-active NetworkManager"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «systemctl is-active NetworkManager» بررسی می‌کنیم؟",
+        "answer_key_fa": "services؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0019",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "scripting",
+      "command": "bash -n ./script.sh",
+      "title_fa": "[L3] بررسی syntax اسکریپت Bash بدون اجرا",
+      "title_en": "بررسی syntax اسکریپت Bash بدون اجرا",
+      "syntax": "bash -n ./script.sh",
+      "when_to_use_fa": "scripting",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nکشف خطاهای syntax پیش از اجرا",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "بدون خروجی در موفقیت؛ exit status صفر"
+      ],
+      "rollback_fa": "این بررسی منطق runtime یا اثرات جانبی را تست نمی‌کند",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "بررسی syntax اسکریپت Bash بدون اجرا",
+        "Linux",
+        "bash -n ./script.sh"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «bash -n ./script.sh» بررسی می‌کنیم؟",
+        "answer_key_fa": "scripting؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux:admin:0020",
+      "vendor": "linux",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "version_scope": "Current GNU/Linux distributions; commands/options may vary by distro",
+      "privilege": "standard user; root only where permissions or target operation require it",
+      "category": "linux",
+      "subcategory": "scripting",
+      "command": "journalctl --disk-usage",
+      "title_fa": "[L3] نمایش فضای مصرفی journal",
+      "title_en": "نمایش فضای مصرفی journal",
+      "syntax": "journalctl --disk-usage",
+      "when_to_use_fa": "logs",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nبررسی رشد logهای systemd journal",
+      "output_fields_fa": [
+        {
+          "field": "stdout/stderr/exit status",
+          "meaning": "خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن ابزارهای همه توزیع‌ها.",
+        "اجرای حذف/تغییر فایل قبل از preview و backup.",
+        "استفاده از sudo بدون نیاز و بدون درک اثر."
+      ],
+      "security_notes_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "lab_hint_fa": "در VM یا container آزمایشگاهی اجرا کنید؛ فرمان‌های این بسته عمدتاً read-only هستند و برای تغییرات از snapshot/backup استفاده کنید.",
+      "verify_steps_fa": [
+        "Archived and active journals take ..."
+      ],
+      "rollback_fa": "قبل از vacuum کردن retention و نیازهای audit را بررسی کنید",
+      "related_commands": [
+        "man",
+        "--help",
+        "journalctl",
+        "ip"
+      ],
+      "search_keywords": [
+        "نمایش فضای مصرفی journal",
+        "Linux",
+        "journalctl --disk-usage"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "چه چیزی را با «journalctl --disk-usage» بررسی می‌کنیم؟",
+        "answer_key_fa": "logs؛ تفاوت نسخه/توزیع و exit status را هم بررسی کنید."
+      },
+      "source_status": "review_required"
+    }
+  ]
+}
