@@ -35,7 +35,7 @@ tools/
 یک‌بار در Git Bash از ریشهٔ ریپو:
 
 ```bash
-cd ~/NetworkEncyclopedia
+cd ~/NetworkAll
 bash tools/reorganize_tools.sh
 git add tools
 git commit -m "chore: reorganize content packs into folders"
@@ -45,7 +45,7 @@ git push
 ## واردسازی به ویندوز (بعد از اجرای سرور حداقل یک‌بار)
 
 ```bash
-cd ~/NetworkEncyclopedia
+cd ~/NetworkAll
 python tools/apply_any_pack.py --db server/data/encyclopedia.db --pack tools/engineer_jokar_automation_python/automation_python_curriculum_pack.json --apply
 ```
 
@@ -65,7 +65,7 @@ APK را از Actions بگیر و بعد از نصب **Clear data** بزن.
 فایل `AI_CONTENT_PACK_PROMPT.md` را به مدل بده + آدرس گیت:
 
 ```text
-https://github.com/MrUtility01/NetworkEncyclopedia
+https://github.com/MrUtility01/NetworkAll
 ```
 
 خروجی باید یک JSON مطابق schema همان پرامپت باشد. آن را در `tools/packs/نام_بسته/` بگذار و با `apply_any_pack.py` وارد کن.
