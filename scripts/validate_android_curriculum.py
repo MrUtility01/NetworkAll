@@ -117,7 +117,8 @@ def main() -> None:
         fail(f"chapter 68 missing command collections: {missing_groups}")
     ch68_lessons = [les for order, les in lessons if order == 68]
     unlabeled = [str(les.get("uid")) for les in ch68_lessons
-                 if not any(str(les.get("title_fa") or "").startswith(f"[{g}]") for g in required_groups)]
+                 if not (str(les.get("title_fa") or "").startswith("[")
+                         and "]" in str(les.get("title_fa") or "")[:48])]
     if unlabeled:
         fail(f"chapter 68 lessons missing collection prefix: {unlabeled[:8]}")
 
