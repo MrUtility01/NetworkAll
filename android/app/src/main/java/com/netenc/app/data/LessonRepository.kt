@@ -23,6 +23,12 @@ class LessonRepository(context: Context) {
             val r = arr.getJSONObject(i)
             val uid = r.optString("uid")
             if (uid.isBlank()) continue
+            // Pull updates the lesson payload, not the Android navigation tree.
+            // Retain the chapter/subchapter placement of an already seeded lesson.
+            val existing = dao.byUid(uid)
+            val uidParts = Regex("""lesson:ch(\\d+):(?:s|lv)(\\d+):l(\\d+)""").matchEntire(uid)
+            val parsedChapter = uidParts?.groupValues?.getOrNull(1)?.toIntOrNull() ?: 0
+            val parsedLesson = uidParts?.groupValues?.getOrNull(3)?.toIntOrNull() ?: (i + 1)
             list.add(
                 LessonEntity(
                     uid = uid,
@@ -42,7 +48,11 @@ class LessonRepository(context: Context) {
                     lastUpdated = r.optString("last_updated", ""),
                     contentHash = r.optString("content_hash", ""),
                     deviceId = r.optString("device_id", ""),
-                    deleted = r.optBoolean("deleted", false)
+                    deleted = r.optBoolean("deleted", false),
+                    chapterOrder = existing?.chapterOrder?.takeIf { it > 0 } ?: parsedChapter,
+                    chapterTitle = existing?.chapterTitle.orEmpty(),
+                    subTitle = existing?.subTitle.orEmpty(),
+                    lessonOrder = existing?.lessonOrder?.takeIf { it > 0 } ?: parsedLesson
                 )
             )
         }
