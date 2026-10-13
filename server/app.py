@@ -67,7 +67,7 @@ def load_web_session_secret() -> str:
     except OSError:
         pass
     value = secrets.token_urlsafe(48)
-    p.write_text(value + "\\n", encoding="utf-8")
+    p.write_text(value + "\n", encoding="utf-8")
     try:
         os.chmod(p, 0o600)
     except OSError:
@@ -116,7 +116,7 @@ def _save_app_password(password: str) -> None:
         "created_at": utc_now(),
     }
     temp = p.with_suffix(".json.tmp")
-    temp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+    temp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     try:
         os.chmod(temp, 0o600)
     except OSError:
