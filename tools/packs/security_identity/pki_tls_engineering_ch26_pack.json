@@ -1,0 +1,336 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "Progressive L0-L4 curriculum for PKI, certificate issuance and validation, TLS handshake, mTLS, revocation, key custody and incident response.",
+  "scope": {
+    "chapter_order": 26,
+    "subchapter_order": 4,
+    "subchapter_title_fa": "۲۶.۴ مهندسی PKI، گواهی و TLS",
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lesson_count": 5,
+    "topics": [
+      {
+        "id": "pki-tls-engineering",
+        "title_fa": "مهندسی PKI و TLS",
+        "title_en": "PKI and TLS Engineering"
+      }
+    ]
+  },
+  "instructional_contract": {
+    "level_floors": {
+      "L0": 600,
+      "L1": 800,
+      "L2": 1200,
+      "L3": 1600,
+      "L4": 2200
+    },
+    "volume_rule": "Grow from distinct lifecycle skills, failure modes, client/vendor versions and acceptance tests; do not inflate counts with duplicates.",
+    "lab_status": "designed_not_executed",
+    "separate_answer_key": true
+  },
+  "compatibility": {
+    "current_tls_reference": "RFC 9846 (July 2026) supersedes RFC 8446; verify implementation behavior against actual TLS library/OS/vendor release.",
+    "certificate_lifetime": "Do not hard-code a universal validity period; check current CA/browser policy and the exact CA product/profile."
+  },
+  "content_quality": {
+    "status": "review_required",
+    "reason": "Lessons and assessments authored; CA lifecycle, TLS compatibility, revocation and mTLS labs have not been executed and independently reviewed."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch26:pki-tls-engineering:l0",
+      "entity": "lesson",
+      "chapter_order": 26,
+      "subchapter_order": 4,
+      "lesson_order": 1,
+      "topic": "pki-tls-engineering",
+      "domain": "identity-and-cryptography",
+      "level": "L0",
+      "title_fa": "[L0] PKI و TLS — آشنایی",
+      "title_en": "[L0] PKI and TLS Engineering — آشنایی",
+      "tags": [
+        "PKI",
+        "TLS",
+        "X.509",
+        "certificate",
+        "CA",
+        "mTLS",
+        "L0"
+      ],
+      "summary": "تفاوت رمزنگاری، امضا و گواهی را توضیح دهد؛ نقش CA و زنجیرهٔ اعتماد را بشناسد؛ علت‌های رایج خطای TLS را تشخیص دهد",
+      "full_content": "# PKI و TLS — آشنایی\n\n## چرا به اعتماد دیجیتال نیاز داریم؟\nوقتی مرورگر به سرویس HTTPS وصل می‌شود، فقط پنهان‌کردن محتوا کافی نیست؛ کلاینت باید مطمئن شود به سرویس درست وصل شده، داده در مسیر دستکاری نشده و کلیدهای نشست امن‌اند. TLS برای ایجاد کانال امن ارتباطی طراحی شده است. PKI یا زیرساخت کلید عمومی مجموعه‌ای از قواعد، نقش‌ها، گواهی‌ها، کلیدها، نرم‌افزارها و فرایندهایی است که امکان اعتماد به هویت‌ها و کلیدهای عمومی را فراهم می‌کند.\n\n## سه مفهوم متفاوت\nرمزنگاری محرمانگی داده را برای طرف‌های غیرمجاز محدود می‌کند. امضای دیجیتال با کلید خصوصی ساخته و با کلید عمومی بررسی می‌شود و می‌تواند یکپارچگی و انتساب امضا را پشتیبانی کند؛ به‌تنهایی محرمانگی ایجاد نمی‌کند. گواهی دیجیتال داده‌ای امضاشده توسط یک مرجع گواهی (CA) است که کلید عمومی و هویت یا ویژگی‌های مربوط را طبق سیاست مشخص به هم پیوند می‌دهد. گواهی به معنای تضمین بی‌قیدوشرط امن بودن سرور یا محتوای آن نیست.\n\nکلید خصوصی باید محرمانه بماند. کلید عمومی می‌تواند منتشر شود؛ با این حال، کلاینت باید راه معتبری برای اعتماد به پیوند میان هویت و کلید عمومی داشته باشد. گواهی را می‌توان مانند کارت شناسایی دیجیتال تصور کرد، اما اعتبار آن تابع امضا، تاریخ، زنجیرهٔ صدور، کاربرد مجاز، سیاست اعتماد و اعتبارسنجی نام سرویس است.\n\n## CA و زنجیرهٔ اعتماد\nدر مدل رایج، Root CA گواهی self-signed دارد و به‌طور صریح در trust store سیستم‌ها نصب شده است. Intermediate CA اختیار صدور محدودتری می‌گیرد و گواهی سرویس را صادر می‌کند. Server certificate معمولاً برای hostname یا هویت مشخصی صادر می‌شود. در اتصال، کلاینت زنجیره را از گواهی سرور به intermediate و سپس trust anchor معتبر می‌سازد. فایل گواهی به‌تنهایی اعتماد ایجاد نمی‌کند؛ کلاینت باید root مورداعتماد را بشناسد و chain validation موفق شود.\n\n## TLS در حد مفهوم\nدر شروع TLS handshake، طرفین نسخه و پارامترهای رمزنگاری را مذاکره می‌کنند، هویت سرور می‌تواند با certificate بررسی شود و اطلاعات لازم برای مشتق‌سازی کلیدهای نشست ایجاد می‌شود. پس از handshake، دادهٔ برنامه در کانال رمزگذاری‌شده ارسال می‌شود. جزئیات TLS 1.3 باید از نسخهٔ جاری استاندارد خوانده شود؛ RFC 9846 در ژوئیهٔ ۲۰۲۶ RFC 8446 را جایگزین کرده است. این موضوع نسخه‌ای مهم است و نباید متن قدیمی را بدون بررسی به‌عنوان مرجع جاری معرفی کرد.\n\n## چرا مرورگر Certificate Error می‌دهد؟\nعلت ممکن است hostname mismatch، تاریخ شروع یا انقضای نامعتبر، زنجیرهٔ ناقص، CA نامعتبر، کاربرد Extended Key Usage نامناسب، الگوریتم یا پارامتر نامقبول یا مشکل revocation باشد. ساعت اشتباه دستگاه نیز می‌تواند گواهی ظاهراً معتبر را خارج از بازه نشان دهد. خاموش‌کردن validation یا انتخاب «ادامه به هر حال» راه‌حل امن نیست؛ اول علت دقیق را ثبت کن.\n\n## تمرین مشاهده‌ای\nدر یک مرورگر، اطلاعات گواهی یک وب‌سایت آزمایشی یا مجاز را باز کن. Subject، Subject Alternative Name (SAN)، Issuer، Valid From/To، Key Usage و chain را ببین. این کار فقط مشاهده است؛ گواهی یا trust store را تغییر نده. سپس برای هر خطا بنویس کدام بخش از زنجیرهٔ اعتماد ممکن است شکست خورده باشد.\n\n## واژه‌نامه\nCA مرجع صدور گواهی است؛ CSR درخواست امضای گواهی؛ SAN نام‌های هویت سرویس؛ Trust Store فهرست anchorهای مورداعتماد؛ CRL/OCSP روش‌های اعلام وضعیت ابطال؛ mTLS احراز هویت دوطرفه با گواهی؛ SNI اعلام نام سرویس در TLS ClientHello در حالت‌های رایج.",
+      "commands": "Read-only examples: inspect certificate chains with OS certificate tools or a current OpenSSL release; test TLS handshakes only against endpoints you administer or are authorized to test. Syntax and output vary by version.",
+      "examples": "Use an isolated local test CA and service with synthetic identities. Do not disable production TLS verification or import an unknown CA into the operating system trust store for convenience.",
+      "notes": "source=tools/packs/security_identity/pki_tls_engineering_ch26_pack.json; status=review_required; labs=designed_not_executed; infographic=pki_certificate_chain.svg",
+      "learning_objectives": [
+        "تفاوت رمزنگاری، امضا و گواهی را توضیح دهد",
+        "نقش CA و زنجیرهٔ اعتماد را بشناسد",
+        "علت‌های رایج خطای TLS را تشخیص دهد"
+      ],
+      "prerequisites": [],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"pki-l0-1\",\"prompt\":\"گواهی دیجیتال چه چیزی را پیوند می‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"pki-l0-2\",\"prompt\":\"تفاوت encryption و digital signature چیست؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"pki-l0-3\",\"prompt\":\"چرا کلاینت باید SAN/hostname را بررسی کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"pki-l0-4\",\"prompt\":\"CA و trust anchor چه نقشی دارند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"pki-l0-5\",\"prompt\":\"CSR چه چیزی نباید شامل شود؟\",\"type\":\"short_answer\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"pki-l0-1\",\"answer\":\"کلید عمومی و هویت/ویژگی‌های مشخص را طبق policy، با امضای CA.\",\"rationale\":\"گواهی به‌تنهایی امن بودن کامل سرور یا محتوای آن را تضمین نمی‌کند.\"},{\"id\":\"pki-l0-2\",\"answer\":\"Encryption محرمانگی را هدف می‌گیرد؛ signature یکپارچگی/انتساب امضا را پشتیبانی می‌کند.\",\"rationale\":\"امضا به‌تنهایی محتوا را مخفی نمی‌کند.\"},{\"id\":\"pki-l0-3\",\"answer\":\"تا مطمئن شود گواهی مربوط به همان سرویس درخواستی است.\",\"rationale\":\"گواهی با chain معتبر اما نام اشتباه برای hostname انتخابی کافی نیست.\"},{\"id\":\"pki-l0-4\",\"answer\":\"CA گواهی را طبق policy امضا می‌کند؛ trust anchor نقطهٔ شروع اعتماد در کلاینت است.\",\"rationale\":\"گواهی self-signed به‌خودی‌خود trusted نیست.\"},{\"id\":\"pki-l0-5\",\"answer\":\"Private key نباید در CSR قرار بگیرد؛ CSR شامل public key و داده‌های لازم است.\",\"rationale\":\"کلید خصوصی در محل تولید باید محافظت شود.\"}]},\"related_infographics\":[\"pki_certificate_chain.svg\",\"tcp_handshake.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 9846 — TLS Protocol Version 1.3 (current July 2026)",
+          "url": "https://www.rfc-editor.org/rfc/rfc9846.html"
+        },
+        {
+          "title": "RFC 5280 — Internet X.509 PKI Certificate and CRL Profile",
+          "url": "https://www.rfc-editor.org/rfc/rfc5280.html"
+        },
+        {
+          "title": "RFC 9525 — Service Identity in TLS",
+          "url": "https://www.rfc-editor.org/rfc/rfc9525.html"
+        },
+        {
+          "title": "RFC 8446 — TLS 1.3 (superseded historical reference)",
+          "url": "https://www.rfc-editor.org/rfc/rfc8446.html"
+        },
+        {
+          "title": "NIST SP 800-57 Part 1 — Recommendation for Key Management",
+          "url": "https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch26:pki-tls-engineering:l1",
+      "entity": "lesson",
+      "chapter_order": 26,
+      "subchapter_order": 4,
+      "lesson_order": 2,
+      "topic": "pki-tls-engineering",
+      "domain": "identity-and-cryptography",
+      "level": "L1",
+      "title_fa": "[L1] PKI و TLS — مقدماتی",
+      "title_en": "[L1] PKI and TLS Engineering — مقدماتی",
+      "tags": [
+        "PKI",
+        "TLS",
+        "X.509",
+        "certificate",
+        "CA",
+        "mTLS",
+        "L1"
+      ],
+      "summary": "CSR و certificate chain را بررسی کند؛ SAN، EKU و تاریخ اعتبار را تحلیل کند؛ خطای TLS را بدون خاموش‌کردن validation عیب‌یابی کند",
+      "full_content": "# PKI و TLS — مقدماتی\n\n## چرخهٔ صدور گواهی\nفرایند رایج از تولید کلید در محیط کنترل‌شده شروع می‌شود. سپس CSR حاوی کلید عمومی و اطلاعات/extensionهای موردنیاز ساخته و برای CA ارسال می‌شود. CA هویت و domain control را طبق policy خود بررسی می‌کند و گواهی را امضا می‌کند. سرویس گواهی و chain لازم را نصب می‌کند و کلید خصوصی باید با روش امن نگهداری شود. CSR نباید شامل کلید خصوصی باشد. اگر private key در فایل یا log افشا شود، تمدید معمولی بدون ارزیابی رخداد کافی نیست؛ باید ریسک compromise و revocation بررسی شود.\n\nبرای certificate سرویس، SAN عموماً منبع اصلی بررسی هویت hostname است. اتکا به Common Name تنها راهکار مدرن قابل‌اتکا نیست. Wildcard certificate دامنهٔ اعتبار مشخصی دارد و نباید فرض کرد تمام سطح‌های زیر دامنه یا نام‌های متفاوت را پوشش می‌دهد. روش اعتبارسنجی سرویس باید با راهنمای جاری و policy client هماهنگ باشد.\n\n## بررسی زنجیره\nبا ابزارهای سیستم‌عامل یا OpenSSL می‌توان certificate و chain را مشاهده کرد؛ دستور دقیق به نسخهٔ ابزار و سیستم‌عامل وابسته است. هنگام بررسی، Subject/SAN، Issuer، serial number، validity dates، signature algorithm، public-key parameters، Key Usage، Extended Key Usage، Basic Constraints و chain order را ثبت کن. Intermediate گم‌شده ممکن است در یک client خطا دهد و در دیگری کار کند، چون cache یا مسیر ساخت chain فرق دارد. Root certificate معمولاً در chain ارسالی لازم نیست اگر از قبل trust store کلاینت موجود باشد؛ در عمل، نیاز ارسال intermediateها را با clientهای هدف آزمایش کن.\n\n## اعتبارسنجی مسیر گواهی\nValidation فقط بررسی امضای یک فایل نیست. کلاینت باید زنجیرهٔ قابل‌اعتماد، constraints و key usage، تاریخ، الگوریتم‌ها و سیاست‌ها را ارزیابی کند. سپس هویت application service را با نام مورد انتظار مقایسه کند. RFC 9525 رویهٔ جاری Service Identity در TLS را تعریف کرده و RFC 6125 را منسوخ کرده است. برای طراحی جدید، مرجع هویت سرویس باید نسخهٔ جدیدتر باشد.\n\n## Revocation: CRL و OCSP\nابطال گواهی ممکن است از طریق Certificate Revocation List یا Online Certificate Status Protocol اعلام شود. رفتار کلاینت به پروتکل، policy، قابلیت و نرم‌افزار بستگی دارد؛ نباید فرض کرد همهٔ مرورگرها یا دستگاه‌ها در همهٔ شرایط یکسان رفتار می‌کنند. در طراحی enterprise، انتشار CRL، دسترسی OCSP، stapling در صورت کاربرد، cache، latency و پاسخ‌های unknown/unreachable باید جزو معیارهای آزمون باشند. تاریخ انقضا و revocation مسئله‌های متفاوت‌اند: گواهی می‌تواند هنوز در بازهٔ زمانی باشد اما ابطال شده باشد.\n\n## TLS و احراز هویت دوطرفه\nدر HTTPS معمولی، کلاینت هویت سرور را بررسی می‌کند. در mutual TLS، سرور نیز certificate کلاینت را درخواست و بررسی می‌کند. این قابلیت برای API، سرویس‌های داخلی و بعضی VPN/NACها مفید است، اما صدور certificate کلاینت باید با هویت، lifecycle، revocation و authorization متصل باشد. داشتن certificate معتبر به‌تنهایی اجازهٔ انجام تمام عملیات برنامه را نمی‌دهد؛ authorization لایهٔ برنامه همچنان لازم است.\n\n## تمرین امن\nبرای یک سرویس آزمایشی، certificate chain را مشاهده و SAN را با hostname مورد استفاده مقایسه کن. سپس با ابزار مجاز، validity، chain و protocol negotiation را ثبت کن. برای آزمایش شکست، روی محیط محلی certificate با SAN اشتباه بساز؛ validation را در کلاینت خاموش نکن و سرویس عمومی سازمان را تغییر نده.\n\n## خطاهای متداول\nUnknown CA یعنی trust anchor یا chain مورداعتماد نیست. Hostname mismatch یعنی نام درخواست‌شده با هویت گواهی تطبیق ندارد. Expired/not yet valid ممکن است از زمان دستگاه یا بازهٔ گواهی باشد. Incomplete chain یعنی intermediate لازم ارائه نشده یا مسیر ساخته نمی‌شود. Wrong EKU/Key Usage یعنی گواهی برای کاربرد موردنیاز صادر نشده است. Protocol/cipher issue یعنی مذاکرهٔ TLS بین دو endpoint سازگار نیست. این علت‌ها را از هم تفکیک کن؛ نصب دوبارهٔ certificate بدون مشخص‌کردن علت ریشه‌ای روش عیب‌یابی نیست.",
+      "commands": "Read-only examples: inspect certificate chains with OS certificate tools or a current OpenSSL release; test TLS handshakes only against endpoints you administer or are authorized to test. Syntax and output vary by version.",
+      "examples": "Use an isolated local test CA and service with synthetic identities. Do not disable production TLS verification or import an unknown CA into the operating system trust store for convenience.",
+      "notes": "source=tools/packs/security_identity/pki_tls_engineering_ch26_pack.json; status=review_required; labs=designed_not_executed; infographic=pki_certificate_chain.svg",
+      "learning_objectives": [
+        "CSR و certificate chain را بررسی کند",
+        "SAN، EKU و تاریخ اعتبار را تحلیل کند",
+        "خطای TLS را بدون خاموش‌کردن validation عیب‌یابی کند"
+      ],
+      "prerequisites": [
+        "Public/private keys, DNS names, TCP and basic cryptographic terminology"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"pki-l1-1\",\"prompt\":\"گواهی دیجیتال چه چیزی را پیوند می‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"pki-l1-2\",\"prompt\":\"تفاوت encryption و digital signature چیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"pki-l1-3\",\"prompt\":\"چرا کلاینت باید SAN/hostname را بررسی کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"pki-l1-4\",\"prompt\":\"CA و trust anchor چه نقشی دارند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"pki-l1-5\",\"prompt\":\"CSR چه چیزی نباید شامل شود؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"pki-l1-6\",\"prompt\":\"فرق chain building با path validation چیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"pki-l1-7\",\"prompt\":\"EKU چه اهمیتی دارد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"pki-l1-8\",\"prompt\":\"CRL و OCSP چه کاری می‌کنند؟\",\"type\":\"short_answer\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"pki-l1-1\",\"answer\":\"کلید عمومی و هویت/ویژگی‌های مشخص را طبق policy، با امضای CA.\",\"rationale\":\"گواهی به‌تنهایی امن بودن کامل سرور یا محتوای آن را تضمین نمی‌کند.\"},{\"id\":\"pki-l1-2\",\"answer\":\"Encryption محرمانگی را هدف می‌گیرد؛ signature یکپارچگی/انتساب امضا را پشتیبانی می‌کند.\",\"rationale\":\"امضا به‌تنهایی محتوا را مخفی نمی‌کند.\"},{\"id\":\"pki-l1-3\",\"answer\":\"تا مطمئن شود گواهی مربوط به همان سرویس درخواستی است.\",\"rationale\":\"گواهی با chain معتبر اما نام اشتباه برای hostname انتخابی کافی نیست.\"},{\"id\":\"pki-l1-4\",\"answer\":\"CA گواهی را طبق policy امضا می‌کند؛ trust anchor نقطهٔ شروع اعتماد در کلاینت است.\",\"rationale\":\"گواهی self-signed به‌خودی‌خود trusted نیست.\"},{\"id\":\"pki-l1-5\",\"answer\":\"Private key نباید در CSR قرار بگیرد؛ CSR شامل public key و داده‌های لازم است.\",\"rationale\":\"کلید خصوصی در محل تولید باید محافظت شود.\"},{\"id\":\"pki-l1-6\",\"answer\":\"Building مسیر نامزد را می‌سازد؛ validation امضا، constraints، policy و اعتبار را بررسی می‌کند.\",\"rationale\":\"یافتن زنجیره تضمین نمی‌کند پذیرفته شود.\"},{\"id\":\"pki-l1-7\",\"answer\":\"کاربرد مجاز گواهی مثل server/client authentication را مشخص می‌کند.\",\"rationale\":\"گواهی نباید بدون بررسی بین purposeهای مختلف بازاستفاده شود.\"},{\"id\":\"pki-l1-8\",\"answer\":\"روش‌هایی برای اعلام یا پرس‌وجوی وضعیت ابطال گواهی‌اند.\",\"rationale\":\"رفتار client هنگام unavailable بودن status endpoint باید آزموده شود.\"}]},\"related_infographics\":[\"pki_certificate_chain.svg\",\"tcp_handshake.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 9846 — TLS Protocol Version 1.3 (current July 2026)",
+          "url": "https://www.rfc-editor.org/rfc/rfc9846.html"
+        },
+        {
+          "title": "RFC 5280 — Internet X.509 PKI Certificate and CRL Profile",
+          "url": "https://www.rfc-editor.org/rfc/rfc5280.html"
+        },
+        {
+          "title": "RFC 9525 — Service Identity in TLS",
+          "url": "https://www.rfc-editor.org/rfc/rfc9525.html"
+        },
+        {
+          "title": "RFC 8446 — TLS 1.3 (superseded historical reference)",
+          "url": "https://www.rfc-editor.org/rfc/rfc8446.html"
+        },
+        {
+          "title": "NIST SP 800-57 Part 1 — Recommendation for Key Management",
+          "url": "https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch26:pki-tls-engineering:l2",
+      "entity": "lesson",
+      "chapter_order": 26,
+      "subchapter_order": 4,
+      "lesson_order": 3,
+      "topic": "pki-tls-engineering",
+      "domain": "identity-and-cryptography",
+      "level": "L2",
+      "title_fa": "[L2] PKI و TLS — ادمین",
+      "title_en": "[L2] PKI and TLS Engineering — ادمین",
+      "tags": [
+        "PKI",
+        "TLS",
+        "X.509",
+        "certificate",
+        "CA",
+        "mTLS",
+        "L2"
+      ],
+      "summary": "صدور، نصب و تمدید گواهی را با کنترل تغییر مدیریت کند؛ خطای chain، revocation و TLS negotiation را تفکیک کند؛ از private key و trust store محافظت کند",
+      "full_content": "# PKI و TLS — ادمین\n\n## طراحی عملیاتی certificate lifecycle\nفهرست گواهی‌ها باید inventory قابل جست‌وجو باشد: service/owner، FQDN و SANها، issuer/CA، serial، key type/size، validity period، EKU، محل نصب، مسئول private key، renewal method، dependencyها و alert قبل از expiry. گواهی‌هایی که دستی روی چند دستگاه نصب شده‌اند خطر انقضا و divergence را بالا می‌برند. برای certificate auto-renewal باید ثابت شود گواهی جدید واقعاً روی سرویس نصب شده، chain در دسترس است و process پس از reload یا restart آن را load می‌کند.\n\nExpiry monitoring فقط خواندن تاریخ نیست. Alert باید owner و service endpoint مشخص داشته باشد، زمان کافی برای CA validation و rollout ایجاد کند و پس از renew بسته شود. اگر گواهی پشت load balancer، reverse proxy و application server وجود دارد، باید مرز TLS termination و تمام nodeها مشخص باشند. یک node سالم نمی‌تواند همهٔ cluster را تضمین کند.\n\n## CSR و کنترل کلید خصوصی\nPrivate key ترجیحاً در سیستم مقصد یا HSM/KMS سازگار تولید و نگهداری می‌شود؛ خروجی کلید به فایل قابل‌انتقال باید فقط با ضرورت و کنترل مناسب انجام شود. CSR را با public key آن، Subject/SAN و الگوریتم مورد انتظار بررسی کن. CA ممکن است SAN درخواستی را بدون تأیید صادر نکند؛ policy صدور باید مرجع باشد. از الگوریتم‌های منسوخ یا پارامترهای ضعیف بدون ضرورت استفاده نکن. در Certificate Authority داخلی، separation of duties، audit log، CA key protection، backup/restore و recovery باید طراحی شود. Root private key در محیط روزمرهٔ صدور leaf certificate استفاده نمی‌شود؛ معماری controlled root و intermediateهای محدودشده را بررسی کن.\n\n## Key Usage، EKU و Basic Constraints\nKey Usage و Extended Key Usage کاربرد مجاز کلید/گواهی را مشخص می‌کنند؛ Basic Constraints دربارهٔ CA بودن و path limit نقش دارد. اشتباه در CA:TRUE، path length، signing purpose یا EKU می‌تواند chain را نامعتبر یا بیش از حد مجاز کند. گواهی یکسان را بدون فهم intended purpose بین TLS server، client authentication و code signing بازاستفاده نکن. Policy سازمانی و نرم‌افزار مقصد ممکن است محدودیت‌های بیشتری اعمال کند.\n\n## TLS diagnostics\nبرای endpoint، hostname دقیق، IP مقصد، SNI، ALPN، TLS version، cipher suite، certificate chain و error message را ثبت کن. اگر TLS روی load balancer terminate می‌شود، گواهی endpoint بیرونی از گواهی hop داخلی متفاوت است. اتصال TCP موفق ولی TLS شکست‌خورده باید در مرز handshake، trust، protocol parameters یا server configuration بررسی شود، نه اینکه فوراً firewall rule عوض شود. TLS 1.3 بخش بیشتری از پیام‌های بعد از ServerHello را رمز می‌کند؛ پس capture شبکه همهٔ جزئیات handshake را لزوماً نشان نمی‌دهد.\n\n## TLS version و استاندارد جاری\nبرای TLS 1.3 باید RFC جاری را بررسی کرد؛ RFC 9846 در ژوئیهٔ ۲۰۲۶ جایگزین RFC 8446 شده است. پیکربندی باید از guidance جاری TLS و vendor release پیروی کند. نسخه‌ها و cipherها را با آزمون سازگاری clientهای موردپشتیبانی تعیین کن؛ خاموش‌کردن TLS 1.0/1.1 یا تغییر legacy باید براساس inventory و rollout انجام شود تا سرویس‌های قدیمی ناشناخته قطع نشوند. از نام cipher به‌تنهایی دربارهٔ امنیت کامل endpoint نتیجه نگیر؛ key exchange، certificate validation، protocol behavior و implementation patch level هم مهم‌اند.\n\n## Revocation و OCSP/CRL\nبرای certificate revoked یا CA compromised باید runbook مشخص باشد: شناسایی serialها، صدور مجدد، توزیع گواهی، پاک‌سازی کلید/secret در معرض خطر، به‌روزرسانی trust stores و بررسی اینکه کلاینت‌ها وضعیت ابطال را چگونه می‌سنجند. OCSP responder unavailable ممکن است در بعضی clientها behavior متفاوت ایجاد کند؛ stapling نیز باید از دید client آزمایش شود. Revocation status یک وابستگی availability است و نیاز به monitoring دارد. گواهی جدید را صادر نکن و حادثه را مختومه ندان تا سرویس از تمام nodeها و مسیرهای مهم آزمایش شده باشد.\n\n## لابراتوارها\nA — Name mismatch: گواهی آزمایشی با SAN متفاوت بساز و شکست validation را ثبت کن.\nB — Missing intermediate: intermediate را از chain ارسالی یک سرویس آزمایشی بردار و رفتار clientها را مقایسه کن.\nC — Expiry/clock: گواهی منقضی‌شدهٔ آزمایشی یا ساعت کنترل‌شده در VM ایزوله بساز؛ ساعت ماشین عملیاتی را تغییر نده.\nD — mTLS: client certificate معتبر و نامعتبر را به API آزمایشی بده و authentication را از authorization برنامه جدا کن.\nهر Lab باید software version، setup، expected result، observed output، cleanup و rollback داشته باشد.\n\n## Security and recovery\nPrivate key، CSRهای حاوی metadata، tokenهای ACME و CA backupها می‌توانند حساس باشند؛ آن‌ها را وارد Git عمومی، logs یا dump آموزشی نکن. اگر private key مشکوک به compromise است، revocation/rotation و بررسی اثر downstream لازم می‌شود؛ تمدید certificate با همان کلید افشاشده remediation کافی نیست.",
+      "commands": "Read-only examples: inspect certificate chains with OS certificate tools or a current OpenSSL release; test TLS handshakes only against endpoints you administer or are authorized to test. Syntax and output vary by version.",
+      "examples": "Use an isolated local test CA and service with synthetic identities. Do not disable production TLS verification or import an unknown CA into the operating system trust store for convenience.",
+      "notes": "source=tools/packs/security_identity/pki_tls_engineering_ch26_pack.json; status=review_required; labs=designed_not_executed; infographic=pki_certificate_chain.svg",
+      "learning_objectives": [
+        "صدور، نصب و تمدید گواهی را با کنترل تغییر مدیریت کند",
+        "خطای chain، revocation و TLS negotiation را تفکیک کند",
+        "از private key و trust store محافظت کند"
+      ],
+      "prerequisites": [
+        "Public/private keys, DNS names, TCP and basic cryptographic terminology"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"pki-l2-1\",\"prompt\":\"گواهی دیجیتال چه چیزی را پیوند می‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"pki-l2-2\",\"prompt\":\"تفاوت encryption و digital signature چیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"pki-l2-3\",\"prompt\":\"چرا کلاینت باید SAN/hostname را بررسی کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"pki-l2-4\",\"prompt\":\"CA و trust anchor چه نقشی دارند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"pki-l2-5\",\"prompt\":\"CSR چه چیزی نباید شامل شود؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"pki-l2-6\",\"prompt\":\"فرق chain building با path validation چیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"pki-l2-7\",\"prompt\":\"EKU چه اهمیتی دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"pki-l2-8\",\"prompt\":\"CRL و OCSP چه کاری می‌کنند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"pki-l2-9\",\"prompt\":\"TLS handshake موفق چه چیزی را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"pki-l2-10\",\"prompt\":\"SNI و ALPN چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"pki-l2-1\",\"answer\":\"کلید عمومی و هویت/ویژگی‌های مشخص را طبق policy، با امضای CA.\",\"rationale\":\"گواهی به‌تنهایی امن بودن کامل سرور یا محتوای آن را تضمین نمی‌کند.\"},{\"id\":\"pki-l2-2\",\"answer\":\"Encryption محرمانگی را هدف می‌گیرد؛ signature یکپارچگی/انتساب امضا را پشتیبانی می‌کند.\",\"rationale\":\"امضا به‌تنهایی محتوا را مخفی نمی‌کند.\"},{\"id\":\"pki-l2-3\",\"answer\":\"تا مطمئن شود گواهی مربوط به همان سرویس درخواستی است.\",\"rationale\":\"گواهی با chain معتبر اما نام اشتباه برای hostname انتخابی کافی نیست.\"},{\"id\":\"pki-l2-4\",\"answer\":\"CA گواهی را طبق policy امضا می‌کند؛ trust anchor نقطهٔ شروع اعتماد در کلاینت است.\",\"rationale\":\"گواهی self-signed به‌خودی‌خود trusted نیست.\"},{\"id\":\"pki-l2-5\",\"answer\":\"Private key نباید در CSR قرار بگیرد؛ CSR شامل public key و داده‌های لازم است.\",\"rationale\":\"کلید خصوصی در محل تولید باید محافظت شود.\"},{\"id\":\"pki-l2-6\",\"answer\":\"Building مسیر نامزد را می‌سازد؛ validation امضا، constraints، policy و اعتبار را بررسی می‌کند.\",\"rationale\":\"یافتن زنجیره تضمین نمی‌کند پذیرفته شود.\"},{\"id\":\"pki-l2-7\",\"answer\":\"کاربرد مجاز گواهی مثل server/client authentication را مشخص می‌کند.\",\"rationale\":\"گواهی نباید بدون بررسی بین purposeهای مختلف بازاستفاده شود.\"},{\"id\":\"pki-l2-8\",\"answer\":\"روش‌هایی برای اعلام یا پرس‌وجوی وضعیت ابطال گواهی‌اند.\",\"rationale\":\"رفتار client هنگام unavailable بودن status endpoint باید آزموده شود.\"},{\"id\":\"pki-l2-9\",\"answer\":\"Authorization یا منطق درست برنامه را به‌تنهایی تضمین نمی‌کند.\",\"rationale\":\"احراز هویت TLS و مجوز application دو مرحله‌اند.\"},{\"id\":\"pki-l2-10\",\"answer\":\"SNI نام سرویس را اعلام می‌کند؛ ALPN پروتکل کاربردی را مذاکره می‌کند.\",\"rationale\":\"این extensionها نقش یکسان ندارند.\"}]},\"related_infographics\":[\"pki_certificate_chain.svg\",\"tcp_handshake.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 9846 — TLS Protocol Version 1.3 (current July 2026)",
+          "url": "https://www.rfc-editor.org/rfc/rfc9846.html"
+        },
+        {
+          "title": "RFC 5280 — Internet X.509 PKI Certificate and CRL Profile",
+          "url": "https://www.rfc-editor.org/rfc/rfc5280.html"
+        },
+        {
+          "title": "RFC 9525 — Service Identity in TLS",
+          "url": "https://www.rfc-editor.org/rfc/rfc9525.html"
+        },
+        {
+          "title": "RFC 8446 — TLS 1.3 (superseded historical reference)",
+          "url": "https://www.rfc-editor.org/rfc/rfc8446.html"
+        },
+        {
+          "title": "NIST SP 800-57 Part 1 — Recommendation for Key Management",
+          "url": "https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch26:pki-tls-engineering:l3",
+      "entity": "lesson",
+      "chapter_order": 26,
+      "subchapter_order": 4,
+      "lesson_order": 4,
+      "topic": "pki-tls-engineering",
+      "domain": "identity-and-cryptography",
+      "level": "L3",
+      "title_fa": "[L3] PKI و TLS — مهندس",
+      "title_en": "[L3] PKI and TLS Engineering — مهندس",
+      "tags": [
+        "PKI",
+        "TLS",
+        "X.509",
+        "certificate",
+        "CA",
+        "mTLS",
+        "L3"
+      ],
+      "summary": "زنجیرهٔ اعتبارسنجی و TLS handshake را با شواهد تحلیل کند؛ معماری CA و rotation را طراحی کند؛ رخداد compromise و revocation را مدیریت کند",
+      "full_content": "# PKI و TLS — مهندس\n\n## PKI به‌عنوان سامانهٔ اعتماد\nPKI فقط یک CA server نیست. معماری شامل root/intermediate CAها، certificate templates/profiles، registration/validation، private-key protection، publication points، CRL/OCSP، trust distribution، inventory، renewal، revocation و incident response است. هر رابطهٔ اعتماد باید purpose مشخص داشته باشد؛ یک root گسترده که بی‌دلیل در تمام کلاینت‌ها trusted شده باشد، blast radius بزرگی دارد. طراحی باید trust domains و CA hierarchy را با policy سازمان، جداسازی محیط production/test و عمر کلیدها پیوند دهد.\n\n## Chain building و path validation\nگواهی سرور به leaf، intermediateها و trust anchor مرتبط است. اعتبارسنجی path شامل امضای هر گواهی، issuer/subject relation، Basic Constraints، Key Usage/EKU، validity، policy constraints و revocation طبق قواعد client است. Chain building و path validation مفاهیم مرتبط ولی جدا هستند: نرم‌افزار ابتدا مسیر نامزد را پیدا می‌کند و سپس آن را اعتبارسنجی می‌کند. Cross-signing، alternate chain و root storeهای متفاوت ممکن است نتیجه را میان OSها تغییر دهند. برای عیب‌یابی، chain واقعی ارائه‌شده و trust store client را ثبت کن؛ به یک screenshot از issuer بسنده نکن.\n\n## هویت سرویس و SAN\nTLS server certificate باید با هویت مورد انتظار کلاینت مطابقت کند. RFC 9525 روش جاری Service Identity را شرح می‌دهد و RFC 6125 را منسوخ کرده است. SAN و قواعد DNS-ID/IP-ID، wildcard و canonicalization را طبق آن و implementation هدف بررسی کن. قرار دادن یک IP در URL و سپس انتظار match شدن DNS SAN درست نیست، مگر گواهی هویت IP مناسب را داشته باشد. Proxy، SNI، alias DNS و service discovery ممکن است نامی را که کلاینت بررسی می‌کند تغییر دهند؛ log و capture باید hostname درخواست‌شده را نشان دهند.\n\n## TLS 1.3 handshake و key schedule\nTLS 1.3 با مذاکرهٔ نسخه و cipher suite، key shares، server authentication و مشتق‌سازی کلیدهای handshake/application کار می‌کند. CertificateVerify امضای مبتنی بر گواهی را برای اثبات possession کلید خصوصی به handshake متصل می‌کند و Finished پیام‌های handshake را با key material تأیید می‌کند. پس از server certificate validation، client باید hostname را جدا اعتبارسنجی کند؛ گواهی امضاشده به‌تنهایی match هویت را ثابت نمی‌کند. RFC 9846 نسخهٔ جاری TLS 1.3 در این پروژه است؛ RFC 8446 برای سازگاری تاریخی مطرح است. جزئیات دقیق پیام‌ها و extensionها باید از استاندارد جاری و library release خوانده شوند.\n\n## SNI، ALPN، termination و mTLS\nSNI به سرور امکان می‌دهد نام سرویس مورد درخواست را در مرحلهٔ handshake اعلام کند؛ ALPN پروتکل application مثل HTTP/2 را مذاکره می‌کند. TLS termination در load balancer ممکن است باعث شود کلاینت certificate عمومی را ببیند اما backend با TLS یا پروتکل دیگری ارتباط داشته باشد. mTLS نیاز دارد سرور client certificate را verify کند، اما authorization بر اساس identity/claims باید جدا باشد. اگر certificate client معتبر است ولی دسترسی رد می‌شود، mapping به user/service، policy یا authorization rule را بررسی کن، نه اینکه CA را بی‌دلیل عوض کنی.\n\n## 0-RTT و replay\nTLS 1.3 امکان early data در سناریوهای resumption را تعریف می‌کند؛ 0-RTT در برابر replay حساس است. درخواست‌های دارای side effect مانند پرداخت یا تغییر state نباید بدون طراحی ضد replay یا idempotency در early data ارسال شوند. امنیت به پروتکل application و deployment وابسته است؛ فعال‌بودن 0-RTT را از config و telemetry تأیید کن. Session resumption و ticket lifetime نیز روی privacy، key management و incident response اثر می‌گذارد.\n\n## Certificate lifecycle engineering\nRenewal automation باید issuance، private key، permissions، deployment، reload، health-check، rollback و post-renew monitoring را به هم وصل کند. گواهی‌های کوتاه‌عمر بار automation را بالا می‌برند اما می‌توانند پنجرهٔ اعتبار credential compromise را کاهش دهند؛ lifetimeها با CA/browser policy تغییر می‌کنند، بنابراین به یک عدد قدیمی متکی نشو. Alert threshold باید از مدت لازم برای اصلاح تا rollout استخراج شود. انقضای certificate روی یکی از backendها ممکن است فقط کاربران خاص یا region خاصی را مختل کند.\n\n## Incident response برای key compromise\nاگر leaf private key افشا شد، مشخص کن چه endpointها و چه copies از کلید استفاده می‌کنند، certificate revoke شود، کلید تازه و گواهی تازه با کنترل مناسب منتشر شود، تمام replicas و terminators به‌روز شوند، و شواهد استفادهٔ غیرمجاز بررسی شود. اگر CA key افشا شد، دامنهٔ بحران بسیار بزرگ‌تر است: توقف صدور، ارزیابی trust anchors و child certificates، revocation/replacement strategy و هماهنگی با تمام مصرف‌کنندگان لازم است. ساخت یک certificate جدید به‌تنهایی key compromise را حل نمی‌کند اگر key قبلی reuse شده باشد.\n\n## Lab: از symptom تا RCA\nCase 1: hostname mismatch در reverse proxy. Case 2: missing intermediate فقط روی یک OS. Case 3: OCSP/CRL endpoint unreachable. Case 4: mTLS certificate معتبر ولی authorization رد می‌شود. Case 5: TLS negotiation اختلاف protocol/ALPN دارد. برای هر کیس، client/server version، SNI، chain، trust store، timestamps، error code، endpoint، revocation result و logs ثبت شوند. فرضیه‌ها را با آزمون‌های جدا رد کن؛ validation را برای بازشدن سرویس خاموش نکن.\n\n## معیار مهندسی\nRCA باید علت، شواهد مستقل، chain دقیق، client scope، وضعیت revocation، remediation، rotation، rollback/fallback و verification پس از تغییر را ثبت کند. خروجی باید از چند client/OS و تمام front-end/backendها گرفته شود. آزمایش طراحی‌شده تا زمان اجرای واقعی verified نیست.",
+      "commands": "Read-only examples: inspect certificate chains with OS certificate tools or a current OpenSSL release; test TLS handshakes only against endpoints you administer or are authorized to test. Syntax and output vary by version.",
+      "examples": "Use an isolated local test CA and service with synthetic identities. Do not disable production TLS verification or import an unknown CA into the operating system trust store for convenience.",
+      "notes": "source=tools/packs/security_identity/pki_tls_engineering_ch26_pack.json; status=review_required; labs=designed_not_executed; infographic=pki_certificate_chain.svg",
+      "learning_objectives": [
+        "زنجیرهٔ اعتبارسنجی و TLS handshake را با شواهد تحلیل کند",
+        "معماری CA و rotation را طراحی کند",
+        "رخداد compromise و revocation را مدیریت کند"
+      ],
+      "prerequisites": [
+        "Public/private keys, DNS names, TCP and basic cryptographic terminology"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"pki-l3-1\",\"prompt\":\"گواهی دیجیتال چه چیزی را پیوند می‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"pki-l3-2\",\"prompt\":\"تفاوت encryption و digital signature چیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"pki-l3-3\",\"prompt\":\"چرا کلاینت باید SAN/hostname را بررسی کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"pki-l3-4\",\"prompt\":\"CA و trust anchor چه نقشی دارند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"pki-l3-5\",\"prompt\":\"CSR چه چیزی نباید شامل شود؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"pki-l3-6\",\"prompt\":\"فرق chain building با path validation چیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"pki-l3-7\",\"prompt\":\"EKU چه اهمیتی دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"pki-l3-8\",\"prompt\":\"CRL و OCSP چه کاری می‌کنند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"pki-l3-9\",\"prompt\":\"TLS handshake موفق چه چیزی را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"pki-l3-10\",\"prompt\":\"SNI و ALPN چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"pki-l3-11\",\"prompt\":\"mTLS چه اضافه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"pki-l3-12\",\"prompt\":\"چرا TLS 1.3 0-RTT برای هر درخواست مناسب نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"pki-l3-1\",\"answer\":\"کلید عمومی و هویت/ویژگی‌های مشخص را طبق policy، با امضای CA.\",\"rationale\":\"گواهی به‌تنهایی امن بودن کامل سرور یا محتوای آن را تضمین نمی‌کند.\"},{\"id\":\"pki-l3-2\",\"answer\":\"Encryption محرمانگی را هدف می‌گیرد؛ signature یکپارچگی/انتساب امضا را پشتیبانی می‌کند.\",\"rationale\":\"امضا به‌تنهایی محتوا را مخفی نمی‌کند.\"},{\"id\":\"pki-l3-3\",\"answer\":\"تا مطمئن شود گواهی مربوط به همان سرویس درخواستی است.\",\"rationale\":\"گواهی با chain معتبر اما نام اشتباه برای hostname انتخابی کافی نیست.\"},{\"id\":\"pki-l3-4\",\"answer\":\"CA گواهی را طبق policy امضا می‌کند؛ trust anchor نقطهٔ شروع اعتماد در کلاینت است.\",\"rationale\":\"گواهی self-signed به‌خودی‌خود trusted نیست.\"},{\"id\":\"pki-l3-5\",\"answer\":\"Private key نباید در CSR قرار بگیرد؛ CSR شامل public key و داده‌های لازم است.\",\"rationale\":\"کلید خصوصی در محل تولید باید محافظت شود.\"},{\"id\":\"pki-l3-6\",\"answer\":\"Building مسیر نامزد را می‌سازد؛ validation امضا، constraints، policy و اعتبار را بررسی می‌کند.\",\"rationale\":\"یافتن زنجیره تضمین نمی‌کند پذیرفته شود.\"},{\"id\":\"pki-l3-7\",\"answer\":\"کاربرد مجاز گواهی مثل server/client authentication را مشخص می‌کند.\",\"rationale\":\"گواهی نباید بدون بررسی بین purposeهای مختلف بازاستفاده شود.\"},{\"id\":\"pki-l3-8\",\"answer\":\"روش‌هایی برای اعلام یا پرس‌وجوی وضعیت ابطال گواهی‌اند.\",\"rationale\":\"رفتار client هنگام unavailable بودن status endpoint باید آزموده شود.\"},{\"id\":\"pki-l3-9\",\"answer\":\"Authorization یا منطق درست برنامه را به‌تنهایی تضمین نمی‌کند.\",\"rationale\":\"احراز هویت TLS و مجوز application دو مرحله‌اند.\"},{\"id\":\"pki-l3-10\",\"answer\":\"SNI نام سرویس را اعلام می‌کند؛ ALPN پروتکل کاربردی را مذاکره می‌کند.\",\"rationale\":\"این extensionها نقش یکسان ندارند.\"},{\"id\":\"pki-l3-11\",\"answer\":\"سرور گواهی کلاینت را نیز بررسی می‌کند.\",\"rationale\":\"مجوز عملیات همچنان به authorization وابسته است.\"},{\"id\":\"pki-l3-12\",\"answer\":\"Early data ممکن است replay شود؛ عملیات دارای side effect نیازمند anti-replay/idempotency است.\",\"rationale\":\"این قابلیت trade-off latency و semantics دارد.\"}]},\"related_infographics\":[\"pki_certificate_chain.svg\",\"tcp_handshake.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 9846 — TLS Protocol Version 1.3 (current July 2026)",
+          "url": "https://www.rfc-editor.org/rfc/rfc9846.html"
+        },
+        {
+          "title": "RFC 5280 — Internet X.509 PKI Certificate and CRL Profile",
+          "url": "https://www.rfc-editor.org/rfc/rfc5280.html"
+        },
+        {
+          "title": "RFC 9525 — Service Identity in TLS",
+          "url": "https://www.rfc-editor.org/rfc/rfc9525.html"
+        },
+        {
+          "title": "RFC 8446 — TLS 1.3 (superseded historical reference)",
+          "url": "https://www.rfc-editor.org/rfc/rfc8446.html"
+        },
+        {
+          "title": "NIST SP 800-57 Part 1 — Recommendation for Key Management",
+          "url": "https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final"
+        }
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch26:pki-tls-engineering:l4",
+      "entity": "lesson",
+      "chapter_order": 26,
+      "subchapter_order": 4,
+      "lesson_order": 5,
+      "topic": "pki-tls-engineering",
+      "domain": "identity-and-cryptography",
+      "level": "L4",
+      "title_fa": "[L4] PKI و TLS — خبره",
+      "title_en": "[L4] PKI and TLS Engineering — خبره",
+      "tags": [
+        "PKI",
+        "TLS",
+        "X.509",
+        "certificate",
+        "CA",
+        "mTLS",
+        "L4"
+      ],
+      "summary": "PKI و TLS را با مرزهای اعتماد و عملیات lifecycle طراحی کند؛ trade-off امنیت، سازگاری، revocation و availability را ارزیابی کند؛ runbook، threat model و acceptance suite معماری ارائه دهد",
+      "full_content": "# PKI و TLS — خبره و طراحی معماری\n\n## Trust architecture و blast radius\nدر معماری بزرگ، trust store یک وابستگی امنیتی سراسری است. باید مشخص شود چه CAهایی به کدام endpointها اعتماد دارند، چه purposeهایی مجازند، چه سیاستی بین user/device/service identities برقرار است و حذف trust چه اثر عملیاتی دارد. Root CA ممکن است آفلاین یا با کنترل سخت‌گیرانه نگهداری شود؛ intermediateهای مجزا بر اساس issuance purpose، security zone و operational ownership می‌توانند blast radius را محدود کنند. ترکیب CA سازمانی کاربر، device authentication و public web PKI بدون مرز روشن می‌تواند موجب اعتماد ناخواسته به certificateهای اشتباه شود.\n\nPolicy certificate باید identity proof، key algorithm/parameters، SAN/EKU/KeyUsage، validity، revocation، renewal، private-key storage، audit، backup/restore و emergency replacement را تعیین کند. CA issuance authorization خودش سطح حمله است؛ template یا policy اشتباه ممکن است به مهاجم اجازه دهد گواهی با هویت یا کاربرد نامناسب بگیرد. CA را با کمترین دسترسی و جداسازی وظایف اداره کن و مسیرهای صدور را از طریق change/audit قابل‌ردیابی نگه‌دار.\n\n## TLS 1.3 و نسخهٔ مرجع\nتا زمان نگارش این pack، RFC 9846 در ژوئیهٔ ۲۰۲۶ نسخهٔ TLS 1.3 را بازتعریف و RFC 8446 را منسوخ کرده است. بنابراین کتاب آموزشی باید به استاندارد جاری اشاره کند و RFCهای superseded را فقط برای سازگاری تاریخی یا implementation notes بیاورد. Behavior واقعی به نسخهٔ TLS library، platform، certificate profile و vendor policy بستگی دارد؛ استاندارد جدید به‌تنهایی تضمین نمی‌کند تمام endpointهای موجود آن را پشتیبانی می‌کنند. rollout باید inventory، compatibility testing و telemetry داشته باشد.\n\n## طراحی TLS profiles\nیک TLS profile برای هر service class باید نسخه‌های مجاز، cipher suites، signature schemes، group/key exchange، certificate purpose، key rotation، mTLS requirement، ALPN، session resumption، 0-RTT policy، stapling/revocation و logging را مشخص کند. از تنظیمات عمومی «قوی‌ترین همه‌چیز» بدون تست استفاده نکن: بعضی endpointها سخت‌افزار یا client قدیمی دارند، اما سازگاری نباید بهانهٔ نگه‌داشتن پروتکل‌های ضعیف و بدون deadline باشد. Exception باید مالک، دلیل، compensating controls و تاریخ بازبینی داشته باشد.\n\n## PKI path validation و service identity\nPath builder ممکن است chainهای مختلفی پیدا کند؛ trust anchor و سیاست client بر نتیجه اثر می‌گذارند. اعتماد به certificate و match شدن نام دو check مستقل هستند. RFC 9525 مرجع جاری Service Identity است؛ DNS SAN، IP-ID، wildcard و alias را مطابق policy اجرا کن. Chain incomplete ممکن است به‌دلیل cache روی یک سیستم کار کند و روی دیگری خطا بدهد. Cross-signing و old trust stores نیازمند مهاجرت کنترل‌شده‌اند. در طراحی root rotation، overlap دوره، rollout trust anchorهای جدید، client inventory و rollback مهم‌اند.\n\n## Revocation در مقیاس\nCRL publication، OCSP availability/stapling و client revocation policy trade-off بین security، latency و availability ایجاد می‌کنند. اگر validation در حالت غیرقابل‌دسترس بودن status server با fail-open رفتار کند، یک گواهی revoked ممکن است توسط بعضی clients پذیرفته شود؛ fail-closed نیز outage در پاسخ‌دهندهٔ revocation می‌تواند سرویس را مختل کند. رفتار را بر اساس client libraries و profile واقعی آزمون کن، نه از روی فرض. OCSP/CRL endpoints باید monitoring، capacity و recovery داشته باشند. Revocation سریع تنها در صورت شناخت endpoint consumers و رفتار cache می‌تواند مؤثر باشد.\n\n## Key custody و cryptographic agility\nکلیدها باید بر اساس حساسیت در HSM، TPM، KMS، protected OS keystore یا storage محدودشده نگهداری شوند. Exportability، backup، access control، audit، recovery و separation of duties باید به مدل تهدید مربوط باشند. Key rotation باید پیش از expiry و پیش از نیاز emergency آزمون شود. Cryptographic agility به معنی استفادهٔ خودکار از هر الگوریتم جدید نیست؛ منظور توانایی مهاجرت کنترل‌شده میان algorithms/keys/profiles در پاسخ به استاندارد، آسیب‌پذیری یا نیاز سازگاری است. از نوشتن الگوریتم رمزنگاری شخصی یا انتخاب الگوریتم صرفاً به دلیل نام/سرعت خودداری کن؛ از library و profile به‌روز و مورد تأیید محیط استفاده شود.\n\n## SNI، ALPN، reverse proxy و service mesh\nTLS termination points باید روی topology مشخص باشند: client-to-edge، edge-to-backend، service-to-service یا sidecar/service mesh. اگر termination روی load balancer است، certificate بیرونی و identity verification داخلی دو قرارداد جدا هستند. mTLS در service mesh نیز نیازمند workload identity، trust domain، certificate distribution، rotation، authorization policy و telemetry است. SNI/ALPN و backend pool selection ممکن است سبب شود فقط یک hostname یا protocol شکست بخورد؛ health check edge به‌تنهایی سلامت تمام backend TLS sessions را ثابت نمی‌کند.\n\n## 0-RTT، resumption و application safety\nTLS 1.3 resumption و early data می‌تواند latency را کم کند اما 0-RTT ممکن است replay شود. برای requestهای stateful و side-effecting باید anti-replay policy، idempotency key و application design لحاظ شود. Ticket encryption keys و rotation آن‌ها به امنیت session resumption مرتبط‌اند. هنگام incident، تنها certificate leaf را تعویض نکن اگر suspected exposure شامل resumption keys یا shared termination secret است؛ scope credentialها باید شناسایی شود.\n\n## Threat model\nخطرها شامل private key compromise، CA mis-issuance، trust store poisoning، expired certificate، weak/legacy TLS، hostname mismatch، missing intermediate، revocation unreachable، rogue internal CA، incorrect client certificate authorization، 0-RTT replay و orphaned credentials هستند. برای هر threat باید prevention، detection، response، owner و acceptance test مشخص شود. Certificate Transparency و monitoring issuance می‌توانند برای public-web PKI visibility ایجاد کنند، اما جای CA policy یا private-key protection را نمی‌گیرند.\n\n## SLO و observability\nMetricها شامل TLS handshake success rate، error classes، certificate expiry horizon، renewal success، chain-validation failures، revocation status latency/availability، mTLS authentication rate، protocol distribution و connection resumption behavior هستند. Alert روی انقضای نزدیک تنها در صورتی عملی است که issuance و rollout زمان کافی داشته باشند؛ threshold باید از lead time سازمان محاسبه شود. Health check باید از دید client و در hostname/regionهای مهم اجرا شود؛ process certificate file موجود به معنی certificate loaded on every replica نیست.\n\n## Acceptance suite\n- chain و hostname معتبر برای client/OSهای پشتیبانی‌شده؛\n- رد گواهی با SAN اشتباه یا CA غیرمجاز؛\n- رفتار در expiry، not-yet-valid و revocation؛\n- renewal و reload روی تمام replicas بدون قطعی فراتر از SLO؛\n- mTLS positive/negative tests و تفکیک authorization؛\n- protocol/ALPN profile و legacy-client inventory؛\n- OCSP/CRL unreachable behavior مطابق policy؛\n- private-key backup/restore و rotation tabletop/controlled test؛\n- 0-RTT/early-data handling برای عملیات حساس؛\n- rollback و verification پس از هر change.\n\n## Incident response و Definition of Done\nبرای compromise ابتدا credential scope را محدود کن، evidence را نگه‌دار و incident owner را مشخص کن؛ سپس revocation/reissuance، key rotation، trust-store change، deployment، monitoring و downstream consumers را هماهنگ کن. Rollback در PKI همیشه به معنی بازگرداندن certificate قدیمی نیست؛ اگر key compromise شده، key/identity قبلی ممکن است دیگر امن نباشد و باید emergency plan خاص وجود داشته باشد. مستندات باید change history، serials، fingerprints و owner را با کنترل دسترسی ثبت کنند.\n\nPKI/TLS زمانی آمادهٔ production است که معماری CA، purpose policy، trust anchors، service identity، renewal، revocation، key custody، monitoring، recovery، compatibility matrix، acceptance results و independent review ثبت شده باشند. این pack محتوای طراحی‌شده دارد؛ تا اجرای آزمایش‌ها و بررسی releaseهای واقعی review_required باقی می‌ماند.",
+      "commands": "Read-only examples: inspect certificate chains with OS certificate tools or a current OpenSSL release; test TLS handshakes only against endpoints you administer or are authorized to test. Syntax and output vary by version.",
+      "examples": "Use an isolated local test CA and service with synthetic identities. Do not disable production TLS verification or import an unknown CA into the operating system trust store for convenience.",
+      "notes": "source=tools/packs/security_identity/pki_tls_engineering_ch26_pack.json; status=review_required; labs=designed_not_executed; infographic=pki_certificate_chain.svg",
+      "learning_objectives": [
+        "PKI و TLS را با مرزهای اعتماد و عملیات lifecycle طراحی کند",
+        "trade-off امنیت، سازگاری، revocation و availability را ارزیابی کند",
+        "runbook، threat model و acceptance suite معماری ارائه دهد"
+      ],
+      "prerequisites": [
+        "Public/private keys, DNS names, TCP and basic cryptographic terminology"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"pki-l4-1\",\"prompt\":\"گواهی دیجیتال چه چیزی را پیوند می‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-2\",\"prompt\":\"تفاوت encryption و digital signature چیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-3\",\"prompt\":\"چرا کلاینت باید SAN/hostname را بررسی کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-4\",\"prompt\":\"CA و trust anchor چه نقشی دارند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-5\",\"prompt\":\"CSR چه چیزی نباید شامل شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-6\",\"prompt\":\"فرق chain building با path validation چیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-7\",\"prompt\":\"EKU چه اهمیتی دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-8\",\"prompt\":\"CRL و OCSP چه کاری می‌کنند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-9\",\"prompt\":\"TLS handshake موفق چه چیزی را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-10\",\"prompt\":\"SNI و ALPN چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-11\",\"prompt\":\"mTLS چه اضافه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-12\",\"prompt\":\"چرا TLS 1.3 0-RTT برای هر درخواست مناسب نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-13\",\"prompt\":\"اگر TLS روی load balancer terminate شود چه باید بررسی شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-14\",\"prompt\":\"با private key مشکوک به compromise چه می‌کنی؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"pki-l4-15\",\"prompt\":\"چه چیزی PKI/TLS را آمادهٔ production می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"pki-l4-1\",\"answer\":\"کلید عمومی و هویت/ویژگی‌های مشخص را طبق policy، با امضای CA.\",\"rationale\":\"گواهی به‌تنهایی امن بودن کامل سرور یا محتوای آن را تضمین نمی‌کند.\"},{\"id\":\"pki-l4-2\",\"answer\":\"Encryption محرمانگی را هدف می‌گیرد؛ signature یکپارچگی/انتساب امضا را پشتیبانی می‌کند.\",\"rationale\":\"امضا به‌تنهایی محتوا را مخفی نمی‌کند.\"},{\"id\":\"pki-l4-3\",\"answer\":\"تا مطمئن شود گواهی مربوط به همان سرویس درخواستی است.\",\"rationale\":\"گواهی با chain معتبر اما نام اشتباه برای hostname انتخابی کافی نیست.\"},{\"id\":\"pki-l4-4\",\"answer\":\"CA گواهی را طبق policy امضا می‌کند؛ trust anchor نقطهٔ شروع اعتماد در کلاینت است.\",\"rationale\":\"گواهی self-signed به‌خودی‌خود trusted نیست.\"},{\"id\":\"pki-l4-5\",\"answer\":\"Private key نباید در CSR قرار بگیرد؛ CSR شامل public key و داده‌های لازم است.\",\"rationale\":\"کلید خصوصی در محل تولید باید محافظت شود.\"},{\"id\":\"pki-l4-6\",\"answer\":\"Building مسیر نامزد را می‌سازد؛ validation امضا، constraints، policy و اعتبار را بررسی می‌کند.\",\"rationale\":\"یافتن زنجیره تضمین نمی‌کند پذیرفته شود.\"},{\"id\":\"pki-l4-7\",\"answer\":\"کاربرد مجاز گواهی مثل server/client authentication را مشخص می‌کند.\",\"rationale\":\"گواهی نباید بدون بررسی بین purposeهای مختلف بازاستفاده شود.\"},{\"id\":\"pki-l4-8\",\"answer\":\"روش‌هایی برای اعلام یا پرس‌وجوی وضعیت ابطال گواهی‌اند.\",\"rationale\":\"رفتار client هنگام unavailable بودن status endpoint باید آزموده شود.\"},{\"id\":\"pki-l4-9\",\"answer\":\"Authorization یا منطق درست برنامه را به‌تنهایی تضمین نمی‌کند.\",\"rationale\":\"احراز هویت TLS و مجوز application دو مرحله‌اند.\"},{\"id\":\"pki-l4-10\",\"answer\":\"SNI نام سرویس را اعلام می‌کند؛ ALPN پروتکل کاربردی را مذاکره می‌کند.\",\"rationale\":\"این extensionها نقش یکسان ندارند.\"},{\"id\":\"pki-l4-11\",\"answer\":\"سرور گواهی کلاینت را نیز بررسی می‌کند.\",\"rationale\":\"مجوز عملیات همچنان به authorization وابسته است.\"},{\"id\":\"pki-l4-12\",\"answer\":\"Early data ممکن است replay شود؛ عملیات دارای side effect نیازمند anti-replay/idempotency است.\",\"rationale\":\"این قابلیت trade-off latency و semantics دارد.\"},{\"id\":\"pki-l4-13\",\"answer\":\"گواهی بیرونی و TLS/identity سمت backend را جدا بررسی کن.\",\"rationale\":\"یک termination تمام hopهای امن را ثابت نمی‌کند.\"},{\"id\":\"pki-l4-14\",\"answer\":\"Scope استفاده را مشخص، certificate را طبق policy revoke/replace، کلید را rotate و تمام consumers را verify می‌کنم.\",\"rationale\":\"تمدید با همان کلید افشاشده ممکن است remediation کافی نباشد.\"},{\"id\":\"pki-l4-15\",\"answer\":\"Lifecycle کلید/گواهی، trust, revocation, renewal, monitoring, recovery و acceptance tests اجرا و مستقل بازبینی شوند.\",\"rationale\":\"وجود فایل certificate یا handshake تنها کافی نیست.\"}]},\"related_infographics\":[\"pki_certificate_chain.svg\",\"tcp_handshake.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "RFC 9846 — TLS Protocol Version 1.3 (current July 2026)",
+          "url": "https://www.rfc-editor.org/rfc/rfc9846.html"
+        },
+        {
+          "title": "RFC 5280 — Internet X.509 PKI Certificate and CRL Profile",
+          "url": "https://www.rfc-editor.org/rfc/rfc5280.html"
+        },
+        {
+          "title": "RFC 9525 — Service Identity in TLS",
+          "url": "https://www.rfc-editor.org/rfc/rfc9525.html"
+        },
+        {
+          "title": "RFC 8446 — TLS 1.3 (superseded historical reference)",
+          "url": "https://www.rfc-editor.org/rfc/rfc8446.html"
+        },
+        {
+          "title": "NIST SP 800-57 Part 1 — Recommendation for Key Management",
+          "url": "https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final"
+        }
+      ],
+      "source_status": "review_required"
+    }
+  ]
+}
