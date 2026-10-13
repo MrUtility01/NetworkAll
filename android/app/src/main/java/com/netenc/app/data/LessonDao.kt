@@ -13,6 +13,18 @@ interface LessonDao {
     @Query("SELECT * FROM lessons WHERE deleted = 0 ORDER BY chapterOrder, lessonOrder, titleFa")
     suspend fun allActive(): List<LessonEntity>
 
+    /**
+     * Navigation-only projection: never materialize multi-kilobyte lesson bodies
+     * when building the chapter tree.
+     */
+    @Query("""
+        SELECT uid, titleFa, chapterOrder, chapterTitle, subTitle, lessonOrder
+        FROM lessons
+        WHERE deleted = 0
+        ORDER BY chapterOrder, lessonOrder, titleFa
+    """)
+    suspend fun navigationRows(): List<LessonNavRow>
+
     @Query("SELECT * FROM lessons WHERE uid = :uid LIMIT 1")
     suspend fun byUid(uid: String): LessonEntity?
 
@@ -48,6 +60,15 @@ interface LessonDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun putMeta(row: SyncMetaEntity)
 }
+
+data class LessonNavRow(
+    val uid: String,
+    val titleFa: String,
+    val chapterOrder: Int,
+    val chapterTitle: String,
+    val subTitle: String,
+    val lessonOrder: Int
+)
 
 data class ChapterRow(
     val chapterOrder: Int,
