@@ -23,6 +23,16 @@ object JalaliDate {
 
     fun currentTime(): String = LocalDateTime.now().format(timeFormatter)
 
+    fun daysInMonth(year: Int, month: Int): Int {
+        require(month in 1..12)
+        val c = calendar()
+        c.clear()
+        c.set(PersianCalendar.YEAR, year)
+        c.set(PersianCalendar.MONTH, month - 1)
+        c.set(PersianCalendar.DAY_OF_MONTH, 1)
+        return c.getActualMaximum(PersianCalendar.DAY_OF_MONTH)
+    }
+
     fun formatStored(value: String): String {
         if (value.isBlank()) return ""
         return try {
