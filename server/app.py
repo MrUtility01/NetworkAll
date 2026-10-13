@@ -140,7 +140,7 @@ def _verify_app_password(password: str) -> bool:
         return False
 
 
-_LOGIN_TEMPLATE = r'''\n<!doctype html>
+_LOGIN_TEMPLATE = r'''<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -166,7 +166,7 @@ button{margin-top:18px;width:100%;padding:12px;border:0;border-radius:8px;backgr
 <button type="submit">{% if setup_mode %}ثبت رمز و ورود{% else %}ورود{% endif %}</button>
 </form>
 <small>این قفل دسترسی رابط وب را محدود می‌کند؛ جایگزین HTTPS، توکن API، فایروال یا رمزگذاری دیتابیس نیست. برای میزبان LAN فقط شبکهٔ خصوصی و مورداعتماد را مجاز کنید.</small>
-</main></body></html>\n'''\n\n\n@app.before_request
+</main></body></html>'''\n\n\n@app.before_request
 def require_web_unlock():
     path = request.path
     if (
@@ -194,7 +194,7 @@ def login():
     next_path = request.args.get("next", "/")
     if request.method == "POST":
         next_path = request.form.get("next", "/")
-        if not next_path.startswith("/") or next_path.startswith("//") or "\\\\" in next_path:
+        if not next_path.startswith("/") or next_path.startswith("//") or chr(92) in next_path:
             next_path = "/"
         password = request.form.get("password", "")
         if setup_mode:
