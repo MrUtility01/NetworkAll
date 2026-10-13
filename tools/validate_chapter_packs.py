@@ -51,6 +51,8 @@ PACKS = [
      "linux-server-administration-ch30", 30),
     ("tools/packs/databases/sql_database_engineering_ch31_pack.json",
      "sql-database-engineering-ch31", 31),
+    ("tools/packs/monitoring/observability_engineering_ch32_pack.json",
+     "monitoring-observability-engineering-ch32", 32),
 ]
 errors: list[str] = []
 checked_lessons = 0
