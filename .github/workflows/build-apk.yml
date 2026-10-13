@@ -1,4 +1,4 @@
-name: Build APK v1
+name: NetworkAll Android APK (validated)
 
 on:
   workflow_dispatch:
@@ -77,8 +77,7 @@ jobs:
         run: |
           set -o pipefail
           ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee /tmp/gradle-assemble.log
-        continue-on-error: true
-
+ 
       - name: Upload gradle log
         if: always()
         uses: actions/upload-artifact@v4
@@ -101,7 +100,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: EngineerJokar-APK-v1
+          name: NetworkAll-Android-debug-APK
           path: android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 30
