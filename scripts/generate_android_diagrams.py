@@ -78,7 +78,7 @@ def chapter_svg(title: str, alt: str, chapter: int) -> str:
 
 def normalize_chapter_row(chapter: int, row: dict, asset: str) -> dict:
     return {
-        "id": row.get("id", row.get("diagram_id", row.get("diagram_id", row.get("id", row.get("diagram_id", ""))))),
+        "id": row.get("id") or row.get("diagram_id") or "",
         "title_fa": row.get("title_fa") or f"نمودار فصل {chapter}",
         "collection": row.get("collection") or f"فصل {chapter}",
         "asset": f"ch{chapter:02d}/{asset}",
@@ -191,7 +191,7 @@ def main() -> None:
         actual = len(chapter_items_by_order.get(chapter, []))
         if actual != count:
             raise SystemExit(f"Chapter {chapter} diagrams expected {count}, got {actual}")
-    expected_combined = 100 + sum(expected.values())
+    expected_combined = 100 + sum(len(rows) for rows in chapter_items_by_order.values())
     if len(combined) != expected_combined:
         raise SystemExit(f"Expected {expected_combined} combined diagrams, got {len(combined)}")
     for item in combined:
