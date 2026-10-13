@@ -2,6 +2,8 @@
 """SQLite سبک برای نسخه وب — فصل‌های ۱–۶۸ با محتوای غنی."""
 from __future__ import annotations
 
+import gzip
+import hashlib
 import json
 import sqlite3
 from pathlib import Path
@@ -113,29 +115,86 @@ class WebDB:
         return self.chapter_count() >= 64
 
     def seed_full(self, force=False):
-        """ساخت کامل فصل‌های ۱–۶۸ با محتوای غنی."""
+        """Seed from the validated shared curriculum asset when available.
+
+        A release package embeds the same merged index as Android. This avoids
+        seeding a shallow, different 68-chapter tree on Windows. A legacy
+        title-generated fallback remains for source checkouts without an asset.
+        """
         if self.is_seeded() and not force:
             return {"ok": True, "skipped": True, "chapters": self.chapter_count()}
 
-        from core.full_curriculum import get_full_curriculum
-        from core.phase_a import CAPSTONE_SCENARIOS, default_meta
+        from core.phase_a import CAPSTONE_SCENARIOS
         from core.seed_helpers import insert_rich_lesson
 
         cur = self.conn.cursor()
+        self.ensure_sync_columns()
         if force:
             cur.executescript(
                 "DELETE FROM lessons; DELETE FROM levels; DELETE FROM chapters; DELETE FROM scenarios;"
             )
 
-        curriculum = get_full_curriculum()
-        try:
-            from core.extra_chapters import ensure_chapters_1_to_68
-            curriculum = ensure_chapters_1_to_68(list(curriculum))
-        except Exception as e:
-            print("extra_chapters", e)
-        n_ch = n_lv = n_les = 0
-        now = datetime.now().isoformat()
+        now = datetime.now().astimezone().isoformat(timespec="seconds")
+        curriculum = []
+        rich_lookup = {}
+        source = "legacy-fallback"
 
+        asset = BASE.parent / "android" / "app" / "src" / "main" / "assets" / "curriculum_index.json.gz"
+        try:
+            with gzip.open(asset, "rt", encoding="utf-8") as stream:
+                payload = json.load(stream)
+            chapters = payload.get("chapters")
+            orders = {int(ch.get("order", 0)) for ch in chapters or []}
+            actual_count = sum(
+                len(sub.get("lessons", []))
+                for ch in chapters or []
+                for sub in ch.get("subchapters", [])
+            )
+            if (
+                isinstance(chapters, list)
+                and set(range(1, 69)).issubset(orders)
+                and int(payload.get("lesson_count", -1)) == actual_count
+            ):
+                seen_uids = set()
+                for chapter in sorted(chapters, key=lambda x: int(x["order"])):
+                    order = int(chapter["order"])
+                    levels = []
+                    for si, sub in enumerate(chapter.get("subchapters", []), 1):
+                        lessons = []
+                        for oi, item in enumerate(sub.get("lessons", []), 1):
+                            title_fa = str(item.get("title_fa") or "").strip()
+                            title_en = str(item.get("title_en") or title_fa).strip()
+                            uid = str(item.get("uid") or f"lesson:ch{order:02d}:s{si:03d}:l{oi:04d}")
+                            if not title_fa or uid in seen_uids:
+                                raise ValueError(f"invalid/duplicate lesson title or uid in chapter {order}: {uid}")
+                            seen_uids.add(uid)
+                            rich_lookup[(order, si, oi)] = item
+                            lessons.append((title_fa, title_en))
+                        levels.append((str(sub.get("title_fa") or f"زیرفصل {si}"), lessons))
+                    curriculum.append((
+                        order,
+                        str(chapter.get("title_fa") or f"فصل {order}"),
+                        str(chapter.get("title_en") or ""),
+                        levels,
+                    ))
+                source = "shared-android-curriculum"
+        except FileNotFoundError:
+            pass
+        except Exception as e:
+            print("shared curriculum asset rejected; using legacy fallback:", e)
+            curriculum = []
+            rich_lookup = {}
+
+        if not curriculum:
+            from core.full_curriculum import get_full_curriculum
+            curriculum = list(get_full_curriculum())
+            try:
+                from core.extra_chapters import ensure_chapters_1_to_68
+                curriculum = ensure_chapters_1_to_68(curriculum)
+            except Exception as e:
+                print("extra_chapters", e)
+
+        n_ch = n_lv = n_les = 0
         for order, title_fa, title_en, levels in curriculum:
             cur.execute(
                 "INSERT INTO chapters(order_index, title_fa, title_en) VALUES (?,?,?)",
@@ -143,15 +202,58 @@ class WebDB:
             )
             ch_id = cur.lastrowid
             n_ch += 1
-            for li, (lv_title, lessons) in enumerate(levels, 1):
+            for li, level_data in enumerate(levels, 1):
+                lv_title, lessons = level_data[0], level_data[1]
+                lv_title_en = level_data[2] if len(level_data) > 2 else ""
                 cur.execute(
-                    "INSERT INTO levels(chapter_id, order_index, title_fa) VALUES (?,?,?)",
-                    (ch_id, li, lv_title),
+                    "INSERT INTO levels(chapter_id, order_index, title_fa, title_en) VALUES (?,?,?,?)",
+                    (ch_id, li, lv_title, lv_title_en),
                 )
                 lv_id = cur.lastrowid
                 n_lv += 1
                 for oi, (lfa, len_) in enumerate(lessons, 1):
-                    insert_rich_lesson(cur, lv_id, oi, lfa, len_, now)
+                    record = rich_lookup.get((int(order), li, oi))
+                    if record is None:
+                        insert_rich_lesson(cur, lv_id, oi, lfa, len_, now)
+                    else:
+                        meta = record.get("meta") if isinstance(record.get("meta"), dict) else {}
+                        objectives = record.get("learning_objectives") or []
+                        if not isinstance(objectives, list):
+                            objectives = [str(objectives)]
+                        search_keywords = record.get("search_keywords") or []
+                        content_fields = {
+                            "title_fa": lfa,
+                            "title_en": len_,
+                            "summary": str(record.get("summary") or ""),
+                            "full_content": str(record.get("full_content") or ""),
+                            "commands": str(record.get("commands") or ""),
+                            "examples": str(record.get("examples") or ""),
+                            "notes": str(record.get("notes") or ""),
+                            "meta": meta,
+                        }
+                        digest = hashlib.sha256(
+                            json.dumps(content_fields, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+                        ).hexdigest()
+                        cur.execute(
+                            """INSERT INTO lessons(
+                                level_id, order_index, title_fa, title_en, tags, summary,
+                                full_content, commands, examples, notes, meta_json, search_query,
+                                learning_objectives, source_status, last_updated, uid, content_hash,
+                                device_id, deleted
+                            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                            (
+                                lv_id, oi, lfa, len_, str(record.get("level") or "L0"),
+                                content_fields["summary"], content_fields["full_content"],
+                                content_fields["commands"], content_fields["examples"], content_fields["notes"],
+                                json.dumps(meta, ensure_ascii=False),
+                                " ".join(str(x) for x in search_keywords),
+                                "\n".join(str(x) for x in objectives),
+                                str(record.get("source_status") or "review_required"),
+                                str(record.get("last_updated") or payload.get("generated_at") or now),
+                                str(record.get("uid") or f"lesson:ch{int(order):02d}:s{li:03d}:l{oi:04d}"),
+                                digest, "windows-seed-v1", 0,
+                            ),
+                        )
                     n_les += 1
 
         for sc in CAPSTONE_SCENARIOS:
@@ -175,9 +277,12 @@ class WebDB:
             )
 
         self.conn.commit()
-        self.set_meta("seeded_version", "web-v3-ch68")
+        self.set_meta("seeded_version", "networkall-v1.0.0" if source == "shared-android-curriculum" else "web-v3-ch68")
         self.set_meta("seeded_at", now)
-        return {"ok": True, "chapters": n_ch, "levels": n_lv, "lessons": n_les, "scenarios": len(CAPSTONE_SCENARIOS)}
+        return {
+            "ok": True, "chapters": n_ch, "levels": n_lv, "lessons": n_les,
+            "scenarios": len(CAPSTONE_SCENARIOS), "curriculum_source": source,
+        }
 
     def list_chapters(self):
         rows = self.conn.execute(
