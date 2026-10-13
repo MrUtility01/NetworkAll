@@ -8,7 +8,7 @@ import java.io.BufferedInputStream
 import java.util.zip.GZIPInputStream
 
 object OfflineSeeder {
-    private const val META_SEEDED = "offline_seeded_v13"
+    private const val META_SEEDED = "offline_seeded_v14"
 
     suspend fun ensureSeeded(context: Context): Int = withContext(Dispatchers.IO) {
         val dao = AppDatabase.get(context).lessonDao()
@@ -19,8 +19,10 @@ object OfflineSeeder {
         }
         val json = readCurriculumAsset(context) ?: return@withContext existing
         val root = JSONObject(json)
-        val chapters = root.optJSONArray("chapters") ?: return@withContext existing
-        if (chapters.length() == 0) return@withContext existing
+        val assetVersion = root.optInt("version", 0)
+        if (assetVersion < 11) throw IllegalStateException("بسته محتوای NetworkAll قدیمی یا نامعتبر است (version=$assetVersion)")
+        val chapters = root.optJSONArray("chapters") ?: throw IllegalStateException("درخت فصل‌های NetworkAll در بسته وجود ندارد")
+        if (chapters.length() == 0) throw IllegalStateException("درخت فصل‌های NetworkAll خالی است")
 
         val batch = mutableListOf<LessonEntity>()
         for (ci in 0 until chapters.length()) {
@@ -67,7 +69,9 @@ object OfflineSeeder {
         }
         if (batch.isNotEmpty()) dao.upsertAll(batch)
         dao.putMeta(SyncMetaEntity(META_SEEDED, "1"))
-        dao.countActive()
+        val finalCount = dao.countActive()
+        if (finalCount == 0) throw IllegalStateException("هیچ درسی از بستهٔ NetworkAll وارد پایگاه داده نشد")
+        finalCount
     }
 
     private fun readCurriculumAsset(context: Context): String? {
