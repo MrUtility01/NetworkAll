@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""v1.0 Dense — ۶۰ فصل | زیر‌فصل متراکم | L0-L4 | سناریوهای سازمانی"""
+"""NetworkAll v1 curriculum core: chapters 1–63, dense subchapters and levels L0–L4."""
 import re
 
 LEVELS = [
