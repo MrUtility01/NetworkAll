@@ -1,0 +1,647 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "purpose": "افزوده آموزشی عملیاتی Linux/Bash، PowerShell و Windows CMD برای فصل ۶۸؛ دارای مراحل، خروجی مورد انتظار، خطاهای رایج، آزمایش و ارزیابی",
+  "chapter_order": 68,
+  "chapter_title_fa": "دانشنامه جامع دستورات",
+  "vendor": "cross-platform",
+  "platform": "Linux, Bash, Windows PowerShell, Windows CMD",
+  "commands": [
+    {
+      "level": "L2",
+      "category": "linux",
+      "subcategory": "troubleshoot",
+      "command": "ip -br address && ip route",
+      "title_fa": "[L2] بررسی فشرده آدرس‌های IP و جدول مسیریابی لینوکس",
+      "title_en": "Inspect Linux interfaces and routes",
+      "syntax": "ip -br address; ip route",
+      "when_to_use_fa": "وقتی میزبان به شبکه یا اینترنت دسترسی ندارد، ابتدا آدرس‌دهی رابط‌ها و مسیر پیش‌فرض را بدون تغییر پیکربندی بررسی کنید.",
+      "prerequisites_fa": [
+        "دسترسی shell",
+        "شناخت IPv4/IPv6، prefix و default gateway"
+      ],
+      "steps_fa": [
+        "نام و وضعیت رابط‌ها را در خروجی خلاصه بررسی کنید.",
+        "وجود آدرس معتبر روی رابط مورد استفاده را کنترل کنید.",
+        "مسیر default و رابط خروجی را مشخص کنید.",
+        "نتیجه را با subnet و gateway طراحی‌شده مقایسه کنید."
+      ],
+      "sample_output": "eth0 UP 192.0.2.20/24\nlo UNKNOWN 127.0.0.1/8\ndefault via 192.0.2.1 dev eth0",
+      "output_fields_fa": [
+        {
+          "field": "UP",
+          "meaning": "رابط از نظر مدیریتی/لینک فعال گزارش شده؛ به‌تنهایی سلامت مسیر تا مقصد را ثابت نمی‌کند."
+        },
+        {
+          "field": "192.0.2.20/24",
+          "meaning": "آدرس میزبان و prefix شبکه."
+        },
+        {
+          "field": "default via",
+          "meaning": "مسیر برای مقصدهایی که route دقیق‌تری ندارند."
+        }
+      ],
+      "related_commands": [
+        "ip link",
+        "ip neigh",
+        "ping",
+        "tracepath"
+      ],
+      "common_mistakes_fa": [
+        "فعال بودن رابط را با دسترسی end-to-end یکی دانستن.",
+        "فرض کردن اینکه وجود default route تضمین می‌کند gateway در دسترس است.",
+        "نادیده گرفتن policy routing یا چند جدول مسیریابی."
+      ],
+      "lab_hint_fa": "در یک VM آزمایشگاهی، ابتدا خروجی سالم را ذخیره کنید؛ سپس فقط در محیط مجاز gateway را موقتاً تغییر دهید و تفاوت جدول مسیر و نتیجه ping را ثبت کنید.",
+      "security_notes_fa": "این دو فرمان خواندنی‌اند؛ برای تغییر مسیر از دستورهای تغییردهنده فقط با دسترسی و پنجره نگهداری مجاز استفاده کنید.",
+      "search_keywords": [
+        "Linux IP address",
+        "ip route",
+        "default gateway",
+        "network troubleshooting"
+      ],
+      "assessment": {
+        "question_fa": "وجود default route چه چیزی را ثابت نمی‌کند؟",
+        "answer_key": "ثابت نمی‌کند gateway قابل دسترس است یا مسیر end-to-end تا مقصد کار می‌کند."
+      }
+    },
+    {
+      "level": "L2",
+      "category": "linux",
+      "subcategory": "troubleshoot",
+      "command": "ss -lntup",
+      "title_fa": "[L2] شناسایی پورت‌های TCP/UDP در حال Listen در لینوکس",
+      "title_en": "Inspect listening sockets with ss",
+      "syntax": "ss -lntup",
+      "when_to_use_fa": "برای تشخیص اینکه سرویس واقعاً روی چه آدرس و پورتی گوش می‌دهد و آیا bind آن فقط روی loopback است یا روی رابط شبکه.",
+      "prerequisites_fa": [
+        "مبانی TCP/UDP و port",
+        "در صورت نیاز دسترسی مجاز برای نمایش نام فرایندها"
+      ],
+      "steps_fa": [
+        "سوکت‌های listening را فهرست کنید.",
+        "پروتکل و local address را بررسی کنید.",
+        "PID/program را در صورت نمایش به سرویس مورد انتظار تطبیق دهید.",
+        "با تنظیمات سرویس و قواعد firewall مقایسه کنید."
+      ],
+      "sample_output": "LISTEN 0 128 127.0.0.1:8080 0.0.0.0:*",
+      "output_fields_fa": [
+        {
+          "field": "LISTEN",
+          "meaning": "سوکت TCP در انتظار اتصال است."
+        },
+        {
+          "field": "127.0.0.1:8080",
+          "meaning": "سرویس فقط روی loopback گوش می‌دهد و معمولاً از میزبان دیگر مستقیماً قابل دسترسی نیست."
+        }
+      ],
+      "related_commands": [
+        "systemctl status",
+        "journalctl",
+        "lsof -i",
+        "curl"
+      ],
+      "common_mistakes_fa": [
+        "تفسیر 127.0.0.1 به‌عنوان همه رابط‌ها.",
+        "تصور اینکه پورت باز در socket به معنی عبور firewall است.",
+        "نادیده گرفتن تفاوت UDP socket و TCP LISTEN."
+      ],
+      "lab_hint_fa": "یک سرویس آزمایشی روی 127.0.0.1 و سپس روی 0.0.0.0 اجرا کنید؛ از یک میزبان دیگر با رعایت firewall اتصال را مقایسه کنید.",
+      "security_notes_fa": "پیش از bind کردن سرویس به همه رابط‌ها، احراز هویت، TLS و محدودیت دسترسی را بررسی کنید.",
+      "search_keywords": [
+        "Linux listening ports",
+        "ss -lntup",
+        "socket bind",
+        "service troubleshooting"
+      ],
+      "assessment": {
+        "question_fa": "خروجی 127.0.0.1:8080 چه نکته‌ای دارد؟",
+        "answer_key": "سرویس فقط روی loopback bind شده و اتصال مستقیم از شبکه معمولاً به آن نمی‌رسد."
+      }
+    },
+    {
+      "level": "L2",
+      "category": "linux",
+      "subcategory": "logs",
+      "command": "journalctl -u nginx --since '30 min ago' --no-pager",
+      "title_fa": "[L2] فیلتر لاگ سرویس با journalctl در لینوکس",
+      "title_en": "Query systemd service logs",
+      "syntax": "journalctl -u <service> --since '<time>' --no-pager",
+      "when_to_use_fa": "برای بررسی رخدادهای اخیر یک سرویس systemd، مخصوصاً پس از restart ناموفق یا خطای اتصال.",
+      "prerequisites_fa": [
+        "systemd journal",
+        "نام دقیق unit سرویس"
+      ],
+      "steps_fa": [
+        "نام unit را با systemctl list-units بررسی کنید.",
+        "بازه زمانی محدود و مشخص انتخاب کنید.",
+        "پیام‌های error و ترتیب زمانی رخدادها را دنبال کنید.",
+        "پس از اصلاح، اجرای مجدد و لاگ جدید را مقایسه کنید."
+      ],
+      "sample_output": "nginx.service: Failed to bind to 0.0.0.0:80: Address already in use",
+      "output_fields_fa": [
+        {
+          "field": "since",
+          "meaning": "جستجو را به بازه زمانی محدود می‌کند."
+        },
+        {
+          "field": "Address already in use",
+          "meaning": "پورت یا آدرس احتمالاً توسط فرایند دیگری اشغال شده است؛ با ss بررسی شود."
+        }
+      ],
+      "related_commands": [
+        "systemctl status nginx",
+        "ss -lntp",
+        "journalctl -p warning"
+      ],
+      "common_mistakes_fa": [
+        "خواندن لاگ‌های نامرتبط با زمان رخداد.",
+        "تغییر تصادفی تنظیمات قبل از ثبت خطای اصلی.",
+        "فرض اینکه هر پیام warning علت اصلی خرابی است."
+      ],
+      "lab_hint_fa": "در یک VM آزمایشی، پیکربندی نامعتبر سرویس را وارد کنید، restart را اجرا کنید، خطا را با journalctl پیدا و سپس تغییر را rollback کنید.",
+      "security_notes_fa": "لاگ‌ها ممکن است شامل مسیرها، نام میزبان‌ها یا داده‌های حساس باشند؛ هنگام اشتراک‌گذاری آن‌ها را پالایش کنید.",
+      "search_keywords": [
+        "journalctl",
+        "Linux service logs",
+        "systemd troubleshooting"
+      ],
+      "assessment": {
+        "question_fa": "برای محدود کردن خروجی به نیم ساعت اخیر کدام گزینه به کار می‌رود؟",
+        "answer_key": "--since '30 min ago'."
+      }
+    },
+    {
+      "level": "L3",
+      "category": "bash",
+      "subcategory": "automation",
+      "command": "set -Eeuo pipefail",
+      "title_fa": "[L3] سخت‌سازی کنترل خطا در اسکریپت Bash",
+      "title_en": "Enable stricter Bash error handling",
+      "syntax": "set -Eeuo pipefail",
+      "when_to_use_fa": "برای اسکریپت‌های اتوماسیون که باید شکست فرمان‌ها و خطاهای pipeline را آشکار کنند؛ این گزینه‌ها جایگزین طراحی درست شرط‌ها و trap نیستند.",
+      "prerequisites_fa": [
+        "متغیرها و exit status در Bash",
+        "تفاوت pipeline و subshell"
+      ],
+      "steps_fa": [
+        "گزینه‌ها را ابتدای اسکریپت قرار دهید.",
+        "برای cleanup مورد نیاز trap تعریف کنید.",
+        "ورودی‌های اختیاری را با ${VAR:-} مدیریت کنید.",
+        "مسیرهای موفقیت، خطا و داده خالی را جداگانه آزمایش کنید."
+      ],
+      "sample_output": "./deploy.sh: line 24: REQUIRED_PATH: unbound variable",
+      "output_fields_fa": [
+        {
+          "field": "-u",
+          "meaning": "ارجاع به متغیر unset را خطا می‌کند."
+        },
+        {
+          "field": "pipefail",
+          "meaning": "شکست فرمان‌های میانی pipeline را در status نهایی آشکار می‌کند."
+        }
+      ],
+      "related_commands": [
+        "trap",
+        "if",
+        "test",
+        "command -v"
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه set -e در همه contextها دقیقاً مانند throw عمل می‌کند.",
+        "نادیده گرفتن دستورهایی که شکستشان عمداً انتظار می‌رود.",
+        "استفاده از متغیر اختیاری بدون default."
+      ],
+      "lab_hint_fa": "اسکریپتی بنویسید که فایل ورودی را بررسی کند، خروجی را به logger pipe کند و در صورت نبود فایل با exit code غیرصفر متوقف شود.",
+      "security_notes_fa": "ورودی کاربر را مستقیماً با eval اجرا نکنید؛ برای فایل‌های موقت، مجوزها و cleanup امن در نظر بگیرید.",
+      "search_keywords": [
+        "Bash strict mode",
+        "pipefail",
+        "shell error handling"
+      ],
+      "assessment": {
+        "question_fa": "چرا pipefail برای pipeline مهم است؟",
+        "answer_key": "چون شکست فرمان میانی را از نتیجه موفق فرمان آخر پنهان نمی‌کند."
+      }
+    },
+    {
+      "level": "L2",
+      "category": "powershell",
+      "subcategory": "troubleshoot",
+      "command": "Get-NetIPConfiguration; Get-NetRoute -AddressFamily IPv4",
+      "title_fa": "[L2] بررسی تنظیمات IP و route در PowerShell",
+      "title_en": "Inspect Windows IP configuration and routes",
+      "syntax": "Get-NetIPConfiguration; Get-NetRoute -AddressFamily IPv4",
+      "when_to_use_fa": "برای بررسی رابط، DNS، gateway و مسیرهای IPv4 در Windows بدون اتکا به خروجی متنی قدیمی ipconfig.",
+      "prerequisites_fa": [
+        "PowerShell",
+        "مفاهیم interface index و route metric"
+      ],
+      "steps_fa": [
+        "رابط فعال و IPv4Address را مشخص کنید.",
+        "IPv4DefaultGateway و DNSServer را بررسی کنید.",
+        "مسیرهای 0.0.0.0/0 و metric آن‌ها را پیدا کنید.",
+        "نتیجه را با مسیر مورد انتظار و VPNها تطبیق دهید."
+      ],
+      "sample_output": "InterfaceAlias: Ethernet\nIPv4Address: 192.0.2.50\nNextHop: 192.0.2.1",
+      "output_fields_fa": [
+        {
+          "field": "InterfaceAlias",
+          "meaning": "نام رابط شبکه."
+        },
+        {
+          "field": "NextHop",
+          "meaning": "گام بعدی route؛ برای مسیر پیش‌فرض معمولاً gateway."
+        }
+      ],
+      "related_commands": [
+        "Test-NetConnection",
+        "Resolve-DnsName",
+        "Get-NetAdapter"
+      ],
+      "common_mistakes_fa": [
+        "نادیده گرفتن VPN یا route با metric کمتر.",
+        "تفسیر نبود DNS به‌عنوان نبود IP connectivity.",
+        "استفاده از نام رابط فرضی که در سیستم متفاوت است."
+      ],
+      "lab_hint_fa": "روی ویندوز آزمایشگاهی با دو رابط یا VPN خروجی cmdletها را قبل و بعد از اتصال VPN مقایسه کنید.",
+      "security_notes_fa": "خروجی شبکه ممکن است اطلاعات داخلی سازمان را افشا کند؛ قبل از ارسال، IPها و نام دامنه‌ها را پالایش کنید.",
+      "search_keywords": [
+        "PowerShell IP configuration",
+        "Get-NetRoute",
+        "Windows gateway troubleshooting"
+      ],
+      "assessment": {
+        "question_fa": "کدام route معمولاً مسیر پیش‌فرض IPv4 را نشان می‌دهد؟",
+        "answer_key": "مسیر 0.0.0.0/0؛ NextHop و RouteMetric باید نیز بررسی شوند."
+      }
+    },
+    {
+      "level": "L2",
+      "category": "powershell",
+      "subcategory": "network",
+      "command": "Test-NetConnection -ComputerName example.com -Port 443 -InformationLevel Detailed",
+      "title_fa": "[L2] آزمون اتصال TCP و پورت با PowerShell",
+      "title_en": "Test TCP connectivity from Windows",
+      "syntax": "Test-NetConnection -ComputerName <host> -Port <port> -InformationLevel Detailed",
+      "when_to_use_fa": "برای تفکیک DNS/route و دسترسی TCP به سرویس مشخص؛ موفقیت TCP به معنی موفقیت TLS یا HTTP نیست.",
+      "prerequisites_fa": [
+        "TCP handshake",
+        "DNS resolution و firewall"
+      ],
+      "steps_fa": [
+        "نام مقصد و پورت مورد انتظار را وارد کنید.",
+        "RemoteAddress و SourceAddress را بررسی کنید.",
+        "TcpTestSucceeded را بخوانید.",
+        "در صورت شکست، DNS، route، firewall و سرویس listener را به ترتیب بررسی کنید."
+      ],
+      "sample_output": "RemotePort: 443\nTcpTestSucceeded: True",
+      "output_fields_fa": [
+        {
+          "field": "TcpTestSucceeded",
+          "meaning": "موفقیت یا شکست برقراری اتصال TCP به مقصد و پورت."
+        },
+        {
+          "field": "RemoteAddress",
+          "meaning": "آدرسی که نام مقصد به آن resolve شده است."
+        }
+      ],
+      "related_commands": [
+        "Resolve-DnsName",
+        "Get-NetRoute",
+        "curl.exe -I"
+      ],
+      "common_mistakes_fa": [
+        "نتیجه True را معادل سالم بودن گواهی TLS یا برنامه دانستن.",
+        "تست نام میزبان بدون مقایسه با تست IP در مشکل DNS.",
+        "آزمون پورت بدون اجازه مالک سامانه."
+      ],
+      "lab_hint_fa": "یک وب‌سرور آزمایشگاهی را روی پورت مجاز تست کنید؛ نتیجه را با firewall روشن/خاموش فقط در محیط کنترل‌شده مقایسه کنید.",
+      "security_notes_fa": "اسکن پورت فقط روی سامانه‌هایی انجام شود که مجوز صریح بررسی آن‌ها را دارید.",
+      "search_keywords": [
+        "Test-NetConnection",
+        "PowerShell TCP port test",
+        "Windows firewall troubleshooting"
+      ],
+      "assessment": {
+        "question_fa": "TcpTestSucceeded=True چه چیزی را تضمین نمی‌کند؟",
+        "answer_key": "سلامت TLS، اعتبار گواهی یا پاسخ صحیح لایه HTTP/برنامه را تضمین نمی‌کند."
+      }
+    },
+    {
+      "level": "L2",
+      "category": "powershell",
+      "subcategory": "services",
+      "command": "Get-Service | Where-Object Status -ne 'Running' | Sort-Object Name",
+      "title_fa": "[L2] فیلتر و مرتب‌سازی سرویس‌ها با PowerShell pipeline",
+      "title_en": "Filter and sort Windows services",
+      "syntax": "Get-Service | Where-Object Status -ne 'Running' | Sort-Object Name",
+      "when_to_use_fa": "برای تهیه فهرست اولیه سرویس‌هایی که در حال اجرا نیستند؛ وضعیت Stopped لزوماً خطا نیست و باید با StartupType و نقش سرویس تفسیر شود.",
+      "prerequisites_fa": [
+        "PowerShell objects",
+        "service state و startup type"
+      ],
+      "steps_fa": [
+        "فهرست سرویس‌ها را دریافت کنید.",
+        "با Where-Object وضعیت را فیلتر کنید.",
+        "خروجی را بر اساس Name مرتب کنید.",
+        "سرویس‌های مورد انتظار را با سیاست سازمان تطبیق دهید."
+      ],
+      "sample_output": "Status  Name              DisplayName\nStopped Spooler           Print Spooler",
+      "output_fields_fa": [
+        {
+          "field": "Status",
+          "meaning": "وضعیت جاری سرویس."
+        },
+        {
+          "field": "Name",
+          "meaning": "نام سیستمی مناسب برای فرمان‌های مدیریتی."
+        }
+      ],
+      "related_commands": [
+        "Get-CimInstance Win32_Service",
+        "Start-Service",
+        "Get-WinEvent"
+      ],
+      "common_mistakes_fa": [
+        "شروع کردن همه سرویس‌های متوقف‌شده بدون بررسی وابستگی‌ها.",
+        "استفاده از DisplayName به جای Name در automation.",
+        "فرض کردن اینکه خروجی خالی یعنی cmdlet شکست خورده است."
+      ],
+      "lab_hint_fa": "فهرست سرویس‌های یک VM را صادر کنید و با یک allowlist کوچک، سرویس‌های غیرمنتظره را گزارش کنید؛ سرویس‌ها را خودکار تغییر ندهید.",
+      "security_notes_fa": "برای اجرای تغییرات سرویس از least privilege و ثبت log استفاده کنید.",
+      "search_keywords": [
+        "PowerShell pipeline",
+        "Get-Service",
+        "Windows service audit"
+      ],
+      "assessment": {
+        "question_fa": "چرا stopped بودن یک سرویس به‌تنهایی incident نیست؟",
+        "answer_key": "برخی سرویس‌ها trigger-start یا وابسته به قابلیت اختیاری‌اند؛ باید با baseline و نقش میزبان مقایسه شود."
+      }
+    },
+    {
+      "level": "L3",
+      "category": "powershell",
+      "subcategory": "automation",
+      "command": "try { Get-Content -LiteralPath $Path -ErrorAction Stop } catch { Write-Error $_; exit 1 }",
+      "title_fa": "[L3] مدیریت خطای قابل پیش‌بینی در اسکریپت PowerShell",
+      "title_en": "Use try/catch and terminating errors",
+      "syntax": "try { <operation -ErrorAction Stop> } catch { <handling> }",
+      "when_to_use_fa": "وقتی اسکریپت باید خطاهای عملیاتی مانند فایل ناموجود را ثبت کند و با exit code قابل اتکا خاتمه یابد.",
+      "prerequisites_fa": [
+        "ErrorRecord",
+        "terminating vs non-terminating errors"
+      ],
+      "steps_fa": [
+        "ورودی و مسیر را پیش از عملیات اعتبارسنجی کنید.",
+        "برای cmdletهای لازم ErrorAction Stop را اعمال کنید.",
+        "در catch جزئیات کافی را log کنید بدون افشای secret.",
+        "exit code قراردادی و قابل اتکا برگردانید."
+      ],
+      "sample_output": "Write-Error: Cannot find path 'C:\\Lab\\input.txt' because it does not exist.",
+      "output_fields_fa": [
+        {
+          "field": "-ErrorAction Stop",
+          "meaning": "خطای غیرخاتمه‌دهنده همان cmdlet را به جریان کنترل catch وارد می‌کند."
+        },
+        {
+          "field": "exit 1",
+          "meaning": "کد شکست برای caller یا scheduler."
+        }
+      ],
+      "related_commands": [
+        "$Error",
+        "-ErrorVariable",
+        "Start-Transcript",
+        "Test-Path"
+      ],
+      "common_mistakes_fa": [
+        "تصور اینکه همه خطاها بدون ErrorAction Stop وارد catch می‌شوند.",
+        "بلعیدن خطا با catch خالی.",
+        "ثبت token یا password در log."
+      ],
+      "lab_hint_fa": "اسکریپت پردازش CSV بسازید که فایل ناموجود، CSV خراب و اجرای موفق را جداگانه تست کند و exit codeهای متمایز داشته باشد.",
+      "security_notes_fa": "از اجرای رشته‌ها با Invoke-Expression برای ورودی غیرقابل اعتماد پرهیز کنید و اسرار را در transcript ننویسید.",
+      "search_keywords": [
+        "PowerShell try catch",
+        "ErrorAction Stop",
+        "script exit code"
+      ],
+      "assessment": {
+        "question_fa": "چرا ErrorAction Stop درون try مفید است؟",
+        "answer_key": "خطای غیرخاتمه‌دهنده همان عملیات را به خطای قابل گرفتن در catch تبدیل می‌کند."
+      }
+    },
+    {
+      "level": "L2",
+      "category": "cmd",
+      "subcategory": "network",
+      "command": "ipconfig /all & route print -4 & nslookup example.com",
+      "title_fa": "[L2] جمع‌آوری اطلاعات IP، مسیر و DNS با CMD",
+      "title_en": "Collect basic Windows network diagnostics",
+      "syntax": "ipconfig /all & route print -4 & nslookup <name>",
+      "when_to_use_fa": "برای جمع‌آوری سریع سه نمای مکمل از تنظیمات رابط، جدول مسیر IPv4 و پاسخ resolver؛ این زنجیره فرمان‌ها وضعیت هر مرحله را مستقل تفسیر می‌کند.",
+      "prerequisites_fa": [
+        "Command Prompt",
+        "IPv4، gateway و DNS resolver"
+      ],
+      "steps_fa": [
+        "ipconfig /all را برای آدرس و DNS اجرا کنید.",
+        "route print -4 را برای default route بررسی کنید.",
+        "nslookup را برای نام داخلی یا مجاز اجرا کنید.",
+        "زمان، میزبان و نتیجه هر مرحله را در گزارش ثبت کنید."
+      ],
+      "sample_output": "Default Gateway . . . : 192.0.2.1\nName: example.com\nAddresses: 192.0.2.80",
+      "output_fields_fa": [
+        {
+          "field": "Default Gateway",
+          "meaning": "دروازه پیکربندی‌شده رابط."
+        },
+        {
+          "field": "Name/Addresses",
+          "meaning": "نام پرس‌وجو و پاسخ resolver؛ ممکن است به‌علت cache یا split DNS متفاوت باشد."
+        }
+      ],
+      "related_commands": [
+        "ping",
+        "tracert",
+        "netstat -ano"
+      ],
+      "common_mistakes_fa": [
+        "استفاده از & و فرض توقف زنجیره در صورت خطای مرحله اول؛ & اجرای فرمان بعدی را متوقف نمی‌کند.",
+        "فرض اینکه nslookup دقیقاً از همان مسیر resolver همه برنامه‌ها استفاده می‌کند.",
+        "ارسال خروجی کامل بدون حذف اطلاعات داخلی."
+      ],
+      "lab_hint_fa": "خروجی سالم را ذخیره کنید، سپس در VM آزمایشگاهی DNS را به resolver آزمایشی تغییر دهید و تفاوت nslookup را ثبت کنید.",
+      "security_notes_fa": "فقط روی شبکه خودتان یا شبکه مجاز عیب‌یابی کنید؛ خروجی می‌تواند نام دامنه‌ها و IPهای داخلی را آشکار کند.",
+      "search_keywords": [
+        "CMD ipconfig",
+        "route print",
+        "nslookup",
+        "Windows diagnostics"
+      ],
+      "assessment": {
+        "question_fa": "تفاوت & با اجرای شرطی در CMD چیست؟",
+        "answer_key": "& فرمان بعدی را حتی پس از شکست فرمان قبلی اجرا می‌کند؛ برای شرط موفقیت از && استفاده می‌شود."
+      }
+    },
+    {
+      "level": "L2",
+      "category": "cmd",
+      "subcategory": "automation",
+      "command": "if not exist \"%~1\" (echo ERROR: file not found 1>&2 & exit /b 2)",
+      "title_fa": "[L2] اعتبارسنجی آرگومان فایل در Batch",
+      "title_en": "Validate a file argument in Windows Batch",
+      "syntax": "if not exist \"%~1\" (echo ERROR... 1>&2 & exit /b 2)",
+      "when_to_use_fa": "برای جلوگیری از اجرای ادامه اسکریپت روی فایل ناموجود و برگرداندن کد خروج قابل بررسی توسط caller یا Task Scheduler.",
+      "prerequisites_fa": [
+        "پارامترهای %1 و %~1",
+        "exit code و redirection"
+      ],
+      "steps_fa": [
+        "مسیر فایل را به‌عنوان آرگومان اول دریافت کنید.",
+        "از کوتیشن برای مسیرهای دارای فاصله استفاده کنید.",
+        "پیام خطا را به stderr هدایت کنید.",
+        "با exit /b کد شکست را به caller برگردانید."
+      ],
+      "sample_output": "ERROR: file not found",
+      "output_fields_fa": [
+        {
+          "field": "%~1",
+          "meaning": "آرگومان اول با حذف کوتیشن‌های پیرامونی."
+        },
+        {
+          "field": "exit /b 2",
+          "meaning": "خروج از batch یا subroutine با کد 2."
+        }
+      ],
+      "related_commands": [
+        "if exist",
+        "errorlevel",
+        "setlocal"
+      ],
+      "common_mistakes_fa": [
+        "حذف کوتیشن از مسیر فایل.",
+        "استفاده از exit به جای exit /b و بستن ناخواسته پنجره CMD.",
+        "بررسی errorlevel با ترتیب نادرست."
+      ],
+      "lab_hint_fa": "فایل batch بسازید که مسیر ورودی را بگیرد؛ حالت فایل موجود، ناموجود و مسیر دارای فاصله را تست کنید.",
+      "security_notes_fa": "آرگومان را با call یا اجرای رشته‌ای به‌صورت ناامن تفسیر نکنید؛ ورودی مسیر را محدود و اعتبارسنجی کنید.",
+      "search_keywords": [
+        "Batch file validation",
+        "%~1",
+        "exit /b",
+        "Windows automation"
+      ],
+      "assessment": {
+        "question_fa": "چرا در پیام خطا از 1>&2 استفاده می‌شود؟",
+        "answer_key": "پیام به جریان خطای استاندارد می‌رود تا خروجی عادی و خطا قابل تفکیک باشند."
+      }
+    },
+    {
+      "level": "L3",
+      "category": "cmd",
+      "subcategory": "automation",
+      "command": "setlocal EnableExtensions EnableDelayedExpansion",
+      "title_fa": "[L3] محدوده متغیر و Delayed Expansion در Batch",
+      "title_en": "Control variable expansion in Batch scripts",
+      "syntax": "setlocal EnableExtensions EnableDelayedExpansion",
+      "when_to_use_fa": "برای محدود کردن تغییرات محیط به یک اسکریپت و خواندن متغیرهایی که داخل بلوک‌های پرانتزی در حلقه تغییر می‌کنند.",
+      "prerequisites_fa": [
+        "%VAR% expansion",
+        "FOR و IF block"
+      ],
+      "steps_fa": [
+        "setlocal را در ابتدای بخش مستقل قرار دهید.",
+        "برای متغیر داخل بلوک، تفاوت %VAR% و !VAR! را آزمایش کنید.",
+        "پس از پایان بخش، endlocal را اجرا کنید.",
+        "با ورودی دارای علامت ! رفتار delayed expansion را نیز آزمایش کنید."
+      ],
+      "sample_output": "count=1\ncount=2\ncount=3",
+      "output_fields_fa": [
+        {
+          "field": "setlocal",
+          "meaning": "تغییرات محیط را در محدوده محلی نگه می‌دارد."
+        },
+        {
+          "field": "!VAR!",
+          "meaning": "مقدار متغیر هنگام اجرای خط، با delayed expansion."
+        }
+      ],
+      "related_commands": [
+        "endlocal",
+        "for /f",
+        "set /a"
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %VAR% داخل بلوک وقتی مقدار در هر تکرار تغییر می‌کند.",
+        "خراب شدن داده‌ای که شامل ! است در حالت delayed expansion.",
+        "فراموش کردن مرز scope متغیر."
+      ],
+      "lab_hint_fa": "حلقه‌ای بسازید که شمارنده را افزایش دهد؛ ابتدا با %count% و سپس با !count! اجرا و خروجی را مقایسه کنید.",
+      "security_notes_fa": "داده‌های خارجی را بدون اعتبارسنجی در دستورات batch جای‌گذاری نکنید؛ کاراکترهای ویژه می‌توانند parsing را تغییر دهند.",
+      "search_keywords": [
+        "Batch delayed expansion",
+        "setlocal",
+        "FOR loop variable"
+      ],
+      "assessment": {
+        "question_fa": "داخل یک بلوک پرانتزی، چرا !count! ممکن است از %count% درست‌تر باشد؟",
+        "answer_key": "Delayed expansion مقدار را در زمان اجرای هر دستور می‌خواند، درحالی‌که %count% اغلب هنگام parse بلوک گسترش می‌یابد."
+      }
+    },
+    {
+      "level": "L2",
+      "category": "cmd",
+      "subcategory": "troubleshoot",
+      "command": "netstat -ano | findstr LISTENING",
+      "title_fa": "[L2] پیدا کردن پورت‌های Listening و PID در CMD",
+      "title_en": "Map listening ports to process IDs",
+      "syntax": "netstat -ano | findstr LISTENING",
+      "when_to_use_fa": "برای یافتن اتصال‌های TCP در حالت LISTENING و PID متناظر؛ سپس PID را با tasklist بررسی کنید.",
+      "prerequisites_fa": [
+        "TCP states",
+        "PID و process"
+      ],
+      "steps_fa": [
+        "خروجی netstat را محدود به LISTENING کنید.",
+        "Local Address و پورت را ثبت کنید.",
+        "PID ستون آخر را بردارید.",
+        "با tasklist /FI \"PID eq <pid>\" فرایند را شناسایی کنید."
+      ],
+      "sample_output": "TCP 0.0.0.0:8080 0.0.0.0:0 LISTENING 4321",
+      "output_fields_fa": [
+        {
+          "field": "0.0.0.0:8080",
+          "meaning": "TCP روی همه رابط‌های IPv4 و پورت 8080 گوش می‌دهد."
+        },
+        {
+          "field": "4321",
+          "meaning": "PID فرایند؛ با tasklist تطبیق داده شود."
+        }
+      ],
+      "related_commands": [
+        "tasklist",
+        "taskkill",
+        "Get-NetTCPConnection"
+      ],
+      "common_mistakes_fa": [
+        "کشتن PID قبل از شناسایی مالک و وابستگی سرویس.",
+        "نادیده گرفتن IPv6 و UDP.",
+        "فرض اینکه LISTENING از بیرون شبکه قابل دسترسی است."
+      ],
+      "lab_hint_fa": "یک HTTP server آزمایشگاهی راه‌اندازی کنید، PID را پیدا کنید و پس از توقف سرویس تفاوت خروجی را بررسی کنید.",
+      "security_notes_fa": "فرایند را تنها پس از تشخیص مالک و ارزیابی اثر متوقف کنید؛ روی سرور تولیدی taskkill کورکورانه اجرا نکنید.",
+      "search_keywords": [
+        "CMD netstat PID",
+        "Windows listening ports",
+        "findstr LISTENING"
+      ],
+      "assessment": {
+        "question_fa": "چرا وجود LISTENING تضمین نمی‌کند که کلاینت راه دور اتصال می‌گیرد؟",
+        "answer_key": "Firewall، bind address، routing و ACL می‌توانند اتصال را مسدود کنند."
+      }
+    }
+  ]
+}
