@@ -37,12 +37,14 @@ object JalaliDate {
     }
 
     fun parseJalali(date: String, time: String): String {
-        val parts = date.trim().replace('-', '/').split('/')
+        val normalizedDate = normalizeDigits(date)
+        val normalizedTime = normalizeDigits(time)
+        val parts = normalizedDate.trim().replace('-', '/').split('/')
         require(parts.size == 3) { "تاریخ را به‌شکل ۱۴۰۵/۰۷/۲۱ وارد کنید." }
         val year = parts[0].toInt()
         val month = parts[1].toInt()
         val day = parts[2].toInt()
-        val hm = time.trim().split(':')
+        val hm = normalizedTime.trim().split(':')
         require(hm.size == 2) { "ساعت را به‌شکل ۱۴:۳۰ وارد کنید." }
         val hour = hm[0].toInt()
         val minute = hm[1].toInt()
@@ -75,6 +77,16 @@ object JalaliDate {
             LocalDateTime.parse(clean, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         } catch (_: Exception) {
             LocalDateTime.ofInstant(Instant.parse(clean), ZoneId.systemDefault())
+        }
+    }
+
+    private fun normalizeDigits(value: String): String = buildString(value.length) {
+        value.forEach { ch ->
+            append(when (ch) {
+                in '۰'..'۹' -> ('0'.code + (ch.code - '۰'.code)).toChar()
+                in '٠'..'٩' -> ('0'.code + (ch.code - '٠'.code)).toChar()
+                else -> ch
+            })
         }
     }
 
