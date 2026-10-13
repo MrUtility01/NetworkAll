@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Validate the chapter 14–18 supplementary curriculum and its infographic links.
+"""Validate progressive supplementary curriculum packs and their infographic links.
 
 This is a structural/content-contract check only. It does not prove the technical
 labs have run; packs explicitly keep lab_status=designed_not_executed until evidence
@@ -43,6 +43,8 @@ PACKS = [
      "evpn-vxlan-engineering-ch17", 17),
     ("tools/packs/wan_design/sdn_sdwan_sase_ch18_pack.json",
      "sdn-sdwan-sase-ch18", 18),
+    ("tools/packs/windows_server/active_directory_domain_engineering_ch28_pack.json",
+     "active-directory-domain-engineering-ch28", 28),
 ]
 errors: list[str] = []
 checked_lessons = 0
