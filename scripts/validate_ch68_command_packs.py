@@ -10,7 +10,8 @@ from collections import Counter
 ROOT = Path(__file__).resolve().parents[1]
 PACKS = ROOT / "tools/packs/commands_encyclopedia"
 REQUIRED = {
-    "cisco_routing.json": ("cisco", 30),
+    "cisco_routing.json": ("cisco_routing", 30),
+    "cisco_switching.json": ("cisco_switching", 20),
     "mikrotik_ops_addon.json": ("mikrotik", 20),
     "powershell.json": ("powershell", 20),
     "windows_batch.json": ("windows_batch", 20),
@@ -120,7 +121,7 @@ def main() -> None:
     print("CH68 ADDITIVE PACKS VALID")
     print("Command counts:", dict(totals))
     print(f"Examples={len(examples)} scenarios={len(scenarios)} questions={len(questions)} answers={len(answers)} sources={len(source_data['sources'])}")
-    print(f"Cisco Routing progress: {totals['cisco']}/1600 curated records in this dedicated pack.")
+    print(f"Cisco Routing progress: {totals['cisco_routing']}/1600 curated records in this dedicated pack.")
     print("Note: structural validation does not replace vendor/version review or real-device labs.")
 
 if __name__ == "__main__":
