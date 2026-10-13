@@ -174,7 +174,7 @@ def main() -> None:
                 "web_diagrams": index["count"],
                 "infographics_compat_api": infographics["count"],
                 "combined_gallery_diagrams": combined["count"],
-                "chapter_1_diagrams": ch1_index["count"],
+                "chapter_diagrams": expected_chapters,
                 "specialty_depth_review_required": depth["review_status"],
                 "destructive_reseed_disabled": True,
             })
