@@ -33,3 +33,10 @@ python scripts/merge_content_packs_into_android.py
 python scripts/validate_android_curriculum.py
 python scripts/generate_android_diagrams.py
 ```
+
+
+## افزوده‌های مرحله دوم
+
+- `ch09_labs.json`: ۱۲ لابراتوار عملی با topology، ابزار، مراحل، شاخه‌های تشخیص، معیار مشاهده و rollback.
+- `ch09_case_studies.json`: ۱۵ مطالعه موردی مبتنی بر شواهد با symptom، طرح بررسی، تصمیم/اصلاح و معیار پذیرش.
+- `scripts/validate_ch09_pack.py` این دو فایل را نیز بررسی می‌کند؛ حداقل ۱۰ مورد از هر مجموعه لازم است و UID درس‌ها باید معتبر باشند.
