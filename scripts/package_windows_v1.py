@@ -19,6 +19,7 @@ INCLUDE_ROOTS = [
     "server", "windows", "shared", "tools", "scripts", "docs",
     "INSTALL_FA.md", "README.md", "README_FA.txt", "VERSION.txt",
     "android/app/src/main/assets/curriculum_index.json.gz",
+    "server/static/diagrams/index.json",
 ]
 EXCLUDE_DIRS = {
     ".git", ".venv", "venv", "__pycache__", "node_modules", "build",
@@ -82,12 +83,24 @@ def curriculum_report() -> dict:
     missing = sorted(required_groups - groups)
     if missing:
         raise SystemExit(f"chapter 68 is missing required command collections: {missing}")
+    web_diagrams = ROOT / "server/static/diagrams"
+    web_index_path = web_diagrams / "index.json"
+    if not web_index_path.is_file():
+        raise SystemExit(f"missing Windows web diagrams index: {web_index_path}")
+    web_index = json.loads(web_index_path.read_text(encoding="utf-8"))
+    web_items = web_index.get("diagrams", [])
+    if web_index.get("count") != 100 or len(web_items) != 100:
+        raise SystemExit(f"Windows web diagram index must contain 100 entries: {web_index.get('count')}")
+    if not all((web_diagrams / item.get("asset", "")).is_file() for item in web_items):
+        raise SystemExit("Windows web diagram index references a missing SVG")
     return {
         "release_version": VERSION,
         "curriculum_version": payload.get("version"),
         "chapters": len(orders),
         "lessons": actual,
         "chapter68_collections": sorted(groups),
+        "diagrams": len(web_items),
+        "web_diagram_svg_bytes": sum(p.stat().st_size for p in web_diagrams.glob("*.svg")),
         "asset_compressed_bytes": ASSET.stat().st_size,
     }
 
@@ -164,6 +177,12 @@ def main() -> None:
         for required in REQUIRED:
             if f"{PACKAGE_ROOT}/{required}" not in names:
                 raise SystemExit(f"zip verification failed: {required} not found")
+        packaged_svg = [
+            n for n in names
+            if n.startswith(f"{PACKAGE_ROOT}/server/static/diagrams/") and n.endswith(".svg")
+        ]
+        if len(packaged_svg) != 100:
+            raise SystemExit(f"Windows ZIP must contain 100 web SVG diagrams, found {len(packaged_svg)}")
         if any(n.endswith((".db", ".sqlite", ".sqlite3", ".apk", ".aab")) for n in names):
             raise SystemExit("package contains database or install artifacts that must not be bundled")
     print(json.dumps({**report, "output": str(OUT), "package_bytes": OUT.stat().st_size, "files": len(files)}, ensure_ascii=False))
