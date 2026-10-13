@@ -14,10 +14,10 @@ Launcher یک `.venv` خصوصی در ریشه می‌سازد، وابستگی�
 
 ## توکن Sync
 
-برای هر نصب یک توکن تصادفی در `server\data
+برای هر نصب یک توکن تصادفی در `server/data/networkall.token` ساخته می‌شود. این مقدار را در Android → Settings → API token وارد کنید. توکن واقعی را در Git یا مستندات عمومی commit نکنید.
 etworkall.token` ساخته می‌شود. این مقدار را در Android → Settings → API token وارد کنید. توکن واقعی را در Git یا مستندات عمومی commit نکنید.
 
-برای اجرای مستقیم `python server\app.py`، سرور به‌صورت پیش‌فرض فقط روی loopback گوش می‌دهد. Launcher ویندوز برای اتصال LAN، `NETENC_HOST=0.0.0.0` را تنظیم می‌کند.
+برای اجرای دستی از ریشهٔ مخزن، `python server/app.py` را اجرا کنید؛ سرور به‌صورت پیش‌فرض فقط روی loopback گوش می‌دهد. Launcher ویندوز برای اتصال LAN، `NETENC_HOST=0.0.0.0` را تنظیم می‌کند.
 
 ## Windows Firewall
 
@@ -31,4 +31,4 @@ netsh advfirewall firewall add rule name="NetworkAll Web TCP 86" dir=in action=a
 
 ## داده‌ها و نسخهٔ قبلی
 
-فایل `server\data\encyclopedia.db` حاوی دادهٔ محلی است. پیش از Reset/Clear data یا جایگزینی دستی دیتابیس، نسخهٔ پشتیبان بگیرید. بستهٔ Windows v1 دیتابیس شخصی همراه ندارد و در نصب تازه، فهرست آموزشی مشترک با اندروید را Seed می‌کند. این خروجی یک ZIP از سورس/میزبان Python است، نه EXE مستقل.
+فایل `server/data/encyclopedia.db` حاوی دادهٔ محلی است. پیش از Reset/Clear data یا جایگزینی دستی دیتابیس، نسخهٔ پشتیبان بگیرید. بستهٔ Windows v1 دیتابیس شخصی همراه ندارد و در نصب تازه، فهرست آموزشی مشترک با اندروید را Seed می‌کند. این خروجی یک ZIP از سورس/میزبان Python است، نه EXE مستقل.
