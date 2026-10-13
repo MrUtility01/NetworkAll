@@ -38,15 +38,17 @@ def _vault_key() -> bytes:
     """Load a separate per-install 256-bit key; back it up securely with vault data."""
     key_file = _db_path().parent / "networkall.vaultkey"
     key_file.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        encoded = key_file.read_text(encoding="ascii").strip()
-        key = base64.urlsafe_b64decode(encoded.encode("ascii"))
-        if len(key) == 32:
-            return key
-    except (OSError, ValueError, UnicodeError):
-        pass
+    if key_file.exists():
+        try:
+            encoded = key_file.read_text(encoding="ascii").strip()
+            key = base64.urlsafe_b64decode(encoded.encode("ascii"))
+        except Exception as exc:
+            raise RuntimeError("Vault key file is unreadable; restore networkall.vaultkey from the same backup") from exc
+        if len(key) != 32:
+            raise RuntimeError("Vault key file has invalid length; restore networkall.vaultkey from the same backup")
+        return key
     key = os.urandom(32)
-    key_file.write_text(base64.urlsafe_b64encode(key).decode("ascii") + "\\n", encoding="ascii")
+    key_file.write_text(base64.urlsafe_b64encode(key).decode("ascii") + "\n", encoding="ascii")
     try:
         os.chmod(key_file, 0o600)
     except OSError:
@@ -57,8 +59,6 @@ def _vault_key() -> bytes:
 def _seal(plain: str) -> str:
     if not plain:
         return ""
-    if plain.startswith("enc2:"):
-        return plain
     nonce = os.urandom(12)
     cipher = AESGCM(_vault_key()).encrypt(nonce, plain.encode("utf-8"), b"NetworkAll/vault/v2")
     return "enc2:" + base64.urlsafe_b64encode(nonce + cipher).decode("ascii")
