@@ -5,7 +5,7 @@
 ## ریشه مجاز
 
 ```
-NetworkEncyclopedia/
+NetworkAll/
   .github/workflows/build-android-apk.yml   ← تنها workflow
   README.md / INSTALL_FA.md
   android/          ← اپ اندروید
@@ -58,7 +58,7 @@ python scripts/merge_content_packs_into_android.py
 
 ## Actions
 
-فقط یک workflow: **Build Android APK** (دستی).
+فقط یک workflow: **NetworkAll Android APK (validated)** (دستی).
 هیچ workflow اضافی نباید اضافه شود مگر نیاز قطعی.
 
 ## نام‌گذاری JSON
