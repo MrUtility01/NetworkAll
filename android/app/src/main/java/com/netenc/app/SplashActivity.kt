@@ -131,7 +131,10 @@ class SplashActivity : AppCompatActivity() {
             setPadding(0, 20, 0, 0)
         }, match(LinearLayout.LayoutParams.WRAP_CONTENT))
 
-        setContentView(ScrollView(this).apply {\n            isFillViewport = true\n            addView(root)\n        })
+        setContentView(ScrollView(this).apply {
+            isFillViewport = true
+            addView(root)
+        })
     }
 
     private fun match(height: Int) = LinearLayout.LayoutParams(
