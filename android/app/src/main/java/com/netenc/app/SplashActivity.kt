@@ -20,7 +20,7 @@ class SplashActivity : AppCompatActivity() {
             setPadding(48, 48, 48, 48)
         }
         root.addView(TextView(this).apply {
-            text = "Network Encyclopedia"
+            text = "NetworkAll"
             textSize = 26f
             setTextColor(Color.parseColor("#1D4ED8"))
             gravity = Gravity.CENTER
@@ -33,7 +33,7 @@ class SplashActivity : AppCompatActivity() {
             setPadding(0, 16, 0, 8)
         })
         root.addView(TextView(this).apply {
-            text = "آفلاین · ۶۳ فصل · یادگیری عمیق"
+            text = "آفلاین · ۶۸ فصل · یادگیری عمیق"
             textSize = 13f
             setTextColor(Ui.MUTED)
             gravity = Gravity.CENTER
