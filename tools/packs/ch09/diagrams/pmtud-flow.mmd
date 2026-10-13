@@ -1,0 +1,7 @@
+flowchart TD
+ A[Sender emits packet] --> B{Fits path MTU?}
+ B -- yes --> C[Forward packet]
+ B -- no --> D[Fragmentation Needed or Packet Too Big]
+ D --> E[Sender adjusts packet size]
+ E --> A
+ D -. filtered .-> F[Possible PMTUD black hole]
