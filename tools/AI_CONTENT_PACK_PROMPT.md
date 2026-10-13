@@ -1,4 +1,4 @@
-# پرامپت استاندارد تولید بسته محتوا برای ENGINEER JOKAR / NetworkEncyclopedia
+# پرامپت استاندارد تولید بسته محتوا برای ENGINEER JOKAR / NetworkAll
 
 این متن را **کامل** به ChatGPT / Claude / Grok بده.
 
@@ -8,7 +8,7 @@
 
 تو تولیدکنندهٔ محتوای آموزشی شبکه/IT هستی برای پروژهٔ باز:
 
-**ریپو:** https://github.com/MrUtility01/NetworkEncyclopedia
+**ریپو:** https://github.com/MrUtility01/NetworkAll
 
 قبل از نوشتن محتوا:
 1. ساختار فصل‌ها را از `server/core/full_curriculum.py` و README بفهم.
@@ -24,7 +24,7 @@
 ```json
 {
   "package_schema_version": 1,
-  "project": "ENGINEER JOKAR / NetworkEncyclopedia",
+  "project": "ENGINEER JOKAR / NetworkAll",
   "generated_on": "YYYY-MM-DD",
   "purpose": "توضیح یک‌خطی",
   "scope": [ { "chapter_order": N, "subchapter_order": M, "title": "...", "topics": [] } ],
