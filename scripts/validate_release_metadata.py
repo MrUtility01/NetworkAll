@@ -85,7 +85,24 @@ if web_index.is_file():
     except Exception as exc:
         ERRORS.append(f"Windows web diagram index is invalid: {exc}")
 
+web_app = read("server/static/app.js")
+home_template = read("server/templates/index.html")
+required_ui_routes = [
+    '@app.get("/api/stats")',
+    '@app.get("/api/chapters/<int:chapter_id>/levels")',
+    '@app.get("/api/levels/<int:level_id>/lessons")',
+    '@app.get("/api/lessons/<int:lesson_id>")',
+    '@app.get("/api/scenarios")',
+    '@app.get("/api/scenarios/<int:scenario_id>")',
+    '@app.get("/api/search")',
+]
+for route in required_ui_routes:
+    require(route in server, f"missing browser API route: {route}")
+require("/api/reseed" not in web_app, "browser UI must not call the destructive reseed endpoint")
+require('id="btnReseed"' not in home_template, "browser homepage still exposes the destructive reseed button")
+
 workflow = read(".github/workflows/build-apk.yml")
+require("scripts/smoke_test_web_routes.py" in workflow, "workflow omits browser-route smoke test")
 require("NetworkAll-Android-v1.0.0" in workflow, "workflow does not publish the versioned Android artifact")
 require("NetworkAll-Windows-v1.0.0" in workflow, "workflow does not publish the versioned Windows artifact")
 
