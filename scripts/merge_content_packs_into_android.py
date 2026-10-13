@@ -959,7 +959,10 @@ def main():
 
         n = merge_by_title(data, lessons)
         print("   title-merge", n)
-        if "ospf" in name or "bgp" in name or "redistribution" in name or "routing_deep" in name:
+        if (("ospf" in name or "bgp" in name or "redistribution" in name or "routing_deep" in name)
+                and "/chapter14/" not in name):
+            # Explicit chapter-scoped supplements under chapter14 stay in chapter 14;
+            # legacy/general OSPF-BGP packs continue to map to chapter 66.
             routing_extra.extend(remap_lessons_to_chapter(lessons, 66))
             continue
         # The chapter-scoped MPLS/VRF/L3VPN pack is intentionally authored
