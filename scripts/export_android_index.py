@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import annotations
 import gzip, json, sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,11 +39,25 @@ def main() -> None:
                     "commands": rich.get("commands") or "",
                     "examples": rich.get("examples") or "",
                     "notes": rich.get("notes") or "",
+                    "meta": rich.get("meta") or {},
+                    "learning_objectives": rich.get("learning_objectives") or [],
+                    "search_keywords": rich.get("search_keywords") or [],
+                    "search_query": rich.get("search_query") or "",
+                    "source_status": rich.get("source_status") or "review_required",
+                    "subchapter_order": si + 1,
+                    "lesson_order": li + 1,
                 })
             sub_out.append({"title_fa": sname, "lessons": les_out})
         chapters.append({"order": int(order), "title_fa": tfa, "title_en": ten, "subchapters": sub_out})
     chapters.sort(key=lambda c: c["order"])
-    payload = {"version": 10, "chapters": chapters, "lesson_count": lesson_count}
+    payload = {
+        "version": 11,
+        "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "project": "NetworkAll",
+        "release_version": "1.0.0",
+        "chapters": chapters,
+        "lesson_count": lesson_count,
+    }
     raw = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     out_dir = ROOT / "android" / "app" / "src" / "main" / "assets"
     out_dir.mkdir(parents=True, exist_ok=True)
