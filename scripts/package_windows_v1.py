@@ -178,9 +178,13 @@ def main() -> None:
         for required in REQUIRED:
             if f"{PACKAGE_ROOT}/{required}" not in names:
                 raise SystemExit(f"zip verification failed: {required} not found")
+        # Only the 100 root-level diagram_NNN.svg assets are rendered by the
+        # web gallery. Chapter-specific and combined subfolder SVGs are source
+        # assets/indexed variants and must not inflate the gallery count.
         packaged_svg = [
             n for n in names
-            if n.startswith(f"{PACKAGE_ROOT}/server/static/diagrams/") and n.endswith(".svg")
+            if n.startswith(f"{PACKAGE_ROOT}/server/static/diagrams/")
+            and re.search(r"/diagram_\\d{3}\\.svg$", n)
         ]
         if len(packaged_svg) != 100:
             raise SystemExit(f"Windows ZIP must contain 100 web SVG diagrams, found {len(packaged_svg)}")
