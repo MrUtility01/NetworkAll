@@ -23,7 +23,7 @@ Extract the complete Windows ZIP to a writable folder and run:
 windows\start.bat
 ```
 
-The launcher creates a private `.venv`, installs `server/requirements.txt`, starts the host on TCP/86, and writes a per-install sync token to `server/data/networkall.token`.
+The launcher creates a private `.venv`, installs `server/requirements.txt`, starts the host on TCP/86, and writes a per-install sync token to `server/data/networkall.token`. On first browser access, set a local web password (minimum 8 characters); choose the same password on Android at first launch if you want the same entry experience. The web password is stored as a salted hash, separately from the API token.
 
 - Local browser: `http://127.0.0.1:86`
 - Android host setting: `http://<Windows-LAN-IP>:86`
