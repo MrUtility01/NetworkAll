@@ -26,7 +26,7 @@ class LessonRepository(context: Context) {
             // Pull updates the lesson payload, not the Android navigation tree.
             // Retain the chapter/subchapter placement of an already seeded lesson.
             val existing = dao.byUid(uid)
-            val uidParts = Regex("""lesson:ch(\\d+):(?:s|lv)(\\d+):l(\\d+)""").matchEntire(uid)
+            val uidParts = Regex("""lesson:ch(\d+):(?:s|lv)(\d+):l(\d+)""").matchEntire(uid)
             val parsedChapter = uidParts?.groupValues?.getOrNull(1)?.toIntOrNull() ?: 0
             val parsedLesson = uidParts?.groupValues?.getOrNull(3)?.toIntOrNull() ?: (i + 1)
             list.add(
