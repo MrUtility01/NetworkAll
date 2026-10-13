@@ -1,0 +1,1218 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "Chapter 68 Windows Batch command pack; additive first batch",
+  "chapter_order": 68,
+  "chapter_title_fa": "دانشنامه جامع دستورات",
+  "vendor_pack": "windows_batch",
+  "vendor": "Microsoft",
+  "platform": "Windows Batch / CMD",
+  "scope": "Robust scripting, file handling, logging, exit codes and scheduled jobs",
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true
+  },
+  "commands": [
+    {
+      "uid": "cmd:batch:admin:0001",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "basics",
+      "command": "@echo off & setlocal",
+      "title_fa": "[L1] شروع اسکریپت با scope محلی",
+      "title_en": "شروع اسکریپت با scope محلی",
+      "syntax": "@echo off & setlocal",
+      "when_to_use_fa": "basics",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nجلوگیری از نشت تغییر متغیرهای محیط به caller",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "اسکریپت بدون echo فرمان‌ها اجرا می‌شود"
+      ],
+      "rollback_fa": "با echo on/off و set بررسی کنید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "شروع اسکریپت با scope محلی",
+        "Windows Batch",
+        "@echo off & setlocal"
+      ],
+      "source_urls": [
+        "بدون تغییر سیستمی"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «@echo off & setlocal» چیست؟",
+        "answer_key_fa": "basics؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0002",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "errors",
+      "command": "if not exist \"%~1\" (echo ERROR: missing file 1>&2 & exit /b 2)",
+      "title_fa": "[L1] اعتبارسنجی آرگومان فایل",
+      "title_en": "اعتبارسنجی آرگومان فایل",
+      "syntax": "if not exist \"%~1\" (echo ERROR: missing file 1>&2 & exit /b 2)",
+      "when_to_use_fa": "errors",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nتوقف امن وقتی مسیر ورودی موجود نیست",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "ERROR: missing file"
+      ],
+      "rollback_fa": "فایل موجود، ناموجود و مسیر دارای فاصله را تست کنید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "اعتبارسنجی آرگومان فایل",
+        "Windows Batch",
+        "if not exist \"%~1\" (echo ERROR: missing file 1>&2 & exit /b 2)"
+      ],
+      "source_urls": [
+        "فقط روی فایل ورودی آزمایشگاهی اجرا کنید"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «if not exist \"%~1\" (echo ERROR: missing file 1>&2 & exit /b 2)» چیست؟",
+        "answer_key_fa": "errors؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0003",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "logging",
+      "command": "set \"LOG=%~dp0run.log\"",
+      "title_fa": "[L1] تعریف مسیر log کنار اسکریپت",
+      "title_en": "تعریف مسیر log کنار اسکریپت",
+      "syntax": "set \"LOG=%~dp0run.log\"",
+      "when_to_use_fa": "logging",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nثابت نگه‌داشتن محل log مستقل از working directory",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "LOG=C:\\Scripts\\run.log"
+      ],
+      "rollback_fa": "مسیر را با echo و if exist بررسی کنید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "تعریف مسیر log کنار اسکریپت",
+        "Windows Batch",
+        "set \"LOG=%~dp0run.log\""
+      ],
+      "source_urls": [
+        "فقط متغیر محیطی محلی"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «set \"LOG=%~dp0run.log\"» چیست؟",
+        "answer_key_fa": "logging؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0004",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "logging",
+      "command": "echo [%date% %time%] START>>\"%LOG%\"",
+      "title_fa": "[L1] ثبت timestamp شروع",
+      "title_en": "ثبت timestamp شروع",
+      "syntax": "echo [%date% %time%] START>>\"%LOG%\"",
+      "when_to_use_fa": "logging",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nثبت خط شروع برای عیب‌یابی job زمان‌بندی‌شده",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "[date time] START"
+      ],
+      "rollback_fa": "قالب date/time با locale فرق می‌کند؛ برای ISO پایدارتر از PowerShell کمک بگیرید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "ثبت timestamp شروع",
+        "Windows Batch",
+        "echo [%date% %time%] START>>\"%LOG%\""
+      ],
+      "source_urls": [
+        "فقط فایل log نوشته می‌شود"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «echo [%date% %time%] START>>\"%LOG%\"» چیست؟",
+        "answer_key_fa": "logging؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0005",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "errors",
+      "command": "if errorlevel 1 exit /b 1",
+      "title_fa": "[L1] بازگرداندن شکست مرحله قبلی",
+      "title_en": "بازگرداندن شکست مرحله قبلی",
+      "syntax": "if errorlevel 1 exit /b 1",
+      "when_to_use_fa": "errors",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nمتوقف‌کردن caller با کد شکست پس از فرمان ناموفق",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "ERRORLEVEL=1"
+      ],
+      "rollback_fa": "شرط‌ها را بلافاصله بعد از فرمان موردنظر بررسی کنید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "بازگرداندن شکست مرحله قبلی",
+        "Windows Batch",
+        "if errorlevel 1 exit /b 1"
+      ],
+      "source_urls": [
+        "هیچ تغییر مستقیمی ندارد"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «if errorlevel 1 exit /b 1» چیست؟",
+        "answer_key_fa": "errors؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0006",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "scripting",
+      "command": "call :Log \"message\"",
+      "title_fa": "[L1] فراخوانی subroutine در همان فایل",
+      "title_en": "فراخوانی subroutine در همان فایل",
+      "syntax": "call :Log \"message\"",
+      "when_to_use_fa": "scripting",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nاستفاده مجدد از منطق logging",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "[timestamp] message"
+      ],
+      "rollback_fa": "label :Log باید وجود داشته باشد و exit /b استفاده کند",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "فراخوانی subroutine در همان فایل",
+        "Windows Batch",
+        "call :Log \"message\""
+      ],
+      "source_urls": [
+        "هیچ تغییر مستقیمی ندارد"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «call :Log \"message\"» چیست؟",
+        "answer_key_fa": "scripting؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0007",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "files",
+      "command": "for %%F in (\"%~dp0*.log\") do echo %%~nxF",
+      "title_fa": "[L1] فهرست فایل‌های log با wildcard",
+      "title_en": "فهرست فایل‌های log با wildcard",
+      "syntax": "for %%F in (\"%~dp0*.log\") do echo %%~nxF",
+      "when_to_use_fa": "files",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\ninventory گرفتن از logها بدون حذف فایل",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "app.log; worker.log"
+      ],
+      "rollback_fa": "برای فرمان تعاملی %F و داخل فایل batch %%F استفاده می‌شود",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "فهرست فایل‌های log با wildcard",
+        "Windows Batch",
+        "for %%F in (\"%~dp0*.log\") do echo %%~nxF"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «for %%F in (\"%~dp0*.log\") do echo %%~nxF» چیست؟",
+        "answer_key_fa": "files؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0008",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "files",
+      "command": "for /f \"usebackq delims=\" %%L in (\"input.txt\") do echo(%%L",
+      "title_fa": "[L2] خواندن خط‌به‌خط فایل متنی",
+      "title_en": "خواندن خط‌به‌خط فایل متنی",
+      "syntax": "for /f \"usebackq delims=\" %%L in (\"input.txt\") do echo(%%L",
+      "when_to_use_fa": "files",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nپردازش فایل متنی ساده با حفظ فاصله‌ها تا حد syntax",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "هر خط ورودی چاپ می‌شود"
+      ],
+      "rollback_fa": "متن دارای کاراکترهای ویژه را به‌عنوان کد اجرا نکنید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "خواندن خط‌به‌خط فایل متنی",
+        "Windows Batch",
+        "for /f \"usebackq delims=\" %%L in (\"input.txt\") do echo(%%L"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «for /f \"usebackq delims=\" %%L in (\"input.txt\") do echo(%%L» چیست؟",
+        "answer_key_fa": "files؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0009",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "scripting",
+      "command": "set /a COUNT+=1",
+      "title_fa": "[L2] افزایش شمارنده عددی",
+      "title_en": "افزایش شمارنده عددی",
+      "syntax": "set /a COUNT+=1",
+      "when_to_use_fa": "scripting",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nشمارش تکرار در loop",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "COUNT=1"
+      ],
+      "rollback_fa": "set /a فقط arithmetic محدود CMD است؛ برای اعداد بزرگ/داده ساختاریافته PowerShell بهتر است",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "افزایش شمارنده عددی",
+        "Windows Batch",
+        "set /a COUNT+=1"
+      ],
+      "source_urls": [
+        "فقط متغیر محلی"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «set /a COUNT+=1» چیست؟",
+        "answer_key_fa": "scripting؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0010",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "basics",
+      "command": "if defined CONFIG (echo CONFIG is set) else (echo CONFIG missing)",
+      "title_fa": "[L2] بررسی تعریف متغیر",
+      "title_en": "بررسی تعریف متغیر",
+      "syntax": "if defined CONFIG (echo CONFIG is set) else (echo CONFIG missing)",
+      "when_to_use_fa": "basics",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nجداکردن تنظیم موجود از مقدار خالی",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "CONFIG is set یا CONFIG missing"
+      ],
+      "rollback_fa": "مقدار حساس را echo نکنید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "بررسی تعریف متغیر",
+        "Windows Batch",
+        "if defined CONFIG (echo CONFIG is set) else (echo CONFIG missing)"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «if defined CONFIG (echo CONFIG is set) else (echo CONFIG missing)» چیست؟",
+        "answer_key_fa": "basics؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0011",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "files",
+      "command": "pushd \"%~dp0\"",
+      "title_fa": "[L2] تغییر پوشه کاری با امکان بازگشت",
+      "title_en": "تغییر پوشه کاری با امکان بازگشت",
+      "syntax": "pushd \"%~dp0\"",
+      "when_to_use_fa": "files",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nاجرای دستورات نسبت به پوشه اسکریپت",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "current directory becomes script folder"
+      ],
+      "rollback_fa": "در انتها popd را حتماً اجرا کنید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "تغییر پوشه کاری با امکان بازگشت",
+        "Windows Batch",
+        "pushd \"%~dp0\""
+      ],
+      "source_urls": [
+        "تغییر موقت working directory"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «pushd \"%~dp0\"» چیست؟",
+        "answer_key_fa": "files؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0012",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "files",
+      "command": "popd",
+      "title_fa": "[L2] بازگشت به پوشه قبلی",
+      "title_en": "بازگشت به پوشه قبلی",
+      "syntax": "popd",
+      "when_to_use_fa": "files",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nبستن scope تغییر مسیر ایجادشده با pushd",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "previous directory restored"
+      ],
+      "rollback_fa": "فقط پس از pushd متناظر اجرا کنید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "بازگشت به پوشه قبلی",
+        "Windows Batch",
+        "popd"
+      ],
+      "source_urls": [
+        "تغییر موقت working directory"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «popd» چیست؟",
+        "answer_key_fa": "files؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0013",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "files",
+      "command": "copy /Y \"%SRC%\" \"%DST%\"",
+      "title_fa": "[L2] کپی فایل با overwrite تأییدشده در اسکریپت",
+      "title_en": "کپی فایل با overwrite تأییدشده در اسکریپت",
+      "syntax": "copy /Y \"%SRC%\" \"%DST%\"",
+      "when_to_use_fa": "files",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nکپی در مسیر مقصد وقتی overwrite بخشی از طراحی است",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "1 file(s) copied"
+      ],
+      "rollback_fa": "/Y تأیید overwrite را حذف می‌کند؛ قبل از اجرا وجود مقصد را بررسی کنید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "کپی فایل با overwrite تأییدشده در اسکریپت",
+        "Windows Batch",
+        "copy /Y \"%SRC%\" \"%DST%\""
+      ],
+      "source_urls": [
+        "Rollback نیازمند نسخه پشتیبان از مقصد قبلی است"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «copy /Y \"%SRC%\" \"%DST%\"» چیست؟",
+        "answer_key_fa": "files؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0014",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "files",
+      "command": "robocopy \"%SRC%\" \"%DST%\" /E /COPY:DAT /R:2 /W:2",
+      "title_fa": "[L2] کپی درخت پوشه با retry محدود",
+      "title_en": "کپی درخت پوشه با retry محدود",
+      "syntax": "robocopy \"%SRC%\" \"%DST%\" /E /COPY:DAT /R:2 /W:2",
+      "when_to_use_fa": "files",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nانتقال پوشه با metadata پایه و retry کنترل‌شده",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "Dirs/Files/Bytes summary"
+      ],
+      "rollback_fa": "کد خروج Robocopy صفر تا هشت می‌تواند حالت‌های موفق/هشدار باشد؛ کدها را درست تفسیر کنید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "کپی درخت پوشه با retry محدود",
+        "Windows Batch",
+        "robocopy \"%SRC%\" \"%DST%\" /E /COPY:DAT /R:2 /W:2"
+      ],
+      "source_urls": [
+        "Rollback با حذف مقصد کورکورانه انجام نشود؛ ابتدا dry run با /L"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «robocopy \"%SRC%\" \"%DST%\" /E /COPY:DAT /R:2 /W:2» چیست؟",
+        "answer_key_fa": "files؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0015",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "logging",
+      "command": "findstr /I /C:\"ERROR\" \"%LOG%\"",
+      "title_fa": "[L2] جست‌وجوی خطا در log",
+      "title_en": "جست‌وجوی خطا در log",
+      "syntax": "findstr /I /C:\"ERROR\" \"%LOG%\"",
+      "when_to_use_fa": "logging",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nاستخراج خطاهای متنی از فایل log",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "matching lines containing ERROR"
+      ],
+      "rollback_fa": "findstr regex محدود دارد؛ برای log پیچیده PowerShell مناسب‌تر است",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "جست‌وجوی خطا در log",
+        "Windows Batch",
+        "findstr /I /C:\"ERROR\" \"%LOG%\""
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «findstr /I /C:\"ERROR\" \"%LOG%\"» چیست؟",
+        "answer_key_fa": "logging؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0016",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "diagnostics",
+      "command": "where.exe python",
+      "title_fa": "[L3] یافتن executable در PATH",
+      "title_en": "یافتن executable در PATH",
+      "syntax": "where.exe python",
+      "when_to_use_fa": "diagnostics",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nتشخیص اینکه کدام executable اجرا می‌شود",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "C:\\Python\\python.exe"
+      ],
+      "rollback_fa": "PATH و چند نسخه نصب‌شده را بررسی کنید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "یافتن executable در PATH",
+        "Windows Batch",
+        "where.exe python"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «where.exe python» چیست؟",
+        "answer_key_fa": "diagnostics؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0017",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "automation",
+      "command": "timeout /t 5 /nobreak >nul",
+      "title_fa": "[L3] مکث کوتاه در job",
+      "title_en": "مکث کوتاه در job",
+      "syntax": "timeout /t 5 /nobreak >nul",
+      "when_to_use_fa": "automation",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nمحدودکردن فاصله زمانی بین مراحل وابسته",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "بعد از پنج ثانیه ادامه می‌دهد"
+      ],
+      "rollback_fa": "به جای sleep طولانی، dependency و retry منطقی را ترجیح دهید",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "مکث کوتاه در job",
+        "Windows Batch",
+        "timeout /t 5 /nobreak >nul"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «timeout /t 5 /nobreak >nul» چیست؟",
+        "answer_key_fa": "automation؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0018",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "automation",
+      "command": "choice /C YN /N /M \"Continue? [Y/N] \"",
+      "title_fa": "[L3] دریافت انتخاب تعاملی",
+      "title_en": "دریافت انتخاب تعاملی",
+      "syntax": "choice /C YN /N /M \"Continue? [Y/N] \"",
+      "when_to_use_fa": "automation",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nتأیید انسانی برای اسکریپت دستی",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "ERRORLEVEL=1 برای Y و 2 برای N"
+      ],
+      "rollback_fa": "ترتیب ERRORLEVEL از مقدار بزرگ به کوچک بررسی شود",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "دریافت انتخاب تعاملی",
+        "Windows Batch",
+        "choice /C YN /N /M \"Continue? [Y/N] \""
+      ],
+      "source_urls": [
+        "تغییر مستقیمی ندارد"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «choice /C YN /N /M \"Continue? [Y/N] \"» چیست؟",
+        "answer_key_fa": "automation؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0019",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "diagnostics",
+      "command": "schtasks /Query /FO LIST /V",
+      "title_fa": "[L3] گزارش taskهای زمان‌بندی‌شده",
+      "title_en": "گزارش taskهای زمان‌بندی‌شده",
+      "syntax": "schtasks /Query /FO LIST /V",
+      "when_to_use_fa": "diagnostics",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nبازبینی schedule و آخرین نتیجه taskها",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "TaskName/Next Run Time/Last Result"
+      ],
+      "rollback_fa": "خروجی ممکن است شامل نام کاربر یا مسیر داخلی باشد",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "گزارش taskهای زمان‌بندی‌شده",
+        "Windows Batch",
+        "schtasks /Query /FO LIST /V"
+      ],
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «schtasks /Query /FO LIST /V» چیست؟",
+        "answer_key_fa": "diagnostics؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:batch:admin:0020",
+      "vendor": "microsoft",
+      "platform": "Windows CMD / Batch",
+      "version_scope": "Windows 10/11 and Windows Server CMD; verify command availability",
+      "privilege": "standard user unless target operation requires elevation",
+      "category": "batch",
+      "subcategory": "basics",
+      "command": "endlocal & exit /b 0",
+      "title_fa": "[L3] پایان موفق اسکریپت و خروج از scope",
+      "title_en": "پایان موفق اسکریپت و خروج از scope",
+      "syntax": "endlocal & exit /b 0",
+      "when_to_use_fa": "basics",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nبازگرداندن کنترل به caller با exit code صفر",
+      "output_fields_fa": [
+        {
+          "field": "ERRORLEVEL",
+          "meaning": "کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود."
+        }
+      ],
+      "common_mistakes_fa": [
+        "استفاده از %F به‌جای %%F داخل فایل batch.",
+        "فراموش کردن quoting مسیرهای دارای فاصله.",
+        "فرض اینکه همه فرمان‌ها exit code صفر/یک دارند."
+      ],
+      "security_notes_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "lab_hint_fa": "یک فایل .bat بسازید، حالت مسیر موجود/ناموجود و کد شکست را تست کنید؛ عملیات overwrite یا حذف را فقط روی فایل‌های آزمایشگاهی انجام دهید.",
+      "verify_steps_fa": [
+        "ERRORLEVEL=0"
+      ],
+      "rollback_fa": "مقدارهایی که باید به caller برگردند قبل از endlocal منتقل شوند",
+      "related_commands": [
+        "setlocal",
+        "if",
+        "for",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "پایان موفق اسکریپت و خروج از scope",
+        "Windows Batch",
+        "endlocal & exit /b 0"
+      ],
+      "source_urls": [
+        "بدون تغییر سیستمی"
+      ],
+      "assessment": {
+        "question_fa": "نکته اصلی در استفاده از «endlocal & exit /b 0» چیست؟",
+        "answer_key_fa": "basics؛ quoting، ERRORLEVEL و رفتار واقعی در نسخه هدف را در لاب بررسی کنید."
+      },
+      "source_status": "review_required"
+    }
+  ]
+}
