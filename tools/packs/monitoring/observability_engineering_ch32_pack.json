@@ -1,0 +1,417 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "Progressive L0-L4 curriculum for monitoring and observability: metrics, logs, traces, synthetic checks, PromQL, alert rules, SLO/error budgets, telemetry pipelines, network observability, capacity, privacy and incident response.",
+  "scope": {
+    "chapter_order": 32,
+    "subchapter_order": 7,
+    "subchapter_title_fa": "پایش، Observability و تحلیل رخداد",
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lesson_count": 5,
+    "topics": [
+      {
+        "id": "monitoring-observability-engineering",
+        "title_fa": "مهندسی پایش و Observability",
+        "title_en": "Monitoring and Observability Engineering"
+      }
+    ]
+  },
+  "instructional_contract": {
+    "level_floors": {
+      "L0": 600,
+      "L1": 800,
+      "L2": 1200,
+      "L3": 1600,
+      "L4": 2200
+    },
+    "volume_rule": "Teach distinct signals, queries, fault cases, decision rules and verification; avoid dashboards with no operational question or owner.",
+    "lab_status": "designed_not_executed",
+    "separate_answer_key": true,
+    "stable_uids": true
+  },
+  "compatibility": {
+    "platforms": [
+      "Prometheus",
+      "Grafana",
+      "OpenTelemetry",
+      "Zabbix",
+      "SNMP/syslog-capable network devices"
+    ],
+    "note": "Metric names, query syntax, exporter labels, sampling and alert evaluation differ by stack/version. Verify actual instrumentation and deployed tool versions."
+  },
+  "content_quality": {
+    "status": "review_required",
+    "reason": "Five-level lessons and separate answer keys authored; lab instrumentation, alert routing, time-to-detect and fault recovery have not yet been executed."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch32:observability-engineering:l0",
+      "entity": "lesson",
+      "chapter_order": 32,
+      "subchapter_order": 7,
+      "lesson_order": 1,
+      "topic": "monitoring-observability-engineering",
+      "domain": "monitoring-and-observability",
+      "level": "L0",
+      "title_fa": "[L0] مبانی Monitoring و Observability",
+      "title_en": "مبانی Monitoring و Observability",
+      "tags": [
+        "Monitoring",
+        "Observability",
+        "Metrics",
+        "Logs",
+        "Tracing",
+        "Prometheus",
+        "Grafana",
+        "OpenTelemetry",
+        "SLO",
+        "L0"
+      ],
+      "summary": "تفاوت metrics، logs و traces و تفاوت health، availability و performance را توضیح دهد.",
+      "full_content": "# مبانی Monitoring و Observability\n\n## چرا پایش فقط ping نیست؟\nMonitoring و observability کمک می‌کنند وضعیت سرویس را از شواهد سیستم بفهمیم. Ping ساده شاید نشان دهد یک IP به ICMP پاسخ می‌دهد؛ اما سلامت DNS، TLS، login، database، یا عملیات واقعی برنامه را ثابت نمی‌کند. یک سرور ممکن است روشن باشد ولی disk پر شده، queue بالا رفته یا application به dependency متصل نشود. پایش حرفه‌ای وضعیت زیرساخت را از دید منبع فنی و از دید تجربهٔ کاربر می‌سنجد.\n\n## سه signal اصلی\nMetrics اندازه‌گیری عددی در طول زمان هستند: CPU usage، latency، request count، packet loss، free disk یا تعداد sessionها. Logs رخدادها و زمینهٔ آن‌ها را ثبت می‌کنند؛ مثل خطای authentication، restart سرویس یا تغییر config. Traces مسیر یک درخواست را در چند component نشان می‌دهند و کمک می‌کنند سهم هر dependency در latency مشخص شود. این سه مکمل هم‌اند: metric می‌گوید latency بالا رفته، trace نشان می‌دهد کدام span کند شده و log خطای مشخص را توضیح می‌دهد. نبود trace یا log به تنهایی ثابت نمی‌کند هیچ failure رخ نداده؛ instrumentation و retention باید درست باشند.\n\n## Availability و performance\nAvailability یعنی سرویس در شرایط و بازهٔ تعریف‌شده قابل استفاده است. Performance چند بُعد دارد: latency، throughput، error rate، capacity و رفتار زیر بار. میانگین latency ممکن است بدترین ۵ درصد درخواست‌ها را پنهان کند، بنابراین percentile مانند p95 و p99 در بسیاری از سرویس‌ها مفیدند. برای یک API، درخواست با status 200 هم می‌تواند از دید کاربردی شکست خورده باشد اگر payload یا business outcome نادرست باشد. تعریف موفقیت باید متناسب با service contract باشد.\n\n## Baseline و تغییر\nBaseline مجموعهٔ اندازه‌گیری‌های نماینده از وضعیت معمول سیستم در بازهٔ زمانی مشخص است. CPU برابر ۷۰٪ ممکن است برای batch job عادی و برای یک سرویس interactive نگران‌کننده باشد. عدد بدون workload، ظرفیت، زمان و تغییرات اخیر معنای کافی ندارد. وقتی مشکلی رخ می‌دهد، ثبت timestamp، نسخه، host، impact، آخرین deployment و metricهای قبل/بعد کمک می‌کند همبستگی زمانی را از علت واقعی جدا کنیم.\n\n## اولین inventory\nبرای هر سرویس ثبت کن: owner، endpoint، dependencies، health check، log source، metrics، alert contact، runbook و ساعات حساس کاری. برای شبکه، نقش دستگاه، interfaceهای حیاتی، routing adjacency، CPU/memory, errors/discards، latency/loss و مسیر syslog/SNMP می‌توانند مناسب باشند. برای app، request rate، latency، error rate، saturation، dependency health و build/version مهم‌اند. هر metric باید واحد، meaning، source و expected range داشته باشد؛ نامی مانند health=1 بدون توضیح کافی نیست.\n\n## آزمایشگاه پایه\nروی یک VM تست، یک سرویس ساده و یک endpoint health تعریف کن. اندازه‌گیری محلی و از یک کلاینت جدا را مقایسه کن. عمداً در محیط آزمایشی یک خطای بی‌خطر مانند توقف process ایجاد و مشخص کن کدام metric/log تغییر می‌کند و alert با چه تأخیری ظاهر می‌شود. سپس سرویس را برگردان و زمان recovery را اندازه بگیر. آزمایش باید قبل از شروع معیار قبولی داشته باشد؛ در غیر این صورت می‌توان هر نتیجه‌ای را موفق تعبیر کرد.\n\n## واژه‌نامه\nMetric اندازه‌گیری عددی؛ Log رکورد رخداد؛ Trace مسیر یک درخواست؛ SLI شاخص سطح خدمت؛ SLO هدف قابل اندازه‌گیری؛ Alert اعلان نیازمند اقدام؛ Runbook مراحل اقدام؛ Baseline وضعیت مرجع؛ Saturation نزدیک‌شدن منبع به ظرفیت عملیاتی؛ Cardinality تعداد ترکیب‌های متفاوت label/attribute.\n\n## معیار قبولی\nباید بتوانی برای یک سرویس شبکه‌ای و یک API، دو metric، یک log signal و یک آزمون end-to-end معرفی کنی و توضیح دهی چرا ping یا CPU به‌تنهایی معیار سلامت نیست.",
+      "commands": "metrics; logs; traces; baseline; synthetic endpoint",
+      "examples": "همهٔ داده‌ها و metric nameها نمونه هستند؛ query و rule باید با instrumentation و نسخهٔ استقرار تطبیق یابد.",
+      "notes": "status=review_required; lab_status=designed_not_executed; telemetry and alert drills pending.",
+      "learning_objectives": [
+        "تفاوت metrics، logs و traces و تفاوت health، availability و performance را توضیح دهد."
+      ],
+      "prerequisites": [],
+      "official_sources": [
+        {
+          "title": "Prometheus overview",
+          "url": "https://prometheus.io/docs/introduction/overview/"
+        },
+        {
+          "title": "Prometheus alerting rules",
+          "url": "https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/"
+        },
+        {
+          "title": "Prometheus recording rules",
+          "url": "https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/"
+        },
+        {
+          "title": "Grafana alerting documentation",
+          "url": "https://grafana.com/docs/grafana/latest/alerting/"
+        },
+        {
+          "title": "OpenTelemetry signals",
+          "url": "https://opentelemetry.io/docs/concepts/signals/"
+        },
+        {
+          "title": "OpenTelemetry Collector",
+          "url": "https://opentelemetry.io/docs/collector/"
+        },
+        {
+          "title": "Google SRE Workbook — Alerting on SLOs",
+          "url": "https://sre.google/workbook/alerting-on-slos/"
+        },
+        {
+          "title": "Zabbix trigger configuration",
+          "url": "https://www.zabbix.com/documentation/current/en/manual/config/triggers"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "پایش، Observability و تحلیل رخداد",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"obs32-l0-1\",\"prompt\":\"Metric، log و trace چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"obs32-l0-2\",\"prompt\":\"چرا ping معیار کامل سلامت نیست؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"obs32-l0-3\",\"prompt\":\"Baseline چیست؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"obs32-l0-4\",\"prompt\":\"p95 به چه معناست؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"obs32-l0-5\",\"prompt\":\"چرا نبود داده مساوی صفر نیست؟\",\"type\":\"short_answer\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"obs32-l0-1\",\"answer\":\"Metric عدد در طول زمان؛ log رخداد با زمینه؛ trace مسیر یک درخواست میان componentهاست.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l0-2\",\"answer\":\"DNS، TLS، authentication، application و dependency را ثابت نمی‌کند.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l0-3\",\"answer\":\"اندازه‌گیری مرجع از رفتار معمول در بازه و workload مشخص.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l0-4\",\"answer\":\"۹۵ درصد نمونه‌ها latency کمتر یا مساوی آن دارند، در صورت محاسبهٔ درست.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l0-5\",\"answer\":\"ممکن است exporter یا pipeline از کار افتاده باشد و مقدار واقعی معلوم نباشد.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://prometheus.io/docs/introduction/overview/\",\"https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/\",\"https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/\",\"https://grafana.com/docs/grafana/latest/alerting/\",\"https://opentelemetry.io/docs/concepts/signals/\",\"https://opentelemetry.io/docs/collector/\",\"https://sre.google/workbook/alerting-on-slos/\",\"https://www.zabbix.com/documentation/current/en/manual/config/triggers\"]}"
+    },
+    {
+      "uid": "lesson:ch32:observability-engineering:l1",
+      "entity": "lesson",
+      "chapter_order": 32,
+      "subchapter_order": 7,
+      "lesson_order": 2,
+      "topic": "monitoring-observability-engineering",
+      "domain": "monitoring-and-observability",
+      "level": "L1",
+      "title_fa": "[L1] ساخت داشبورد، event log و probeهای معتبر",
+      "title_en": "ساخت داشبورد، event log و probeهای معتبر",
+      "tags": [
+        "Monitoring",
+        "Observability",
+        "Metrics",
+        "Logs",
+        "Tracing",
+        "Prometheus",
+        "Grafana",
+        "OpenTelemetry",
+        "SLO",
+        "L1"
+      ],
+      "summary": "شاخص‌های قابل‌اقدام تعریف کند، dashboard را با context بسازد و probe را از نتیجهٔ end-to-end تفکیک نماید.",
+      "full_content": "# ساخت داشبورد، event log و probeهای معتبر\n\n## هر نمودار باید سؤال مشخصی پاسخ دهد\nداشبورد مجموعه‌ای از نمودارهای پراکنده نیست. هر panel باید سؤالی مانند «آیا درخواست کاربر موفق است؟»، «کدام dependency کند شده؟» یا «چه میزان capacity باقی مانده؟» پاسخ دهد. عنوان باید سرویس، واحد و aggregation را روشن کند؛ محور زمان، timezone و range درست انتخاب شوند. نمودار بدون unit، legend یا منبع داده می‌تواند تصمیم را گمراه کند. برای مقایسه، deployment marker، maintenance window و incident annotation مفیدند.\n\n## چهار شاخص RED و چهار شاخص USE\nبرای سرویس request-driven، RED رایج است: Rate، Errors، Duration. برای resource، USE شامل Utilization، Saturation و Errors است. این‌ها الگوی طراحی‌اند، نه الزام برای همهٔ سامانه‌ها. یک router می‌تواند علاوه بر CPU/memory، interface errors/discards، route changes، adjacency state و reachability مقصد حیاتی را نیاز داشته باشد. یک database ممکن است connection saturation، lock waits، query latency، replication lag و backup age را لازم بداند. شاخص را با failure mode واقعی انتخاب کن.\n\n## Probe و health check\nLiveness می‌پرسد process زنده است؟ Readiness می‌پرسد اکنون می‌تواند درخواست را سرویس دهد؟ Synthetic/end-to-end check مسیر کاربر را از بیرون آزمایش می‌کند. این probeها هم‌معنی نیستند. Health check که هر ثانیه query سنگین به database می‌زند می‌تواند هنگام overload مشکل را بدتر کند. probe باید timeout، frequency، retry، expected response و اثر بر dependency را مشخص کند. شکست یک health endpoint نیز باید از شکست خود monitoring system تفکیک شود.\n\n## جمع‌آوری log\nLog useful باید timestamp، source/service، severity، event name، correlation/request ID و نتیجه داشته باشد. ساعت hostها باید قابل مقایسه باشد و timezone و sync status ثبت شود. از log کردن password، access token، private key یا payload خصوصی غیرضروری خودداری کن. Structured logging فیلدهای ثابت را برای جست‌وجو آسان می‌کند؛ free text همچنان برای توضیح انسانی مفید است. Retention، access control و redaction باید متناسب با حساسیت باشد.\n\n## نمونهٔ inventory\nبرای هر alert این ستون‌ها را نگه دار: signal/query، threshold یا SLO window، severity، owner، route notification، runbook، suppression/maintenance rule و link به داشبورد. Alert بدون owner فقط سروصدا تولید می‌کند. داشبورد باید آخرین زمان ingest و gapهای داده را نشان دهد؛ نمودار تخت می‌تواند نتیجهٔ healthy بودن باشد یا exporter از کار افتاده باشد. «no data» را از مقدار صفر تفکیک کن.\n\n## لابراتوار\nیک VM یا سرویس مجاز را با حداقل چند metric و structured log instrument کن. یک endpoint از خارج کلاینت را monitor کن و سپس دو fault متفاوت ایجاد کن: توقف process، و قطع دسترسی به یک dependency. ثبت کن کدام signal اول تغییر می‌کند، false positive یا false negative رخ می‌دهد و alert latency چقدر است. سپس alert را طوری اصلاح کن که صرف CPU spike کوتاه یا نبود دادهٔ exporter را با outage قطعی یکی نگیرد.\n\n## معیار قبولی\nDashboard باید تجربهٔ سرویس، منبع اصلی saturation، eventهای اخیر و state خود monitoring را نشان دهد؛ برای هر alert مالک، runbook و تست مثبت/منفی تعریف شده باشد.",
+      "commands": "RED; USE; structured logs; readiness/liveness; endpoint probes",
+      "examples": "همهٔ داده‌ها و metric nameها نمونه هستند؛ query و rule باید با instrumentation و نسخهٔ استقرار تطبیق یابد.",
+      "notes": "status=review_required; lab_status=designed_not_executed; telemetry and alert drills pending.",
+      "learning_objectives": [
+        "شاخص‌های قابل‌اقدام تعریف کند، dashboard را با context بسازد و probe را از نتیجهٔ end-to-end تفکیک نماید."
+      ],
+      "prerequisites": [
+        "مبانی شبکه و سرویس‌ها",
+        "مفهوم اندازه‌گیری و log"
+      ],
+      "official_sources": [
+        {
+          "title": "Prometheus overview",
+          "url": "https://prometheus.io/docs/introduction/overview/"
+        },
+        {
+          "title": "Prometheus alerting rules",
+          "url": "https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/"
+        },
+        {
+          "title": "Prometheus recording rules",
+          "url": "https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/"
+        },
+        {
+          "title": "Grafana alerting documentation",
+          "url": "https://grafana.com/docs/grafana/latest/alerting/"
+        },
+        {
+          "title": "OpenTelemetry signals",
+          "url": "https://opentelemetry.io/docs/concepts/signals/"
+        },
+        {
+          "title": "OpenTelemetry Collector",
+          "url": "https://opentelemetry.io/docs/collector/"
+        },
+        {
+          "title": "Google SRE Workbook — Alerting on SLOs",
+          "url": "https://sre.google/workbook/alerting-on-slos/"
+        },
+        {
+          "title": "Zabbix trigger configuration",
+          "url": "https://www.zabbix.com/documentation/current/en/manual/config/triggers"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "پایش، Observability و تحلیل رخداد",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"obs32-l1-1\",\"prompt\":\"RED به چه اشاره می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"obs32-l1-2\",\"prompt\":\"USE به چه اشاره می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"obs32-l1-3\",\"prompt\":\"Liveness و Readiness چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"obs32-l1-4\",\"prompt\":\"چرا health check نباید backend را بیش‌ازحد بار دهد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"obs32-l1-5\",\"prompt\":\"چرا no-data باید جدا دیده شود؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"obs32-l1-6\",\"prompt\":\"چه اطلاعاتی برای alert لازم است؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"obs32-l1-7\",\"prompt\":\"چرا timestamp مهم است؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"obs32-l1-8\",\"prompt\":\"دو fault پایه برای لابراتوار چیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"obs32-l1-1\",\"answer\":\"Rate، Errors، Duration برای سرویس‌های request-driven.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l1-2\",\"answer\":\"Utilization، Saturation و Errors برای resourceها.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l1-3\",\"answer\":\"Liveness زنده‌بودن process؛ readiness توان فعلی سرویس‌دادن.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l1-4\",\"answer\":\"خود probe می‌تواند overload را تشدید کند.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l1-5\",\"answer\":\"صفر واقعی را از شکاف telemetry تفکیک می‌کند.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l1-6\",\"answer\":\"سیگنال، شرط/window، severity، owner، route و runbook.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l1-7\",\"answer\":\"برای correlation بین hostها و جداکردن رخداد از تأخیر ingest.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l1-8\",\"answer\":\"توقف process و قطع دسترسی dependency در محیط آزمایش.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://prometheus.io/docs/introduction/overview/\",\"https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/\",\"https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/\",\"https://grafana.com/docs/grafana/latest/alerting/\",\"https://opentelemetry.io/docs/concepts/signals/\",\"https://opentelemetry.io/docs/collector/\",\"https://sre.google/workbook/alerting-on-slos/\",\"https://www.zabbix.com/documentation/current/en/manual/config/triggers\"]}"
+    },
+    {
+      "uid": "lesson:ch32:observability-engineering:l2",
+      "entity": "lesson",
+      "chapter_order": 32,
+      "subchapter_order": 7,
+      "lesson_order": 3,
+      "topic": "monitoring-observability-engineering",
+      "domain": "monitoring-and-observability",
+      "level": "L2",
+      "title_fa": "[L2] PromQL، alert rules، cardinality و هشدار قابل‌اقدام",
+      "title_en": "PromQL، alert rules، cardinality و هشدار قابل‌اقدام",
+      "tags": [
+        "Monitoring",
+        "Observability",
+        "Metrics",
+        "Logs",
+        "Tracing",
+        "Prometheus",
+        "Grafana",
+        "OpenTelemetry",
+        "SLO",
+        "L2"
+      ],
+      "summary": "query و alert rule را طراحی کند، نرخ خطا را محاسبه و مشکل cardinality و alert fatigue را مدیریت نماید.",
+      "full_content": "# PromQL، alert rules، cardinality و هشدار قابل‌اقدام\n\n## انتخاب مدل متریک\nCounter فقط افزایشی است و برای رخدادهایی مانند تعداد درخواست مناسب است؛ rate روی افزایش آن در یک window نرخ تقریبی را می‌دهد. Gauge می‌تواند افزایش یا کاهش یابد، مانند queue depth یا free memory. Histogram توزیع مشاهده‌ها را در bucketها جمع می‌کند و برای تخمین latency percentile در سیستم‌هایی مانند Prometheus کاربرد دارد. نوع metric را بر اساس semantics انتخاب کن؛ reset شدن process می‌تواند counter را به صفر برگرداند، بنابراین rate calculation باید reset را مدیریت کند.\n\n## Error ratio به‌جای عدد خام\nهشدار «۱۰۰ خطا» بدون دانستن حجم درخواست گمراه‌کننده است؛ ۱۰۰ خطا از ۱۰۰ درخواست با ۱۰۰ خطا از یک میلیون درخواست یک وضعیت نیست. نسبت error به total request در window مناسب اطلاعات بیشتری می‌دهد. برای نمونهٔ PromQL، syntax و نام metric باید با instrumentation خود سرویس تطبیق یابد:\n~~~promql\nsum(rate(http_requests_total{status=~\"5..\"}[5m]))\n/\nsum(rate(http_requests_total[5m]))\n~~~\nاگر denominator صفر یا metric ناپدید شود، query ممکن است no data یا مقدار نامعتبر بدهد. حالت no traffic، telemetry gap و واقعی بودن صفر خطا را از هم جدا کن. فیلتر status label نیز باید با scheme instrumentation سازگار باشد.\n\n## Alert rule و duration\nRule معمولاً expression، threshold/condition، duration pending، labels و annotations دارد. Duration کوتاه detection را سریع‌تر می‌کند اما transient spike بیشتری هشدار می‌دهد؛ duration طولانی false alarm را کم می‌کند اما detection delay می‌افزاید. Threshold باید از SLO، baseline یا ظرفیت به دست بیاید، نه از عدد تصادفی. Alertهای warning برای بررسی و critical برای اثر فوری بر سرویس باید تعریف اقدام متفاوت داشته باشند. هر alert باید توضیح «چه چیزی خراب شده»، «اثر محتمل چیست» و «اولین بررسی امن کدام است» داشته باشد.\n\n## Cardinality و هزینه\nاگر label شامل user ID، raw URL، request ID یا هر مقدار نامحدود شود، تعداد سری‌های زمانی ممکن است بسیار زیاد شود؛ این cardinality مصرف memory، storage و query cost را افزایش می‌دهد. Label باید محدود، پایدار و برای aggregation لازم باشد. شناسه‌های پرتنوع برای trace/log مناسب‌ترند، نه label متریک بلندمدت، مگر با بررسی دقیق هزینه. قبل از افزودن label جدید، تعداد ترکیب‌ها، retention و queryهای واقعی را بررسی کن. حذف بعدی label هم ممکن است داشبورد و ruleهای فعلی را بشکند.\n\n## Recording rule و aggregate\nRecording rule نتیجهٔ query پرکاربرد را محاسبه و به‌عنوان سری جدید نگه می‌دارد. آن را برای queryهای تکراری/گران و metricهای سطح سرویس در نظر بگیر؛ اما تعریف نام و label را ثابت و مستند نگه دار. Aggregate بیش‌ازحد ممکن است تفاوت یک site یا interface بحرانی را پنهان کند؛ aggregate نکردن نیز هزینهٔ بالا و نویز ایجاد می‌کند. از هر دو نمای کلی و drill-down هدفمند استفاده کن.\n\n## SLO و burn rate\nبرای سرویس با availability target، error budget حاصل فاصلهٔ بین هدف و رفتار واقعی در دورهٔ تعریف‌شده است. Burn rate نشان می‌دهد budget با چه سرعتی مصرف می‌شود. هشدار سریع و آهسته می‌توانند ترکیب شوند تا هم حادثهٔ شدید سریع دیده شود و هم افت آرام از قلم نیفتد. تعریف دقیق به SLI، window، traffic و سیاست محصول بستگی دارد. هدف SLO باید بر اساس نیاز کاربر تعیین شود؛ صرفاً بالابردن عدد به 99.999% بدون هزینه/ظرفیت و توجیه business تصمیم فنی دفاع‌پذیر نیست.\n\n## لابراتوار\nاز دادهٔ مصنوعی یا metricهای lab یک counter درخواست و counter خطا بساز. ابتدا query نرخ درخواست و error ratio را محاسبه کن، سپس هنگام traffic کم و هنگام خطای عمدی نتیجه را مقایسه کن. یک alert برای error budget burn تعریف کن و pending duration را با دو سناریوی spike کوتاه و failure پایدار آزمایش کن. خروجی query، زمان شروع fault، زمان firing/resolution و false positive را ثبت کن.\n\n## معیار قبولی L2\nباید Counter/Gauge/Histogram را از هم تشخیص دهی، error ratio را با denominator درست بسازی، no-data را از zero جدا کنی و برای هر rule rationale، owner و runbook داشته باشی.",
+      "commands": "PromQL; alert rules; recording rules; cardinality controls; error ratio",
+      "examples": "همهٔ داده‌ها و metric nameها نمونه هستند؛ query و rule باید با instrumentation و نسخهٔ استقرار تطبیق یابد.",
+      "notes": "status=review_required; lab_status=designed_not_executed; telemetry and alert drills pending.",
+      "learning_objectives": [
+        "query و alert rule را طراحی کند، نرخ خطا را محاسبه و مشکل cardinality و alert fatigue را مدیریت نماید."
+      ],
+      "prerequisites": [
+        "مبانی شبکه و سرویس‌ها",
+        "مفهوم اندازه‌گیری و log"
+      ],
+      "official_sources": [
+        {
+          "title": "Prometheus overview",
+          "url": "https://prometheus.io/docs/introduction/overview/"
+        },
+        {
+          "title": "Prometheus alerting rules",
+          "url": "https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/"
+        },
+        {
+          "title": "Prometheus recording rules",
+          "url": "https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/"
+        },
+        {
+          "title": "Grafana alerting documentation",
+          "url": "https://grafana.com/docs/grafana/latest/alerting/"
+        },
+        {
+          "title": "OpenTelemetry signals",
+          "url": "https://opentelemetry.io/docs/concepts/signals/"
+        },
+        {
+          "title": "OpenTelemetry Collector",
+          "url": "https://opentelemetry.io/docs/collector/"
+        },
+        {
+          "title": "Google SRE Workbook — Alerting on SLOs",
+          "url": "https://sre.google/workbook/alerting-on-slos/"
+        },
+        {
+          "title": "Zabbix trigger configuration",
+          "url": "https://www.zabbix.com/documentation/current/en/manual/config/triggers"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "پایش، Observability و تحلیل رخداد",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"obs32-l2-1\",\"prompt\":\"Counter و Gauge چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"obs32-l2-2\",\"prompt\":\"چرا error ratio از error count مفیدتر است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"obs32-l2-3\",\"prompt\":\"چرا no traffic و no telemetry فرق دارند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"obs32-l2-4\",\"prompt\":\"Alert pending duration چه trade-off دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"obs32-l2-5\",\"prompt\":\"Cardinality زیاد چه اثری دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"obs32-l2-6\",\"prompt\":\"چرا user ID label متریک پرریسک است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"obs32-l2-7\",\"prompt\":\"Recording rule چه کاربردی دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"obs32-l2-8\",\"prompt\":\"Error budget چیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"obs32-l2-9\",\"prompt\":\"چرا threshold دلخواه قابل دفاع نیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"obs32-l2-10\",\"prompt\":\"چه چیزی در alert lab ثبت می‌شود؟\",\"type\":\"short_answer\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"obs32-l2-1\",\"answer\":\"Counter عمدتاً افزایشی است و reset می‌شود؛ Gauge بالا و پایین می‌رود.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l2-2\",\"answer\":\"تعداد خطا را در نسبت به کل ترافیک می‌سنجد.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l2-3\",\"answer\":\"اولی ممکن است denominator صفر باشد؛ دومی نشان‌دهندهٔ فقدان داده/ingest است.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l2-4\",\"answer\":\"کوتاه تشخیص سریع ولی false positive بیشتر؛ بلند transient را کم اما detection را دیر می‌کند.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l2-5\",\"answer\":\"مصرف حافظه/storage و هزینهٔ query را افزایش می‌دهد.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l2-6\",\"answer\":\"می‌تواند تعداد سری‌ها را انفجاری کند و PII ایجاد کند.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l2-7\",\"answer\":\"query پرکاربرد را پیش‌محاسبه می‌کند تا مصرف و latency query کنترل شود.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l2-8\",\"answer\":\"فاصلهٔ رفتار واقعی سرویس از هدف SLO در window تعریف‌شده.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l2-9\",\"answer\":\"باید با baseline، ظرفیت یا SLO و اثر کاربر مرتبط باشد.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l2-10\",\"answer\":\"زمان fault، query، زمان firing/resolution و false positive.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://prometheus.io/docs/introduction/overview/\",\"https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/\",\"https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/\",\"https://grafana.com/docs/grafana/latest/alerting/\",\"https://opentelemetry.io/docs/concepts/signals/\",\"https://opentelemetry.io/docs/collector/\",\"https://sre.google/workbook/alerting-on-slos/\",\"https://www.zabbix.com/documentation/current/en/manual/config/triggers\"]}"
+    },
+    {
+      "uid": "lesson:ch32:observability-engineering:l3",
+      "entity": "lesson",
+      "chapter_order": 32,
+      "subchapter_order": 7,
+      "lesson_order": 4,
+      "topic": "monitoring-observability-engineering",
+      "domain": "monitoring-and-observability",
+      "level": "L3",
+      "title_fa": "[L3] توزیع tracing، telemetry pipeline و RCA چندلایه",
+      "title_en": "توزیع tracing، telemetry pipeline و RCA چندلایه",
+      "tags": [
+        "Monitoring",
+        "Observability",
+        "Metrics",
+        "Logs",
+        "Tracing",
+        "Prometheus",
+        "Grafana",
+        "OpenTelemetry",
+        "SLO",
+        "L3"
+      ],
+      "summary": "trace را با logs و metrics هم‌بسته کند، telemetry pipeline را عیب‌یابی نماید و failure را بر اساس شواهد تفکیک کند.",
+      "full_content": "# توزیع tracing، telemetry pipeline و RCA چندلایه\n\n## Trace و propagation\nDistributed trace از spanها تشکیل می‌شود و هر span زمان، parent/child relation، service identity و attributeهای مناسب دارد. trace context باید بین سرویس‌ها propagate شود تا یک درخواست از gateway تا application و database قابل دنبال‌کردن باشد. اگر یک سرویس context را حذف کند، trace قطع یا به trace جدید تبدیل می‌شود؛ traceها ناقص‌اند و نباید تمام درخواست‌های سیستم را بازنمایی‌شده فرض کرد. Sampling نرخ مشاهده را محدود می‌کند و باید با نیاز incident/volume هماهنگ شود.\n\n## Metrics، logs و traces را correlation کن\nاگر p99 latency بالا می‌رود، metric نشان می‌دهد اثر چه زمانی آغاز شد. Traceهای نمونه ممکن است کندی در database span، DNS lookup یا external API را نشان دهند. Log با request ID می‌تواند علت business یا exception را توضیح دهد. Timestamp skew، trace sampling و log pipeline lag می‌توانند ظاهراً ترتیب نادرست بسازند. برای RCA یک time window واحد تعریف کن، شناسهٔ درخواست را بدون افشای PII استفاده کن و correlation را با دقت بررسی کن.\n\n## Telemetry pipeline خودش سرویس است\nExporter، collector، queue، backend و dashboard همگی می‌توانند شکست بخورند. اگر داشبورد no data نشان می‌دهد، ابتدا مشخص کن source تولید نمی‌کند، exporter نمی‌تواند ارسال کند، collector drop کرده، network/TLS مشکل دارد یا backend ingest/query در دسترس نیست. queue backlog و dropped telemetry باید metric و alert مستقل داشته باشند. نبود دادهٔ مشاهده، مساوی healthy یا unhealthy بودن سرویس مقصد نیست. یک alert برای monitoring pipeline تعریف کن تا نابینایی سامانه زودتر دیده شود.\n\n## Sampling و budget\nHead sampling هنگام آغاز trace تصمیم می‌گیرد که trace ذخیره شود یا نه؛ tail sampling می‌تواند پس از مشاهدهٔ trace کامل‌تر تصمیم بگیرد اما resource و buffering بیشتری می‌خواهد. Sampling باید خطاها و latency نادر را تا حد امکان حفظ کند بدون آنکه storage budget را تمام کند. نمونه‌گیری روی error/slow requestها باید با privacy و cardinality سنجیده شود. Attributeهای حاوی token، query values یا دادهٔ شخصی را export نکن؛ telemetry یک مخزن حساس است و باید IAM، retention و deletion policy داشته باشد.\n\n## Network observability\nبرای شبکه، SNMP counters، syslog، streaming telemetry، flow logs، packet capture و active probes دیدهای متفاوت می‌دهند. Counter interface می‌تواند افزایش error/discard را نشان دهد؛ syslog رخداد link down یا routing adjacency را ثبت می‌کند؛ flow data الگوی source/destination/volume را نشان می‌دهد؛ packet capture جزئیات یک flow را در بازهٔ کوتاه آشکار می‌کند. هیچ روش به‌تنهایی تمام مسئله را پاسخ نمی‌دهد. Counterها معمولاً cumulative هستند و باید rate/delta با توجه به reset و wrap محاسبه شود. poll interval بیش‌ازحد کوتاه نیز بار مدیریتی و حجم داده ایجاد می‌کند.\n\n## RCA با فرضیه‌های رقابتی\nسناریو: کاربران شعبه latency بالا دارند. فرضیه‌ها می‌تواند WAN congestion، packet loss، DNS response delay، application processing، storage latency یا monitoring collector backlog باشد. برای هر فرضیه یک آزمون تمایزدهنده طراحی کن: RTT/loss از چند نقطه، interface errors/discards، DNS timing، trace span breakdown، server I/O و telemetry drops. فقط اینکه دو metric همزمان تغییر کرده‌اند علت را ثابت نمی‌کند. ترتیب زمانی، scope، control site و تکرار تست اهمیت دارند.\n\n## Lab: درخواست کند\nدر دو سرویس آزمایش، trace context را propagate کن و برای یک درخواست مصنوعی correlation ID ثبت کن. سپس یک dependency test را با delay مصنوعی کنترل‌شده کند کن. باید در trace زمان آن span، در logs خطای مربوط و در metrics افزایش latency دیده شود. بعد collector را به‌صورت کنترل‌شده در lab قطع کن و verify کن که telemetry loss خودش alert می‌دهد؛ این fault نباید روی pipeline عملیاتی انجام شود. پس از restore، backlog drain و نبود duplicate/telemetry gap را بررسی کن.\n\n## cardinality و label governance\nیک label با path یا user ID می‌تواند میلیون‌ها series تولید کند. قبل از rollout، series count، ingest rate، retention، query speed و resource usage را در staging اندازه بگیر. از labelهای آزاد و payload کامل در metric پرهیز کن و شناسهٔ high-cardinality را به logs/traces با کنترل دسترسی منتقل کن. Schema telemetry باید version داشته باشد؛ rename کردن fieldها می‌تواند dashboard، alert و downstream analytics را بشکند. تغییر instrumentation نیز یک تغییر عملیاتی است و نیازمند review و backward compatibility است.\n\n## معیار قبولی L3\nباید بتوانی یک request را میان trace/log/metric دنبال کنی، failure telemetry pipeline را از failure سرویس جدا کنی و برای حداقل سه فرضیه آزمون تفکیک‌کننده تعریف کنی. هر نتیجه باید زمان، مبدأ و محدودیت sampling/retention را ثبت کند.",
+      "commands": "OpenTelemetry spans/context; SNMP counters; syslog; telemetry pipeline diagnostics",
+      "examples": "همهٔ داده‌ها و metric nameها نمونه هستند؛ query و rule باید با instrumentation و نسخهٔ استقرار تطبیق یابد.",
+      "notes": "status=review_required; lab_status=designed_not_executed; telemetry and alert drills pending.",
+      "learning_objectives": [
+        "trace را با logs و metrics هم‌بسته کند، telemetry pipeline را عیب‌یابی نماید و failure را بر اساس شواهد تفکیک کند."
+      ],
+      "prerequisites": [
+        "مبانی شبکه و سرویس‌ها",
+        "مفهوم اندازه‌گیری و log"
+      ],
+      "official_sources": [
+        {
+          "title": "Prometheus overview",
+          "url": "https://prometheus.io/docs/introduction/overview/"
+        },
+        {
+          "title": "Prometheus alerting rules",
+          "url": "https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/"
+        },
+        {
+          "title": "Prometheus recording rules",
+          "url": "https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/"
+        },
+        {
+          "title": "Grafana alerting documentation",
+          "url": "https://grafana.com/docs/grafana/latest/alerting/"
+        },
+        {
+          "title": "OpenTelemetry signals",
+          "url": "https://opentelemetry.io/docs/concepts/signals/"
+        },
+        {
+          "title": "OpenTelemetry Collector",
+          "url": "https://opentelemetry.io/docs/collector/"
+        },
+        {
+          "title": "Google SRE Workbook — Alerting on SLOs",
+          "url": "https://sre.google/workbook/alerting-on-slos/"
+        },
+        {
+          "title": "Zabbix trigger configuration",
+          "url": "https://www.zabbix.com/documentation/current/en/manual/config/triggers"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "پایش، Observability و تحلیل رخداد",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"obs32-l3-1\",\"prompt\":\"چرا trace ممکن است ناقص باشد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"obs32-l3-2\",\"prompt\":\"چرا no data باید monitoring pipeline را هم بررسی کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"obs32-l3-3\",\"prompt\":\"Head و tail sampling چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"obs32-l3-4\",\"prompt\":\"چرا SNMP counter باید به rate تبدیل شود؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"obs32-l3-5\",\"prompt\":\"چرا دو metric همزمان علت را ثابت نمی‌کنند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"obs32-l3-6\",\"prompt\":\"چرا packet capture محدود نگه داشته می‌شود؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"obs32-l3-7\",\"prompt\":\"کدام شواهد برای trace/log/metric correlation لازم‌اند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"obs32-l3-8\",\"prompt\":\"چرا pipeline خودش مانیتور می‌شود؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"obs32-l3-9\",\"prompt\":\"چرا label schema نیاز به versioning دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"obs32-l3-10\",\"prompt\":\"سه فرضیه برای latency شعبه چیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"obs32-l3-11\",\"prompt\":\"چرا sampling و retention بخشی از RCA هستند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"obs32-l3-12\",\"prompt\":\"چه چیزی معیار قبولی L3 است؟\",\"type\":\"short_answer\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"obs32-l3-1\",\"answer\":\"sampling یا عدم propagation context میان سرویس‌ها.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l3-2\",\"answer\":\"source، exporter، collector، transport یا backend ممکن است خراب باشد.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l3-3\",\"answer\":\"head در آغاز تصمیم می‌گیرد؛ tail با مشاهدهٔ بیشتر trace تصمیم می‌گیرد و resource بیشتری می‌خواهد.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l3-4\",\"answer\":\"اغلب cumulative است و باید delta/reset/wrap در نظر گرفته شود.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l3-5\",\"answer\":\"همبستگی زمانی می‌تواند معلول مشترک یا تصادفی باشد؛ آزمون تفکیک‌کننده لازم است.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l3-6\",\"answer\":\"payload حساس دارد و هزینهٔ privacy/storage را افزایش می‌دهد.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l3-7\",\"answer\":\"window یکسان، request ID، timestamp و درنظرگرفتن ingest delay.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l3-8\",\"answer\":\"تا از دست رفتن telemetry قبل از outageهای اصلی تشخیص داده شود.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l3-9\",\"answer\":\"تغییر می‌تواند dashboards و alert rules را بشکند.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l3-10\",\"answer\":\"WAN loss/congestion، DNS delay، app/dependency/storage latency؛ هرکدام آزمون جدا می‌خواهد.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l3-11\",\"answer\":\"ممکن است خطاهای نادر حذف یا شواهد پیش از incident منقضی شده باشند.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l3-12\",\"answer\":\"یک درخواست در trace/log/metric دنبال و failure pipeline از سرویس تفکیک شود.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://prometheus.io/docs/introduction/overview/\",\"https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/\",\"https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/\",\"https://grafana.com/docs/grafana/latest/alerting/\",\"https://opentelemetry.io/docs/concepts/signals/\",\"https://opentelemetry.io/docs/collector/\",\"https://sre.google/workbook/alerting-on-slos/\",\"https://www.zabbix.com/documentation/current/en/manual/config/triggers\"]}"
+    },
+    {
+      "uid": "lesson:ch32:observability-engineering:l4",
+      "entity": "lesson",
+      "chapter_order": 32,
+      "subchapter_order": 7,
+      "lesson_order": 5,
+      "topic": "monitoring-observability-engineering",
+      "domain": "monitoring-and-observability",
+      "level": "L4",
+      "title_fa": "[L4] معماری Observability سازمانی — SLO، capacity، incident و هزینه",
+      "title_en": "معماری Observability سازمانی — SLO، capacity، incident و هزینه",
+      "tags": [
+        "Monitoring",
+        "Observability",
+        "Metrics",
+        "Logs",
+        "Tracing",
+        "Prometheus",
+        "Grafana",
+        "OpenTelemetry",
+        "SLO",
+        "L4"
+      ],
+      "summary": "پلتفرم telemetry و alerting را با SLO، ظرفیت، privacy، هزینه، failure domain و runbook طراحی کند.",
+      "full_content": "# معماری Observability سازمانی — SLO، capacity، incident و هزینه\n\n## معماری را با تصمیم‌های عملیاتی طراحی کن\nObservability platform خود یک سرویس حیاتی است. معماری باید منابع داده، agents/exporters، collectors، transport، storage، query engines، dashboards، alert routing، on-call و retention را مشخص کند. برای هر جزء capacity، owner، trust boundary، credential، failure mode و recovery path تعریف کن. Collector نباید تنها نقطه‌ای باشد که تمام داده‌ها از آن عبور می‌کنند مگر redundancy و buffer strategy لحاظ شده باشد. اگر telemetry برای incident response لازم است، از دست رفتن آن در زمان outage باید یک failure mode مستقل در طراحی باشد.\n\n## SLI و SLO از دید کاربر\nSLI باید نتیجه‌ای را اندازه بگیرد که برای مصرف‌کننده معنا دارد. برای API، نسبت درخواست‌های موفق به درخواست‌های معتبر و latency زیر threshold می‌تواند مناسب باشد. برای DNS، resolution success و timing از چند vantage point؛ برای VPN، tunnel up به تنهایی کافی نیست و مسیر واقعی عبور ترافیک باید تست شود. SLO به هدف و window زمانی نیاز دارد. تعریف «دسترس‌پذیر» باید مشخص کند کدام client، کدام endpoint و چه عملیات موفقی مدنظر است؛ ping شدن host معیار کافی نیست.\n\n## Error budget و اولویت\nError budget فاصلهٔ رفتار واقعی از هدف SLO را به operational decision متصل می‌کند. اگر budget سریع مصرف می‌شود، ممکن است feature rollout متوقف، reliability work اولویت و تغییرات پرریسک محدود شوند. Alerting on SLOs کمک می‌کند به‌جای thresholdهای منفرد CPU، اثر کاربر دیده شود. Multi-window burn-rate alert سریع و کند می‌تواند هم رخداد بزرگ و هم افت تدریجی را آشکار کند؛ پارامترها باید با traffic و هدف سرویس تنظیم شوند. Alert بیش‌ازحد حساس می‌تواند تیم را به ignore کردن هشدارها سوق دهد، در حالی که alert دیرهنگام هزینهٔ outage را افزایش می‌دهد.\n\n## ظرفیت telemetry و هزینه\nCardinality، scrape frequency، sample rate، label count، log volume، trace sampling، retention و replication بر هزینه اثر می‌گذارند. هزینه را فقط به storage تقلیل نده؛ ingest CPU، query latency، egress، backup، operator time و on-call noise هم مهم‌اند. ظرفیت را با دادهٔ پیک، cardinality انفجاری و incident storm آزمایش کن. سیاست‌های retention می‌توانند دادهٔ طولانی‌مدت برای trend و دادهٔ کوتاه‌مدت high-resolution برای incident را تفکیک کنند. کاهش هزینه باید با risk analysis همراه باشد تا data ضروری دقیقاً هنگام رخداد حذف نشود.\n\n## High availability و failure domain\nRedundancy در dashboard به تنهایی کافی نیست. بررسی کن source، collector، transport، storage، DNS، authentication و alert receiver کدام failure domain مشترک دارند. اگر alert manager در همان زیرساختی است که outage را تجربه می‌کند، ممکن است هشدار از مسیر دیگری خارج نشود. برای سرویس حیاتی مسیر out-of-band مانند notification service جدا و runbook دستی در نظر بگیر. هرچند alerting out-of-band هم هزینه و تست دارد؛ باید دوره‌ای بررسی شود تا در حادثهٔ واقعی فعال باشد.\n\n## Privacy، access control و retention\nMetrics و traces ممکن است با labelها و attributes اطلاعات هویتی را افشا کنند؛ logs می‌توانند شامل token یا query string باشند. طبقه‌بندی telemetry، redaction در source یا collector، least privilege، encryption transit/storage و retention/deletion policy لازم‌اند. حذف PII پس از ذخیره‌سازی دشوارتر از جلوگیری از ingest است. دسترسی analyst، operator و developer را جدا کن و audit queryهای حساس را براساس policy فعال کن. packet capture از همه حساس‌تر است و باید با scope، مدت، مجوز و retention محدود انجام شود.\n\n## Incident lifecycle\nRunbook باید detection، triage، containment، mitigation، recovery، validation و postmortem را از هم جدا کند. در triage، impact و scope مشخص می‌شود؛ در containment برای جلوگیری از گسترش خطر اقدام می‌شود؛ recovery سرویس را بازمی‌گرداند؛ validation ثابت می‌کند رفتار مصرف‌کننده صحیح است. Alert firing پایان incident نیست. بعد از mitigation، SLI و telemetry pipeline و dependencyها را بررسی کن. Postmortem باید عوامل زمینه‌ای و systemic را ثبت کند؛ مقصرسازی افراد معمولاً خطای طراحی/فرآیند را پنهان می‌کند.\n\n## Runbook نمونه: «سرویس در دسترس نیست»\n۱) از vantage point مستقل عملیات end-to-end را تست کن. ۲) وضعیت monitoring pipeline و freshness داده را بررسی کن. ۳) error rate/latency و زمان شروع تغییر را بسنج. ۴) trace/log مربوط را با request ID correlation کن. ۵) DNS، شبکه، process، storage و dependency را بر اساس evidence بررسی کن. ۶) blast radius را مشخص و در صورت نیاز تغییر جدید را متوقف کن. ۷) mitigation با rollback روشن اجرا کن. ۸) از client مستقل تست مثبت و منفی انجام بده. ۹) معیار SLO را تا پایان recovery پایش کن. ۱۰) شواهد، زمان‌ها و follow-upها را در postmortem ثبت کن.\n\n## Capacity planning و پیش‌بینی\nبرای رشد ۳ تا ۱۲ ماهه، نرخ تولید metrics/log/traces، retention، burst factor، replication/backup overhead و رشد تعداد device/service را مدل کن. سناریوی رخداد ممکن است حجم telemetry را چند برابر کند؛ error storm و debug logging حجم بیشتری می‌سازند. با buffer و quota از پرشدن ناگهانی disk backend جلوگیری کن و برای telemetry drop هشدار داشته باش. Storage full در monitoring platform نباید تمام incident evidence را از دسترس خارج کند؛ retention emergency و priority rules باید از پیش طراحی شوند.\n\n## آزمون پلتفرم Observability\nدر lab، failureهای مختلف را یکی‌یکی اعمال کن: process down، dependency latency، DNS failure، packet loss، disk threshold و collector down. برای هر سناریو expected signal، time-to-detect، false positive، notification route و time-to-recover را اندازه بگیر. سپس یک fault خارج از پوشش را اضافه کن تا false negative و شکاف instrumentation آشکار شود. آزمون باید به VM/network ایزوله محدود باشد و هزینه یا ریسک production ایجاد نکند. اگر alert به دلیل no data firing شد، آن را با source failure مقایسه کن تا وضعیت healthy از monitoring outage تفکیک شود.\n\n## Governance و schema telemetry\nنام‌گذاری metricها، units، labels، trace attributes، severity و ownership باید استاندارد مشترک داشته باشد. schema changes با version یا compatibility plan منتشر شوند؛ حذف یا تغییر نام metric می‌تواند alertهای سازمان را ناگهان خاموش کند. هر داشبورد/alert باید owner، last-reviewed date و runbook link داشته باشد. بازبینی دوره‌ای alertها باید alertهای بی‌اقدام، duplicate و noise را حذف/ادغام کند؛ اما قبل از حذف، بررسی کن آیا هشدار در runbook یا audit requirement لازم است.\n\n## معماری نهایی قابل دفاع\nDeliverable باید شامل topology، service catalog، signal inventory، SLI/SLO، alert policy، privacy/retention، capacity forecast، failure-domain analysis، test matrix، runbooks، cost model و evidence آزمون باشد. برای هر تصمیم، alternative، trade-off و owner مشخص کن. وضعیت Verified تنها وقتی مناسب است که probe، alert route، pipeline failure و recovery واقعاً در محیط هدف تست و نتیجه ثبت شده باشد.\n\n## واژه‌نامه\nSLI شاخص سطح خدمت؛ SLO هدف سطح خدمت؛ Error budget فاصلهٔ عملکرد واقعی از هدف؛ Burn rate سرعت مصرف budget؛ Sampling زیرنمونه‌گیری telemetry؛ Cardinality تعداد ترکیب label/attribute؛ RED نرخ/خطا/مدت؛ USE استفاده/اشباع/خطا؛ Runbook رویهٔ عملیاتی؛ Telemetry pipeline زنجیرهٔ جمع‌آوری تا ذخیره و هشدار.",
+      "commands": "SLO/burn rate; capacity forecast; privacy/retention; incident runbook; failure-domain test",
+      "examples": "همهٔ داده‌ها و metric nameها نمونه هستند؛ query و rule باید با instrumentation و نسخهٔ استقرار تطبیق یابد.",
+      "notes": "status=review_required; lab_status=designed_not_executed; telemetry and alert drills pending.",
+      "learning_objectives": [
+        "پلتفرم telemetry و alerting را با SLO، ظرفیت، privacy، هزینه، failure domain و runbook طراحی کند."
+      ],
+      "prerequisites": [
+        "مبانی شبکه و سرویس‌ها",
+        "مفهوم اندازه‌گیری و log"
+      ],
+      "official_sources": [
+        {
+          "title": "Prometheus overview",
+          "url": "https://prometheus.io/docs/introduction/overview/"
+        },
+        {
+          "title": "Prometheus alerting rules",
+          "url": "https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/"
+        },
+        {
+          "title": "Prometheus recording rules",
+          "url": "https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/"
+        },
+        {
+          "title": "Grafana alerting documentation",
+          "url": "https://grafana.com/docs/grafana/latest/alerting/"
+        },
+        {
+          "title": "OpenTelemetry signals",
+          "url": "https://opentelemetry.io/docs/concepts/signals/"
+        },
+        {
+          "title": "OpenTelemetry Collector",
+          "url": "https://opentelemetry.io/docs/collector/"
+        },
+        {
+          "title": "Google SRE Workbook — Alerting on SLOs",
+          "url": "https://sre.google/workbook/alerting-on-slos/"
+        },
+        {
+          "title": "Zabbix trigger configuration",
+          "url": "https://www.zabbix.com/documentation/current/en/manual/config/triggers"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "پایش، Observability و تحلیل رخداد",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"obs32-l4-1\",\"prompt\":\"چرا observability platform یک سرویس حیاتی است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-2\",\"prompt\":\"چرا SLI باید user-centric باشد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-3\",\"prompt\":\"Error budget چگونه تصمیم عملیاتی می‌سازد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-4\",\"prompt\":\"چرا alert receiver باید failure-domain مستقل داشته باشد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-5\",\"prompt\":\"چه هزینه‌هایی غیر از storage وجود دارند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-6\",\"prompt\":\"چرا trace/logها دادهٔ حساس‌اند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-7\",\"prompt\":\"Incident lifecycle چه مراحل اصلی دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-8\",\"prompt\":\"چرا health check نباید query سنگین backend اجرا کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-9\",\"prompt\":\"در capacity planning چه سناریوی بدی باید سنجیده شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-10\",\"prompt\":\"چرا no data alert باید از service down جدا باشد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-11\",\"prompt\":\"چه اطلاعاتی در runbook باید باشد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-12\",\"prompt\":\"چرا metric name/label change باید کنترل شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-13\",\"prompt\":\"چگونه time-to-detect را اندازه می‌گیریم؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-14\",\"prompt\":\"چه آزمون‌هایی پیش از Verified لازم‌اند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"obs32-l4-15\",\"prompt\":\"چه چیزی باید در postmortem ثبت شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"obs32-l4-1\",\"answer\":\"از دست‌رفتن آن هنگام incident می‌تواند تشخیص و recovery را مختل کند.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-2\",\"answer\":\"لزوماً host/process سالم به معنی عملیات موفق کاربر نیست.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-3\",\"answer\":\"مصرف سریع آن می‌تواند rollout را متوقف و reliability work را اولویت دهد.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-4\",\"answer\":\"outage همان زیرساخت نباید مسیر notification را هم قطع کند.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-5\",\"answer\":\"ingest CPU، query, egress، backup، operator time و on-call noise.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-6\",\"answer\":\"ممکن است PII، token، query value یا payload را داشته باشند.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-7\",\"answer\":\"detection، triage، containment، mitigation، recovery، validation و postmortem.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-8\",\"answer\":\"می‌تواند overload را تشدید و false failure بسازد.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-9\",\"answer\":\"incident storm، telemetry burst، cardinality growth و backend/node failure.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-10\",\"answer\":\"ممکن است فقط exporter/collector/backend خراب باشد.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-11\",\"answer\":\"signal، impact، scope، اولین بررسی امن، owner، mitigation و validation.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-12\",\"answer\":\"alertها و داشبوردهای وابسته ممکن است silently broken شوند.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-13\",\"answer\":\"اختلاف آغاز fault ثبت‌شده و زمان اولین alert معتبر.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-14\",\"answer\":\"probe، alert route، pipeline failure، بازیابی و fault matrix در محیط هدف.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"},{\"id\":\"obs32-l4-15\",\"answer\":\"timeline، impact، cause evidence، remediation، شکاف‌های detection و follow-up owner.\",\"rationale\":\"پاسخ باید به اثر عملیاتی و شاهد قابل اندازه‌گیری متصل باشد، نه صرفاً تعریف اصطلاح.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://prometheus.io/docs/introduction/overview/\",\"https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/\",\"https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/\",\"https://grafana.com/docs/grafana/latest/alerting/\",\"https://opentelemetry.io/docs/concepts/signals/\",\"https://opentelemetry.io/docs/collector/\",\"https://sre.google/workbook/alerting-on-slos/\",\"https://www.zabbix.com/documentation/current/en/manual/config/triggers\"]}"
+    }
+  ]
+}
