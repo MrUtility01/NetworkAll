@@ -69,17 +69,23 @@ class TreeCatalogActivity : AppCompatActivity() {
     private suspend fun loadTree() {
         val lessons = try {
             withContext(Dispatchers.IO) {
-                // Do not depend on MainActivity's background seeding having finished before
-                // the user opens the tree. This also repairs old databases missing hierarchy.
+                val dao = AppDatabase.get(this@TreeCatalogActivity).lessonDao()
+                // Seed synchronously before reading; retry once for databases created by
+                // older releases or interrupted first-run imports.
                 OfflineSeeder.ensureSeeded(this@TreeCatalogActivity)
-                AppDatabase.get(this@TreeCatalogActivity).lessonDao().allActive()
+                var rows = dao.allActive()
+                if (rows.isEmpty()) {
+                    OfflineSeeder.ensureSeeded(this@TreeCatalogActivity, force = true)
+                    rows = dao.allActive()
+                }
+                rows
             }
         } catch (e: Exception) {
-            header.text = "خطا در بارگذاری محتوا: " + (e.message ?: "خطای نامشخص")
+            header.text = "خطا در بارگذاری دانشنامه: " + (e.message ?: e.javaClass.simpleName)
             return
         }
         if (lessons.isEmpty()) {
-            header.text = "محتوایی بارگذاری نشد. به صفحه اصلی برگردید و وضعیت بارگذاری را بررسی کنید."
+            header.text = "فهرست خالی است: محتوای اولیه وارد پایگاه داده نشد. نسخهٔ جدید را نصب کنید و از تنظیمات، ورود/بازیابی JSON را بررسی کنید. اطلاعات برنامه را پیش از تهیهٔ پشتیبان پاک نکنید."
             return
         }
         // Repair display hierarchy defensively for older or partially imported rows.
