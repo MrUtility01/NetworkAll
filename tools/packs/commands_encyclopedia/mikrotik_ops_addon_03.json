@@ -2,7 +2,7 @@
   "package_schema_version": 1,
   "project": "ENGINEER JOKAR / NetworkAll",
   "generated_on": "2026-10-13",
-  "purpose": "RouterOS v7 additive enrichment batch 3; 40 diagnostic and operations records; review required",
+  "purpose": "RouterOS v7 additive enrichment batch 3; 40 diagnostic and operations records; review required; additive enrichment batch 4; +10 records; review required",
   "chapter_order": 68,
   "chapter_title_fa": "دانشنامه جامع دستورات",
   "vendor_pack": "mikrotik",
@@ -2471,6 +2471,606 @@
       "assessment": {
         "question_fa": "در چه شرایطی از «/certificate/print detail» استفاده می‌شود؟",
         "answer_key_fa": "بررسی subject، expiry و trust برای سرویس‌های TLS سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0185",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; confirm exact menu path and properties on target minor release",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "ping",
+      "command": "/tool/ping 192.0.2.1 count=5",
+      "title_fa": "[L3] بررسی reachability با تعداد محدود بسته",
+      "title_en": "بررسی reachability با تعداد محدود بسته",
+      "syntax": "/tool/ping 192.0.2.1 count=5",
+      "when_to_use_fa": "آیا مقصد در سطح IP پاسخ می‌دهد؟",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\n/tool/ping 192.0.2.1 count=5\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "آدرس مقصد را با IP آزمایشگاهی جایگزین کن؛ ping به‌تنهایی سلامت سرویس را ثابت نمی‌کند.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در CHR یا مقصد آزمایشگاهی اجرا کن؛ نتیجه را با مسیر و firewall counter تطبیق بده. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "/tool/ping 192.0.2.1 count=5",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "/log/print",
+        "/system/resource/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی reachability با تعداد محدود بسته",
+        "RouterOS v7",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: آیا مقصد در سطح IP پاسخ می‌دهد؟",
+        "answer_key_fa": "برای آیا مقصد در سطح IP پاسخ می‌دهد؟؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0186",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; confirm exact menu path and properties on target minor release",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "traceroute",
+      "command": "/tool/traceroute 192.0.2.1",
+      "title_fa": "[L3] بررسی مسیر hop به hop",
+      "title_en": "بررسی مسیر hop به hop",
+      "syntax": "/tool/traceroute 192.0.2.1",
+      "when_to_use_fa": "برای تفکیک مشکل مسیر از مشکل endpoint",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\n/tool/traceroute 192.0.2.1\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "پاسخ‌ندادن hop میانی می‌تواند ناشی از فیلتر ICMP باشد.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "مقصد کنترل‌شده انتخاب کن؛ timeout هر hop را به‌تنهایی خرابی قطعی همان روتر تلقی نکن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "/tool/traceroute 192.0.2.1",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "/log/print",
+        "/system/resource/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی مسیر hop به hop",
+        "RouterOS v7",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای تفکیک مشکل مسیر از مشکل endpoint",
+        "answer_key_fa": "برای برای تفکیک مشکل مسیر از مشکل endpoint؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0187",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; confirm exact menu path and properties on target minor release",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "leases",
+      "command": "/ip/dhcp-server/lease/print detail",
+      "title_fa": "[L3] ممیزی leaseهای DHCP",
+      "title_en": "ممیزی leaseهای DHCP",
+      "syntax": "/ip/dhcp-server/lease/print detail",
+      "when_to_use_fa": "برای بررسی آدرس تخصیص‌یافته و وضعیت lease",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\n/ip/dhcp-server/lease/print detail\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "lease ثبت‌شده لزوماً به معنی ارتباط فعلی کلاینت نیست.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "نام کلاینت و MAC را پیش از اشتراک‌گذاری پاک‌سازی کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "/ip/dhcp-server/lease/print detail",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "/log/print",
+        "/system/resource/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ممیزی leaseهای DHCP",
+        "RouterOS v7",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای بررسی آدرس تخصیص‌یافته و وضعیت lease",
+        "answer_key_fa": "برای برای بررسی آدرس تخصیص‌یافته و وضعیت lease؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0188",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; confirm exact menu path and properties on target minor release",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "cache",
+      "command": "/ip/dns/cache/print detail",
+      "title_fa": "[L3] بررسی cache نام‌گشایی DNS",
+      "title_en": "بررسی cache نام‌گشایی DNS",
+      "syntax": "/ip/dns/cache/print detail",
+      "when_to_use_fa": "برای تحلیل پاسخ cache و TTL",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\n/ip/dns/cache/print detail\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "cache خالی لزوماً به معنی خرابی DNS upstream نیست.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "نام‌های داخلی و اطلاعات حساس را در خروجی منتشر نکن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "/ip/dns/cache/print detail",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "/log/print",
+        "/system/resource/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی cache نام‌گشایی DNS",
+        "RouterOS v7",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای تحلیل پاسخ cache و TTL",
+        "answer_key_fa": "برای برای تحلیل پاسخ cache و TTL؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0189",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; confirm exact menu path and properties on target minor release",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "bridge-hosts",
+      "command": "/interface/bridge/host/print detail",
+      "title_fa": "[L3] بررسی یادگیری MAC در bridge",
+      "title_en": "بررسی یادگیری MAC در bridge",
+      "syntax": "/interface/bridge/host/print detail",
+      "when_to_use_fa": "برای تشخیص محل یادگیری MAC و پورت",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\n/interface/bridge/host/print detail\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "جدول MAC پویا با گذشت زمان و ترافیک تغییر می‌کند.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "MAC مورد انتظار را از endpoint آزمایشگاهی بگیر و با VLAN تطبیق بده. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "/interface/bridge/host/print detail",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "/log/print",
+        "/system/resource/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی یادگیری MAC در bridge",
+        "RouterOS v7",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای تشخیص محل یادگیری MAC و پورت",
+        "answer_key_fa": "برای برای تشخیص محل یادگیری MAC و پورت؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0190",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; confirm exact menu path and properties on target minor release",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "filter-counters",
+      "command": "/ip/firewall/filter/print stats",
+      "title_fa": "[L3] بازبینی شمارنده ruleهای فایروال",
+      "title_en": "بازبینی شمارنده ruleهای فایروال",
+      "syntax": "/ip/firewall/filter/print stats",
+      "when_to_use_fa": "برای یافتن ruleهایی که packet را match می‌کنند",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\n/ip/firewall/filter/print stats\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "افزایش counter به‌تنهایی اثبات نمی‌کند که همان rule علت اصلی رخداد است.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "ابتدا baseline شمارنده‌ها را ثبت کن؛ در این مرحله ruleها را تغییر نده. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "/ip/firewall/filter/print stats",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "/log/print",
+        "/system/resource/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بازبینی شمارنده ruleهای فایروال",
+        "RouterOS v7",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای یافتن ruleهایی که packet را match می‌کنند",
+        "answer_key_fa": "برای برای یافتن ruleهایی که packet را match می‌کنند؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0191",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; confirm exact menu path and properties on target minor release",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "conntrack",
+      "command": "/ip/firewall/connection/print count-only",
+      "title_fa": "[L3] شمارش connection tracking",
+      "title_en": "شمارش connection tracking",
+      "syntax": "/ip/firewall/connection/print count-only",
+      "when_to_use_fa": "برای بررسی تقریبی حجم connection tracking",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\n/ip/firewall/connection/print count-only\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "از چاپ کامل connectionها در خروجی عمومی پرهیز کن؛ ممکن است IP و پورت حساس باشد.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "زمان و بار سیستم را همراه شمارش ثبت کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "/ip/firewall/connection/print count-only",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "/log/print",
+        "/system/resource/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "شمارش connection tracking",
+        "RouterOS v7",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای بررسی تقریبی حجم connection tracking",
+        "answer_key_fa": "برای برای بررسی تقریبی حجم connection tracking؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0192",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; confirm exact menu path and properties on target minor release",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "packages",
+      "command": "/system/package/print detail",
+      "title_fa": "[L3] ثبت نسخه و بسته‌های نصب‌شده",
+      "title_en": "ثبت نسخه و بسته‌های نصب‌شده",
+      "syntax": "/system/package/print detail",
+      "when_to_use_fa": "برای ممیزی نسخه و packageهای روتر",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\n/system/package/print detail\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "نام بسته‌ها و قابلیت‌ها را برای همه مدل‌ها یکسان فرض نکن.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "قبل از ارتقا نسخه فعلی و وضعیت پشتیبان را ثبت کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "/system/package/print detail",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "/log/print",
+        "/system/resource/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ثبت نسخه و بسته‌های نصب‌شده",
+        "RouterOS v7",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای ممیزی نسخه و packageهای روتر",
+        "answer_key_fa": "برای برای ممیزی نسخه و packageهای روتر؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0193",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; confirm exact menu path and properties on target minor release",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "cpu-profile",
+      "command": "/tool/profile duration=10s",
+      "title_fa": "[L3] شناسایی مصرف CPU به تفکیک فعالیت",
+      "title_en": "شناسایی مصرف CPU به تفکیک فعالیت",
+      "syntax": "/tool/profile duration=10s",
+      "when_to_use_fa": "برای بررسی CPU بالا در بازه کوتاه",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\n/tool/profile duration=10s\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "خروجی profile snapshot است و علت ریشه‌ای را به‌تنهایی مشخص نمی‌کند.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "در زمان رخداد و با مدت محدود اجرا کن؛ baseline را هم ثبت کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "/tool/profile duration=10s",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "/log/print",
+        "/system/resource/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "شناسایی مصرف CPU به تفکیک فعالیت",
+        "RouterOS v7",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای بررسی CPU بالا در بازه کوتاه",
+        "answer_key_fa": "برای برای بررسی CPU بالا در بازه کوتاه؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0194",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; confirm exact menu path and properties on target minor release",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "firewall-logs",
+      "command": "/log/print where topics~\"firewall\"",
+      "title_fa": "[L3] فیلتر لاگ‌های مرتبط با firewall",
+      "title_en": "فیلتر لاگ‌های مرتبط با firewall",
+      "syntax": "/log/print where topics~\"firewall\"",
+      "when_to_use_fa": "برای همبستگی رخداد با لاگ فایروال",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\n/log/print where topics~\"firewall\"\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "نبود log الزاماً به معنی نبود packet یا rule match نیست.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "بازه زمانی، timezone و رخداد مورد انتظار را ثبت کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "/log/print where topics~\"firewall\"",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "/log/print",
+        "/system/resource/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "فیلتر لاگ‌های مرتبط با firewall",
+        "RouterOS v7",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای همبستگی رخداد با لاگ فایروال",
+        "answer_key_fa": "برای برای همبستگی رخداد با لاگ فایروال؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
       },
       "source_status": "review_required"
     }
