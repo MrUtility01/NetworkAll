@@ -570,6 +570,11 @@ def main():
         if p.name == "ch03_pack.json" and "/tools/packs/ch03/" in name:
             added = append_unmatched_to_existing_chapter(data, lessons, 3)
             print("   chapter-3 additive lessons", added)
+        # Chapter 09 has a dedicated additive pack. Keep the original curriculum
+        # lessons intact and append only new UID/title pairs into chapter 09.
+        if p.name == "ch09_pack.json" and "/tools/packs/ch09/" in name:
+            added = append_unmatched_to_existing_chapter(data, lessons, 9)
+            print("   chapter-9 additive lessons", added)
         if "ospf" in name or "bgp" in name or "redistribution" in name or "routing_deep" in name:
             routing_extra.extend(lessons)
         if "vpn" in name or "ipsec" in name:
