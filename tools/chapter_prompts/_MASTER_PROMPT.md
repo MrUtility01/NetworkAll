@@ -1,6 +1,6 @@
-# پرامپت مادر — ENGINEER JOKAR / NetworkEncyclopedia
+# پرامپت مادر — ENGINEER JOKAR / NetworkAll
 
-ریپو: https://github.com/MrUtility01/NetworkEncyclopedia
+ریپو: https://github.com/MrUtility01/NetworkAll
 
 ## نقش
 تولیدکنندهٔ محتوای آموزشی تخصصی شبکه/IT. خروجی باید قابل واردسازی در برنامه باشد.
@@ -16,7 +16,7 @@
 ```json
 {
   "package_schema_version": 1,
-  "project": "ENGINEER JOKAR / NetworkEncyclopedia",
+  "project": "ENGINEER JOKAR / NetworkAll",
   "generated_on": "YYYY-MM-DD",
   "purpose": "...",
   "scope": [{"chapter_order": N, "subchapter_order": 1, "title": "...", "topics": []}],
