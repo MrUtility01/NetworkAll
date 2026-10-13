@@ -116,7 +116,7 @@ PR کاندید: https://github.com/MrUtility01/NetworkAll/pull/5
 
 ### تکمیل بیشتر فصل ۹
 
-- علاوه بر ۲۱ درس، ۵۰ مثال، ۵۰ سناریوی پایه و ۵۵ سؤال/پاسخ مستقل، **۱۲ لابراتوار مرحله‌ای** و **۱۵ مطالعهٔ موردی عیب‌یابی/RCA** افزوده شد.
+- بسته فعلی فصل ۹ شامل ۳۱ درس، ۵۰ مثال، ۵۰ سناریوی پایه و ۵۵ سؤال/پاسخ مستقل، **۱۲ لابراتوار مرحله‌ای** و **۱۵ مطالعهٔ موردی عیب‌یابی/RCA** افزوده شد.
 - validator فصل ۹ اکنون وجود و ارجاع lesson UID در هر دو مجموعهٔ تازه را هم بررسی می‌کند.
 - [۱۲ لابراتوار](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/ch09/ch09_labs.json) · [۱۵ مطالعهٔ موردی](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/ch09/ch09_case_studies.json)
 
@@ -128,3 +128,11 @@ PR کاندید: https://github.com/MrUtility01/NetworkAll/pull/5
 - وضعیت اجرای جاری: [GitHub Actions](https://github.com/MrUtility01/NetworkAll/actions). نصب روی گوشی واقعی هنوز انجام/تأیید نشده است.
 
 تمام رکوردهای جدید همچنان `review_required` هستند؛ شمارش و اعتبارسنجی ساختاری جایگزین بازبینی release-specific و آزمون عملی روی تجهیزات/سیستم‌های هدف نیست.
+
+
+### Batch مستقل جدید — 2026-10-13
+
+- RouterOS v7: ده رکورد فرمان تشخیصی افزوده شد؛ جمع مستقل **۱۹۴** رکورد. Commit: `a4a90328ce9a6e64336834612982413230e18e78`.
+- PowerShell: ده رکورد شبکه و عیب‌یابی افزوده شد؛ جمع مستقل **۱۸۴** رکورد. Commit: `9088d6960c177fadc08f19ca165b5ddd0ad66a67`.
+- آزمون‌های تخصصی با answer key مستقل: Cisco ۴۵، RouterOS ۵۰، PowerShell ۴۱ سؤال/پاسخ.
+- آخرین اجرای کامل پیش از این batch: [Run 904 موفق](https://github.com/MrUtility01/NetworkAll/actions/runs/38461248080)، APK با اندازه artifact برابر 14,282,426 بایت. اجرای جدید پس از batch باید جداگانه تأیید شود.
