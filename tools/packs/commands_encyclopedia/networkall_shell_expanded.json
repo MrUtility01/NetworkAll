@@ -4152,23 +4152,23 @@
       "level": "L3",
       "category": "batch",
       "subcategory": "logging",
-      "command": ":log & echo [%date% %time%] %*>>\"%LOG_FILE%\" & exit /b 0",
-      "title_fa": "تعریف زیربرنامه برای ثبت رویداد",
-      "title_en": "Create a reusable batch subroutine",
-      "syntax": ":log & echo [%date% %time%] %*>>\"%LOG_FILE%\" & exit /b 0",
+      "command": "call :log \"service started\"",
+      "title_fa": "فراخوانی زیربرنامه برای ثبت رویداد در Batch",
+      "title_en": "Call a reusable logging subroutine",
+      "syntax": "call :log <message>  (subroutine: :log / echo ... >> log / exit /b)",
       "aliases": [],
-      "when_to_use_fa": "برای جمع‌کردن logging در یک نقطه مشترک؛ در فایل batch باید با call :log پیام را ارسال و ساختار را واضح نگه دارید.",
+      "when_to_use_fa": "برای یکپارچه‌کردن ثبت رخدادها در یک فایل Batch و افزودن timestamp به پیام‌های تشخیصی. پیاده‌سازی زیربرنامه باید جداگانه در فایل باشد.",
       "prerequisites_fa": [
         "دسترسی مجاز به سیستم یا VM آزمایشگاهی",
         "آشنایی پایه با خط فرمان همان پلتفرم"
       ],
       "steps_fa": [
-        "قبل از اجرا، سیستم‌عامل و shell فعلی را تأیید کنید.",
-        "فرمان را دقیقاً با مسیر یا مقصد کنترل‌شده اجرا کنید.",
-        "خروجی، زمان اجرا و کد خروج در صورت وجود را ثبت کنید.",
-        "نتیجه را با شواهد مستقل مانند تنظیمات سرویس یا خروجی یک فرمان مکمل تطبیق دهید."
+        "ابتدا یک متغیر LOG_FILE با مسیر آزمایشی و پوشه موجود تعیین کنید.",
+        "در فایل Batch، برچسب :log را در انتهای جریان اصلی تعریف کنید؛ داخل آن پیام را با %date% و %time% به log اضافه کنید و با exit /b بازگردید.",
+        "در نقطه موردنیاز call :log \"service started\" را اجرا کنید.",
+        "فایل log را بخوانید و بررسی کنید پیام، timestamp و کد خروج مطابق انتظار باشند."
       ],
-      "sample_output": "[date time] step completed\nتوجه: خروجی نمونه آموزشی است و با نسخه، زبان و پیکربندی سیستم تغییر می‌کند.",
+      "sample_output": "[10/13/2026 10:15:00.00] service started",
       "output_fields_fa": [
         {
           "field": "نتیجه اصلی",
@@ -4180,23 +4180,25 @@
         }
       ],
       "related_commands": [
-        "call :log started",
-        "goto :eof"
+        "call /?",
+        "exit /b /?",
+        "echo",
+        "%date%",
+        "%time%"
       ],
       "common_mistakes_fa": [
         "تفسیر یک خروجی منفرد به‌عنوان اثبات سلامت end-to-end.",
         "اجرای فرمان مربوط به shell دیگر (CMD/Batch/PowerShell/Bash) بدون سازگاری‌سنجی.",
         "انتشار log یا خروجی حاوی IP داخلی، نام حساب یا مسیر محرمانه."
       ],
-      "lab_hint_fa": "در فایل موقت پیام‌های success/error ثبت کنید و مسیر log و کد خروج را بررسی کنید. تمرین را در VM/پوشه موقت اجرا کنید؛ خروجی مورد انتظار، تفاوت با نتیجه واقعی و روش rollback را ثبت کنید.",
-      "security_notes_fa": "ورودی کنترل‌نشده به log می‌تواند log injection ایجاد کند؛ متن محرمانه را ثبت نکنید و مسیر LOG_FILE را validate کنید.",
+      "lab_hint_fa": "در پوشه موقت یک فایل .bat بسازید: زیربرنامه را در خطوط مستقل (برچسب :log، سپس echo به فایل و exit /b) تعریف کنید؛ بعد call :log را دو بار با پیام‌های مختلف فراخوانی و محتویات log را بررسی کنید.",
+      "security_notes_fa": "قبل از redirect به LOG_FILE مطمئن شوید مسیر معتبر و خارج از پوشه‌های سیستمی حساس است. پیام نامطمئن را پالایش کنید تا newline یا متن ساختگی باعث جعل رخداد نشود.",
       "search_keywords": [
-        ":log & echo [%date% %time%] %*>>\"%LOG_FILE%\" & exit /b 0",
-        "تعریف زیربرنامه برای ثبت رویداد",
-        "Create a reusable batch subroutine",
-        "batch",
-        "عیب‌یابی",
-        "شبکه و زیرساخت"
+        "Windows Batch",
+        "call :label",
+        "batch logging",
+        "%date% %time%",
+        "exit /b"
       ],
       "tips_fa": [
         "ابتدا فرمان‌های خواندنی را اجرا و baseline را ذخیره کنید.",
@@ -4216,12 +4218,12 @@
         "questions": [
           {
             "id": "q1",
-            "prompt": "پیش از تکیه بر خروجی «:log & echo [%date% %time%] %*>>\"%LOG_FILE%\" & exit /b 0» کدام روش درست‌تر است؟",
+            "prompt": "برای اجرای زیربرنامه :log در همان فایل batch کدام فرمان مناسب است؟",
             "options": [
-              "خروجی را با سؤال عیب‌یابی و شواهد مستقل تطبیق دهیم",
-              "صرفاً از روی یک خط خروجی، سلامت کل شبکه را نتیجه بگیریم",
-              "بدون backup پیکربندی را تغییر دهیم",
-              "لاگ‌ها را بدون پالایش در مخزن عمومی منتشر کنیم"
+              "call :log \"service started\"",
+              "goto :log",
+              "start /b :log",
+              "sc start log"
             ],
             "type": "mcq"
           }
@@ -4230,7 +4232,7 @@
           {
             "id": "q1",
             "correct_index": 0,
-            "explain_fa": "فرمان بخشی از شواهد است و باید در scope مشخص، با خروجی مکمل و معیار پذیرش تفسیر شود."
+            "explain_fa": "call :log کنترل را به زیربرنامه می‌برد و پس از exit /b به محل فراخوانی برمی‌گردد."
           }
         ]
       }
