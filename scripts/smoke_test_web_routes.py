@@ -23,6 +23,39 @@ def main() -> None:
                 raise SystemExit(f"test DB did not seed shared curriculum: {seeded}")
             server_app.db = lambda: test_db
             server_app.app.config.update(TESTING=True)
+
+            # Verify first-run setup, correct-password login, and rejection of
+            # an incorrect password without touching the real server/data files.
+            server_app._app_password_path = lambda: Path(td) / "app_access.json"
+            login_client = server_app.app.test_client()
+            locked_home = login_client.get("/")
+            if locked_home.status_code not in (301, 302) or "/login" not in locked_home.headers.get("Location", ""):
+                raise SystemExit(f"unlocked web home should redirect to first-run login, got {locked_home.status_code}")
+            setup = login_client.get("/login")
+            if setup.status_code != 200 or "تأیید رمز" not in setup.get_data(as_text=True):
+                raise SystemExit("first-run local web password setup screen is missing")
+            first_login = login_client.post("/login", data={
+                "next": "/", "password": "engineerjokar", "confirmation": "engineerjokar"
+            }, follow_redirects=False)
+            if first_login.status_code not in (301, 302):
+                raise SystemExit(f"first-run password setup failed: HTTP {first_login.status_code}")
+            if not server_app._app_password_path().is_file():
+                raise SystemExit("local password hash file was not created")
+            if "engineerjokar" in server_app._app_password_path().read_text(encoding="utf-8"):
+                raise SystemExit("local password was stored in plaintext")
+            wrong_client = server_app.app.test_client()
+            wrong_login = wrong_client.post("/login", data={
+                "next": "/", "password": "incorrect-password"
+            })
+            if wrong_login.status_code != 200 or "رمز نادرست" not in wrong_login.get_data(as_text=True):
+                raise SystemExit("incorrect local password was not rejected")
+            correct_client = server_app.app.test_client()
+            correct_login = correct_client.post("/login", data={
+                "next": "/", "password": "engineerjokar"
+            }, follow_redirects=False)
+            if correct_login.status_code not in (301, 302):
+                raise SystemExit("correct local password was not accepted")
+
             client = server_app.app.test_client()
 
             locked = client.get("/api/chapters")
