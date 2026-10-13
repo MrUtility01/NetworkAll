@@ -321,7 +321,8 @@ def main():
             print("study routes", e)
     print(f"NetworkAll listening on http://{host}:{port}")
     print("  sync: /api/sync/hello | manifest | pull | push")
-    print(f"  token_required={bool(SYNC_TOKEN)} default_token={SYNC_TOKEN == DEFAULT_DEV_TOKEN}")
+    token_source = "environment" if os.environ.get("NETENC_TOKEN", "").strip() else "per-install-file"
+    print(f"  token_required={bool(SYNC_TOKEN)} token_source={token_source}")
     app.run(host=host, port=port, debug=False)
 
 
