@@ -22,7 +22,7 @@
 
 ```bat
 :: ویندوز — خروجی JSON
-curl http://127.0.0.1:5050/api/export > NetEnc_backup.json
+curl http://127.0.0.1:86/api/export > NetworkAll_backup.json
 
 git add NetEnc_backup.json
 git commit -m "backup content"
@@ -39,7 +39,7 @@ git pull
 ## پشتیبان Google Drive
 
 1. از اپ **خروجی JSON** بگیرید
-2. فایل `NetEnc_export.json` را در Drive آپلود کنید
+2. فایل `NetworkAll_export.json` را در Drive آپلود کنید
 3. روی دستگاه دیگر دانلود → **ورودی JSON**
 
 فایل دیتابیس ویندوز: `server/data/encyclopedia.db` (می‌توانید همین را هم در Drive بگذارید).
