@@ -16,7 +16,7 @@ import java.io.InputStreamReader
 import java.util.zip.GZIPInputStream
 
 object OfflineSeeder {
-    private const val META_SEEDED = "offline_seeded_v18"
+    private const val META_SEEDED = "offline_seeded_v19"
     private const val BATCH_SIZE = 50
     private val seedMutex = Mutex()
 
@@ -115,7 +115,7 @@ object OfflineSeeder {
                         learningObjectives = lesson.optString("learning_objectives", ""),
                         sourceStatus = lesson.optString("source_status", "review_required"),
                         lastUpdated = lesson.optString("last_updated").ifBlank { "2026-10-12T00:00:00Z" },
-                        contentHash = "offline-v17-hierarchy",
+                        contentHash = "offline-v18-hierarchy",
                         deviceId = "android-offline",
                         // Preserve user soft-deletions when refreshing bundled content.
                         deleted = existingRows[uid]?.deleted ?: false,
