@@ -170,6 +170,98 @@
                   "label": "تأیید gateway/forwarding و یک آزمون dataplane قابل تکرار"
                 }
               ]
+            },
+            {
+              "id": "Q5",
+              "type": "mcq",
+              "prompt": "در سناریوی «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7»، کدام مجموعه شواهد برای پیدا کردن نخستین نقطهٔ خرابی قوی‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "تغییر هم‌زمان تمام timerها و routeها"
+                },
+                {
+                  "id": "B",
+                  "label": "restart کردن همهٔ سرویس‌ها پیش از جمع‌آوری شواهد"
+                },
+                {
+                  "id": "C",
+                  "label": "یک ping منفرد بدون ثبت source، زمان یا مسیر"
+                },
+                {
+                  "id": "D",
+                  "label": "ثبت active route، longest-prefix، routing table و gateway recursion با timestamp و مقایسهٔ قبل/بعد در هر دو سمت"
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "type": "mcq",
+              "prompt": "اگر در درس «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» علامت اولیه دیده شود، کدام استنتاج فنی محتاطانه‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "همیشه باید سخت‌افزار را تعویض کرد"
+                },
+                {
+                  "id": "B",
+                  "label": "علامت فقط مرحله‌ای از زنجیره را نشان می‌دهد؛ active route، longest-prefix، routing table و gateway recursion باید جداگانه بررسی شود"
+                },
+                {
+                  "id": "C",
+                  "label": "اگر log خطا ندارد، سرویس قطعاً سالم است"
+                },
+                {
+                  "id": "D",
+                  "label": "علامت، علت ریشه‌ای را قطعاً ثابت می‌کند"
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "type": "mcq",
+              "prompt": "کدام معیار قبولی برای آزمایش «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» کامل‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "config بدون syntax error ذخیره شود"
+                },
+                {
+                  "id": "B",
+                  "label": "یک بار ping موفق شود و آزمایش تمام شود"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط state یا flag مورد انتظار دیده شود"
+                },
+                {
+                  "id": "D",
+                  "label": "state و خروجی مورد انتظار، flow واقعی، حالت منفی و نتیجهٔ rollback ثبت شوند"
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "type": "mcq",
+              "prompt": "پیش از هر تغییر در سناریوی «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7»، کدام اقدام امن‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "بدون snapshot تغییر را اجرا کن و بعداً علت را حدس بزن"
+                },
+                {
+                  "id": "B",
+                  "label": "baseline و backup، مسیر OOB/Safe Mode، دامنهٔ تغییر و rollback را قبل از اجرا ثبت کن"
+                },
+                {
+                  "id": "C",
+                  "label": "ابتدا دسترسی مدیریت را ببند تا config ساده‌تر شود"
+                },
+                {
+                  "id": "D",
+                  "label": "چند عامل را با هم تغییر بده تا سریع‌تر نتیجه بگیری"
+                }
+              ]
             }
           ],
           "answer_key": [
@@ -256,6 +348,90 @@
               ],
               "id": "Q4",
               "correct_index": 3
+            },
+            {
+              "id": "Q5",
+              "question_id": "Q5",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» شواهد کافی دربارهٔ active route، longest-prefix، routing table و gateway recursion فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» شواهد کافی دربارهٔ active route، longest-prefix، routing table و gateway recursion فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» شواهد کافی دربارهٔ active route، longest-prefix، routing table و gateway recursion فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "question_id": "Q6",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» شواهد کافی دربارهٔ active route، longest-prefix، routing table و gateway recursion فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» شواهد کافی دربارهٔ active route، longest-prefix، routing table و gateway recursion فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» شواهد کافی دربارهٔ active route، longest-prefix، routing table و gateway recursion فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "question_id": "Q7",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» شواهد کافی دربارهٔ active route، longest-prefix، routing table و gateway recursion فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» شواهد کافی دربارهٔ active route، longest-prefix، routing table و gateway recursion فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» شواهد کافی دربارهٔ active route، longest-prefix، routing table و gateway recursion فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "question_id": "Q8",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» شواهد کافی دربارهٔ active route، longest-prefix، routing table و gateway recursion فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» شواهد کافی دربارهٔ active route، longest-prefix، routing table و gateway recursion فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7» شواهد کافی دربارهٔ active route، longest-prefix، routing table و gateway recursion فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                }
+              ]
             }
           ]
         }
@@ -400,6 +576,144 @@
                   "label": "فقط DNS cache"
                 }
               ]
+            },
+            {
+              "id": "Q5",
+              "type": "mcq",
+              "prompt": "در سناریوی «[L2] Failover دو WAN با Recursive Routing»، کدام مجموعه شواهد برای پیدا کردن نخستین نقطهٔ خرابی قوی‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "ثبت probe جدا برای هر WAN، scope/target-scope و active default route با timestamp و مقایسهٔ قبل/بعد در هر دو سمت"
+                },
+                {
+                  "id": "B",
+                  "label": "تغییر هم‌زمان تمام timerها و routeها"
+                },
+                {
+                  "id": "C",
+                  "label": "restart کردن همهٔ سرویس‌ها پیش از جمع‌آوری شواهد"
+                },
+                {
+                  "id": "D",
+                  "label": "یک ping منفرد بدون ثبت source، زمان یا مسیر"
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "type": "mcq",
+              "prompt": "اگر در درس «[L2] Failover دو WAN با Recursive Routing» علامت اولیه دیده شود، کدام استنتاج فنی محتاطانه‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "علامت، علت ریشه‌ای را قطعاً ثابت می‌کند"
+                },
+                {
+                  "id": "B",
+                  "label": "همیشه باید سخت‌افزار را تعویض کرد"
+                },
+                {
+                  "id": "C",
+                  "label": "علامت فقط مرحله‌ای از زنجیره را نشان می‌دهد؛ probe جدا برای هر WAN، scope/target-scope و active default route باید جداگانه بررسی شود"
+                },
+                {
+                  "id": "D",
+                  "label": "اگر log خطا ندارد، سرویس قطعاً سالم است"
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "type": "mcq",
+              "prompt": "کدام معیار قبولی برای آزمایش «[L2] Failover دو WAN با Recursive Routing» کامل‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "state و خروجی مورد انتظار، flow واقعی، حالت منفی و نتیجهٔ rollback ثبت شوند"
+                },
+                {
+                  "id": "B",
+                  "label": "config بدون syntax error ذخیره شود"
+                },
+                {
+                  "id": "C",
+                  "label": "یک بار ping موفق شود و آزمایش تمام شود"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط state یا flag مورد انتظار دیده شود"
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "type": "mcq",
+              "prompt": "پیش از هر تغییر در سناریوی «[L2] Failover دو WAN با Recursive Routing»، کدام اقدام امن‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "چند عامل را با هم تغییر بده تا سریع‌تر نتیجه بگیری"
+                },
+                {
+                  "id": "B",
+                  "label": "بدون snapshot تغییر را اجرا کن و بعداً علت را حدس بزن"
+                },
+                {
+                  "id": "C",
+                  "label": "baseline و backup، مسیر OOB/Safe Mode، دامنهٔ تغییر و rollback را قبل از اجرا ثبت کن"
+                },
+                {
+                  "id": "D",
+                  "label": "ابتدا دسترسی مدیریت را ببند تا config ساده‌تر شود"
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "type": "mcq",
+              "prompt": "اگر پس از تغییر در «[L2] Failover دو WAN با Recursive Routing» علامت برطرف نشود، قدم بعدی مناسب چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فرضیه را با evidence تازه بسنج و مرحلهٔ بعدی زنجیرهٔ probe جدا برای هر WAN، scope/target-scope و active default route را بررسی کن"
+                },
+                {
+                  "id": "B",
+                  "label": "بدون بررسی همهٔ routeها را حذف کن"
+                },
+                {
+                  "id": "C",
+                  "label": "مشکل را حل‌شده ثبت کن چون config پذیرفته شده است"
+                },
+                {
+                  "id": "D",
+                  "label": "همان تغییر را چندین بار تکرار کن"
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "type": "mcq",
+              "prompt": "اگر دو دستگاه یا دو release برای «[L2] Failover دو WAN با Recursive Routing» خروجی متفاوت نشان دهند، کدام روش مناسب‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "هر دو خروجی را یکسان فرض کن"
+                },
+                {
+                  "id": "B",
+                  "label": "نام فرمان را معیار نهایی قرار بده"
+                },
+                {
+                  "id": "C",
+                  "label": "نسخه، نقش دستگاه، context اجرای فرمان و قابلیت feature را با مستندات همان release مقایسه کن"
+                },
+                {
+                  "id": "D",
+                  "label": "فرمان destructive را برای هماهنگ‌کردن خروجی‌ها اجرا کن"
+                }
+              ]
             }
           ],
           "answer_key": [
@@ -486,6 +800,132 @@
               ],
               "id": "Q4",
               "correct_index": 1
+            },
+            {
+              "id": "Q5",
+              "question_id": "Q5",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "question_id": "Q6",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "question_id": "Q7",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "question_id": "Q8",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "question_id": "Q9",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "question_id": "Q10",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L2] Failover دو WAN با Recursive Routing» شواهد کافی دربارهٔ probe جدا برای هر WAN، scope/target-scope و active default route فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                }
+              ]
             }
           ]
         }
@@ -630,6 +1070,144 @@
                   "label": "خیر، چون IPv4 هیچ NAT ندارد"
                 }
               ]
+            },
+            {
+              "id": "Q5",
+              "type": "mcq",
+              "prompt": "در سناریوی «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط»، کدام مجموعه شواهد برای پیدا کردن نخستین نقطهٔ خرابی قوی‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "یک ping منفرد بدون ثبت source، زمان یا مسیر"
+                },
+                {
+                  "id": "B",
+                  "label": "ثبت NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path با timestamp و مقایسهٔ قبل/بعد در هر دو سمت"
+                },
+                {
+                  "id": "C",
+                  "label": "تغییر هم‌زمان تمام timerها و routeها"
+                },
+                {
+                  "id": "D",
+                  "label": "restart کردن همهٔ سرویس‌ها پیش از جمع‌آوری شواهد"
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "type": "mcq",
+              "prompt": "اگر در درس «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» علامت اولیه دیده شود، کدام استنتاج فنی محتاطانه‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "اگر log خطا ندارد، سرویس قطعاً سالم است"
+                },
+                {
+                  "id": "B",
+                  "label": "علامت، علت ریشه‌ای را قطعاً ثابت می‌کند"
+                },
+                {
+                  "id": "C",
+                  "label": "همیشه باید سخت‌افزار را تعویض کرد"
+                },
+                {
+                  "id": "D",
+                  "label": "علامت فقط مرحله‌ای از زنجیره را نشان می‌دهد؛ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path باید جداگانه بررسی شود"
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "type": "mcq",
+              "prompt": "کدام معیار قبولی برای آزمایش «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» کامل‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط state یا flag مورد انتظار دیده شود"
+                },
+                {
+                  "id": "B",
+                  "label": "state و خروجی مورد انتظار، flow واقعی، حالت منفی و نتیجهٔ rollback ثبت شوند"
+                },
+                {
+                  "id": "C",
+                  "label": "config بدون syntax error ذخیره شود"
+                },
+                {
+                  "id": "D",
+                  "label": "یک بار ping موفق شود و آزمایش تمام شود"
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "type": "mcq",
+              "prompt": "پیش از هر تغییر در سناریوی «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط»، کدام اقدام امن‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "ابتدا دسترسی مدیریت را ببند تا config ساده‌تر شود"
+                },
+                {
+                  "id": "B",
+                  "label": "چند عامل را با هم تغییر بده تا سریع‌تر نتیجه بگیری"
+                },
+                {
+                  "id": "C",
+                  "label": "بدون snapshot تغییر را اجرا کن و بعداً علت را حدس بزن"
+                },
+                {
+                  "id": "D",
+                  "label": "baseline و backup، مسیر OOB/Safe Mode، دامنهٔ تغییر و rollback را قبل از اجرا ثبت کن"
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "type": "mcq",
+              "prompt": "اگر پس از تغییر در «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» علامت برطرف نشود، قدم بعدی مناسب چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "همان تغییر را چندین بار تکرار کن"
+                },
+                {
+                  "id": "B",
+                  "label": "فرضیه را با evidence تازه بسنج و مرحلهٔ بعدی زنجیرهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path را بررسی کن"
+                },
+                {
+                  "id": "C",
+                  "label": "بدون بررسی همهٔ routeها را حذف کن"
+                },
+                {
+                  "id": "D",
+                  "label": "مشکل را حل‌شده ثبت کن چون config پذیرفته شده است"
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "type": "mcq",
+              "prompt": "اگر دو دستگاه یا دو release برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» خروجی متفاوت نشان دهند، کدام روش مناسب‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فرمان destructive را برای هماهنگ‌کردن خروجی‌ها اجرا کن"
+                },
+                {
+                  "id": "B",
+                  "label": "هر دو خروجی را یکسان فرض کن"
+                },
+                {
+                  "id": "C",
+                  "label": "نام فرمان را معیار نهایی قرار بده"
+                },
+                {
+                  "id": "D",
+                  "label": "نسخه، نقش دستگاه، context اجرای فرمان و قابلیت feature را با مستندات همان release مقایسه کن"
+                }
+              ]
             }
           ],
           "answer_key": [
@@ -716,6 +1294,132 @@
               ],
               "id": "Q4",
               "correct_index": 1
+            },
+            {
+              "id": "Q5",
+              "question_id": "Q5",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "question_id": "Q6",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "question_id": "Q7",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "question_id": "Q8",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "question_id": "Q9",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "question_id": "Q10",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L2] NAT و Connection Tracking در عیب‌یابی ارتباط» شواهد کافی دربارهٔ NAT rule counter، conntrack entry، tuple پیش/پس از ترجمه و reply path فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                }
+              ]
             }
           ]
         }
@@ -860,6 +1564,190 @@
                   "label": "route active/gateway resolution، marks، NAT و flow واقعی"
                 }
               ]
+            },
+            {
+              "id": "Q5",
+              "type": "mcq",
+              "prompt": "در سناریوی «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks»، کدام مجموعه شواهد برای پیدا کردن نخستین نقطهٔ خرابی قوی‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "restart کردن همهٔ سرویس‌ها پیش از جمع‌آوری شواهد"
+                },
+                {
+                  "id": "B",
+                  "label": "یک ping منفرد بدون ثبت source، زمان یا مسیر"
+                },
+                {
+                  "id": "C",
+                  "label": "ثبت routing mark، lookup table، active route، خروجی WAN و مسیر برگشت با timestamp و مقایسهٔ قبل/بعد در هر دو سمت"
+                },
+                {
+                  "id": "D",
+                  "label": "تغییر هم‌زمان تمام timerها و routeها"
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "type": "mcq",
+              "prompt": "اگر در درس «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» علامت اولیه دیده شود، کدام استنتاج فنی محتاطانه‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "علامت فقط مرحله‌ای از زنجیره را نشان می‌دهد؛ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت باید جداگانه بررسی شود"
+                },
+                {
+                  "id": "B",
+                  "label": "اگر log خطا ندارد، سرویس قطعاً سالم است"
+                },
+                {
+                  "id": "C",
+                  "label": "علامت، علت ریشه‌ای را قطعاً ثابت می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "همیشه باید سخت‌افزار را تعویض کرد"
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "type": "mcq",
+              "prompt": "کدام معیار قبولی برای آزمایش «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» کامل‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "یک بار ping موفق شود و آزمایش تمام شود"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط state یا flag مورد انتظار دیده شود"
+                },
+                {
+                  "id": "C",
+                  "label": "state و خروجی مورد انتظار، flow واقعی، حالت منفی و نتیجهٔ rollback ثبت شوند"
+                },
+                {
+                  "id": "D",
+                  "label": "config بدون syntax error ذخیره شود"
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "type": "mcq",
+              "prompt": "پیش از هر تغییر در سناریوی «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks»، کدام اقدام امن‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "baseline و backup، مسیر OOB/Safe Mode، دامنهٔ تغییر و rollback را قبل از اجرا ثبت کن"
+                },
+                {
+                  "id": "B",
+                  "label": "ابتدا دسترسی مدیریت را ببند تا config ساده‌تر شود"
+                },
+                {
+                  "id": "C",
+                  "label": "چند عامل را با هم تغییر بده تا سریع‌تر نتیجه بگیری"
+                },
+                {
+                  "id": "D",
+                  "label": "بدون snapshot تغییر را اجرا کن و بعداً علت را حدس بزن"
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "type": "mcq",
+              "prompt": "اگر پس از تغییر در «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» علامت برطرف نشود، قدم بعدی مناسب چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "مشکل را حل‌شده ثبت کن چون config پذیرفته شده است"
+                },
+                {
+                  "id": "B",
+                  "label": "همان تغییر را چندین بار تکرار کن"
+                },
+                {
+                  "id": "C",
+                  "label": "فرضیه را با evidence تازه بسنج و مرحلهٔ بعدی زنجیرهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت را بررسی کن"
+                },
+                {
+                  "id": "D",
+                  "label": "بدون بررسی همهٔ routeها را حذف کن"
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "type": "mcq",
+              "prompt": "اگر دو دستگاه یا دو release برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» خروجی متفاوت نشان دهند، کدام روش مناسب‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "نسخه، نقش دستگاه، context اجرای فرمان و قابلیت feature را با مستندات همان release مقایسه کن"
+                },
+                {
+                  "id": "B",
+                  "label": "فرمان destructive را برای هماهنگ‌کردن خروجی‌ها اجرا کن"
+                },
+                {
+                  "id": "C",
+                  "label": "هر دو خروجی را یکسان فرض کن"
+                },
+                {
+                  "id": "D",
+                  "label": "نام فرمان را معیار نهایی قرار بده"
+                }
+              ]
+            },
+            {
+              "id": "Q11",
+              "type": "mcq",
+              "prompt": "کدام مشاهده به‌تنهایی اثبات نمی‌کند مشکل «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» کاملاً رفع شده است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "مقایسهٔ شاهد قبل و بعد"
+                },
+                {
+                  "id": "B",
+                  "label": "آزمون flow مجاز و منفی"
+                },
+                {
+                  "id": "C",
+                  "label": "یک state/config موفق بدون بررسی routing mark، lookup table، active route، خروجی WAN و مسیر برگشت و رفتار end-to-end"
+                },
+                {
+                  "id": "D",
+                  "label": "تکرار آزمون با timestamp و نتیجهٔ مستقل"
+                }
+              ]
+            },
+            {
+              "id": "Q12",
+              "type": "mcq",
+              "prompt": "برای آزمودن ایمنی سناریوی «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks»، کدام روش بهتر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "یک مورد مجاز و یک مورد غیرمجاز را در محیط کنترل‌شده بسنج و تأیید کن policy درست اجازه/رد می‌دهد"
+                },
+                {
+                  "id": "B",
+                  "label": "تمام فیلترها را موقتاً خاموش کن"
+                },
+                {
+                  "id": "C",
+                  "label": "prefix یا سرویس آزمایشی را به peer واقعی advertise کن"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط تست مثبت انجام بده و مورد ردشده را بررسی نکن"
+                }
+              ]
             }
           ],
           "answer_key": [
@@ -946,6 +1834,174 @@
               ],
               "id": "Q4",
               "correct_index": 3
+            },
+            {
+              "id": "Q5",
+              "question_id": "Q5",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "question_id": "Q6",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "question_id": "Q7",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "question_id": "Q8",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "question_id": "Q9",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "question_id": "Q10",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                }
+              ]
+            },
+            {
+              "id": "Q11",
+              "question_id": "Q11",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q12",
+              "question_id": "Q12",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks» شواهد کافی دربارهٔ routing mark، lookup table، active route، خروجی WAN و مسیر برگشت فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                }
+              ]
             }
           ]
         }
@@ -1094,6 +2150,190 @@
                   "label": "فقط reboot router"
                 }
               ]
+            },
+            {
+              "id": "Q5",
+              "type": "mcq",
+              "prompt": "در سناریوی «[L3] PCC و Load Balancing مبتنی بر Connection»، کدام مجموعه شواهد برای پیدا کردن نخستین نقطهٔ خرابی قوی‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "تغییر هم‌زمان تمام timerها و routeها"
+                },
+                {
+                  "id": "B",
+                  "label": "restart کردن همهٔ سرویس‌ها پیش از جمع‌آوری شواهد"
+                },
+                {
+                  "id": "C",
+                  "label": "یک ping منفرد بدون ثبت source، زمان یا مسیر"
+                },
+                {
+                  "id": "D",
+                  "label": "ثبت PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید با timestamp و مقایسهٔ قبل/بعد در هر دو سمت"
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "type": "mcq",
+              "prompt": "اگر در درس «[L3] PCC و Load Balancing مبتنی بر Connection» علامت اولیه دیده شود، کدام استنتاج فنی محتاطانه‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "همیشه باید سخت‌افزار را تعویض کرد"
+                },
+                {
+                  "id": "B",
+                  "label": "علامت فقط مرحله‌ای از زنجیره را نشان می‌دهد؛ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید باید جداگانه بررسی شود"
+                },
+                {
+                  "id": "C",
+                  "label": "اگر log خطا ندارد، سرویس قطعاً سالم است"
+                },
+                {
+                  "id": "D",
+                  "label": "علامت، علت ریشه‌ای را قطعاً ثابت می‌کند"
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "type": "mcq",
+              "prompt": "کدام معیار قبولی برای آزمایش «[L3] PCC و Load Balancing مبتنی بر Connection» کامل‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "config بدون syntax error ذخیره شود"
+                },
+                {
+                  "id": "B",
+                  "label": "یک بار ping موفق شود و آزمایش تمام شود"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط state یا flag مورد انتظار دیده شود"
+                },
+                {
+                  "id": "D",
+                  "label": "state و خروجی مورد انتظار، flow واقعی، حالت منفی و نتیجهٔ rollback ثبت شوند"
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "type": "mcq",
+              "prompt": "پیش از هر تغییر در سناریوی «[L3] PCC و Load Balancing مبتنی بر Connection»، کدام اقدام امن‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "بدون snapshot تغییر را اجرا کن و بعداً علت را حدس بزن"
+                },
+                {
+                  "id": "B",
+                  "label": "baseline و backup، مسیر OOB/Safe Mode، دامنهٔ تغییر و rollback را قبل از اجرا ثبت کن"
+                },
+                {
+                  "id": "C",
+                  "label": "ابتدا دسترسی مدیریت را ببند تا config ساده‌تر شود"
+                },
+                {
+                  "id": "D",
+                  "label": "چند عامل را با هم تغییر بده تا سریع‌تر نتیجه بگیری"
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "type": "mcq",
+              "prompt": "اگر پس از تغییر در «[L3] PCC و Load Balancing مبتنی بر Connection» علامت برطرف نشود، قدم بعدی مناسب چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "بدون بررسی همهٔ routeها را حذف کن"
+                },
+                {
+                  "id": "B",
+                  "label": "مشکل را حل‌شده ثبت کن چون config پذیرفته شده است"
+                },
+                {
+                  "id": "C",
+                  "label": "همان تغییر را چندین بار تکرار کن"
+                },
+                {
+                  "id": "D",
+                  "label": "فرضیه را با evidence تازه بسنج و مرحلهٔ بعدی زنجیرهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید را بررسی کن"
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "type": "mcq",
+              "prompt": "اگر دو دستگاه یا دو release برای «[L3] PCC و Load Balancing مبتنی بر Connection» خروجی متفاوت نشان دهند، کدام روش مناسب‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "نام فرمان را معیار نهایی قرار بده"
+                },
+                {
+                  "id": "B",
+                  "label": "نسخه، نقش دستگاه، context اجرای فرمان و قابلیت feature را با مستندات همان release مقایسه کن"
+                },
+                {
+                  "id": "C",
+                  "label": "فرمان destructive را برای هماهنگ‌کردن خروجی‌ها اجرا کن"
+                },
+                {
+                  "id": "D",
+                  "label": "هر دو خروجی را یکسان فرض کن"
+                }
+              ]
+            },
+            {
+              "id": "Q11",
+              "type": "mcq",
+              "prompt": "کدام مشاهده به‌تنهایی اثبات نمی‌کند مشکل «[L3] PCC و Load Balancing مبتنی بر Connection» کاملاً رفع شده است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "تکرار آزمون با timestamp و نتیجهٔ مستقل"
+                },
+                {
+                  "id": "B",
+                  "label": "مقایسهٔ شاهد قبل و بعد"
+                },
+                {
+                  "id": "C",
+                  "label": "آزمون flow مجاز و منفی"
+                },
+                {
+                  "id": "D",
+                  "label": "یک state/config موفق بدون بررسی PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید و رفتار end-to-end"
+                }
+              ]
+            },
+            {
+              "id": "Q12",
+              "type": "mcq",
+              "prompt": "برای آزمودن ایمنی سناریوی «[L3] PCC و Load Balancing مبتنی بر Connection»، کدام روش بهتر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط تست مثبت انجام بده و مورد ردشده را بررسی نکن"
+                },
+                {
+                  "id": "B",
+                  "label": "یک مورد مجاز و یک مورد غیرمجاز را در محیط کنترل‌شده بسنج و تأیید کن policy درست اجازه/رد می‌دهد"
+                },
+                {
+                  "id": "C",
+                  "label": "تمام فیلترها را موقتاً خاموش کن"
+                },
+                {
+                  "id": "D",
+                  "label": "prefix یا سرویس آزمایشی را به peer واقعی advertise کن"
+                }
+              ]
             }
           ],
           "answer_key": [
@@ -1180,6 +2420,174 @@
               ],
               "id": "Q4",
               "correct_index": 1
+            },
+            {
+              "id": "Q5",
+              "question_id": "Q5",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "question_id": "Q6",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "question_id": "Q7",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "question_id": "Q8",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "question_id": "Q9",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "question_id": "Q10",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                }
+              ]
+            },
+            {
+              "id": "Q11",
+              "question_id": "Q11",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q12",
+              "question_id": "Q12",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] PCC و Load Balancing مبتنی بر Connection» شواهد کافی دربارهٔ PCC bucket، connection mark، WAN egress، NAT source و تفاوت flow جاری/جدید فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                }
+              ]
             }
           ]
         }
@@ -1324,6 +2732,190 @@
                   "label": "کنسول/Safe Mode، allow مدیریت، backup و تست منفی/مثبت"
                 }
               ]
+            },
+            {
+              "id": "Q5",
+              "type": "mcq",
+              "prompt": "در سناریوی «[L3] Firewall Filter، مسیر Packet و اثر FastTrack»، کدام مجموعه شواهد برای پیدا کردن نخستین نقطهٔ خرابی قوی‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "ثبت input/forward/output chain، rule counter، FastTrack و queue behavior با timestamp و مقایسهٔ قبل/بعد در هر دو سمت"
+                },
+                {
+                  "id": "B",
+                  "label": "تغییر هم‌زمان تمام timerها و routeها"
+                },
+                {
+                  "id": "C",
+                  "label": "restart کردن همهٔ سرویس‌ها پیش از جمع‌آوری شواهد"
+                },
+                {
+                  "id": "D",
+                  "label": "یک ping منفرد بدون ثبت source، زمان یا مسیر"
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "type": "mcq",
+              "prompt": "اگر در درس «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» علامت اولیه دیده شود، کدام استنتاج فنی محتاطانه‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "علامت، علت ریشه‌ای را قطعاً ثابت می‌کند"
+                },
+                {
+                  "id": "B",
+                  "label": "همیشه باید سخت‌افزار را تعویض کرد"
+                },
+                {
+                  "id": "C",
+                  "label": "علامت فقط مرحله‌ای از زنجیره را نشان می‌دهد؛ input/forward/output chain، rule counter، FastTrack و queue behavior باید جداگانه بررسی شود"
+                },
+                {
+                  "id": "D",
+                  "label": "اگر log خطا ندارد، سرویس قطعاً سالم است"
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "type": "mcq",
+              "prompt": "کدام معیار قبولی برای آزمایش «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» کامل‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "state و خروجی مورد انتظار، flow واقعی، حالت منفی و نتیجهٔ rollback ثبت شوند"
+                },
+                {
+                  "id": "B",
+                  "label": "config بدون syntax error ذخیره شود"
+                },
+                {
+                  "id": "C",
+                  "label": "یک بار ping موفق شود و آزمایش تمام شود"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط state یا flag مورد انتظار دیده شود"
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "type": "mcq",
+              "prompt": "پیش از هر تغییر در سناریوی «[L3] Firewall Filter، مسیر Packet و اثر FastTrack»، کدام اقدام امن‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "چند عامل را با هم تغییر بده تا سریع‌تر نتیجه بگیری"
+                },
+                {
+                  "id": "B",
+                  "label": "بدون snapshot تغییر را اجرا کن و بعداً علت را حدس بزن"
+                },
+                {
+                  "id": "C",
+                  "label": "baseline و backup، مسیر OOB/Safe Mode، دامنهٔ تغییر و rollback را قبل از اجرا ثبت کن"
+                },
+                {
+                  "id": "D",
+                  "label": "ابتدا دسترسی مدیریت را ببند تا config ساده‌تر شود"
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "type": "mcq",
+              "prompt": "اگر پس از تغییر در «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» علامت برطرف نشود، قدم بعدی مناسب چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فرضیه را با evidence تازه بسنج و مرحلهٔ بعدی زنجیرهٔ input/forward/output chain، rule counter، FastTrack و queue behavior را بررسی کن"
+                },
+                {
+                  "id": "B",
+                  "label": "بدون بررسی همهٔ routeها را حذف کن"
+                },
+                {
+                  "id": "C",
+                  "label": "مشکل را حل‌شده ثبت کن چون config پذیرفته شده است"
+                },
+                {
+                  "id": "D",
+                  "label": "همان تغییر را چندین بار تکرار کن"
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "type": "mcq",
+              "prompt": "اگر دو دستگاه یا دو release برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» خروجی متفاوت نشان دهند، کدام روش مناسب‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "هر دو خروجی را یکسان فرض کن"
+                },
+                {
+                  "id": "B",
+                  "label": "نام فرمان را معیار نهایی قرار بده"
+                },
+                {
+                  "id": "C",
+                  "label": "نسخه، نقش دستگاه، context اجرای فرمان و قابلیت feature را با مستندات همان release مقایسه کن"
+                },
+                {
+                  "id": "D",
+                  "label": "فرمان destructive را برای هماهنگ‌کردن خروجی‌ها اجرا کن"
+                }
+              ]
+            },
+            {
+              "id": "Q11",
+              "type": "mcq",
+              "prompt": "کدام مشاهده به‌تنهایی اثبات نمی‌کند مشکل «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» کاملاً رفع شده است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "یک state/config موفق بدون بررسی input/forward/output chain، rule counter، FastTrack و queue behavior و رفتار end-to-end"
+                },
+                {
+                  "id": "B",
+                  "label": "تکرار آزمون با timestamp و نتیجهٔ مستقل"
+                },
+                {
+                  "id": "C",
+                  "label": "مقایسهٔ شاهد قبل و بعد"
+                },
+                {
+                  "id": "D",
+                  "label": "آزمون flow مجاز و منفی"
+                }
+              ]
+            },
+            {
+              "id": "Q12",
+              "type": "mcq",
+              "prompt": "برای آزمودن ایمنی سناریوی «[L3] Firewall Filter، مسیر Packet و اثر FastTrack»، کدام روش بهتر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "prefix یا سرویس آزمایشی را به peer واقعی advertise کن"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط تست مثبت انجام بده و مورد ردشده را بررسی نکن"
+                },
+                {
+                  "id": "C",
+                  "label": "یک مورد مجاز و یک مورد غیرمجاز را در محیط کنترل‌شده بسنج و تأیید کن policy درست اجازه/رد می‌دهد"
+                },
+                {
+                  "id": "D",
+                  "label": "تمام فیلترها را موقتاً خاموش کن"
+                }
+              ]
             }
           ],
           "answer_key": [
@@ -1410,6 +3002,174 @@
               ],
               "id": "Q4",
               "correct_index": 3
+            },
+            {
+              "id": "Q5",
+              "question_id": "Q5",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "question_id": "Q6",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "question_id": "Q7",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "question_id": "Q8",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "question_id": "Q9",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "question_id": "Q10",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                }
+              ]
+            },
+            {
+              "id": "Q11",
+              "question_id": "Q11",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q12",
+              "question_id": "Q12",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L3] Firewall Filter، مسیر Packet و اثر FastTrack» شواهد کافی دربارهٔ input/forward/output chain، rule counter، FastTrack و queue behavior فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                }
+              ]
             }
           ]
         }
@@ -1558,6 +3318,259 @@
                   "label": "آزمون outage، flow جدید/موجود، مسیر برگشت و recovery به primary"
                 }
               ]
+            },
+            {
+              "id": "Q5",
+              "type": "mcq",
+              "prompt": "در سناریوی «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN»، کدام مجموعه شواهد برای پیدا کردن نخستین نقطهٔ خرابی قوی‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "یک ping منفرد بدون ثبت source، زمان یا مسیر"
+                },
+                {
+                  "id": "B",
+                  "label": "ثبت NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید با timestamp و مقایسهٔ قبل/بعد در هر دو سمت"
+                },
+                {
+                  "id": "C",
+                  "label": "تغییر هم‌زمان تمام timerها و routeها"
+                },
+                {
+                  "id": "D",
+                  "label": "restart کردن همهٔ سرویس‌ها پیش از جمع‌آوری شواهد"
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "type": "mcq",
+              "prompt": "اگر در درس «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» علامت اولیه دیده شود، کدام استنتاج فنی محتاطانه‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "اگر log خطا ندارد، سرویس قطعاً سالم است"
+                },
+                {
+                  "id": "B",
+                  "label": "علامت، علت ریشه‌ای را قطعاً ثابت می‌کند"
+                },
+                {
+                  "id": "C",
+                  "label": "همیشه باید سخت‌افزار را تعویض کرد"
+                },
+                {
+                  "id": "D",
+                  "label": "علامت فقط مرحله‌ای از زنجیره را نشان می‌دهد؛ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید باید جداگانه بررسی شود"
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "type": "mcq",
+              "prompt": "کدام معیار قبولی برای آزمایش «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» کامل‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط state یا flag مورد انتظار دیده شود"
+                },
+                {
+                  "id": "B",
+                  "label": "state و خروجی مورد انتظار، flow واقعی، حالت منفی و نتیجهٔ rollback ثبت شوند"
+                },
+                {
+                  "id": "C",
+                  "label": "config بدون syntax error ذخیره شود"
+                },
+                {
+                  "id": "D",
+                  "label": "یک بار ping موفق شود و آزمایش تمام شود"
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "type": "mcq",
+              "prompt": "پیش از هر تغییر در سناریوی «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN»، کدام اقدام امن‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "ابتدا دسترسی مدیریت را ببند تا config ساده‌تر شود"
+                },
+                {
+                  "id": "B",
+                  "label": "چند عامل را با هم تغییر بده تا سریع‌تر نتیجه بگیری"
+                },
+                {
+                  "id": "C",
+                  "label": "بدون snapshot تغییر را اجرا کن و بعداً علت را حدس بزن"
+                },
+                {
+                  "id": "D",
+                  "label": "baseline و backup، مسیر OOB/Safe Mode، دامنهٔ تغییر و rollback را قبل از اجرا ثبت کن"
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "type": "mcq",
+              "prompt": "اگر پس از تغییر در «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» علامت برطرف نشود، قدم بعدی مناسب چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "همان تغییر را چندین بار تکرار کن"
+                },
+                {
+                  "id": "B",
+                  "label": "فرضیه را با evidence تازه بسنج و مرحلهٔ بعدی زنجیرهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید را بررسی کن"
+                },
+                {
+                  "id": "C",
+                  "label": "بدون بررسی همهٔ routeها را حذف کن"
+                },
+                {
+                  "id": "D",
+                  "label": "مشکل را حل‌شده ثبت کن چون config پذیرفته شده است"
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "type": "mcq",
+              "prompt": "اگر دو دستگاه یا دو release برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» خروجی متفاوت نشان دهند، کدام روش مناسب‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فرمان destructive را برای هماهنگ‌کردن خروجی‌ها اجرا کن"
+                },
+                {
+                  "id": "B",
+                  "label": "هر دو خروجی را یکسان فرض کن"
+                },
+                {
+                  "id": "C",
+                  "label": "نام فرمان را معیار نهایی قرار بده"
+                },
+                {
+                  "id": "D",
+                  "label": "نسخه، نقش دستگاه، context اجرای فرمان و قابلیت feature را با مستندات همان release مقایسه کن"
+                }
+              ]
+            },
+            {
+              "id": "Q11",
+              "type": "mcq",
+              "prompt": "کدام مشاهده به‌تنهایی اثبات نمی‌کند مشکل «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» کاملاً رفع شده است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "آزمون flow مجاز و منفی"
+                },
+                {
+                  "id": "B",
+                  "label": "یک state/config موفق بدون بررسی NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید و رفتار end-to-end"
+                },
+                {
+                  "id": "C",
+                  "label": "تکرار آزمون با timestamp و نتیجهٔ مستقل"
+                },
+                {
+                  "id": "D",
+                  "label": "مقایسهٔ شاهد قبل و بعد"
+                }
+              ]
+            },
+            {
+              "id": "Q12",
+              "type": "mcq",
+              "prompt": "برای آزمودن ایمنی سناریوی «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN»، کدام روش بهتر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "تمام فیلترها را موقتاً خاموش کن"
+                },
+                {
+                  "id": "B",
+                  "label": "prefix یا سرویس آزمایشی را به peer واقعی advertise کن"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط تست مثبت انجام بده و مورد ردشده را بررسی نکن"
+                },
+                {
+                  "id": "D",
+                  "label": "یک مورد مجاز و یک مورد غیرمجاز را در محیط کنترل‌شده بسنج و تأیید کن policy درست اجازه/رد می‌دهد"
+                }
+              ]
+            },
+            {
+              "id": "Q13",
+              "type": "mcq",
+              "prompt": "در گزارش علت ریشه‌ای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN»، کدام داده قابل اتکاتر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "تخمین اپراتور از اینکه احتمالاً چه شده"
+                },
+                {
+                  "id": "B",
+                  "label": "خروجی/شاهد زمان‌دار مربوط به NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید همراه با فرضیهٔ قابل رد"
+                },
+                {
+                  "id": "C",
+                  "label": "تغییر چند متغیر بدون ثبت مقدار اولیه"
+                },
+                {
+                  "id": "D",
+                  "label": "یک screenshot بدون device، زمان و context"
+                }
+              ]
+            },
+            {
+              "id": "Q14",
+              "type": "mcq",
+              "prompt": "برای محاسبهٔ زمان بازیابی در «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN»، کدام روش مناسب‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط تعداد logها را بشمار"
+                },
+                {
+                  "id": "B",
+                  "label": "زمان را پس از پایان incident حدس بزن"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط زمان boot دستگاه را حساب کن"
+                },
+                {
+                  "id": "D",
+                  "label": "eventهای تشخیص، تغییر state/route، آماده‌شدن forwarding و موفقیت flow را جدا ثبت کن"
+                }
+              ]
+            },
+            {
+              "id": "Q15",
+              "type": "mcq",
+              "prompt": "کدام تعریف از rollback موفق برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» درست‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط rule تغییرکرده حذف شود حتی اگر state ناسازگار بماند"
+                },
+                {
+                  "id": "B",
+                  "label": "baseline restore شود و state، NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید، flow مجاز و test منفی دوباره verify شوند"
+                },
+                {
+                  "id": "C",
+                  "label": "فایل config ظاهراً شبیه نسخهٔ قبلی باشد"
+                },
+                {
+                  "id": "D",
+                  "label": "دستگاه reboot شود و بررسی دیگری انجام نشود"
+                }
+              ]
             }
           ],
           "answer_key": [
@@ -1644,6 +3657,237 @@
               ],
               "id": "Q4",
               "correct_index": 3
+            },
+            {
+              "id": "Q5",
+              "question_id": "Q5",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "question_id": "Q6",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "question_id": "Q7",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "question_id": "Q8",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "question_id": "Q9",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "question_id": "Q10",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                }
+              ]
+            },
+            {
+              "id": "Q11",
+              "question_id": "Q11",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q12",
+              "question_id": "Q12",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                }
+              ]
+            },
+            {
+              "id": "Q13",
+              "question_id": "Q13",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "گزارش باید فرضیه را به evidence قابل بازبینی وصل کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ گزارش باید فرضیه را به evidence قابل بازبینی وصل کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ گزارش باید فرضیه را به evidence قابل بازبینی وصل کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ گزارش باید فرضیه را به evidence قابل بازبینی وصل کند."
+                }
+              ]
+            },
+            {
+              "id": "Q14",
+              "question_id": "Q14",
+              "correct_option_id": "D",
+              "correct_index": 3,
+              "explanation": "مرحله‌های مختلف می‌توانند تاخیر جدا داشته باشند؛ تفکیک timestampها bottleneck را مشخص می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ مرحله‌های مختلف می‌توانند تاخیر جدا داشته باشند؛ تفکیک timestampها bottleneck را مشخص می‌کند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ مرحله‌های مختلف می‌توانند تاخیر جدا داشته باشند؛ تفکیک timestampها bottleneck را مشخص می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ مرحله‌های مختلف می‌توانند تاخیر جدا داشته باشند؛ تفکیک timestampها bottleneck را مشخص می‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q15",
+              "question_id": "Q15",
+              "correct_option_id": "B",
+              "correct_index": 1,
+              "explanation": "Rollback باید رفتار سیستم را به baseline بازگرداند، نه فقط متن config را.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ Rollback باید رفتار سیستم را به baseline بازگرداند، نه فقط متن config را."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ Rollback باید رفتار سیستم را به baseline بازگرداند، نه فقط متن config را."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN» شواهد کافی دربارهٔ NAT mapping، public source، reply ingress و تفاوت connection جاری/جدید فراهم نمی‌کند؛ Rollback باید رفتار سیستم را به baseline بازگرداند، نه فقط متن config را."
+                }
+              ]
             }
           ]
         }
@@ -1792,6 +4036,259 @@
                   "label": "بدون آزمون failback"
                 }
               ]
+            },
+            {
+              "id": "Q5",
+              "type": "mcq",
+              "prompt": "در سناریوی «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery»، کدام مجموعه شواهد برای پیدا کردن نخستین نقطهٔ خرابی قوی‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "restart کردن همهٔ سرویس‌ها پیش از جمع‌آوری شواهد"
+                },
+                {
+                  "id": "B",
+                  "label": "یک ping منفرد بدون ثبت source، زمان یا مسیر"
+                },
+                {
+                  "id": "C",
+                  "label": "ثبت probe health، route transition، service flow، alert و failback با timestamp و مقایسهٔ قبل/بعد در هر دو سمت"
+                },
+                {
+                  "id": "D",
+                  "label": "تغییر هم‌زمان تمام timerها و routeها"
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "type": "mcq",
+              "prompt": "اگر در درس «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» علامت اولیه دیده شود، کدام استنتاج فنی محتاطانه‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "علامت فقط مرحله‌ای از زنجیره را نشان می‌دهد؛ probe health، route transition، service flow، alert و failback باید جداگانه بررسی شود"
+                },
+                {
+                  "id": "B",
+                  "label": "اگر log خطا ندارد، سرویس قطعاً سالم است"
+                },
+                {
+                  "id": "C",
+                  "label": "علامت، علت ریشه‌ای را قطعاً ثابت می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "همیشه باید سخت‌افزار را تعویض کرد"
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "type": "mcq",
+              "prompt": "کدام معیار قبولی برای آزمایش «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» کامل‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "یک بار ping موفق شود و آزمایش تمام شود"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط state یا flag مورد انتظار دیده شود"
+                },
+                {
+                  "id": "C",
+                  "label": "state و خروجی مورد انتظار، flow واقعی، حالت منفی و نتیجهٔ rollback ثبت شوند"
+                },
+                {
+                  "id": "D",
+                  "label": "config بدون syntax error ذخیره شود"
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "type": "mcq",
+              "prompt": "پیش از هر تغییر در سناریوی «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery»، کدام اقدام امن‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "baseline و backup، مسیر OOB/Safe Mode، دامنهٔ تغییر و rollback را قبل از اجرا ثبت کن"
+                },
+                {
+                  "id": "B",
+                  "label": "ابتدا دسترسی مدیریت را ببند تا config ساده‌تر شود"
+                },
+                {
+                  "id": "C",
+                  "label": "چند عامل را با هم تغییر بده تا سریع‌تر نتیجه بگیری"
+                },
+                {
+                  "id": "D",
+                  "label": "بدون snapshot تغییر را اجرا کن و بعداً علت را حدس بزن"
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "type": "mcq",
+              "prompt": "اگر پس از تغییر در «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» علامت برطرف نشود، قدم بعدی مناسب چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "مشکل را حل‌شده ثبت کن چون config پذیرفته شده است"
+                },
+                {
+                  "id": "B",
+                  "label": "همان تغییر را چندین بار تکرار کن"
+                },
+                {
+                  "id": "C",
+                  "label": "فرضیه را با evidence تازه بسنج و مرحلهٔ بعدی زنجیرهٔ probe health، route transition، service flow، alert و failback را بررسی کن"
+                },
+                {
+                  "id": "D",
+                  "label": "بدون بررسی همهٔ routeها را حذف کن"
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "type": "mcq",
+              "prompt": "اگر دو دستگاه یا دو release برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» خروجی متفاوت نشان دهند، کدام روش مناسب‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "نسخه، نقش دستگاه، context اجرای فرمان و قابلیت feature را با مستندات همان release مقایسه کن"
+                },
+                {
+                  "id": "B",
+                  "label": "فرمان destructive را برای هماهنگ‌کردن خروجی‌ها اجرا کن"
+                },
+                {
+                  "id": "C",
+                  "label": "هر دو خروجی را یکسان فرض کن"
+                },
+                {
+                  "id": "D",
+                  "label": "نام فرمان را معیار نهایی قرار بده"
+                }
+              ]
+            },
+            {
+              "id": "Q11",
+              "type": "mcq",
+              "prompt": "کدام مشاهده به‌تنهایی اثبات نمی‌کند مشکل «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» کاملاً رفع شده است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "مقایسهٔ شاهد قبل و بعد"
+                },
+                {
+                  "id": "B",
+                  "label": "آزمون flow مجاز و منفی"
+                },
+                {
+                  "id": "C",
+                  "label": "یک state/config موفق بدون بررسی probe health، route transition، service flow، alert و failback و رفتار end-to-end"
+                },
+                {
+                  "id": "D",
+                  "label": "تکرار آزمون با timestamp و نتیجهٔ مستقل"
+                }
+              ]
+            },
+            {
+              "id": "Q12",
+              "type": "mcq",
+              "prompt": "برای آزمودن ایمنی سناریوی «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery»، کدام روش بهتر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "یک مورد مجاز و یک مورد غیرمجاز را در محیط کنترل‌شده بسنج و تأیید کن policy درست اجازه/رد می‌دهد"
+                },
+                {
+                  "id": "B",
+                  "label": "تمام فیلترها را موقتاً خاموش کن"
+                },
+                {
+                  "id": "C",
+                  "label": "prefix یا سرویس آزمایشی را به peer واقعی advertise کن"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط تست مثبت انجام بده و مورد ردشده را بررسی نکن"
+                }
+              ]
+            },
+            {
+              "id": "Q13",
+              "type": "mcq",
+              "prompt": "در گزارش علت ریشه‌ای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery»، کدام داده قابل اتکاتر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "یک screenshot بدون device، زمان و context"
+                },
+                {
+                  "id": "B",
+                  "label": "تخمین اپراتور از اینکه احتمالاً چه شده"
+                },
+                {
+                  "id": "C",
+                  "label": "خروجی/شاهد زمان‌دار مربوط به probe health، route transition، service flow، alert و failback همراه با فرضیهٔ قابل رد"
+                },
+                {
+                  "id": "D",
+                  "label": "تغییر چند متغیر بدون ثبت مقدار اولیه"
+                }
+              ]
+            },
+            {
+              "id": "Q14",
+              "type": "mcq",
+              "prompt": "برای محاسبهٔ زمان بازیابی در «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery»، کدام روش مناسب‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "eventهای تشخیص، تغییر state/route، آماده‌شدن forwarding و موفقیت flow را جدا ثبت کن"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط تعداد logها را بشمار"
+                },
+                {
+                  "id": "C",
+                  "label": "زمان را پس از پایان incident حدس بزن"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط زمان boot دستگاه را حساب کن"
+                }
+              ]
+            },
+            {
+              "id": "Q15",
+              "type": "mcq",
+              "prompt": "کدام تعریف از rollback موفق برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» درست‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "دستگاه reboot شود و بررسی دیگری انجام نشود"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط rule تغییرکرده حذف شود حتی اگر state ناسازگار بماند"
+                },
+                {
+                  "id": "C",
+                  "label": "baseline restore شود و state، probe health، route transition، service flow، alert و failback، flow مجاز و test منفی دوباره verify شوند"
+                },
+                {
+                  "id": "D",
+                  "label": "فایل config ظاهراً شبیه نسخهٔ قبلی باشد"
+                }
+              ]
             }
           ],
           "answer_key": [
@@ -1878,6 +4375,237 @@
               ],
               "id": "Q4",
               "correct_index": 0
+            },
+            {
+              "id": "Q5",
+              "question_id": "Q5",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ یک ping یا تغییر گروهی علت را جدا نمی‌کند؛ evidence مشخص این درس محل شکست را محدود می‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q6",
+              "question_id": "Q6",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ نشانهٔ اولیه معمولاً علت را به‌تنهایی اثبات نمی‌کند؛ مرحله و context مرتبط باید با evidence بررسی شود."
+                }
+              ]
+            },
+            {
+              "id": "Q7",
+              "question_id": "Q7",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ معیار کامل باید کنترل، رفتار واقعی، امنیت حالت منفی و بازگشت را پوشش دهد."
+                }
+              ]
+            },
+            {
+              "id": "Q8",
+              "question_id": "Q8",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ baseline و rollback از قطع مدیریت و مبهم‌شدن علت جلوگیری می‌کنند."
+                }
+              ]
+            },
+            {
+              "id": "Q9",
+              "question_id": "Q9",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ وقتی علامت باقی است باید فرضیه با شاهد بررسی یا رد شود، نه اینکه تغییر بدون تشخیص تکرار شود."
+                }
+              ]
+            },
+            {
+              "id": "Q10",
+              "question_id": "Q10",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ syntax و جزئیات نمایش می‌تواند وابسته به نسخه/پیاده‌سازی باشد؛ context باید ثبت شود."
+                }
+              ]
+            },
+            {
+              "id": "Q11",
+              "question_id": "Q11",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ وجود state یا configuration به‌تنهایی رفتار واقعی و مراحل مرتبط را اثبات نمی‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q12",
+              "question_id": "Q12",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ test منفی نشان می‌دهد اصلاح، دسترسی یا انتشار route ناخواسته ایجاد نکرده است."
+                }
+              ]
+            },
+            {
+              "id": "Q13",
+              "question_id": "Q13",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "گزارش باید فرضیه را به evidence قابل بازبینی وصل کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ گزارش باید فرضیه را به evidence قابل بازبینی وصل کند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ گزارش باید فرضیه را به evidence قابل بازبینی وصل کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ گزارش باید فرضیه را به evidence قابل بازبینی وصل کند."
+                }
+              ]
+            },
+            {
+              "id": "Q14",
+              "question_id": "Q14",
+              "correct_option_id": "A",
+              "correct_index": 0,
+              "explanation": "مرحله‌های مختلف می‌توانند تاخیر جدا داشته باشند؛ تفکیک timestampها bottleneck را مشخص می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ مرحله‌های مختلف می‌توانند تاخیر جدا داشته باشند؛ تفکیک timestampها bottleneck را مشخص می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ مرحله‌های مختلف می‌توانند تاخیر جدا داشته باشند؛ تفکیک timestampها bottleneck را مشخص می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ مرحله‌های مختلف می‌توانند تاخیر جدا داشته باشند؛ تفکیک timestampها bottleneck را مشخص می‌کند."
+                }
+              ]
+            },
+            {
+              "id": "Q15",
+              "question_id": "Q15",
+              "correct_option_id": "C",
+              "correct_index": 2,
+              "explanation": "Rollback باید رفتار سیستم را به baseline بازگرداند، نه فقط متن config را.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ Rollback باید رفتار سیستم را به baseline بازگرداند، نه فقط متن config را."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ Rollback باید رفتار سیستم را به baseline بازگرداند، نه فقط متن config را."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این انتخاب برای «[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery» شواهد کافی دربارهٔ probe health، route transition، service flow، alert و failback فراهم نمی‌کند؛ Rollback باید رفتار سیستم را به baseline بازگرداند، نه فقط متن config را."
+                }
+              ]
             }
           ]
         }
