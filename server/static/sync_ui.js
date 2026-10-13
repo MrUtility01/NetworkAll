@@ -1,15 +1,16 @@
-/* LAN IP + Sync status bar */
+/* NetworkAll LAN IP + Sync status bar */
 async function loadLanAndSync() {
   const lanEl = document.getElementById("lanIp");
   const hintEl = document.getElementById("androidHint");
   const statusEl = document.getElementById("syncStatus");
   if (!lanEl) return;
+  const webPort = window.location.port || "86";
   try {
     const r = await fetch("/api/sync/hello");
     const hello = await r.json();
     const ip = hello.lan_ip || "127.0.0.1";
     lanEl.textContent = ip;
-    if (hintEl) hintEl.textContent = "http://" + ip + ":5050";
+    if (hintEl) hintEl.textContent = "http://" + ip + ":" + webPort;
     if (statusEl) {
       const s = hello.stats || {};
       statusEl.textContent =
@@ -26,7 +27,7 @@ async function loadLanAndSync() {
 
 document.getElementById("btnCopyIp")?.addEventListener("click", async () => {
   const ip = document.getElementById("lanIp")?.textContent || "";
-  const url = "http://" + ip + ":5050";
+  const url = "http://" + ip + ":" + (window.location.port || "86");
   try {
     await navigator.clipboard.writeText(url);
     const st = document.getElementById("syncStatus");
