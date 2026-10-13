@@ -29,6 +29,7 @@ version = read("VERSION.txt")
 gradle = read("android/app/build.gradle.kts")
 settings = read("android/settings.gradle.kts")
 manifest = read("android/app/src/main/AndroidManifest.xml")
+diagrams_page = read("server/templates/diagrams.html")
 server = read("server/app.py")
 launcher = read("windows/start.bat")
 android_settings = read("android/app/src/main/java/com/netenc/app/SettingsActivity.kt")
@@ -38,6 +39,8 @@ require("Version: 1.0.0" in version and "Port: 86" in version, "VERSION.txt vers
 require('versionName = "1.0.0"' in gradle and re.search(r"versionCode = \d+", gradle), "Android Gradle version metadata missing")
 require('rootProject.name = "NetworkAll"' in settings, "Gradle root project name is not NetworkAll")
 require('android:label="NetworkAll"' in manifest, "Android launcher label is not NetworkAll")
+require('@app.get("/diagrams")' in server, "Windows web route /diagrams is missing")
+require('/static/diagrams/index.json' in diagrams_page, "Windows web diagram gallery is not wired to generated assets")
 require('os.environ.get("PORT", "86")' in server, "Flask default port is not TCP/86")
 require('set NETENC_PORT=86' in launcher, "Windows launcher does not default to TCP/86")
 require('const val DEFAULT_TOKEN = ""' in android_settings, "Android must not ship a hard-coded API token")
@@ -68,6 +71,19 @@ for rel in public_docs:
         ERRORS.append(f"{rel} still points users at the old repository")
     if "127.0.0.1:5050" in text or "IP-ویندوز:5050" in text:
         ERRORS.append(f"{rel} still instructs users to use port 5050")
+
+web_diagrams = ROOT / "server/static/diagrams"
+web_index = web_diagrams / "index.json"
+require(web_index.is_file(), "Windows web diagram index is missing after generation")
+if web_index.is_file():
+    try:
+        import json
+        index = json.loads(web_index.read_text(encoding="utf-8"))
+        items = index.get("diagrams", [])
+        require(index.get("count") == 100 and len(items) == 100, "Windows web diagram index must contain 100 diagrams")
+        require(all((web_diagrams / item.get("asset", "")).is_file() for item in items), "Windows web diagram asset is missing")
+    except Exception as exc:
+        ERRORS.append(f"Windows web diagram index is invalid: {exc}")
 
 workflow = read(".github/workflows/build-apk.yml")
 require("NetworkAll-Android-v1.0.0" in workflow, "workflow does not publish the versioned Android artifact")
