@@ -73,9 +73,40 @@ def commands_to_lessons(data: dict, source_key: str = "pack") -> list:
         cmd = c.get("command") or c.get("title_en") or ""
         level = c.get("level") or "L1"
         category_raw = str(c.get("category") or data.get("platform") or "general").strip().lower().replace("-", "_").replace("/", "_")
-        collection, collection_order = collection_map.get(category_raw, (str(c.get("platform") or data.get("platform") or category_raw).strip() or "عمومی", 199))
+        # category is usually a functional area (routing/VLAN/firewall), not
+        # the vendor/platform. Resolve the collection from record, pack
+        # metadata and source filename before using a generic fallback.
+        vendor_blob = " ".join(str(v or "") for v in (
+            c.get("vendor"), c.get("platform"), data.get("vendor_pack"),
+            data.get("vendor"), data.get("platform"), source_key
+        )).lower().replace("_", " ").replace("-", " ")
         raw_title = str(c.get("title_fa") or cmd)
-        if category_raw == "cmd" and any(token in (raw_title + " " + cmd).lower() for token in ("batch", "errorlevel", "delayed expansion", "setlocal", "goto ", "@echo off", "for /f", "if errorlevel")):
+        shell_collection = {
+            "linux": ("Linux", 101),
+            "bash": ("Bash", 102),
+            "powershell": ("PowerShell", 103),
+            "power_shell": ("PowerShell", 103),
+            "cmd": ("Windows CMD", 104),
+            "windows_cmd": ("Windows CMD", 104),
+            "batch": ("Windows Batch", 105),
+            "windows_batch": ("Windows Batch", 105),
+        }
+        if category_raw in shell_collection:
+            collection, collection_order = shell_collection[category_raw]
+        elif any(k in vendor_blob for k in ("mikrotik", "routeros", "ros7")):
+            collection, collection_order = ("MikroTik RouterOS", 107)
+        elif any(k in vendor_blob for k in ("cisco", "ios xe", "ios-xe")):
+            collection, collection_order = ("Cisco IOS/IOS-XE", 106)
+        elif any(k in vendor_blob for k in ("fortigate", "fortios")):
+            collection, collection_order = ("FortiGate", 108)
+        elif any(k in vendor_blob for k in ("issabel", "asterisk")):
+            collection, collection_order = ("Issabel / Asterisk", 109)
+        else:
+            collection, collection_order = (
+                str(c.get("platform") or data.get("platform") or category_raw).strip() or "عمومی",
+                199,
+            )
+        if category_raw in ("cmd", "windows_cmd") and any(token in (raw_title + " " + cmd).lower() for token in ("batch", "errorlevel", "delayed expansion", "setlocal", "goto ", "@echo off", "for /f", "if errorlevel")):
             collection, collection_order = ("Windows Batch", 105)
         title_fa = c.get("title_fa") or cmd
         if not str(title_fa).startswith("[L"):
@@ -225,7 +256,7 @@ def blueprint_to_lessons(d, focus_keywords, default_ch):
 
 def normalize_pack(path: Path, data: dict):
     if data.get("commands"):
-        return commands_to_lessons(data, path.stem)
+        return commands_to_lessons(data, path.relative_to(ROOT).as_posix().removesuffix(".json"))
     if data.get("lessons"):
         lessons = data.get("lessons") or []
         if int(data.get("chapter_order") or 0) == 68 or "chapter_68" in path.name.lower():
