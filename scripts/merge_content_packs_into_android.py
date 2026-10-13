@@ -355,6 +355,18 @@ def git_markdown_to_lessons(path: Path) -> list:
     return lessons
 
 
+def is_legacy_routing_pack(name: str) -> bool:
+    """Return whether an OSPF/BGP pack should be routed to the legacy chapter 66 bucket.
+
+    Chapter-scoped packs inside tools/packs/chapter14 are authored for chapter 14
+    and must retain that chapter when the Android curriculum is rebuilt.
+    """
+    normalized = str(name).replace("\\", "/").lower()
+    if "/chapter14/" in normalized:
+        return False
+    return any(token in normalized for token in ("ospf", "bgp", "redistribution", "routing_deep"))
+
+
 def normalize_pack(path: Path, data: dict):
     if path.suffix.lower() == ".md":
         return git_markdown_to_lessons(path)
@@ -959,8 +971,7 @@ def main():
 
         n = merge_by_title(data, lessons)
         print("   title-merge", n)
-        if (("ospf" in name or "bgp" in name or "redistribution" in name or "routing_deep" in name)
-                and "/chapter14/" not in name):
+        if is_legacy_routing_pack(name):
             # Explicit chapter-scoped supplements under chapter14 stay in chapter 14;
             # legacy/general OSPF-BGP packs continue to map to chapter 66.
             routing_extra.extend(remap_lessons_to_chapter(lessons, 66))
