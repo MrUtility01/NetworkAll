@@ -1,48 +1,28 @@
-# پرامپت مادر — ENGINEER JOKAR / NetworkAll
+# پرامپت مادر غنی‌سازی کتاب‌محور فصل‌های NetworkAll
 
-ریپو: https://github.com/MrUtility01/NetworkAll
+مخزن هدف: https://github.com/MrUtility01/NetworkAll
 
-## نقش
-تولیدکنندهٔ محتوای آموزشی تخصصی شبکه/IT. خروجی باید قابل واردسازی در برنامه باشد.
+## اصول سخت
+- فقط محتوای افزایشی بساز؛ فایل/درس/UID معتبر یا قابلیت فعلی حذف یا overwrite نشود.
+- قبل از تولید، عنوان/موضوع فصل و زیرفصل واقعی، سطح L0 تا L4، تکرارها و شکاف‌ها را ممیزی کن.
+- هر عنوان با متن درس مرتبط باشد؛ UID موجود ثابت بماند و UID جدید یکتا باشد.
+- فارسی فنی روان، عنوان انگلیسی، پیش‌نیاز، اهداف یادگیری، واژه‌نامه و منبع رسمی دقیق داشته باش.
+- فرمان/نسخه/منبع/خروجی آزمایش را جعل نکن. فقط لاب مجاز؛ backup و rollback اجباری.
+- هر درس باید فصل کتاب واقعی باشد: مبانی، مدل ذهنی، معماری، کارکرد مرحله‌ای، موارد کاربرد/عدم کاربرد، مثال حل‌شده، لاب، خروجی موردانتظار، RCA، خطاهای رایج، امنیت، rollback، checklist، خلاصه و واژه‌نامه.
+- حداقل در هر فصل: 50 مثال مستقل، 50 سناریوی واقعی و مستقل، 50 سؤال آزمون با answer_key جدا و IDهای یکسان، نمودار مخصوص هر مفهوم اصلی، لاب برای هر موضوع اصلی و حداقل 10 منبع معتبر.
+- هر مثال شامل داده ورودی/فرمان، گام‌ها، خروجی و تفسیر باشد. هر سناریو محیط، هدف/علامت خرابی، محدودیت، شواهد، تحلیل، اصلاح، verify و rollback داشته باشد.
+- سوال/options نباید فیلد correct یا پاسخ را افشا کنند. answer_key جدا و دارای ID و دلیل باشد.
+- هر نمودار ID، عنوان، lesson_uid، Mermaid source، SVG، manifest و متن جایگزین داشته باشد؛ نمودار تکراری/تزئینی ممنوع.
+- فیلدهای lesson: uid، chapter_order، subchapter_order، lesson_order، level، title_fa، title_en، topic، summary، full_content، commands، examples، notes، learning_objectives، meta، source_status.
+- محتوای جدید تا بازبینی انسانی source_status=review_required بماند.
+- اگر loader فعلی سناریو/نمودار را وارد UI نمی‌کند، آن را asset جدا اعلام کن؛ ادغام‌نشدن را پنهان نکن.
+- خروجی‌ها: chNN_pack.json، chNN_answer_key.json، chNN_scenarios.json، diagrams/chNN/manifest.json + SVG/source، و VALIDATION.md با آمار واقعی.
+- اول gap analysis و طرح درس‌ها، بعد JSON معتبر؛ بدون placeholder، ellipsis، رکورد تکراری یا منابع جعلی.
 
-## قوانین سخت
-1. فقط Lab مجاز و دفاعی؛ بدون حمله به سیستم ثالث یا اکسپلویت واقعی.
-2. سؤال و جواب جدا: questions بدون correct؛ answer_key جدا.
-3. عمق مثل درس مرجع IP/Subnetting: مفهوم + معماری + مثال + دستور + Lab + RCA + امنیت + ارزیابی.
-4. فارسی روان برای title_fa و full_content؛ title_en هم پر شود.
-5. uid پایدار: `lesson:chNN:lvMMM:lKKKK`
+پس از ذخیره pack از ریشه مخزن اجرا کن:
+    py -3 scripts/export_android_index.py
+    py -3 scripts/merge_content_packs_into_android.py
+    py -3 scripts/validate_android_curriculum.py
+    py -3 scripts/generate_android_diagrams.py
 
-## اسکلت JSON خروجی
-```json
-{
-  "package_schema_version": 1,
-  "project": "ENGINEER JOKAR / NetworkAll",
-  "generated_on": "YYYY-MM-DD",
-  "purpose": "...",
-  "scope": [{"chapter_order": N, "subchapter_order": 1, "title": "...", "topics": []}],
-  "compatibility": {
-    "preserve_existing_records": true,
-    "preserve_existing_uids": true,
-    "questions_and_answers_separate": true
-  },
-  "lessons": []
-}
-```
-
-## بخش‌های اجباری full_content هر درس
-1) معرفی و نقشه راه  2) آموزش از صفر  3) تشبیه سازمانی  4) معماری فنی
-5) مثال مرحله‌ای  6) دستورات با خروجی مورد انتظار  7) لابراتوار ایمن
-8) عیب‌یابی Symptom→Scope→Evidence→Hypothesis→Fix→Verify
-9) نکات امنیتی و اشتباهات رایج  10) خلاصه + واژه‌نامه
-
-## روند تولید
-1) اول فهرست درس‌ها (عنوان، سطح L0–L4، order) را بده تا تأیید شود.
-2) بعد JSON را بسته‌بسته (۱۵–۲۰ درس در هر پیام) تحویل بده.
-
-## محل ذخیره بعد از تولید
-`tools/packs/chNN_<slug>/<name>_pack.json`
-
-سپس:
-```bash
-python tools/apply_any_pack.py --db server/data/encyclopedia.db --pack PATH --apply
-```
+این فرمان‌ها اعتبار ساختاری را بررسی می‌کنند، نه صحت علمی. پیش از migration/reseed از دیتابیس شخصی backup بگیر.

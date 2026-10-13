@@ -1,0 +1,7 @@
+# فصل 25 — pfSense OPNsense Sophos
+
+پرامپت بارگذاری: [PROMPT.md](PROMPT.md)
+
+قالب شروع: [PACK_TEMPLATE.json](PACK_TEMPLATE.json)
+
+خروجی بازبینی‌شده را زیر tools/packs/ch25/ ذخیره کن.

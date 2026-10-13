@@ -1,0 +1,7 @@
+# فصل 05 — فایل‌سیستم و Storage پایه
+
+پرامپت بارگذاری: [PROMPT.md](PROMPT.md)
+
+قالب شروع: [PACK_TEMPLATE.json](PACK_TEMPLATE.json)
+
+خروجی بازبینی‌شده را زیر tools/packs/ch05/ ذخیره کن.
