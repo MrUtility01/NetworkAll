@@ -10,7 +10,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "server"))
+sys.path.insert(0, str(ROOT))\nsys.path.insert(0, str(ROOT / "server"))
 ASSET = ROOT / "android/app/src/main/assets/curriculum_index.json.gz"
 
 
@@ -18,7 +18,7 @@ def main() -> None:
     payload = json.loads(gzip.decompress(ASSET.read_bytes()))
     expected = int(payload["lesson_count"])
     with tempfile.TemporaryDirectory(prefix="networkall-v1-seed-") as td:
-        from core.db import WebDB
+        from core.db import WebDB\n        from shared.sync_engine import content_hash
 
         db = WebDB(Path(td) / "seed-test.db")
         try:
@@ -57,6 +57,21 @@ def main() -> None:
             ).fetchone()[0]
             if bad_uid or duplicate_uid:
                 raise SystemExit(f"invalid Windows UIDs/hashes: missing={bad_uid}, duplicate groups={duplicate_uid}")
+
+            sample_uids = [
+                row["uid"] for row in db.conn.execute(
+                    "SELECT uid FROM lessons WHERE uid IS NOT NULL AND uid!='' ORDER BY order_index LIMIT 25"
+                ).fetchall()
+            ]
+            for uid in sample_uids:
+                record = next((x for x in db.sync_pull([uid]) if x.get("uid") == uid), None)
+                if not record:
+                    raise SystemExit(f"sync pull could not retrieve seeded lesson {uid}")
+                expected_hash = content_hash(record)
+                if record.get("content_hash") != expected_hash:
+                    raise SystemExit(
+                        f"sync content hash mismatch for {uid}: stored={record.get('content_hash')} expected={expected_hash}"
+                    )
 
             print(json.dumps({
                 "ok": True,
