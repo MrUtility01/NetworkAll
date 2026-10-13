@@ -15,7 +15,7 @@ echo ============================================
 echo  NetworkAll v1.0.0 Server
 echo  Host  : %NETENC_HOST%
 echo  Port  : %NETENC_PORT%
-echo  Token : server\data\networkall.token (copy to Android Settings)
+echo  Token : %~dp0..\server\data\networkall.token (copy to Android Settings)
 echo ============================================
 echo.
 
