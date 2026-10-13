@@ -62,8 +62,6 @@ def commands_to_lessons(data: dict, source_key: str = "pack") -> list:
         "mikrotik": ("MikroTik RouterOS", 107), "fortigate": ("FortiGate", 108),
         "issabel": ("Issabel / Asterisk", 109),
     }
-    category_raw = str((data.get("commands") or [{}])[0].get("category") or data.get("platform") or "general").strip().lower().replace("-", "_").replace("/", "_")
-    collection, collection_order = collection_map.get(category_raw, (str(data.get("platform") or category_raw).strip() or "عمومی", 199))
     sub_map = {
         "basics": 1, "interface": 2, "vlan": 3, "trunk": 3, "stp": 4, "spanning-tree": 4,
         "etherchannel": 5, "port-security": 6, "mac": 7, "cdp": 8, "lldp": 8,
@@ -74,6 +72,8 @@ def commands_to_lessons(data: dict, source_key: str = "pack") -> list:
             continue
         cmd = c.get("command") or c.get("title_en") or ""
         level = c.get("level") or "L1"
+        category_raw = str(c.get("category") or data.get("platform") or "general").strip().lower().replace("-", "_").replace("/", "_")
+        collection, collection_order = collection_map.get(category_raw, (str(c.get("platform") or data.get("platform") or category_raw).strip() or "عمومی", 199))
         title_fa = c.get("title_fa") or cmd
         if not str(title_fa).startswith("[L"):
             title_fa = f"[{level}] {title_fa}"
