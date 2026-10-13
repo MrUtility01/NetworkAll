@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import socket
+import secrets
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -70,13 +71,33 @@ except Exception as _e:
     register_study_routes = None
     _MODULE_STATUS["study_error"] = str(_e)
 
-DEFAULT_DEV_TOKEN = "09136555866"
-SYNC_TOKEN = os.environ.get("NETENC_TOKEN", DEFAULT_DEV_TOKEN)
-DEVICE_ID = os.environ.get("NETENC_DEVICE", socket.gethostname() or "windows-host")
-BIND_HOST = os.environ.get("NETENC_HOST", "0.0.0.0")
+def load_or_create_sync_token() -> str:
+    """Use an explicit environment secret or a private, per-install token file."""
+    configured = os.environ.get("NETENC_TOKEN", "").strip()
+    if configured:
+        return configured
+    token_file = BASE / "data" / "networkall.token"
+    token_file.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        current = token_file.read_text(encoding="utf-8").strip()
+        if len(current) >= 32:
+            return current
+    except OSError:
+        pass
+    token = secrets.token_urlsafe(32)
+    token_file.write_text(token + "\\n", encoding="utf-8")
+    try:
+        os.chmod(token_file, 0o600)
+    except OSError:
+        pass
+    print(f"Generated per-install sync token. Copy it from: {token_file}")
+    return token
 
-if SYNC_TOKEN == DEFAULT_DEV_TOKEN:
-    print("WARNING: using default NETENC_TOKEN — set env NETENC_TOKEN for LAN use")
+
+SYNC_TOKEN = load_or_create_sync_token()
+DEVICE_ID = os.environ.get("NETENC_DEVICE", socket.gethostname() or "windows-host")
+# Safe default for manual/local launches. windows/start.bat opts into LAN binding.
+BIND_HOST = os.environ.get("NETENC_HOST", "127.0.0.1")
 
 _db = None
 
@@ -99,14 +120,12 @@ def extract_token() -> str:
     t = request.headers.get("X-NetEnc-Token", "") or ""
     if t:
         return t.strip()
-    t = request.cookies.get("netenc_token") or request.args.get("token") or ""
-    return (t or "").strip()
+    # Never accept secrets in URLs: they leak into browser history and access logs.
+    return (request.cookies.get("netenc_token") or "").strip()
 
 
 def check_token() -> bool:
-    if not SYNC_TOKEN:
-        return True
-    return extract_token() == SYNC_TOKEN
+    return bool(SYNC_TOKEN) and extract_token() == SYNC_TOKEN
 
 
 def require_token():
@@ -140,7 +159,7 @@ def health():
         "schema_version": SCHEMA_VERSION,
         "sync_protocol": "v1-aligned",
         "token_required": bool(SYNC_TOKEN),
-        "default_token_in_use": SYNC_TOKEN == DEFAULT_DEV_TOKEN,
+        "token_source": "environment" if os.environ.get("NETENC_TOKEN", "").strip() else "per-install-file",
         "modules": {
             "workspace": _MODULE_STATUS["workspace"],
             "study": bool(register_study_routes),
