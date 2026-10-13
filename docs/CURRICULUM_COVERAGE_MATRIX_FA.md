@@ -58,9 +58,9 @@
 | برنامه‌ریزی، یادآوری و همگام‌سازی | local persistence، time zone، due/remind، notifications، retries، tombstones، conflicts، offline edits، reconciliation و recovery | in_progress | یادآوری Windows/Android و sync باید در پایان با ساعت واقعی و restart تست شوند |
 | مستندسازی، آموزش و capstone | runbook، diagram-as-code، change plan، acceptance tests، incident report، design review و دفاع از trade-off | gap — مدرک پوشش نیازمند استخراج | برای هر حوزه پروژهٔ نهایی end-to-end و rubric مستقل تعریف شود |
 
-## وضعیت افزوده‌شدن فصل‌های ۲۸ تا ۳۱ در شاخهٔ کاری
+## وضعیت افزوده‌شدن فصل‌های ۲۸ تا ۳۲ در شاخهٔ کاری
 
-این چهار بسته به‌عنوان **محتوای در حال بازبینی** به مسیر مرجع `tools/packs/` افزوده شده‌اند. اضافه‌شدن به کاتالوگ یا عبور از آستانهٔ واژگان، به‌تنهایی پوشش تأییدشده محسوب نمی‌شود.
+این پنج بسته به‌عنوان **محتوای در حال بازبینی** به مسیر مرجع `tools/packs/` افزوده شده‌اند. اضافه‌شدن به کاتالوگ یا عبور از آستانهٔ واژگان، به‌تنهایی پوشش تأییدشده محسوب نمی‌شود.
 
 | فصل | حوزه | مسیر بسته | اجزای موجود | وضعیت واقعی |
 |---|---|---|---|---|
@@ -68,8 +68,9 @@
 | ۲۹ | SMB، Share و NTFS ACL، signing/encryption، audit، DFS Namespace/DFSR، FSRM، capacity و recovery | `tools/packs/windows_server/windows_file_services_smb_dfs_ch29_pack.json` | پنج سطح L0–L4؛ آزمون و پاسخ‌نامهٔ هم‌شناسه؛ سناریوهای مجوز، referral، backlog، hardening و restore؛ منابع Microsoft Learn | `review_required`؛ لابراتوار واقعی، تست سازگاری و آزمون بازیابی اجرا/ثبت نشده |
 | ۳۰ | Linux Server برای ادمین شبکه: systemd، permission، SSH، DNS، route/firewall، storage، log/performance، hardening و recovery | `tools/packs/linux/linux_server_administration_ch30_pack.json` | پنج سطح L0–L4؛ آزمون/پاسخ‌نامهٔ هم‌شناسه؛ سناریوهای systemd، network، storage، observability و DR؛ منابع Ubuntu/systemd/man-pages | `review_required`؛ اجرای لابراتوارهای Ubuntu/RHEL، syntax/version checks و restore test ثبت نشده |
 | ۳۱ | مهندسی SQL/Database: مدل رابطه‌ای، JOIN، query پارامتری، index/plan، concurrency، migration، backup/PITR و failover | `tools/packs/databases/sql_database_engineering_ch31_pack.json` | پنج سطح L0–L4؛ ۵/۸/۱۰/۱۲/۱۵ سؤال با پاسخ‌نامهٔ هم‌شناسه؛ سناریوهای query، transaction، migration و restore؛ منابع SQLite/PostgreSQL/Microsoft Learn | `review_required`؛ benchmark، تست concurrency، migration rollback و restore واقعی هنوز اجرا/ثبت نشده |
+| ۳۲ | Monitoring/Observability: metrics، logs، traces، PromQL، alerting، SLO/error budget، telemetry pipeline، capacity و incident response | `tools/packs/monitoring/observability_engineering_ch32_pack.json` | پنج سطح L0–L4؛ ۵/۸/۱۰/۱۲/۱۵ سؤال با پاسخ‌نامهٔ هم‌شناسه؛ fault matrix و runbookهای تشخیصی؛ منابع Prometheus/Grafana/OpenTelemetry/SRE | `review_required`؛ instrumentation، alert delivery و fault/recovery lab اجرا/ثبت نشده |
 
-دروازهٔ بعدی این چهار فصل، اجرای اعتبارسنجی ساختاری، کنترل UIDها و کلیدهای پاسخ، ادغام در شاخص مشترک Windows/Android و سپس اجرای آزمایش‌ها روی نسخه‌ها و توپولوژی مشخص است. تا ثبت خروجی واقعی lab، وضعیت `verified` مجاز نیست. اجرای اعتبارسنجی ساختاری، کنترل UIDها و کلیدهای پاسخ، ادغام در شاخص مشترک Windows/Android و سپس اجرای آزمایش‌ها روی نسخه‌ها و توپولوژی مشخص است. تا ثبت خروجی واقعی lab، وضعیت `verified` مجاز نیست.، کنترل UIDها و کلیدهای پاسخ، ادغام در شاخص مشترک Windows/Android و سپس اجرای آزمایش‌ها روی نسخه‌ها و توپولوژی مشخص است. تا ثبت خروجی واقعی lab، وضعیت `verified` مجاز نیست.
+دروازهٔ بعدی این پنج فصل، اجرای اعتبارسنجی ساختاری، کنترل UIDها و کلیدهای پاسخ، ادغام در شاخص مشترک Windows/Android و سپس اجرای آزمایش‌ها روی نسخه‌ها و توپولوژی مشخص است. تا ثبت خروجی واقعی lab، وضعیت `verified` مجاز نیست. اجرای اعتبارسنجی ساختاری، کنترل UIDها و کلیدهای پاسخ، ادغام در شاخص مشترک Windows/Android و سپس اجرای آزمایش‌ها روی نسخه‌ها و توپولوژی مشخص است. تا ثبت خروجی واقعی lab، وضعیت `verified` مجاز نیست. اجرای اعتبارسنجی ساختاری، کنترل UIDها و کلیدهای پاسخ، ادغام در شاخص مشترک Windows/Android و سپس اجرای آزمایش‌ها روی نسخه‌ها و توپولوژی مشخص است. تا ثبت خروجی واقعی lab، وضعیت `verified` مجاز نیست.، کنترل UIDها و کلیدهای پاسخ، ادغام در شاخص مشترک Windows/Android و سپس اجرای آزمایش‌ها روی نسخه‌ها و توپولوژی مشخص است. تا ثبت خروجی واقعی lab، وضعیت `verified` مجاز نیست.
 
 ## ۴. چطور تعداد رکورد واقعی را تعیین می‌کنیم؟
 
