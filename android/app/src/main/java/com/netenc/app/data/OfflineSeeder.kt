@@ -6,9 +6,10 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.BufferedInputStream
 import java.util.zip.GZIPInputStream
+import java.security.MessageDigest
 
 object OfflineSeeder {
-    private const val META_SEEDED = "offline_seeded_v16"
+    private const val META_SEEDED = "offline_seeded_v17"
 
     suspend fun ensureSeeded(context: Context): Int = withContext(Dispatchers.IO) {
         val dao = AppDatabase.get(context).lessonDao()
@@ -40,20 +41,40 @@ object OfflineSeeder {
                     val uid = les.optString("uid")
                     if (uid.isBlank()) continue
                     lessonOrd++
+                    val titleFa = les.optString("title_fa")
+                    val titleEn = les.optString("title_en")
+                    val summary = les.optString("summary")
+                    val fullContent = les.optString("full_content")
+                    val commands = les.optString("commands")
+                    val examples = les.optString("examples")
+                    val notes = les.optString("notes")
+                    val metaJson = les.optJSONObject("meta")?.toString() ?: "{}"
+                    val objectives = les.optJSONArray("learning_objectives")
+                    val objectivesText = if (objectives == null) "" else
+                        (0 until objectives.length()).joinToString("\n") { objectives.optString(it) }
+                    val searchQuery = les.optString("search_query",
+                        (les.optJSONArray("search_keywords")?.let { arr ->
+                            (0 until arr.length()).joinToString(" ") { arr.optString(it) }
+                        } ?: ""))
+                    val generatedAt = root.optString("generated_at", Instant.now().toString())
                     batch.add(
                         LessonEntity(
                             uid = uid,
-                            titleFa = les.optString("title_fa"),
-                            titleEn = les.optString("title_en"),
+                            titleFa = titleFa,
+                            titleEn = titleEn,
                             tags = les.optString("level", "L0"),
-                            summary = les.optString("summary"),
-                            fullContent = les.optString("full_content"),
-                            commands = les.optString("commands"),
-                            examples = les.optString("examples"),
-                            notes = les.optString("notes"),
-                            lastUpdated = "2026-10-11T12:00:00Z",
-                            contentHash = "offline-v16-ch68",
-                            deviceId = "android-offline",
+                            summary = summary,
+                            fullContent = fullContent,
+                            commands = commands,
+                            examples = examples,
+                            notes = notes,
+                            metaJson = metaJson,
+                            searchQuery = searchQuery,
+                            learningObjectives = objectivesText,
+                            sourceStatus = les.optString("source_status", "review_required"),
+                            lastUpdated = generatedAt,
+                            contentHash = sha256(uid, titleFa, titleEn, summary, fullContent, commands, examples, notes, metaJson),
+                            deviceId = "android-offline-v1",
                             chapterOrder = chOrder,
                             chapterTitle = chTitle,
                             subTitle = subTitle,
@@ -72,6 +93,12 @@ object OfflineSeeder {
         val finalCount = dao.countActive()
         if (finalCount == 0) throw IllegalStateException("هیچ درسی از بستهٔ NetworkAll وارد پایگاه داده نشد")
         finalCount
+    }
+
+    private fun sha256(vararg values: String): String {
+        val source = values.joinToString("\u001f")
+        val bytes = MessageDigest.getInstance("SHA-256").digest(source.toByteArray(Charsets.UTF_8))
+        return bytes.joinToString("") { "%02x".format(it.toInt() and 0xff) }
     }
 
     private fun readCurriculumAsset(context: Context): String? {
