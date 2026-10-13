@@ -1,4 +1,4 @@
-# Android Client
+# NetworkAll — Android Client
 
 ## باز کردن در Android Studio
 1. File → Open → پوشه `android/`
@@ -6,7 +6,7 @@
 3. Run روی گوشی/امولاتور (همان Wi‑Fi ویندوز)
 
 ## کاربرد
-- آدرس سرور: `http://IP-ویندوز:5050`
+- آدرس سرور: `http://IP-ویندوز:86`
 - دکمه **همگام‌سازی** → `/api/sync/manifest` + pull/push
 - قانون تعارض: Last-Write-Wins
 
