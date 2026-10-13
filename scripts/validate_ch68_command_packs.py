@@ -22,8 +22,10 @@ REQUIRED = {
     "cisco_switching.json": ("cisco_switching", 20),
     "mikrotik_ops_addon.json": ("mikrotik", 43),
     "mikrotik_ops_addon_02.json": ("mikrotik", 100),
+    "mikrotik_ops_addon_03.json": ("mikrotik", 41),
     "powershell.json": ("powershell", 49),
     "powershell_addon_01.json": ("powershell", 100),
+    "powershell_addon_02.json": ("powershell", 25),
     "windows_batch.json": ("windows_batch", 20),
     "linux.json": ("linux", 20),
 }
@@ -130,6 +132,9 @@ def main() -> None:
         ("cisco_routing_exam.json", "cisco_routing_exam_answer_key.json", "cisco", 20),
         ("routeros_exam.json", "routeros_exam_answer_key.json", "mikrotik", 20),
         ("powershell_exam.json", "powershell_exam_answer_key.json", "powershell", 20),
+        ("cisco_routing_exam_addon_01.json", "cisco_routing_exam_addon_01_answer_key.json", "cisco", 15),
+        ("routeros_exam_addon_01.json", "routeros_exam_addon_01_answer_key.json", "mikrotik", 15),
+        ("powershell_exam_addon_01.json", "powershell_exam_addon_01_answer_key.json", "powershell", 15),
     )
     exam_counts = {}
     for qfile, afile, vendor, minimum in exam_specs:
@@ -159,7 +164,7 @@ def main() -> None:
                 fail(f"{afile}:{qid}: invalid correct_option_index")
             if options[idx] != a.get("correct_answer_fa") or not a.get("explanation_fa"):
                 fail(f"{afile}:{qid}: answer key does not match option or lacks explanation")
-        exam_counts[vendor] = len(qs)
+        exam_counts[vendor] = exam_counts.get(vendor, 0) + len(qs)
         print(f"OK {qfile}: questions={len(qs)} answers={len(ans)}")
 
     source_data = json.loads((PACKS / "ch68_sources.json").read_text(encoding="utf-8"))
