@@ -1,4 +1,4 @@
-# پروتکل همگام‌سازی NetworkEncyclopedia v1 (aligned)
+# پروتکل همگام‌سازی NetworkAll v1 (aligned)
 
 ## قرارداد API (ویندوز ↔ اندروید)
 
@@ -26,6 +26,7 @@ X-NetEnc-Token: <NETENC_TOKEN>
 **هشدار:** توکن پیش‌فرض dev را روی LAN عمومی نگذارید:
 
 ```bash
+set NETENC_PORT=86
 set NETENC_TOKEN=یک-رشته-بلند-تصادفی
 cd server
 python app.py
