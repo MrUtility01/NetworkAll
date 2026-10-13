@@ -1,0 +1,248 @@
+{
+  "package_schema_version": 1,
+  "chapter_order": 9,
+  "chapter_title_fa": "مطالعات موردی و RCA — ARP / ICMP / TCP / UDP",
+  "case_study_count": 15,
+  "case_studies": [
+    {
+      "id": "ch09-case-01",
+      "lesson_uid": "ch09:arp-cache:v1",
+      "title_fa": "ARP incomplete on one VLAN",
+      "symptom_fa": "یک کلاینت همسایه را در حالت INCOMPLETE نشان می‌دهد؛ سایر VLANها سالم‌اند.",
+      "investigation_plan_fa": "بررسی کن آیا ARP Request روی VLAN درست از پورت access خارج می‌شود و پاسخ به همان broadcast domain برمی‌گردد.",
+      "decision_and_remediation_fa": "در صورت خروج Request روی VLAN اشتباه، mapping پورت/VLAN را بررسی کن؛ اگر Request درست است، endpoint یا کنترل‌های لایه ۲ را بررسی کن.",
+      "acceptance_criteria_fa": "جدول MAC/VLAN و ARP روی هر دو سمت باید با آدرس‌دهی مستند سازگار باشد.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-02",
+      "lesson_uid": "ch09:gratuitous:v1",
+      "title_fa": "Duplicate IP intermittent gateway",
+      "symptom_fa": "اتصال gateway گهگاه قطع و MAC نگاشت‌شده تغییر می‌کند.",
+      "investigation_plan_fa": "capture ARP دوطرفه بگیر و MACهای پاسخ‌دهنده به gateway IP را در یک timeline ثبت کن.",
+      "decision_and_remediation_fa": "پس از تأیید دو مالک IP، آدرس‌دهی یا DHCP reservation را اصلاح کن؛ cache flush تنها پس از رفع علت انجام شود.",
+      "acceptance_criteria_fa": "یک IP فقط یک مالک مورد انتظار دارد و neighbor entry پس از اصلاح پایدار می‌ماند.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-03",
+      "lesson_uid": "ch09:proxy-arp:v1",
+      "title_fa": "Proxy ARP unexpected",
+      "symptom_fa": "میزبان برای مقصدی خارج از subnet، MAC یک روتر را به‌جای gateway طراحی‌شده resolve می‌کند.",
+      "investigation_plan_fa": "route کلاینت، mask، proxy-ARP state روتر و capture را کنار هم بررسی کن.",
+      "decision_and_remediation_fa": "mask اشتباه یا proxy ARP ناخواسته را در لاب بازتولید کن؛ تغییر را فقط پس از تأیید طراحی انجام بده.",
+      "acceptance_criteria_fa": "رفتار ARP با توپولوژی و طراحی L3 مطابقت دارد.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-04",
+      "lesson_uid": "ch09:ping:v1",
+      "title_fa": "Ping fails but TCP works",
+      "symptom_fa": "ICMP Echo شکست می‌خورد ولی اتصال TCP به سرویس مشخص برقرار است.",
+      "investigation_plan_fa": "capture در دو سمت و firewall counters را برای ICMP و TCP مقایسه کن.",
+      "decision_and_remediation_fa": "policy ICMP یا rate-limit را بررسی کن؛ صرفاً برای سبزشدن ping، firewall را باز نکن.",
+      "acceptance_criteria_fa": "نتیجه‌گیری فقط درباره پروتکل/پورت آزمایش‌شده است، نه کل دسترس‌پذیری میزبان.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-05",
+      "lesson_uid": "ch09:traceroute:v1",
+      "title_fa": "Traceroute has one silent hop",
+      "symptom_fa": "یک hop timeout می‌شود ولی مقصد نهایی پاسخ می‌دهد.",
+      "investigation_plan_fa": "نوع probe، TTL و ICMP Time Exceeded را با capture یا probe جایگزین بررسی کن.",
+      "decision_and_remediation_fa": "اگر forwarding سالم است، timeout را به محدودیت پاسخ‌گویی کنترل‌پلین نسبت بده نه قطع قطعی مسیر.",
+      "acceptance_criteria_fa": "دسترسی مقصد و محدودیت مشاهده hop جداگانه ثبت می‌شوند.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-06",
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "title_fa": "TCP SYN retransmits",
+      "symptom_fa": "کلاینت چند SYN می‌فرستد و SYN-ACK دریافت نمی‌کند.",
+      "investigation_plan_fa": "listener/bind address، مسیر دوطرفه، ACL و capture سمت سرور را بررسی کن.",
+      "decision_and_remediation_fa": "اگر SYN به سرور نمی‌رسد، مسیر/فیلتر میانی؛ اگر می‌رسد، host firewall/listener را بررسی کن.",
+      "acceptance_criteria_fa": "هر فرضیه با مشاهده یک نقطه دیگر تأیید یا رد می‌شود.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-07",
+      "lesson_uid": "ch09:tcp-close:v1",
+      "title_fa": "TCP reset after handshake",
+      "symptom_fa": "TCP سه‌مرحله‌ای کامل می‌شود اما بلافاصله RST دیده می‌شود.",
+      "investigation_plan_fa": "tuple و زمان RST را در هر دو سمت بررسی و با log برنامه هم‌بسته کن.",
+      "decision_and_remediation_fa": "listener، application protocol، idle timeout یا middlebox را بررسی کن؛ RST را بدون شواهد به مهاجم نسبت نده.",
+      "acceptance_criteria_fa": "منشأ محتمل RST و شواهدش در RCA مستند می‌شود.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-08",
+      "lesson_uid": "ch09:tcp-seq:v1",
+      "title_fa": "Retransmission without app timeout",
+      "symptom_fa": "Wireshark بازانتقال نشان می‌دهد ولی برنامه هنوز timeout نداده است.",
+      "investigation_plan_fa": "sequence/ACK، RTT، duplicate ACK، capture loss و سمت مشاهده را بررسی کن.",
+      "decision_and_remediation_fa": "قبل از تغییر TCP tuning، congestion، link errors، path asymmetry و offload را بررسی کن.",
+      "acceptance_criteria_fa": "با capture سمت دوم و counters شبکه علت محتمل محدود می‌شود.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-09",
+      "lesson_uid": "ch09:mtu-pmtud:v1",
+      "title_fa": "Large transfers stall",
+      "symptom_fa": "ping کوچک و TCP handshake موفق‌اند اما انتقال‌های بزرگ stall می‌شوند.",
+      "investigation_plan_fa": "MTU مسیر، MSS، DF probe و ICMP Fragmentation Needed/Packet Too Big را بررسی کن.",
+      "decision_and_remediation_fa": "PMTUD black hole یا MTU mismatch را در لاب تأیید کن و فقط تغییر کم‌ریسک و مستند انجام بده.",
+      "acceptance_criteria_fa": "پس از اصلاح، انتقال بزرگ و مسیر مدیریتی هر دو آزموده می‌شوند.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-10",
+      "lesson_uid": "ch09:udp:v1",
+      "title_fa": "UDP request no reply",
+      "symptom_fa": "در capture درخواست UDP دیده می‌شود اما پاسخی به کلاینت برنمی‌گردد.",
+      "investigation_plan_fa": "bind/listener، application log، destination port، return route و ICMP احتمالی را بررسی کن.",
+      "decision_and_remediation_fa": "پروتکل برنامه و انتظار response را تأیید کن؛ UDP تضمین پاسخ ندارد.",
+      "acceptance_criteria_fa": "پاسخ یا نبود پاسخ با وضعیت برنامه و policy توضیح داده می‌شود.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-11",
+      "lesson_uid": "ch09:udp-apps:v1",
+      "title_fa": "DNS UDP fallback confusion",
+      "symptom_fa": "پرس‌وجوی DNS گاهی به TCP منتقل می‌شود و کاربر آن را قطعی شبکه می‌داند.",
+      "investigation_plan_fa": "capture DNS، پاسخ truncation، اندازه پاسخ، policy TCP/53 و resolver logs را مقایسه کن.",
+      "decision_and_remediation_fa": "هر دو مسیر UDP/53 و TCP/53 را در لاب مجاز آزمایش کن.",
+      "acceptance_criteria_fa": "تست DNS شامل transportهای مورد نیاز و resolver واقعی است.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-12",
+      "lesson_uid": "ch09:ipv6-nd:v1",
+      "title_fa": "IPv6 neighbor resolution failure",
+      "symptom_fa": "IPv6 route موجود است اما neighbor resolution به مقصد لینک محلی انجام نمی‌شود.",
+      "investigation_plan_fa": "Neighbor Solicitation/Advertisement، ICMPv6 policy، prefix و interface scope را بررسی کن.",
+      "decision_and_remediation_fa": "فیلتر بیش از حد کلی ICMPv6 و VLAN/interface mismatch را بررسی کن.",
+      "acceptance_criteria_fa": "ND و ICMPv6 ضروری در محدوده سیاست امنیتی درست کار می‌کنند.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-13",
+      "lesson_uid": "ch09:capture:v1",
+      "title_fa": "Capture shows only one side",
+      "symptom_fa": "در capture سرور بسته پاسخ دیده می‌شود ولی کلاینت آن را ندارد.",
+      "investigation_plan_fa": "نقطه capture، جهت، interface، filter، packet drops و clock skew را بررسی کن.",
+      "decision_and_remediation_fa": "capture را روی interface/سمت مناسب تکرار کن و سپس ACL یا مسیر برگشت را تحلیل کن.",
+      "acceptance_criteria_fa": "عدم مشاهده در capture بدون تأیید صحت capture به‌عنوان drop قطعی ثبت نمی‌شود.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-14",
+      "lesson_uid": "ch09:tcp-state:v1",
+      "title_fa": "TCP listener bound to loopback",
+      "symptom_fa": "روی خود سرور اتصال به localhost موفق است اما کلاینت راه دور نمی‌تواند وصل شود.",
+      "investigation_plan_fa": "Get-NetTCPConnection/ss را برای local address بررسی و bind address را با firewall مقایسه کن.",
+      "decision_and_remediation_fa": "سرویس را فقط در لاب روی آدرس موردنیاز bind کن و دسترسی را با firewall محدود کن.",
+      "acceptance_criteria_fa": "سرویس روی endpoint مورد انتظار listen می‌کند و فقط دسترسی مجاز ممکن است.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-case-15",
+      "lesson_uid": "ch09:tcp-close:v1",
+      "title_fa": "RST appears after idle period",
+      "symptom_fa": "اتصال بعد از مدت بیکاری با RST یا قطع غیرمنتظره مواجه می‌شود.",
+      "investigation_plan_fa": "keepalive، application timeout، firewall/NAT idle timeout و log دو سمت را تطبیق بده.",
+      "decision_and_remediation_fa": "زمان رخداد را با timeout هر لایه مقایسه و فقط policy مستند را تغییر بده.",
+      "acceptance_criteria_fa": "تست طولانی‌مدت و قطع/وصل پس از اصلاح، رفتار مورد انتظار را تأیید می‌کند.",
+      "evidence_required": [
+        "baseline و timestamp",
+        "خروجی ابزار/لاگ با نسخه مشخص",
+        "در صورت نیاز capture محدود و پاک‌سازی‌شده"
+      ],
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ تغییرها باید محدود، قابل بازگشت و ثبت‌شده باشند.",
+      "source_status": "review_required"
+    }
+  ]
+}
