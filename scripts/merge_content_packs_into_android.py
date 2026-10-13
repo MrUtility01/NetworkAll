@@ -342,7 +342,7 @@ def apply_fields(les, src):
         if append_mode and field in ("summary", "full_content", "commands", "examples", "notes"):
             old_text, new_text = as_text(existing).strip(), as_text(incoming).strip()
             if new_text and new_text not in old_text:
-                les[field] = (old_text + "\\n\\n--- تکمیل افزایشی فصل ۰۲ ---\\n\\n" + new_text).strip() if old_text else new_text
+                les[field] = (old_text + "\n\n--- تکمیل افزایشی فصل ۰۲ ---\n\n" + new_text).strip() if old_text else new_text
         elif append_mode and field in ("learning_objectives", "search_keywords"):
             old_items = existing if isinstance(existing, list) else ([existing] if existing else [])
             new_items = incoming if isinstance(incoming, list) else ([incoming] if incoming else [])
