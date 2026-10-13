@@ -1,0 +1,1238 @@
+{
+  "package_schema_version": 1,
+  "chapter_order": 9,
+  "chapter_title_fa": "ARP ICMP TCP UDP",
+  "scenarios": [
+    {
+      "id": "ch09-scn-001",
+      "lesson_uid": "ch09:arp-cache:v1",
+      "title_fa": "سناریو 1 — ARP incomplete / حالت 1",
+      "level": "L1",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "کلاینت در VLAN محلی به next-hop دسترسی ندارد",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "ip neigh حالت INCOMPLETE و نبود ARP Reply",
+      "hypotheses": [
+        "subnet/VLAN ناسازگار",
+        "لینک خاموش",
+        "مقصد خاموش یا فیلتر لایه ۲"
+      ],
+      "diagnostic_steps_fa": [
+        "route، mask و VLAN را read-only بررسی و capture دو سمت بگیر",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "route، mask و VLAN را read-only بررسی و capture دو سمت بگیر",
+      "verification_fa": "neighbor entry کامل شود و ترافیک gateway با آزمون تکراری بررسی شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-002",
+      "lesson_uid": "ch09:gratuitous:v1",
+      "title_fa": "سناریو 2 — IP maps to changing MAC / حالت 1",
+      "level": "L2",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "یک IP در بازه‌های زمانی به MACهای متفاوت resolve می‌شود",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "Gratuitous ARP یا پاسخ ARP متناوب از MACهای متفاوت",
+      "hypotheses": [
+        "duplicate IP",
+        "HA/failover",
+        "teaming یا spoofing"
+      ],
+      "diagnostic_steps_fa": [
+        "رخداد را با DHCP/IPAM، switch MAC table و change log هم‌بسته کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "رخداد را با DHCP/IPAM، switch MAC table و change log هم‌بسته کن",
+      "verification_fa": "مالک IP مشخص و mapping مطابق طراحی پایدار باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-003",
+      "lesson_uid": "ch09:ping:v1",
+      "title_fa": "سناریو 3 — Echo timeout / حالت 1",
+      "level": "L3",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "ping پاسخ ندارد اما علت مشخص نیست",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "درخواست Echo دیده می‌شود و Reply مشاهده نمی‌شود",
+      "hypotheses": [
+        "ICMP policy",
+        "rate limit",
+        "مسیر برگشت یا مقصد خاموش"
+      ],
+      "diagnostic_steps_fa": [
+        "آزمون gateway و TCP مجاز را جدا انجام بده؛ log و capture سمت مقصد را مقایسه کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "آزمون gateway و TCP مجاز را جدا انجام بده؛ log و capture سمت مقصد را مقایسه کن",
+      "verification_fa": "محدودیت مورد انتظار مستند شود و آزمون مستقل دسترسی برنامه نتیجه مشخص دهد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-004",
+      "lesson_uid": "ch09:tcp-state:v1",
+      "title_fa": "سناریو 4 — Application port failure / حالت 1",
+      "level": "L4",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "ping موفق است ولی سرویس TCP در دسترس نیست",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "Echo Reply موفق؛ اتصال پورت timeout/refused می‌شود",
+      "hypotheses": [
+        "listener",
+        "bind address",
+        "ACL یا TLS/application issue"
+      ],
+      "diagnostic_steps_fa": [
+        "socket listener، اتصال TCP مجاز و log سرویس را بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "socket listener، اتصال TCP مجاز و log سرویس را بررسی کن",
+      "verification_fa": "TCP handshake و health check برنامه با معیار مشخص موفق باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-005",
+      "lesson_uid": "ch09:traceroute:v1",
+      "title_fa": "سناریو 5 — Traceroute gap / حالت 1",
+      "level": "L2",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "چند hop پاسخ نمی‌دهند اما مقصد reachable است",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "timeout در hop میانی و پاسخ در مقصد یا TCP test",
+      "hypotheses": [
+        "ICMP/UDP probe filtering",
+        "rate limiting یا ECMP"
+      ],
+      "diagnostic_steps_fa": [
+        "نوع probe و چند تکرار را مقایسه و timeout را با capture بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "نوع probe و چند تکرار را مقایسه و timeout را با capture بررسی کن",
+      "verification_fa": "گزارش بین probe timeout و قطع واقعی forward تفکیک کند",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-006",
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "title_fa": "سناریو 6 — TCP no SYN-ACK / حالت 1",
+      "level": "L1",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "SYNهای خروجی بدون SYN-ACK می‌مانند",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "SYN retransmission و عدم پاسخ در capture کلاینت",
+      "hypotheses": [
+        "service down",
+        "ACL",
+        "route برگشت یا NAT"
+      ],
+      "diagnostic_steps_fa": [
+        "listener و capture سمت سرور/میان‌راه را بررسی کن؛ تغییر فقط پس از شواهد",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "listener و capture سمت سرور/میان‌راه را بررسی کن؛ تغییر فقط پس از شواهد",
+      "verification_fa": "سه‌مرحله‌ای handshake و اتصال برنامه با زمان ثبت‌شده کامل شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-007",
+      "lesson_uid": "ch09:tcp-close:v1",
+      "title_fa": "سناریو 7 — Unexpected RST / حالت 1",
+      "level": "L2",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "اتصال در آغاز یا حین تبادل reset می‌شود",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "RST با tuple، sequence و timestamp",
+      "hypotheses": [
+        "پورت بسته",
+        "برنامه یا middlebox"
+      ],
+      "diagnostic_steps_fa": [
+        "منبع RST را در دو capture و log سرویس مشخص کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "منبع RST را در دو capture و log سرویس مشخص کن",
+      "verification_fa": "رفتار RST با policy/طراحی سرویس سازگار و مستند باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-008",
+      "lesson_uid": "ch09:tcp-seq:v1",
+      "title_fa": "سناریو 8 — TCP retransmission / حالت 1",
+      "level": "L3",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "انتقال کند و retransmission زیاد است",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "duplicate ACK، RTT متغیر یا retransmission",
+      "hypotheses": [
+        "loss",
+        "congestion",
+        "reordering یا capture artifact"
+      ],
+      "diagnostic_steps_fa": [
+        "دو نقطه capture، counters رابط و offload را بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "دو نقطه capture، counters رابط و offload را بررسی کن",
+      "verification_fa": "در شرایط مشابه retransmission و RTT به baseline قابل قبول برگردد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-009",
+      "lesson_uid": "ch09:tcp-window:v1",
+      "title_fa": "سناریو 9 — Zero Window / حالت 1",
+      "level": "L4",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "اتصال TCP برقرار است اما ارسال متوقف می‌شود",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "advertised receive window صفر و سپس window updates",
+      "hypotheses": [
+        "گیرنده/برنامه داده را مصرف نمی‌کند یا منابع محدود است"
+      ],
+      "diagnostic_steps_fa": [
+        "resource و queue برنامه گیرنده را بررسی کن؛ timeout را کورکورانه زیاد نکن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "resource و queue برنامه گیرنده را بررسی کن؛ timeout را کورکورانه زیاد نکن",
+      "verification_fa": "window updates و پیشرفت انتقال با log برنامه هم‌خوان باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-010",
+      "lesson_uid": "ch09:udp-apps:v1",
+      "title_fa": "سناریو 10 — UDP DNS timeout / حالت 1",
+      "level": "L2",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "درخواست DNS می‌رود ولی پاسخ نمی‌آید",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "UDP/53 query بدون پاسخ در یک capture",
+      "hypotheses": [
+        "resolver",
+        "ACL/NAT",
+        "loss یا مسیر برگشت"
+      ],
+      "diagnostic_steps_fa": [
+        "resolver، response code و capture دو سمت را بررسی کن؛ TCP fallback را هم در نظر بگیر",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "resolver، response code و capture دو سمت را بررسی کن؛ TCP fallback را هم در نظر بگیر",
+      "verification_fa": "resolve معتبر چندباره و زمان پاسخ ثبت شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-011",
+      "lesson_uid": "ch09:arp-cache:v1",
+      "title_fa": "سناریو 11 — ARP incomplete / حالت 2",
+      "level": "L1",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "کلاینت در VLAN محلی به next-hop دسترسی ندارد",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "ip neigh حالت INCOMPLETE و نبود ARP Reply",
+      "hypotheses": [
+        "subnet/VLAN ناسازگار",
+        "لینک خاموش",
+        "مقصد خاموش یا فیلتر لایه ۲"
+      ],
+      "diagnostic_steps_fa": [
+        "route، mask و VLAN را read-only بررسی و capture دو سمت بگیر",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "route، mask و VLAN را read-only بررسی و capture دو سمت بگیر",
+      "verification_fa": "neighbor entry کامل شود و ترافیک gateway با آزمون تکراری بررسی شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-012",
+      "lesson_uid": "ch09:gratuitous:v1",
+      "title_fa": "سناریو 12 — IP maps to changing MAC / حالت 2",
+      "level": "L2",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "یک IP در بازه‌های زمانی به MACهای متفاوت resolve می‌شود",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "Gratuitous ARP یا پاسخ ARP متناوب از MACهای متفاوت",
+      "hypotheses": [
+        "duplicate IP",
+        "HA/failover",
+        "teaming یا spoofing"
+      ],
+      "diagnostic_steps_fa": [
+        "رخداد را با DHCP/IPAM، switch MAC table و change log هم‌بسته کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "رخداد را با DHCP/IPAM، switch MAC table و change log هم‌بسته کن",
+      "verification_fa": "مالک IP مشخص و mapping مطابق طراحی پایدار باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-013",
+      "lesson_uid": "ch09:ping:v1",
+      "title_fa": "سناریو 13 — Echo timeout / حالت 2",
+      "level": "L3",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "ping پاسخ ندارد اما علت مشخص نیست",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "درخواست Echo دیده می‌شود و Reply مشاهده نمی‌شود",
+      "hypotheses": [
+        "ICMP policy",
+        "rate limit",
+        "مسیر برگشت یا مقصد خاموش"
+      ],
+      "diagnostic_steps_fa": [
+        "آزمون gateway و TCP مجاز را جدا انجام بده؛ log و capture سمت مقصد را مقایسه کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "آزمون gateway و TCP مجاز را جدا انجام بده؛ log و capture سمت مقصد را مقایسه کن",
+      "verification_fa": "محدودیت مورد انتظار مستند شود و آزمون مستقل دسترسی برنامه نتیجه مشخص دهد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-014",
+      "lesson_uid": "ch09:tcp-state:v1",
+      "title_fa": "سناریو 14 — Application port failure / حالت 2",
+      "level": "L4",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "ping موفق است ولی سرویس TCP در دسترس نیست",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "Echo Reply موفق؛ اتصال پورت timeout/refused می‌شود",
+      "hypotheses": [
+        "listener",
+        "bind address",
+        "ACL یا TLS/application issue"
+      ],
+      "diagnostic_steps_fa": [
+        "socket listener، اتصال TCP مجاز و log سرویس را بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "socket listener، اتصال TCP مجاز و log سرویس را بررسی کن",
+      "verification_fa": "TCP handshake و health check برنامه با معیار مشخص موفق باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-015",
+      "lesson_uid": "ch09:traceroute:v1",
+      "title_fa": "سناریو 15 — Traceroute gap / حالت 2",
+      "level": "L2",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "چند hop پاسخ نمی‌دهند اما مقصد reachable است",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "timeout در hop میانی و پاسخ در مقصد یا TCP test",
+      "hypotheses": [
+        "ICMP/UDP probe filtering",
+        "rate limiting یا ECMP"
+      ],
+      "diagnostic_steps_fa": [
+        "نوع probe و چند تکرار را مقایسه و timeout را با capture بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "نوع probe و چند تکرار را مقایسه و timeout را با capture بررسی کن",
+      "verification_fa": "گزارش بین probe timeout و قطع واقعی forward تفکیک کند",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-016",
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "title_fa": "سناریو 16 — TCP no SYN-ACK / حالت 2",
+      "level": "L1",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "SYNهای خروجی بدون SYN-ACK می‌مانند",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "SYN retransmission و عدم پاسخ در capture کلاینت",
+      "hypotheses": [
+        "service down",
+        "ACL",
+        "route برگشت یا NAT"
+      ],
+      "diagnostic_steps_fa": [
+        "listener و capture سمت سرور/میان‌راه را بررسی کن؛ تغییر فقط پس از شواهد",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "listener و capture سمت سرور/میان‌راه را بررسی کن؛ تغییر فقط پس از شواهد",
+      "verification_fa": "سه‌مرحله‌ای handshake و اتصال برنامه با زمان ثبت‌شده کامل شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-017",
+      "lesson_uid": "ch09:tcp-close:v1",
+      "title_fa": "سناریو 17 — Unexpected RST / حالت 2",
+      "level": "L2",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "اتصال در آغاز یا حین تبادل reset می‌شود",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "RST با tuple، sequence و timestamp",
+      "hypotheses": [
+        "پورت بسته",
+        "برنامه یا middlebox"
+      ],
+      "diagnostic_steps_fa": [
+        "منبع RST را در دو capture و log سرویس مشخص کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "منبع RST را در دو capture و log سرویس مشخص کن",
+      "verification_fa": "رفتار RST با policy/طراحی سرویس سازگار و مستند باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-018",
+      "lesson_uid": "ch09:tcp-seq:v1",
+      "title_fa": "سناریو 18 — TCP retransmission / حالت 2",
+      "level": "L3",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "انتقال کند و retransmission زیاد است",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "duplicate ACK، RTT متغیر یا retransmission",
+      "hypotheses": [
+        "loss",
+        "congestion",
+        "reordering یا capture artifact"
+      ],
+      "diagnostic_steps_fa": [
+        "دو نقطه capture، counters رابط و offload را بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "دو نقطه capture، counters رابط و offload را بررسی کن",
+      "verification_fa": "در شرایط مشابه retransmission و RTT به baseline قابل قبول برگردد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-019",
+      "lesson_uid": "ch09:tcp-window:v1",
+      "title_fa": "سناریو 19 — Zero Window / حالت 2",
+      "level": "L4",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "اتصال TCP برقرار است اما ارسال متوقف می‌شود",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "advertised receive window صفر و سپس window updates",
+      "hypotheses": [
+        "گیرنده/برنامه داده را مصرف نمی‌کند یا منابع محدود است"
+      ],
+      "diagnostic_steps_fa": [
+        "resource و queue برنامه گیرنده را بررسی کن؛ timeout را کورکورانه زیاد نکن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "resource و queue برنامه گیرنده را بررسی کن؛ timeout را کورکورانه زیاد نکن",
+      "verification_fa": "window updates و پیشرفت انتقال با log برنامه هم‌خوان باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-020",
+      "lesson_uid": "ch09:udp-apps:v1",
+      "title_fa": "سناریو 20 — UDP DNS timeout / حالت 2",
+      "level": "L2",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "درخواست DNS می‌رود ولی پاسخ نمی‌آید",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "UDP/53 query بدون پاسخ در یک capture",
+      "hypotheses": [
+        "resolver",
+        "ACL/NAT",
+        "loss یا مسیر برگشت"
+      ],
+      "diagnostic_steps_fa": [
+        "resolver، response code و capture دو سمت را بررسی کن؛ TCP fallback را هم در نظر بگیر",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "resolver، response code و capture دو سمت را بررسی کن؛ TCP fallback را هم در نظر بگیر",
+      "verification_fa": "resolve معتبر چندباره و زمان پاسخ ثبت شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-021",
+      "lesson_uid": "ch09:arp-cache:v1",
+      "title_fa": "سناریو 21 — ARP incomplete / حالت 3",
+      "level": "L1",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "کلاینت در VLAN محلی به next-hop دسترسی ندارد",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "ip neigh حالت INCOMPLETE و نبود ARP Reply",
+      "hypotheses": [
+        "subnet/VLAN ناسازگار",
+        "لینک خاموش",
+        "مقصد خاموش یا فیلتر لایه ۲"
+      ],
+      "diagnostic_steps_fa": [
+        "route، mask و VLAN را read-only بررسی و capture دو سمت بگیر",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "route، mask و VLAN را read-only بررسی و capture دو سمت بگیر",
+      "verification_fa": "neighbor entry کامل شود و ترافیک gateway با آزمون تکراری بررسی شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-022",
+      "lesson_uid": "ch09:gratuitous:v1",
+      "title_fa": "سناریو 22 — IP maps to changing MAC / حالت 3",
+      "level": "L2",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "یک IP در بازه‌های زمانی به MACهای متفاوت resolve می‌شود",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "Gratuitous ARP یا پاسخ ARP متناوب از MACهای متفاوت",
+      "hypotheses": [
+        "duplicate IP",
+        "HA/failover",
+        "teaming یا spoofing"
+      ],
+      "diagnostic_steps_fa": [
+        "رخداد را با DHCP/IPAM، switch MAC table و change log هم‌بسته کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "رخداد را با DHCP/IPAM، switch MAC table و change log هم‌بسته کن",
+      "verification_fa": "مالک IP مشخص و mapping مطابق طراحی پایدار باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-023",
+      "lesson_uid": "ch09:ping:v1",
+      "title_fa": "سناریو 23 — Echo timeout / حالت 3",
+      "level": "L3",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "ping پاسخ ندارد اما علت مشخص نیست",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "درخواست Echo دیده می‌شود و Reply مشاهده نمی‌شود",
+      "hypotheses": [
+        "ICMP policy",
+        "rate limit",
+        "مسیر برگشت یا مقصد خاموش"
+      ],
+      "diagnostic_steps_fa": [
+        "آزمون gateway و TCP مجاز را جدا انجام بده؛ log و capture سمت مقصد را مقایسه کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "آزمون gateway و TCP مجاز را جدا انجام بده؛ log و capture سمت مقصد را مقایسه کن",
+      "verification_fa": "محدودیت مورد انتظار مستند شود و آزمون مستقل دسترسی برنامه نتیجه مشخص دهد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-024",
+      "lesson_uid": "ch09:tcp-state:v1",
+      "title_fa": "سناریو 24 — Application port failure / حالت 3",
+      "level": "L4",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "ping موفق است ولی سرویس TCP در دسترس نیست",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "Echo Reply موفق؛ اتصال پورت timeout/refused می‌شود",
+      "hypotheses": [
+        "listener",
+        "bind address",
+        "ACL یا TLS/application issue"
+      ],
+      "diagnostic_steps_fa": [
+        "socket listener، اتصال TCP مجاز و log سرویس را بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "socket listener، اتصال TCP مجاز و log سرویس را بررسی کن",
+      "verification_fa": "TCP handshake و health check برنامه با معیار مشخص موفق باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-025",
+      "lesson_uid": "ch09:traceroute:v1",
+      "title_fa": "سناریو 25 — Traceroute gap / حالت 3",
+      "level": "L2",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "چند hop پاسخ نمی‌دهند اما مقصد reachable است",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "timeout در hop میانی و پاسخ در مقصد یا TCP test",
+      "hypotheses": [
+        "ICMP/UDP probe filtering",
+        "rate limiting یا ECMP"
+      ],
+      "diagnostic_steps_fa": [
+        "نوع probe و چند تکرار را مقایسه و timeout را با capture بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "نوع probe و چند تکرار را مقایسه و timeout را با capture بررسی کن",
+      "verification_fa": "گزارش بین probe timeout و قطع واقعی forward تفکیک کند",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-026",
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "title_fa": "سناریو 26 — TCP no SYN-ACK / حالت 3",
+      "level": "L1",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "SYNهای خروجی بدون SYN-ACK می‌مانند",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "SYN retransmission و عدم پاسخ در capture کلاینت",
+      "hypotheses": [
+        "service down",
+        "ACL",
+        "route برگشت یا NAT"
+      ],
+      "diagnostic_steps_fa": [
+        "listener و capture سمت سرور/میان‌راه را بررسی کن؛ تغییر فقط پس از شواهد",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "listener و capture سمت سرور/میان‌راه را بررسی کن؛ تغییر فقط پس از شواهد",
+      "verification_fa": "سه‌مرحله‌ای handshake و اتصال برنامه با زمان ثبت‌شده کامل شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-027",
+      "lesson_uid": "ch09:tcp-close:v1",
+      "title_fa": "سناریو 27 — Unexpected RST / حالت 3",
+      "level": "L2",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "اتصال در آغاز یا حین تبادل reset می‌شود",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "RST با tuple، sequence و timestamp",
+      "hypotheses": [
+        "پورت بسته",
+        "برنامه یا middlebox"
+      ],
+      "diagnostic_steps_fa": [
+        "منبع RST را در دو capture و log سرویس مشخص کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "منبع RST را در دو capture و log سرویس مشخص کن",
+      "verification_fa": "رفتار RST با policy/طراحی سرویس سازگار و مستند باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-028",
+      "lesson_uid": "ch09:tcp-seq:v1",
+      "title_fa": "سناریو 28 — TCP retransmission / حالت 3",
+      "level": "L3",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "انتقال کند و retransmission زیاد است",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "duplicate ACK، RTT متغیر یا retransmission",
+      "hypotheses": [
+        "loss",
+        "congestion",
+        "reordering یا capture artifact"
+      ],
+      "diagnostic_steps_fa": [
+        "دو نقطه capture، counters رابط و offload را بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "دو نقطه capture، counters رابط و offload را بررسی کن",
+      "verification_fa": "در شرایط مشابه retransmission و RTT به baseline قابل قبول برگردد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-029",
+      "lesson_uid": "ch09:tcp-window:v1",
+      "title_fa": "سناریو 29 — Zero Window / حالت 3",
+      "level": "L4",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "اتصال TCP برقرار است اما ارسال متوقف می‌شود",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "advertised receive window صفر و سپس window updates",
+      "hypotheses": [
+        "گیرنده/برنامه داده را مصرف نمی‌کند یا منابع محدود است"
+      ],
+      "diagnostic_steps_fa": [
+        "resource و queue برنامه گیرنده را بررسی کن؛ timeout را کورکورانه زیاد نکن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "resource و queue برنامه گیرنده را بررسی کن؛ timeout را کورکورانه زیاد نکن",
+      "verification_fa": "window updates و پیشرفت انتقال با log برنامه هم‌خوان باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-030",
+      "lesson_uid": "ch09:udp-apps:v1",
+      "title_fa": "سناریو 30 — UDP DNS timeout / حالت 3",
+      "level": "L2",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "درخواست DNS می‌رود ولی پاسخ نمی‌آید",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "UDP/53 query بدون پاسخ در یک capture",
+      "hypotheses": [
+        "resolver",
+        "ACL/NAT",
+        "loss یا مسیر برگشت"
+      ],
+      "diagnostic_steps_fa": [
+        "resolver، response code و capture دو سمت را بررسی کن؛ TCP fallback را هم در نظر بگیر",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "resolver، response code و capture دو سمت را بررسی کن؛ TCP fallback را هم در نظر بگیر",
+      "verification_fa": "resolve معتبر چندباره و زمان پاسخ ثبت شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-031",
+      "lesson_uid": "ch09:arp-cache:v1",
+      "title_fa": "سناریو 31 — ARP incomplete / حالت 4",
+      "level": "L1",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "کلاینت در VLAN محلی به next-hop دسترسی ندارد",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "ip neigh حالت INCOMPLETE و نبود ARP Reply",
+      "hypotheses": [
+        "subnet/VLAN ناسازگار",
+        "لینک خاموش",
+        "مقصد خاموش یا فیلتر لایه ۲"
+      ],
+      "diagnostic_steps_fa": [
+        "route، mask و VLAN را read-only بررسی و capture دو سمت بگیر",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "route، mask و VLAN را read-only بررسی و capture دو سمت بگیر",
+      "verification_fa": "neighbor entry کامل شود و ترافیک gateway با آزمون تکراری بررسی شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-032",
+      "lesson_uid": "ch09:gratuitous:v1",
+      "title_fa": "سناریو 32 — IP maps to changing MAC / حالت 4",
+      "level": "L2",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "یک IP در بازه‌های زمانی به MACهای متفاوت resolve می‌شود",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "Gratuitous ARP یا پاسخ ARP متناوب از MACهای متفاوت",
+      "hypotheses": [
+        "duplicate IP",
+        "HA/failover",
+        "teaming یا spoofing"
+      ],
+      "diagnostic_steps_fa": [
+        "رخداد را با DHCP/IPAM، switch MAC table و change log هم‌بسته کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "رخداد را با DHCP/IPAM، switch MAC table و change log هم‌بسته کن",
+      "verification_fa": "مالک IP مشخص و mapping مطابق طراحی پایدار باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-033",
+      "lesson_uid": "ch09:ping:v1",
+      "title_fa": "سناریو 33 — Echo timeout / حالت 4",
+      "level": "L3",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "ping پاسخ ندارد اما علت مشخص نیست",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "درخواست Echo دیده می‌شود و Reply مشاهده نمی‌شود",
+      "hypotheses": [
+        "ICMP policy",
+        "rate limit",
+        "مسیر برگشت یا مقصد خاموش"
+      ],
+      "diagnostic_steps_fa": [
+        "آزمون gateway و TCP مجاز را جدا انجام بده؛ log و capture سمت مقصد را مقایسه کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "آزمون gateway و TCP مجاز را جدا انجام بده؛ log و capture سمت مقصد را مقایسه کن",
+      "verification_fa": "محدودیت مورد انتظار مستند شود و آزمون مستقل دسترسی برنامه نتیجه مشخص دهد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-034",
+      "lesson_uid": "ch09:tcp-state:v1",
+      "title_fa": "سناریو 34 — Application port failure / حالت 4",
+      "level": "L4",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "ping موفق است ولی سرویس TCP در دسترس نیست",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "Echo Reply موفق؛ اتصال پورت timeout/refused می‌شود",
+      "hypotheses": [
+        "listener",
+        "bind address",
+        "ACL یا TLS/application issue"
+      ],
+      "diagnostic_steps_fa": [
+        "socket listener، اتصال TCP مجاز و log سرویس را بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "socket listener، اتصال TCP مجاز و log سرویس را بررسی کن",
+      "verification_fa": "TCP handshake و health check برنامه با معیار مشخص موفق باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-035",
+      "lesson_uid": "ch09:traceroute:v1",
+      "title_fa": "سناریو 35 — Traceroute gap / حالت 4",
+      "level": "L2",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "چند hop پاسخ نمی‌دهند اما مقصد reachable است",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "timeout در hop میانی و پاسخ در مقصد یا TCP test",
+      "hypotheses": [
+        "ICMP/UDP probe filtering",
+        "rate limiting یا ECMP"
+      ],
+      "diagnostic_steps_fa": [
+        "نوع probe و چند تکرار را مقایسه و timeout را با capture بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "نوع probe و چند تکرار را مقایسه و timeout را با capture بررسی کن",
+      "verification_fa": "گزارش بین probe timeout و قطع واقعی forward تفکیک کند",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-036",
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "title_fa": "سناریو 36 — TCP no SYN-ACK / حالت 4",
+      "level": "L1",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "SYNهای خروجی بدون SYN-ACK می‌مانند",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "SYN retransmission و عدم پاسخ در capture کلاینت",
+      "hypotheses": [
+        "service down",
+        "ACL",
+        "route برگشت یا NAT"
+      ],
+      "diagnostic_steps_fa": [
+        "listener و capture سمت سرور/میان‌راه را بررسی کن؛ تغییر فقط پس از شواهد",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "listener و capture سمت سرور/میان‌راه را بررسی کن؛ تغییر فقط پس از شواهد",
+      "verification_fa": "سه‌مرحله‌ای handshake و اتصال برنامه با زمان ثبت‌شده کامل شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-037",
+      "lesson_uid": "ch09:tcp-close:v1",
+      "title_fa": "سناریو 37 — Unexpected RST / حالت 4",
+      "level": "L2",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "اتصال در آغاز یا حین تبادل reset می‌شود",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "RST با tuple، sequence و timestamp",
+      "hypotheses": [
+        "پورت بسته",
+        "برنامه یا middlebox"
+      ],
+      "diagnostic_steps_fa": [
+        "منبع RST را در دو capture و log سرویس مشخص کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "منبع RST را در دو capture و log سرویس مشخص کن",
+      "verification_fa": "رفتار RST با policy/طراحی سرویس سازگار و مستند باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-038",
+      "lesson_uid": "ch09:tcp-seq:v1",
+      "title_fa": "سناریو 38 — TCP retransmission / حالت 4",
+      "level": "L3",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "انتقال کند و retransmission زیاد است",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "duplicate ACK، RTT متغیر یا retransmission",
+      "hypotheses": [
+        "loss",
+        "congestion",
+        "reordering یا capture artifact"
+      ],
+      "diagnostic_steps_fa": [
+        "دو نقطه capture، counters رابط و offload را بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "دو نقطه capture، counters رابط و offload را بررسی کن",
+      "verification_fa": "در شرایط مشابه retransmission و RTT به baseline قابل قبول برگردد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-039",
+      "lesson_uid": "ch09:tcp-window:v1",
+      "title_fa": "سناریو 39 — Zero Window / حالت 4",
+      "level": "L4",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "اتصال TCP برقرار است اما ارسال متوقف می‌شود",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "advertised receive window صفر و سپس window updates",
+      "hypotheses": [
+        "گیرنده/برنامه داده را مصرف نمی‌کند یا منابع محدود است"
+      ],
+      "diagnostic_steps_fa": [
+        "resource و queue برنامه گیرنده را بررسی کن؛ timeout را کورکورانه زیاد نکن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "resource و queue برنامه گیرنده را بررسی کن؛ timeout را کورکورانه زیاد نکن",
+      "verification_fa": "window updates و پیشرفت انتقال با log برنامه هم‌خوان باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-040",
+      "lesson_uid": "ch09:udp-apps:v1",
+      "title_fa": "سناریو 40 — UDP DNS timeout / حالت 4",
+      "level": "L2",
+      "environment": "محیط سازمانی شبیه‌سازی‌شده؛ دسترسی تشخیصی read-only تا تصویب تغییر",
+      "symptom": "درخواست DNS می‌رود ولی پاسخ نمی‌آید",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "UDP/53 query بدون پاسخ در یک capture",
+      "hypotheses": [
+        "resolver",
+        "ACL/NAT",
+        "loss یا مسیر برگشت"
+      ],
+      "diagnostic_steps_fa": [
+        "resolver، response code و capture دو سمت را بررسی کن؛ TCP fallback را هم در نظر بگیر",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "resolver، response code و capture دو سمت را بررسی کن؛ TCP fallback را هم در نظر بگیر",
+      "verification_fa": "resolve معتبر چندباره و زمان پاسخ ثبت شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-041",
+      "lesson_uid": "ch09:arp-cache:v1",
+      "title_fa": "سناریو 41 — ARP incomplete / حالت 5",
+      "level": "L1",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "کلاینت در VLAN محلی به next-hop دسترسی ندارد",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "ip neigh حالت INCOMPLETE و نبود ARP Reply",
+      "hypotheses": [
+        "subnet/VLAN ناسازگار",
+        "لینک خاموش",
+        "مقصد خاموش یا فیلتر لایه ۲"
+      ],
+      "diagnostic_steps_fa": [
+        "route، mask و VLAN را read-only بررسی و capture دو سمت بگیر",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "route، mask و VLAN را read-only بررسی و capture دو سمت بگیر",
+      "verification_fa": "neighbor entry کامل شود و ترافیک gateway با آزمون تکراری بررسی شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-042",
+      "lesson_uid": "ch09:gratuitous:v1",
+      "title_fa": "سناریو 42 — IP maps to changing MAC / حالت 5",
+      "level": "L2",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "یک IP در بازه‌های زمانی به MACهای متفاوت resolve می‌شود",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "Gratuitous ARP یا پاسخ ARP متناوب از MACهای متفاوت",
+      "hypotheses": [
+        "duplicate IP",
+        "HA/failover",
+        "teaming یا spoofing"
+      ],
+      "diagnostic_steps_fa": [
+        "رخداد را با DHCP/IPAM، switch MAC table و change log هم‌بسته کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "رخداد را با DHCP/IPAM، switch MAC table و change log هم‌بسته کن",
+      "verification_fa": "مالک IP مشخص و mapping مطابق طراحی پایدار باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-043",
+      "lesson_uid": "ch09:ping:v1",
+      "title_fa": "سناریو 43 — Echo timeout / حالت 5",
+      "level": "L3",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "ping پاسخ ندارد اما علت مشخص نیست",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "درخواست Echo دیده می‌شود و Reply مشاهده نمی‌شود",
+      "hypotheses": [
+        "ICMP policy",
+        "rate limit",
+        "مسیر برگشت یا مقصد خاموش"
+      ],
+      "diagnostic_steps_fa": [
+        "آزمون gateway و TCP مجاز را جدا انجام بده؛ log و capture سمت مقصد را مقایسه کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "آزمون gateway و TCP مجاز را جدا انجام بده؛ log و capture سمت مقصد را مقایسه کن",
+      "verification_fa": "محدودیت مورد انتظار مستند شود و آزمون مستقل دسترسی برنامه نتیجه مشخص دهد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-044",
+      "lesson_uid": "ch09:tcp-state:v1",
+      "title_fa": "سناریو 44 — Application port failure / حالت 5",
+      "level": "L4",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "ping موفق است ولی سرویس TCP در دسترس نیست",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "Echo Reply موفق؛ اتصال پورت timeout/refused می‌شود",
+      "hypotheses": [
+        "listener",
+        "bind address",
+        "ACL یا TLS/application issue"
+      ],
+      "diagnostic_steps_fa": [
+        "socket listener، اتصال TCP مجاز و log سرویس را بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "socket listener، اتصال TCP مجاز و log سرویس را بررسی کن",
+      "verification_fa": "TCP handshake و health check برنامه با معیار مشخص موفق باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-045",
+      "lesson_uid": "ch09:traceroute:v1",
+      "title_fa": "سناریو 45 — Traceroute gap / حالت 5",
+      "level": "L2",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "چند hop پاسخ نمی‌دهند اما مقصد reachable است",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "timeout در hop میانی و پاسخ در مقصد یا TCP test",
+      "hypotheses": [
+        "ICMP/UDP probe filtering",
+        "rate limiting یا ECMP"
+      ],
+      "diagnostic_steps_fa": [
+        "نوع probe و چند تکرار را مقایسه و timeout را با capture بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "نوع probe و چند تکرار را مقایسه و timeout را با capture بررسی کن",
+      "verification_fa": "گزارش بین probe timeout و قطع واقعی forward تفکیک کند",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-046",
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "title_fa": "سناریو 46 — TCP no SYN-ACK / حالت 5",
+      "level": "L1",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "SYNهای خروجی بدون SYN-ACK می‌مانند",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "SYN retransmission و عدم پاسخ در capture کلاینت",
+      "hypotheses": [
+        "service down",
+        "ACL",
+        "route برگشت یا NAT"
+      ],
+      "diagnostic_steps_fa": [
+        "listener و capture سمت سرور/میان‌راه را بررسی کن؛ تغییر فقط پس از شواهد",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "listener و capture سمت سرور/میان‌راه را بررسی کن؛ تغییر فقط پس از شواهد",
+      "verification_fa": "سه‌مرحله‌ای handshake و اتصال برنامه با زمان ثبت‌شده کامل شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-047",
+      "lesson_uid": "ch09:tcp-close:v1",
+      "title_fa": "سناریو 47 — Unexpected RST / حالت 5",
+      "level": "L2",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "اتصال در آغاز یا حین تبادل reset می‌شود",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "RST با tuple، sequence و timestamp",
+      "hypotheses": [
+        "پورت بسته",
+        "برنامه یا middlebox"
+      ],
+      "diagnostic_steps_fa": [
+        "منبع RST را در دو capture و log سرویس مشخص کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "منبع RST را در دو capture و log سرویس مشخص کن",
+      "verification_fa": "رفتار RST با policy/طراحی سرویس سازگار و مستند باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-048",
+      "lesson_uid": "ch09:tcp-seq:v1",
+      "title_fa": "سناریو 48 — TCP retransmission / حالت 5",
+      "level": "L3",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "انتقال کند و retransmission زیاد است",
+      "constraints": "PCAP پیش از اشتراک‌گذاری پالایش شود",
+      "evidence": "duplicate ACK، RTT متغیر یا retransmission",
+      "hypotheses": [
+        "loss",
+        "congestion",
+        "reordering یا capture artifact"
+      ],
+      "diagnostic_steps_fa": [
+        "دو نقطه capture، counters رابط و offload را بررسی کن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "دو نقطه capture، counters رابط و offload را بررسی کن",
+      "verification_fa": "در شرایط مشابه retransmission و RTT به baseline قابل قبول برگردد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-049",
+      "lesson_uid": "ch09:tcp-window:v1",
+      "title_fa": "سناریو 49 — Zero Window / حالت 5",
+      "level": "L4",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "اتصال TCP برقرار است اما ارسال متوقف می‌شود",
+      "constraints": "هیچ تغییر production بدون change approval انجام نشود",
+      "evidence": "advertised receive window صفر و سپس window updates",
+      "hypotheses": [
+        "گیرنده/برنامه داده را مصرف نمی‌کند یا منابع محدود است"
+      ],
+      "diagnostic_steps_fa": [
+        "resource و queue برنامه گیرنده را بررسی کن؛ timeout را کورکورانه زیاد نکن",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "resource و queue برنامه گیرنده را بررسی کن؛ timeout را کورکورانه زیاد نکن",
+      "verification_fa": "window updates و پیشرفت انتقال با log برنامه هم‌خوان باشد",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch09-scn-050",
+      "lesson_uid": "ch09:udp-apps:v1",
+      "title_fa": "سناریو 50 — UDP DNS timeout / حالت 5",
+      "level": "L2",
+      "environment": "لابراتوار دو VM در شبکه Host-only",
+      "symptom": "درخواست DNS می‌رود ولی پاسخ نمی‌آید",
+      "constraints": "baseline و timestamp ثبت شود",
+      "evidence": "UDP/53 query بدون پاسخ در یک capture",
+      "hypotheses": [
+        "resolver",
+        "ACL/NAT",
+        "loss یا مسیر برگشت"
+      ],
+      "diagnostic_steps_fa": [
+        "resolver، response code و capture دو سمت را بررسی کن؛ TCP fallback را هم در نظر بگیر",
+        "شاهد دوم از log، جدول route/neighbor یا capture سمت مقابل جمع کن.",
+        "فرضیه را با نتیجه قابل ابطال بررسی کن و تغییرات را قبل/بعد ثبت کن."
+      ],
+      "corrective_action_fa": "resolver، response code و capture دو سمت را بررسی کن؛ TCP fallback را هم در نظر بگیر",
+      "verification_fa": "resolve معتبر چندباره و زمان پاسخ ثبت شود",
+      "rollback_fa": "اگر تغییری لازم شد، تنظیم قبلی و مسیر مدیریت out-of-band را نگه دار؛ تغییر را برگردان، همان آزمون را تکرار و سرویس وابسته را verify کن. اگر فقط capture گرفته شد، داده حساس را طبق سیاست نگهداری پاک‌سازی کن.",
+      "root_cause_note_fa": "نشانه اولیه علت قطعی نیست؛ RCA نهایی به شواهد مستقل و هم‌بستگی زمانی نیاز دارد.",
+      "source_status": "review_required"
+    }
+  ],
+  "source_status": "review_required"
+}
