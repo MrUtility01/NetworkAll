@@ -400,7 +400,7 @@ class ContentMergeTests(unittest.TestCase):
             with self.subTest(uid=lesson.get("uid")):
                 level = lesson.get("level", "L0")
                 text = lesson.get("full_content", "")
-                self.assertGreaterEqual(len(re.findall(r"[\\w]+", text, flags=re.UNICODE)), word_floors[level])
+                self.assertGreaterEqual(len(re.findall(r"[\w]+", text, flags=re.UNICODE)), word_floors[level])
                 metadata = json.loads(lesson.get("meta_json") or "{}")
                 assessment = metadata.get("assessment", {})
                 questions = assessment.get("questions", [])
