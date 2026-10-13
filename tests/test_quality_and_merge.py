@@ -18,7 +18,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "shared"))
 
-from merge_content_packs_into_android import append_unmatched_as_extra, apply_fields, commands_to_lessons, git_markdown_to_lessons, merge_by_title, unmatched_by_title
+from merge_content_packs_into_android import append_unmatched_as_extra, apply_fields, commands_to_lessons, git_markdown_to_lessons, is_legacy_routing_pack, merge_by_title, unmatched_by_title
 from sync_engine import compare_lww, content_hash, merge_push
 from audit_content import _item_quality
 from audit_content_packs import extract_items, inspect_record, review_sort_key
@@ -373,6 +373,15 @@ class DeepFallbackTests(unittest.TestCase):
 
 
 class ContentMergeTests(unittest.TestCase):
+    def test_chapter14_scoped_routing_pack_is_not_remapped_to_chapter66(self):
+        chapter14_pack = "tools/packs/chapter14/ospf_bgp_lab_scenarios_ch14_pack.json"
+        legacy_routing_pack = "tools/packs/routing_deep/ospf_bgp_redistribution_deep_pack.json"
+        windows_style_chapter14_path = r"tools\\packs\\chapter14\\ospf_bgp_lab_scenarios_ch14_pack.json"
+
+        self.assertFalse(is_legacy_routing_pack(chapter14_pack))
+        self.assertFalse(is_legacy_routing_pack(windows_style_chapter14_path))
+        self.assertTrue(is_legacy_routing_pack(legacy_routing_pack))
+
     def test_git_markdown_enriches_same_level_lesson_without_duplicate_uid(self):
         existing_lesson = {
             "uid": "lesson:ch64:s000:l0002",
