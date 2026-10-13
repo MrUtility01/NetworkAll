@@ -66,6 +66,11 @@ def commands_to_lessons(data: dict, source_key: str = "pack") -> list:
         "basics": 1, "interface": 2, "vlan": 3, "trunk": 3, "stp": 4, "spanning-tree": 4,
         "etherchannel": 5, "port-security": 6, "mac": 7, "cdp": 8, "lldp": 8,
         "troubleshoot": 9, "switching": 2, "general": 10,
+        "routing": 11, "ospf": 12, "bgp": 13, "acl": 14, "nat": 15,
+        "prefix-list": 16, "route-map": 17, "redistribution": 18, "verification": 19,
+        "networking": 20, "files": 21, "process": 22, "services": 23, "dns": 24,
+        "api": 25, "logs": 26, "storage": 27, "scripting": 28, "variables": 29,
+        "loops": 30, "environment": 31, "errors": 32,
     }
     for i, c in enumerate(data.get("commands") or [], 1):
         if not isinstance(c, dict):
