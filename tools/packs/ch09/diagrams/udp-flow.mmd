@@ -1,0 +1,7 @@
+flowchart LR
+ A[Application payload] --> B[UDP header: ports length checksum]
+ B --> C[IP packet]
+ C --> D[Network path]
+ D --> E{Application response?}
+ E -- yes --> F[Parse response]
+ E -- no --> G[Check app ACL NAT loss and return path]
