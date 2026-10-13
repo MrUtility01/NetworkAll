@@ -213,7 +213,35 @@ def normalize_pack(path: Path, data: dict):
     if data.get("commands"):
         return commands_to_lessons(data, path.stem)
     if data.get("lessons"):
-        return data.get("lessons") or []
+        lessons = data.get("lessons") or []
+        if int(data.get("chapter_order") or 0) == 68 or "chapter_68" in path.name.lower():
+            stem = path.stem.lower()
+            if "mikrotik" in stem or "routeros" in stem:
+                collection, group_order = "MikroTik RouterOS", 107
+            elif "cisco" in stem:
+                collection, group_order = "Cisco IOS/IOS-XE", 106
+            elif "powershell" in stem:
+                collection, group_order = "PowerShell", 103
+            elif "linux" in stem:
+                collection, group_order = "Linux", 101
+            elif "bash" in stem:
+                collection, group_order = "Bash", 102
+            elif "batch" in stem or "cmd" in stem:
+                collection, group_order = "Windows Batch/CMD", 104
+            else:
+                collection, group_order = path.stem.replace("_", " ").title(), 199
+            for idx, lesson in enumerate(lessons, 1):
+                if not isinstance(lesson, dict):
+                    continue
+                title = str(lesson.get("title_fa") or lesson.get("title") or "درس")
+                if not title.startswith("["):
+                    lesson["title_fa"] = f"[{collection}] {title}"
+                lesson.setdefault("chapter_order", 68)
+                lesson.setdefault("subchapter_order", group_order * 100 + 10)
+                lesson.setdefault("subchapter_title_fa", f"{collection} — عمومی")
+                lesson.setdefault("collection", collection)
+                lesson.setdefault("lesson_order", idx)
+        return lessons
     name = path.name.upper()
     if "curriculum" in data:
         if any(k in name for k in ("OSPF", "BGP", "REDIS")):
