@@ -24,6 +24,8 @@ class FlashcardActivity : AppCompatActivity() {
     private var showBack = false
     private var mode = "review"
     private var sessionDone = 0
+    private var learningPath = false
+    private var pathOffset = 0
     private lateinit var title: TextView
     private lateinit var body: TextView
     private lateinit var meta: TextView
@@ -33,6 +35,7 @@ class FlashcardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         study = StudyRepository(this)
         mode = intent.getStringExtra("mode") ?: "review"
+        learningPath = intent.getBooleanExtra("learning_path", false)
         title = TextView(this).apply { textSize = 18f; setTextColor(Ui.TEXT); typeface = Ui.persianTypeface(); setPadding(24, 20, 24, 8) }
         progress = TextView(this).apply { textSize = 12f; setTextColor(Ui.ACCENT); typeface = Ui.persianTypeface(); setPadding(24, 0, 24, 4) }
         meta = TextView(this).apply { textSize = 12f; setTextColor(Ui.MUTED); typeface = Ui.persianTypeface(); setPadding(24, 0, 24, 8) }
@@ -83,24 +86,43 @@ class FlashcardActivity : AppCompatActivity() {
     private suspend fun loadQueue() {
         val dao = AppDatabase.get(this).lessonDao()
         val chapterFilter = intent.getStringExtra("chapter")
-        val due = withContext(Dispatchers.IO) { study.dueNow(40) }
-        var lessons = if (due.isNotEmpty()) due.mapNotNull { withContext(Dispatchers.IO) { dao.byUid(it.lessonUid) } }
-        else withContext(Dispatchers.IO) { dao.allActive().filter { it.summary.isNotBlank() || it.fullContent.isNotBlank() }.shuffled().take(50) }
-        if (!chapterFilter.isNullOrBlank()) {
-            lessons = lessons.filter { it.chapterTitle == chapterFilter }
-            if (lessons.isEmpty()) {
-                lessons = withContext(Dispatchers.IO) {
-                    dao.allActive().filter { it.chapterTitle == chapterFilter }.shuffled().take(40)
-                }
-            }
+        val lessons = if (learningPath && !chapterFilter.isNullOrBlank()) {
+            pathOffset = 0
+            loadNextPathPage()
+            return
+        } else {
+            val due = withContext(Dispatchers.IO) { study.dueNow(40) }
+            if (due.isNotEmpty()) due.mapNotNull { withContext(Dispatchers.IO) { dao.byUid(it.lessonUid) } }
+            else withContext(Dispatchers.IO) { dao.allActive().filter { it.summary.isNotBlank() || it.fullContent.isNotBlank() }.shuffled().take(50) }
         }
         queue = lessons.toMutableList(); index = 0; showBack = false
         if (queue.isEmpty()) { title.text = "کارتی نیست"; body.text = "ابتدا فهرست درختی یا بازسازی محتوا." } else render()
         refreshProgress()
     }
 
+    private suspend fun loadNextPathPage() {
+        val chapter = intent.getStringExtra("chapter") ?: return
+        val page = withContext(Dispatchers.IO) {
+            AppDatabase.get(this@FlashcardActivity).lessonDao().learningPathPage(chapter, pathOffset, 30)
+        }
+        pathOffset += page.size
+        queue = page.toMutableList()
+        index = 0
+        showBack = false
+        if (queue.isEmpty()) {
+            title.text = "مسیر این فصل کامل شد"
+            body.text = "این فصل را به‌ترتیب از مبانی تا مباحث پیشرفته مرور کردی. می‌توانی فصل بعدی را انتخاب کنی یا مرور فاصله‌دار را ادامه بدهی."
+        } else {
+            title.text = "مسیر یادگیری · بخش ${((pathOffset - 1) / 30) + 1}"
+            render()
+        }
+        refreshProgress()
+    }
+
     private fun refreshProgress() {
-        progress.text = "جلسه: $sessionDone کارت · صف: ${queue.size} · حالت: ${modeLabel()}"
+        progress.text = if (learningPath) {
+            "مسیر پیوسته مبتدی ← حرفه‌ای · ${sessionDone} کارت مرورشده · ${queue.size} کارت در این بخش"
+        } else "جلسه: $sessionDone کارت · صف: ${queue.size} · حالت: ${modeLabel()}"
     }
 
     private fun render() {
@@ -138,7 +160,8 @@ class FlashcardActivity : AppCompatActivity() {
             }
             showBack = false
             if (queue.isEmpty()) {
-                title.text = "تمام شد"; body.text = "این دور تمام شد. آفرین."
+                if (learningPath) loadNextPathPage()
+                else { title.text = "تمام شد"; body.text = "این دور تمام شد. آفرین." }
             } else render()
             Toast.makeText(this@FlashcardActivity, grade, Toast.LENGTH_SHORT).show()
         }
