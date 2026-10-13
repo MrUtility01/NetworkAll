@@ -395,6 +395,8 @@ class ContentMergeTests(unittest.TestCase):
             if item.get("active_in_merge") is True
         }
 
+        word_floors = {"L0": 600, "L1": 800, "L2": 1200, "L3": 1600, "L4": 2200}
+        question_floors = {"L0": 5, "L1": 8, "L2": 10, "L3": 12, "L4": 15}
         for relative_path, expected_chapter, expected_count in pack_paths:
             with self.subTest(path=relative_path):
                 path = ROOT / relative_path
@@ -412,30 +414,34 @@ class ContentMergeTests(unittest.TestCase):
                     len(lessons),
                 )
                 for lesson in lessons:
-                    assessment = lesson.get("meta", {}).get("assessment", {})
-                    questions = assessment.get("questions", [])
-                    answer_key = assessment.get("answer_key", [])
-                    self.assertEqual(len(questions), 4)
-                    self.assertEqual(len(answer_key), 4)
-                    self.assertEqual(
-                        {question.get("id") for question in questions},
-                        {answer.get("question_id") for answer in answer_key},
-                    )
-                    answers_by_id = {answer.get("id"): answer for answer in answer_key}
-                    self.assertEqual({question.get("id") for question in questions}, set(answers_by_id))
-                    for question in questions:
-                        answer = answers_by_id[question["id"]]
-                        option_ids = [option.get("id") for option in question.get("options", [])]
-                        self.assertEqual(len(option_ids), 4)
-                        self.assertIn(answer.get("correct_option_id"), option_ids)
+                    with self.subTest(uid=lesson.get("uid")):
+                        level = lesson.get("level", "L0")
+                        words = len(re.findall(r"[\\w]+", lesson.get("full_content", ""), flags=re.UNICODE))
+                        self.assertGreaterEqual(words, word_floors[level])
+                        assessment = lesson.get("meta", {}).get("assessment", {})
+                        questions = assessment.get("questions", [])
+                        answer_key = assessment.get("answer_key", [])
+                        self.assertGreaterEqual(len(questions), question_floors[level])
+                        self.assertEqual(len(answer_key), len(questions))
                         self.assertEqual(
-                            answer.get("correct_index"),
-                            option_ids.index(answer.get("correct_option_id")),
-                            "Android QuizActivity requires a correct_index aligned with question option order",
+                            {question.get("id") for question in questions},
+                            {answer.get("question_id") for answer in answer_key},
                         )
-                        self.assertTrue(answer.get("explanation"))
-                    self.assertTrue(lesson.get("meta", {}).get("official_sources"))
-                    self.assertEqual(lesson.get("source_status"), "review_required")
+                        answers_by_id = {answer.get("id"): answer for answer in answer_key}
+                        self.assertEqual({question.get("id") for question in questions}, set(answers_by_id))
+                        for question in questions:
+                            answer = answers_by_id[question["id"]]
+                            option_ids = [option.get("id") for option in question.get("options", [])]
+                            self.assertEqual(len(option_ids), 4)
+                            self.assertIn(answer.get("correct_option_id"), option_ids)
+                            self.assertEqual(
+                                answer.get("correct_index"),
+                                option_ids.index(answer.get("correct_option_id")),
+                                "Android QuizActivity requires a correct_index aligned with question option order",
+                            )
+                            self.assertTrue(answer.get("explanation"))
+                        self.assertTrue(lesson.get("meta", {}).get("official_sources"))
+                        self.assertEqual(lesson.get("source_status"), "review_required")
 
     def test_git_markdown_enriches_same_level_lesson_without_duplicate_uid(self):
         existing_lesson = {
