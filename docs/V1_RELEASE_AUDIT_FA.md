@@ -13,6 +13,7 @@
 | P0 | Windows و Android از مسیرهای Seed جداگانه استفاده می‌کردند؛ Windows ممکن بود درس‌های عمیق packها را نداشته باشد. | Seed دیتابیس تازهٔ Windows اکنون می‌تواند از همان index فشردهٔ ادغام‌شده استفاده کند. | نیازمند اجرای Windows smoke-test با بستهٔ release |
 | P1 | چند راهنمای نصب به مخزن قدیمی و کپی دستی فایل‌های غایب اشاره می‌کردند. | README، نصب، ساختار، Sync و وضعیت امکانات با نام NetworkAll، پورت 86 و مسیر Workflow هماهنگ شدند. | بازبینی مستندات در PR |
 | P1 | توکن Sync ثابت در کد/launcher عمومی بود و استخراج توکن از query string خطر نشت داشت. | تولید توکن تصادفی per-install، ذخیره در `server/data/networkall.token`، حذف query-token، bind امن loopback برای اجرای دستی. Launcher ویندوز برای LAN به‌صراحت bind می‌کند. | باید تست احراز هویت + راه‌اندازی واقعی شود |
+| P1 | Vault قبلاً با XOR ساده حفاظت می‌شد و کلید قابل‌اتکایی برای backup نداشت. | AES-GCM با کلید تصادفی مجزا `server/data/networkall.vaultkey`، رمزگذاری احراز‌شده و مسیر سازگاری برای خواندن `enc1` اضافه شد. | باید smoke-test رمزنگاری و بازیابی DB همراه فایل کلید پاس شود |
 | P1 | شناسه/محتوای Seed اندروید برای همهٔ درس‌ها hash یکسان داشت و متادیتای درس به‌طور کامل نگهداری نمی‌شد. | hash مستقل برای هر درس، زمان تولید فهرست، meta، search query، learning objectives و source status به Seed اضافه شد. | نیازمند Gradle build و آزمون مهاجرت/دادهٔ قدیمی |
 | P1 | تعداد درس‌ها در گزارش‌های قبلی متفاوت بود و نباید یک مقدار ثابت در اسناد اعلام شود. | نسخهٔ export اکنون تعداد درس را از دادهٔ تولیدشده ثبت می‌کند؛ CI باید شمار واقعی داخل APK را مقایسه کند. | عدد نهایی فقط از اجرای موفق CI پذیرفته است |
 | P2 | دیاگرام‌های ۱۰۰گانه از قالب‌های SVG تولید می‌شوند؛ این‌ها هنوز ۱۰۰ نمودار تخصصی مستقل و بازبینی‌شده نیستند. | تعداد/وجود SVG در بسته کنترل می‌شود. | بازبینی تخصصی و اتصال به درس‌ها باقی است |
@@ -37,10 +38,13 @@
 2. `scripts/merge_content_packs_into_android.py`
 3. `scripts/validate_android_curriculum.py`
 4. `scripts/generate_android_diagrams.py`
-5. `scripts/package_windows_v1.py`
-6. `gradle assembleDebug`
-7. audit محتوای واقعی داخل APK: فصل‌ها، تعداد درس‌ها، فهرست ۱۰۰ دیاگرام
-8. انتشار artifactهای Windows و Android
+5. کنترل نام محصول/نسخه/پورت و توکن با `scripts/validate_release_metadata.py`
+6. آزمون Seed ویندوز با `scripts/smoke_test_windows_seed.py`
+7. تست Vault با `scripts/smoke_test_vault_crypto.py` و نصب وابستگی‌های سرور
+8. بسته‌سازی و audit ZIP ویندوز با `scripts/package_windows_v1.py`
+9. `gradle assembleDebug`
+10. audit محتوای واقعی داخل APK: فصل‌ها، تعداد درس‌ها، فهرست ۱۰۰ دیاگرام
+11. انتشار artifactهای Windows و Android
 
 ## آزمون‌هایی که نباید جعل یا حدس زده شوند
 
