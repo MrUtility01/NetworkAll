@@ -52,12 +52,15 @@ jobs:
           assert 1 in orders and 68 in orders
           PY
 
-      - name: Merge packs (best effort)
+      - name: Merge content packs (required)
         run: |
-          set +e
+          set -euo pipefail
           python3 scripts/merge_content_packs_into_android.py
-          echo "merge_exit=$?"
-          exit 0
+
+      - name: Validate final NetworkAll curriculum
+        run: |
+          set -euo pipefail
+          python3 scripts/validate_android_curriculum.py
 
       - name: Gradle wrapper + local.properties
         working-directory: android
