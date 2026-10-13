@@ -297,10 +297,18 @@ def normalize_pack(path: Path, data: dict):
                     # alias. Keep the collection as the first visible label.
                     title = re.sub(r"^\[[^\]]+\]\s*", "", title).strip()
                     lesson["title_fa"] = f"{prefix} {title}"
-                lesson.setdefault("chapter_order", 68)
-                lesson.setdefault("subchapter_order", group_order * 100 + 10)
-                lesson.setdefault("subchapter_title_fa", f"{collection} — عمومی")
-                lesson.setdefault("collection", collection)
+                lesson["chapter_order"] = 68
+                try:
+                    old_sub_order = int(lesson.get("subchapter_order") or 10)
+                except (TypeError, ValueError):
+                    old_sub_order = 10
+                local_order = old_sub_order if 1 <= old_sub_order <= 99 else 10
+                lesson["subchapter_order"] = group_order * 100 + local_order
+                old_sub_title = str(lesson.get("subchapter_title_fa") or lesson.get("category") or "عمومی").strip()
+                if "—" in old_sub_title:
+                    old_sub_title = old_sub_title.split("—", 1)[-1].strip()
+                lesson["subchapter_title_fa"] = f"{collection} — {old_sub_title or 'عمومی'}"
+                lesson["collection"] = collection
                 lesson.setdefault("lesson_order", idx)
         return lessons
     name = path.name.upper()
