@@ -65,6 +65,20 @@ jobs:
           set -euo pipefail
           python3 scripts/validate_android_curriculum.py
 
+      - name: Generate 100 offline SVG diagrams
+        run: |
+          set -euo pipefail
+          python3 scripts/generate_android_diagrams.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("android/app/src/main/assets/diagrams")
+          index = json.loads((root / "index.json").read_text(encoding="utf-8"))
+          assert index["count"] == 100 and len(index["diagrams"]) == 100
+          assert all((root / x["asset"]).is_file() for x in index["diagrams"])
+          print("diagrams", index["count"], "svg bytes", sum(p.stat().st_size for p in root.glob("*.svg")))
+          PY
+
       - name: Gradle wrapper + local.properties
         working-directory: android
         run: |
