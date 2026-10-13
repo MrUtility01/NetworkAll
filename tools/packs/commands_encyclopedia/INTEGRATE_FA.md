@@ -7,7 +7,7 @@
 ## روی ویندوز / Git Bash
 
 ```bash
-cd ~/NetworkEncyclopedia
+cd ~/NetworkAll
 git pull
 python scripts/merge_content_packs_into_android.py
 # باید ببینید: ch68 commands 1323
