@@ -36,7 +36,7 @@ class DiagramGalleryActivity : AppCompatActivity() {
         root.addView(web, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1.5f))
         setContentView(root)
         try {
-            val index = assets.open("diagrams/index.json").bufferedReader(Charsets.UTF_8).use { it.readText() }
+            val index = assets.open("diagrams/combined_index.json").bufferedReader(Charsets.UTF_8).use { it.readText() }
             val arr = JSONObject(index).getJSONArray("diagrams")
             val titles = (0 until arr.length()).map { i ->
                 "%03d · %s".format(arr.getJSONObject(i).getInt("id"), arr.getJSONObject(i).getString("title_fa"))

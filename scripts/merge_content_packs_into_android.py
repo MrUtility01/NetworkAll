@@ -327,10 +327,29 @@ def normalize_pack(path: Path, data: dict):
 
 
 def apply_fields(les, src):
-    for k in ("summary", "full_content", "commands", "examples", "notes"):
-        if src.get(k):
-            les[k] = as_text(src.get(k)) if k != "full_content" else (src.get(k) or "")
-
+    # Preserve stable UIDs and chapter hierarchy; only merge fields into an exact title match.
+    content_fields = (
+        "summary", "full_content", "commands", "examples", "notes",
+        "learning_objectives", "search_keywords", "search_query", "source_status",
+    )
+    for field in content_fields:
+        if field in src and src[field] is not None:
+            les[field] = src[field]
+    # Merge metadata without discarding existing AI prompts or other metadata.
+    incoming_meta = src.get("meta")
+    if isinstance(incoming_meta, dict):
+        previous_meta = les.get("meta")
+        if not isinstance(previous_meta, dict):
+            previous_meta = {}
+        merged_meta = dict(previous_meta)
+        for key, value in incoming_meta.items():
+            if isinstance(value, dict) and isinstance(merged_meta.get(key), dict):
+                nested = dict(merged_meta[key])
+                nested.update(value)
+                merged_meta[key] = nested
+            else:
+                merged_meta[key] = value
+        les["meta"] = merged_meta
 
 def merge_by_title(data, lessons):
     by = {}

@@ -139,6 +139,18 @@ def main() -> None:
             infographics = get_json("/api/infographics")
             if infographics.get("count") != 100 or len(infographics.get("items", [])) != 100:
                 raise SystemExit("compatibility /api/infographics should return all 100 SVG items")
+            combined_response = client.get("/static/diagrams/combined_index.json")
+            if combined_response.status_code != 200:
+                raise SystemExit(f"combined diagram index HTTP {combined_response.status_code}")
+            combined = combined_response.get_json()
+            if combined.get("count") != 141 or len(combined.get("diagrams", [])) != 141:
+                raise SystemExit("combined gallery should contain 100 existing + 41 Chapter 1 diagrams")
+            ch1_response = client.get("/static/diagrams/ch01/index.json")
+            if ch1_response.status_code != 200:
+                raise SystemExit(f"Chapter 1 diagram index HTTP {ch1_response.status_code}")
+            ch1_index = ch1_response.get_json()
+            if ch1_index.get("count") != 41 or len(ch1_index.get("diagrams", [])) != 41:
+                raise SystemExit("Chapter 1 gallery should expose 41 diagrams")
             if not infographics["items"][0].get("svg", "").lstrip().startswith("<svg"):
                 raise SystemExit("/api/infographics returned invalid SVG content")
 
@@ -157,6 +169,8 @@ def main() -> None:
                 "search_results": len(search),
                 "web_diagrams": index["count"],
                 "infographics_compat_api": infographics["count"],
+                "combined_gallery_diagrams": combined["count"],
+                "chapter_1_diagrams": ch1_index["count"],
                 "specialty_depth_review_required": depth["review_status"],
                 "destructive_reseed_disabled": True,
             })

@@ -75,6 +75,43 @@ index_text = json.dumps({"version": 1, "count": len(items), "diagrams": items}, 
 assert len(items) == 100
 assert all((OUT / x["asset"]).is_file() for x in items)
 assert all((WEB_OUT / x["asset"]).is_file() for x in items)
+# Also publish the 41 curated Chapter 1 topic diagrams.
+chapter_src = ROOT / "tools/packs/ch01/diagrams"
+chapter_manifest = chapter_src / "manifest.json"
+if chapter_manifest.is_file():
+    chapter_data = json.loads(chapter_manifest.read_text(encoding="utf-8"))
+    chapter_items = []
+    (OUT / "ch01").mkdir(parents=True, exist_ok=True)
+    (WEB_OUT / "ch01").mkdir(parents=True, exist_ok=True)
+    for row in chapter_data.get("diagrams", []):
+        filename = str(row.get("asset_source_file") or "")
+        if not filename or Path(filename).name != filename or not filename.endswith(".svg"):
+            raise SystemExit("Unsafe Chapter 1 diagram asset filename")
+        source_svg = chapter_src / filename
+        if not source_svg.is_file():
+            raise SystemExit(f"Missing Chapter 1 SVG source: {source_svg}")
+        svg_text = source_svg.read_text(encoding="utf-8")
+        (OUT / "ch01" / filename).write_text(svg_text, encoding="utf-8")
+        (WEB_OUT / "ch01" / filename).write_text(svg_text, encoding="utf-8")
+        item = dict(row)
+        item["asset"] = "ch01/" + filename
+        chapter_items.append(item)
+    if len(chapter_items) != 41:
+        raise SystemExit(f"Expected 41 Chapter 1 diagrams, got {len(chapter_items)}")
+    chapter_index = {"version": 1, "count": len(chapter_items), "diagrams": chapter_items}
+    (OUT / "ch01" / "index.json").write_text(json.dumps(chapter_index, ensure_ascii=False, indent=2), encoding="utf-8")
+    (WEB_OUT / "ch01" / "index.json").write_text(json.dumps(chapter_index, ensure_ascii=False, indent=2), encoding="utf-8")
+    combined = list(items) + chapter_items
+    combined_index = {"version": 1, "count": len(combined), "diagrams": combined}
+    (OUT / "combined_index.json").write_text(json.dumps(combined_index, ensure_ascii=False, indent=2), encoding="utf-8")
+    (WEB_OUT / "combined_index.json").write_text(json.dumps(combined_index, ensure_ascii=False, indent=2), encoding="utf-8")
+    if len(combined) != 141:
+        raise SystemExit(f"Expected 141 combined diagrams, got {len(combined)}")
+    if not all((OUT / x["asset"]).is_file() for x in combined):
+        raise SystemExit("Missing Android combined diagram asset")
+    if not all((WEB_OUT / x["asset"]).is_file() for x in combined):
+        raise SystemExit("Missing web combined diagram asset")
+
 print(
     f"Generated {len(items)} NetworkAll diagrams for Android + Windows web; "
     f"Android SVG bytes={sum(p.stat().st_size for p in OUT.glob('*.svg'))}; "
