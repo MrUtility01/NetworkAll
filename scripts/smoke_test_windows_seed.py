@@ -19,7 +19,8 @@ def main() -> None:
     payload = json.loads(gzip.decompress(ASSET.read_bytes()))
     expected = int(payload["lesson_count"])
     with tempfile.TemporaryDirectory(prefix="networkall-v1-seed-") as td:
-        from core.db import WebDB\n        from shared.sync_engine import content_hash
+        from core.db import WebDB
+        from shared.sync_engine import content_hash
 
         db = WebDB(Path(td) / "seed-test.db")
         try:
