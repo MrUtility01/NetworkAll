@@ -63,6 +63,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnTree).setOnClickListener {
             startActivity(Intent(this, TreeCatalogActivity::class.java))
         }
+        findViewById<Button>(R.id.btnDiagrams).setOnClickListener {
+            startActivity(Intent(this, DiagramGalleryActivity::class.java))
+        }
         findViewById<Button>(R.id.btnCatalog).setOnClickListener {
             startActivity(Intent(this, CatalogActivity::class.java))
         }
