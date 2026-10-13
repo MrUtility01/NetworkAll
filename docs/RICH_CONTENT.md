@@ -1,4 +1,4 @@
-# محتوای غنی
+# NetworkAll — محتوای غنی و اعتبارسنجی
 
 هر درس شامل:
 
@@ -20,7 +20,7 @@ python app.py
 در UI دکمه **بازسازی ساختار** یا:
 
 ```bat
-curl -X POST http://127.0.0.1:5050/api/reseed
+curl -X POST http://127.0.0.1:86/api/reseed
 ```
 
 ## اندروید
