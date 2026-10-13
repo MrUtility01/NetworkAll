@@ -17,7 +17,7 @@ object OfflineSeeder {
         if (dao.getMeta(META_SEEDED) == "1" && existing > 5000 && filled > 2000) {
             return@withContext existing
         }
-        val json = readCurriculumAsset(context) ?: return@withContext existing
+        val json = readCurriculumAsset(context) ?: throw IllegalStateException("فایل curriculum_index.json.gz در بسته NetworkAll وجود ندارد")
         val root = JSONObject(json)
         val assetVersion = root.optInt("version", 0)
         if (assetVersion < 11) throw IllegalStateException("بسته محتوای NetworkAll قدیمی یا نامعتبر است (version=$assetVersion)")
