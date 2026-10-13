@@ -69,8 +69,57 @@ def main() -> None:
                 fail(f"{filename}[{i}]: assessment must contain question_fa and answer_key_fa")
         totals[platform] += len(commands)
         print(f"OK {filename}: {len(commands)} records, {len(local_uids)} unique UIDs")
+    # Validate independent examples, scenarios, questions and answer key.
+    command_uids = set(global_uids)
+    def read_collection(filename: str, key: str, expected: int = 50) -> list:
+        path = PACKS / filename
+        if not path.is_file():
+            fail(f"missing Chapter 68 support file: {filename}")
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            fail(f"{filename}: invalid JSON: {exc}")
+        items = payload.get(key)
+        if not isinstance(items, list) or len(items) < expected:
+            fail(f"{filename}: expected at least {expected} items in {key}")
+        return items
+
+    examples = read_collection("ch68_examples.json", "examples")
+    scenarios = read_collection("ch68_scenarios.json", "scenarios")
+    questions = read_collection("ch68_questions.json", "questions")
+    answers = read_collection("ch68_answer_key.json", "answers")
+    answer_by_id = {str(a.get("id")): a for a in answers}
+    if len(answer_by_id) != len(answers):
+        fail("answer key contains duplicate IDs")
+    question_by_id = {str(q.get("id")): q for q in questions}
+    if len(question_by_id) != len(questions):
+        fail("questions contain duplicate IDs")
+    if set(question_by_id) != set(answer_by_id):
+        fail("question IDs and answer-key IDs do not match exactly")
+    for collection_name, items in (("examples", examples), ("scenarios", scenarios), ("questions", questions)):
+        ids = [str(item.get("id") or "") for item in items]
+        if any(not item_id for item_id in ids) or len(ids) != len(set(ids)):
+            fail(f"{collection_name}: missing or duplicate IDs")
+        for item in items:
+            if item.get("command_uid") not in command_uids:
+                fail(f"{collection_name}: unknown command_uid {item.get('command_uid')}")
+    for qid, question in question_by_id.items():
+        answer = answer_by_id[qid]
+        options = question.get("options") or []
+        index = answer.get("correct_option_index")
+        if not isinstance(index, int) or index < 0 or index >= len(options):
+            fail(f"{qid}: correct_option_index is outside the options array")
+        if options[index] != answer.get("correct_answer_fa"):
+            fail(f"{qid}: answer key does not match the selected option")
+        if not answer.get("explanation_fa"):
+            fail(f"{qid}: answer key has no explanation")
+
+    source_data = json.loads((PACKS / "ch68_sources.json").read_text(encoding="utf-8"))
+    if len(source_data.get("sources") or []) < 5:
+        fail("Chapter 68 must have at least five source entries")
     print("CH68 ADDITIVE PACKS VALID")
-    print("Counts:", dict(totals))
+    print("Command counts:", dict(totals))
+    print(f"Examples={len(examples)} scenarios={len(scenarios)} questions={len(questions)} answers={len(answers)} sources={len(source_data['sources'])}")
     print(f"Cisco Routing progress: {totals['cisco']}/1600 curated records in this dedicated pack.")
     print("Note: structural validation does not replace vendor/version review or real-device labs.")
 
