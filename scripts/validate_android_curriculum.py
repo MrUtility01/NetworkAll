@@ -115,12 +115,29 @@ def main() -> None:
     missing_groups = sorted(required_groups - set(group_titles))
     if missing_groups:
         fail(f"chapter 68 missing command collections: {missing_groups}")
+    chapter68 = next((ch for ch in chapters if int(ch.get("order", 0)) == 68), {})
     ch68_lessons = [les for order, les in lessons if order == 68]
-    unlabeled = [str(les.get("uid")) for les in ch68_lessons
-                 if not (str(les.get("title_fa") or "").startswith("[")
-                         and "]" in str(les.get("title_fa") or "")[:48])]
+    collection_prefix_by_group = {
+        str(sub.get("title_fa") or "").split("—", 1)[0].strip(): str(sub.get("title_fa") or "").split("—", 1)[0].strip()
+        for sub in chapter68.get("subchapters", [])
+    }
+    unlabeled = []
+    empty_groups = []
+    for sub in chapter68.get("subchapters", []):
+        group = str(sub.get("title_fa") or "").split("—", 1)[0].strip()
+        group_lessons = sub.get("lessons", [])
+        if not group_lessons:
+            empty_groups.append(group)
+            continue
+        expected_prefix = f"[{group}]"
+        for lesson in group_lessons:
+            title = str(lesson.get("title_fa") or "").strip()
+            if not title.startswith(expected_prefix):
+                unlabeled.append({"uid": lesson.get("uid"), "expected": expected_prefix, "title": title[:100]})
+    if empty_groups:
+        fail(f"chapter 68 contains empty command collections: {empty_groups[:8]}")
     if unlabeled:
-        fail(f"chapter 68 lessons missing collection prefix: {unlabeled[:8]}")
+        fail(f"chapter 68 lesson title does not match its collection (examples): {unlabeled[:8]}")
 
     if thin_content:
         print("QUALITY WARNING: thin lesson examples (first 10 uids):", thin_content[:10])
