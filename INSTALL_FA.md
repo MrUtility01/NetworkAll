@@ -4,12 +4,12 @@
 
 ```bat
 git clone https://github.com/MrUtility01/NetworkAll.git
-cd NetworkEncyclopedia
+cd NetworkAll
 ```
 
 ### هسته ۶۳ فصل
 فایل‌های `server/core/db.py`، `phase_a.py`، `full_curriculum.py` را از بسته محلی
-`NetworkEncyclopediaWeb` یا `NetworkEncyclopedia_full_core_for_github.zip` داخل `server/core/` کپی کنید.
+`NetworkAllWeb` یا `NetworkAll_full_core_for_github.zip` داخل `server/core/` کپی کنید.
 
 همچنین `server/static/app.css` و `app.js` را از همان بسته کپی کنید.
 
