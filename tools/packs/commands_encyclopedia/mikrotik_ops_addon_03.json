@@ -1,0 +1,2478 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "RouterOS v7 additive enrichment batch 3; 40 diagnostic and operations records; review required",
+  "chapter_order": 68,
+  "chapter_title_fa": "دانشنامه جامع دستورات",
+  "vendor_pack": "mikrotik",
+  "vendor": "MikroTik",
+  "platform": "RouterOS v7",
+  "scope": "Routing protocols, bridge/VLAN, DHCP/DNS, firewall counters, packet diagnostics, management hygiene and system health",
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true
+  },
+  "commands": [
+    {
+      "uid": "cmd:mikrotik:ops:0144",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "routing",
+      "command": "/routing/route/print detail where active",
+      "title_fa": "[L2] بررسی مسیرهای فعال با جزئیات",
+      "title_en": "بررسی مسیرهای فعال با جزئیات",
+      "syntax": "/routing/route/print detail where active",
+      "when_to_use_fa": "تشخیص next-hop و مسیر منتخب بدون تغییر پیکربندی",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/routing/route/print detail where active\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "فقط‌خواندنی؛ IP و topology خروجی را قبل از اشتراک‌گذاری پاک‌سازی کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/routing/route/print detail where active",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی مسیرهای فعال با جزئیات",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/routing/route/print detail where active» استفاده می‌شود؟",
+        "answer_key_fa": "تشخیص next-hop و مسیر منتخب بدون تغییر پیکربندی سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0145",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "routing",
+      "command": "/routing/route/print detail where dst-address=198.51.100.0/24",
+      "title_fa": "[L2] بررسی مسیر برای prefix مشخص",
+      "title_en": "بررسی مسیر برای prefix مشخص",
+      "syntax": "/routing/route/print detail where dst-address=198.51.100.0/24",
+      "when_to_use_fa": "مقایسه routeهای دقیق و مسیر انتخابی برای مقصد آزمایشگاهی",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/routing/route/print detail where dst-address=198.51.100.0/24\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "فقط‌خواندنی؛ prefix آزمایشگاهی را با مقصد واقعی جایگزین کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/routing/route/print detail where dst-address=198.51.100.0/24",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی مسیر برای prefix مشخص",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/routing/route/print detail where dst-address=198.51.100.0/24» استفاده می‌شود؟",
+        "answer_key_fa": "مقایسه routeهای دقیق و مسیر انتخابی برای مقصد آزمایشگاهی سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0146",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "routing",
+      "command": "/routing/ospf/neighbor/print detail",
+      "title_fa": "[L2] ممیزی همسایه‌های OSPF",
+      "title_en": "ممیزی همسایه‌های OSPF",
+      "syntax": "/routing/ospf/neighbor/print detail",
+      "when_to_use_fa": "بررسی state، router-id و زمان همسایگی OSPF",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/routing/ospf/neighbor/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "فقط‌خواندنی؛ شناسه‌ها و آدرس‌های داخلی حساس‌اند",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/routing/ospf/neighbor/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ممیزی همسایه‌های OSPF",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/routing/ospf/neighbor/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی state، router-id و زمان همسایگی OSPF سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0147",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "routing",
+      "command": "/routing/ospf/interface/print detail",
+      "title_fa": "[L2] بررسی تنظیمات اینترفیس OSPF",
+      "title_en": "بررسی تنظیمات اینترفیس OSPF",
+      "syntax": "/routing/ospf/interface/print detail",
+      "when_to_use_fa": "تطبیق area، network type و timers با طراحی",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/routing/ospf/interface/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "قبل از تغییر OSPF، اثر روی adjacency را ارزیابی کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/routing/ospf/interface/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی تنظیمات اینترفیس OSPF",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/routing/ospf/interface/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "تطبیق area، network type و timers با طراحی سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0148",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "routing",
+      "command": "/routing/ospf/lsa/print detail",
+      "title_fa": "[L2] بررسی Link-State Advertisement",
+      "title_en": "بررسی Link-State Advertisement",
+      "syntax": "/routing/ospf/lsa/print detail",
+      "when_to_use_fa": "تحلیل LSAs در عیب‌یابی convergence و توپولوژی",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/routing/ospf/lsa/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "خروجی می‌تواند ساختار داخلی شبکه را افشا کند",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/routing/ospf/lsa/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی Link-State Advertisement",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/routing/ospf/lsa/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "تحلیل LSAs در عیب‌یابی convergence و توپولوژی سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0149",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "routing",
+      "command": "/routing/bgp/session/print detail",
+      "title_fa": "[L2] بررسی نشست‌های BGP",
+      "title_en": "بررسی نشست‌های BGP",
+      "syntax": "/routing/bgp/session/print detail",
+      "when_to_use_fa": "بررسی وضعیت session، uptime و prefix counters",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/routing/bgp/session/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "همسایه‌های BGP و ASها را پیش از انتشار مخفی کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/routing/bgp/session/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی نشست‌های BGP",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/routing/bgp/session/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی وضعیت session، uptime و prefix counters سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0150",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "routing",
+      "command": "/routing/bgp/advertisements/print detail",
+      "title_fa": "[L2] بازبینی اعلان‌های BGP",
+      "title_en": "بازبینی اعلان‌های BGP",
+      "syntax": "/routing/bgp/advertisements/print detail",
+      "when_to_use_fa": "بررسی prefixهای advertised به peer مشخص در لاب",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/routing/bgp/advertisements/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "اعلان route را روی شبکه عملیاتی بدون مجوز تغییر نده",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/routing/bgp/advertisements/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بازبینی اعلان‌های BGP",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/routing/bgp/advertisements/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی prefixهای advertised به peer مشخص در لاب سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0151",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "routing",
+      "command": "/routing/bgp/connection/print detail",
+      "title_fa": "[L2] بررسی پیکربندی اتصال BGP",
+      "title_en": "بررسی پیکربندی اتصال BGP",
+      "syntax": "/routing/bgp/connection/print detail",
+      "when_to_use_fa": "تطبیق local/remote AS، address و template",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/routing/bgp/connection/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "از اشتراک‌گذاری peer IP و ASN خصوصی/حساس خودداری کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/routing/bgp/connection/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی پیکربندی اتصال BGP",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/routing/bgp/connection/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "تطبیق local/remote AS، address و template سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0152",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "routing",
+      "command": "/ip/route/print detail where routing-table=main",
+      "title_fa": "[L2] مشاهده routeهای IPv4 جدول اصلی",
+      "title_en": "مشاهده routeهای IPv4 جدول اصلی",
+      "syntax": "/ip/route/print detail where routing-table=main",
+      "when_to_use_fa": "تشخیص route فعال و distance در جدول main",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/route/print detail where routing-table=main\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "فقط‌خواندنی؛ پیش از افزودن route از وضعیت فعلی خروجی بگیر",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/route/print detail where routing-table=main",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "مشاهده routeهای IPv4 جدول اصلی",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/route/print detail where routing-table=main» استفاده می‌شود؟",
+        "answer_key_fa": "تشخیص route فعال و distance در جدول main سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0153",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "routing",
+      "command": "/routing/table/print detail",
+      "title_fa": "[L2] ممیزی جدول‌های مسیریابی",
+      "title_en": "ممیزی جدول‌های مسیریابی",
+      "syntax": "/routing/table/print detail",
+      "when_to_use_fa": "بررسی جدول‌های سفارشی در policy routing",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/routing/table/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "تغییر جدول می‌تواند مسیر مدیریت را قطع کند",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/routing/table/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ممیزی جدول‌های مسیریابی",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/routing/table/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی جدول‌های سفارشی در policy routing سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0154",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "routing",
+      "command": "/routing/rule/print detail",
+      "title_fa": "[L2] بازبینی routing rules",
+      "title_en": "بازبینی routing rules",
+      "syntax": "/routing/rule/print detail",
+      "when_to_use_fa": "بررسی ترتیب و شرط‌های policy routing",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/routing/rule/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "ترتیب ruleها مهم است؛ هر تغییر را مرحله‌ای و با rollback انجام بده",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/routing/rule/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بازبینی routing rules",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/routing/rule/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی ترتیب و شرط‌های policy routing سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0155",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/ip/vrf/print detail",
+      "title_fa": "[L2] ممیزی VRFهای IPv4",
+      "title_en": "ممیزی VRFهای IPv4",
+      "syntax": "/ip/vrf/print detail",
+      "when_to_use_fa": "بررسی جداسازی routing domainها",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/vrf/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "مقصد و جدول VRF را با توپولوژی واقعی تطبیق بده",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/vrf/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ممیزی VRFهای IPv4",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/vrf/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی جداسازی routing domainها سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0156",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "interface",
+      "command": "/interface/ethernet/monitor ether1 once",
+      "title_fa": "[L2] خواندن وضعیت لحظه‌ای پورت Ethernet",
+      "title_en": "خواندن وضعیت لحظه‌ای پورت Ethernet",
+      "syntax": "/interface/ethernet/monitor ether1 once",
+      "when_to_use_fa": "بررسی link، speed، duplex و وضعیت negotiation",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/interface/ethernet/monitor ether1 once\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "نام پورت نمونه است؛ تغییر speed/duplex بدون بررسی سمت مقابل انجام نشود",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/interface/ethernet/monitor ether1 once",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "خواندن وضعیت لحظه‌ای پورت Ethernet",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/interface/ethernet/monitor ether1 once» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی link، speed، duplex و وضعیت negotiation سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0157",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "interface",
+      "command": "/interface/ethernet/print stats detail",
+      "title_fa": "[L2] بررسی شمارنده‌های Ethernet",
+      "title_en": "بررسی شمارنده‌های Ethernet",
+      "syntax": "/interface/ethernet/print stats detail",
+      "when_to_use_fa": "تشخیص خطاهای RX/TX، drops و شمارنده‌های فیزیکی",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/interface/ethernet/print stats detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "counterها را قبل و بعد از بازه زمانی مقایسه کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/interface/ethernet/print stats detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی شمارنده‌های Ethernet",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/interface/ethernet/print stats detail» استفاده می‌شود؟",
+        "answer_key_fa": "تشخیص خطاهای RX/TX، drops و شمارنده‌های فیزیکی سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0158",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "interface",
+      "command": "/interface/bridge/host/print detail",
+      "title_fa": "[L2] مشاهده جدول MAC در Bridge",
+      "title_en": "مشاهده جدول MAC در Bridge",
+      "syntax": "/interface/bridge/host/print detail",
+      "when_to_use_fa": "تطبیق MAC learning با VLAN و پورت",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/interface/bridge/host/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "MAC و توپولوژی را قبل از انتشار scrub کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/interface/bridge/host/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "مشاهده جدول MAC در Bridge",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/interface/bridge/host/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "تطبیق MAC learning با VLAN و پورت سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0159",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "interface",
+      "command": "/interface/bridge/vlan/print detail",
+      "title_fa": "[L2] ممیزی عضویت VLAN در Bridge",
+      "title_en": "ممیزی عضویت VLAN در Bridge",
+      "syntax": "/interface/bridge/vlan/print detail",
+      "when_to_use_fa": "بررسی tagged/untagged و PVID در RouterOS v7",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/interface/bridge/vlan/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "تغییر VLAN ممکن است دسترسی مدیریتی را قطع کند",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/interface/bridge/vlan/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ممیزی عضویت VLAN در Bridge",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/interface/bridge/vlan/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی tagged/untagged و PVID در RouterOS v7 سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0160",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "interface",
+      "command": "/interface/bridge/port/print detail",
+      "title_fa": "[L2] بازبینی پورت‌های Bridge",
+      "title_en": "بازبینی پورت‌های Bridge",
+      "syntax": "/interface/bridge/port/print detail",
+      "when_to_use_fa": "بررسی PVID، frame-types و ingress filtering",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/interface/bridge/port/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "پیش از تغییر پورت uplink، مسیر جایگزین مدیریت داشته باش",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/interface/bridge/port/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بازبینی پورت‌های Bridge",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/interface/bridge/port/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی PVID، frame-types و ingress filtering سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0161",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "interface",
+      "command": "/interface/vlan/print detail",
+      "title_fa": "[L2] بررسی رابط‌های VLAN",
+      "title_en": "بررسی رابط‌های VLAN",
+      "syntax": "/interface/vlan/print detail",
+      "when_to_use_fa": "تطبیق VLAN ID و رابط parent",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/interface/vlan/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "شناسه VLAN و parent را با طرح لایه ۲ تأیید کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/interface/vlan/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی رابط‌های VLAN",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/interface/vlan/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "تطبیق VLAN ID و رابط parent سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0162",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "services",
+      "command": "/ip/dhcp-server/lease/print detail where status=bound",
+      "title_fa": "[L2] بازبینی Leaseهای فعال DHCP",
+      "title_en": "بازبینی Leaseهای فعال DHCP",
+      "syntax": "/ip/dhcp-server/lease/print detail where status=bound",
+      "when_to_use_fa": "تطبیق آدرس تخصیص‌یافته با MAC و hostname",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/dhcp-server/lease/print detail where status=bound\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "خروجی می‌تواند اطلاعات کاربران را افشا کند",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/dhcp-server/lease/print detail where status=bound",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بازبینی Leaseهای فعال DHCP",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/dhcp-server/lease/print detail where status=bound» استفاده می‌شود؟",
+        "answer_key_fa": "تطبیق آدرس تخصیص‌یافته با MAC و hostname سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0163",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "services",
+      "command": "/ip/dhcp-server/network/print detail",
+      "title_fa": "[L2] ممیزی optionهای شبکه DHCP",
+      "title_en": "ممیزی optionهای شبکه DHCP",
+      "syntax": "/ip/dhcp-server/network/print detail",
+      "when_to_use_fa": "بررسی gateway، DNS و subnetهای توزیع‌شده",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/dhcp-server/network/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "تغییر optionها روی کلاینت‌ها اثر گسترده دارد",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/dhcp-server/network/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ممیزی optionهای شبکه DHCP",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/dhcp-server/network/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی gateway، DNS و subnetهای توزیع‌شده سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0164",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "services",
+      "command": "/ip/dhcp-server/alert/print detail",
+      "title_fa": "[L2] بررسی DHCP Alert",
+      "title_en": "بررسی DHCP Alert",
+      "syntax": "/ip/dhcp-server/alert/print detail",
+      "when_to_use_fa": "بررسی هشدارهای سرور DHCP ناخواسته",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/dhcp-server/alert/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "برای جلوگیری از اختلال، فقط روی VLAN مجاز آزمایش کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/dhcp-server/alert/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی DHCP Alert",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/dhcp-server/alert/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی هشدارهای سرور DHCP ناخواسته سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0165",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/ip/dns/cache/print detail",
+      "title_fa": "[L2] بازبینی cache DNS",
+      "title_en": "بازبینی cache DNS",
+      "syntax": "/ip/dns/cache/print detail",
+      "when_to_use_fa": "بررسی نام‌ها و رکوردهای cacheشده در عیب‌یابی",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/dns/cache/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "نام‌های داخلی و queryهای کاربران ممکن است حساس باشند",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/dns/cache/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بازبینی cache DNS",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/dns/cache/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی نام‌ها و رکوردهای cacheشده در عیب‌یابی سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0166",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/ip/dns/static/print detail",
+      "title_fa": "[L2] ممیزی رکوردهای DNS ایستا",
+      "title_en": "ممیزی رکوردهای DNS ایستا",
+      "syntax": "/ip/dns/static/print detail",
+      "when_to_use_fa": "بررسی mappingهای محلی DNS",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/dns/static/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "رکوردها را قبل از تغییر export و مستند کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/dns/static/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ممیزی رکوردهای DNS ایستا",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/dns/static/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی mappingهای محلی DNS سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0167",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "firewall",
+      "command": "/ip/firewall/filter/print stats detail",
+      "title_fa": "[L2] تحلیل شمارنده‌های Firewall Filter",
+      "title_en": "تحلیل شمارنده‌های Firewall Filter",
+      "syntax": "/ip/firewall/filter/print stats detail",
+      "when_to_use_fa": "شناسایی ruleهایی که ترافیک را match یا drop می‌کنند",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/firewall/filter/print stats detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "صرفاً شمارنده‌ها را تحلیل کن؛ rule را کورکورانه disable نکن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/firewall/filter/print stats detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "تحلیل شمارنده‌های Firewall Filter",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/firewall/filter/print stats detail» استفاده می‌شود؟",
+        "answer_key_fa": "شناسایی ruleهایی که ترافیک را match یا drop می‌کنند سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0168",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "firewall",
+      "command": "/ip/firewall/raw/print stats detail",
+      "title_fa": "[L2] تحلیل ruleهای Raw",
+      "title_en": "تحلیل ruleهای Raw",
+      "syntax": "/ip/firewall/raw/print stats detail",
+      "when_to_use_fa": "بررسی پردازش زودهنگام packetها و شمارنده‌های rule",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/firewall/raw/print stats detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "تغییر raw می‌تواند بخش بزرگی از ترافیک را متأثر کند",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/firewall/raw/print stats detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "تحلیل ruleهای Raw",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/firewall/raw/print stats detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی پردازش زودهنگام packetها و شمارنده‌های rule سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0169",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "firewall",
+      "command": "/ip/firewall/mangle/print detail",
+      "title_fa": "[L2] بازبینی Mangle و packet marking",
+      "title_en": "بازبینی Mangle و packet marking",
+      "syntax": "/ip/firewall/mangle/print detail",
+      "when_to_use_fa": "بررسی markهای connection/packet/routing در policy routing",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/firewall/mangle/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "markها را با routing rules و queueها یکپارچه بررسی کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/firewall/mangle/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بازبینی Mangle و packet marking",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/firewall/mangle/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی markهای connection/packet/routing در policy routing سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0170",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "firewall",
+      "command": "/ip/firewall/nat/print stats detail",
+      "title_fa": "[L2] بررسی شمارنده‌های NAT",
+      "title_en": "بررسی شمارنده‌های NAT",
+      "syntax": "/ip/firewall/nat/print stats detail",
+      "when_to_use_fa": "تطبیق ruleهای NAT با جریان‌های واقعی",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/firewall/nat/print stats detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "آدرس‌های عمومی و داخلی را در گزارش ناشناس کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/firewall/nat/print stats detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی شمارنده‌های NAT",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/firewall/nat/print stats detail» استفاده می‌شود؟",
+        "answer_key_fa": "تطبیق ruleهای NAT با جریان‌های واقعی سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0171",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "firewall",
+      "command": "/ip/firewall/connection/print detail where protocol=tcp",
+      "title_fa": "[L2] بازبینی connection tracking برای TCP",
+      "title_en": "بازبینی connection tracking برای TCP",
+      "syntax": "/ip/firewall/connection/print detail where protocol=tcp",
+      "when_to_use_fa": "تحلیل state، timeout و tuple اتصال در لاب",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/firewall/connection/print detail where protocol=tcp\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "connection table می‌تواند IP و پورت کاربران را افشا کند",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/firewall/connection/print detail where protocol=tcp",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بازبینی connection tracking برای TCP",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/firewall/connection/print detail where protocol=tcp» استفاده می‌شود؟",
+        "answer_key_fa": "تحلیل state، timeout و tuple اتصال در لاب سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0172",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/ip/service/print detail",
+      "title_fa": "[L2] ممیزی سرویس‌های مدیریتی",
+      "title_en": "ممیزی سرویس‌های مدیریتی",
+      "syntax": "/ip/service/print detail",
+      "when_to_use_fa": "شناسایی سرویس‌های فعال و محدودیت‌های دسترسی",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/ip/service/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "سرویس غیرضروری را پس از تأیید و با مسیر مدیریت جایگزین غیرفعال کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/ip/service/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ممیزی سرویس‌های مدیریتی",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/ip/service/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "شناسایی سرویس‌های فعال و محدودیت‌های دسترسی سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0173",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/user/active/print detail",
+      "title_fa": "[L2] بررسی نشست‌های مدیریتی فعال",
+      "title_en": "بررسی نشست‌های مدیریتی فعال",
+      "syntax": "/user/active/print detail",
+      "when_to_use_fa": "ممیزی نشست‌های جاری و مبدأ دسترسی",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/user/active/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "اطلاعات کاربری را در خروجی منتشرشده حذف کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/user/active/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی نشست‌های مدیریتی فعال",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/user/active/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "ممیزی نشست‌های جاری و مبدأ دسترسی سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0174",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/system/package/print detail",
+      "title_fa": "[L2] ثبت نسخه بسته‌های RouterOS",
+      "title_en": "ثبت نسخه بسته‌های RouterOS",
+      "syntax": "/system/package/print detail",
+      "when_to_use_fa": "تعیین نسخه و packageهای نصب‌شده پیش از تغییر",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/system/package/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "سازگاری فرمان‌ها را با نسخه دقیق RouterOS بررسی کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/system/package/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ثبت نسخه بسته‌های RouterOS",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/system/package/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "تعیین نسخه و packageهای نصب‌شده پیش از تغییر سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0175",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/system/resource/print",
+      "title_fa": "[L2] ثبت منابع و uptime روتر",
+      "title_en": "ثبت منابع و uptime روتر",
+      "syntax": "/system/resource/print",
+      "when_to_use_fa": "بررسی CPU، RAM، uptime و معماری سیستم",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/system/resource/print\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "خروجی را همراه زمان و بار کاری ثبت کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/system/resource/print",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ثبت منابع و uptime روتر",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/system/resource/print» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی CPU، RAM، uptime و معماری سیستم سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0176",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/system/health/print",
+      "title_fa": "[L2] خواندن حسگرهای سلامت سخت‌افزار",
+      "title_en": "خواندن حسگرهای سلامت سخت‌افزار",
+      "syntax": "/system/health/print",
+      "when_to_use_fa": "بررسی ولتاژ/دما در دستگاه‌های پشتیبانی‌شده",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/system/health/print\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "همه مدل‌ها همه حسگرها را ارائه نمی‌کنند",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/system/health/print",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "خواندن حسگرهای سلامت سخت‌افزار",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/system/health/print» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی ولتاژ/دما در دستگاه‌های پشتیبانی‌شده سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0177",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/tool/profile cpu=all duration=10s",
+      "title_fa": "[L2] پروفایل کوتاه مصرف CPU",
+      "title_en": "پروفایل کوتاه مصرف CPU",
+      "syntax": "/tool/profile cpu=all duration=10s",
+      "when_to_use_fa": "یافتن subsystem پرمصرف در بازه کوتاه کنترل‌شده",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/tool/profile cpu=all duration=10s\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "در زمان اوج بار، profiling را کوتاه و با مجوز اجرا کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/tool/profile cpu=all duration=10s",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "پروفایل کوتاه مصرف CPU",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/tool/profile cpu=all duration=10s» استفاده می‌شود؟",
+        "answer_key_fa": "یافتن subsystem پرمصرف در بازه کوتاه کنترل‌شده سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0178",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "interface",
+      "command": "/tool/sniffer/quick interface=bridge1 ip-protocol=tcp port=443",
+      "title_fa": "[L2] مشاهده زنده TCP/443 در لاب",
+      "title_en": "مشاهده زنده TCP/443 در لاب",
+      "syntax": "/tool/sniffer/quick interface=bridge1 ip-protocol=tcp port=443",
+      "when_to_use_fa": "تأیید رسیدن ترافیک به interface مشخص",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/tool/sniffer/quick interface=bridge1 ip-protocol=tcp port=443\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "payload و metadata ممکن است حساس باشند؛ فقط capture مجاز بگیر",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/tool/sniffer/quick interface=bridge1 ip-protocol=tcp port=443",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "مشاهده زنده TCP/443 در لاب",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/tool/sniffer/quick interface=bridge1 ip-protocol=tcp port=443» استفاده می‌شود؟",
+        "answer_key_fa": "تأیید رسیدن ترافیک به interface مشخص سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0179",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "interface",
+      "command": "/tool/torch interface=ether1",
+      "title_fa": "[L2] تحلیل زنده ترافیک اینترفیس",
+      "title_en": "تحلیل زنده ترافیک اینترفیس",
+      "syntax": "/tool/torch interface=ether1",
+      "when_to_use_fa": "مشاهده نرخ و جریان‌ها برای تشخیص اشباع لینک",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/tool/torch interface=ether1\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "نمونه نام interface است؛ اجرای طولانی روی CPU را پایش کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/tool/torch interface=ether1",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "تحلیل زنده ترافیک اینترفیس",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/tool/torch interface=ether1» استفاده می‌شود؟",
+        "answer_key_fa": "مشاهده نرخ و جریان‌ها برای تشخیص اشباع لینک سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0180",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/tool/ping 198.51.100.10 count=5 interval=500ms",
+      "title_fa": "[L2] آزمون ICMP کنترل‌شده",
+      "title_en": "آزمون ICMP کنترل‌شده",
+      "syntax": "/tool/ping 198.51.100.10 count=5 interval=500ms",
+      "when_to_use_fa": "تفکیک loss و RTT در مقصد مستندشده آزمایشگاهی",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/tool/ping 198.51.100.10 count=5 interval=500ms\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "از IP مستندشده TEST-NET یا مقصد تحت اختیار استفاده کن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/tool/ping 198.51.100.10 count=5 interval=500ms",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "آزمون ICMP کنترل‌شده",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/tool/ping 198.51.100.10 count=5 interval=500ms» استفاده می‌شود؟",
+        "answer_key_fa": "تفکیک loss و RTT در مقصد مستندشده آزمایشگاهی سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0181",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/tool/traceroute 198.51.100.10 count=1",
+      "title_fa": "[L2] ردیابی مسیر در لاب",
+      "title_en": "ردیابی مسیر در لاب",
+      "syntax": "/tool/traceroute 198.51.100.10 count=1",
+      "when_to_use_fa": "بررسی hopها و محل احتمالی فیلتر ICMP/TTL exceeded",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/tool/traceroute 198.51.100.10 count=1\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "نتیجه به سیاست پاسخ‌گویی روترهای مسیر وابسته است",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/tool/traceroute 198.51.100.10 count=1",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ردیابی مسیر در لاب",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/tool/traceroute 198.51.100.10 count=1» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی hopها و محل احتمالی فیلتر ICMP/TTL exceeded سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0182",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/system/clock/print",
+      "title_fa": "[L2] ثبت زمان روتر",
+      "title_en": "ثبت زمان روتر",
+      "syntax": "/system/clock/print",
+      "when_to_use_fa": "تطبیق timestamp روتر با log و packet capture",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/system/clock/print\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "اختلاف ساعت می‌تواند تحلیل رخداد را مخدوش کند",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/system/clock/print",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ثبت زمان روتر",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/system/clock/print» استفاده می‌شود؟",
+        "answer_key_fa": "تطبیق timestamp روتر با log و packet capture سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0183",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/system/logging/print detail",
+      "title_fa": "[L2] ممیزی مقصدهای logging",
+      "title_en": "ممیزی مقصدهای logging",
+      "syntax": "/system/logging/print detail",
+      "when_to_use_fa": "بررسی topic و مقصد ثبت رویدادها",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/system/logging/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "مقصد log باید احراز هویت و دسترسی محدود داشته باشد",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/system/logging/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ممیزی مقصدهای logging",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/system/logging/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی topic و مقصد ثبت رویدادها سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0184",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7",
+      "version_scope": "RouterOS v7; verify exact path and property support on target minor release",
+      "privilege": "read-only diagnostics unless explicitly stated otherwise",
+      "category": "networking",
+      "subcategory": "troubleshoot",
+      "command": "/certificate/print detail",
+      "title_fa": "[L2] ممیزی گواهی‌های نصب‌شده",
+      "title_en": "ممیزی گواهی‌های نصب‌شده",
+      "syntax": "/certificate/print detail",
+      "when_to_use_fa": "بررسی subject، expiry و trust برای سرویس‌های TLS",
+      "prerequisites_fa": [
+        "دسترسی مجاز به روتر آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت نسخه RouterOS، hostname، زمان و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی RouterOS v7 آزمایشگاهی یا در حالت فقط‌خواندنی اجرا کن.",
+        "خروجی را همراه زمان، interface/VRF و هدف جمع‌آوری ثبت کن.",
+        "یافته را با لاگ، شمارنده‌ها یا capture مستقل تطبیق بده."
+      ],
+      "sample_output": "نمونه آموزشی؛ مقادیر واقعی با مدل و پیکربندی فرق دارد:\n/certificate/print detail\n# وضعیت باید با خروجی همان روتر تأیید شود",
+      "output_fields_fa": [
+        {
+          "field": "status/state/counters",
+          "meaning": "وضعیت، شمارنده یا نتیجه‌ای که باید در دستگاه هدف مشاهده و مستند شود"
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن menu path در همه نسخه‌های RouterOS.",
+        "تغییر configuration بر اساس یک snapshot بدون baseline و verify."
+      ],
+      "security_notes_fa": "private key را export یا منتشر نکن",
+      "lab_hint_fa": "در CHR یا لاب ایزوله، قبل/بعد را ثبت کن؛ اگر تغییر لازم شد، export پیکربندی و rollback تست‌شده داشته باش.",
+      "verify_steps_fa": [
+        "/certificate/print detail",
+        "با log، interface counter یا ابزار مستقل، نتیجه را تأیید کن."
+      ],
+      "rollback_fa": "فرمان نمونه صرفاً خواندنی است؛ اگر برای پیگیری تغییر لازم شد، تغییر را در لاب انجام بده و دستور معکوس مستند کن.",
+      "related_commands": [
+        "/system/resource/print",
+        "/log/print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ممیزی گواهی‌های نصب‌شده",
+        "MikroTik RouterOS v7",
+        "chapter 68",
+        "network troubleshooting"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "در چه شرایطی از «/certificate/print detail» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی subject، expiry و trust برای سرویس‌های TLS سپس خروجی را با نسخه و پیکربندی واقعی تطبیق بده."
+      },
+      "source_status": "review_required"
+    }
+  ]
+}
