@@ -2,7 +2,7 @@
   "package_schema_version": 1,
   "project": "ENGINEER JOKAR / NetworkAll",
   "generated_on": "2026-10-13",
-  "purpose": "غنی‌سازی افزایشی فصل ۹: ARP ICMP TCP UDP",
+  "purpose": "غنی‌سازی افزایشی فصل ۹: ARP ICMP TCP UDP؛ 30 درس تخصصی به همراه مثال‌ها، سناریوها، آزمون و پاسخ‌نامه مستقل",
   "chapter_order": 9,
   "chapter_title_fa": "ARP ICMP TCP UDP",
   "vendor_pack": "network_protocols",
@@ -573,6 +573,266 @@
         "assessment": {
           "type": "practice",
           "question_fa": "برای امنیت ARP و TCP چه شاهدی فرضیه اصلی را تأیید یا رد می‌کند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:icmp-packet-too-big:v1",
+      "chapter_order": 9,
+      "subchapter_order": 2,
+      "lesson_order": 22,
+      "level": "L2",
+      "title_fa": "[L2] تکمیلی فصل ۹ — ICMP Packet Too Big، Fragmentation و PMTUD",
+      "title_en": "ICMP errors and Path MTU Discovery",
+      "topic": "ICMP",
+      "summary": "تفاوت پیام‌های ICMPv4 و ICMPv6 مرتبط با MTU، fragmentation و Path MTU Discovery را در عیب‌یابی مسیر توضیح می‌دهد.",
+      "full_content": "# ICMP Packet Too Big، Fragmentation و PMTUD\n\n## مفهوم\nدر IPv4، روتر ممکن است بسته‌ای بزرگ‌تر از MTU خروجی را که DF آن فعال است drop کند و ICMP Destination Unreachable/Fragmentation Needed برگرداند. در IPv6، روترها packet را fragment نمی‌کنند؛ مبدأ با دریافت ICMPv6 Packet Too Big اندازه packet را کاهش می‌دهد یا در صورت نیاز از Fragment Header استفاده می‌کند.\n\n## روند عیب‌یابی\n1. MTU رابط‌های مبدأ، تونل/VPN، مسیر و مقصد را ثبت کن.\n2. ping با اندازه کنترل‌شده و DF را فقط در لابراتوار اجرا کن.\n3. capture را در دو سوی مسیر مقایسه کن: آیا بسته وارد می‌شود، کجا ناپدید می‌شود و ICMP error برمی‌گردد؟\n4. TCP MSS را از MTU با کسر سربار IP/TCP تخمین بزن؛ encapsulation و options نتیجه را تغییر می‌دهند.\n5. هر تغییر MTU/MSS را یک‌به‌یک اعمال و مسیرهای دیگر را دوباره آزمایش کن.\n\n## مثال و لاب\nاگر handshake TCP موفق است ولی انتقال فایل بزرگ گیر می‌کند، PMTUD black hole یکی از فرضیه‌هاست؛ congestion، loss، proxy و application timeout را هم رد کن. در Wireshark فیلترهای icmp و icmpv6 و برای IPv6 نوع 2 را بررسی کن.\n\n## معیار تأیید\nاندازه packet، پیام ICMP، MTU اعلام‌شده، سمت تولیدکننده error و موفقیت انتقال در اندازه‌های مختلف را ثبت کن. تغییر فقط وقتی پذیرفته است که انتقال کوچک و بزرگ و مسیر برگشت آزموده شوند.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · ICMP · L2",
+      "learning_objectives": [
+        "توضیح دقیق ICMP Packet Too Big، Fragmentation و PMTUD",
+        "عیب‌یابی ICMP با شواهد، verify و rollback"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای «ICMP Packet Too Big، Fragmentation و PMTUD» چه شواهدی باید جمع‌آوری و چگونه راستی‌آزمایی شوند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:icmp-rate-limit:v1",
+      "chapter_order": 9,
+      "subchapter_order": 2,
+      "lesson_order": 23,
+      "level": "L3",
+      "title_fa": "[L3] تکمیلی فصل ۹ — ICMP Rate Limiting و تفسیر سکوت شبکه",
+      "title_en": "ICMP rate limiting and filtering",
+      "topic": "ICMP",
+      "summary": "توضیح می‌دهد چرا نبود پاسخ ICMP الزاماً به معنی قطع بودن مقصد نیست و rate limiting چگونه تفسیر آزمون را تغییر می‌دهد.",
+      "full_content": "# ICMP Rate Limiting و تفسیر سکوت شبکه\n\nPing و Traceroute ابزار مشاهده‌اند، نه اثبات قطعی reachability برنامه. فایروال، ACL، control-plane policing یا rate limiting می‌تواند ICMP را محدود کند در حالی که TCP/UDP موردنیاز برنامه همچنان کار می‌کند. برعکس، پاسخ Echo نیز سلامت application را تضمین نمی‌کند.\n\n## روش\n- مبدأ، مقصد، protocol، port، زمان و مسیر را ثابت نگه دار.\n- هم‌زمان ICMP و آزمون سرویس را انجام بده؛ برای TCP از آزمون پورت و برای UDP از telemetry/application log کمک بگیر.\n- loss واقعی ترافیک داده را از پاسخ‌های ICMP rate-limited جدا کن.\n- در Traceroute، هر hop ممکن است به probe پاسخ ندهد؛ مقصد نهایی و مسیر forward/return را جداگانه تحلیل کن.\n\n## مثال\nTraceroute در hop چهارم ستاره نشان می‌دهد، اما مقصد وب باز می‌شود. این الگو با فیلتر یا محدودسازی ICMP سازگار است و به‌تنهایی خرابی مسیر را ثابت نمی‌کند.\n\n## امنیت\nProbeها را محدود نگه دار و از flood در production اجتناب کن. گزارش باید protocol/port آزمایش‌شده و محدودیت‌های نتیجه را مشخص کند.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · ICMP · L3",
+      "learning_objectives": [
+        "توضیح دقیق ICMP Rate Limiting و تفسیر سکوت شبکه",
+        "عیب‌یابی ICMP با شواهد، verify و rollback"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای «ICMP Rate Limiting و تفسیر سکوت شبکه» چه شواهدی باید جمع‌آوری و چگونه راستی‌آزمایی شوند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:tcp-options:v1",
+      "chapter_order": 9,
+      "subchapter_order": 3,
+      "lesson_order": 24,
+      "level": "L3",
+      "title_fa": "[L3] تکمیلی فصل ۹ — TCP Options، MSS، Window Scaling و SACK",
+      "title_en": "TCP options and performance",
+      "topic": "TCP",
+      "summary": "گزینه‌های TCP و نقش آن‌ها در اندازه segment، پنجره دریافت و بازیابی loss را با تحلیل capture توضیح می‌دهد.",
+      "full_content": "# TCP Options، MSS، Window Scaling و SACK\n\nMSS مقدار داده TCP در یک segment را محدود می‌کند و از MTU و سربار IP/TCP اثر می‌پذیرد. Window Scaling اجازه می‌دهد receive window بزرگ‌تر از محدوده پایه header بیان شود. SACK گیرنده را قادر می‌سازد بلوک‌های دریافت‌شده را گزارش کند تا فرستنده در برخی شرایط فقط داده گمشده را retransmit کند. Timestamp نیز برای اندازه‌گیری RTT و برخی الگوریتم‌ها کاربرد دارد.\n\n## تحلیل handshake\nدر SYN و SYN/ACK، options توافق‌شده را بررسی کن؛ نبود option در capture می‌تواند ناشی از negotiation، middlebox یا نقطه capture باشد. MSS را با MTU تونل و encapsulation مقایسه کن، نه فقط MTU رابط Ethernet.\n\n## مثال و لاب\nHandshake موفق است اما throughput پایین است. ابتدا loss/retransmission، receive window، RTT، congestion و application را بسنج؛ صرف وجود یا نبود SACK علت را ثابت نمی‌کند. در Wireshark tcp.options و tcp.analysis.retransmission را در کنار stream بررسی کن.\n\n## اشتباه رایج\nMSS را با MTU یا receive window یکی نگیر. Window کوچک می‌تواند flow control را محدود کند؛ congestion window از دید فرستنده و receive window از دید گیرنده دو مفهوم متفاوت‌اند.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · TCP · L3",
+      "learning_objectives": [
+        "توضیح دقیق TCP Options، MSS، Window Scaling و SACK",
+        "عیب‌یابی TCP با شواهد، verify و rollback"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای «TCP Options، MSS، Window Scaling و SACK» چه شواهدی باید جمع‌آوری و چگونه راستی‌آزمایی شوند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:tcp-congestion:v1",
+      "chapter_order": 9,
+      "subchapter_order": 3,
+      "lesson_order": 25,
+      "level": "L4",
+      "title_fa": "[L4] تکمیلی فصل ۹ — TCP Congestion Control، RTT و Retransmission",
+      "title_en": "TCP loss and congestion diagnosis",
+      "topic": "TCP",
+      "summary": "تفاوت flow control و congestion control و نحوه تفسیر retransmission، duplicate ACK و RTO را بررسی می‌کند.",
+      "full_content": "# TCP Congestion Control، RTT و Retransmission\n\nReceive Window توسط گیرنده برای کنترل میزان داده‌ای که می‌تواند دریافت کند اعلام می‌شود. Congestion Window بخشی از الگوریتم فرستنده برای کنترل بار شبکه است و به‌عنوان فیلد معمولی در TCP header اعلام نمی‌شود. محدودیت throughput می‌تواند از هرکدام، RTT، loss یا application ناشی شود.\n\n## شواهد capture\n- Retransmission می‌تواند با loss، reorder یا capture ناقص سازگار باشد.\n- Duplicate ACK ممکن است نشانه رسیدن داده خارج از ترتیب یا segment گمشده باشد.\n- RTO نشان‌دهنده timeout ارسال مجدد است؛ زمان دقیق و الگوریتم به stack بستگی دارد.\n- Capture یک‌طرفه ممکن است ACK یا segment اصلی را از دست بدهد.\n\n## مثال و لاب\nاگر سمت A retransmission می‌فرستد، capture را در هر دو سمت مسیر بگیر و sequence/acknowledgment، timestamp و interface counters را تطبیق بده. در Wireshark tcp.analysis.retransmission و tcp.analysis.duplicate_ack را با stream و log برنامه مقایسه کن.\n\n## خروجی\nگزارش شامل flow tuple، RTT تقریبی، تعداد retransmission، پنجره دریافت، نقطه capture و محدودیت‌های مشاهده باشد.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · TCP · L4",
+      "learning_objectives": [
+        "توضیح دقیق TCP Congestion Control، RTT و Retransmission",
+        "عیب‌یابی TCP با شواهد، verify و rollback"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای «TCP Congestion Control، RTT و Retransmission» چه شواهدی باید جمع‌آوری و چگونه راستی‌آزمایی شوند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:udp-checksum:v1",
+      "chapter_order": 9,
+      "subchapter_order": 4,
+      "lesson_order": 26,
+      "level": "L2",
+      "title_fa": "[L2] تکمیلی فصل ۹ — UDP Checksum، طول Datagram و تضمین تحویل",
+      "title_en": "UDP checksum and delivery semantics",
+      "topic": "UDP",
+      "summary": "هدر UDP، طول، checksum و تفاوت مسئولیت لایه انتقال با retryهای application را توضیح می‌دهد.",
+      "full_content": "# UDP Checksum، طول Datagram و تضمین تحویل\n\nUDP header شامل source port، destination port، length و checksum است. UDP handshake ایجاد نمی‌کند، ترتیب یا تحویل قابل‌اعتماد را تضمین نمی‌کند و retransmission را ذاتاً مدیریت نمی‌کند. برنامه ممکن است retry، sequence number یا timeout خود را پیاده‌سازی کند.\n\n## Checksum\nدر IPv4، checksum صفر از نظر پروتکل می‌تواند به معنی عدم استفاده باشد؛ در IPv6 checksum UDP عموماً الزامی است، به‌جز استثناهای محدود استاندارد. کارت شبکه ممکن است به دلیل checksum offload در capture محلی ظاهراً خطا نشان دهد.\n\n## عیب‌یابی\n1. source/destination IP و port را ثبت کن.\n2. طول datagram، checksum، fragmentation و packet loss را بررسی کن.\n3. مشخص کن پاسخ یا retry توسط application انتظار می‌رود یا نه.\n4. capture را با log برنامه و counters سمت مقصد تطبیق بده.\n\n## مثال\nدر DNS، timeout ممکن است ناشی از drop UDP، نبود پاسخ، retry، truncation یا انتقال بعدی روی TCP باشد. دیدن یک UDP query به معنی موفقیت resolution نیست. در Wireshark فیلتر udp و udp.port == 53 را بررسی کن.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · UDP · L2",
+      "learning_objectives": [
+        "توضیح دقیق UDP Checksum، طول Datagram و تضمین تحویل",
+        "عیب‌یابی UDP با شواهد، verify و rollback"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای «UDP Checksum، طول Datagram و تضمین تحویل» چه شواهدی باید جمع‌آوری و چگونه راستی‌آزمایی شوند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:dns-udp-tcp:v1",
+      "chapter_order": 9,
+      "subchapter_order": 4,
+      "lesson_order": 27,
+      "level": "L2",
+      "title_fa": "[L2] تکمیلی فصل ۹ — DNS روی UDP و TCP؛ Truncation و Retry",
+      "title_en": "DNS transport behavior",
+      "topic": "UDP",
+      "summary": "نحوه استفاده DNS از UDP و TCP، پرچم TC و رفتار resolver را برای عیب‌یابی پاسخ‌های بزرگ توضیح می‌دهد.",
+      "full_content": "# DNS روی UDP و TCP؛ Truncation و Retry\n\nDNS اغلب از UDP استفاده می‌کند، اما TCP نیز بخشی از رفتار استاندارد است؛ از جمله انتقال zone و پاسخ‌هایی که با محدودیت UDP یا تنظیمات EDNS بزرگ‌تر می‌شوند. پرچم TC در پاسخ می‌تواند نشان دهد پاسخ truncate شده و resolver بر اساس پیاده‌سازی و شرایط query را از طریق TCP تکرار کند.\n\n## روش تشخیص\n- query ID، QNAME، QTYPE، response code، TC و اندازه پاسخ را ثبت کن.\n- DNS client، resolver و authoritative server را از هم تفکیک کن.\n- بررسی کن آیا UDP/53 و TCP/53 در مسیر مجازند؛ فقط UDP ممکن است برخی پاسخ‌ها را خراب کند.\n- cache و TTL را در نظر بگیر تا پاسخ قدیمی با شکست فعلی اشتباه نشود.\n\n## مثال\nپاسخ کوچک A موفق است اما پاسخ بزرگ DNSSEC timeout می‌شود. اندازه پاسخ، TC، fragmentation، PMTUD و دسترسی TCP/53 را بررسی کن؛ از نتیجه‌گیری فوری درباره خراب بودن DNSSEC خودداری کن.\n\n## لاب\nدر capture فیلتر dns و tcp.port == 53 را مقایسه کن. آزمون را روی دامنه آزمایشگاهی یا داده مجاز انجام بده.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · UDP · L2",
+      "learning_objectives": [
+        "توضیح دقیق DNS روی UDP و TCP؛ Truncation و Retry",
+        "عیب‌یابی UDP با شواهد، verify و rollback"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای «DNS روی UDP و TCP؛ Truncation و Retry» چه شواهدی باید جمع‌آوری و چگونه راستی‌آزمایی شوند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:tcp-reset-middlebox:v1",
+      "chapter_order": 9,
+      "subchapter_order": 3,
+      "lesson_order": 28,
+      "level": "L3",
+      "title_fa": "[L3] تکمیلی فصل ۹ — TCP RST، Firewall و Middlebox",
+      "title_en": "TCP resets and path diagnosis",
+      "topic": "TCP",
+      "summary": "تفاوت RST از endpoint، فایروال و middlebox را با توجه به محل capture و sequence context بررسی می‌کند.",
+      "full_content": "# TCP RST، Firewall و Middlebox\n\nRST می‌تواند نشان دهد مقصد یا تجهیز میانی اتصال را رد یا قطع کرده، اما فقط از روی flag نمی‌توان تولیدکننده را با قطعیت شناخت. پورت بدون listener، policy فایروال، proxy یا middlebox می‌تواند نتیجه مشابهی ایجاد کند.\n\n## روش تحلیل\n1. پنج‌تایی flow شامل src/dst IP، src/dst port و protocol را ثبت کن.\n2. sequence/acknowledgment، زمان RST و packetهای قبل از آن را بررسی کن.\n3. در صورت امکان capture را در دو سمت firewall یا endpoint مقایسه کن.\n4. socket listener، application log و firewall log را هم‌زمان بررسی کن.\n\n## مثال\nکلاینت بلافاصله RST می‌بیند. اگر capture فقط در سمت کلاینت باشد، منبع واقعی ممکن است endpoint یا middlebox باشد؛ TTL، MAC next-hop و زمان فقط شواهد کمکی‌اند و به‌تنهایی اثبات قطعی نیستند.\n\n## امنیت\nبرای تشخیص، firewall را بی‌دلیل خاموش نکن و ترافیک حساس را بدون پاک‌سازی منتشر نکن.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · TCP · L3",
+      "learning_objectives": [
+        "توضیح دقیق TCP RST، Firewall و Middlebox",
+        "عیب‌یابی TCP با شواهد، verify و rollback"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای «TCP RST، Firewall و Middlebox» چه شواهدی باید جمع‌آوری و چگونه راستی‌آزمایی شوند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:tcp-keepalive-timewait:v1",
+      "chapter_order": 9,
+      "subchapter_order": 3,
+      "lesson_order": 29,
+      "level": "L2",
+      "title_fa": "[L2] تکمیلی فصل ۹ — TCP Keepalive، TIME_WAIT و چرخه عمر Socket",
+      "title_en": "TCP lifecycle and diagnostics",
+      "topic": "TCP",
+      "summary": "نقش TIME_WAIT، FIN و TCP keepalive را در چرخه عمر اتصال و عیب‌یابی socket توضیح می‌دهد.",
+      "full_content": "# TCP Keepalive، TIME_WAIT و چرخه عمر Socket\n\nTIME_WAIT بخشی از چرخه بستن اتصال TCP است و وجود آن لزوماً نشانه نشت socket نیست. TCP keepalive برای تشخیص اتصال‌های ظاهراً idle و مرده کاربرد دارد و با application heartbeat یا timeout یکسان نیست.\n\n## عیب‌یابی\n- تعداد socketها را با state، local/remote endpoint و process مرتبط بررسی کن.\n- روند تعداد connectionها را در زمان مقایسه کن، نه یک snapshot تنها.\n- محدودیت ephemeral port، نرخ ایجاد اتصال، connection pooling و رفتار برنامه را در نظر بگیر.\n- keepalive را با timeoutهای NAT/firewall و سیاست برنامه هماهنگ کن.\n\n## مثال\nافزایش TIME_WAIT پس از ترافیک burst ممکن است با نرخ بالای اتصال کوتاه سازگار باشد؛ پیش از تغییر kernel/registry، pool، keep-alive و رفتار client/server را اندازه‌گیری کن.\n\n## لاب\nدر Linux از ss -tan و در Windows از Get-NetTCPConnection برای مشاهده state استفاده کن. تغییر timeoutهای سیستم را فقط با مستندات و آزمون کنترل‌شده انجام بده.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · TCP · L2",
+      "learning_objectives": [
+        "توضیح دقیق TCP Keepalive، TIME_WAIT و چرخه عمر Socket",
+        "عیب‌یابی TCP با شواهد، verify و rollback"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای «TCP Keepalive، TIME_WAIT و چرخه عمر Socket» چه شواهدی باید جمع‌آوری و چگونه راستی‌آزمایی شوند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:pcap-filtering:v1",
+      "chapter_order": 9,
+      "subchapter_order": 5,
+      "lesson_order": 30,
+      "level": "L3",
+      "title_fa": "[L3] تکمیلی فصل ۹ — Capture Filter در برابر Display Filter",
+      "title_en": "Packet capture filter workflow",
+      "topic": "Analysis",
+      "summary": "تفاوت فیلتر capture و display را توضیح می‌دهد و روال تکرارپذیر جمع‌آوری PCAP را مشخص می‌کند.",
+      "full_content": "# Capture Filter در برابر Display Filter\n\nCapture filter هنگام جمع‌آوری ترافیک بسته‌های ذخیره‌شده را محدود می‌کند؛ display filter در Wireshark روی بسته‌هایی که capture شده‌اند اعمال می‌شود. syntax این دو یکی نیست. Capture filter بیش از حد محدود می‌تواند شواهد لازم را برای همیشه از فایل PCAP حذف کند.\n\n## گردش کار\n1. سؤال دقیق، interface، مبدأ/مقصد، protocol و مدت capture را مشخص کن.\n2. اگر نامطمئنی، capture کوتاه و کنترل‌شده بگیر؛ سپس display filter را برای تمرکز استفاده کن.\n3. ساعت سیستم‌ها را همگام و timestamp و نقطه capture را ثبت کن.\n4. حجم و داده حساس را حداقل کن؛ credential یا payload خصوصی را پیش از اشتراک‌گذاری پاک‌سازی کن.\n5. checksum offload، SPAN/TAP drops و محدودیت یک‌طرفه بودن capture را در گزارش ذکر کن.\n\n## مثال\nفیلتر نمایش tcp.stream eq N می‌تواند یک جریان را متمرکز کند؛ اما اگر capture filter قبلی فقط SYN را ذخیره کرده باشد، payload و ACKها در فایل وجود ندارند.\n\n## معیار پذیرش\nPCAP باید همراه هدف، interface، زمان، filter و محدودیت‌های جمع‌آوری مستند باشد تا شخص دیگر بتواند نتیجه را تکرار کند.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · Analysis · L3",
+      "learning_objectives": [
+        "توضیح دقیق Capture Filter در برابر Display Filter",
+        "عیب‌یابی Analysis با شواهد، verify و rollback"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای «Capture Filter در برابر Display Filter» چه شواهدی باید جمع‌آوری و چگونه راستی‌آزمایی شوند؟"
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "ch09:layered-diagnostic-case:v1",
+      "chapter_order": 9,
+      "subchapter_order": 5,
+      "lesson_order": 31,
+      "level": "L4",
+      "title_fa": "[L4] تکمیلی فصل ۹ — لابراتوار RCA از ARP تا TCP؛ روش لایه‌به‌لایه",
+      "title_en": "End-to-end layered troubleshooting lab",
+      "topic": "Analysis",
+      "summary": "سناریوی یک کلاینت با شکست اتصال را از neighbor resolution تا route، ICMP و TCP به ترتیب قابل‌آزمون بررسی می‌کند.",
+      "full_content": "# لابراتوار RCA از ARP تا TCP\n\n## سناریو\nکلاینت 192.0.2.10/24 می‌تواند gateway را resolve کند اما به 198.51.100.20:443 متصل نمی‌شود. هدف، تشخیص علت با شواهد است نه حدس از روی یک ping.\n\n## ترتیب آزمایش\n1. پیکربندی IP، mask، route و gateway را ثبت کن.\n2. ARP/neighbor cache و VLAN لایه ۲ را بررسی کن.\n3. route انتخابی، next-hop و مسیر برگشت را در روترها تأیید کن.\n4. ICMP را شاهد کمکی بدان؛ شکست ping را معادل شکست TCP نگیر.\n5. با آزمون مجاز TCP/443، SYN/SYN-ACK/RST و firewall log را تطبیق بده.\n6. اگر handshake کامل است اما برنامه شکست می‌خورد، TLS، proxy، certificate و application log را جداگانه بررسی کن.\n\n## فرضیه‌ها و شواهد\n- ARP ناقص: capture ARP و VLAN لازم است.\n- route اشتباه: RIB/FIB و next-hop در هر دو جهت لازم است.\n- firewall drop: counter/log و capture دوطرفه مفید است.\n- TCP برقرار است ولی TLS شکست می‌خورد: log برنامه را بررسی کن؛ این دیگر صرفاً مشکل ARP نیست.\n\n## گزارش نهایی\nSymptom، scope، timestamp، شواهد خام، فرضیه‌های ردشده، تغییر انجام‌شده، verify و rollback را ثبت کن. هر تغییر باید کوچک، قابل‌بازگشت و با baseline مقایسه شود.",
+      "commands": [],
+      "examples": [],
+      "notes": "فصل ۹ · Analysis · L4",
+      "learning_objectives": [
+        "توضیح دقیق لابراتوار RCA از ARP تا TCP؛ روش لایه‌به‌لایه",
+        "عیب‌یابی Analysis با شواهد، verify و rollback"
+      ],
+      "meta": {
+        "assessment": {
+          "type": "practice",
+          "question_fa": "برای «لابراتوار RCA از ARP تا TCP؛ روش لایه‌به‌لایه» چه شواهدی باید جمع‌آوری و چگونه راستی‌آزمایی شوند؟"
         }
       },
       "source_status": "review_required"
