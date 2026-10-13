@@ -64,6 +64,9 @@ def main() -> None:
             locked_depth = client.get("/api/lessons/1/specialized-depth")
             if locked_depth.status_code != 401:
                 raise SystemExit(f"specialty endpoint must require authentication; got {locked_depth.status_code}")
+            locked_infographics = client.get("/api/infographics")
+            if locked_infographics.status_code != 401:
+                raise SystemExit(f"infographics endpoint must require authentication; got {locked_infographics.status_code}")
 
             with client.session_transaction() as sess:
                 sess["networkall_unlocked"] = True
@@ -133,6 +136,11 @@ def main() -> None:
             index = diagram_index.get_json()
             if index.get("count") != 100 or len(index.get("diagrams", [])) != 100:
                 raise SystemExit("Windows web diagram index does not contain 100 items")
+            infographics = get_json("/api/infographics")
+            if infographics.get("count") != 100 or len(infographics.get("items", [])) != 100:
+                raise SystemExit("compatibility /api/infographics should return all 100 SVG items")
+            if not infographics["items"][0].get("svg", "").lstrip().startswith("<svg"):
+                raise SystemExit("/api/infographics returned invalid SVG content")
 
             disabled = client.post("/api/reseed")
             if disabled.status_code != 404:
@@ -148,6 +156,7 @@ def main() -> None:
                 "scenarios": len(scenarios),
                 "search_results": len(search),
                 "web_diagrams": index["count"],
+                "infographics_compat_api": infographics["count"],
                 "specialty_depth_review_required": depth["review_status"],
                 "destructive_reseed_disabled": True,
             })

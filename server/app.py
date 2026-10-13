@@ -436,6 +436,35 @@ def lesson_specialized_depth(lesson_id: int):
     })
 
 
+@app.get("/api/infographics")
+def api_infographics():
+    """Compatibility API backed by the shared Android/Windows SVG diagram index."""
+    denied = require_token()
+    if denied:
+        return denied
+    index_path = Path(app.static_folder) / "diagrams" / "index.json"
+    try:
+        payload = json.loads(index_path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        return jsonify({"error": "diagram_index_unavailable", "detail": str(exc), "items": [], "count": 0}), 503
+
+    items = []
+    for row in payload.get("diagrams", []):
+        asset = str(row.get("asset") or "")
+        # Whitelist the generated asset naming scheme; never accept arbitrary paths.
+        if not (asset.startswith("diagram_") and len(asset) == 15 and
+                asset[8:11].isdigit() and asset.endswith(".svg")):
+            continue
+        svg_path = index_path.parent / asset
+        if not svg_path.is_file():
+            continue
+        items.append({
+            "title": str(row.get("title_fa") or row.get("collection") or row.get("id") or "NetworkAll"),
+            "svg": svg_path.read_text(encoding="utf-8"),
+        })
+    return jsonify({"items": items, "count": len(items)})
+
+
 @app.get("/api/scenarios")
 def scenarios_list():
     denied = require_token()
