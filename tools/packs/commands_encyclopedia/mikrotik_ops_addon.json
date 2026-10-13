@@ -1,0 +1,1178 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "Chapter 68 MikroTik RouterOS operational and routing command pack, additive batch",
+  "chapter_order": 68,
+  "chapter_title_fa": "دانشنامه جامع دستورات",
+  "vendor_pack": "mikrotik",
+  "vendor": "MikroTik",
+  "platform": "RouterOS v7",
+  "scope": "Routing, bridge/VLAN, DHCP/DNS, firewall, troubleshooting and backups",
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true
+  },
+  "commands": [
+    {
+      "uid": "cmd:mikrotik:ops:0001",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "routing",
+      "subcategory": "general",
+      "command": "/ip route print detail",
+      "title_fa": "[L1] نمایش مسیرهای IPv4",
+      "title_en": "نمایش مسیرهای IPv4",
+      "syntax": "/ip route print detail",
+      "when_to_use_fa": "routing",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nDAc dst-address=192.0.2.0/24 gateway=ether1 distance=1",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "از /routing/route/print detail نیز متناسب با نسخه استفاده کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "نمایش مسیرهای IPv4",
+        "MikroTik RouterOS",
+        "/ip route print detail"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/ip route print detail» چیست؟",
+        "answer_key_fa": "routing؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0002",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "troubleshoot",
+      "subcategory": "general",
+      "command": "/ip address print detail",
+      "title_fa": "[L1] نمایش IPهای رابط‌ها",
+      "title_en": "نمایش IPهای رابط‌ها",
+      "syntax": "/ip address print detail",
+      "when_to_use_fa": "interface",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\naddress=192.0.2.1/24 interface=bridge",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "با route و ARP تطبیق دهید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "نمایش IPهای رابط‌ها",
+        "MikroTik RouterOS",
+        "/ip address print detail"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/ip address print detail» چیست؟",
+        "answer_key_fa": "interface؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0003",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "troubleshoot",
+      "subcategory": "general",
+      "command": "/interface print detail",
+      "title_fa": "[L1] بررسی رابط‌ها",
+      "title_en": "بررسی رابط‌ها",
+      "syntax": "/interface print detail",
+      "when_to_use_fa": "interface",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nname=ether1 type=ether running=yes",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "با link LED و طرف مقابل مقایسه کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی رابط‌ها",
+        "MikroTik RouterOS",
+        "/interface print detail"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/interface print detail» چیست؟",
+        "answer_key_fa": "interface؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0004",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "troubleshoot",
+      "subcategory": "general",
+      "command": "/interface bridge port print detail",
+      "title_fa": "[L1] بررسی اعضای bridge",
+      "title_en": "بررسی اعضای bridge",
+      "syntax": "/interface bridge port print detail",
+      "when_to_use_fa": "bridge",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\ninterface=ether2 bridge=bridge1",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "VLAN filtering و PVID را نیز بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی اعضای bridge",
+        "MikroTik RouterOS",
+        "/interface bridge port print detail"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/interface bridge port print detail» چیست؟",
+        "answer_key_fa": "bridge؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0005",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "vlan",
+      "subcategory": "general",
+      "command": "/interface bridge vlan print detail",
+      "title_fa": "[L1] بررسی جدول VLAN bridge",
+      "title_en": "بررسی جدول VLAN bridge",
+      "syntax": "/interface bridge vlan print detail",
+      "when_to_use_fa": "vlan",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nbridge=bridge1 vlan-ids=10 tagged=bridge1,ether1",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "VLAN filtering باید با طراحی و پورت‌ها تطبیق داشته باشد"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی جدول VLAN bridge",
+        "MikroTik RouterOS",
+        "/interface bridge vlan print detail"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/interface bridge vlan print detail» چیست؟",
+        "answer_key_fa": "vlan؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0006",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "dhcp",
+      "subcategory": "general",
+      "command": "/ip dhcp-server lease print detail",
+      "title_fa": "[L1] بررسی DHCP lease",
+      "title_en": "بررسی DHCP lease",
+      "syntax": "/ip dhcp-server lease print detail",
+      "when_to_use_fa": "dhcp",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\naddress=192.0.2.50 mac-address=AA:BB:CC:DD:EE:FF status=bound",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "با pool، network و DHCP server بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی DHCP lease",
+        "MikroTik RouterOS",
+        "/ip dhcp-server lease print detail"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/ip dhcp-server lease print detail» چیست؟",
+        "answer_key_fa": "dhcp؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0007",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "dhcp",
+      "subcategory": "general",
+      "command": "/ip dhcp-server print detail",
+      "title_fa": "[L2] بررسی DHCP server",
+      "title_en": "بررسی DHCP server",
+      "syntax": "/ip dhcp-server print detail",
+      "when_to_use_fa": "dhcp",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nname=dhcp1 interface=bridge1 address-pool=pool1",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "مطمئن شوید DHCP ناخواسته روی VLAN دیگر فعال نیست"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی DHCP server",
+        "MikroTik RouterOS",
+        "/ip dhcp-server print detail"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/ip dhcp-server print detail» چیست؟",
+        "answer_key_fa": "dhcp؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0008",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "dns",
+      "subcategory": "general",
+      "command": "/ip dns print",
+      "title_fa": "[L2] بررسی تنظیمات DNS",
+      "title_en": "بررسی تنظیمات DNS",
+      "syntax": "/ip dns print",
+      "when_to_use_fa": "dns",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nservers=192.0.2.53 allow-remote-requests=no",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "اگر resolver برای کلاینت‌هاست، firewall و محدوده دسترسی را بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی تنظیمات DNS",
+        "MikroTik RouterOS",
+        "/ip dns print"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/ip dns print» چیست؟",
+        "answer_key_fa": "dns؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0009",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "firewall",
+      "subcategory": "general",
+      "command": "/ip firewall filter print stats",
+      "title_fa": "[L2] آمار ruleهای firewall",
+      "title_en": "آمار ruleهای firewall",
+      "syntax": "/ip firewall filter print stats",
+      "when_to_use_fa": "firewall",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nchain=forward action=accept packets=120 bytes=9600",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "قواعد بالا به پایین ارزیابی می‌شوند؛ counter تنها یک سرنخ است"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "آمار ruleهای firewall",
+        "MikroTik RouterOS",
+        "/ip firewall filter print stats"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/ip firewall filter print stats» چیست؟",
+        "answer_key_fa": "firewall؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0010",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "nat",
+      "subcategory": "general",
+      "command": "/ip firewall nat print stats",
+      "title_fa": "[L2] آمار ruleهای NAT",
+      "title_en": "آمار ruleهای NAT",
+      "syntax": "/ip firewall nat print stats",
+      "when_to_use_fa": "nat",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nchain=srcnat action=masquerade packets=200",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "با route، interface list و conntrack تطبیق دهید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "آمار ruleهای NAT",
+        "MikroTik RouterOS",
+        "/ip firewall nat print stats"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/ip firewall nat print stats» چیست؟",
+        "answer_key_fa": "nat؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0011",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "firewall",
+      "subcategory": "general",
+      "command": "/ip firewall connection print count-only",
+      "title_fa": "[L2] تعداد connection tracking entries",
+      "title_en": "تعداد connection tracking entries",
+      "syntax": "/ip firewall connection print count-only",
+      "when_to_use_fa": "firewall",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nعدد count متناسب با بار شبکه",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "با منابع CPU/RAM و timeoutها بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "تعداد connection tracking entries",
+        "MikroTik RouterOS",
+        "/ip firewall connection print count-only"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/ip firewall connection print count-only» چیست؟",
+        "answer_key_fa": "firewall؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0012",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "ospf",
+      "subcategory": "general",
+      "command": "/routing ospf neighbor print detail",
+      "title_fa": "[L2] مشاهده همسایه‌های OSPF",
+      "title_en": "مشاهده همسایه‌های OSPF",
+      "syntax": "/routing ospf neighbor print detail",
+      "when_to_use_fa": "ospf",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nstate=Full address=192.0.2.2",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "area، network type، timers و authentication را بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "مشاهده همسایه‌های OSPF",
+        "MikroTik RouterOS",
+        "/routing ospf neighbor print detail"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/routing ospf neighbor print detail» چیست؟",
+        "answer_key_fa": "ospf؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0013",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "ospf",
+      "subcategory": "general",
+      "command": "/routing ospf interface-template print detail",
+      "title_fa": "[L2] بررسی OSPF interface templates",
+      "title_en": "بررسی OSPF interface templates",
+      "syntax": "/routing ospf interface-template print detail",
+      "when_to_use_fa": "ospf",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\narea=backbone networks=192.0.2.0/24",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "syntax و منطق با نسخه RouterOS هدف تطبیق داده شود"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی OSPF interface templates",
+        "MikroTik RouterOS",
+        "/routing ospf interface-template print detail"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/routing ospf interface-template print detail» چیست؟",
+        "answer_key_fa": "ospf؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0014",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "bgp",
+      "subcategory": "general",
+      "command": "/routing bgp session print detail",
+      "title_fa": "[L2] بررسی نشست‌های BGP",
+      "title_en": "بررسی نشست‌های BGP",
+      "syntax": "/routing bgp session print detail",
+      "when_to_use_fa": "bgp",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nname=peer1 remote.as=65020 state=established",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "TCP/179، ASN، filters و routing policy را بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "بررسی نشست‌های BGP",
+        "MikroTik RouterOS",
+        "/routing bgp session print detail"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/routing bgp session print detail» چیست؟",
+        "answer_key_fa": "bgp؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0015",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "troubleshoot",
+      "subcategory": "general",
+      "command": "/tool ping 192.0.2.1 count=5",
+      "title_fa": "[L2] آزمون دسترسی ICMP",
+      "title_en": "آزمون دسترسی ICMP",
+      "syntax": "/tool ping 192.0.2.1 count=5",
+      "when_to_use_fa": "troubleshoot",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nsent=5 received=5 packet-loss=0%",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "در صورت نیاز src-address و routing-table را مشخص کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "آزمون دسترسی ICMP",
+        "MikroTik RouterOS",
+        "/tool ping 192.0.2.1 count=5"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/tool ping 192.0.2.1 count=5» چیست؟",
+        "answer_key_fa": "troubleshoot؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0016",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "routing",
+      "subcategory": "general",
+      "command": "/tool traceroute 192.0.2.80",
+      "title_fa": "[L3] ردیابی مسیر",
+      "title_en": "ردیابی مسیر",
+      "syntax": "/tool traceroute 192.0.2.80",
+      "when_to_use_fa": "troubleshoot",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\n1 192.0.2.1 1ms; 2 198.51.100.1 5ms",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "پاسخ ندادن یک hop لزوماً به معنی قطع ترافیک نیست"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ردیابی مسیر",
+        "MikroTik RouterOS",
+        "/tool traceroute 192.0.2.80"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/tool traceroute 192.0.2.80» چیست؟",
+        "answer_key_fa": "troubleshoot؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0017",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "troubleshoot",
+      "subcategory": "general",
+      "command": "/system resource print",
+      "title_fa": "[L3] نمایش CPU/RAM و uptime",
+      "title_en": "نمایش CPU/RAM و uptime",
+      "syntax": "/system resource print",
+      "when_to_use_fa": "system",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\ncpu-load=12% free-memory=... uptime=...",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "با /tool profile و logs تکمیل کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "نمایش CPU/RAM و uptime",
+        "MikroTik RouterOS",
+        "/system resource print"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/system resource print» چیست؟",
+        "answer_key_fa": "system؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0018",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "read",
+      "category": "logs",
+      "subcategory": "general",
+      "command": "/log print where topics~\"error|warning\"",
+      "title_fa": "[L3] فیلتر لاگ‌های خطا و هشدار",
+      "title_en": "فیلتر لاگ‌های خطا و هشدار",
+      "syntax": "/log print where topics~\"error|warning\"",
+      "when_to_use_fa": "logs",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\ndate time topics message",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "زمان دستگاه، timezone و NTP را بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "فیلتر لاگ‌های خطا و هشدار",
+        "MikroTik RouterOS",
+        "/log print where topics~\"error|warning\""
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/log print where topics~\"error|warning\"» چیست؟",
+        "answer_key_fa": "logs؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0019",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "write or sensitive",
+      "category": "files",
+      "subcategory": "general",
+      "command": "/export terse",
+      "title_fa": "[L3] خروجی متنی پیکربندی",
+      "title_en": "خروجی متنی پیکربندی",
+      "syntax": "/export terse",
+      "when_to_use_fa": "backup",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nخروجی خطوط terse؛ مقادیر وابسته به دستگاه",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "فایل را از نظر secretها بازبینی و در محل امن نگهداری کنید"
+      ],
+      "rollback_fa": "Rollback: import تنها پس از بررسی سازگاری نسخه و اثر دستورات؛ برای بکاپ کامل از /system backup save نیز طبق راهنمای رسمی استفاده کنید",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "خروجی متنی پیکربندی",
+        "MikroTik RouterOS",
+        "/export terse"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/export terse» چیست؟",
+        "answer_key_fa": "backup؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:ops:0020",
+      "vendor": "mikrotik",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "version_scope": "RouterOS v7; compare RouterOS v6 syntax before use",
+      "privilege": "write or sensitive",
+      "category": "files",
+      "subcategory": "general",
+      "command": "/system backup save name=pre-change",
+      "title_fa": "[L3] ایجاد backup دودویی پیش از تغییر",
+      "title_en": "ایجاد backup دودویی پیش از تغییر",
+      "syntax": "/system backup save name=pre-change",
+      "when_to_use_fa": "backup",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nSaving system configuration ...",
+      "output_fields_fa": [
+        {
+          "field": "status/counters",
+          "meaning": "خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض یکسان بودن syntax در RouterOS v6 و v7.",
+        "اجرای دستور تغییردهنده بدون Safe Mode یا مسیر بازگشت."
+      ],
+      "security_notes_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "lab_hint_fa": "در CHR یا روتر آزمایشگاهی اجرا کنید؛ قبل از تغییرات firewall/routing از Safe Mode و مسیر مدیریت جایگزین استفاده کنید.",
+      "verify_steps_fa": [
+        "انتقال فایل backup از دستگاه و کنترل دسترسی/رمزگذاری طبق مستندات"
+      ],
+      "rollback_fa": "Rollback: restore ممکن است دستگاه را reboot کند و وابسته به مدل/نسخه است؛ مسیر out-of-band لازم است",
+      "related_commands": [
+        "/system resource print",
+        "/log print",
+        "/export terse"
+      ],
+      "search_keywords": [
+        "ایجاد backup دودویی پیش از تغییر",
+        "MikroTik RouterOS",
+        "/system backup save name=pre-change"
+      ],
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "assessment": {
+        "question_fa": "هدف اصلی فرمان «/system backup save name=pre-change» چیست؟",
+        "answer_key_fa": "backup؛ نسخه RouterOS و مستندات رسمی همان نسخه را بررسی کنید."
+      },
+      "source_status": "review_required"
+    }
+  ]
+}
