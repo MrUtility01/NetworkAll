@@ -45,7 +45,7 @@
 ```json
 {
   "package_schema_version": 1,
-  "project": "ENGINEER JOKAR / NetworkEncyclopedia",
+  "project": "ENGINEER JOKAR / NetworkAll",
   "purpose": "commands encyclopedia",
   "chapter_order": 68,
   "chapter_title_fa": "دانشنامه جامع دستورات",
