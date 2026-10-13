@@ -166,7 +166,10 @@ button{margin-top:18px;width:100%;padding:12px;border:0;border-radius:8px;backgr
 <button type="submit">{% if setup_mode %}ثبت رمز و ورود{% else %}ورود{% endif %}</button>
 </form>
 <small>این قفل دسترسی رابط وب را محدود می‌کند؛ جایگزین HTTPS، توکن API، فایروال یا رمزگذاری دیتابیس نیست. برای میزبان LAN فقط شبکهٔ خصوصی و مورداعتماد را مجاز کنید.</small>
-</main></body></html>'''\n\n\n@app.before_request
+</main></body></html>'''
+
+
+@app.before_request
 def require_web_unlock():
     path = request.path
     if (
