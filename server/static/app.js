@@ -169,6 +169,13 @@ async function onLessonClick(btn) {
   viewer.innerHTML = `<div class="loading">بارگذاری درس…</div>`;
   try {
     const les = await api(`/api/lessons/${id}`);
+    // Specialty material is supplemental and must never prevent the base lesson from opening.
+    try {
+      const depth = await api(`/api/lessons/${id}/specialized-depth`);
+      if (depth && depth.available) les.specialized_depth = depth;
+    } catch (depthError) {
+      console.warn("Optional specialty content unavailable", depthError);
+    }
     breadcrumb.textContent = les.title_fa;
     renderLesson(les);
   } catch (err) {
@@ -187,6 +194,13 @@ function renderLesson(les) {
     { id: "objectives", label: "اهداف یادگیری", body: les.learning_objectives },
     { id: "meta", label: "Meta / پرامپت", body: formatMeta(les) },
   ];
+  if (les.specialized_depth && les.specialized_depth.available) {
+    tabs.splice(tabs.length - 1, 0, {
+      id: "specialized_depth",
+      label: "عمق تخصصی",
+      body: formatSpecializedDepth(les.specialized_depth),
+    });
+  }
 
   viewer.innerHTML = `
     <div class="lesson-card">
@@ -220,6 +234,16 @@ function renderLesson(les) {
       if (p) p.classList.add("active");
     });
   });
+}
+
+function formatSpecializedDepth(depth) {
+  const parts = [];
+  if (depth.notice_fa) parts.push(`وضعیت: ${depth.review_status || "review_required"}\n${depth.notice_fa}`);
+  if (depth.extra_full) parts.push(String(depth.extra_full));
+  if (depth.extra_commands) parts.push(`## دستورات تکمیلی\n\n${depth.extra_commands}`);
+  if (depth.extra_lab) parts.push(`## لابراتوار تکمیلی\n\n${depth.extra_lab}`);
+  if (depth.extra_notes) parts.push(`## نکات تکمیلی\n\n${depth.extra_notes}`);
+  return parts.join("\n\n");
 }
 
 function formatMeta(les) {

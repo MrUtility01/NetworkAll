@@ -61,6 +61,9 @@ def main() -> None:
             locked = client.get("/api/chapters")
             if locked.status_code != 401:
                 raise SystemExit(f"expected locked browser API to return 401; got {locked.status_code}")
+            locked_depth = client.get("/api/lessons/1/specialized-depth")
+            if locked_depth.status_code != 401:
+                raise SystemExit(f"specialty endpoint must require authentication; got {locked_depth.status_code}")
 
             with client.session_transaction() as sess:
                 sess["networkall_unlocked"] = True
@@ -93,6 +96,25 @@ def main() -> None:
             full = get_json(f"/api/lessons/{lessons[0]['id']}")
             if not full.get("title_fa"):
                 raise SystemExit("web lesson detail route returned an untitled item")
+
+            # Temporary fixture gives this test a stable specialty input without
+            # depending on the current wording of a real curriculum lesson.
+            fixture = test_db.conn.execute(
+                """INSERT INTO lessons(
+                    level_id, order_index, title_fa, title_en, tags, summary, full_content
+                ) VALUES (?,?,?,?,?,?,?)""",
+                (levels[0]["id"], 9999, "MikroTik RouterOS firewall", "MikroTik RouterOS firewall",
+                 "L2", "test fixture", "# Test fixture"),
+            )
+            test_db.conn.commit()
+            depth = get_json(f"/api/lessons/{fixture.lastrowid}/specialized-depth")
+            if not depth.get("available") or depth.get("specialty") != "mikrotik":
+                raise SystemExit("specialty endpoint did not identify MikroTik content")
+            if depth.get("review_status") != "review_required":
+                raise SystemExit("specialty template is missing the review-required status")
+            if not depth.get("extra_full") or not depth.get("extra_commands") or not depth.get("extra_lab"):
+                raise SystemExit("specialty endpoint returned an incomplete teaching template")
+
             scenarios = get_json("/api/scenarios")
             if scenarios:
                 detail = get_json(f"/api/scenarios/{scenarios[0]['id']}")
@@ -126,6 +148,7 @@ def main() -> None:
                 "scenarios": len(scenarios),
                 "search_results": len(search),
                 "web_diagrams": index["count"],
+                "specialty_depth_review_required": depth["review_status"],
                 "destructive_reseed_disabled": True,
             })
         finally:

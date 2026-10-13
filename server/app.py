@@ -402,6 +402,40 @@ def lesson_by_id(lesson_id: int):
     return jsonify(result)
 
 
+@app.get("/api/lessons/<int:lesson_id>/specialized-depth")
+def lesson_specialized_depth(lesson_id: int):
+    """Return optional, read-only specialty templates without mutating/syncing lesson content."""
+    denied = require_token()
+    if denied:
+        return denied
+    result = db().get_lesson(lesson_id)
+    if result is None:
+        return jsonify({"error": "not found"}), 404
+
+    from core.specialized_depth import detect_specialty, specialized_block
+
+    title_fa = str(result.get("title_fa") or "")
+    title_en = str(result.get("title_en") or "")
+    raw_level = str(result.get("tags") or "L2").strip().upper()
+    level = raw_level if raw_level in {"L0", "L1", "L2", "L3", "L4"} else "L2"
+    specialty = detect_specialty(title_fa, title_en)
+    block = specialized_block(title_fa, title_en, level)
+    available = bool(specialty and any(str(value or "").strip() for value in block.values()))
+    return jsonify({
+        "ok": True,
+        "available": available,
+        "specialty": specialty,
+        "review_status": "review_required" if available else "not_applicable",
+        "notice_fa": (
+            "این بخش یک الگوی تکمیلی تولیدشده بر اساس حوزهٔ فناوری است؛ قبل از استفاده عملی، "
+            "دستورات و نسخهٔ محصول را با مستندات رسمی بررسی کنید. این پاسخ در پایگاه داده ذخیره نمی‌شود."
+            if available else ""
+        ),
+        "topic_fa": title_fa,
+        **block,
+    })
+
+
 @app.get("/api/scenarios")
 def scenarios_list():
     denied = require_token()
