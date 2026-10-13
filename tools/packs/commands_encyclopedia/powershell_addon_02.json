@@ -2,7 +2,7 @@
   "package_schema_version": 1,
   "project": "ENGINEER JOKAR / NetworkAll",
   "generated_on": "2026-10-13",
-  "purpose": "PowerShell advanced networking and Windows diagnostics enrichment batch 2; additive records; review required",
+  "purpose": "PowerShell advanced networking and Windows diagnostics enrichment batch 2; additive records; review required; additive enrichment batch 4; +10 records; review required",
   "chapter_order": 68,
   "chapter_title_fa": "دانشنامه جامع دستورات",
   "vendor_pack": "powershell",
@@ -1561,6 +1561,606 @@
       "assessment": {
         "question_fa": "این فرمان چه جنبه‌ای از وضعیت Windows را ممیزی می‌کند؟",
         "answer_key_fa": "بررسی تنظیمات power saving در قطع‌ووصلی‌های متناوب و سپس نتیجه را با نسخه و policy مؤثر سیستم تطبیق بده."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0175",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Verify cmdlet/module and properties on the target Windows build; Windows PowerShell 5.1 unless noted",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "arp-neighbor",
+      "command": "Get-NetNeighbor -AddressFamily IPv4 | Format-Table -AutoSize",
+      "title_fa": "[L3] ممیزی neighborهای IPv4",
+      "title_en": "ممیزی neighborهای IPv4",
+      "syntax": "Get-NetNeighbor -AddressFamily IPv4 | Format-Table -AutoSize",
+      "when_to_use_fa": "برای بررسی نگاشت IP به MAC و وضعیت neighbor",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\nGet-NetNeighbor -AddressFamily IPv4 | Format-Table -AutoSize\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "ورودی stale به‌تنهایی به معنی قطع قطعی endpoint نیست.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "نام رابط و آدرس‌های حساس را هنگام اشتراک‌گذاری پاک‌سازی کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "Get-NetNeighbor -AddressFamily IPv4 | Format-Table -AutoSize",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-WinEvent",
+        "Get-Help"
+      ],
+      "search_keywords": [
+        "ممیزی neighborهای IPv4",
+        "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای بررسی نگاشت IP به MAC و وضعیت neighbor",
+        "answer_key_fa": "برای برای بررسی نگاشت IP به MAC و وضعیت neighbor؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0176",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Verify cmdlet/module and properties on the target Windows build; Windows PowerShell 5.1 unless noted",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "dns-cache",
+      "command": "Get-DnsClientCache | Select-Object Entry,RecordName,RecordType,Status,TimeToLive",
+      "title_fa": "[L3] ممیزی cache کلاینت DNS",
+      "title_en": "ممیزی cache کلاینت DNS",
+      "syntax": "Get-DnsClientCache | Select-Object Entry,RecordName,RecordType,Status,TimeToLive",
+      "when_to_use_fa": "برای تشخیص پاسخ cache شده و TTL",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\nGet-DnsClientCache | Select-Object Entry,RecordName,RecordType,Status,TimeToLive\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "cache کلاینت با cache resolver سازمانی یکسان نیست.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "خروجی را با Resolve-DnsName و resolver مورد استفاده مقایسه کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "Get-DnsClientCache | Select-Object Entry,RecordName,RecordType,Status,TimeToLive",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-WinEvent",
+        "Get-Help"
+      ],
+      "search_keywords": [
+        "ممیزی cache کلاینت DNS",
+        "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای تشخیص پاسخ cache شده و TTL",
+        "answer_key_fa": "برای برای تشخیص پاسخ cache شده و TTL؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0177",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Verify cmdlet/module and properties on the target Windows build; Windows PowerShell 5.1 unless noted",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "dns-query",
+      "command": "Resolve-DnsName example.com -Type A -DnsOnly",
+      "title_fa": "[L3] آزمایش پاسخ A با DNS",
+      "title_en": "آزمایش پاسخ A با DNS",
+      "syntax": "Resolve-DnsName example.com -Type A -DnsOnly",
+      "when_to_use_fa": "برای بررسی نام‌گشایی مستقل از مسیرهای جایگزین",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\nResolve-DnsName example.com -Type A -DnsOnly\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "یک پاسخ موفق، تمام رکوردها و همه resolverها را تأیید نمی‌کند.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "نام را با دامنه مجاز یا نام آزمایشگاهی جایگزین کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "Resolve-DnsName example.com -Type A -DnsOnly",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-WinEvent",
+        "Get-Help"
+      ],
+      "search_keywords": [
+        "آزمایش پاسخ A با DNS",
+        "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای بررسی نام‌گشایی مستقل از مسیرهای جایگزین",
+        "answer_key_fa": "برای برای بررسی نام‌گشایی مستقل از مسیرهای جایگزین؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0178",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Verify cmdlet/module and properties on the target Windows build; Windows PowerShell 5.1 unless noted",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "tcp-test",
+      "command": "Test-NetConnection -ComputerName 192.0.2.10 -Port 443 -InformationLevel Detailed",
+      "title_fa": "[L3] آزمایش TCP به پورت مشخص",
+      "title_en": "آزمایش TCP به پورت مشخص",
+      "syntax": "Test-NetConnection -ComputerName 192.0.2.10 -Port 443 -InformationLevel Detailed",
+      "when_to_use_fa": "برای جداسازی reachability TCP از تست ICMP",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\nTest-NetConnection -ComputerName 192.0.2.10 -Port 443 -InformationLevel Detailed\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "موفقیت TCP تضمین‌کننده سلامت لایه کاربرد نیست.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "از endpoint آزمایشگاهی و پورت مجاز استفاده کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "Test-NetConnection -ComputerName 192.0.2.10 -Port 443 -InformationLevel Detailed",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-WinEvent",
+        "Get-Help"
+      ],
+      "search_keywords": [
+        "آزمایش TCP به پورت مشخص",
+        "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای جداسازی reachability TCP از تست ICMP",
+        "answer_key_fa": "برای برای جداسازی reachability TCP از تست ICMP؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0179",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Verify cmdlet/module and properties on the target Windows build; Windows PowerShell 5.1 unless noted",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "tcp-connections",
+      "command": "Get-NetTCPConnection -State Established | Group-Object -Property OwningProcess | Sort-Object Count -Descending",
+      "title_fa": "[L3] خلاصه connectionهای TCP برقرار",
+      "title_en": "خلاصه connectionهای TCP برقرار",
+      "syntax": "Get-NetTCPConnection -State Established | Group-Object -Property OwningProcess | Sort-Object Count -Descending",
+      "when_to_use_fa": "برای یافتن processهای دارای connectionهای متعدد",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\nGet-NetTCPConnection -State Established | Group-Object -Property OwningProcess | Sort-Object Count -Descending\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "تعداد connection به‌تنهایی نشانه compromise نیست.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "خروجی را با Get-Process تطبیق بده و از انتشار endpointهای حساس پرهیز کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "Get-NetTCPConnection -State Established | Group-Object -Property OwningProcess | Sort-Object Count -Descending",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-WinEvent",
+        "Get-Help"
+      ],
+      "search_keywords": [
+        "خلاصه connectionهای TCP برقرار",
+        "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای یافتن processهای دارای connectionهای متعدد",
+        "answer_key_fa": "برای برای یافتن processهای دارای connectionهای متعدد؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0180",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Verify cmdlet/module and properties on the target Windows build; Windows PowerShell 5.1 unless noted",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "nic-properties",
+      "command": "Get-NetAdapterAdvancedProperty | Select-Object Name,DisplayName,DisplayValue,RegistryKeyword",
+      "title_fa": "[L3] ممیزی تنظیمات پیشرفته NIC",
+      "title_en": "ممیزی تنظیمات پیشرفته NIC",
+      "syntax": "Get-NetAdapterAdvancedProperty | Select-Object Name,DisplayName,DisplayValue,RegistryKeyword",
+      "when_to_use_fa": "برای بررسی offload و ویژگی‌های درایور",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\nGet-NetAdapterAdvancedProperty | Select-Object Name,DisplayName,DisplayValue,RegistryKeyword\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "تغییر offload بدون baseline و برنامه rollback می‌تواند کارایی را بدتر کند.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "نسخه درایور و مدل NIC را ثبت کن؛ ابتدا فقط خواندن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "Get-NetAdapterAdvancedProperty | Select-Object Name,DisplayName,DisplayValue,RegistryKeyword",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-WinEvent",
+        "Get-Help"
+      ],
+      "search_keywords": [
+        "ممیزی تنظیمات پیشرفته NIC",
+        "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای بررسی offload و ویژگی‌های درایور",
+        "answer_key_fa": "برای برای بررسی offload و ویژگی‌های درایور؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0181",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Verify cmdlet/module and properties on the target Windows build; Windows PowerShell 5.1 unless noted",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "firewall-policy",
+      "command": "Get-NetFirewallProfile -PolicyStore ActiveStore | Select-Object Name,Enabled,DefaultInboundAction,DefaultOutboundAction",
+      "title_fa": "[L3] بررسی policy مؤثر فایروال",
+      "title_en": "بررسی policy مؤثر فایروال",
+      "syntax": "Get-NetFirewallProfile -PolicyStore ActiveStore | Select-Object Name,Enabled,DefaultInboundAction,DefaultOutboundAction",
+      "when_to_use_fa": "برای ممیزی نمای مؤثر پروفایل‌های فایروال",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\nGet-NetFirewallProfile -PolicyStore ActiveStore | Select-Object Name,Enabled,DefaultInboundAction,DefaultOutboundAction\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "تنظیم محلی به‌تنهایی ممکن است policy اعمال‌شده را نشان ندهد.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "با سیاست سازمان و GPO مقایسه کن؛ خروجی را امن نگه دار. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "Get-NetFirewallProfile -PolicyStore ActiveStore | Select-Object Name,Enabled,DefaultInboundAction,DefaultOutboundAction",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-WinEvent",
+        "Get-Help"
+      ],
+      "search_keywords": [
+        "بررسی policy مؤثر فایروال",
+        "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای ممیزی نمای مؤثر پروفایل‌های فایروال",
+        "answer_key_fa": "برای برای ممیزی نمای مؤثر پروفایل‌های فایروال؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0182",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Verify cmdlet/module and properties on the target Windows build; Windows PowerShell 5.1 unless noted",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "smb-sessions",
+      "command": "Get-SmbConnection | Select-Object ServerName,ShareName,UserName,Dialect,NumOpens",
+      "title_fa": "[L3] ممیزی اتصال‌های SMB کلاینت",
+      "title_en": "ممیزی اتصال‌های SMB کلاینت",
+      "syntax": "Get-SmbConnection | Select-Object ServerName,ShareName,UserName,Dialect,NumOpens",
+      "when_to_use_fa": "برای بررسی server/share و dialect اتصال فعلی",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\nGet-SmbConnection | Select-Object ServerName,ShareName,UserName,Dialect,NumOpens\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "این خروجی فقط اتصال‌های قابل مشاهده در زمینه کاربر فعلی را پوشش می‌دهد.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "نام سرور، share و user را قبل از ارسال لاگ پاک‌سازی کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "Get-SmbConnection | Select-Object ServerName,ShareName,UserName,Dialect,NumOpens",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-WinEvent",
+        "Get-Help"
+      ],
+      "search_keywords": [
+        "ممیزی اتصال‌های SMB کلاینت",
+        "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای بررسی server/share و dialect اتصال فعلی",
+        "answer_key_fa": "برای برای بررسی server/share و dialect اتصال فعلی؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0183",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Verify cmdlet/module and properties on the target Windows build; Windows PowerShell 5.1 unless noted",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "dns-events",
+      "command": "Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-DNS-Client/Operational'; StartTime=(Get-Date).AddHours(-1)} -ErrorAction SilentlyContinue | Select-Object -First 50 TimeCreated,Id,LevelDisplayName,Message",
+      "title_fa": "[L3] بررسی رخدادهای DNS Client در یک ساعت اخیر",
+      "title_en": "بررسی رخدادهای DNS Client در یک ساعت اخیر",
+      "syntax": "Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-DNS-Client/Operational'; StartTime=(Get-Date).AddHours(-1)} -ErrorAction SilentlyContinue | Select-Object -First 50 TimeCreated,Id,LevelDisplayName,Message",
+      "when_to_use_fa": "برای همبستگی شکست DNS با رخدادهای سیستم",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\nGet-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-DNS-Client/Operational'; StartTime=(Get-Date).AddHours(-1)} -ErrorAction SilentlyContinue | Select-Object -First 50 TimeCreated,Id,LevelDisplayName,Message\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "ممکن است log غیرفعال باشد یا schema رخداد با نسخه فرق کند.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "بازه زمانی را به رخداد محدود کن؛ وجود و فعال بودن log را بررسی کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-DNS-Client/Operational'; StartTime=(Get-Date).AddHours(-1)} -ErrorAction SilentlyContinue | Select-Object -First 50 TimeCreated,Id,LevelDisplayName,Message",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-WinEvent",
+        "Get-Help"
+      ],
+      "search_keywords": [
+        "بررسی رخدادهای DNS Client در یک ساعت اخیر",
+        "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای همبستگی شکست DNS با رخدادهای سیستم",
+        "answer_key_fa": "برای برای همبستگی شکست DNS با رخدادهای سیستم؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0184",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+      "version_scope": "Verify cmdlet/module and properties on the target Windows build; Windows PowerShell 5.1 unless noted",
+      "privilege": "Read-only diagnostics; use authorized lab/managed system; elevation may be required",
+      "category": "networking",
+      "subcategory": "route-table",
+      "command": "Get-NetRoute -AddressFamily IPv4 | Sort-Object DestinationPrefix,RouteMetric | Format-Table -AutoSize",
+      "title_fa": "[L3] ممیزی routeهای IPv4 و metric",
+      "title_en": "ممیزی routeهای IPv4 و metric",
+      "syntax": "Get-NetRoute -AddressFamily IPv4 | Sort-Object DestinationPrefix,RouteMetric | Format-Table -AutoSize",
+      "when_to_use_fa": "برای بررسی prefix، next hop، interface و metric",
+      "prerequisites_fa": [
+        "نسخه سیستم/RouterOS، نام میزبان، زمان و هدف آزمون را ثبت کن",
+        "دسترسی مجاز و دامنه جمع‌آوری را محدود نگه دار"
+      ],
+      "steps_fa": [
+        "فرمان را روی دستگاه یا VM مجاز اجرا کن و زمان اجرا را ثبت کن.",
+        "خروجی را با baseline، مسیر و policy مؤثر مقایسه کن.",
+        "یافته را با log، counter یا ابزار مستقل تأیید کن."
+      ],
+      "sample_output": "نمونه آموزشی؛ خروجی واقعی وابسته به نسخه، توپولوژی و پیکربندی سیستم هدف است.\nGet-NetRoute -AddressFamily IPv4 | Sort-Object DestinationPrefix,RouteMetric | Format-Table -AutoSize\nمقادیر واقعی را از دستگاه آزمایشگاهی ثبت و بررسی کن.",
+      "output_fields_fa": [
+        {
+          "field": "state / counters / configuration",
+          "meaning": "وضعیت مشاهده‌شده را همراه نسخه، رابط و timestamp تفسیر کن."
+        }
+      ],
+      "common_mistakes_fa": [
+        "کمترین RouteMetric به‌تنهایی در همه prefixها مسیر منتخب را تعیین نمی‌کند.",
+        "تعمیم دادن نتیجه یک snapshot به تمام سیستم‌ها یا نسخه‌ها."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، MAC، نام میزبان، کاربر یا سیاست امنیتی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی کن.",
+      "lab_hint_fa": "مسیر منتخب را برای مقصد واقعی با longest-prefix match تحلیل کن. ابتدا baseline بگیر و هر بار فقط یک عامل را تغییر بده.",
+      "verify_steps_fa": [
+        "Get-NetRoute -AddressFamily IPv4 | Sort-Object DestinationPrefix,RouteMetric | Format-Table -AutoSize",
+        "نتیجه را با لاگ یا ابزار مستقل و مستندات نسخه هدف تطبیق بده."
+      ],
+      "rollback_fa": "این رکورد برای تشخیص خواندنی است؛ هر تغییر بعدی باید جداگانه، با مجوز، پشتیبان و rollback آزموده‌شده انجام شود.",
+      "related_commands": [
+        "Get-NetIPConfiguration",
+        "Get-WinEvent",
+        "Get-Help"
+      ],
+      "search_keywords": [
+        "ممیزی routeهای IPv4 و metric",
+        "Windows PowerShell 5.1 / PowerShell 7+ where supported",
+        "network diagnostics",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "این فرمان برای چه هدفی مناسب است: برای بررسی prefix، next hop، interface و metric",
+        "answer_key_fa": "برای برای بررسی prefix، next hop، interface و metric؛ خروجی باید با نسخه، baseline و شواهد مستقل تطبیق داده شود."
       },
       "source_status": "review_required"
     }
