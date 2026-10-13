@@ -45,6 +45,8 @@ PACKS = [
      "sdn-sdwan-sase-ch18", 18),
     ("tools/packs/windows_server/active_directory_domain_engineering_ch28_pack.json",
      "active-directory-domain-engineering-ch28", 28),
+    ("tools/packs/windows_server/windows_file_services_smb_dfs_ch29_pack.json",
+     "windows-file-services-smb-dfs-ch29", 29),
 ]
 errors: list[str] = []
 checked_lessons = 0
