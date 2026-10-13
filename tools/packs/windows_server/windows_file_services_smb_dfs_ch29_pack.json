@@ -1,0 +1,386 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "Progressive L0-L4 curriculum for Windows Server file services, SMB, share/NTFS access control, SMB security, DFS Namespace, DFS Replication, FSRM, capacity, audit and recovery.",
+  "scope": {
+    "chapter_order": 29,
+    "subchapter_order": 4,
+    "subchapter_title_fa": "مهندسی سرویس فایل ویندوز، SMB و DFS",
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lesson_count": 5,
+    "topics": [
+      {
+        "id": "windows-file-services-smb-dfs",
+        "title_fa": "سرویس فایل ویندوز و اشتراک امن",
+        "title_en": "Windows File Services Engineering"
+      }
+    ]
+  },
+  "instructional_contract": {
+    "level_floors": {
+      "L0": 600,
+      "L1": 800,
+      "L2": 1200,
+      "L3": 1600,
+      "L4": 2200
+    },
+    "volume_rule": "Expand only distinct competencies, failure modes, version cases, measured labs and separate assessments; no template-only record inflation.",
+    "lab_status": "designed_not_executed",
+    "separate_answer_key": true,
+    "stable_uids": true
+  },
+  "compatibility": {
+    "platforms": [
+      "Windows Server 2016",
+      "Windows Server 2019",
+      "Windows Server 2022",
+      "Windows Server 2025"
+    ],
+    "note": "SMB defaults, PowerShell properties, DFS features and FSRM behavior depend on release, installed roles/modules and client compatibility. Verify exact target build before change."
+  },
+  "content_quality": {
+    "status": "review_required",
+    "reason": "Five-level lessons and separate answer keys authored; Windows/SMB/DFSR/FSRM laboratory execution, version-specific validation and independent review remain pending."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch29:windows-file-services:l0",
+      "entity": "lesson",
+      "chapter_order": 29,
+      "subchapter_order": 4,
+      "lesson_order": 1,
+      "topic": "windows-file-services-smb-dfs",
+      "domain": "windows-file-services",
+      "level": "L0",
+      "title_fa": "[L0] سرویس فایل ویندوز — SMB، Share و NTFS از پایه",
+      "title_en": "سرویس فایل ویندوز — SMB، Share و NTFS از پایه",
+      "tags": [
+        "Windows Server",
+        "SMB",
+        "NTFS",
+        "ACL",
+        "DFS",
+        "DFSR",
+        "file server",
+        "L0"
+      ],
+      "summary": "تفاوت share و فایل‌سیستم، مسیر SMB، مجوزهای شبکه و محلی، و مفهوم دسترسی مؤثر را توضیح دهد.",
+      "full_content": "# سرویس فایل ویندوز — SMB، Share و NTFS از پایه\n\n## فایل‌سرور چه مسئله‌ای را حل می‌کند؟\nدر سازمان، فایل‌سرور فقط پوشه‌ای روی دیسک نیست؛ یک سرویس مشترک با هویت، سیاست دسترسی، ثبت رخداد، پشتیبان‌گیری، ظرفیت و مسئولیت مالکیت داده است. فایل‌سرور باید مشخص کند چه کسی می‌تواند فایل را بخواند، ایجاد کند، تغییر دهد، حذف کند و از کدام مسیر به آن دسترسی پیدا کند. یک مسیر محلی مانند `D:\\Shares\\Public` با مسیر شبکه‌ای مانند `\\\\FS01\\Public` یکسان نیست. دسترسی محلی از ACL فایل‌سیستم عبور می‌کند؛ دسترسی SMB علاوه بر ACL فایل‌سیستم از share policy و احراز هویت شبکه نیز اثر می‌گیرد.\n\nSMB پروتکل اشتراک فایل و چاپ در شبکه‌های ویندوزی است. کلاینت با نام سرور و share ارتباط برقرار می‌کند، سرویس SMB مذاکرهٔ protocol و قابلیت‌ها را انجام می‌دهد، سپس هویت و مجوزها بررسی می‌شوند. بعد از باز شدن فایل، رفتارهایی مانند locking، caching، durable handles، signing و encryption می‌توانند روی سازگاری، امنیت و performance اثر بگذارند. هیچ‌کدام از این مراحل با «ping سرور موفق است» ثابت نمی‌شود.\n\n## سه لایهٔ مسیر دسترسی\n۱) **نام و اتصال:** کلاینت باید نام درست سرور را به IP تبدیل کند و بتواند به سرویس SMB دسترسی داشته باشد. DNS، routing، firewall، سرور و پورت 445 از بخش‌های این مرحله هستند. ۲) **هویت:** اتصال با حسابی برقرار می‌شود؛ credentialهای cache شده یا حساب انتخاب‌شده ممکن است با چیزی که کاربر تصور می‌کند فرق داشته باشد. ۳) **مجوز:** Share permissions و NTFS ACL بر عملیات فایل اثر می‌گذارند. اگر یکی از لایه‌ها شکست بخورد، نتیجه معمولاً شبیه پیام سادهٔ «دسترسی ندارید» دیده می‌شود؛ تشخیص باید لایه‌به‌لایه باشد.\n\n## Share permission و NTFS permission\nShare permission در سطح اشتراک شبکه اعمال می‌شود. NTFS ACL روی دایرکتوری و فایل نگهداری می‌شود و برای دسترسی محلی نیز کاربرد دارد. برای دسترسی از راه SMB، هر دو لایه باید اجازه دهند؛ در طراحی متداول، دسترسی مؤثر از محدودکننده‌ترین مجموعهٔ مجوزها حاصل می‌شود، با این قید که ترتیب ACEها، deny entry، inheritance، مالکیت و token نیز می‌توانند نتیجه را پیچیده کنند. بنابراین عبارت «اجازهٔ Full Control روی Share یعنی همه‌چیز مجاز است» اشتباه است؛ NTFS ممکن است دسترسی را محدود کند. به همین ترتیب، مجوز NTFS مناسب با Shareی که فقط Read می‌دهد، نوشتن شبکه‌ای ایجاد نمی‌کند.\n\nاز گروه‌های امنیتی به‌جای ACL جداگانه برای هر کاربر استفاده کن. نام گروه باید نقش و منبع را روشن کند و owner داشته باشد. برای مثال، گروه `GG-FS-Finance-Read` فقط نمونهٔ یک گروه نقش‌محور است؛ نام واقعی را مطابق استاندارد سازمان انتخاب کن. گروه‌بندی را با تست حساب کاربری نماینده و آزمون منفی بررسی کن.\n\n## خواندن مجوز بدون تغییر\nدر سرور مجاز و مسیر آزمایشگاهی:\n```powershell\nGet-SmbShare\nGet-SmbShareAccess -Name \"LabShare\"\nGet-Acl \"D:\\LabData\"\nGet-SmbConnection\nTest-Path \"\\\\FS01\\LabShare\"\n```\nنام `LabShare` و `D:\\LabData` نمونه‌اند. ممکن است برای بعضی cmdletها مجوز مدیریتی یا module مناسب لازم باشد. اگر خروجی خالی است، ابتدا بررسی کن اشتراک یا مسیر واقعاً وجود دارد و در context درست اجرا می‌کنی. `Test-Path` به‌تنهایی ثابت نمی‌کند کاربر توان نوشتن، حذف یا خواندن همهٔ فایل‌ها را دارد.\n\n## مثال مرحله‌ای\nفرض کن یک کارمند پوشهٔ مالی را در File Explorer می‌بیند اما هنگام ذخیره‌کردن فایل پیام Access Denied می‌گیرد. وجود share و دیده‌شدن نام آن فقط discovery را ثابت می‌کند. سپس هویت مؤثر را بررسی کن، `Get-SmbShareAccess` را بخوان، ACL مسیر ریشه و پوشه‌های میانی را بررسی کن و ببین آیا inheritance در زیرپوشهٔ هدف قطع شده است. در مرحلهٔ بعد، عملیات واقعی مورد انتظار را با فایل مصنوعی در مسیر آزمایش انجام بده: ایجاد فایل، بازکردن، تغییر نام و حذف. از تست با فایل واقعی مالی یا حساب مدیر پرهیز کن؛ مجوز مدیر ممکن است مشکلی را که کاربر عادی تجربه می‌کند پنهان کند.\n\n## لابراتوار پایه\nروی VM یا سرور آزمایشی یک مسیر با چند فایل مصنوعی بساز، دو گروه «Read» و «Modify» تعریف کن و فقط با حساب‌های تست کار کن. یکی از حساب‌ها باید خواندن را انجام دهد اما نتواند محتوای فایل را تغییر دهد؛ حساب دیگر باید در محدودهٔ مجاز بتواند فایل جدید بسازد. test case را با نام حساب، مسیر، عمل، نتیجهٔ مورد انتظار و نتیجهٔ مشاهده‌شده ثبت کن. از تغییر مجوز در share واقعی شرکت یا استفاده از `Everyone: Full Control` به‌عنوان راه‌حل فوری استفاده نکن.\n\n## امنیت و پاک‌سازی\nدسترسی گسترده، group nesting نامعلوم و مجوز نوشتن روی پوشهٔ ریشه می‌تواند باعث دستکاری، رمزگذاری یا حذف داده شود. مجوزها باید بر اساس نیاز شغلی و least privilege تعریف شوند. قبل از تمرین، فهرست ACL اولیه را ذخیره کن؛ پس از تمرین، فقط همان مسیر آزمایشی را طبق plan پاک‌سازی کن. Shadow Copy جایگزین backup مستقل نیست و مجوز NTFS نیز جایگزین نسخهٔ پشتیبان نمی‌شود.\n\n## واژه‌نامه\n**SMB:** پروتکل اشتراک فایل؛ **Share:** نام اشتراک شبکه؛ **NTFS ACL:** مجوزهای فایل‌سیستم؛ **ACE:** یک ورودی مجوز؛ **Inheritance:** به ارث رسیدن ACL؛ **Effective access:** نتیجهٔ ترکیب هویت و مجوزها؛ **UNC path:** مسیر شبکه‌ای مانند `\\\\server\\share`; **Access Denied:** نتیجهٔ مجوز یا policy، نه اثبات قطعی یک علت مشخص.\n\n## معیار قبولی\nباید بتوانی تفاوت مسیر محلی و UNC، تفاوت Share و NTFS ACL، و سه مرحلهٔ اتصال/هویت/مجوز را توضیح دهی. همچنین باید برای خطای read، write و delete سه آزمون هدفمند بسازی و به جای افزودن مجوز گسترده، علت را مشخص کنی.",
+      "commands": "Get-SmbShare; Get-SmbShareAccess; Get-Acl; Test-Path",
+      "examples": "تمام نام‌ها، دامنه‌ها و مسیرها مثال هستند؛ اجرای فرمان‌های تغییر‌دهنده فقط در VM/لابراتوار مجاز.",
+      "notes": "status=review_required; lab_status=designed_not_executed; no production changes authorized by this lesson.",
+      "learning_objectives": [
+        "تفاوت share و فایل‌سیستم، مسیر SMB، مجوزهای شبکه و محلی، و مفهوم دسترسی مؤثر را توضیح دهد."
+      ],
+      "prerequisites": [],
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — SMB overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/file-server-smb-overview"
+        },
+        {
+          "title": "Microsoft Learn — SMB security enhancements",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-security"
+        },
+        {
+          "title": "Microsoft Learn — SMB signing overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-signing-overview"
+        },
+        {
+          "title": "Microsoft Learn — DFS Namespaces overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespaces/dfs-overview"
+        },
+        {
+          "title": "Microsoft Learn — DFS Replication overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/dfs-replication/dfsr-overview"
+        },
+        {
+          "title": "Microsoft Learn — File Server Resource Manager overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/fsrm/fsrm-overview"
+        },
+        {
+          "title": "Microsoft Learn — Windows Server storage documentation",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی سرویس فایل ویندوز، SMB و DFS",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"fs29-l0-1\",\"prompt\":\"SMB و NTFS چه نقش متفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"fs29-l0-2\",\"prompt\":\"چرا Full Control روی Share لزوماً نوشتن را مجاز نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"fs29-l0-3\",\"prompt\":\"مسیر UNC چه شکلی است؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"fs29-l0-4\",\"prompt\":\"چرا ping موفق کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"fs29-l0-5\",\"prompt\":\"آزمون منفی چه چیزی را اثبات می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"fs29-l0-1\",\"answer\":\"SMB پروتکل دسترسی شبکه‌ای است؛ NTFS ACL مجوزهای فایل‌سیستم را تعیین می‌کند و در دسترسی شبکه‌ای با Share permissions ترکیب می‌شود.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l0-2\",\"answer\":\"NTFS ACL یا deny entry می‌تواند عملیات را محدود کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l0-3\",\"answer\":\"مانند \\\\\\\\FS01\\\\LabShare؛ مسیر شبکه‌ای مبتنی بر نام سرور و share است.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l0-4\",\"answer\":\"SMB service، احراز هویت و مجوز فایل را بررسی نمی‌کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l0-5\",\"answer\":\"کاربر خارج از scope واقعاً از عمل ممنوع منع می‌شود.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/file-server-smb-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-security\",\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-signing-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespaces/dfs-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/dfs-replication/dfsr-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/fsrm/fsrm-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/\"]}"
+    },
+    {
+      "uid": "lesson:ch29:windows-file-services:l1",
+      "entity": "lesson",
+      "chapter_order": 29,
+      "subchapter_order": 4,
+      "lesson_order": 2,
+      "topic": "windows-file-services-smb-dfs",
+      "domain": "windows-file-services",
+      "level": "L1",
+      "title_fa": "[L1] پیاده‌سازی و عیب‌یابی کنترل‌شدهٔ Share و ACL",
+      "title_en": "پیاده‌سازی و عیب‌یابی کنترل‌شدهٔ Share و ACL",
+      "tags": [
+        "Windows Server",
+        "SMB",
+        "NTFS",
+        "ACL",
+        "DFS",
+        "DFSR",
+        "file server",
+        "L1"
+      ],
+      "summary": "اشتراک فایل آزمایشی بسازد، مجوز مؤثر را با حساب‌های مجزا بررسی کند و مشکل اتصال را از مشکل ACL جدا نماید.",
+      "full_content": "# پیاده‌سازی و عیب‌یابی کنترل‌شدهٔ Share و ACL\n\n## طراحی پیش از ایجاد Share\nقبل از ساخت اشتراک، owner داده، sensitivity، گروه‌های مجاز، عملیات لازم و روش recovery را مشخص کن. نام share و مسیر فیزیکی لازم نیست یکسان باشند؛ اما تغییر نام یا جابه‌جایی path می‌تواند scriptها، برنامه‌ها و mappingها را بشکند. ساختار نمونه می‌تواند `D:\\Shares\\DepartmentA` باشد و دسترسی فقط از طریق گروه‌های نقش‌محور ارائه شود. از shareهای موقت با نام مبهم و دسترسی عمومی خودداری کن. سهمیهٔ فضای ذخیره‌سازی و محل backup باید از پیش معلوم باشد، نه زمانی که دیسک پر شد.\n\n## ارزیابی مرحله‌ای با PowerShell\nدستورات خواندنی زیر را در محیط کنترل‌شده اجرا کن:\n```powershell\nGet-SmbShare | Select-Object Name,Path,Description,EncryptData\nGet-SmbShareAccess -Name \"LabShare\"\nGet-Acl \"D:\\LabData\" | Format-List\nGet-ChildItem \"D:\\LabData\" -Force\nGet-SmbSession\nGet-SmbConnection\n```\n`Get-SmbSession` نشست‌های SMB و `Get-SmbConnection` اتصال‌های کلاینت را نشان می‌دهند؛ این‌ها پرس‌وجوهایی برای وضعیت جاری هستند و ممکن است فقط با سطح دسترسی و context مشخص تمام جزئیات را نشان دهند. فیلدهای خروجی را با نسخهٔ ویندوز و module نصب‌شده تطبیق بده.\n\n## ساخت Share آزمایشی با نقطهٔ بازگشت\nدر VM غیرعملیاتی و پس از تأیید اینکه مسیر فقط دادهٔ مصنوعی دارد، می‌توان از فرمان‌های تغییردهنده برای ساخت Share تمرینی استفاده کرد. نمونهٔ زیر را روی فایل‌سرور واقعی اجرا نکن:\n```powershell\nNew-Item -ItemType Directory -Path \"D:\\LabData\" -Force\nNew-SmbShare -Name \"LabShare\" -Path \"D:\\LabData\" -FullAccess \"LAB\\Lab-Admins\" -ReadAccess \"LAB\\Lab-Readers\"\nGet-SmbShareAccess -Name \"LabShare\"\n```\nحساب‌ها و دامنه در مثال ساختگی‌اند و باید در lab ایجاد شده باشند. مجوز Share فقط بخشی از کنترل است؛ NTFS ACL را جداگانه تنظیم و تست کن. از افزودن Everyone یا Guest برای برطرف کردن خطای ناشناخته خودداری کن. پیش از حذف share، وابستگی‌ها و اتصال‌های فعال را بررسی کن؛ حذف نام share از روی سرور می‌تواند برنامه‌ها و user mappingها را مختل کند.\n\n## مدل آزمون برای سه نقش\nبا حساب Lab-Readers انتظار می‌رود فهرست و محتوای مجاز خوانده شود اما نوشتن/حذف رد شود. با حساب Lab-Editors انتظار می‌رود عملیات تغییر در مسیرهای مشخص مجاز باشد. با حساب خارج از scope انتظار می‌رود دسترسی رد شود. این آزمایش باید از کلاینت شبکه‌ای انجام شود، نه فقط روی سرور، چون مسیر محلی Share permission را دور می‌زند. همچنین از یک کلاینت واقعی‌نما با credential همان حساب استفاده کن؛ نشست با credential قدیمی می‌تواند نتیجهٔ تست را مبهم کند.\n\n## چگونه Access Denied را تشخیص دهیم؟\nابتدا نام سرور را resolve کن، سپس اتصال به پورت SMB و availability share را بررسی کن. اگر share وجود ندارد یا سرور reachable نیست، مسئله ACL نیست. اگر share باز می‌شود اما عملیات فایل رد می‌شود، هویت مؤثر، Share ACL، NTFS ACL، inheritance، deny ACE، group nesting و مالکیت مسیر را بررسی کن. از تست با اکانت ادمین به‌عنوان «اثبات رفع مشکل» استفاده نکن؛ privilege بالا معمولاً رفتار کاربر موردنظر را بازنمایی نمی‌کند. یک آزمون read-only و سپس یک write کنترل‌شده با فایل موقت در هر شاخه کمک می‌کند علت محدود شود.\n\n## محدودیت‌های نگاشت درایو\nDrive mapping بیشتر یک convenience برای کاربر است و خود مجوز امنیتی ایجاد نمی‌کند. مسیر UNC مستقیم و نام سرور مورد استفاده می‌تواند روی Kerberos/SPN و caching اثر بگذارد. در محیط سازمانی، mappingها معمولاً از GPO یا ابزار مدیریت endpoint عرضه می‌شوند؛ اگر همزمان چند روش mapping یک drive letter یکسان را تعریف کنند، رفتار ممکن است متغیر شود. برای عیب‌یابی، `Get-SmbConnection`، مسیر دقیق UNC، نام هویت و خطای برنامه را ثبت کن. قطع اتصال شبکه‌ای فعال می‌تواند فایل‌های باز را مختل کند؛ از `net use * /delete` روی سیستم کاری بدون اطلاع از پیامدها استفاده نکن.\n\n## دادهٔ آزمایشی و rollback\nقبل از تغییر، خروجی `Get-SmbShareAccess`، ACL مسیر و نام share را ذخیره کن. راه برگشت باید دقیقاً روشن کند چه مجوزی اضافه/حذف شده و کدام فایل آزمایشی ساخته شده است. اگر تست شکست خورد، همهٔ تنظیمات را یکجا عوض نکن؛ یک تغییر بده و همان test case را تکرار کن. پس از تکمیل، share آزمایشی را فقط زمانی حذف کن که هیچ کلاینت یا سرویس دیگری به آن وابسته نباشد. اگر این محیط shared است، با owner آن هماهنگ کن.\n\n## معیار قبولی L1\nفایل‌سرور آزمایشی باید به حساب نقش Read اجازهٔ خواندن و به نقش Modify اجازهٔ تغییر در scope تعیین‌شده بدهد؛ کاربر خارج از scope باید رد شود. گزارش باید مسیر UNC، هویت، share permission، NTFS ACL، عملیات و نتیجه را به همراه داشته باشد. در کنار موفقیت تست، عدم دسترسی غیرمجاز نیز باید اثبات شود.",
+      "commands": "Get-SmbShare; Get-SmbShareAccess; Get-SmbConnection; New-SmbShare (lab only)",
+      "examples": "تمام نام‌ها، دامنه‌ها و مسیرها مثال هستند؛ اجرای فرمان‌های تغییر‌دهنده فقط در VM/لابراتوار مجاز.",
+      "notes": "status=review_required; lab_status=designed_not_executed; no production changes authorized by this lesson.",
+      "learning_objectives": [
+        "اشتراک فایل آزمایشی بسازد، مجوز مؤثر را با حساب‌های مجزا بررسی کند و مشکل اتصال را از مشکل ACL جدا نماید."
+      ],
+      "prerequisites": [
+        "مبانی Windows Server و AD DS",
+        "فهم DNS و مجوزهای گروهی"
+      ],
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — SMB overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/file-server-smb-overview"
+        },
+        {
+          "title": "Microsoft Learn — SMB security enhancements",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-security"
+        },
+        {
+          "title": "Microsoft Learn — SMB signing overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-signing-overview"
+        },
+        {
+          "title": "Microsoft Learn — DFS Namespaces overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespaces/dfs-overview"
+        },
+        {
+          "title": "Microsoft Learn — DFS Replication overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/dfs-replication/dfsr-overview"
+        },
+        {
+          "title": "Microsoft Learn — File Server Resource Manager overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/fsrm/fsrm-overview"
+        },
+        {
+          "title": "Microsoft Learn — Windows Server storage documentation",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی سرویس فایل ویندوز، SMB و DFS",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"fs29-l1-1\",\"prompt\":\"چرا آزمون Share باید از کلاینت انجام شود؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"fs29-l1-2\",\"prompt\":\"چه تفاوتی میان Get-SmbShareAccess و Get-Acl هست؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"fs29-l1-3\",\"prompt\":\"چرا تست با administrator کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"fs29-l1-4\",\"prompt\":\"Test-Path چه محدودیتی دارد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"fs29-l1-5\",\"prompt\":\"قبل از ساخت Share چه اطلاعاتی باید معلوم باشد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"fs29-l1-6\",\"prompt\":\"چرا Everyone Full Control راه‌حل مناسبی نیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"fs29-l1-7\",\"prompt\":\"چرا drive mapping به‌تنهایی امنیت نمی‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"fs29-l1-8\",\"prompt\":\"سه آزمون نقش‌محور استاندارد چیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"fs29-l1-1\",\"answer\":\"دسترسی محلی می‌تواند Share ACL را دور بزند و رفتار SMB را اثبات نمی‌کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l1-2\",\"answer\":\"اولی مجوز Share و دومی ACL فایل‌سیستم را نشان می‌دهد.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l1-3\",\"answer\":\"سطح دسترسی بالاتر ممکن است مشکل کاربر عادی را پنهان کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l1-4\",\"answer\":\"وجود/دسترسی ابتدایی مسیر را می‌سنجد و مجوز نوشتن یا حذف را ثابت نمی‌کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l1-5\",\"answer\":\"owner داده، classification، گروه‌های مجاز، عملیات لازم، backup و rollback.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l1-6\",\"answer\":\"blast radius را زیاد می‌کند و علت اصلی denial را مشخص نمی‌کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l1-7\",\"answer\":\"mapping فقط مسیر را ارائه می‌کند؛ مجوز و هویت جداگانه اعمال می‌شوند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l1-8\",\"answer\":\"Read مجاز خواندنی باشد، Modify فقط در scope تغییر دهد و user خارج از scope رد شود.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/file-server-smb-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-security\",\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-signing-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespaces/dfs-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/dfs-replication/dfsr-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/fsrm/fsrm-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/\"]}"
+    },
+    {
+      "uid": "lesson:ch29:windows-file-services:l2",
+      "entity": "lesson",
+      "chapter_order": 29,
+      "subchapter_order": 4,
+      "lesson_order": 3,
+      "topic": "windows-file-services-smb-dfs",
+      "domain": "windows-file-services",
+      "level": "L2",
+      "title_fa": "[L2] امن‌سازی SMB، ممیزی دسترسی و کنترل data exposure",
+      "title_en": "امن‌سازی SMB، ممیزی دسترسی و کنترل data exposure",
+      "tags": [
+        "Windows Server",
+        "SMB",
+        "NTFS",
+        "ACL",
+        "DFS",
+        "DFSR",
+        "file server",
+        "L2"
+      ],
+      "summary": "پروتکل SMB و signing/encryption را ارزیابی کند، سطح حمله را کاهش دهد و کنترل‌های دسترسی و logging را آزمایش نماید.",
+      "full_content": "# امن‌سازی SMB، ممیزی دسترسی و کنترل data exposure\n\n## سطح حملهٔ فایل‌سرور\nفایل‌سرور غالباً به تعداد زیادی endpoint سرویس می‌دهد و داده‌ای با حساسیت متفاوت نگه می‌دارد. تهدیدها تنها دسترسی غیرمجاز نیستند: credential theft، lateral movement، سوءاستفاده از پروتکل قدیمی، ransomware، حذف تصادفی، سوءاستفاده از مجوزهای inherited و نشت از backup نیز مهم‌اند. مرز امنیتی شامل هویت کلاینت، پروتکل SMB، شبکه، share/NTFS ACL، سیستم‌عامل سرور، حساب مدیریتی و backup است. hardening باید چندلایه باشد و از سیاست «همه چیز را فعال بگذار تا سازگاری حفظ شود» پرهیز کند.\n\n## مذاکرهٔ SMB، signing و encryption\nکلاینت و سرور در شروع session روی dialect و قابلیت‌های مشترک مذاکره می‌کنند. قابلیت‌ها و پیش‌فرض‌ها با نسخهٔ Windows Server و Windows Client تغییر می‌کنند. SMB signing به تمامیت پیام کمک می‌کند و می‌تواند در برابر دستکاری میانی نقش داشته باشد؛ SMB encryption محرمانگی payload را برای session/shareهای پشتیبانی‌شده فراهم می‌کند. این دو یک مفهوم نیستند. encryption جایگزین authentication یا ACL نیست و signing به‌تنهایی محتوای ترافیک را محرمانه نمی‌کند. برای تصمیم‌گیری باید نسخه‌های server/client، تأثیر performance، نیاز interop و قابلیت‌های واقعی peerها را ثبت کرد.\n\n## بررسی تنظیمات به‌صورت فقط‌خواندنی\n```powershell\nGet-SmbServerConfiguration\nGet-SmbClientConfiguration\nGet-SmbShare | Select-Object Name,EncryptData,FolderEnumerationMode\nGet-SmbSession | Select-Object ClientComputerName,ClientUserName,Dialect,NumOpens\nGet-SmbConnection | Select-Object ServerName,ShareName,UserName,Dialect,Signed,Encrypted\n```\nنام برخی فیلدها ممکن است بر اساس نسخه یا module تغییر کند؛ پیش از استفاده در script، schema واقعی خروجی را بررسی کن. خروجی configuration، وضعیت connection فعلی و policyهای اعمال‌شده را از هم جدا نگه دار. اگر `Signed` یا `Encrypted` برای یک connection خالی است، ابتدا ببین نسخهٔ cmdlet چه propertyهایی ارائه می‌دهد، سپس از logها یا ابزارهای پشتیبانی‌شده استفاده کن؛ به‌جای نتیجه‌گیری فوری «امن نیست» شواهد مکمل جمع کن.\n\n## کاهش پروتکل‌ها و guest access\nSMBv1 یک protocol قدیمی است و نباید بدون نیاز مستند و تحلیل سازگاری فعال بماند. بررسی کن آیا dependency legacy وجود دارد؛ اگر وجود دارد، مالک برنامه، جایگزین، مدت exception و روش حذف را مشخص کن. Guest/insecure guest logon نیز می‌تواند مدل هویت و محافظت session را تضعیف کند. صرفاً برای اینکه یک NAS یا دستگاه قدیمی متصل شود، کنترل سراسری clientها را پایین نیاور؛ device inventory، firmware، قابلیت signing/encryption و مسیر upgrade را بررسی کن. تنظیم‌ها و cmdletهای موجود با نسخه فرق دارند؛ مستند رسمی همان نسخه را بخوان و در lab کنترل‌شده امتحان کن.\n\n## ممیزی دسترسی و تغییرات\nبازبینی مجوز باید از سطح share تا فایل حساس انجام شود. گروه‌های بدون owner، حساب‌های غیرفعال، ACL با Everyone/Authenticated Users در مسیرهای حساس، مجوز تغییر روی ریشه و inheritance ناخواسته از موارد بررسی‌اند؛ اما هر مورد باید با کاربرد واقعی تفسیر شود. بعضی مسیرها عمداً برای کاربران زیادی خواندنی‌اند. گزارش ACL را به‌عنوان دادهٔ بالقوه حساس نگه دار و آن را در مخزن عمومی منتشر نکن. تغییر باید شامل قبل/بعد، مالک تأییدکننده، scope و تست مثبت و منفی باشد.\n\n## دسترسی بر اساس محتوا و enumeration\nAccess-Based Enumeration می‌تواند فایل‌ها و پوشه‌هایی را که کاربر مجوز دیدنشان را ندارد از فهرست پنهان کند. این ویژگی به‌خودی‌خود جایگزین ACL نیست؛ مخفی بودن نام یک مسیر، مانع دسترسی غیرمجاز در صورت وجود مجوز اشتباه نمی‌شود. از آن به‌عنوان بهبود تجربهٔ کاربر استفاده کن، نه کنترل اصلی امنیت. هنگام عیب‌یابی، نبودن folder در فهرست را از نبود share، خطای نام و خطای مجوز تفکیک کن.\n\n## لابراتوار امن hardening\nیک VM فایل‌سرور و دو VM کلاینت سازگار آماده کن. ابتدا baseline نسخه، dialect، اتصال، ACL و log را ذخیره کن. فقط یک کنترل را در هر بار تغییر بده: برای مثال encryption روی share آزمایشی، یا الزام signing در scope مشخص. سپس از کلاینت سازگار و در صورت نیاز کلاینت آزمایشی قدیمی اتصال را بررسی کن، operation واقعی را انجام بده و لاگ‌ها را مرور کن. Acceptance criteria باید هم امنیت را پوشش دهد و هم کارکرد: اتصال باید با policy مورد انتظار انجام شود، signing/encryption مورد انتظار برقرار باشد و user غیرمجاز همچنان رد شود. اگر کلاینتی شکست خورد، سیاست را کورکورانه تضعیف نکن؛ dependency و قابلیت آن کلاینت را تحلیل کن.\n\n## logging و incident triage\nدر رخداد دسترسی به فایل، timestamp، client، user/service identity، server، share، فایل/مسیر در محدودهٔ مجاز، عمل، process و نتیجه را طبق سیاست privacy ثبت کن. فعال‌کردن auditing وسیع روی تمام درخت فایل می‌تواند حجم event log و هزینهٔ storage را بالا ببرد؛ ابتدا use case، eventهای مورد نیاز، حجم تخمینی، retention و alert threshold را تعیین کن. یک event ثبت‌شده به تنهایی ثابت نمی‌کند همهٔ دسترسی‌ها audit شده‌اند؛ SACL و policy auditing باید درست scope شده باشند و log forwarder نیز سلامت داشته باشد.\n\n## خطاهای رایج\n- فقط به ping تکیه کردن: reachability سرویس SMB و ACL را ثابت نمی‌کند.\n- Share را Full Control دادن برای رفع Permission Denied: NTFS می‌تواند همچنان deny کند و blast radius افزایش می‌یابد.\n- فعال کردن guest یا SMBv1 در کل سازمان: مشکل یک دستگاه را به risk عمومی تبدیل می‌کند.\n- encryption را معادل authorization دانستن: دادهٔ رمز‌شده هم باید مجوز درست داشته باشد.\n- auditing همهٔ فایل‌ها بدون ظرفیت‌سنجی: ممکن است سیستم logging را اشباع یا رخدادهای مهم را دفن کند.\n- تست صرفاً با admin: رفتار کاربر عادی را اثبات نمی‌کند.\n\n## Rollback و آزمون پذیرش\nپیش از hardening، نسخه و تنظیمات پایه و فهرست کلاینت‌های تحت تأثیر را مستند کن. rollout را در حلقه‌های کوچک انجام بده. روش بازگشت باید شامل setting دقیق، زمان، شخص تأییدکننده و test case باشد؛ از rollback کلی که کنترل امنیتی را به حالت نامعلوم بازمی‌گرداند پرهیز کن. پس از تغییر، یک تست مجاز، یک تست ممنوع، یک تست compatibility و یک بازبینی log اجرا کن. معیار قبولی نباید فقط «کاربران شکایت نکردند» باشد، زیرا شکست ممکن است تا زمان نیاز بعدی پنهان بماند.\n\n## واژه‌نامه\n**SMB dialect:** نسخهٔ مذاکره‌شدهٔ protocol؛ **signing:** تمامیت پیام؛ **encryption:** محرمانگی payload؛ **ABE:** پنهان‌کردن فهرست موارد غیرقابل‌دسترسی؛ **SACL:** تنظیمات audit روی object؛ **guest logon:** دسترسی با مدل guest؛ **exception:** انحراف موقت و مستند از baseline امنیت.",
+      "commands": "Get-SmbServerConfiguration; Get-SmbClientConfiguration; Get-SmbSession; Get-SmbConnection",
+      "examples": "تمام نام‌ها، دامنه‌ها و مسیرها مثال هستند؛ اجرای فرمان‌های تغییر‌دهنده فقط در VM/لابراتوار مجاز.",
+      "notes": "status=review_required; lab_status=designed_not_executed; no production changes authorized by this lesson.",
+      "learning_objectives": [
+        "پروتکل SMB و signing/encryption را ارزیابی کند، سطح حمله را کاهش دهد و کنترل‌های دسترسی و logging را آزمایش نماید."
+      ],
+      "prerequisites": [
+        "مبانی Windows Server و AD DS",
+        "فهم DNS و مجوزهای گروهی"
+      ],
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — SMB overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/file-server-smb-overview"
+        },
+        {
+          "title": "Microsoft Learn — SMB security enhancements",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-security"
+        },
+        {
+          "title": "Microsoft Learn — SMB signing overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-signing-overview"
+        },
+        {
+          "title": "Microsoft Learn — DFS Namespaces overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespaces/dfs-overview"
+        },
+        {
+          "title": "Microsoft Learn — DFS Replication overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/dfs-replication/dfsr-overview"
+        },
+        {
+          "title": "Microsoft Learn — File Server Resource Manager overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/fsrm/fsrm-overview"
+        },
+        {
+          "title": "Microsoft Learn — Windows Server storage documentation",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی سرویس فایل ویندوز، SMB و DFS",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"fs29-l2-1\",\"prompt\":\"SMB signing و encryption چه فرقی دارند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"fs29-l2-2\",\"prompt\":\"چرا حذف SMBv1 باید با inventory همراه باشد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"fs29-l2-3\",\"prompt\":\"Access-Based Enumeration چه چیزی را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"fs29-l2-4\",\"prompt\":\"چرا hardening باید مرحله‌ای باشد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"fs29-l2-5\",\"prompt\":\"SACL چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"fs29-l2-6\",\"prompt\":\"چرا auditing سراسری بدون ظرفیت‌سنجی خطرناک است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"fs29-l2-7\",\"prompt\":\"اگر property Signed خروجی نداشته باشد چه می‌کنیم؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"fs29-l2-8\",\"prompt\":\"چرا encryption جایگزین ACL نیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"fs29-l2-9\",\"prompt\":\"چرا user guest برای مشکل یک NAS فعال نشود؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"fs29-l2-10\",\"prompt\":\"چه چیزی معیار پذیرش hardening است؟\",\"type\":\"short_answer\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"fs29-l2-1\",\"answer\":\"Signing تمامیت پیام را تقویت می‌کند؛ encryption محرمانگی payload را فراهم می‌کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l2-2\",\"answer\":\"ممکن است dependency legacy وجود داشته باشد؛ باید مالک، جایگزین و استثنای موقت مشخص شود.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l2-3\",\"answer\":\"به‌تنهایی مجوز را کنترل نمی‌کند؛ فقط visibility موارد غیرقابل‌دسترسی را کاهش می‌دهد.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l2-4\",\"answer\":\"یک تغییر سراسری ممکن است client compatibility و دسترسی سرویس‌ها را مختل کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l2-5\",\"answer\":\"مشخص می‌کند چه نوع دسترسی‌هایی روی object برای auditing ثبت شوند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l2-6\",\"answer\":\"حجم event و هزینهٔ storage افزایش و رخدادهای مهم ممکن است در نویز گم شوند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l2-7\",\"answer\":\"نسخه و schema خروجی را بررسی و با log یا ابزار پشتیبانی‌شده شاهد مکمل جمع می‌کنیم.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l2-8\",\"answer\":\"دادهٔ رمز‌شده نیز باید فقط برای هویت مجاز قابل دسترسی باشد.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l2-9\",\"answer\":\"استثنای ناامن را از یک دستگاه به سطح گسترده‌تر تبدیل می‌کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l2-10\",\"answer\":\"تست مجاز، تست ممنوع، آزمون سازگاری و بازبینی لاگ با baseline مشخص.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/file-server-smb-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-security\",\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-signing-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespaces/dfs-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/dfs-replication/dfsr-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/fsrm/fsrm-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/\"]}"
+    },
+    {
+      "uid": "lesson:ch29:windows-file-services:l3",
+      "entity": "lesson",
+      "chapter_order": 29,
+      "subchapter_order": 4,
+      "lesson_order": 4,
+      "topic": "windows-file-services-smb-dfs",
+      "domain": "windows-file-services",
+      "level": "L3",
+      "title_fa": "[L3] DFS Namespace و DFS Replication — معماری، consistency و RCA",
+      "title_en": "DFS Namespace و DFS Replication — معماری، consistency و RCA",
+      "tags": [
+        "Windows Server",
+        "SMB",
+        "NTFS",
+        "ACL",
+        "DFS",
+        "DFSR",
+        "file server",
+        "L3"
+      ],
+      "summary": "DFS Namespace را از replication واقعی داده جدا کند و اختلاف فایل، referral، backlog و conflict را مرحله‌ای تحلیل نماید.",
+      "full_content": "# DFS Namespace و DFS Replication — معماری، consistency و RCA\n\n## دو قابلیت متفاوت با نام مشابه\nDFS Namespace یک مسیر منطقی پایدار به shareها ارائه می‌کند؛ کاربر می‌تواند به namespace مانند `\\\\corp.example\\Files` مراجعه کند و بر اساس referral به target مناسب هدایت شود. Namespace به‌خودی‌خود فایل‌ها را copy یا synchronize نمی‌کند. DFS Replication یا DFSR یک موتور replication برای توزیع محتوا میان folderهای پیکربندی‌شده است. اشتباه رایج این است که وجود namespace را معادل داشتن replica سالم بدانیم. باید هم مسیریابی namespace و هم وضعیت داده در targetها مستقل بررسی شود.\n\nNamespace serverها referral برمی‌گردانند و ترتیب/targetهایی که کلاینت دریافت می‌کند به site، priority، availability و configuration وابسته است. اگر branch به target دفتر مرکزی هدایت شود، کاربر ممکن است latency بیشتر تجربه کند؛ اما ترتیب referral همیشه به معنی load-balancing ساده نیست. cache referral در کلاینت می‌تواند سبب شود بعد از تغییر تنظیم، نتایج فوری متفاوت باشند. برای عیب‌یابی، مسیر namespace، targetهای واقعی، site/subnet، cache و وضعیت target را ثبت کن.\n\n## DFSR چگونه replication می‌کند؟\nDFSR از سازوکار تغییرات و conflict resolution برای همگام‌سازی پوشه‌ها استفاده می‌کند؛ این کپی هم‌زمان و بدون conflict guarantee نیست. لینک WAN، backlog، staging quota، فایل‌های باز، محدودیت bandwidth و نسخهٔ داده می‌توانند روی زمان همگام‌سازی اثر بگذارند. اگر یک فایل روی دو عضو به‌صورت هم‌زمان تغییر کند، یکی از نسخه‌ها ممکن است در conflict handling قرار بگیرد. DFSR را برای هر workload مناسب فرض نکن؛ فایل‌دیتابیس‌هایی که به locking یا write coordination خاص نیاز دارند ممکن است معماری دیگری بخواهند. Namespace path هم فقط یک نام است و رفتار consistency را تعریف نمی‌کند.\n\n## جمع‌آوری وضعیت قبل از اقدام\nروی اعضای DFSR با دسترسی مجاز، eventهای DFS Replication را بخوان، وضعیت replication group/folder را از ابزارهای مدیریتی و cmdletهای در دسترس استخراج کن و حجم backlog و زمان آخرین موفقیت را ثبت کن. نام cmdlet و پارامترها با نسخهٔ ویندوز و ماژول تفاوت دارد؛ اول `Get-Command *Dfs*` و `Get-Help` را برای همان سیستم بررسی کن. از حذف پوشهٔ DFSR database یا تغییر دستی فایل‌های private replication برای رفع مشکل خودداری کن؛ این مسیرها می‌توانند recovery را پیچیده کنند.\n\n## سناریوی اختلاف فایل\nشعبه می‌گوید گزارش جدید را می‌بیند، دفتر مرکزی هنوز نسخهٔ قدیمی را دارد. ابتدا مطمئن شو هر دو کاربر به همان namespace link/target مراجعه می‌کنند. سپس نام واقعی target و share را از هر دو محل ثبت کن. اگر target فرق دارد و replication group این دو را شامل نمی‌شود، مشکل صرفاً backlog نیست. اگر هر دو عضو یک replication group‌اند، سلامت connection، schedule، bandwidth، staging، quota، فضای دیسک و eventهای DFSR را بررسی کن. زمان modified file به‌تنهایی اثبات replication نیست؛ timezone، برنامهٔ تولید فایل و conflict resolution می‌توانند تصویر را تغییر دهند.\n\n## علت‌یابی backlog\nBacklog باید با context تفسیر شود. صف بزرگ بعد از انتقال انبوه فایل ممکن است موقت باشد؛ صف ثابت برای چند ساعت، همراه با خطای connection یا staging، علامت جدی‌تری است. اندازه‌گیری در چند timestamp کمک می‌کند بفهمی صف در حال کاهش است یا رو به رشد. نرخ تولید تغییرات، حجم بایت، تعداد فایل‌های کوچک و latency روی اثر DFSR تأثیر دارند؛ فقط تعداد فایل، ظرفیت لازم را تعیین نمی‌کند. در گزارش، مبدا/مقصد، شمار و حجم backlog، زمان سنجش، نرخ تغییر و errorهای مرتبط را ثبت کن.\n\n## Conflict و deleted/updated file\nهنگام conflict، فایل حذف‌شده یا تغییرات هم‌زمان، قبل از پاک‌سازی با owner داده هماهنگ شو. فایل‌های conflict/deleted ممکن است تنها نسخهٔ باقی‌مانده از یک تغییر مهم باشند. مسیر و policy نگهداری نسخه‌های conflict را براساس مستندات نسخهٔ هدف بررسی کن. از حذف دستی پوشه‌ها یا force replication بدون تشخیص علت خودداری کن. راه حل باید اصل دادهٔ معتبر را مشخص کند و پس از بازیابی، محتوا و hash یا تست کاربردی را بررسی نماید. «فایل دوباره دیده می‌شود» معیار کافی برای ثابت‌کردن حفظ نسخهٔ صحیح نیست.\n\n## لابراتوار referral و replication\nدر دو VM ایزوله، دو SMB target با فایل‌های مصنوعی بساز و namespace آزمایشی تنظیم کن. ابتدا از کلاینت اول path را باز کن و target واقعی را ثبت کن. سپس یک فایل کوچک و بی‌خطر بساز و زمان رسیدن آن به مقصد را اندازه بگیر. یک تغییر کنترل‌شدهٔ جدید انجام بده و backlog/event logs را مشاهده کن. سناریوی خرابی را با قطع یک اتصال آزمایشگاهی یا pause زمان‌بندی‌شده اجرا کن، نه با تغییر firewall سرور عملیاتی. پس از رفع fault، زمان همگرایی و محتوای مقصدها را بررسی کن و تست را با baseline مقایسه کن.\n\n## namespace و permission\nمجوز namespace و مجوز target باید سازگار باشند. کاربر ممکن است namespace را باز کند ولی هنگام ورود به target مجوز لازم نداشته باشد. بعضی targetها ممکن است برای گروه‌های مختلف policy متفاوت داشته باشند که تجربهٔ کاربر را غیرقابل پیش‌بینی می‌کند. در طراحی، مسیر namespace، target list، share ACL، NTFS ACL و owner داده را در یک ماتریس نگه دار. باز کردن دسترسی گسترده فقط در یکی از لایه‌ها ممکن است مشکل را رفع نکند یا دادهٔ حساس را افشا کند.\n\n## Root-cause workflow\n۱) مسیر کامل UNC و endpoint را ثبت کن. ۲) referral و target انتخاب‌شده را مشخص کن. ۳) share/NTFS permission و identity را بررسی کن. ۴) اگر فایل در target اشتباه است، scope replication group و folder را تایید کن. ۵) backlog و eventهای هر دو عضو را در بازهٔ زمانی مشخص جمع کن. ۶) disk/staging/bandwidth/schedule و connectivity را ارزیابی کن. ۷) پس از یک remediation، دوباره همان test file را مقایسه کن. ۸) اگر نسخه‌های متعارض وجود دارد، نسخهٔ مورد تأیید owner را بازیابی و نسخهٔ دیگر را قبل از پاک‌سازی archive کن.\n\n## محدودیت عملیاتی\nDFSR برای replication عمومی پوشه طراحی شده است، نه جایگزین همهٔ راهکارهای clustered file service یا backup. Namespace و replication را با file locking، application consistency، access based enumeration، backup policy و recovery plan هماهنگ کن. در صورت نیاز به active-active write برای workload حساس، از معماری‌ای استفاده کن که semantics آن workload را پشتیبانی کند. تفاوت «هر دو سایت یک کپی از فایل دارند» با «هر دو سایت می‌توانند همزمان و امن روی یک دادهٔ mutable کار کنند» بنیادی است.\n\n## معیار قبولی L3\nباید بتوانی در نمودار، namespace referral را از DFSR data flow جدا کنی، اختلاف path/target را از اختلاف محتوا تشخیص دهی و با شواهد timestamped علت backlog را محدود کنی. در آزمایشگاه، تغییر ساده باید به مقصد برسد، قطع موقت اتصال باید قابل تشخیص باشد و پس از restore، content validation و cleanup امن ثبت شود.",
+      "commands": "Get-Command *Dfs*; Get-Help; review DFSR event logs and backlog",
+      "examples": "تمام نام‌ها، دامنه‌ها و مسیرها مثال هستند؛ اجرای فرمان‌های تغییر‌دهنده فقط در VM/لابراتوار مجاز.",
+      "notes": "status=review_required; lab_status=designed_not_executed; no production changes authorized by this lesson.",
+      "learning_objectives": [
+        "DFS Namespace را از replication واقعی داده جدا کند و اختلاف فایل، referral، backlog و conflict را مرحله‌ای تحلیل نماید."
+      ],
+      "prerequisites": [
+        "مبانی Windows Server و AD DS",
+        "فهم DNS و مجوزهای گروهی"
+      ],
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — SMB overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/file-server-smb-overview"
+        },
+        {
+          "title": "Microsoft Learn — SMB security enhancements",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-security"
+        },
+        {
+          "title": "Microsoft Learn — SMB signing overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-signing-overview"
+        },
+        {
+          "title": "Microsoft Learn — DFS Namespaces overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespaces/dfs-overview"
+        },
+        {
+          "title": "Microsoft Learn — DFS Replication overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/dfs-replication/dfsr-overview"
+        },
+        {
+          "title": "Microsoft Learn — File Server Resource Manager overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/fsrm/fsrm-overview"
+        },
+        {
+          "title": "Microsoft Learn — Windows Server storage documentation",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی سرویس فایل ویندوز، SMB و DFS",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"fs29-l3-1\",\"prompt\":\"Namespace و DFSR چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"fs29-l3-2\",\"prompt\":\"چرا referral ممکن است پس از تغییر هنوز قدیمی باشد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"fs29-l3-3\",\"prompt\":\"Backlog ثابت چه معنایی دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"fs29-l3-4\",\"prompt\":\"چرا زمان modified file به‌تنهایی اثبات replication نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"fs29-l3-5\",\"prompt\":\"چرا فایل conflict را فوری حذف نمی‌کنیم؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"fs29-l3-6\",\"prompt\":\"اگر namespace باز شود ولی target رد کند چه لایه‌ای را بررسی می‌کنیم؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"fs29-l3-7\",\"prompt\":\"چرا DFSR برای همهٔ دیتابیس‌ها مناسب نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"fs29-l3-8\",\"prompt\":\"چه شواهدی برای backlog لازم است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"fs29-l3-9\",\"prompt\":\"لابراتوار امن DFSR چه کاری دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"fs29-l3-10\",\"prompt\":\"چرا حذف DFSR private database ممنوع است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"fs29-l3-11\",\"prompt\":\"چرا مجوزهای namespace و target باید ماتریس شوند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"fs29-l3-12\",\"prompt\":\"معیار قبولی RCA چیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"fs29-l3-1\",\"answer\":\"Namespace مسیر منطقی/referral می‌دهد؛ DFSR محتوای پوشه را بین اعضا replicate می‌کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l3-2\",\"answer\":\"کلاینت ممکن است referral را cache کرده باشد یا target availability/site policy متفاوت باشد.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l3-3\",\"answer\":\"می‌تواند نشانهٔ اتصال، schedule، staging، disk، bandwidth یا خطای replication باشد و نیاز به شاهد تکمیلی دارد.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l3-4\",\"answer\":\"timezone، تولیدکنندهٔ فایل و conflict handling می‌تواند زمان را گمراه‌کننده کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l3-5\",\"answer\":\"ممکن است تنها نسخهٔ معتبر تغییر باشد و حذف باعث از دست رفتن داده شود.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l3-6\",\"answer\":\"هویت، share ACL و NTFS ACL مقصد؛ namespace بازشدن مجوز target را تضمین نمی‌کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l3-7\",\"answer\":\"همگرایی پوشه‌ای الزاماً locking یا consistency موردنیاز application را تضمین نمی‌کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l3-8\",\"answer\":\"مبدأ/مقصد، چند اندازه‌گیری زمان‌دار، شمار/حجم صف، eventها، schedule و connectivity.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l3-9\",\"answer\":\"دو target مصنوعی، ثبت referral، تست فایل، fault کنترل‌شده و بررسی همگرایی/محتوا.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l3-10\",\"answer\":\"می‌تواند وضعیت داخلی و recovery را پیچیده کند و جایگزین تشخیص ریشه‌ای نیست.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l3-11\",\"answer\":\"کاربر ممکن است مسیر منطقی را باز کند اما در مقصد مجاز نباشد یا به target ناخواسته برود.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l3-12\",\"answer\":\"target و علت مشخص، شواهد زمان‌دار، آزمون دوباره و حفظ نسخهٔ معتبر داده.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/file-server-smb-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-security\",\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-signing-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespaces/dfs-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/dfs-replication/dfsr-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/fsrm/fsrm-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/\"]}"
+    },
+    {
+      "uid": "lesson:ch29:windows-file-services:l4",
+      "entity": "lesson",
+      "chapter_order": 29,
+      "subchapter_order": 4,
+      "lesson_order": 5,
+      "topic": "windows-file-services-smb-dfs",
+      "domain": "windows-file-services",
+      "level": "L4",
+      "title_fa": "[L4] طراحی Enterprise File Services — ظرفیت، recovery، حاکمیت داده و تداوم خدمت",
+      "title_en": "طراحی Enterprise File Services — ظرفیت، recovery، حاکمیت داده و تداوم خدمت",
+      "tags": [
+        "Windows Server",
+        "SMB",
+        "NTFS",
+        "ACL",
+        "DFS",
+        "DFSR",
+        "file server",
+        "L4"
+      ],
+      "summary": "معماری فایل سازمانی را بر پایهٔ طبقه‌بندی داده، SLO/RPO/RTO، ظرفیت، backup مستقل و بازیابی آزمایش‌شده طراحی کند.",
+      "full_content": "# طراحی Enterprise File Services — ظرفیت، recovery، حاکمیت داده و تداوم خدمت\n\n## معماری را از data lifecycle آغاز کن\nقبل از انتخاب file server، DFS، cluster یا storage appliance، مشخص کن داده چیست، مالک آن کیست، چه کسانی باید آن را تغییر دهند، چه مدت نگهداری می‌شود، چه حساسیتی دارد و در رخداد چه مدت می‌تواند از دسترس خارج بماند. فایل‌های عمومی، مالی، پروژه، نرم‌افزار، backup و فایل‌های موقت به policy یکسان نیاز ندارند. طبقه‌بندی داده باید در نام‌گذاری، گروه‌ها، ACL، auditing، quota، backup، retention و deletion lifecycle بازتاب داشته باشد. تکنولوژی بدون مدل مالکیت و چرخهٔ عمر، فقط پیچیدگی ایجاد می‌کند.\n\n## دسترس‌پذیری و failure domain\nیک فایل‌سرور با دو NIC لزوماً high availability نیست. باید failure domainهای برق، میزبان، storage controller، uplink، switch، DNS، Active Directory، site و backup repository بررسی شوند. اگر تمام replicaها و backupها در یک rack یا یک administrative domain باشند، یک خرابی فیزیکی یا compromise می‌تواند همه را تحت‌تأثیر قرار دهد. طراحی باید نیاز واقعی RPO/RTO، نوع workload، SMB features، application support و عملیات failover را در نظر بگیرد. namespace ممکن است مسیر را پایدار نگه دارد ولی به‌تنهایی service failover یا application consistency را تضمین نمی‌کند.\n\n## ظرفیت‌سنجی کاربردی\nفضای اولیه تنها یک جزء ظرفیت است. باید رشد داده، تعداد فایل، اندازهٔ فایل، تعداد concurrent user، نرخ read/write، metadata operation، peak-hour traffic، backup window، replication backlog و retention را بسنجی. میلیون‌ها فایل کوچک می‌توانند با ظرفیت بایت متوسط، فشار metadata زیادی ایجاد کنند. فشرده‌سازی یا deduplication فقط برای داده و workload مناسب سودمند است و نباید بدون اندازه‌گیری فرض شود. معیار performance باید end-to-end باشد: زمان بازشدن سند، latency write، throughput، error rate و تجربهٔ application، نه فقط درصد CPU.\n\nیک benchmark معتبر باید workload نماینده، حجم دادهٔ مصنوعی، الگوی concurrency و معیار baseline داشته باشد. قبل از تغییر NIC offload، antivirus exclusion، SMB Multichannel یا تنظیم storage، یک متغیر را تغییر بده، نتیجه را مقایسه کن و اثر امنیتی را ارزیابی کن. Exclusion امنیتی گسترده در antivirus برای «سریع شدن share» راه‌حل قابل قبول نیست؛ استثنا فقط بر اساس سند vendor، scope محدود و approval طراحی می‌شود.\n\n## Quota و File Server Resource Manager\nFSRM می‌تواند quota، file screening و گزارش‌های ذخیره‌سازی را در محیط پشتیبانی‌شده مدیریت کند. Quotaها ممکن است hard باشند یا soft threshold برای هشدار تعریف کنند. soft quota برای تشخیص رشد و گفتگو با owner مفید است؛ hard quota از پرشدن بیش از حد جلوگیری می‌کند اما می‌تواند عملیات کاری را متوقف کند. file screening نیز باید با نیاز کسب‌وکار هماهنگ باشد؛ block کردن پسوندهای خاص بدون understanding از data workflow ممکن است سرویس را بشکند. برای هر rule، owner، scope، پیام کاربر، آستانه، راه درخواست استثناء و گزارش audit تعریف کن.\n\n## Backup با Shadow Copy یا Replication یکی نیست\nShadow Copies/Previous Versions می‌توانند بازگردانی کوتاه‌مدت نسخهٔ قبلی را تسهیل کنند، اما backup جدا و immutable را جایگزین نمی‌کنند. DFSR copy دیگری از داده می‌سازد و ممکن است حذف یا تغییر مخرب را نیز replicate کند. بنابراین replication، availability و backup سه کنترل مستقل هستند. backup باید credential و policy جدا، repository مجزا، حفاظت از حذف/تغییر، encryption مناسب، retention مشخص و restore test واقعی داشته باشد. یک backup catalog موفق، بدون test restore، هنوز شواهد کافی از recovery نیست.\n\n## طراحی RPO/RTO\nبرای هر data class مشخص کن حداکثر تغییر قابل قبول در رخداد از دست برود (RPO) و خدمت در چه مدت باید برگردد (RTO). فایل‌های حیاتی روزانه ممکن است نیاز به زمان و cadence backup متفاوت از archive داشته باشند. Recovery pointها، زمان replication و backup interval را با churn و business impact مقایسه کن. اگر RPO پانزده دقیقه لازم است ولی backup ساعتی انجام می‌شود، طراحی با هدف سازگار نیست؛ replication لحظه‌ای هم در صورت ransomware ممکن است نسخه‌های رمزگذاری‌شده را منتقل کند. mitigation باید شامل recovery pointهای جدا و محفوظ باشد.\n\n## لابراتوار بازیابی کامل\nدر محیط غیرعملیاتی، دادهٔ مصنوعی با manifest و hash بساز. backup تهیه کن، فایل‌ها را تغییر بده و حذف کن، سپس restore را از repository جدا انجام بده. قبل از بازگردانی، مقصد را ایزوله و اختلاف نسخه‌ها را بررسی کن. پس از restore، تعداد فایل، size/hash یا صحت بازشدن فایل، ACL، مالکیت، path و دسترسی کاربران آزمایشی را تأیید کن. سپس اندازه بگیر که recovery چقدر زمان برد و کدام manual step باعث تأخیر شد. هیچ فایل واقعی کاربر را برای تمرین حذف نکن و به Shadow Copy تنها به‌عنوان منبع بازگشت تکیه نکن.\n\n## ransomware و containment\nدر رخداد مشکوک، ابتدا incident response سازمانی را فعال کن، شواهد و زمان‌بندی را حفظ و محدودهٔ compromise را مشخص کن. قطع دسترسی یا isolate کردن share ممکن است برای جلوگیری از آسیب بیشتر لازم باشد، اما باید با incident commander و اثر بر کسب‌وکار هماهنگ شود. از delete کردن snapshot، پاک‌سازی event log، بازگردانی بی‌برنامهٔ backup یا وصل کردن repository بازیابی به دامنهٔ compromise شده خودداری کن. قبل از restore، حساب‌های مدیریتی، مسیر backup، endpoint و راه ورود مجدد را بررسی کن؛ وگرنه دادهٔ restored ممکن است دوباره رمزگذاری یا خراب شود.\n\n## حاکمیت داده و ممیزی\nهر share حساس باید owner، purpose، گروه‌های مجاز، data classification، retention، audit scope، backup policy و زمان بازبینی دسترسی داشته باشد. ACL drift را به‌صورت دوره‌ای گزارش کن، اما اتوماتیک ACLها را اصلاح یا حذف نکن بدون تحلیل و approval. حساب‌های departed user و گروه‌های orphaned باید با چرخهٔ joiner/mover/leaver هماهنگ شوند. logging باید اطلاعات لازم برای RCA بدهد و همزمان دسترسی به نام فایل‌ها، داده‌های شخصی و محتوا را محدود کند. retention log و privacy requirements را پیش از افزایش auditing ارزیابی کن.\n\n## تغییرات حساس و برگشت‌پذیری\nتغییر path، share name، ACL ریشه، encryption requirement، SMB signing policy، DFSR topology یا quota می‌تواند گسترهٔ بزرگی از سرویس را مختل کند. change plan باید scope، وابستگی‌ها، owner، baseline، window، acceptance test، rollback trigger و بازگشت را مشخص کند. اگر بازگشت ساده نیست، change به rollout مرحله‌ای و test محیطی نیاز دارد. با یک حساب مدیر همهٔ سناریوها را تست نکن؛ حداقل user read-only، user modify و principal خارج از scope را آزمایش کن.\n\n## شاخص‌ها و runbook\nمانیتورینگ باید فضای آزاد، رشد، latency، throughput، session errors، failed logons، SMB protocol/security state، backup age، last successful restore test، DFSR backlog و quota threshold را پوشش دهد. آستانهٔ هشدار باید بر اساس baseline و ظرفیت مشخص شود. در runbook «share در دسترس نیست» ابتدا DNS و TCP 445، سپس سرویس SMB/share، بعد authentication و authorization، بعد storage health و در نهایت client cache بررسی می‌شود. اگر تمام کاربران یک share مشکل دارند، احتمال cause مشترک بیشتر است؛ اگر یک کاربر فقط روی یک پوشه مشکل دارد، scope مجوز/هویت را زودتر بررسی کن. این‌ها اولویت‌های تشخیصی‌اند نه قطعیت.\n\n## capstone طراحی\nبرای یک سازمان با دفتر مرکزی و دو شعبه، ۲۰۰ کاربر، پوشه‌های عمومی/مالی/HR، فایل‌های بزرگ طراحی و داده‌های آرشیوی، deliverable شامل namespace pathها، target placement، share/NTFS ACL matrix، گروه‌های نقش‌محور، DFSR scope در صورت نیاز، quota، audit policy، backup separation، RPO/RTO و برنامهٔ failover باشد. برای هر تصمیم، دلیل و alternative ردشده را ثبت کن. آزمون عملی باید شامل کاربر مجاز، کاربر غیرمجاز، قطع لینک آزمایشگاهی، بازیابی یک فایل، restore مجموعهٔ پوشه و تایید ACL باشد. در نهایت، نتایج واقعی آزمون و شکاف‌ها را در گزارش تحویل ثبت کن؛ طراحی روی کاغذ را verified اعلام نکن.\n\n## واژه‌نامه\n**DFS Namespace:** مسیر منطقی با referral؛ **DFSR:** replication پوشه؛ **RPO/RTO:** اهداف بازیابی؛ **FSRM:** ابزار مدیریت منابع فایل؛ **immutable backup:** نسخه‌ای که در محدودهٔ تهدید تعریف‌شده تغییر/حذف آن محدود است؛ **quota:** سقف یا آستانهٔ مصرف؛ **data owner:** مسئول کسب‌وکاری داده؛ **RCA:** تحلیل علت ریشه‌ای.",
+      "commands": "SMB signing/encryption review; FSRM quota/reporting; backup restore test; DFSR health and capacity runbook",
+      "examples": "تمام نام‌ها، دامنه‌ها و مسیرها مثال هستند؛ اجرای فرمان‌های تغییر‌دهنده فقط در VM/لابراتوار مجاز.",
+      "notes": "status=review_required; lab_status=designed_not_executed; no production changes authorized by this lesson.",
+      "learning_objectives": [
+        "معماری فایل سازمانی را بر پایهٔ طبقه‌بندی داده، SLO/RPO/RTO، ظرفیت، backup مستقل و بازیابی آزمایش‌شده طراحی کند."
+      ],
+      "prerequisites": [
+        "مبانی Windows Server و AD DS",
+        "فهم DNS و مجوزهای گروهی"
+      ],
+      "official_sources": [
+        {
+          "title": "Microsoft Learn — SMB overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/file-server-smb-overview"
+        },
+        {
+          "title": "Microsoft Learn — SMB security enhancements",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-security"
+        },
+        {
+          "title": "Microsoft Learn — SMB signing overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-signing-overview"
+        },
+        {
+          "title": "Microsoft Learn — DFS Namespaces overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespaces/dfs-overview"
+        },
+        {
+          "title": "Microsoft Learn — DFS Replication overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/dfs-replication/dfsr-overview"
+        },
+        {
+          "title": "Microsoft Learn — File Server Resource Manager overview",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/fsrm/fsrm-overview"
+        },
+        {
+          "title": "Microsoft Learn — Windows Server storage documentation",
+          "url": "https://learn.microsoft.com/en-us/windows-server/storage/"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی سرویس فایل ویندوز، SMB و DFS",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"fs29-l4-1\",\"prompt\":\"چرا DFSR backup مستقل نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-2\",\"prompt\":\"چرا Shadow Copy backup immutable را جایگزین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-3\",\"prompt\":\"RPO و RTO چه هستند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-4\",\"prompt\":\"چه شاخص‌هایی برای file services پایش می‌شوند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-5\",\"prompt\":\"چه چیزی باید در capstone سازمانی تحویل شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-6\",\"prompt\":\"چرا backup job موفق کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-7\",\"prompt\":\"چه خطری در چند replica هم‌مکان وجود دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-8\",\"prompt\":\"چرا hard quota باید با owner هماهنگ شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-9\",\"prompt\":\"چه چیزی باید برای FSRM ثبت شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-10\",\"prompt\":\"چرا antivirus exclusion سراسری راه حل performance نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-11\",\"prompt\":\"در رخداد ransomware چه کار عجولانه‌ای ممنوع است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-12\",\"prompt\":\"چرا share name و path changes حساس‌اند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-13\",\"prompt\":\"چگونه تست منفی داده را معتبر می‌کنیم؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-14\",\"prompt\":\"چرا namespace availability و application continuity یکی نیستند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"fs29-l4-15\",\"prompt\":\"چه زمانی تغییر حساس verified است؟\",\"type\":\"short_answer\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"fs29-l4-1\",\"answer\":\"حذف یا رمزگذاری مخرب نیز ممکن است replicate شود.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-2\",\"answer\":\"نسخه‌های محلی ممکن است با compromise یا خطای همان سیستم از بین بروند و recovery مستقل را تضمین نمی‌کنند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-3\",\"answer\":\"حداکثر از دست‌رفتن دادهٔ قابل‌قبول و زمان هدف برای بازگشت خدمت.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-4\",\"answer\":\"فضای آزاد/رشد، latency/throughput، session error، SMB security state، backup age، restore test و DFSR backlog.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-5\",\"answer\":\"ماتریس ACL، namespace/target، quota/audit، backup separation، RPO/RTO، failover و نتایج آزمون.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-6\",\"answer\":\"باید restore واقعی و بررسی محتوا/ACL/دسترسی اثبات شود.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-7\",\"answer\":\"یک failure domain مشترک می‌تواند تمام replicaها و شاید backup را هم از بین ببرد.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-8\",\"answer\":\"می‌تواند نوشتن را متوقف کند و به سرویس کاری آسیب بزند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-9\",\"answer\":\"scope، owner، آستانه، اقدام hard/soft، پیام کاربر و مسیر استثنا.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-10\",\"answer\":\"سطح حمله را بی‌دلیل افزایش می‌دهد؛ استثنا باید vendor-supported و محدود باشد.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-11\",\"answer\":\"پاک‌کردن شواهد، restore بی‌برنامه یا اتصال repository بازیابی به محیط compromise شده.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-12\",\"answer\":\"scriptها، برنامه‌ها، drive mappings و کاربردهای دیگر ممکن است به آن‌ها وابسته باشند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-13\",\"answer\":\"از هویت غیرمجاز واقعی و مقصد روشن استفاده می‌کنیم؛ timeout عمومی را معادل deny نمی‌گیریم.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-14\",\"answer\":\"namespace فقط مسیر منطقی را ارائه می‌کند و consistency/locking/failover برنامه را به‌تنهایی تضمین نمی‌کند.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"},{\"id\":\"fs29-l4-15\",\"answer\":\"پس از تست مجاز/ممنوع، compatibility، سلامت backup/restore، log review و ثبت نتیجهٔ تکرارپذیر.\",\"rationale\":\"پاسخ باید بر تفکیک لایه‌ها و شاهد حاصل از آزمون تکیه کند؛ یک پیام خطا به‌تنهایی علت ریشه‌ای نیست.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/file-server-smb-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-security\",\"https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-signing-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespaces/dfs-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/dfs-replication/dfsr-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/fsrm/fsrm-overview\",\"https://learn.microsoft.com/en-us/windows-server/storage/\"]}"
+    }
+  ]
+}
