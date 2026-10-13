@@ -44,6 +44,29 @@ jobs:
       - name: Icons
         run: python3 scripts/install_android_icon.py
 
+      - name: Validate per-chapter prompt tree
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/chapter_prompts/generate_chapter_prompts.py
+          python3 tools/chapter_prompts/generate_chapter_prompts.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("tools/chapter_prompts")
+          prompts = sorted(root.glob("ch[0-9][0-9]/PROMPT.md"))
+          templates = sorted(root.glob("ch[0-9][0-9]/PACK_TEMPLATE.json"))
+          assert len(prompts) == 68, f"Expected 68 chapter prompts, found {len(prompts)}"
+          assert len(templates) == 68, f"Expected 68 starter templates, found {len(templates)}"
+          for prompt in prompts:
+              chapter = prompt.parent.name
+              json.loads((prompt.parent / "PACK_TEMPLATE.json").read_text(encoding="utf-8"))
+              text = prompt.read_text(encoding="utf-8")
+              assert "50" in text and "answer_key" in text, f"Incomplete enrichment prompt: {chapter}"
+          index = (root / "INDEX.md").read_text(encoding="utf-8")
+          assert all(f"ch{i:02d}/PROMPT.md" in index for i in range(1, 69)), "Chapter index is incomplete"
+          print(f"Chapter prompts validated: {len(prompts)} folders, {len(templates)} JSON templates")
+          PY
+
       - name: Chapters 1-68 export
         run: |
           set -e
@@ -103,6 +126,7 @@ jobs:
             scripts/smoke_test_web_routes.py \
             scripts/package_windows_v1.py \
             scripts/validate_release_metadata.py \
+            tools/chapter_prompts/generate_chapter_prompts.py \
             tools/chapter_git_teacher.py
           node --check server/static/app.js
           node --check server/static/sync_ui.js
