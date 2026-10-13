@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from datetime import date
 
-OUT = Path(__file__).with_name('automation_python_curriculum_pack.json')
+OUT = Path(__file__).resolve().parents[1] / 'packs' / 'automation_python' / 'automation_python_curriculum_pack.json'
 LEVELS = [
     ('L0', 'آشنایی', 'Intro', 'درک شهودی و واژگان پایه'),
     ('L1', 'مقدماتی', 'Junior', 'اجرای کار پایه در محیط کنترل‌شده'),
@@ -776,5 +776,6 @@ for _t in TOPICS:
 
 if __name__ == '__main__':
     pack = build_pack()
+    OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(pack, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(f'Wrote {OUT} with {len(pack["lessons"])} lessons and {len(TOPICS)} topics.')

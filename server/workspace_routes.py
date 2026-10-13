@@ -5,12 +5,14 @@ from __future__ import annotations
 import base64
 import hashlib
 import hmac
+import json
+import os
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 import sqlite3
 
-from flask import Blueprint, request, jsonify, render_template_string, make_response, redirect
+from flask import Blueprint, request, jsonify, render_template, render_template_string, make_response, redirect
 
 bp = Blueprint("workspace", __name__)
 
@@ -32,29 +34,92 @@ def _authorized() -> bool:
     return bool(_check_token())
 
 
+def _vault_key() -> bytes:
+    """Get a per-user AES key. Windows keys are protected with DPAPI."""
+    override = os.environ.get("NETENC_VAULT_KEY", "").strip()
+    if override:
+        return hashlib.sha256(b"NetworkEncyclopedia-vault-v2:" + override.encode("utf-8")).digest()
+
+    key_path = _db_path().parent / "vault.key"
+    if key_path.exists():
+        stored = key_path.read_bytes()
+        if stored.startswith(b"dpapi1:"):
+            try:
+                import win32crypt
+                result = win32crypt.CryptUnprotectData(base64.b64decode(stored[7:]), None, None, None, 0)
+                key = result[-1] if isinstance(result, tuple) else result
+                if len(key) != 32:
+                    raise ValueError("invalid DPAPI key length")
+                return bytes(key)
+            except Exception as exc:
+                raise RuntimeError("کلید Vault ویندوز با حساب فعلی باز نشد؛ فایل vault.key را حذف نکنید.") from exc
+        if stored.startswith(b"key1:"):
+            key = base64.b64decode(stored[5:])
+            if len(key) == 32:
+                return key
+        raise RuntimeError("قالب فایل کلید Vault ناشناخته است؛ داده‌ها تغییر داده نشدند.")
+
+    key = os.urandom(32)
+    key_path.parent.mkdir(parents=True, exist_ok=True)
+    if os.name == "nt":
+        try:
+            import win32crypt
+            protected = win32crypt.CryptProtectData(key, "NetworkEncyclopedia Vault", None, None, None, 0)
+            if isinstance(protected, tuple):
+                protected = protected[-1]
+            key_path.write_bytes(b"dpapi1:" + base64.b64encode(protected))
+        except Exception as exc:
+            raise RuntimeError("ساخت کلید امن ویندوز ناموفق بود؛ بسته pywin32 را نصب کنید.") from exc
+    else:
+        key_path.write_bytes(b"key1:" + base64.b64encode(key))
+        try:
+            os.chmod(key_path, 0o600)
+        except OSError:
+            pass
+    return key
+
+
 def _seal(plain: str) -> str:
+    """Authenticated AES-GCM encryption; never falls back to storing plaintext."""
     if not plain:
         return ""
-    if plain.startswith("enc1:"):
+    if plain.startswith("enc2:"):
         return plain
-    key = hashlib.sha256((_sync_token or "dev").encode("utf-8")).digest()
-    raw = plain.encode("utf-8")
-    out = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
-    return "enc1:" + base64.urlsafe_b64encode(out).decode("ascii")
+    try:
+        from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        nonce = os.urandom(12)
+        aad = b"NetworkEncyclopedia-Workspace-Vault-v2"
+        encrypted = AESGCM(_vault_key()).encrypt(nonce, plain.encode("utf-8"), aad)
+        return "enc2:" + base64.urlsafe_b64encode(nonce + encrypted).decode("ascii")
+    except Exception as exc:
+        raise RuntimeError("ذخیره‌سازی امن رمز ناموفق بود؛ مقدار به متن ساده تبدیل نشد.") from exc
 
 
 def _unseal(blob: str) -> str:
     if not blob:
         return ""
-    if not blob.startswith("enc1:"):
-        return "•••• (legacy — edit to re-seal)"
-    try:
-        key = hashlib.sha256((_sync_token or "dev").encode("utf-8")).digest()
-        raw = base64.urlsafe_b64decode(blob[5:].encode("ascii"))
-        out = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
-        return out.decode("utf-8")
-    except Exception:
-        return "••••"
+    if blob.startswith("enc2:"):
+        try:
+            from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+            payload = base64.urlsafe_b64decode(blob[5:].encode("ascii"))
+            if len(payload) < 29:
+                raise ValueError("encrypted data is too short")
+            nonce, ciphertext = payload[:12], payload[12:]
+            aad = b"NetworkEncyclopedia-Workspace-Vault-v2"
+            return AESGCM(_vault_key()).decrypt(nonce, ciphertext, aad).decode("utf-8")
+        except Exception:
+            return "•••• (رمز قابل رمزگشایی نیست؛ کلید را بررسی کنید)"
+    if blob.startswith("enc1:"):
+        # One-way migration path for the legacy XOR envelope. Re-seal immediately
+        # in workspace_page when this legacy value can be decrypted.
+        try:
+            key = hashlib.sha256((_sync_token or "dev").encode("utf-8")).digest()
+            raw = base64.urlsafe_b64decode(blob[5:].encode("ascii"))
+            plain = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
+            return plain.decode("utf-8")
+        except Exception:
+            return "•••• (legacy vault record cannot be decrypted)"
+    return "•••• (legacy plaintext record is intentionally masked)"
 
 
 LOGIN_PAGE = """
@@ -129,20 +194,196 @@ def _db_path():
 
 
 def _conn():
-    c = sqlite3.connect(str(_db_path()))
+    c = sqlite3.connect(str(_db_path()), timeout=10)
     c.row_factory = sqlite3.Row
-    c.execute("CREATE TABLE IF NOT EXISTS ws_tasks(uid TEXT PRIMARY KEY, title TEXT, body TEXT, done INT, last_updated TEXT)")
-    c.execute("CREATE TABLE IF NOT EXISTS ws_notes(uid TEXT PRIMARY KEY, title TEXT, body TEXT, last_updated TEXT)")
+    c.execute("PRAGMA busy_timeout = 10000")
+    c.execute("""CREATE TABLE IF NOT EXISTS ws_tasks(
+        uid TEXT PRIMARY KEY, title TEXT NOT NULL, body TEXT DEFAULT '', done INT DEFAULT 0,
+        last_updated TEXT, due_at TEXT NOT NULL DEFAULT '', priority INTEGER NOT NULL DEFAULT 1,
+        remind_at TEXT NOT NULL DEFAULT '', reminded_at TEXT NOT NULL DEFAULT '',
+        device_id TEXT NOT NULL DEFAULT '', deleted INTEGER NOT NULL DEFAULT 0,
+        content_hash TEXT NOT NULL DEFAULT ''
+    )""")
+    c.execute("""CREATE TABLE IF NOT EXISTS ws_notes(
+        uid TEXT PRIMARY KEY, title TEXT, body TEXT, last_updated TEXT,
+        tags TEXT NOT NULL DEFAULT '', device_id TEXT NOT NULL DEFAULT '',
+        deleted INTEGER NOT NULL DEFAULT 0, content_hash TEXT NOT NULL DEFAULT ''
+    )""")
     c.execute("CREATE TABLE IF NOT EXISTS ws_vault(uid TEXT PRIMARY KEY, title TEXT, username TEXT, secret TEXT, last_updated TEXT)")
+    # Non-destructive, additive migration for databases made by older versions.
+    task_columns = {row["name"] for row in c.execute("PRAGMA table_info(ws_tasks)").fetchall()}
+    for name, declaration in (
+        ("due_at", "TEXT NOT NULL DEFAULT ''"),
+        ("priority", "INTEGER NOT NULL DEFAULT 1"),
+        ("remind_at", "TEXT NOT NULL DEFAULT ''"),
+        ("reminded_at", "TEXT NOT NULL DEFAULT ''"),
+        ("device_id", "TEXT NOT NULL DEFAULT ''"),
+        ("deleted", "INTEGER NOT NULL DEFAULT 0"),
+        ("content_hash", "TEXT NOT NULL DEFAULT ''"),
+    ):
+        if name not in task_columns:
+            c.execute(f"ALTER TABLE ws_tasks ADD COLUMN {name} {declaration}")
+    note_columns = {row["name"] for row in c.execute("PRAGMA table_info(ws_notes)").fetchall()}
+    for name, declaration in (
+        ("tags", "TEXT NOT NULL DEFAULT ''"),
+        ("device_id", "TEXT NOT NULL DEFAULT ''"),
+        ("deleted", "INTEGER NOT NULL DEFAULT 0"),
+        ("content_hash", "TEXT NOT NULL DEFAULT ''"),
+    ):
+        if name not in note_columns:
+            c.execute(f"ALTER TABLE ws_notes ADD COLUMN {name} {declaration}")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_ws_tasks_due ON ws_tasks(due_at, done)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_ws_tasks_reminder ON ws_tasks(remind_at, reminded_at, done)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_ws_tasks_deleted_updated ON ws_tasks(deleted, last_updated)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_ws_notes_deleted_updated ON ws_notes(deleted, last_updated)")
     c.commit()
     return c
 
 
+def _workspace_hash(record):
+    keys = sorted(k for k in record if k not in ("device_id", "last_updated", "content_hash"))
+    blob = json.dumps({k: record[k] for k in keys}, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def _workspace_record(row, entity):
+    raw = dict(row)
+    # Project only protocol fields. Scheduler-only fields such as reminded_at
+    # must not affect cross-platform content hashes.
+    if entity == "task":
+        item = {
+            "uid": raw.get("uid") or "",
+            "entity": "task",
+            "title": raw.get("title") or "",
+            "body": raw.get("body") or "",
+            "done": bool(raw.get("done", 0)),
+            "due_at": raw.get("due_at") or "",
+            "priority": int(raw.get("priority") or 1),
+            "remind_at": raw.get("remind_at") or "",
+            "last_updated": raw.get("last_updated") or "",
+            "device_id": raw.get("device_id") or "",
+            "deleted": bool(raw.get("deleted", 0)),
+        }
+    else:
+        item = {
+            "uid": raw.get("uid") or "",
+            "entity": "note",
+            "title": raw.get("title") or "",
+            "body": raw.get("body") or "",
+            "tags": raw.get("tags") or "",
+            "last_updated": raw.get("last_updated") or "",
+            "device_id": raw.get("device_id") or "",
+            "deleted": bool(raw.get("deleted", 0)),
+        }
+    item["content_hash"] = _workspace_hash(item)
+    return item
+
+
+def sync_index():
+    """Manifest metadata for user-owned tasks/notes. Vault is intentionally excluded."""
+    c = _conn()
+    try:
+        result = []
+        for entity, table in (("task", "ws_tasks"), ("note", "ws_notes")):
+            rows = c.execute(
+                f"SELECT * FROM {table} WHERE uid IS NOT NULL AND uid!=''"
+            ).fetchall()
+            result.extend({
+                "uid": _workspace_record(row, entity)["uid"],
+                "entity": entity,
+                "last_updated": _workspace_record(row, entity)["last_updated"],
+                "content_hash": _workspace_record(row, entity)["content_hash"],
+                "deleted": _workspace_record(row, entity)["deleted"],
+            } for row in rows)
+        return result
+    finally:
+        c.close()
+
+
+def sync_pull(uids):
+    """Pull task/note records and tombstones by stable UID; never exports Vault secrets."""
+    clean = list(dict.fromkeys(str(uid) for uid in uids if str(uid).strip()))
+    if not clean:
+        return []
+    c = _conn()
+    try:
+        marks = ",".join("?" for _ in clean)
+        out = []
+        for entity, table in (("task", "ws_tasks"), ("note", "ws_notes")):
+            rows = c.execute(f"SELECT * FROM {table} WHERE uid IN ({marks})", clean).fetchall()
+            out.extend(_workspace_record(row, entity) for row in rows)
+        return out
+    finally:
+        c.close()
+
+
+def sync_apply(records):
+    """Persist accepted task/note edits. Deletes are soft tombstones; Vault never syncs."""
+    now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    c = _conn()
+    applied = 0
+    try:
+        for record in records:
+            if not isinstance(record, dict):
+                continue
+            uid = str(record.get("uid") or "").strip()
+            entity = str(record.get("entity") or "")
+            if not uid or len(uid) > 128 or entity not in ("task", "note"):
+                continue
+            title = str(record.get("title") or "").strip()
+            body = str(record.get("body") or "")
+            if not title or len(title) > 300 or len(body) > 2_000_000:
+                continue
+            updated = str(record.get("last_updated") or record.get("lastUpdated") or now)[:64]
+            device = str(record.get("device_id") or record.get("deviceId") or "")[:128]
+            deleted = 1 if record.get("deleted") is True or record.get("deleted") == 1 else 0
+            digest = str(record.get("content_hash") or record.get("contentHash") or "")[:128]
+            if entity == "task":
+                try:
+                    priority = int(record.get("priority", 1))
+                except (TypeError, ValueError):
+                    priority = 1
+                if priority not in (1, 2, 3):
+                    priority = 1
+                due_at = str(record.get("due_at") or record.get("dueAt") or "")[:32]
+                remind_at = str(record.get("remind_at") or record.get("remindAt") or "")[:32]
+                done = 1 if record.get("done") is True or record.get("done") == 1 else 0
+                c.execute(
+                    """INSERT INTO ws_tasks(
+                           uid,title,body,done,last_updated,due_at,priority,remind_at,reminded_at,
+                           device_id,deleted,content_hash
+                       ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)
+                       ON CONFLICT(uid) DO UPDATE SET title=excluded.title, body=excluded.body,
+                       done=excluded.done, last_updated=excluded.last_updated, due_at=excluded.due_at,
+                       priority=excluded.priority, remind_at=excluded.remind_at, reminded_at='',
+                       device_id=excluded.device_id, deleted=excluded.deleted,
+                       content_hash=excluded.content_hash""",
+                    (uid, title, body, done, updated, due_at, priority, remind_at, "", device, deleted, digest),
+                )
+            else:
+                tags = str(record.get("tags") or "")[:2000]
+                c.execute(
+                    """INSERT INTO ws_notes(uid,title,body,last_updated,tags,device_id,deleted,content_hash)
+                       VALUES(?,?,?,?,?,?,?,?)
+                       ON CONFLICT(uid) DO UPDATE SET title=excluded.title, body=excluded.body,
+                       last_updated=excluded.last_updated, tags=excluded.tags, device_id=excluded.device_id,
+                       deleted=excluded.deleted, content_hash=excluded.content_hash""",
+                    (uid, title, body, updated, tags, device, deleted, digest),
+                )
+            applied += 1
+        c.commit()
+        return applied
+    finally:
+        c.close()
+
+
 def _cookie_ok() -> bool:
+    # When no shared token is configured, defer to the server's local-only
+    # auth policy. Never let an empty token bypass auth on a remote bind.
     if not _sync_token:
-        return True
-    c = request.cookies.get("netenc_token") or ""
-    return hmac.compare_digest(c, _sync_token)
+        return bool(_check_token and _check_token())
+    cookie = request.cookies.get("netenc_token") or ""
+    return hmac.compare_digest(cookie, _sync_token)
 
 
 @bp.route("/workspace/login", methods=["GET", "POST"])
@@ -179,7 +420,11 @@ def workspace_page():
         if request.form.get("delete"):
             uid = request.form["delete"]
             table = {"notes": "ws_notes", "vault": "ws_vault"}.get(tab, "ws_tasks")
-            c.execute(f"DELETE FROM {table} WHERE uid=?", (uid,))
+            if tab == "vault":
+                c.execute("DELETE FROM ws_vault WHERE uid=?", (uid,))
+            else:
+                c.execute(f"UPDATE {table} SET deleted=1,last_updated=? WHERE uid=?",
+                          (datetime.now(timezone.utc).isoformat(), uid))
             c.commit()
         else:
             title = (request.form.get("title") or "").strip()
@@ -189,26 +434,175 @@ def workspace_page():
                 uid = str(uuid.uuid4())
                 now = datetime.now(timezone.utc).isoformat()
                 if tab == "notes":
-                    c.execute("INSERT INTO ws_notes VALUES(?,?,?,?)", (uid, title, body, now))
+                    c.execute("INSERT INTO ws_notes(uid,title,body,last_updated) VALUES(?,?,?,?)", (uid, title, body, now))
                 elif tab == "vault":
                     c.execute("INSERT INTO ws_vault VALUES(?,?,?,?,?)", (uid, title, username, _seal(body), now))
                 else:
-                    c.execute("INSERT INTO ws_tasks VALUES(?,?,?,?,?)", (uid, title, body, 0, now))
+                    c.execute("INSERT INTO ws_tasks(uid,title,body,done,last_updated) VALUES(?,?,?,?,?)", (uid, title, body, 0, now))
                 c.commit()
     if tab == "notes":
-        items = c.execute("SELECT uid,title,body FROM ws_notes ORDER BY last_updated DESC").fetchall()
+        items = c.execute("SELECT uid,title,body FROM ws_notes WHERE deleted=0 ORDER BY last_updated DESC").fetchall()
         title = "یادداشت‌ها"
     elif tab == "vault":
         rows = c.execute("SELECT uid,title,username,secret FROM ws_vault ORDER BY title").fetchall()
         items = []
+        migrated_any = False
         for r in rows:
-            secret_show = _unseal(r["secret"]) if (_authorized() or _cookie_ok()) else "••••"
+            secret_blob = r["secret"] or ""
+            if _authorized() or _cookie_ok():
+                if secret_blob.startswith("enc1:"):
+                    secret_show = _unseal(secret_blob)
+                    if not str(secret_show).startswith("••••"):
+                        try:
+                            secret_blob = _seal(secret_show)
+                            c.execute("UPDATE ws_vault SET secret=? WHERE uid=?", (secret_blob, r["uid"]))
+                            migrated_any = True
+                        except Exception as exc:
+                            print("legacy sealed vault migration skipped for", r["uid"], exc)
+                elif secret_blob.startswith("enc2:"):
+                    secret_show = _unseal(secret_blob)
+                else:
+                    # Older versions could persist plaintext when encryption failed.
+                    # On an authenticated local Vault view, show once and immediately re-seal.
+                    secret_show = secret_blob
+                    if secret_blob:
+                        try:
+                            secret_blob = _seal(secret_blob)
+                            c.execute("UPDATE ws_vault SET secret=? WHERE uid=?", (secret_blob, r["uid"]))
+                            migrated_any = True
+                        except Exception as exc:
+                            secret_show = "•••• (رمز قدیمی؛ مهاجرت امن ناموفق بود)"
+                            print("legacy plaintext vault migration failed for", r["uid"], exc)
+            else:
+                secret_show = "••••"
             items.append({"uid": r["uid"], "title": r["title"], "body": f"{r['username']}\n{secret_show}"})
-        title = "مدیریت رمز ورود (sealed)"
+        if migrated_any:
+            c.commit()
+        title = "مدیریت رمز ورود (AES-GCM)"
     else:
-        items = c.execute("SELECT uid,title,body FROM ws_tasks ORDER BY last_updated DESC").fetchall()
+        items = c.execute("SELECT uid,title,body FROM ws_tasks WHERE deleted=0 ORDER BY last_updated DESC").fetchall()
         title = "مدیریت کارها"
     return render_template_string(PAGE, items=items, title=title, tab=tab)
+
+
+
+def _planner_auth_error():
+    if _authorized() or _cookie_ok():
+        return None
+    return jsonify({"ok": False, "error": "unauthorized"}), 401
+
+
+def _valid_local_datetime(value):
+    value = str(value or "").strip()
+    if not value:
+        return ""
+    try:
+        # Accept an all-day Jalali-calendar selection (stored as ISO Gregorian date)
+        # or a local wall time. Windows compares the latter in the same local zone.
+        if len(value) == 10:
+            datetime.strptime(value, "%Y-%m-%d")
+        else:
+            datetime.strptime(value, "%Y-%m-%dT%H:%M")
+    except ValueError:
+        return None
+    return value
+
+
+@bp.route("/planner")
+def planner_page():
+    if not _authorized() and not _cookie_ok():
+        return redirect("/workspace/login")
+    return render_template("planner.html")
+
+
+@bp.route("/api/planner/tasks", methods=["GET", "POST"])
+def planner_tasks():
+    denied = _planner_auth_error()
+    if denied:
+        return denied
+    c = _conn()
+    if request.method == "GET":
+        try:
+            limit = max(1, min(1000, int(request.args.get("limit", "1000"))))
+        except ValueError:
+            c.close()
+            return jsonify({"ok": False, "error": "invalid_limit"}), 400
+        rows = c.execute(
+            """SELECT uid,title,body,done,last_updated,due_at,priority,remind_at
+               FROM ws_tasks WHERE deleted=0 ORDER BY
+                 CASE WHEN due_at='' THEN 1 ELSE 0 END, due_at ASC, priority DESC, last_updated DESC
+               LIMIT ?""", (limit,)
+        ).fetchall()
+        c.close()
+        return jsonify({"ok": True, "items": [dict(row) for row in rows]})
+
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        c.close()
+        return jsonify({"ok": False, "error": "JSON object required"}), 400
+    title = str(payload.get("title") or "").strip()
+    body = str(payload.get("body") or "").strip()
+    due_at = _valid_local_datetime(payload.get("due_at"))
+    try:
+        priority = int(payload.get("priority", 2))
+    except (TypeError, ValueError):
+        priority = 0
+    if not title or len(title) > 200 or len(body) > 5000:
+        c.close()
+        return jsonify({"ok": False, "error": "title is required (max 200) and body max is 5000"}), 400
+    if due_at is None:
+        c.close()
+        return jsonify({"ok": False, "error": "due_at must be YYYY-MM-DDTHH:MM"}), 400
+    if priority not in (1, 2, 3):
+        c.close()
+        return jsonify({"ok": False, "error": "priority must be 1, 2, or 3"}), 400
+    remind_at = due_at if payload.get("reminder") and "T" in due_at else ""
+    uid = uuid.uuid4().hex
+    now = datetime.now(timezone.utc).isoformat()
+    c.execute(
+        """INSERT INTO ws_tasks(uid,title,body,done,last_updated,due_at,priority,remind_at,reminded_at)
+           VALUES(?,?,?,?,?,?,?,?,?)""",
+        (uid, title, body, 0, now, due_at, priority, remind_at, ""),
+    )
+    c.commit()
+    row = c.execute(
+        "SELECT uid,title,body,done,last_updated,due_at,priority,remind_at FROM ws_tasks WHERE uid=?",
+        (uid,)
+    ).fetchone()
+    c.close()
+    return jsonify({"ok": True, "item": dict(row)}), 201
+
+
+@bp.route("/api/planner/tasks/<uid>", methods=["PATCH", "DELETE"])
+def planner_task_item(uid):
+    denied = _planner_auth_error()
+    if denied:
+        return denied
+    if len(uid) > 80:
+        return jsonify({"ok": False, "error": "invalid uid"}), 400
+    c = _conn()
+    existing = c.execute("SELECT uid FROM ws_tasks WHERE uid=?", (uid,)).fetchone()
+    if not existing:
+        c.close()
+        return jsonify({"ok": False, "error": "not_found"}), 404
+    if request.method == "DELETE":
+        c.execute("UPDATE ws_tasks SET deleted=1,last_updated=? WHERE uid=?",
+                  (datetime.now(timezone.utc).isoformat(), uid))
+        c.commit()
+        c.close()
+        return jsonify({"ok": True, "deleted": uid})
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict) or not isinstance(payload.get("done"), bool):
+        c.close()
+        return jsonify({"ok": False, "error": "JSON boolean field 'done' required"}), 400
+    c.execute(
+        "UPDATE ws_tasks SET done=?,last_updated=?,reminded_at=CASE WHEN ?=0 THEN '' ELSE reminded_at END WHERE uid=?",
+        (1 if payload["done"] else 0, datetime.now(timezone.utc).isoformat(),
+         1 if payload["done"] else 0, uid),
+    )
+    c.commit()
+    c.close()
+    return jsonify({"ok": True, "uid": uid, "done": payload["done"]})
 
 
 @bp.route("/api/workspace/export")

@@ -1,0 +1,410 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "Progressive L0-L4 curriculum for relational database design and operations: SQL, constraints, joins, parameterization, indexing, query plans, transactions, concurrency, migrations, security, backups, restore, replication and disaster recovery.",
+  "scope": {
+    "chapter_order": 31,
+    "subchapter_order": 6,
+    "subchapter_title_fa": "مهندسی SQL و مدیریت پایگاه‌داده",
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lesson_count": 5,
+    "topics": [
+      {
+        "id": "relational-database-engineering",
+        "title_fa": "مهندسی پایگاه‌داده رابطه‌ای",
+        "title_en": "Relational Database Engineering"
+      }
+    ]
+  },
+  "instructional_contract": {
+    "level_floors": {
+      "L0": 600,
+      "L1": 800,
+      "L2": 1200,
+      "L3": 1600,
+      "L4": 2200
+    },
+    "volume_rule": "Add unique competencies, engine/version behavior, measured queries, concurrency cases, failure modes and recovery evidence; avoid duplicate/template-only lessons.",
+    "lab_status": "designed_not_executed",
+    "separate_answer_key": true,
+    "stable_uids": true
+  },
+  "compatibility": {
+    "engines": [
+      "SQLite",
+      "PostgreSQL",
+      "Microsoft SQL Server"
+    ],
+    "note": "SQL dialects, foreign-key enforcement, transaction semantics for DDL, isolation behavior, query-plan tooling and backup/recovery mechanisms differ by engine and version. Never run modifying examples on production data without an approved plan."
+  },
+  "content_quality": {
+    "status": "review_required",
+    "reason": "Five-level lessons and paired answer keys authored; engine-specific query benchmarks, concurrency tests, migration rollback and restore drills remain unexecuted."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch31:database-engineering:l0",
+      "entity": "lesson",
+      "chapter_order": 31,
+      "subchapter_order": 6,
+      "lesson_order": 1,
+      "topic": "relational-database-engineering",
+      "domain": "databases-and-sql",
+      "level": "L0",
+      "title_fa": "[L0] مبانی پایگاه‌دادهٔ رابطه‌ای و SQL",
+      "title_en": "[L0] Relational Database and SQL Fundamentals",
+      "tags": [
+        "SQL",
+        "Database",
+        "SQLite",
+        "PostgreSQL",
+        "SQL Server",
+        "transactions",
+        "index",
+        "backup",
+        "L0"
+      ],
+      "summary": "جدول، کلید، رابطه، NULL و query را توضیح دهد و عملیات خواندنی ساده را امن اجرا کند.",
+      "full_content": "# مبانی پایگاه‌دادهٔ رابطه‌ای و SQL\n\n## پایگاه‌داده چه مشکلی را حل می‌کند؟\nپایگاه‌دادهٔ رابطه‌ای داده را در جدول‌های ساختاریافته نگه می‌دارد و با کلیدها رابطهٔ میان entityها را مدل می‌کند. SQL برای تعریف، خواندن و تغییر داده و ساختار کاربرد دارد، اما یک محصول خاص نیست. SQLite، PostgreSQL و Microsoft SQL Server dialect، قابلیت، پیش‌فرض و روش ادارهٔ متفاوت دارند؛ بنابراین دستور یکسان را با رفتار قطعی یکسان فرض نکن.\n\n## جدول، ستون و کلید\nجدول مجموعه‌ای از رکوردهای هم‌نوع است؛ ستون معنای یک ویژگی و ردیف یک نمونهٔ آن entity را مشخص می‌کند. Primary key ردیف را یکتا می‌کند. Foreign key رابطهٔ معتبر به ردیف جدول دیگر می‌سازد، به شرط آنکه موتور و تنظیمات مورد استفاده آن constraint را enforce کنند. Unique constraint جلوی تکرار مقدار یا ترکیب مشخص را می‌گیرد. قواعد کسب‌وکار فقط در UI نباید باقی بمانند، زیرا script، import یا sync API ممکن است UI را دور بزند.\n\nمثال: جدول customers شناسه و نام مشتری را دارد؛ جدول repairs شناسهٔ مشتری را نگه می‌دارد. ذخیرهٔ مکرر نام مشتری در تمام تعمیرها می‌تواند ناهماهنگی بسازد؛ foreign key و مدل رابطه‌ای رابطه را صریح و قابل‌اعتبارسنجی می‌کنند.\n\n## SELECT: خواندن هدفمند\n~~~sql\nSELECT repair_id, status, created_at\nFROM repairs\nWHERE status = 'open'\nORDER BY created_at DESC\nLIMIT 20;\n~~~\nاین query ستون‌های لازم را انتخاب، وضعیت را فیلتر، ترتیب زمانی را مشخص و خروجی را محدود می‌کند. LIMIT در SQLite و PostgreSQL رایج است؛ SQL Server نحوهای متفاوتی مانند TOP یا OFFSET/FETCH دارد. نام جدول و ستون‌ها نمونه‌اند و باید با schema واقعی تطبیق داده شوند.\n\n## WHERE و NULL\nNULL به معنی مقدار ناموجود یا نامشخص است و با صفر یا رشتهٔ خالی یکی نیست. مقایسهٔ = NULL معمولاً رفتار مورد انتظار ندارد؛ از IS NULL و IS NOT NULL استفاده کن. منطق SQL سه‌ارزشی است: شرط می‌تواند TRUE، FALSE یا UNKNOWN شود. فیلتر بر status ممکن است ردیف‌های NULL را ناخواسته حذف کند. رفتار NULL باید آگاهانه تعریف و آزمایش شود.\n\n## تغییر داده و transaction\nUPDATE و DELETE داده را تغییر می‌دهند. پیش از هر تغییر، با SELECT و همان شرط WHERE شمار و شناسهٔ ردیف‌های هدف را بررسی کن. اجرای DELETE بدون شرط می‌تواند تمام ردیف‌های جدول را حذف کند. Transaction مجموعه‌ای از عملیات است که باید به‌عنوان یک واحد منطقی commit یا rollback شود. ACID به Atomicity، Consistency، Isolation و Durability اشاره دارد؛ سطح تضمین‌ها به موتور و تنظیمات بستگی دارد. کاهش موجودی قطعه و ثبت مصرف باید طوری طراحی شود که شکست نیمهٔ عملیات، دادهٔ ناسازگار باقی نگذارد.\n\n## شناسایی محیط\nدر ابزار sqlite3، دستورهای .tables و .schema meta-command همان client هستند نه SQL استاندارد. PostgreSQL و SQL Server ابزار و catalog متفاوت دارند. همیشه مشخص کن در کدام client، دیتابیس و محیط اجرا می‌کنی. برای شناخت اولیه، schema، version، connection target و account را ثبت کن و با پایگاه‌دادهٔ واقعی کاربر تمرین نکن.\n\n## لابراتوار پایه\nدر SQLite آزمایشی، جدول customers و repairs با primary key و foreign key بساز و چند ردیف مصنوعی وارد کن. query تعمیرهای باز را اجرا و نتیجه را با تعداد معلوم مقایسه کن. سپس تلاش کن foreign key ناموجود درج کنی؛ انتظار باید با تنظیمات واقعی engine مشخص شود و اگر رد می‌شود، خطا را ثبت کن. هیچ دادهٔ واقعی مشتری، credential یا یادداشت خصوصی را در تمرین کپی نکن.\n\n## امنیت\nبرای application از حساب کم‌اختیار استفاده کن؛ برنامهٔ مطالعه معمولاً به مجوز مدیریت userهای دیتابیس یا تغییر آزاد schema نیاز ندارد. secret را در Git یا log قرار نده. برای ورودی user از query پارامتری استفاده کن، چون چسباندن ورودی به متن SQL خطر injection ایجاد می‌کند. پارامتری‌سازی جایگزین authorization نیست؛ کاربر مجاز به اجرای query همچنان باید فقط دادهٔ مجاز خود را ببیند.\n\n## backup و معیار قبولی\nTransaction جایگزین backup نیست. backup نیز وقتی قابل اتکا است که restore واقعاً آزمایش شده باشد. در پایان این سطح باید بتوانی keyها، NULL، خواندن در برابر تغییر، و مفهوم transaction را توضیح بدهی و query خواندنی بسازی. قبل از هر UPDATE/DELETE باید دامنهٔ تغییر را با یک query بی‌خطر اثبات کنی.\n\n## واژه‌نامه\nSchema ساختار جدول‌ها و قیدهاست؛ Primary key ردیف را یکتا می‌کند؛ Foreign key رابطه را enforce می‌کند؛ Constraint قانون داده است؛ Transaction واحد عملیات؛ Migration تغییر نسخه‌دار schema؛ SQL dialect تفاوت نحوی و رفتاری موتور.",
+      "commands": "SELECT; WHERE; ORDER BY; IS NULL; schema inspection",
+      "examples": "Schema و داده‌ها مصنوعی‌اند؛ syntax، isolation، DDL transaction behavior و ابزار backup را با engine/version هدف تطبیق بده.",
+      "notes": "status=review_required; lab_status=designed_not_executed; backup/restore and concurrency labs pending.",
+      "learning_objectives": [
+        "جدول، کلید، رابطه، NULL و query را توضیح دهد و عملیات خواندنی ساده را امن اجرا کند."
+      ],
+      "prerequisites": [],
+      "official_sources": [
+        {
+          "title": "SQLite SQL language",
+          "url": "https://www.sqlite.org/lang.html"
+        },
+        {
+          "title": "SQLite EXPLAIN QUERY PLAN",
+          "url": "https://www.sqlite.org/eqp.html"
+        },
+        {
+          "title": "SQLite backup API",
+          "url": "https://www.sqlite.org/backup.html"
+        },
+        {
+          "title": "PostgreSQL tutorial",
+          "url": "https://www.postgresql.org/docs/current/tutorial.html"
+        },
+        {
+          "title": "PostgreSQL EXPLAIN",
+          "url": "https://www.postgresql.org/docs/current/using-explain.html"
+        },
+        {
+          "title": "PostgreSQL backup and restore",
+          "url": "https://www.postgresql.org/docs/current/backup.html"
+        },
+        {
+          "title": "SQL Server execution plans",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans?view=sql-server-ver17"
+        },
+        {
+          "title": "SQL Server backup and restore overview",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/restore-and-recovery-overview-sql-server?view=sql-server-ver17"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی SQL و مدیریت پایگاه‌داده",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"db31-l0-1\",\"prompt\":\"Primary key چه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"db31-l0-2\",\"prompt\":\"Foreign key چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"db31-l0-3\",\"prompt\":\"NULL با رشتهٔ خالی چه تفاوتی دارد؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"db31-l0-4\",\"prompt\":\"چرا DELETE بدون WHERE خطرناک است؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"db31-l0-5\",\"prompt\":\"ACID چه مفاهیمی دارد؟\",\"type\":\"short_answer\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"db31-l0-1\",\"answer\":\"هر ردیف را یکتا شناسایی می‌کند و باید معتبر و پایدار باشد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l0-2\",\"answer\":\"رابطه به جدول دیگر را enforce می‌کند، در صورت فعال‌بودن constraint.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l0-3\",\"answer\":\"NULL مقدار ناموجود/نامشخص است؛ رشتهٔ خالی یک مقدار رشته‌ای است.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l0-4\",\"answer\":\"می‌تواند تمام ردیف‌های جدول را حذف کند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l0-5\",\"answer\":\"Atomicity، Consistency، Isolation و Durability.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://www.sqlite.org/lang.html\",\"https://www.sqlite.org/eqp.html\",\"https://www.sqlite.org/backup.html\",\"https://www.postgresql.org/docs/current/tutorial.html\",\"https://www.postgresql.org/docs/current/using-explain.html\",\"https://www.postgresql.org/docs/current/backup.html\",\"https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans?view=sql-server-ver17\",\"https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/restore-and-recovery-overview-sql-server?view=sql-server-ver17\"]}"
+    },
+    {
+      "uid": "lesson:ch31:database-engineering:l1",
+      "entity": "lesson",
+      "chapter_order": 31,
+      "subchapter_order": 6,
+      "lesson_order": 2,
+      "topic": "relational-database-engineering",
+      "domain": "databases-and-sql",
+      "level": "L1",
+      "title_fa": "[L1] JOIN، گروه‌بندی و queryهای کسب‌وکار",
+      "title_en": "[L1] JOINs, Aggregation and Business Queries",
+      "tags": [
+        "SQL",
+        "Database",
+        "SQLite",
+        "PostgreSQL",
+        "SQL Server",
+        "transactions",
+        "index",
+        "backup",
+        "L1"
+      ],
+      "summary": "رابطهٔ جدول‌ها را با JOIN و aggregate تحلیل کند، خروجی مورد انتظار بسازد و ورودی را امن پارامتری کند.",
+      "full_content": "# JOIN، گروه‌بندی و queryهای کسب‌وکار\n\n## JOIN براساس رابطهٔ واقعی\nJOIN ردیف‌های جدول‌ها را براساس شرط اتصال ترکیب می‌کند. شرطی که به‌جای key یکتا روی نام یا مقدار غیر یکتا وصل شود، ممکن است duplicate بسازد. INNER JOIN فقط ردیف‌های منطبق را برمی‌گرداند؛ LEFT JOIN همهٔ ردیف‌های چپ را حفظ می‌کند و سمت راست بدون تطبیق را با NULL نمایش می‌دهد. این تفاوت برای گزارش «تمام مشتری‌ها حتی بدون تعمیر» مهم است.\n\n~~~sql\nSELECT c.customer_id, c.name, r.repair_id, r.status\nFROM customers AS c\nLEFT JOIN repairs AS r\n  ON r.customer_id = c.customer_id\nORDER BY c.customer_id, r.repair_id;\n~~~\nاگر شرط جدول راست را در WHERE قرار دهی، ممکن است ردیف‌های NULL حذف شوند و نتیجه شبیه INNER JOIN شود. محل شرط باید با هدف گزارش هماهنگ باشد.\n\n## Aggregate و GROUP BY\nCOUNT، SUM، MIN، MAX و AVG روی مجموعهٔ ردیف‌ها محاسبه می‌کنند. GROUP BY ردیف‌ها را گروه‌بندی می‌کند و HAVING روی گروه‌ها شرط می‌گذارد، در حالی که WHERE پیش از grouping اعمال می‌شود. COUNT(*) همهٔ ردیف‌ها را می‌شمارد؛ COUNT(column) معمولاً NULL آن ستون را نادیده می‌گیرد. نتیجهٔ گزارش باید با دادهٔ تست قابل پیش‌بینی مقایسه شود.\n\n~~~sql\nSELECT status, COUNT(*) AS repair_count\nFROM repairs\nGROUP BY status\nORDER BY repair_count DESC;\n~~~\n\n## Parameterized query و SQL injection\nورودی UI، فایل import یا API را قابل اعتماد فرض نکن. query parametrized متن SQL را از مقدار ورودی جدا می‌کند. در Python با SQLite:\n~~~python\ncur.execute(\n    \"SELECT repair_id, status FROM repairs WHERE customer_id = ?\",\n    (customer_id,)\n)\n~~~\nplaceholder در driverها فرق می‌کند؛ قراردادی را که برای موتور واقعی مستند شده استفاده کن. پارامتری‌کردن مقدارها، نام table/column یا کل query را خودکار امن نمی‌کند؛ identifier پویا باید از allow-list انتخاب شود. همچنین پارامتری‌سازی جایگزین مجوزدهی نیست.\n\n## Constraintها و یکپارچگی\nNOT NULL برای الزام حضور، UNIQUE برای یکتایی و CHECK برای محدودیت مقدار مفیدند. Foreign key نیز باید در موتور هدف واقعاً فعال باشد. برای هر constraint هم آزمون موفق و هم آزمون شکست بساز: درج مقدار مجاز موفق شود؛ دادهٔ ناسازگار طبق طراحی رد شود. اگر برنامه دادهٔ یتیم می‌پذیرد، ممکن است constraint یا تنظیم مربوط به آن فعال نباشد.\n\n## لابراتوار گزارش‌گیری\nبا دادهٔ مصنوعی، چهار گزارش بساز: شمار تعمیرها به تفکیک وضعیت؛ مشتریان بدون تعمیر؛ مجموع مبلغ به تفکیک ماه؛ تعمیرهای باز همراه نام مشتری و زمان آخرین تغییر. در گزارش مبلغ، مشخص کن NULL باید حذف، صفر تلقی یا جدا گزارش شود. تبدیل NULL به صفر بدون قاعدهٔ کسب‌وکار، معنای داده را عوض می‌کند. برای هر query، نمونه ورودی و تعداد ردیف مورد انتظار را ثبت کن.\n\n## عیب‌یابی JOIN\nخروجی بیشتر از انتظار می‌تواند ناشی از شرط اتصال غیریکتا یا رابطهٔ یک‌به‌چند مشروع باشد. خروجی کمتر می‌تواند از INNER JOIN، شرط غلط یا data integrity باشد. ابتدا cardinality و uniqueness keyها را بررسی کن؛ سپس joinها را مرحله‌ای اضافه کن. DISTINCT برای پنهان کردن duplicate، علت ساختاری را حل نمی‌کند و ممکن است هزینهٔ اضافی بسازد.\n\n## تغییر داده و معیار قبولی\nبرای UPDATE/DELETE اول SELECT متناظر را اجرا، شمار و شناسهٔ ردیف‌ها را ثبت و در lab از transaction استفاده کن. در محیط autocommit باید بدانی چه زمان تغییر قطعی می‌شود. گزارش باید شامل query، dataset، engine/version، output و نتیجه باشد. این سطح زمانی پاس است که بتوانی INNER/LEFT JOIN، WHERE/HAVING و COUNTها را توضیح دهی و ثابت کنی ورودی نامعتبر از مسیر پارامتری وارد query می‌شود.\n\n\n## Predicate، ترتیب و pagination\nبرای خروجی قابل تکرار، ترتیب را صریح تعیین کن. بدون ORDER BY ترتیب ردیف‌ها تضمین‌شده نیست، حتی اگر چند بار به‌ظاهر یک نتیجه ببینی. در pagination نیز مرتب‌سازی روی ستونی که مقدار تکراری دارد ممکن است بین صفحه‌ها ردیف تکراری یا گم‌شده نشان دهد؛ یک key یکتا را به انتهای ORDER BY اضافه کن. اگر داده میان درخواست‌ها تغییر می‌کند، offset pagination ممکن است جابه‌جایی ردیف‌ها را نشان دهد و keyset pagination برای برخی workloadها مناسب‌تر است. انتخاب باید بر اندازهٔ داده، الگوی تغییر و قرارداد API متکی باشد.\n\n## تاریخ، پول و type conversion\nتاریخ را ترجیحاً با نوع مناسب و قالب قابل‌تفسیر ذخیره کن؛ رشتهٔ تاریخ با قالب‌های متعدد می‌تواند مقایسهٔ متنی نادرست بسازد. برای مبلغ، binary floating point ممکن است گردکردن غیرمنتظره ایجاد کند؛ نوع decimal یا مقدار integer در واحد کوچک پول، بسته به موتور و نیاز، گزینهٔ قابل بررسی است. واحد پول، منطقهٔ زمانی و معنای NULL باید در data dictionary مستند شوند. cast ضمنی می‌تواند index usage و نتیجهٔ مقایسه را تغییر دهد، پس نوع پارامتر را با نوع ستون هماهنگ کن.\n\n## آزمون query قبل از انتشار\nبرای هر query یک fixture کوچک با خروجی دستی قابل محاسبه نگه دار: ردیف با تطابق، بدون تطابق، مقدار NULL، مقدار تکراری و مقدار مرزی. علاوه بر happy path، ورودی خالی، ID ناموجود و تاریخ مرزی را تست کن. query را با account read-only بررسی کن و plan اولیه را ذخیره کن. تست واحد SQL باید علاوه بر syntax، معنای نتیجه را assert کند؛ گذشتن از syntax validation به معنی درست بودن منطق join یا aggregate نیست.\n",
+      "commands": "JOIN; GROUP BY; HAVING; parameterized query",
+      "examples": "Schema و داده‌ها مصنوعی‌اند؛ syntax، isolation، DDL transaction behavior و ابزار backup را با engine/version هدف تطبیق بده.",
+      "notes": "status=review_required; lab_status=designed_not_executed; backup/restore and concurrency labs pending.",
+      "learning_objectives": [
+        "رابطهٔ جدول‌ها را با JOIN و aggregate تحلیل کند، خروجی مورد انتظار بسازد و ورودی را امن پارامتری کند."
+      ],
+      "prerequisites": [
+        "مبانی فایل و داده",
+        "آشنایی ابتدایی با برنامه‌نویسی یا ابزار دیتابیس"
+      ],
+      "official_sources": [
+        {
+          "title": "SQLite SQL language",
+          "url": "https://www.sqlite.org/lang.html"
+        },
+        {
+          "title": "SQLite EXPLAIN QUERY PLAN",
+          "url": "https://www.sqlite.org/eqp.html"
+        },
+        {
+          "title": "SQLite backup API",
+          "url": "https://www.sqlite.org/backup.html"
+        },
+        {
+          "title": "PostgreSQL tutorial",
+          "url": "https://www.postgresql.org/docs/current/tutorial.html"
+        },
+        {
+          "title": "PostgreSQL EXPLAIN",
+          "url": "https://www.postgresql.org/docs/current/using-explain.html"
+        },
+        {
+          "title": "PostgreSQL backup and restore",
+          "url": "https://www.postgresql.org/docs/current/backup.html"
+        },
+        {
+          "title": "SQL Server execution plans",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans?view=sql-server-ver17"
+        },
+        {
+          "title": "SQL Server backup and restore overview",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/restore-and-recovery-overview-sql-server?view=sql-server-ver17"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی SQL و مدیریت پایگاه‌داده",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"db31-l1-1\",\"prompt\":\"INNER و LEFT JOIN چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"db31-l1-2\",\"prompt\":\"WHERE و HAVING چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"db31-l1-3\",\"prompt\":\"COUNT(*) و COUNT(column) چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"db31-l1-4\",\"prompt\":\"چرا query پارامتری امن‌تر است؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"db31-l1-5\",\"prompt\":\"آیا پارامتری‌سازی identifier پویا را امن می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"db31-l1-6\",\"prompt\":\"چرا DISTINCT درمان عمومی duplicate نیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"db31-l1-7\",\"prompt\":\"چرا foreign key SQLite را باید عملاً بررسی کرد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"db31-l1-8\",\"prompt\":\"آزمون منفی constraint چیست؟\",\"type\":\"short_answer\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"db31-l1-1\",\"answer\":\"INNER فقط ردیف‌های منطبق را برمی‌گرداند؛ LEFT تمام ردیف‌های چپ را حفظ می‌کند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l1-2\",\"answer\":\"WHERE ردیف‌ها را قبل از grouping فیلتر می‌کند؛ HAVING گروه‌ها را.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l1-3\",\"answer\":\"اولی همهٔ ردیف‌ها؛ دومی معمولاً مقدارهای non-NULL ستون را می‌شمارد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l1-4\",\"answer\":\"مقدار ورودی را از SQL جدا می‌کند و خطر injection از طریق value را کاهش می‌دهد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l1-5\",\"answer\":\"خیر؛ شناسه‌ها باید از allow-list انتخاب شوند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l1-6\",\"answer\":\"ممکن است خطای join را پنهان کند و هزینهٔ اضافی بسازد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l1-7\",\"answer\":\"enforcement به تنظیمات اتصال و نحوهٔ استفاده بستگی دارد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l1-8\",\"answer\":\"دادهٔ نامعتبر درج شود و موتور طبق طراحی آن را رد کند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://www.sqlite.org/lang.html\",\"https://www.sqlite.org/eqp.html\",\"https://www.sqlite.org/backup.html\",\"https://www.postgresql.org/docs/current/tutorial.html\",\"https://www.postgresql.org/docs/current/using-explain.html\",\"https://www.postgresql.org/docs/current/backup.html\",\"https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans?view=sql-server-ver17\",\"https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/restore-and-recovery-overview-sql-server?view=sql-server-ver17\"]}"
+    },
+    {
+      "uid": "lesson:ch31:database-engineering:l2",
+      "entity": "lesson",
+      "chapter_order": 31,
+      "subchapter_order": 6,
+      "lesson_order": 3,
+      "topic": "relational-database-engineering",
+      "domain": "databases-and-sql",
+      "level": "L2",
+      "title_fa": "[L2] Index، Execution Plan، transaction و migration",
+      "title_en": "[L2] Indexes, Execution Plans, Transactions and Migrations",
+      "tags": [
+        "SQL",
+        "Database",
+        "SQLite",
+        "PostgreSQL",
+        "SQL Server",
+        "transactions",
+        "index",
+        "backup",
+        "L2"
+      ],
+      "summary": "با plan و آمار index را ارزیابی کند، transaction ایمن بنویسد و migration نسخه‌دار طراحی کند.",
+      "full_content": "# Index، Execution Plan، transaction و migration\n\n## Index و trade-off\nIndex ساختار کمکی برای یافتن ردیف است و ممکن است read را سریع کند؛ اما فضای ذخیره‌سازی و هزینهٔ insert/update/delete و maintenance را افزایش می‌دهد. Index روی هر ستون خودکار performance را بهتر نمی‌کند. ترتیب ستون‌های composite index، selectivity، predicate، ترتیب sort و plan اهمیت دارند. قبل از ساخت index، query پرتکرار، حجم داده و latency baseline را ثبت کن؛ بعد از تغییر plan و عملکرد read و write را مقایسه کن.\n\n## Execution plan\nPlan راه اجرای انتخاب‌شده توسط optimizer را نشان می‌دهد. Full scan همیشه بد نیست؛ اگر جدول کوچک باشد یا query بخش بزرگی از داده را بخواهد، scan منطقی است. PostgreSQL EXPLAIN تخمین optimizer را نشان می‌دهد و EXPLAIN ANALYZE query را واقعاً اجرا می‌کند. برای DML یا query سنگین این اجرا ممکن است اثر واقعی ایجاد کند. SQLite EXPLAIN QUERY PLAN را دارد و SQL Server ابزارهای plan خود را دارد. syntax و معنای plan را بین موتورها یکی فرض نکن.\n\n~~~sql\n-- PostgreSQL\nEXPLAIN SELECT * FROM repairs WHERE customer_id = 42;\n\n-- SQLite\nEXPLAIN QUERY PLAN SELECT * FROM repairs WHERE customer_id = 42;\n~~~\nبرای نتیجهٔ قابل تکرار به schema و dataset نماینده نیاز است؛ پنج ردیف تست، رفتار میلیون‌ها ردیف را پیش‌بینی نمی‌کند.\n\n## Transaction و concurrency\nعملیات همزمان می‌توانند بسته به isolation و engine به lost update، non-repeatable read، phantom یا انتظار lock منجر شوند. ACID به معنی حذف تمام anomalyها در هر isolation level نیست. برای کاهش موجودی، query شرطی می‌تواند از منفی‌شدن quantity جلوگیری کند:\n~~~sql\nUPDATE inventory\nSET quantity = quantity - 1\nWHERE item_id = 7 AND quantity >= 1;\n~~~\nپس از اجرا row count را بررسی کن. صفر بودن یعنی موجودی کافی نبوده یا ردیف وجود نداشته است؛ برنامه نباید بی‌سر و صدا موفقیت اعلام کند.\n\n## Migration نسخه‌دار\nMigration باید version، precondition، postcondition و plan بازگشت داشته باشد. رفتار DDL از نظر transaction در موتورها فرق دارد. تغییر نوع ستون، افزودن constraint، rename و ساخت index روی جدول بزرگ می‌تواند lock یا زمان downtime ایجاد کند. Expand-and-contract به ساختار افزایشی سازگار، انتشار کد جدید، backfill، بررسی اختلاف و حذف مرحله‌ای ساختار قدیمی اشاره دارد. برای تغییر حساس schema، backup و restore تست‌شده لازم است؛ «اسکریپت برگشت» به‌تنهایی تضمین نمی‌کند دادهٔ از دست‌رفته بازگردد.\n\n## Lab: ارزیابی index\nDataset مصنوعی با حجم نماینده بساز. query هدف را چند بار اجرا و plan، latency، engine/version، cache context و تعداد row را ثبت کن. سپس فقط یک index هدفمند اضافه و آزمون را تکرار کن. اگر optimizer از index استفاده نمی‌کند، cardinality، type conversion، predicate function و هزینهٔ تخمینی را بررسی کن؛ index اضافی را کورکورانه انباشته نکن. هزینهٔ write و storage نیز بخشی از پذیرش است.\n\n## Backup با موتور سازگار\nTransaction از عملیات جاری محافظت می‌کند ولی جای backup نیست. SQLite API و سازوکار backup مناسب خود را دارد؛ copy سادهٔ فایل فعال ممکن است بسته به journal/WAL و وضعیت اتصال ناسازگار باشد. PostgreSQL روش‌های logical dump و physical/WAL backup دارد؛ SQL Server full/differential/log backup و recovery model دارد. روش را با نسخهٔ موتور، RPO/RTO و شرایط workload انتخاب کن و restore را روی instance جدا اجرا کن.\n\n## معیار قبولی L2\nباید query را اندازه بگیری، plan را تفسیر کنی، index را با فرضیهٔ مشخص ارزیابی کنی، transaction را کنترل کنی و migration را با pre/post checks مستند کنی. نتیجهٔ performance بدون dataset، engine/version و تکرار اندازه‌گیری قابل اتکا نیست.\n\n\n## بررسی cardinality و composite index\nفرض کن گزارش تعمیرها بر اساس customer_id و status فیلتر می‌کند و سپس بر created_at مرتب می‌شود. index ترکیبی با ترتیب ستون‌های مناسب ممکن است در این query کمک کند، اما نتیجه به selectivity، ترتیب predicates، query projection و engine بستگی دارد. اگر query فقط درصد زیادی از جدول را برمی‌گرداند، scan هنوز می‌تواند ارزان‌تر باشد. index covering یا include columns نیز در همهٔ موتورها با syntax و semantics یکسان پیاده نمی‌شوند. قبل از طراحی، queryهای پرتکرار و selectivity واقعی را از workload اندازه بگیر و indexهای موجود را inventory کن تا index تکراری ایجاد نشود.\n\n## Statistics و تغییر data distribution\nOptimizer برای تخمین تعداد ردیف‌ها به statistics اتکا دارد. پس از load بزرگ داده، تغییر skew یا تغییر filter، تخمین cardinality ممکن است با واقعیت فرق کند. در plan، تفاوت estimated rows و actual rows را بررسی کن؛ تفاوت بزرگ می‌تواند به statistics، correlation ستون‌ها یا parameter distribution مربوط باشد. Update statistics یا analyze در موتورهای مختلف شکل‌های متفاوت دارد و ممکن است CPU/I/O بسازد؛ روی زمان و روش نگهداری برنامه‌ریزی کن. plan را تنها بر اساس نام یک node خوب یا بد قضاوت نکن؛ row count، loop count، buffer reads و elapsed time را با کل query تطبیق بده.\n\n## Isolation و الگوی concurrency\nسطح isolation باید با invariant کسب‌وکار متناسب شود. برای مثال، جلوگیری از oversell موجودی می‌تواند به شرط در update یا lock/transaction مناسب نیاز داشته باشد. بالا بردن isolation به بالاترین سطح همیشه راه‌حل بدون هزینه نیست؛ می‌تواند contention و retry را افزایش دهد. راه درست وابسته به موتور، query pattern و نیاز consistency است. لابراتوار دو session بساز و مشاهده کن آیا خواندن تکراری مقدار یکسان می‌دهد، آیا transaction منتظر می‌ماند و بعد از commit چه می‌بیند. نتیجه را با engine/version و isolation ثبت کن.\n\n## Migration با backfill\nوقتی ستون جدید به جدول پر داده اضافه می‌شود، تفاوت میان افزودن ستون nullable، نوشتن همزمان قدیم/جدید و backfill باید طراحی شود. backfill را می‌توان در batchهای محدود با checkpoint انجام داد تا transaction بزرگ log را رشد ندهد یا lock را طولانی نکند. هر batch باید قابل تکرار باشد و شرطی داشته باشد که ردیف‌های قبلاً تکمیل‌شده را بی‌جهت تغییر ندهد. شمار ردیف‌های پردازش‌شده، باقی‌مانده، خطاها و اختلاف داده ثبت شود. فقط پس از اثبات تکمیل می‌توان constraint سخت‌تر یا حذف ستون قدیمی را مرحله‌بندی کرد.\n\n## قرارداد عملیات تغییر داده\nبرای یک عملیات حساس، record count پیش و پس از تغییر، invariantها، transaction boundary و پیام خطای قابل بازیابی تعریف کن. اگر update چند جدول دارد، atomicity آن را بررسی کن و هیچ side effect خارجی را قبل از commit غیرقابل‌برگشت انجام نده. اگر event بیرونی باید ارسال شود، outbox pattern ممکن است از شکاف میان commit و انتشار جلوگیری کند. برای retry، یک idempotency key یا قید یکتایی می‌تواند اجرای دوباره را قابل کنترل کند.\n\n\n## تحلیل خروجی قبل و بعد\nدر گزارش performance، زمان query باید همراه تعداد ردیف بازگشتی، نوع plan، engine/version، dataset size و شرایط cache ثبت شود. اگر query از 800 میلی‌ثانیه به 300 میلی‌ثانیه رسید اما نتیجهٔ بیشتری برگرداند، مقایسه منصفانه نیست. اگر latency کمتر شد اما insertها کندتر یا disk بسیار بزرگ‌تر شد، index هزینه‌ای داشته که باید در تصمیم دیده شود. تست را چند بار اجرا و median و tail را بررسی کن؛ یک نتیجهٔ خوش‌شانس معیار release نیست.\n\n\n\n## Data quality و constraintها\nقبل از افزودن constraint به جدول موجود، توزیع داده را گزارش کن. اگر قرار است status فقط یکی از مقادیر open، in_progress، closed باشد، ابتدا تعداد مقدارهای خارج از دامنه و NULLها را پیدا کن و برای هر مورد تصمیم کسب‌وکاری بگیر. اجرای فوری CHECK یا NOT NULL روی دادهٔ ناسازگار ممکن است migration را متوقف کند یا عملیات طولانی بسازد. پس از پاک‌سازی کنترل‌شده، constraint را اضافه و یک تست منفی ثبت کن تا معلوم شود rule واقعاً enforce می‌شود. قانون تکراری در چند جای برنامه به‌تنهایی قابل اعتماد نیست؛ دیتابیس باید invariantهای مرکزی را تا جای ممکن enforce کند.\n",
+      "commands": "EXPLAIN; EXPLAIN QUERY PLAN; transactions; migration",
+      "examples": "Schema و داده‌ها مصنوعی‌اند؛ syntax، isolation، DDL transaction behavior و ابزار backup را با engine/version هدف تطبیق بده.",
+      "notes": "status=review_required; lab_status=designed_not_executed; backup/restore and concurrency labs pending.",
+      "learning_objectives": [
+        "با plan و آمار index را ارزیابی کند، transaction ایمن بنویسد و migration نسخه‌دار طراحی کند."
+      ],
+      "prerequisites": [
+        "مبانی فایل و داده",
+        "آشنایی ابتدایی با برنامه‌نویسی یا ابزار دیتابیس"
+      ],
+      "official_sources": [
+        {
+          "title": "SQLite SQL language",
+          "url": "https://www.sqlite.org/lang.html"
+        },
+        {
+          "title": "SQLite EXPLAIN QUERY PLAN",
+          "url": "https://www.sqlite.org/eqp.html"
+        },
+        {
+          "title": "SQLite backup API",
+          "url": "https://www.sqlite.org/backup.html"
+        },
+        {
+          "title": "PostgreSQL tutorial",
+          "url": "https://www.postgresql.org/docs/current/tutorial.html"
+        },
+        {
+          "title": "PostgreSQL EXPLAIN",
+          "url": "https://www.postgresql.org/docs/current/using-explain.html"
+        },
+        {
+          "title": "PostgreSQL backup and restore",
+          "url": "https://www.postgresql.org/docs/current/backup.html"
+        },
+        {
+          "title": "SQL Server execution plans",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans?view=sql-server-ver17"
+        },
+        {
+          "title": "SQL Server backup and restore overview",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/restore-and-recovery-overview-sql-server?view=sql-server-ver17"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی SQL و مدیریت پایگاه‌داده",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"db31-l2-1\",\"prompt\":\"چرا هر index مفید نیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"db31-l2-2\",\"prompt\":\"EXPLAIN ANALYZE چه ریسکی دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"db31-l2-3\",\"prompt\":\"چرا full scan همیشه بد نیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"db31-l2-4\",\"prompt\":\"Lost update چیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"db31-l2-5\",\"prompt\":\"چرا row count پس از UPDATE شرطی مهم است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"db31-l2-6\",\"prompt\":\"Expand-and-contract چه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"db31-l2-7\",\"prompt\":\"چرا DDL rollback بین موتورها یکسان نیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"db31-l2-8\",\"prompt\":\"Backup و transaction چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"db31-l2-9\",\"prompt\":\"چرا dataset کوچک benchmark را گمراه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"db31-l2-10\",\"prompt\":\"قبل و بعد index چه چیزهایی مقایسه می‌شوند؟\",\"type\":\"short_answer\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"db31-l2-1\",\"answer\":\"هزینهٔ storage و write دارد و optimizer ممکن است آن را انتخاب نکند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l2-2\",\"answer\":\"query را واقعاً اجرا می‌کند و DML ممکن است اثر واقعی بگذارد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l2-3\",\"answer\":\"برای جدول کوچک یا query روی بخش بزرگی از داده ممکن است بهینه باشد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l2-4\",\"answer\":\"تغییر همزمان باعث overwrite یکی از updateها شود.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l2-5\",\"answer\":\"صفر بودن نشان می‌دهد ردیف/شرط هدف محقق نشده است.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l2-6\",\"answer\":\"مهاجرت schema را مرحله‌ای و سازگار با نسخه‌های همزمان برنامه می‌کند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l2-7\",\"answer\":\"transaction behavior و پشتیبانی DDL به engine وابسته است.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l2-8\",\"answer\":\"transaction عملیات جاری را اتمی می‌کند؛ backup برای recovery است.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l2-9\",\"answer\":\"cardinality و توزیع داده و رفتار optimizer را بازنمایی نمی‌کند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l2-10\",\"answer\":\"plan، latency تکرارپذیر، تعداد ردیف و هزینهٔ write/storage.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://www.sqlite.org/lang.html\",\"https://www.sqlite.org/eqp.html\",\"https://www.sqlite.org/backup.html\",\"https://www.postgresql.org/docs/current/tutorial.html\",\"https://www.postgresql.org/docs/current/using-explain.html\",\"https://www.postgresql.org/docs/current/backup.html\",\"https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans?view=sql-server-ver17\",\"https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/restore-and-recovery-overview-sql-server?view=sql-server-ver17\"]}"
+    },
+    {
+      "uid": "lesson:ch31:database-engineering:l3",
+      "entity": "lesson",
+      "chapter_order": 31,
+      "subchapter_order": 6,
+      "lesson_order": 4,
+      "topic": "relational-database-engineering",
+      "domain": "databases-and-sql",
+      "level": "L3",
+      "title_fa": "[L3] عیب‌یابی lock، deadlock، contention و query regression",
+      "title_en": "[L3] Locks, Deadlocks, Contention and Query Regression",
+      "tags": [
+        "SQL",
+        "Database",
+        "SQLite",
+        "PostgreSQL",
+        "SQL Server",
+        "transactions",
+        "index",
+        "backup",
+        "L3"
+      ],
+      "summary": "افت query performance را با plan و wait evidence تحلیل کند و consistency race و migrationهای پرریسک را تشخیص دهد.",
+      "full_content": "# عیب‌یابی lock، deadlock، contention و query regression\n\n## کندی را اندازه‌پذیر کن\n«دیتابیس کند است» تشخیص نیست. مشخص کن کدام query یا endpoint، از چه زمانی، برای چه میزان workload و با چه latency percentile یا error rate دچار افت شده است. Engine/version، schema migration اخیر، تغییر حجم داده، index، deployment برنامه و resource pressure را ثبت کن. یک query ممکن است چندین endpoint را کند کند؛ یا مشکل تنها برای پارامتر یا tenant خاص رخ دهد. گزارش query fingerprint و plan باید مقادیر حساس را حذف کند.\n\n## Locking و contention\nLock برای consistency لازم است اما transaction طولانی می‌تواند عملیات دیگر را مسدود کند. transactionی که پس از UPDATE منتظر تماس شبکه یا کاربر می‌ماند، lock را بی‌جهت نگه می‌دارد. عملیات دیتابیس را کوتاه نگه دار و کارهای خارجی را تا حد امکان بیرون مرز transaction انجام بده. PostgreSQL از pg_stat_activity و pg_locks استفاده می‌کند؛ SQL Server DMV و deadlock graphهای خودش را دارد؛ SQLite مدل locking و write concurrency متفاوتی دارد. یک query تشخیصی را بدون تطبیق نسخه و privilege میان موتورها کپی نکن.\n\n## Deadlock و retry\nDeadlock زمانی است که transactionها در چرخهٔ انتظار منابع قفل‌شده قرار می‌گیرند. ترتیب یکسان دسترسی به ردیف‌ها و transactionهای کوتاه احتمال را کاهش می‌دهد. Capture یا log باید victim، transaction و ترتیب رخداد را نشان دهد. Retry باید محدود و با backoff باشد و تنها وقتی امن است که عملیات idempotent یا اثر تکرار آن کنترل شده باشد. اگر عملیات خارجی مانند ارسال ایمیل، فراخوانی API یا ثبت پرداخت دخیل است، retry کورکورانه ممکن است side effect را دو برابر کند؛ idempotency key، outbox و reconciliation را متناسب با طراحی در نظر بگیر.\n\n## Query regression و optimizer\nتوزیع داده و آمار optimizer می‌تواند عوض شود و plan متفاوتی بسازد. Index جدید الزاماً plan بهتر نمی‌دهد. PostgreSQL اختلاف estimated rows و actual rows در EXPLAIN ANALYZE می‌تواند سرنخ خطای تخمین باشد؛ در SQL Server، parameter sniffing و plan cache ممکن است برای بعضی مقدارها اثر داشته باشد. راه‌حل به engine/version و workload وابسته است، نه یک فرمان عمومی. EXPLAIN ANALYZE query را اجرا می‌کند و برای DML یا query گران‌قیمت باید در محیط کنترل‌شده بررسی شود.\n\n## مراحل root cause\n۱) fingerprint و baseline latency؛ ۲) plan و row estimate؛ ۳) lock/wait evidence؛ ۴) CPU، memory، disk I/O و شبکه؛ ۵) migration و تغییر توزیع داده؛ ۶) فرضیه با آزمون کم‌خطر؛ ۷) اصلاح محدود؛ ۸) تکرار correctness/performance test. Kill session، rebuild index یا تغییر isolation ممکن است rollback یا load اضافی بسازد؛ ابتدا owner query و اثر کسب‌وکار را روشن کن.\n\n## Lab: blocking کنترل‌شده\nدر instance ایزوله دو session ایجاد کن. session اول transaction باز می‌کند و یک ردیف مصنوعی را تغییر می‌دهد بدون commit؛ session دوم همان ردیف را با عملیات مناسب موتور می‌خواند یا تغییر می‌دهد. wait time و lock evidence را ثبت کن، سپس session اول commit/rollback شود و ادامهٔ session دوم را تأیید کن. lab نباید روی جدول عملیاتی اجرا شود. برای deadlock، دو session و ترتیب معکوس دسترسی به دو ردیف را کنترل کن و پایان/rollback هر session از قبل مشخص باشد.\n\n## Race condition در برنامه\nاگر برنامه موجودی را SELECT می‌کند و بعد UPDATE جدا می‌زند، دو درخواست همزمان ممکن است هر دو موجودی کافی ببینند. Conditional update و بررسی row count، constraint، locking یا optimistic concurrency می‌تواند این ریسک را کاهش دهد. در چند سرویس، distributed transaction همیشه مناسب نیست؛ outbox/inbox، idempotency و reconciliation می‌توانند سازگاری نهایی را پشتیبانی کنند. Failure و retry باید بخش عادی طراحی باشند، نه حالتی که «نباید هرگز رخ دهد».\n\n## Migration در دیتابیس بزرگ\nپیش از DDL، حجم داده، long-running transaction، log/WAL growth، lock، replica lag، backup و مدت بازگشت را بررسی کن. Expand-and-contract نسخه‌های application و schema را مرحله‌ای سازگار می‌کند؛ پس از backfill، اختلاف داده را اندازه بگیر و تنها پس از تأیید ساختار قدیمی را حذف کن. Rollback schema همیشه معکوس ساده‌ای نیست و گاهی forward-fix امن‌تر است؛ این تصمیم باید پیش از پنجرهٔ تغییر آماده باشد.\n\n## Observability و privacy\nشاخص‌های مفید شامل p95/p99 query latency، lock wait، deadlock rate، connection pool saturation، cache efficiency، disk latency و replication lag است. Query log ممکن است اطلاعات شخصی یا secret را ثبت کند؛ دسترسی، retention و masking باید مشخص باشند. هر alert باید owner و runbook داشته باشد. «فرمان اجرا شد» نتیجه نیست؛ نتیجه باید فرضیه را تقویت یا رد کند.\n\n## معیار قبولی L3\nاز symptom باید به چند فرضیهٔ مستقل برسی، شاهد تمایزدهنده جمع کنی و correctness، latency و error rate را پس از اصلاح تکرار کنی. اگر شواهد کافی نیست، علت را نامشخص اعلام کن و آزمون بعدی را تعریف کن.\n\n\n## تشخیص connection pool و overload\nوقتی latency می‌افزاید، تنها plan یک query را بررسی نکن. pool می‌تواند تمام connectionها را در انتظار یا transactionهای باز مصرف کرده باشد؛ در نتیجه درخواست جدید حتی پیش از اجرای SQL منتظر می‌ماند. بررسی کن درخواست‌ها در pool، صف application، database sessionها یا dependency متوقف شده‌اند. تعداد connectionهای بسیار زیاد نیز می‌تواند memory، scheduler و lock pressure را افزایش دهد. pool size را فقط براساس CPU core انتخاب نکن؛ workload، engine max connections، transaction time و failover behavior را در نظر بگیر. timeoutها باید با dependency chain هماهنگ باشند تا client و server چرخهٔ retry نامحدود نسازند.\n\n## Explain با دادهٔ حساس و production safety\nPlan واقعی ممکن است نام schema، index، query text و اطلاعات ساختاری کسب‌وکار را آشکار کند؛ انتشار عمومی آن نیاز به redaction دارد. اجرای analyze روی query تغییردهنده ممکن است واقعاً داده را تغییر دهد؛ اگر در موتور هدف transaction rollback مورد اعتماد و پشتیبانی است، فقط با روش مستند و dataset آزمایشی استفاده کن. حتی query read-only می‌تواند بار بالایی ایجاد کند. ابتدا query plan تخمینی، query fingerprint و metrics کم‌خطر را جمع کن؛ سپس برای reproduction یک نمونهٔ representative در محیط staging بساز.\n\n## Lock graph و اولویت incident\nدر blocking chain، session ریشه ممکن است منتظر هیچ‌کس نباشد اما transaction آن طولانی و قفل‌کننده باشد. به‌جای kill تصادفی تمام blocked sessionها، ریشهٔ chain، owner business operation، زمان transaction و پیامد rollback را مشخص کن. در deadlock graph، ترتیب object/row و resourceهای درگیر را بخوان. اصلاح می‌تواند کوتاه‌کردن transaction، دسترسی به objectها با ترتیب ثابت، index مناسب یا بازطراحی concurrency باشد؛ هر مورد فرضیهٔ جدا می‌خواهد. اگر transaction قربانی انتخاب‌شده retry می‌شود، retry budget و عملیات idempotent باید مشخص باشند.\n\n## آزمون correctness زیر concurrency\nTest معمولی یک کاربر race condition را آشکار نمی‌کند. با دادهٔ مصنوعی و دو یا چند session، تلاش همزمان برای آخرین واحد موجودی یا ثبت دو رکورد با کلید یکتا را آزمایش کن. خروجی قبولی باید invariant را حفظ کند: موجودی منفی نشود، رویداد دوبار ثبت نشود و uniqueness باقی بماند. تست را روی isolation level و موتور هدف تکرار کن؛ نتیجهٔ SQLite لزوماً قابل تعمیم به PostgreSQL یا SQL Server نیست. Record counts، errors و elapsed time را ثبت کن. یک تست که فقط «بدون exception تمام شد» معیار کافی نیست.\n\n## Migration: تصمیم rollback یا forward-fix\nبرای هر مرحله تشخیص بده rollback امن است یا ممکن است دادهٔ جدید را از بین ببرد. اگر نسخهٔ جدید داده‌هایی نوشته که schema قدیمی نمی‌تواند نگه دارد، rollback binary بدون reconciliation ممکن است خطرناک باشد. طرح expand-and-contract، write compatibility، checkpoint و reconciliation report را از پیش آماده کن. Migration باید روی copy با حجم و distribution نماینده اجرا شود؛ سپس lock duration، log growth، زمان backfill، replica lag و اثر queryهای آنلاین اندازه‌گیری شوند. زمان اجرا روی ده ردیف به معنی آماده‌بودن migration برای ده میلیون ردیف نیست.\n\n## Post-change monitoring\nپس از ایجاد index، تغییر query یا migration، مدت کافی برای workload واقعی‌نما پایش کن. latency تنها یک شاخص است: rows affected، error rate، deadlocks، CPU/I/O، replication lag، growth log و connection count نیز مهم‌اند. اگر latency بهتر شده ولی write latency یا storage growth غیرقابل‌قبول شده، trade-off باید آشکار باشد. Rollback trigger را پیش از اجرای تغییر تعیین کن تا پس از افت عملکرد اختلاف نظر باعث ادامهٔ rollout نشود.\n\n\n## تفاوت retry دیتابیس و retry درخواست API\nوقتی driver خطای transient می‌دهد، مشخص کن transaction commit شده یا هنوز نتیجه نامعلوم است. Timeout سمت client ممکن است بعد از commit رخ داده باشد؛ تکرار insert بدون idempotency key ردیف duplicate می‌سازد. Unique constraint می‌تواند یک invariant را enforce کند، اما application باید conflict را به نتیجهٔ قابل فهم تبدیل کند. برای عملیات مالی/حساس، correlation ID، transaction boundary و وضعیت نهایی را بررسی کن؛ هر خطای timeout را معادل rollback قطعی فرض نکن.\n\n\n\n## Connection pool و صف درخواست\nدر یک web application، latency تجربه‌شده توسط کاربر می‌تواند ترکیبی از صف pool، زمان اجرای query، lock wait و network round trip باشد. در log درخواست، زمان انتظار برای گرفتن connection را جدا از execute duration نگه دار. pool خیلی کوچک می‌تواند صف بسازد؛ pool خیلی بزرگ ممکن است تعداد connection و contention در موتور را افزایش دهد. زمان timeoutها را زنجیره‌ای طراحی کن: deadline درخواست باید محدود و retry بودجه داشته باشد؛ retry همزمان تعداد زیادی client می‌تواند ازدحام را بیشتر کند. آزمون load باید رفتار خطا و recovery پس از حذف load را نیز بسنجد، نه فقط maximum throughput.\n\n\n## Recovery از lock storm و saturation\nوقتی صدها درخواست در صف یک query قرار می‌گیرند، افزایش threadها یا connection pool ممکن است فشار موتور را بیشتر کند. ابتدا ورود بار جدید را طبق incident plan محدود کن، صف و درخواست‌های طولانی را از هم جدا کن و transaction ریشهٔ blocking را شناسایی کن. هر kill یا cancel باید پیامد rollback و امکان retry را مشخص کند. پس از کاهش فشار، تعداد connection، lock wait، latency percentile و error rate را در چند نمونهٔ زمانی بررسی کن تا معلوم شود سیستم پایدار شده است. بازگشت یک query منفرد به latency عادی، پایان incident را اثبات نمی‌کند اگر صف درخواست‌های قبلی هنوز تخلیه نشده باشد.\n",
+      "commands": "query plan; lock/wait diagnostics; execution metrics; deadlock analysis",
+      "examples": "Schema و داده‌ها مصنوعی‌اند؛ syntax، isolation، DDL transaction behavior و ابزار backup را با engine/version هدف تطبیق بده.",
+      "notes": "status=review_required; lab_status=designed_not_executed; backup/restore and concurrency labs pending.",
+      "learning_objectives": [
+        "افت query performance را با plan و wait evidence تحلیل کند و consistency race و migrationهای پرریسک را تشخیص دهد."
+      ],
+      "prerequisites": [
+        "مبانی فایل و داده",
+        "آشنایی ابتدایی با برنامه‌نویسی یا ابزار دیتابیس"
+      ],
+      "official_sources": [
+        {
+          "title": "SQLite SQL language",
+          "url": "https://www.sqlite.org/lang.html"
+        },
+        {
+          "title": "SQLite EXPLAIN QUERY PLAN",
+          "url": "https://www.sqlite.org/eqp.html"
+        },
+        {
+          "title": "SQLite backup API",
+          "url": "https://www.sqlite.org/backup.html"
+        },
+        {
+          "title": "PostgreSQL tutorial",
+          "url": "https://www.postgresql.org/docs/current/tutorial.html"
+        },
+        {
+          "title": "PostgreSQL EXPLAIN",
+          "url": "https://www.postgresql.org/docs/current/using-explain.html"
+        },
+        {
+          "title": "PostgreSQL backup and restore",
+          "url": "https://www.postgresql.org/docs/current/backup.html"
+        },
+        {
+          "title": "SQL Server execution plans",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans?view=sql-server-ver17"
+        },
+        {
+          "title": "SQL Server backup and restore overview",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/restore-and-recovery-overview-sql-server?view=sql-server-ver17"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی SQL و مدیریت پایگاه‌داده",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"db31-l3-1\",\"prompt\":\"چرا «دیتابیس کند است» کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"db31-l3-2\",\"prompt\":\"Deadlock با blocking چه تفاوتی دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"db31-l3-3\",\"prompt\":\"چرا retry side effect را دوبرابر می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"db31-l3-4\",\"prompt\":\"چرا EXPLAIN ANALYZE محتاطانه است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"db31-l3-5\",\"prompt\":\"چرا parameter sniffing راهکار عمومی ندارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"db31-l3-6\",\"prompt\":\"در blocking lab چه شواهدی ثبت می‌شوند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"db31-l3-7\",\"prompt\":\"Race condition با SELECT سپس UPDATE چگونه رخ می‌دهد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"db31-l3-8\",\"prompt\":\"پیش از DDL بزرگ چه چیزهایی سنجیده می‌شوند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"db31-l3-9\",\"prompt\":\"چرا query log حساس است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"db31-l3-10\",\"prompt\":\"چرا kill session قدم اول نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"db31-l3-11\",\"prompt\":\"شاخص‌های query performance کدام‌اند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"db31-l3-12\",\"prompt\":\"اگر evidence ناکافی باشد RCA چه می‌گوید؟\",\"type\":\"short_answer\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"db31-l3-1\",\"answer\":\"باید query/endpoint، زمان، workload، percentile و error rate مشخص شود.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l3-2\",\"answer\":\"deadlock چرخهٔ انتظار است؛ blocking ممکن است انتظار یک‌طرفه باشد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l3-3\",\"answer\":\"عملیات بیرونی ممکن است تکرار شود مگر idempotency طراحی شده باشد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l3-4\",\"answer\":\"query واقعاً اجرا می‌شود و ممکن است پرهزینه یا تغییردهنده باشد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l3-5\",\"answer\":\"رفتار به engine/version، plan cache و distribution پارامترها بستگی دارد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l3-6\",\"answer\":\"sessionها، transaction، ردیف هدف، wait/lock، زمان و commit/rollback.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l3-7\",\"answer\":\"دو درخواست همزمان یک وضعیت را می‌خوانند و تغییرهای متعارض اعمال می‌کنند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l3-8\",\"answer\":\"حجم داده، lockها، log/WAL، replica lag، backup و maintenance window.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l3-9\",\"answer\":\"ممکن است PII یا secret ثبت کند؛ masking و retention لازم است.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l3-10\",\"answer\":\"ممکن است transaction کاربر را rollback کند و evidence را از بین ببرد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l3-11\",\"answer\":\"p95/p99، wait، deadlock rate، pool saturation، I/O latency و replica lag.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l3-12\",\"answer\":\"علت را نامشخص/فرضیهٔ باز می‌نویسد و آزمون بعدی را مشخص می‌کند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://www.sqlite.org/lang.html\",\"https://www.sqlite.org/eqp.html\",\"https://www.sqlite.org/backup.html\",\"https://www.postgresql.org/docs/current/tutorial.html\",\"https://www.postgresql.org/docs/current/using-explain.html\",\"https://www.postgresql.org/docs/current/backup.html\",\"https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans?view=sql-server-ver17\",\"https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/restore-and-recovery-overview-sql-server?view=sql-server-ver17\"]}"
+    },
+    {
+      "uid": "lesson:ch31:database-engineering:l4",
+      "entity": "lesson",
+      "chapter_order": 31,
+      "subchapter_order": 6,
+      "lesson_order": 5,
+      "topic": "relational-database-engineering",
+      "domain": "databases-and-sql",
+      "level": "L4",
+      "title_fa": "[L4] معماری و تاب‌آوری پایگاه‌داده — امنیت، replication و بازیابی",
+      "title_en": "[L4] Database Architecture, Security, Replication and Recovery",
+      "tags": [
+        "SQL",
+        "Database",
+        "SQLite",
+        "PostgreSQL",
+        "SQL Server",
+        "transactions",
+        "index",
+        "backup",
+        "L4"
+      ],
+      "summary": "طراحی دیتابیس را براساس workload، consistency، privilege separation، backup/PITR و RPO/RTO دفاع کند.",
+      "full_content": "# معماری و تاب‌آوری پایگاه‌داده — امنیت، replication و بازیابی\n\n## Workload و consistency پیش از انتخاب موتور\nمعماری دیتابیس با نام محصول آغاز نمی‌شود؛ از نسبت read/write، concurrency، حجم و رشد داده، latency هدف، privacy، consistency و recovery objective آغاز می‌شود. اپلیکیشن شخصی SQLite و سامانهٔ چندنویسندهٔ شبکه‌ای نیازهای متفاوت دارند. SQLite می‌تواند برای embedded/offline-first مناسب باشد، ولی locking/WAL و الگوی writer باید با workload سازگار باشد. PostgreSQL و SQL Server ابزارهای server-side، replication و administration متفاوتی دارند؛ مشهورتر بودن یک موتور به معنی بهترین انتخاب برای هر مسئله نیست.\n\nConsistency باید دقیق تعریف شود: آیا stale read قابل قبول است؟ آیا duplicate operation خطرناک است؟ آیا تغییر موجودی و ثبت رویداد باید به‌صورت یک transaction انجام شود؟ در سیستم چندسرویسی، exactly-once به‌معنی جادویی و بدون failure boundary نیست؛ معمولاً idempotency، correlation و reconciliation بخشی از طراحی‌اند.\n\n## ظرفیت و عملکرد\nشاخص‌ها می‌توانند TPS، p95/p99 latency، error rate، connection pool saturation، lock waits، CPU، memory، I/O latency و replica lag باشند. میانگین می‌تواند tail latency را مخفی کند. سناریوی از دست‌دادن یک node نیز باید ظرفیت‌سنجی شود؛ سرور باقی‌مانده باید بار منتقل‌شده را تحمل کند. اندازهٔ index، WAL/log، temp storage و backup window را در رشد داده لحاظ کن.\n\nبرای benchmark از dataset مصنوعی با توزیع نماینده استفاده کن. اندازهٔ فایل/داده، parameter distribution، concurrency، مدت، cache context و منابع VM را ثبت کن؛ بدون این metadata اعداد قابل مقایسه نیستند. هر optimization باید plan، latency پیش/پس و اثر روی write را نشان دهد.\n\n## Security model و privilege separation\nحساب application نباید مالک database یا administrator engine باشد. runtime DML، migration DDL، read-only reporting و backup/restore را از هم جدا کن. هویت انسانی مدیر را برای runtime service استفاده نکن. Secret باید در secret store یا سازوکار امن deployment باشد، نه در Git و log. Least privilege، authentication، TLS متناسب، patch lifecycle و network exposure control لازم‌اند. Parameterization خطر SQL injection از طریق value را کاهش می‌دهد، اما authorization و tenant isolation باید مستقلاً enforce شوند.\n\nدر سامانهٔ چندمستاجری، query باید scope tenant را رعایت کند و constraintها جلوی cross-tenant relation نامعتبر را بگیرند. آزمون منفی باید ثابت کند tenant A نمی‌تواند دادهٔ tenant B را بخواند یا تغییر دهد. اگر کنترل فقط در UI است، API/script ممکن است آن را دور بزند.\n\n## Backup engine-aware\nBackup صرفاً فایل دیگری روی همان disk نیست. SQLite سازوکار backup و حالت journal/WAL خودش را دارد؛ copy ساده از فایل فعال ممکن است بسته به حالت اتصال ناسازگار باشد. PostgreSQL logical dump و physical backup همراه WAL/PITR دارد؛ SQL Server full/differential/log backup و recovery model ارائه می‌کند. روش نهایی باید با نسخهٔ موتور، حجم، RPO و RTO هماهنگ باشد. کلید رمزگذاری و دسترسی به repository باید از runtime privilege جدا شوند.\n\nRestore test در instance ایزوله انجام می‌شود. Schema version، row counts، constraints، queryهای نماینده و business invariants را بررسی کن و سپس برنامه را با identity/configuration نزدیک به محیط هدف اجرا کن. برای PITR، base backup و زنجیرهٔ WAL/transaction log تا زمان مطلوب باید قابل استفاده باشد؛ شکاف در زنجیره می‌تواند recovery point را ناممکن کند.\n\n## Replication و failover\nReplication می‌تواند برای availability، read scaling یا DR استفاده شود. در async replication ممکن است تغییر committed به replica نرسیده باشد؛ synchronous replication trade-off latency و availability دارد. Read replica معمولاً مقصد عمومی تمام writeها نیست و stale read ممکن است برای گزارش پذیرفتنی اما برای موجودی یا پرداخت خطرناک باشد. Failover بدون fencing و جلوگیری از دو primary می‌تواند split-brain و conflict بسازد. Runbook باید authority برای promotion، معیار تشخیص خرابی، behavior اتصال client و روش rejoin/reseed node قبلی را مشخص کند.\n\nقبل از failover drill، replication lag و پنجرهٔ احتمالی از دست رفتن داده را ثبت کن. در lab، primary را کنترل‌شده جدا و رفتار client را بسنج؛ سپس مشخص کن کدام تغییرها به replica رسیده‌اند. پس از بازگشت node قدیمی، آن را کورکورانه primary نکن؛ روش rejoin باید متناسب با engine/topology باشد.\n\n## Migration بدون توقف ناخواسته\nMigration باید نسخه‌دار و دارای pre/post condition باشد. DDL ممکن است table rewrite یا metadata lock ایجاد کند. Expand-and-contract یعنی ابتدا ساختار افزایشی سازگار اضافه شود؛ کد جدید مرحله‌ای deploy شود؛ داده backfill و اختلاف اندازه‌گیری شود؛ سپس مسیر جدید فعال و ساختار قدیمی بعد از تأیید حذف شود. هر مرحله checkpoint و rollback یا forward-fix plan می‌خواهد. اجرای migration با حساب runtime پرمجوز یا روی همهٔ nodeها بدون هماهنگی، ریسک را افزایش می‌دهد.\n\n## Incident response برای فساد داده\nدر احتمال corruption/compromise، شواهد را حفظ و scope را مشخص کن. Backup تازه را بدون بررسی روی دادهٔ مشکوک overwrite نکن. تشخیص بده فساد منطقی است یا فیزیکی، از چه زمانی آغاز شده، کدام replica/backup ممکن است آلوده باشد و کدام writes باید موقتاً متوقف شوند. Restore به زمان قبل حادثه می‌تواند تراکنش‌های قانونی پس از آن را حذف کند؛ reconciliation plan لازم است. در رخداد SQL injection یا compromise account، علاوه بر اصلاح query، privilege، credential rotation، log، exposure scope و احتمال exfiltration را بررسی کن.\n\n## Runbook بازیابی\n۱) incident owner و scope؛ ۲) حفظ شواهد و کنترل writeها؛ ۳) انتخاب recovery point؛ ۴) restore در محیط ایزوله؛ ۵) integrity/invariant checks؛ ۶) بازگرداندن config و identity/network dependencies؛ ۷) تست خواندن/نوشتن محدود با حساب آزمایش؛ ۸) cutover؛ ۹) reconciliation و پایش؛ ۱۰) postmortem. زمان detection، decision، restore، validation و cutover را جدا اندازه بگیر. Backup job سبز اگر زمان restore از RTO عبور کند نیاز سرویس را برآورده نکرده است.\n\n## Capstone\nدیتابیس مصنوعی مدیریت تعمیرگاه با customers، devices و repairs بساز. Primary/foreign key، uniqueness، status constraints و indexهای queryهای واقعی را تعریف کن. workload شامل درج تعمیر، جست‌وجوی وضعیت، گزارش ماهانه و تغییر همزمان status باشد. Queryهای parameterized استفاده کن، plan/latency قبل و بعد index را ثبت کن، race condition را آزمایش و transaction/constraint مناسب را اضافه کن. سپس backup engine-aware بگیر، داده را تغییر بده و restore را در instance جدا انجام بده. Row count، روابط، statusها و گزارش باید حفظ شوند. در پایان runtime account را از migration account جدا و آزمون منفی دسترسی را اجرا کن.\n\n## معیار طراحی نهایی\nDeliverable شامل ERD/schema، data dictionary، constraintها، workload model، index rationale، engine/version notes، privilege matrix، threat model، migration/rollback، plan/latency evidence، backup/restore evidence، replication/failover behavior، SLI/SLO و risk register است. اگر test یا restore واقعاً اجرا نشده، pending ثبت کن؛ سند معماری یا وجود فایل backup به تنهایی verified نیست.\n\n## واژه‌نامه\nPITR بازیابی در نقطهٔ زمانی؛ WAL/transaction log ثبت تغییرات؛ replica lag فاصلهٔ اعمال تغییر؛ split-brain دو authority متعارض؛ expand-and-contract مهاجرت مرحله‌ای؛ idempotency تکرار درخواست بدون اثر ناخواسته؛ invariant قاعدهٔ صحت داده؛ RPO/RTO هدف داده و زمان بازیابی.\n\n\n## انتخاب الگوی persistence برای offline-first\nدر برنامه‌هایی که Windows و Android بخشی از کار را آفلاین انجام می‌دهند، دیتابیس محلی و دیتابیس مرکزی نقش‌های جدا دارند. Local write باید پایدار بماند تا حتی در قطع شبکه گم نشود؛ sync queue باید هر تغییر را با UID پایدار، version یا updated_at، operation و idempotency key ثبت کند. سرور باید دوباره‌رسیدن همان عملیات را تشخیص دهد؛ در غیر این صورت retry بعد از timeout ممکن است دو بار یادداشت یا task بسازد. حذف نیز باید tombstone یا مدل حذف قابل همگام‌سازی داشته باشد؛ حذف فیزیکی فوری می‌تواند به کلاینت قدیمی اجازه دهد رکورد را زنده کند.\n\n## مدل تعارض و merge\nقبل از انتخاب last-write-wins، مشخص کن آیا آن سیاست برای داده قابل قبول است. برای یک یادداشت، merge field-level یا نسخه‌بندی ممکن است قابل بررسی باشد؛ برای وضعیت پرداخت یا موجودی، ادغام خودکار دو مقدار می‌تواند نادرست باشد. سرور باید شناسهٔ هر تغییر، دستگاه مبدأ، base version، version پذیرفته‌شده و نتیجهٔ conflict را ثبت کند. در conflict، دو نسخه را بی‌صدا حذف نکن؛ policy باید نوع داده، خطر و تجربهٔ کاربر را در نظر بگیرد. برای test، دو کلاینت را offline کن، یک رکورد مشترک را به شکل ناسازگار تغییر بده، سپس reconnect و reconciliation را با شواهد ثبت‌شده بررسی کن.\n\n## داده، schema و migration در نسخهٔ اپلیکیشن\nنسخهٔ schema باید از نسخهٔ app جدا و به‌صورت صریح مدیریت شود. Migration باید idempotent یا version-gated باشد و در صورت شکست، transaction یا recovery plan داشته باشد. تست upgrade باید دیتابیس ساخته‌شده با نسخهٔ قبلی را به نسخهٔ جدید منتقل کند و note/task/progress را با تعداد و hash یا invariant مقایسه کند. تست install تازه تنها مسیر migration را نمی‌سنجد. قبل از migration، backup بگیر و restore واقعی را آزمایش کن؛ بعد از migration، queryهای حیاتی، indexها، foreign key و دادهٔ نمونه را اعتبارسنجی کن.\n\n## Backup consistency برای SQLite و دیتابیس سروری\nبرای SQLite، زمان و روش backup را با journal mode، WAL و اتصال‌های باز هماهنگ کن؛ copy سادهٔ فایل اصلی ممکن است برای وضعیت فعال کافی نباشد. Backup API یا روش رسمی موتور را استفاده و بعد integrity check و restore آزمایشی اجرا کن. در PostgreSQL، logical dump برای برخی مهاجرت‌ها مفید است و physical/base backup همراه WAL برای recoveryهای دیگر؛ در SQL Server باید recovery model و زنجیرهٔ full/differential/log با نیاز نقطهٔ زمانی هماهنگ باشد. این روش‌ها قابل جایگزینی کورکورانه نیستند. Backup را روی repository با credential و policy جدا نگه دار.\n\n## RPO/RTO برای سرویس sync\nاگر برنامه یادداشت‌ها را هر چند ثانیه sync می‌کند، RPO را با آخرین تغییر محلی، آخرین تغییر پذیرفته‌شدهٔ سرور و backlog pending اندازه بگیر. RTO شامل راه‌اندازی server، اتصال client، reconciliation، بازیابی backup و تأیید صحت داده است. «API بالا آمده» معیار برگشت کامل نیست. پس از restore، دستگاه‌های offline باید بدون duplicate و loss دوباره sync شوند؛ تست باید شامل pending queue، tombstone، conflict و retry باشد. برای دادهٔ کاربر، local copy تا وقتی سرور receipt موفقیت نداده نباید بی‌دلیل حذف شود.\n\n## امنیت و جداسازی privilege\nRuntime service برای خواندن/نوشتن جدول‌های کاری به دسترسی لازم محدود شود؛ migration pipeline با identity جداگانه و تأیید کنترل‌شده اجرا شود؛ backup worker فقط به منابع و مقصدهای لازم دسترسی داشته باشد. Secret همگام‌سازی و encryption keys را در دیتابیس عمومی یا logهای عادی ثبت نکن. پارامتری‌سازی، tenant/device authorization، محدودیت نرخ، backup protection و audit باید با هم دیده شوند. یک UID معتبر به معنی مجوز دسترسی نیست؛ هر query باید scope مالک/کاربر را کنترل کند.\n\n## Capstone بازیابی و reconciliation\nنسخهٔ آزمایشی NetworkAll را با دیتابیس مصنوعی بساز، note/task/progress records را ایجاد و backup سازگار تهیه کن. همزمان یک کلاینت را offline نگه دار و تغییرهای pending تولید کن. سپس server را به یک restore point جدا برگردان، queue را دوباره متصل کن و سیاست conflict/idempotency را تست کن. انتظار: تغییر پذیرفته‌شده دوباره duplicate نشود، تغییر pending گم نشود، tombstone به حذف ناخواستهٔ رکوردهای قدیمی نینجامد و پیشرفت درسی با invariant طراحی هماهنگ باشد. Record counts، UIDها، versionها و نتایج conflict را مقایسه کن. تست موفق باید از ابتدا تا انتها روی کلاینت و سرور دیده شود؛ نه اینکه تنها یک query SQL موفق باشد.\n\n## Architecture decision record\nبرای انتخاب engine یا replication، یک ADR بنویس: مسئله و constraints، گزینه‌ها، رفتار concurrency، scalability، backup/restore، offline support، operator burden، امنیت، هزینه و دلیل انتخاب. تصمیم را با benchmark و restore evidence پشتیبانی کن. اگر داده‌ها هنوز اندازه‌گیری نشده‌اند، آن‌ها را فرض ثبت کن و تصمیم را provisional نگه دار. وضعیت verified تنها پس از عبور از acceptance criteria و peer review تعریف‌شده مجاز است.\n\n\n## سازگاری schema و چند نسخهٔ فعال application\nدر rollout تدریجی ممکن است نسخهٔ قدیمی و جدید برنامه همزمان به یک database متصل باشند. تغییر destructive مانند حذف ستون یا تغییر نوع داده پیش از پایان ترافیک نسخهٔ قدیمی می‌تواند outage بسازد. ابتدا سازگاری backward/forward را تعریف، metricهای استفاده از فیلد قدیمی را ثبت و deploy را حلقه‌ای انجام بده. پس از گذشت پنجرهٔ rollback، داده و گزارش را بررسی و سپس حذف را انجام بده. در migration، application version، schema version و replication state باید به‌صورت هماهنگ ثبت شوند.\n\n## محافظت در برابر backup خراب یا رمزگذاری‌شده\nدر رخداد ransomware یا corruption، backup آخر ممکن است هم از نظر محتوا آلوده باشد و هم از لحاظ integrity نامعتبر. چند restore point را با زمان شروع incident تطبیق بده؛ در محیط ایزوله database integrity check، queryهای نماینده و business invariants را اجرا کن. قبل از برگرداندن سرویس، credentialهای compromise شده و دسترسی repository را بررسی کن تا backup بازیابی‌شده دوباره تخریب نشود. برای هر restore تصمیم owner دربارهٔ reconciliation تغییرهایی که بعد از recovery point ثبت شده‌اند لازم است.\n\n\n\n## انتخاب consistency برای داده‌های مختلف\nهمهٔ جدول‌ها الزام consistency یکسان ندارند. دادهٔ مرجع مانند نقش‌های دسترسی و کلیدهای رابطه‌ای ممکن است به سازگاری فوری نیاز داشته باشد، در حالی که گزارش تحلیلی ممکن است چند ثانیه lag را تحمل کند. این trade-off باید در قرارداد API و UI مشخص باشد؛ در غیر این صورت کاربر می‌تواند پس از ثبت موفق، داده را در گزارش نبیند و تصور کند عملیات گم شده است. Read-after-write guarantee، استفاده از primary به‌جای replica و آگاه‌کردن رابط از pending state گزینه‌های طراحی هستند. هر انتخاب را با آزمون تأخیر و failure و نه صرفاً توصیف معماری بررسی کن.\n\n## نگهداری نسخه‌ها و drift\nدر گزارش incident، engine version، compatibility level (در صورت کاربرد)، extensionها، schema migration version، collation، timezone و مهم‌ترین تنظیمات را ثبت کن. تفاوت collation یا timezone می‌تواند sorting، uniqueness یا گزارش تاریخ را تغییر دهد. Patch/upgrade را ابتدا روی clone با حجم دادهٔ نماینده اجرا و query regression را بسنج؛ بازگردانی engine بعد از ارتقای format data همیشه trivially ممکن نیست. برای upgrade بزرگ، backup سازگار، restore test، compatibility matrix و stop/rollback condition ضروری است.\n\n\n## الزامات شواهد پیش از اعلام آمادگی\nبرای هر تغییر معماری، evidence bundle را نسخه‌دار نگه دار: schema و migration version، planهای query نماینده، workload و نتایج performance، invariantهای consistency، backup job و restore log، حساب‌های استفاده‌شده، زمان‌بندی و نتیجهٔ failover. دادهٔ حساس باید redact شود ولی شناسهٔ آزمایش و قابلیت تکرار حفظ شود. Peer review باید بداند کدام فرضیه تأیید شده، کدام ریسک پذیرفته شده و کدام تست هنوز اجرا نشده است. اگر failover یا restore فقط با یک کاربر مدیر انجام شده، authorization برنامهٔ واقعی هنوز اثبات نشده است.\n",
+      "commands": "backup/restore; PITR; replication/failover; least privilege; migration runbook",
+      "examples": "Schema و داده‌ها مصنوعی‌اند؛ syntax، isolation، DDL transaction behavior و ابزار backup را با engine/version هدف تطبیق بده.",
+      "notes": "status=review_required; lab_status=designed_not_executed; backup/restore and concurrency labs pending.",
+      "learning_objectives": [
+        "طراحی دیتابیس را براساس workload، consistency، privilege separation، backup/PITR و RPO/RTO دفاع کند."
+      ],
+      "prerequisites": [
+        "مبانی فایل و داده",
+        "آشنایی ابتدایی با برنامه‌نویسی یا ابزار دیتابیس"
+      ],
+      "official_sources": [
+        {
+          "title": "SQLite SQL language",
+          "url": "https://www.sqlite.org/lang.html"
+        },
+        {
+          "title": "SQLite EXPLAIN QUERY PLAN",
+          "url": "https://www.sqlite.org/eqp.html"
+        },
+        {
+          "title": "SQLite backup API",
+          "url": "https://www.sqlite.org/backup.html"
+        },
+        {
+          "title": "PostgreSQL tutorial",
+          "url": "https://www.postgresql.org/docs/current/tutorial.html"
+        },
+        {
+          "title": "PostgreSQL EXPLAIN",
+          "url": "https://www.postgresql.org/docs/current/using-explain.html"
+        },
+        {
+          "title": "PostgreSQL backup and restore",
+          "url": "https://www.postgresql.org/docs/current/backup.html"
+        },
+        {
+          "title": "SQL Server execution plans",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans?view=sql-server-ver17"
+        },
+        {
+          "title": "SQL Server backup and restore overview",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/restore-and-recovery-overview-sql-server?view=sql-server-ver17"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی SQL و مدیریت پایگاه‌داده",
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"db31-l4-1\",\"prompt\":\"چرا انتخاب موتور بر workload تکیه می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-2\",\"prompt\":\"چرا async replication می‌تواند داده از دست بدهد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-3\",\"prompt\":\"چرا replica جای backup نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-4\",\"prompt\":\"PITR به چه نیاز دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-5\",\"prompt\":\"چرا runtime و migration account جدا می‌شوند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-6\",\"prompt\":\"Split-brain چیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-7\",\"prompt\":\"چرا backup repository باید جدا باشد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-8\",\"prompt\":\"مراحل expand-and-contract چیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-9\",\"prompt\":\"چرا restore باید در instance جدا تست شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-10\",\"prompt\":\"پس از restore چه چیزهایی تأیید می‌شوند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-11\",\"prompt\":\"چرا tenant isolation فقط در UI کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-12\",\"prompt\":\"RPO/RTO با چه چیزی سنجیده می‌شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-13\",\"prompt\":\"چرا backup job موفق کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-14\",\"prompt\":\"چرا retry کور job مالی خطرناک است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"db31-l4-15\",\"prompt\":\"capstone چه مدرکی می‌خواهد؟\",\"type\":\"short_answer\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"db31-l4-1\",\"answer\":\"Concurrency، consistency، recovery و عملیات بین engineها فرق دارند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-2\",\"answer\":\"تغییر committed ممکن است هنوز به replica نرسیده باشد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-3\",\"answer\":\"حذف یا corruption مخرب ممکن است replicate شود.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-4\",\"answer\":\"base backup معتبر و زنجیرهٔ پیوستهٔ WAL/transaction log تا زمان هدف.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-5\",\"answer\":\"برنامهٔ عادی نباید نیازمند اختیار DDL/مدیریت engine باشد.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-6\",\"answer\":\"دو authority همزمان روی state متعارض کار می‌کنند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-7\",\"answer\":\"compromise هویت/سرور اصلی نباید بتواند همهٔ recovery pointها را حذف کند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-8\",\"answer\":\"افزودن ساختار سازگار، deploy کد، backfill و سنجش اختلاف، انتقال و حذف مرحله‌ای قدیمی.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-9\",\"answer\":\"از overwrite دیتای جاری جلوگیری می‌کند و recovery را ایزوله بررسی می‌کند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-10\",\"answer\":\"schema، row count، constraints، queryهای نماینده، invariantها و دسترسی برنامه.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-11\",\"answer\":\"API/script می‌تواند UI را دور بزند؛ کنترل در مرز داده/مجوز هم لازم است.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-12\",\"answer\":\"نتیجهٔ عملی restore/failover و دادهٔ ازدست‌رفته در تمرین.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-13\",\"answer\":\"باید خوانایی، consistency و زمان restore واقعی اثبات شود.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-14\",\"answer\":\"می‌تواند side effect را تکرار کند مگر idempotency و transaction boundary مشخص باشند.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"},{\"id\":\"db31-l4-15\",\"answer\":\"schema، workload، query/index evidence، consistency test، privilege separation و restore evidence.\",\"rationale\":\"پاسخ باید بر semantics موتور، شواهد اجرا و معیار پذیرش متکی باشد؛ syntax مشابه به‌معنی رفتار یکسان همهٔ دیتابیس‌ها نیست.\"}]},\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"source_links\":[\"https://www.sqlite.org/lang.html\",\"https://www.sqlite.org/eqp.html\",\"https://www.sqlite.org/backup.html\",\"https://www.postgresql.org/docs/current/tutorial.html\",\"https://www.postgresql.org/docs/current/using-explain.html\",\"https://www.postgresql.org/docs/current/backup.html\",\"https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans?view=sql-server-ver17\",\"https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/restore-and-recovery-overview-sql-server?view=sql-server-ver17\"]}"
+    }
+  ]
+}

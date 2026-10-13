@@ -1,0 +1,1125 @@
+# -*- coding: utf-8 -*-
+"""Regression tests for content merging and assessment checks."""
+from __future__ import annotations
+
+import gzip
+import json
+import re
+import sqlite3
+import sys
+import tempfile
+import unittest
+from unittest.mock import patch
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "server"))
+sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(ROOT / "shared"))
+
+from merge_content_packs_into_android import append_unmatched_as_extra, apply_fields, commands_to_lessons, git_markdown_to_lessons, is_legacy_routing_pack, merge_by_title, unmatched_by_title
+from sync_engine import compare_lww, content_hash, merge_push
+from audit_content import _item_quality
+from audit_content_packs import extract_items, inspect_record, review_sort_key
+from core.db import WebDB
+from core.curriculum_import import sync_canonical_curriculum
+from core.deep_fallback import build_deep_fallback
+from core.rich_content import _contains_any, build_rich_lesson
+import app as server_app
+import workspace_routes
+from core.study import study_sync_apply, study_sync_index, study_sync_pull
+
+
+class CanonicalCurriculumImportTests(unittest.TestCase):
+    def test_import_updates_matching_lesson_migrates_progress_and_is_idempotent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            db = WebDB(tmp_path / "test.db")
+            try:
+                chapter_id = db.conn.execute(
+                    "INSERT INTO chapters(order_index,title_fa,title_en) VALUES(1,?,?)",
+                    ("فصل یک", "Chapter One"),
+                ).lastrowid
+                level_id = db.conn.execute(
+                    "INSERT INTO levels(chapter_id,order_index,title_fa) VALUES(1,1,?)",
+                    ("مبانی",),
+                ).lastrowid
+                db.conn.execute(
+                    """INSERT INTO lessons(level_id,order_index,title_fa,title_en,summary,full_content,notes,last_updated)
+                       VALUES(?,?,?,?,?,?,?,?)""",
+                    (level_id, 1, "[L0] Lesson One", "Lesson One", "old summary", "old body", "old content note", "2025-01-01T00:00:00Z"),
+                )
+                db.conn.commit()
+                db.ensure_sync_columns()
+                old_uid = db.conn.execute("SELECT uid FROM lessons LIMIT 1").fetchone()["uid"]
+                from core.study import ensure_study_table
+                ensure_study_table(db.conn)
+                db.conn.execute(
+                    """INSERT INTO study_progress(lesson_uid,status,ease,interval_hours,last_studied,
+                       next_review,times_studied,notes,last_updated,device_id,deleted,content_hash)
+                       VALUES(?,?,?,?,?,?,?,?,?,?,?,?)""",
+                    (old_uid, "known", 2.8, 96, "2025-01-02T00:00:00Z", "2025-01-06T00:00:00Z", 7, "یادداشت شخصی", "2025-01-02T00:00:00Z", "test-device", 0, ""),
+                )
+                db.conn.commit()
+
+                asset = tmp_path / "curriculum_index.json.gz"
+                payload = {
+                    "version": 11,
+                    "lesson_count": 1,
+                    "chapters": [{
+                        "order": 1, "title_fa": "فصل یک", "title_en": "Chapter One",
+                        "subchapters": [{
+                            "title_fa": "مبانی",
+                            "lessons": [{
+                                "uid": "lesson:ch01:s001:l0000",
+                                "chapter_order": 1, "subchapter_order": 1, "lesson_order": 1,
+                                "title_fa": "[L0] Lesson One", "title_en": "Lesson One", "level": "L0",
+                                "summary": "new summary", "full_content": "new deep content",
+                                "commands": "verify", "examples": "expected output",
+                                "notes": "curriculum note", "meta_json": '{"assessment":{"questions":[],"answer_key":[]}}',
+                                "learning_objectives": "understand;verify", "source_status": "review_required",
+                            }],
+                        }],
+                    }],
+                }
+                def write_asset(data):
+                    raw = json.dumps(data, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+                    asset.write_bytes(gzip.compress(raw, mtime=0))
+                write_asset(payload)
+
+                first = sync_canonical_curriculum(db, asset)
+                self.assertFalse(first["skipped"])
+                self.assertEqual(first["updated"], 1)
+                self.assertEqual(db.conn.execute("SELECT COUNT(*) FROM lessons").fetchone()[0], 1)
+                lesson = db.conn.execute("SELECT * FROM lessons LIMIT 1").fetchone()
+                self.assertEqual(lesson["uid"], "lesson:ch01:s001:l0000")
+                self.assertEqual(lesson["full_content"], "new deep content")
+                self.assertEqual(lesson["notes"], "curriculum note")
+                progress = db.conn.execute("SELECT * FROM study_progress LIMIT 1").fetchone()
+                self.assertEqual(progress["lesson_uid"], "lesson:ch01:s001:l0000")
+                self.assertEqual(progress["notes"], "یادداشت شخصی")
+                self.assertEqual(progress["times_studied"], 7)
+                self.assertTrue(Path(first["backup"]).is_file())
+
+                second = sync_canonical_curriculum(db, asset)
+                self.assertTrue(second["skipped"])
+                self.assertEqual(db.conn.execute("SELECT COUNT(*) FROM lessons").fetchone()[0], 1)
+
+                payload["chapters"][0]["subchapters"][0]["lessons"][0]["full_content"] = "revised deep content"
+                write_asset(payload)
+                third = sync_canonical_curriculum(db, asset)
+                self.assertFalse(third["skipped"])
+                self.assertEqual(db.conn.execute("SELECT full_content FROM lessons LIMIT 1").fetchone()[0], "revised deep content")
+                self.assertTrue(Path(third["backup"]).is_file())
+            finally:
+                db.conn.close()
+
+
+class ContentAuditMetadataTests(unittest.TestCase):
+    def test_audit_keeps_chapter_and_subchapter_context(self):
+        path = ROOT / "tools/packs/audit-test.json"
+        items = extract_items({
+            "chapters": [{
+                "order": 68,
+                "title_fa": "Cisco Routing",
+                "subchapters": [{
+                    "title_fa": "OSPF",
+                    "lessons": [{"uid": "audit-osfp", "title_fa": "OSPF neighbor states",
+                                 "full_content": "## Lab\\n## Scenario"}],
+                }],
+            }],
+        }, path)
+        self.assertEqual(len(items), 1)
+        row = inspect_record(path, items[0], 1, 1)
+        self.assertEqual(row["chapter_order"], 68)
+        self.assertEqual(row["chapter_title"], "Cisco Routing")
+        self.assertEqual(row["subchapter_title"], "OSPF")
+
+    def test_network_cli_command_titles_avoid_false_boilerplate_flags(self):
+        path = ROOT / "tools/packs/audit-test.json"
+        repeated_network_text = "VLAN trunk STP router gateway"
+        for index, title in enumerate(("[L2] configure terminal", "[L1] فیلتر switchport Gi1/0/1"), 1):
+            with self.subTest(title=title):
+                row = inspect_record(
+                    path,
+                    {"uid": f"cli-{index}", "title_fa": title, "full_content": repeated_network_text},
+                    index,
+                    1,
+                )
+                self.assertNotIn("generic_network_boilerplate", row["checks"])
+
+        nonnetwork = inspect_record(
+            path,
+            {"uid": "powershell-service", "title_fa": "PowerShell Get-Service",
+             "full_content": repeated_network_text},
+            3,
+            1,
+        )
+        self.assertIn("generic_network_boilerplate", nonnetwork["checks"])
+
+    def test_actionable_warnings_sort_before_review_status_only(self):
+        high_risk = {"index": 100, "checks": ["needs_human_review", "missing_answer_key_marker"]}
+        review_only = {"index": 1, "checks": ["needs_human_review"]}
+        self.assertLess(review_sort_key(high_risk), review_sort_key(review_only))
+
+    def test_audit_recognizes_nested_assessment_and_answer_key_metadata(self):
+        assessment = {
+            "questions": [{"id": "q1", "prompt": "؟", "options": ["الف", "ب"]}],
+            "answer_key": [{"id": "q1", "correct_index": 0}],
+        }
+        variants = [
+            {"meta": {"assessment": assessment}},
+            {"meta_json": json.dumps({"assessment": assessment}, ensure_ascii=False)},
+        ]
+        for index, metadata in enumerate(variants, 1):
+            with self.subTest(index=index):
+                record = {
+                    "uid": f"audit-test-{index}",
+                    "title_fa": "آزمون ساختاریافته",
+                    "full_content": "## آزمایشگاه عملی\\n## سناریوی عملی\\nمتن تستی.",
+                    **metadata,
+                }
+                result = inspect_record(ROOT / "tools/packs/audit-test.json", record, index, 1)
+                self.assertTrue(result["field_presence"]["assessment"])
+                self.assertTrue(result["field_presence"]["answer_key"])
+                self.assertNotIn("missing_answer_key_marker", result["checks"])
+
+
+    def test_level_aware_audit_reports_depth_floor_and_command_reference_kind(self):
+        path = ROOT / "tools/packs/audit-test.json"
+        short_l4 = inspect_record(
+            path,
+            {
+                "uid": "short-l4",
+                "title_fa": "[L4] تحلیل پیشرفتهٔ مسیریابی",
+                "full_content": "شرح کوتاه",
+                "meta": {"depth_level": "L4"},
+            },
+            1,
+            0,
+        )
+        self.assertEqual(short_l4["depth_level"], "L4")
+        self.assertEqual(short_l4["minimum_word_guideline"], 2200)
+        self.assertIn("below_depth_word_floor", short_l4["checks"])
+        self.assertIn("missing_troubleshooting", short_l4["checks"])
+
+        command = inspect_record(
+            path,
+            {"uid": "cmd-reference", "command": "Get-Service", "summary": "نمونهٔ کوتاه"},
+            2,
+            0,
+        )
+        self.assertEqual(command["record_kind"], "command_reference")
+        self.assertEqual(command["minimum_word_guideline"], 250)
+        self.assertNotIn("missing_depth_level", command["checks"])
+
+
+class PacketPathMasterclassTests(unittest.TestCase):
+    def test_progressive_l0_to_l4_pack_has_level_depth_and_separate_answer_keys(self):
+        path = ROOT / "tools/packs/network_fundamentals/packet_path_masterclass.json"
+        pack = json.loads(path.read_text(encoding="utf-8"))
+        lessons = pack.get("lessons", [])
+        self.assertEqual({item.get("depth_level") for item in lessons}, {"L0", "L1", "L2", "L3", "L4"})
+        floors = {"L0": 600, "L1": 800, "L2": 1200, "L3": 1600, "L4": 2200}
+        question_floors = {"L0": 5, "L1": 8, "L2": 10, "L3": 12, "L4": 15}
+        uids = [item.get("uid") for item in lessons]
+        self.assertEqual(len(uids), len(set(uids)), "lesson UIDs must be unique")
+        for item in lessons:
+            with self.subTest(uid=item["uid"]):
+                level = item["depth_level"]
+                word_count = len(re.findall(r"(?u)\b[\w]+\b", item.get("full_content", "")))
+                self.assertGreaterEqual(word_count, floors[level])
+                assessment = item.get("meta", {}).get("assessment", {})
+                questions = assessment.get("questions", [])
+                answer_key = assessment.get("answer_key", [])
+                self.assertGreaterEqual(len(questions), question_floors[level])
+                question_ids = {q.get("id") for q in questions}
+                answer_ids = {a.get("id") for a in answer_key}
+                self.assertEqual(question_ids, answer_ids)
+                self.assertTrue(all(a.get("explanation") for a in answer_key))
+                self.assertTrue(item.get("official_sources"))
+                self.assertEqual(item.get("source_status"), "review_required")
+
+
+class InfographicRouteTests(unittest.TestCase):
+    def test_shared_infographic_gallery_and_packet_diagram_are_served(self):
+        client = server_app.app.test_client()
+        page = client.get("/infographics")
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("packet_path.svg", page.get_data(as_text=True))
+        diagram = client.get("/infographics/packet_path.svg")
+        self.assertEqual(diagram.status_code, 200)
+        self.assertIn("<svg", diagram.get_data(as_text=True))
+        self.assertIn("ROUTER / FW", diagram.get_data(as_text=True))
+
+
+class DeepFallbackTests(unittest.TestCase):
+    def test_hardware_fallback_uses_hardware_specific_lab_and_answer_key(self):
+        lesson = build_deep_fallback("[L1] CPU چیست و چگونه کار می‌کند", "CPU fundamentals")
+        content = lesson["full_content"]
+        self.assertIn("RAM میز کار است", content)
+        self.assertIn("خودآزمایی و پاسخ‌نامه", content)
+        self.assertIn("Answer Key", content)
+        self.assertNotIn("VLAN / VRF", content)
+        self.assertIn("SMART", content)
+        self.assertIn("منابع رسمی و مراجع", content)
+        self.assertIn("Intel Product Support", content)
+
+    def test_short_acronym_does_not_match_inside_an_unrelated_word(self):
+        self.assertFalse(_contains_any("Network Bottleneck", ("TTL",)))
+        self.assertTrue(_contains_any("Set TTL on the record", ("TTL",)))
+
+    def test_case_insensitive_specialist_dispatch_for_boot_linux_fs_and_resources(self):
+        cases = [
+            ("[L2] systemd-boot", "boot"),
+            ("[L1] journalctl پایه", "linux"),
+            ("[L1] سلسله‌مراتب FS", "linux"),
+            ("[L2] Btrfs Snapshot", "linux_fs"),
+            ("[L2] Network Bottleneck", "resource"),
+        ]
+        for title, expected_category in cases:
+            with self.subTest(title=title):
+                lesson = build_rich_lesson(title, title)
+                self.assertEqual(lesson["category"], expected_category)
+                self.assertIn(title.split("] ", 1)[-1], lesson["full_content"])
+                self.assertTrue(
+                    lesson["full_content"].lstrip().startswith("# "),
+                    "specialist explanation should lead the lesson body",
+                )
+                self.assertNotIn("## ۰) داستان واقعی سازمانی", lesson["full_content"])
+                self.assertIn("پاسخ‌نامه", lesson["full_content"])
+                self.assertIn("## ۱۰) منابع رسمی و مراجع", lesson["full_content"])
+                if "Btrfs Snapshot" in title:
+                    self.assertIn("copy-on-write", lesson["full_content"])
+                    self.assertIn("btrfs subvolume snapshot", lesson["full_content"])
+                    self.assertIn("جایگزین backup روی رسانه/سیستم جدا نیست", lesson["full_content"])
+                if "سلسله‌مراتب FS" in title:
+                    self.assertIn("Filesystem Hierarchy Standard", lesson["full_content"])
+                    self.assertIn("findmnt -T /var/log", lesson["full_content"])
+                    self.assertIn("df -i", lesson["full_content"])
+                    self.assertIn("/var/lib", lesson["full_content"])
+                if "Network Bottleneck" in title:
+                    self.assertIn("RTT median/p95", lesson["examples"])
+                    self.assertIn("Get-NetAdapterStatistics", lesson["commands"])
+                    self.assertIn("show interfaces counters errors", lesson["commands"])
+                    self.assertIn("معیار قبولی", lesson["full_content"])
+
+    def test_python_fallback_has_python_specific_troubleshooting(self):
+        lesson = build_deep_fallback("[L2] Python exception handling", "Python exception handling")
+        content = lesson["full_content"]
+        self.assertIn("unit test", content)
+        self.assertIn("Answer Key", content)
+        self.assertIn("ورودی نامعتبر", content)
+        self.assertNotIn("لایه ۲ (VLAN", content)
+        self.assertIn("Python official documentation", content)
+
+    def test_general_fallback_does_not_inject_network_only_lab(self):
+        lesson = build_deep_fallback("[L2] Technical documentation workflow", "Documentation workflow")
+        combined = "\\n".join(str(lesson.get(key) or "") for key in ("full_content", "commands", "examples", "notes"))
+        self.assertIn("معیار قبولی", combined)
+        self.assertIn("حالت مرزی", combined)
+        self.assertNotIn("show ip interface brief", combined)
+        self.assertNotIn("VLAN / VRF", combined)
+        self.assertNotIn("کابل uplink", combined)
+
+    def test_fallback_assessment_has_separate_matching_answer_key(self):
+        lesson = build_deep_fallback("[L2] Git merge conflict", "Git merge conflict")
+        assessment = lesson["assessment"]
+        question_ids = {q["id"] for q in assessment["questions"]}
+        answer_ids = {a["id"] for a in assessment["answer_key"]}
+        self.assertGreaterEqual(len(assessment["questions"]), 2)
+        self.assertEqual(question_ids, answer_ids)
+        quality = _item_quality({
+            "title_fa": "[L2] Git merge conflict",
+            "full_content": lesson["full_content"],
+            "assessment": assessment,
+        })
+        self.assertTrue(quality["has_questions"])
+        self.assertTrue(quality["has_answer_key"])
+        self.assertTrue(quality["answer_key_ids_match"])
+
+    def test_fallback_is_progressive_and_has_glossary_sources_and_lab_status(self):
+        floors = {"L0": 5, "L1": 8, "L2": 10, "L3": 12, "L4": 15}
+        for level, floor in floors.items():
+            lesson = build_deep_fallback(f"[{level}] DNS recursive resolver", "DNS recursive resolver", level)
+            assessment = lesson["assessment"]
+            qids = [q["id"] for q in assessment["questions"]]
+            aids = [a["id"] for a in assessment["answer_key"]]
+            with self.subTest(level=level):
+                self.assertGreaterEqual(len(qids), floor)
+                self.assertEqual(len(qids), len(set(qids)))
+                self.assertEqual(set(qids), set(aids))
+                self.assertTrue(all(a.get("explanation") for a in assessment["answer_key"]))
+                self.assertTrue(lesson.get("official_sources"))
+                self.assertEqual(lesson.get("lab_status"), "designed_not_executed")
+                self.assertIn("## واژه‌نامهٔ تخصصی", lesson["full_content"])
+                self.assertIn("## خروجی مورد انتظار و معیار قبولی", lesson["full_content"])
+                self.assertIn("## سناریوی عملی و Lab acceptance", lesson["full_content"])
+
+    def test_specialist_content_receives_level_floor_without_losing_domain_explanation(self):
+        lesson = build_rich_lesson("[L2] CPU چیست و چگونه کار می‌کند", "CPU fundamentals", level="L2")
+        assessment = lesson["assessment"]
+        qids = [q["id"] for q in assessment["questions"]]
+        aids = [a["id"] for a in assessment["answer_key"]]
+        self.assertGreaterEqual(len(qids), 10)
+        self.assertEqual(len(qids), len(set(qids)))
+        self.assertEqual(set(qids), set(aids))
+        self.assertIn("Fetch → Decode → Execute → Write-back", lesson["full_content"])
+        self.assertIn("## واژه‌نامهٔ تخصصی", lesson["full_content"])
+        self.assertIn("## خروجی مورد انتظار و معیار قبولی", lesson["full_content"])
+        self.assertTrue(lesson.get("official_sources"))
+        self.assertEqual(lesson.get("lab_status"), "designed_not_executed")
+
+
+class ContentMergeTests(unittest.TestCase):
+    def test_chapter14_scoped_routing_pack_is_not_remapped_to_chapter66(self):
+        chapter14_pack = "tools/packs/chapter14/ospf_bgp_lab_scenarios_ch14_pack.json"
+        legacy_routing_pack = "tools/packs/routing_deep/ospf_bgp_redistribution_deep_pack.json"
+        windows_style_chapter14_path = r"tools\\packs\\chapter14\\ospf_bgp_lab_scenarios_ch14_pack.json"
+
+        self.assertFalse(is_legacy_routing_pack(chapter14_pack))
+        self.assertFalse(is_legacy_routing_pack(windows_style_chapter14_path))
+        self.assertTrue(is_legacy_routing_pack(legacy_routing_pack))
+
+    def test_routeros_qos_vpn_ha_pack_has_android_mcqs_and_depth(self):
+        relative_path = "tools/packs/mikrotik/routeros_qos_vpn_ha_ch21_pack.json"
+        pack = json.loads((ROOT / relative_path).read_text(encoding="utf-8"))
+        catalog = json.loads((ROOT / "tools/packs/pack_catalog.json").read_text(encoding="utf-8"))
+        active_paths = {
+            item.get("path")
+            for item in catalog.get("packs", [])
+            if item.get("active_in_merge") is True
+        }
+        word_floors = {"L0": 600, "L1": 800, "L2": 1200, "L3": 1600, "L4": 2200}
+        question_floors = {"L0": 5, "L1": 8, "L2": 10, "L3": 12, "L4": 15}
+
+        self.assertIn(relative_path, active_paths)
+        self.assertEqual(len(pack.get("lessons", [])), 5)
+        for lesson in pack["lessons"]:
+            with self.subTest(uid=lesson.get("uid")):
+                level = lesson.get("level", "L0")
+                text = lesson.get("full_content", "")
+                self.assertGreaterEqual(len(re.findall(r"[\w]+", text, flags=re.UNICODE)), word_floors[level])
+                metadata = json.loads(lesson.get("meta_json") or "{}")
+                assessment = metadata.get("assessment", {})
+                questions = assessment.get("questions", [])
+                answer_key = assessment.get("answer_key", [])
+                by_id = {answer.get("id"): answer for answer in answer_key}
+                mcqs = [
+                    question for question in questions
+                    if isinstance(question.get("options"), list) and len(question.get("options", [])) >= 2
+                ]
+                self.assertGreaterEqual(len(mcqs), question_floors[level])
+                for question in mcqs:
+                    answer = by_id.get(question.get("id"))
+                    self.assertIsNotNone(answer)
+                    options = question.get("options", [])
+                    self.assertTrue(0 <= answer.get("correct_index", -1) < len(options))
+                    self.assertEqual(answer.get("question_id"), question.get("id"))
+                    self.assertEqual(
+                        answer.get("correct_option_id"),
+                        options[answer["correct_index"]].get("id"),
+                    )
+                    self.assertTrue(answer.get("explanation") or answer.get("rationale"))
+
+    def test_new_scenario_packs_are_catalogued_and_have_separate_assessment_keys(self):
+        pack_paths = (
+            ("tools/packs/chapter14/ospf_bgp_lab_scenarios_ch14_pack.json", 14, 11),
+            ("tools/packs/mikrotik/routeros_multiwan_applied_labs_ch20_pack.json", 20, 8),
+        )
+        catalog_path = ROOT / "tools/packs/pack_catalog.json"
+        catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+        active_paths = {
+            item.get("path")
+            for item in catalog.get("packs", [])
+            if item.get("active_in_merge") is True
+        }
+
+        word_floors = {"L0": 600, "L1": 800, "L2": 1200, "L3": 1600, "L4": 2200}
+        question_floors = {"L0": 5, "L1": 8, "L2": 10, "L3": 12, "L4": 15}
+        for relative_path, expected_chapter, expected_count in pack_paths:
+            with self.subTest(path=relative_path):
+                path = ROOT / relative_path
+                pack = json.loads(path.read_text(encoding="utf-8"))
+                lessons = pack.get("lessons", [])
+                self.assertEqual(len(lessons), expected_count)
+                self.assertIn(relative_path, active_paths)
+                self.assertEqual({lesson.get("chapter_order") for lesson in lessons}, {expected_chapter})
+                self.assertEqual(len({lesson.get("uid") for lesson in lessons}), len(lessons))
+                self.assertEqual(
+                    len({
+                        (lesson.get("chapter_order"), lesson.get("subchapter_order"), lesson.get("lesson_order"))
+                        for lesson in lessons
+                    }),
+                    len(lessons),
+                )
+                for lesson in lessons:
+                    with self.subTest(uid=lesson.get("uid")):
+                        level = lesson.get("level", "L0")
+                        words = len(re.findall(r"[\w]+", lesson.get("full_content", ""), flags=re.UNICODE))
+                        self.assertGreaterEqual(words, word_floors[level])
+                        assessment = lesson.get("meta", {}).get("assessment", {})
+                        questions = assessment.get("questions", [])
+                        answer_key = assessment.get("answer_key", [])
+                        self.assertGreaterEqual(len(questions), question_floors[level])
+                        self.assertEqual(len(answer_key), len(questions))
+                        self.assertEqual(
+                            {question.get("id") for question in questions},
+                            {answer.get("question_id") for answer in answer_key},
+                        )
+                        answers_by_id = {answer.get("id"): answer for answer in answer_key}
+                        self.assertEqual({question.get("id") for question in questions}, set(answers_by_id))
+                        for question in questions:
+                            answer = answers_by_id[question["id"]]
+                            option_ids = [option.get("id") for option in question.get("options", [])]
+                            self.assertEqual(len(option_ids), 4)
+                            self.assertIn(answer.get("correct_option_id"), option_ids)
+                            self.assertEqual(
+                                answer.get("correct_index"),
+                                option_ids.index(answer.get("correct_option_id")),
+                                "Android QuizActivity requires a correct_index aligned with question option order",
+                            )
+                            self.assertTrue(answer.get("explanation"))
+                        self.assertTrue(lesson.get("meta", {}).get("official_sources"))
+                        self.assertEqual(lesson.get("source_status"), "review_required")
+
+    def test_git_markdown_enriches_same_level_lesson_without_duplicate_uid(self):
+        existing_lesson = {
+            "uid": "lesson:ch64:s000:l0002",
+            "chapter_order": 64,
+            "title_fa": "[L2] Git و GitHub چه هستند و چه تفاوتی دارند — ادمین",
+            "title_en": "",
+            "tags": "L2",
+            "summary": "مبانی Git",
+            "full_content": "## آموزش اصلی\\nتوضیح مفهومی و راهنمای مرحله‌ای.",
+            "commands": "git status",
+            "examples": "Lab baseline",
+            "notes": "",
+        }
+        data = {"chapters": [{
+            "order": 64,
+            "title_fa": "فصل ۶۴: Git و GitHub",
+            "subchapters": [{"title_fa": "۶۴.۱ مبانی", "lessons": [existing_lesson]}],
+        }]}
+        markdown_lesson = {
+            "uid": "lesson:ch64:git:s01:example",
+            "chapter_order": 64,
+            "level": "L2",
+            "title_fa": "[L2] Git و GitHub چه هستند و چه تفاوتی دارند",
+            "full_content": "## سناریوی تخصصی Git\\nGit-specific merge marker.\\n## Lab\\ngit status",
+            "commands": "git log --oneline",
+            "examples": "Scenario: create a temporary repository.",
+        }
+        merged = merge_by_title(data, [markdown_lesson])
+        self.assertEqual(merged, 1)
+        self.assertEqual(existing_lesson["uid"], "lesson:ch64:s000:l0002")
+        self.assertIn("Git-specific merge marker", existing_lesson["full_content"])
+        self.assertEqual(unmatched_by_title(data, [markdown_lesson], 64), [])
+
+    def test_empty_pack_assessment_does_not_erase_generated_quiz(self):
+        questions = [
+            {"id": f"base_{i}", "prompt": f"Generated question {i}", "options": ["A", "B", "C", "D"]}
+            for i in range(8)
+        ]
+        answers = [{"id": q["id"], "correct_index": 1, "explanation": "Generated answer"} for q in questions]
+        base = {
+            "title_fa": "[L1] Lesson",
+            "level": "L1",
+            "meta_json": json.dumps({"assessment": {"questions": questions, "answer_key": answers}}),
+        }
+        incoming = {
+            "title_fa": "[L1] Lesson",
+            "level": "L1",
+            "meta_json": json.dumps({"assessment": {"questions": [], "answer_key": []}}),
+        }
+        apply_fields(base, incoming)
+        meta = json.loads(base["meta_json"])
+        self.assertEqual(len(meta["assessment"]["questions"]), 8)
+        self.assertEqual(
+            {q["id"] for q in meta["assessment"]["questions"]},
+            {a["id"] for a in meta["assessment"]["answer_key"]},
+        )
+
+    def test_short_pack_quiz_keeps_domain_questions_and_tops_up_to_level_floor(self):
+        base_questions = [
+            {"id": f"base_{i}", "prompt": f"Generated question {i}", "options": ["A", "B", "C", "D"]}
+            for i in range(8)
+        ]
+        base_answers = [{"id": q["id"], "correct_index": 1, "explanation": "Generated answer"} for q in base_questions]
+        pack_questions = [
+            {"id": f"vendor_{i}", "prompt": f"Vendor-specific question {i}", "options": ["A", "B", "C", "D"]}
+            for i in range(2)
+        ]
+        pack_answers = [{"id": q["id"], "correct_index": 2, "explanation": "Vendor answer"} for q in pack_questions]
+        base = {
+            "title_fa": "[L1] Lesson",
+            "level": "L1",
+            "meta_json": json.dumps({"assessment": {"questions": base_questions, "answer_key": base_answers}}),
+        }
+        incoming = {
+            "title_fa": "[L1] Lesson",
+            "level": "L1",
+            "meta_json": json.dumps({"assessment": {"questions": pack_questions, "answer_key": pack_answers}}),
+        }
+        apply_fields(base, incoming)
+        assessment = json.loads(base["meta_json"])["assessment"]
+        self.assertGreaterEqual(len(assessment["questions"]), 8)
+        self.assertEqual(assessment["questions"][0]["id"], "vendor_0")
+        self.assertEqual(
+            {q["id"] for q in assessment["questions"]},
+            {a["id"] for a in assessment["answer_key"]},
+        )
+
+    def test_pack_merge_does_not_overwrite_longer_base_lesson(self):
+        base = {
+            "full_content": "BASE_DEEP_CONTENT " * 400,
+            "examples": "Baseline lab and expected result.",
+            "commands": "show baseline",
+        }
+        incoming = {
+            "full_content": "## Lab تخصصی\nScenario: یک رخداد واقعی\nExpected result: سرویس سالم بماند.",
+            "examples": "Scenario-specific lab steps.",
+            "commands": "show topic-specific-status",
+        }
+        apply_fields(base, incoming)
+        self.assertIn("BASE_DEEP_CONTENT", base["full_content"])
+        self.assertIn("Scenario: یک رخداد واقعی", base["full_content"])
+        self.assertIn("Baseline lab", base["examples"])
+        self.assertIn("Scenario-specific lab steps", base["examples"])
+        self.assertIn("show baseline", base["commands"])
+        self.assertIn("show topic-specific-status", base["commands"])
+
+    def test_append_preserves_base_chapter_and_existing_lesson(self):
+        data = {
+            "chapters": [{
+                "order": 66,
+                "title_fa": "فصل ۶۶",
+                "subchapters": [{
+                    "title_fa": "محتوای پایه",
+                    "lessons": [{"uid": "base-1", "title_fa": "[L0] مبانی مسیریابی"}],
+                }],
+            }]
+        }
+        added = [
+            {"uid": "base-1", "title_fa": "[L0] مبانی مسیریابی", "subchapter_order": 1},
+            {"uid": "route-1", "title_fa": "[L2] OSPF عملی", "subchapter_order": 1, "lesson_order": 1,
+             "full_content": "شرح آموزش", "meta": {}},
+        ]
+        appended = append_unmatched_as_extra(data, added, 66, "فصل ۶۶", "Routing Deep")
+        self.assertEqual(appended, 1)
+        self.assertEqual(len(data["chapters"]), 1)
+        chapter = data["chapters"][0]
+        self.assertEqual(chapter["subchapters"][0]["lessons"][0]["uid"], "base-1")
+        all_lessons = [lesson for sub in chapter["subchapters"] for lesson in sub["lessons"]]
+        self.assertEqual(sum(x["uid"] == "base-1" for x in all_lessons), 1)
+        self.assertEqual(sum(x["uid"] == "route-1" for x in all_lessons), 1)
+
+    def test_duplicate_titles_merge_richer_later_pack_instead_of_dropping_it(self):
+        data = {"chapters": []}
+        short = "محتوای کوتاه " * 400
+        detailed = "# Windows Server Remoting\n\n## Lab\n" + "جزئیات تخصصی قابل راستی‌آزمایی " * 500
+        added = append_unmatched_as_extra(data, [
+            {"uid": "automation-remoting", "title_fa": "[L2] Remoting", "subchapter_order": 3,
+             "lesson_order": 1, "full_content": short, "summary": "نسخه کوتاه"},
+            {"uid": "windows-remoting", "title_fa": "[L2] Remoting", "subchapter_order": 3,
+             "lesson_order": 2, "full_content": detailed, "summary": "نسخه تخصصی ویندوز"},
+        ], 35, "فصل ۳۵", "Windows Server")
+        lessons = [lesson for sub in data["chapters"][0]["subchapters"] for lesson in sub["lessons"]]
+        self.assertEqual(added, 1)
+        self.assertEqual(len(lessons), 1)
+        self.assertIn("Windows Server Remoting", lessons[0]["full_content"])
+        self.assertIn("نسخه تخصصی ویندوز", lessons[0]["summary"])
+
+    def test_assessment_and_learning_objectives_survive_pack_append(self):
+        assessment = {
+            "questions": [{"id": "q1", "prompt": "سؤال", "options": ["الف", "ب"]}],
+            "answer_key": [{"id": "q1", "correct_index": 1, "explanation": "دلیل"}],
+        }
+        data = {"chapters": []}
+        append_unmatched_as_extra(data, [{
+            "uid": "pack-lesson",
+            "title_fa": "[L1] درس بسته",
+            "subchapter_order": 1,
+            "meta": {"assessment": assessment, "keywords": ["lab"]},
+            "learning_objectives": ["اجرای آزمایش", "تحلیل خروجی"],
+            "source_status": "review_required",
+        }], 66, "فصل ۶۶", "Routing")
+        lesson = data["chapters"][0]["subchapters"][0]["lessons"][0]
+        metadata = json.loads(lesson["meta_json"])
+        self.assertEqual(metadata["assessment"], assessment)
+        self.assertIn("lab", metadata["keywords"])
+        self.assertIn("اجرای آزمایش", lesson["learning_objectives"])
+        self.assertEqual(lesson["source_status"], "review_required")
+
+    def test_title_merge_preserves_structured_assessment_metadata(self):
+        assessment = {
+            "questions": [{"id": "q1", "prompt": "سؤال", "options": ["الف", "ب"]}],
+            "answer_key": [{"id": "q1", "correct_index": 0, "explanation": "دلیل"}],
+        }
+        base = {"full_content": "محتوای پایه"}
+        apply_fields(base, {
+            "full_content": "شرح تکمیلی",
+            "meta": {"assessment": assessment},
+            "learning_objectives": ["هدف اول"],
+            "source_status": "verified",
+        })
+        self.assertEqual(json.loads(base["meta_json"])["assessment"], assessment)
+        self.assertEqual(base["learning_objectives"], "هدف اول")
+        self.assertEqual(base["source_status"], "verified")
+
+    def test_creates_chapter_if_missing(self):
+        data = {"chapters": []}
+        appended = append_unmatched_as_extra(
+            data, [{"uid": "new-1", "title_fa": "دستور جدید", "subchapter_order": 1}],
+            68, "فصل ۶۸", "Commands",
+        )
+        self.assertEqual(appended, 1)
+        self.assertEqual([c["order"] for c in data["chapters"]], [68])
+
+    def test_unrelated_lesson_with_colliding_uid_is_preserved(self):
+        data = {"chapters": [{"order": 68, "title_fa": "دستورات", "subchapters": [
+            {"title_fa": "زیرفصل", "lessons": [{"uid": "collision", "title_fa": "دستور اول"}]}
+        ]}]}
+        added = append_unmatched_as_extra(
+            data, [{"uid": "collision", "title_fa": "دستور دوم", "subchapter_order": 1, "full_content": "شرح"}],
+            68, "فصل ۶۸", "Commands",
+        )
+        self.assertEqual(added, 1)
+        lessons = [lesson for sub in data["chapters"][0]["subchapters"] for lesson in sub["lessons"]]
+        self.assertEqual(len(lessons), 2)
+        self.assertNotEqual(lessons[0]["uid"], lessons[1]["uid"])
+
+    def test_command_ids_are_namespaced_by_source_pack(self):
+        pack = {"chapter_order": 68, "commands": [{"command": "show version", "title_fa": "نمایش نسخه", "level": "L1"}]}
+        first = commands_to_lessons(pack, ROOT / "tools/packs/commands_encyclopedia/cisco_switching.json")
+        second = commands_to_lessons(pack, ROOT / "tools/packs/routing_deep/chapter_68_cisco_routing_1600.json")
+        self.assertNotEqual(first[0]["uid"], second[0]["uid"])
+
+    def test_automation_python_and_windows_packs_have_distinct_uid_namespaces(self):
+        auto_path = ROOT / "tools/packs/automation_python/automation_python_curriculum_pack.json"
+        windows_path = ROOT / "tools/packs/windows_server/windows_server_complete_curriculum_pack.json"
+        auto = json.loads(auto_path.read_text(encoding="utf-8"))
+        windows = json.loads(windows_path.read_text(encoding="utf-8"))
+        auto_uids = {item.get("uid") for item in auto.get("lessons", []) if item.get("uid")}
+        windows_uids = {item.get("uid") for item in windows.get("lessons", []) if item.get("uid")}
+        self.assertFalse(auto_uids & windows_uids, f"duplicate lesson UIDs: {sorted(auto_uids & windows_uids)}")
+        self.assertTrue(any("اتوماسیون PowerShell" in item.get("title_fa", "") for item in auto.get("lessons", [])))
+
+    def test_command_pack_assessment_is_preserved_as_structured_metadata(self):
+        assessment = {
+            "questions": [{"id": "q1", "prompt": "کدام دستور؟", "options": ["الف", "ب"]}],
+            "answer_key": [{"id": "q1", "correct_index": 0, "explanation": "دلیل"}],
+        }
+        pack = {
+            "chapter_order": 68,
+            "commands": [{
+                "command": "show version",
+                "title_fa": "نمایش نسخه",
+                "level": "L1",
+                "assessment": assessment,
+                "learning_objectives": ["تفسیر خروجی"],
+                "scenario": {
+                    "title": "بررسی نسخه",
+                    "steps": ["دستور را در سوییچ آزمایشگاهی اجرا کن", "خروجی را ثبت کن"],
+                    "expected_result": "نسخه و uptime قابل مشاهده باشد",
+                },
+                "official_sources": [
+                    {"title": "Cisco command reference", "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-command-reference-list.html"}
+                ],
+            }],
+        }
+        lesson = commands_to_lessons(pack, ROOT / "tools/packs/commands_encyclopedia/cisco_switching.json")[0]
+        self.assertEqual(lesson["meta"]["assessment"], assessment)
+        self.assertIn("EJ_ASSESSMENT", lesson["notes"])
+        self.assertIn("## سناریوی عملی مبتنی بر دستور", lesson["full_content"])
+        self.assertIn("بررسی نسخه", lesson["full_content"])
+        self.assertIn("expected_result", lesson["full_content"])
+        self.assertIn("https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-command-reference-list.html", lesson["full_content"])
+
+    def test_cisco_command_pack_gets_specific_scenario_and_versioned_official_sources(self):
+        pack = {
+            "chapter_order": 68,
+            "vendor": "Cisco",
+            "platform": "IOS XE",
+            "commands": [{
+                "command": "show ip interface brief",
+                "title_fa": "نمایش خلاصه وضعیت اینترفیس‌ها",
+                "when_to_use_fa": "برای تشخیص رابط‌های down و آدرس‌های IP",
+                "sample_output": "GigabitEthernet1/0/1  192.0.2.1  YES manual  up  up",
+            }],
+        }
+        lesson = commands_to_lessons(pack, ROOT / "tools/packs/commands_encyclopedia/cisco_switching.json")[0]
+        content = lesson["full_content"]
+        self.assertIn("## سناریوی عملی مبتنی بر دستور", content)
+        self.assertIn("show ip interface brief", content)
+        self.assertIn("معیار قبولی", content)
+        self.assertIn("شاهد خروجی برای مقایسه", content)
+        self.assertIn("https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-26/products-command-reference-list.html", content)
+        self.assertIn("https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-command-reference-list.html", content)
+
+    def test_git_markdown_book_splits_into_level_lessons(self):
+        markdown = """# فصل ۶۴
+## ۶۴.۱ مبانی و راه‌اندازی
+### Git و GitHub — L0
+## ۱. مدل ذهنی
+متن مقدماتی.
+## ۴. سناریوی عملی
+سناریوی آزمایشی.
+## ۶. آزمایشگاه
+آزمایش محلی.
+### Git و GitHub — L1
+## ۱. مدل ذهنی
+متن پیشرفته.
+"""
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "Git_Chapter_64_Full.md"
+            path.write_text(markdown, encoding="utf-8")
+            lessons = git_markdown_to_lessons(path)
+        self.assertEqual(len(lessons), 2)
+        self.assertEqual(lessons[0]["chapter_order"], 64)
+        self.assertEqual(lessons[0]["subchapter_order"], 1)
+        self.assertIn("سناریوی عملی", lessons[0]["examples"])
+
+    def test_sync_compares_timezone_offsets_by_instant(self):
+        server_record = {"uid": "x", "last_updated": "2026-10-11T12:00:00Z", "title": "same"}
+        client_record = {"uid": "x", "last_updated": "2026-10-11T15:30:00+03:30", "title": "same"}
+        server_record["content_hash"] = content_hash(server_record)
+        client_record["content_hash"] = content_hash(client_record)
+        self.assertEqual(compare_lww(server_record, client_record), "equal")
+
+    def test_sync_merge_does_not_mutate_incoming_record(self):
+        incoming = {"uid": "new", "last_updated": "2026-10-11T12:00:00Z", "title": "lesson"}
+        applied, _, _ = merge_push({}, [incoming])
+        self.assertNotIn("content_hash", incoming)
+        self.assertIn("content_hash", applied[0])
+
+    def test_fts_search_finds_english_terms_and_falls_back_cleanly(self):
+        with tempfile.TemporaryDirectory() as td:
+            db = WebDB(Path(td) / "search.sqlite")
+            chapter_id = db.conn.execute(
+                "INSERT INTO chapters(order_index, title_fa, title_en) VALUES(1, ?, ?)",
+                ("مسیریابی", "Routing"),
+            ).lastrowid
+            level_id = db.conn.execute(
+                "INSERT INTO levels(chapter_id, order_index, title_fa, title_en) VALUES(?, 1, ?, ?)",
+                (chapter_id, "مبتدی", "Beginner"),
+            ).lastrowid
+            db.conn.execute(
+                """INSERT INTO lessons(level_id, order_index, title_fa, title_en, tags, summary, full_content, commands, examples)
+                   VALUES(?, 1, ?, ?, ?, ?, ?, ?, ?)""",
+                (level_id, "مسیریابی BGP", "BGP routing", "BGP", "neighbor", "BGP establishes routing adjacencies.", "show ip bgp summary", "Verify neighbor state."),
+            )
+            db.conn.commit()
+            rows = db.search("BGP")
+            self.assertTrue(any("BGP" in str(row.get("title_fa", "")) for row in rows))
+            db.conn.close()
+
+    def test_database_backup_is_consistent_and_readable(self):
+        with tempfile.TemporaryDirectory() as td:
+            db = WebDB(Path(td) / "source.sqlite")
+            db.conn.execute(
+                "INSERT INTO chapters(order_index, title_fa, title_en) VALUES(1, ?, ?)",
+                ("فصل آزمایشی", "Test chapter"),
+            )
+            db.conn.commit()
+            backup = db.backup(Path(td) / "backups")
+            self.assertTrue(backup.is_file())
+            with sqlite3.connect(str(backup)) as copied:
+                count = copied.execute("SELECT COUNT(*) FROM chapters").fetchone()[0]
+            self.assertEqual(count, 1)
+            db.conn.close()
+
+    def test_assessment_requires_matching_separate_answer_key(self):
+        result = _item_quality({
+            "title_fa": "آزمون نمونه",
+            "full_content": "این یک مثال و Lab برای راستی‌آزمایی و امنیت است.",
+            "assessment": {
+                "questions": [{"id": "q1", "prompt": "؟", "options": ["الف", "ب"]}],
+                "answer_key": [{"id": "q2", "correct_index": 0}],
+            },
+        })
+        self.assertTrue(result["has_questions"])
+        self.assertTrue(result["has_answer_key"])
+        self.assertFalse(result["answer_key_ids_match"])
+
+
+class StudySyncMigrationTests(unittest.TestCase):
+    def test_old_study_table_is_migrated_without_losing_progress_and_can_sync(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "legacy-study.sqlite"
+            conn = sqlite3.connect(str(path))
+            conn.row_factory = sqlite3.Row
+            conn.execute(
+                """CREATE TABLE study_progress (
+                    lesson_uid TEXT PRIMARY KEY, status TEXT DEFAULT 'new',
+                    ease REAL DEFAULT 2.5, interval_hours INTEGER DEFAULT 1,
+                    last_studied TEXT, next_review TEXT, times_studied INTEGER DEFAULT 0,
+                    notes TEXT DEFAULT ''
+                )"""
+            )
+            stamp = "2026-10-10T15:00:00Z"
+            conn.execute(
+                """INSERT INTO study_progress
+                   (lesson_uid,status,ease,interval_hours,last_studied,next_review,times_studied,notes)
+                   VALUES(?,?,?,?,?,?,?,?)""",
+                ("lesson:legacy", "learning", 2.7, 24, stamp, "2026-10-11T15:00:00Z", 4, "preserve this"),
+            )
+            conn.commit()
+
+            manifest = study_sync_index(conn)
+            item = next(row for row in manifest if row["uid"] == "lesson:legacy")
+            self.assertEqual(item["last_updated"], stamp)
+            pulled = study_sync_pull(conn, ["lesson:legacy"])
+            self.assertEqual(pulled[0]["notes"], "preserve this")
+            self.assertEqual(pulled[0]["times_studied"], 4)
+
+            incoming = {
+                "uid": "lesson:new-progress", "entity": "study", "status": "known",
+                "ease": 2.8, "interval_hours": 72, "last_studied": stamp,
+                "next_review": "2026-10-13T15:00:00Z", "times_studied": 3,
+                "notes": "synced from Android", "last_updated": "2026-10-12T04:00:00Z",
+                "device_id": "android-test", "deleted": False,
+            }
+            self.assertEqual(study_sync_apply(conn, [incoming]), 1)
+            remote = {row["uid"]: row for row in study_sync_pull(conn, ["lesson:new-progress"])}
+            self.assertEqual(remote["lesson:new-progress"]["status"], "known")
+            self.assertEqual(remote["lesson:new-progress"]["device_id"], "android-test")
+            self.assertEqual(remote["lesson:new-progress"]["notes"], "synced from Android")
+            conn.close()
+
+
+class SyncApiContractTests(unittest.TestCase):
+    def test_sync_push_persists_tasks_notes_and_tombstones_but_rejects_missing_lessons(self):
+        with tempfile.TemporaryDirectory() as td:
+            db = WebDB(Path(td) / "sync-api.sqlite")
+            stamp = "2026-10-12T04:00:00Z"
+            chapter_id = db.conn.execute(
+                "INSERT INTO chapters(order_index, title_fa, title_en) VALUES(1, ?, ?)",
+                ("Sync Lab", "Sync Lab"),
+            ).lastrowid
+            level_id = db.conn.execute(
+                "INSERT INTO levels(chapter_id, order_index, title_fa, title_en) VALUES(?, 1, ?, ?)",
+                (chapter_id, "Sync lesson", "Sync lesson"),
+            ).lastrowid
+            db.conn.execute(
+                "INSERT INTO lessons(level_id, order_index, title_fa, last_updated) VALUES(?, 1, ?, ?)",
+                (level_id, "Lesson for study sync", stamp),
+            )
+            db.conn.commit()
+            db.ensure_sync_columns()
+            db.conn.execute(
+                "UPDATE lessons SET uid=? WHERE title_fa=?",
+                ("lesson:study-test", "Lesson for study sync"),
+            )
+            db.conn.commit()
+            payload = {
+                "records": [
+                    {"uid": "task-1", "entity": "task", "title": "LAN sync test",
+                     "body": "Created on Android", "done": False, "priority": 2,
+                     "due_at": "2026-10-13T04:30", "remind_at": "2026-10-13T04:30",
+                     "last_updated": stamp, "device_id": "android-test"},
+                    {"uid": "note-1", "entity": "note", "title": "OSPF notes",
+                     "body": "Neighbor state checklist", "tags": "routing",
+                     "last_updated": stamp, "device_id": "android-test", "deleted": True},
+                    {"uid": "lesson:study-test", "entity": "study", "status": "learning",
+                     "ease": 2.5, "interval_hours": 24, "last_studied": stamp,
+                     "next_review": "2026-10-13T04:00:00Z", "times_studied": 2,
+                     "notes": "Revise OSPF neighbor states", "last_updated": stamp,
+                     "device_id": "android-test", "deleted": False},
+                    {"uid": "lesson:missing", "entity": "lesson", "title_fa": "درس ناشناخته"},
+                    {"uid": "lesson:study-orphan", "entity": "study", "status": "learning",
+                     "ease": 2.5, "interval_hours": 24, "last_studied": stamp,
+                     "next_review": "2026-10-13T04:00:00Z", "times_studied": 2,
+                     "notes": "must be rejected without a lesson", "last_updated": stamp,
+                     "device_id": "android-test", "deleted": False},
+                    {"uid": "vault-1", "entity": "vault", "title": "must not sync", "secret": "plaintext"},
+                    {"uid": "note-invalid", "entity": "note", "title": "   ",
+                     "body": "must not be silently dropped", "tags": "routing",
+                     "last_updated": stamp, "device_id": "android-test"},
+                    {"uid": "lesson:study-invalid", "entity": "study", "status": "corrupted",
+                     "ease": 2.5, "interval_hours": 24, "times_studied": 2,
+                     "notes": "must be reported", "last_updated": stamp,
+                     "device_id": "android-test"},
+                ]
+            }
+            with (
+                patch.object(server_app, "db", return_value=db),
+                patch.object(server_app, "require_token", return_value=None),
+                patch.object(workspace_routes, "_db_path", return_value=db.path),
+            ):
+                client = server_app.app.test_client()
+                response = client.post("/api/sync/push", json=payload)
+                self.assertEqual(response.status_code, 200)
+                body = response.get_json()
+                self.assertEqual(body["accepted"], 3)
+                self.assertEqual(body["unsupported"], 1)
+                self.assertEqual(body["unsupported_uids"], ["vault-1"])
+                self.assertEqual(body["missing_targets"], 2)
+                self.assertEqual(
+                    body["missing_target_uids"],
+                    ["lesson:missing", "study:lesson:study-orphan"],
+                )
+                self.assertEqual(body["invalid"], 2)
+                self.assertEqual(body["invalid_uids"], ["note-invalid", "lesson:study-invalid"])
+                self.assertEqual(body["apply_rejected"], 0)
+
+                manifest = client.get("/api/sync/manifest").get_json()
+                by_uid = {item["uid"]: item for item in manifest["items"]}
+                self.assertIn("task-1", by_uid)
+                self.assertIn("note-1", by_uid)
+                self.assertNotIn("note-invalid", by_uid)
+                self.assertNotIn("lesson:study-orphan", by_uid)
+                self.assertTrue(by_uid["note-1"]["deleted"])
+                self.assertIn("lesson:study-test", by_uid)
+                self.assertEqual(by_uid["lesson:study-test"]["entity"], "study")
+
+                pulled = client.post("/api/sync/pull", json={"uids": ["task-1", "note-1", "lesson:study-test"]}).get_json()
+                records = {item["uid"]: item for item in pulled["records"]}
+                self.assertEqual(records["task-1"]["title"], "LAN sync test")
+                self.assertEqual(records["task-1"]["device_id"], "android-test")
+                self.assertEqual(records["task-1"]["remind_at"], "2026-10-13T04:30")
+                server_task = db.conn.execute("SELECT remind_at, reminded_at FROM ws_tasks WHERE uid='task-1'").fetchone()
+                self.assertEqual(server_task["remind_at"], "2026-10-13T04:30")
+                self.assertEqual(server_task["reminded_at"], "")
+                self.assertTrue(records["note-1"]["deleted"])
+                self.assertNotIn("secret", records["note-1"])
+                self.assertEqual(records["lesson:study-test"]["times_studied"], 2)
+                self.assertEqual(records["lesson:study-test"]["notes"], "Revise OSPF neighbor states")
+            db.conn.close()
+
+
+    def test_sync_push_rejects_malformed_task_fields_instead_of_coercing(self):
+        with tempfile.TemporaryDirectory() as td:
+            db = WebDB(Path(td) / "sync-invalid-task.sqlite")
+            payload = {
+                "records": [
+                    {"uid": "task-bad-priority", "entity": "task", "title": "Bad priority",
+                     "body": "", "done": False, "priority": 4, "due_at": "",
+                     "last_updated": "2026-10-12T04:00:00Z", "device_id": "android-test"},
+                    {"uid": "task-bad-date", "entity": "task", "title": "Bad date",
+                     "body": "", "done": False, "priority": 2, "due_at": "2026-99-99",
+                     "last_updated": "2026-10-12T04:00:00Z", "device_id": "android-test"},
+                    {"uid": "task-bad-done", "entity": "task", "title": "Bad done flag",
+                     "body": "", "done": "false", "priority": 2, "due_at": "",
+                     "last_updated": "2026-10-12T04:00:00Z", "device_id": "android-test"},
+                    {"uid": "task-bad-delete", "entity": "task", "title": "Bad delete flag",
+                     "body": "", "done": False, "priority": 2, "due_at": "",
+                     "deleted": "yes", "last_updated": "2026-10-12T04:00:00Z",
+                     "device_id": "android-test"},
+                    {"uid": "task-bad-reminder", "entity": "task", "title": "Bad reminder",
+                     "body": "", "done": False, "priority": 2, "due_at": "2026-10-13T09:00",
+                     "remind_at": "tomorrow morning", "last_updated": "2026-10-12T04:00:00Z",
+                     "device_id": "android-test"},
+                ]
+            }
+            try:
+                with (
+                    patch.object(server_app, "db", return_value=db),
+                    patch.object(server_app, "require_token", return_value=None),
+                    patch.object(workspace_routes, "_db_path", return_value=db.path),
+                ):
+                    client = server_app.app.test_client()
+                    response = client.post("/api/sync/push", json=payload)
+                    self.assertEqual(response.status_code, 200)
+                    body = response.get_json()
+                    self.assertEqual(body["accepted"], 0)
+                    self.assertEqual(body["invalid"], 5)
+                    self.assertEqual(
+                        body["invalid_uids"],
+                        ["task-bad-priority", "task-bad-date", "task-bad-done", "task-bad-delete", "task-bad-reminder"],
+                    )
+                    manifest = client.get("/api/sync/manifest").get_json()
+                    self.assertFalse(
+                        any(item["uid"].startswith("task-bad-") for item in manifest["items"])
+                    )
+            finally:
+                db.conn.close()
+
+    def test_task_reminder_time_round_trips_but_delivery_marker_stays_device_local(self):
+        with tempfile.TemporaryDirectory() as td:
+            db = WebDB(Path(td) / "sync-reminder.sqlite")
+            stamp = "2026-10-12T04:00:00Z"
+            payload = {
+                "records": [
+                    {"uid": "task-reminder-1", "entity": "task", "title": "Submit report",
+                     "body": "Verify exported report", "done": False, "priority": 2,
+                     "due_at": "2026-10-13T04:30", "remind_at": "2026-10-13T04:30",
+                     "last_updated": stamp, "device_id": "android-test"},
+                    {"uid": "task-reminder-invalid", "entity": "task", "title": "Invalid reminder",
+                     "body": "", "done": False, "priority": 2, "due_at": "2026-10-13T04:30",
+                     "remind_at": "2026-99-99T44:88", "last_updated": stamp,
+                     "device_id": "android-test"},
+                ]
+            }
+            try:
+                with (
+                    patch.object(server_app, "db", return_value=db),
+                    patch.object(server_app, "require_token", return_value=None),
+                    patch.object(workspace_routes, "_db_path", return_value=db.path),
+                ):
+                    client = server_app.app.test_client()
+                    pushed = client.post("/api/sync/push", json=payload)
+                    self.assertEqual(pushed.status_code, 200)
+                    result = pushed.get_json()
+                    self.assertEqual(result["accepted"], 1)
+                    self.assertEqual(result["invalid"], 1)
+                    pulled = client.post(
+                        "/api/sync/pull", json={"uids": ["task-reminder-1", "task-reminder-invalid"]}
+                    ).get_json()
+                    records = {row["uid"]: row for row in pulled["records"]}
+                    self.assertEqual(records["task-reminder-1"]["remind_at"], "2026-10-13T04:30")
+                    self.assertNotIn("reminded_at", records["task-reminder-1"])
+                    self.assertNotIn("task-reminder-invalid", records)
+            finally:
+                db.conn.close()
+
+
+    def test_sync_push_does_not_claim_success_when_storage_rejects_existing_lesson(self):
+        with tempfile.TemporaryDirectory() as td:
+            db = WebDB(Path(td) / "sync-reject.sqlite")
+            chapter_id = db.conn.execute(
+                "INSERT INTO chapters(order_index, title_fa, title_en) VALUES(1, ?, ?)",
+                ("آزمایشی", "Test"),
+            ).lastrowid
+            level_id = db.conn.execute(
+                "INSERT INTO levels(chapter_id, order_index, title_fa, title_en) VALUES(?, 1, ?, ?)",
+                (chapter_id, "بخش آزمایشی", "Test level"),
+            ).lastrowid
+            db.conn.execute(
+                "INSERT INTO lessons(level_id, order_index, title_fa, last_updated) VALUES(?, 1, ?, ?)",
+                (level_id, "درس آزمایشی", "2026-10-11T00:00:00Z"),
+            )
+            db.conn.commit()
+            db.ensure_sync_columns()
+            uid = db.conn.execute("SELECT uid FROM lessons LIMIT 1").fetchone()["uid"]
+            payload = {
+                "records": [{
+                    "uid": uid, "entity": "lesson", "title_fa": "درس ویرایش‌شده",
+                    "full_content": "متن درس", "last_updated": "2026-10-12T00:00:00Z",
+                    "device_id": "android-test",
+                }]
+            }
+            original_apply = db.sync_apply
+            self.assertEqual(original_apply(payload["records"]), 1)
+
+            # Simulate a race where the target disappears between index and apply.
+            db.conn.execute("UPDATE lessons SET last_updated=? WHERE uid=?", ("2026-10-11T00:00:00Z", uid))
+            db.conn.commit()
+            db.sync_apply = lambda records: 0
+            try:
+                with (
+                    patch.object(server_app, "db", return_value=db),
+                    patch.object(server_app, "require_token", return_value=None),
+                ):
+                    response = server_app.app.test_client().post("/api/sync/push", json=payload)
+                    body = response.get_json()
+                    self.assertEqual(response.status_code, 200)
+                    self.assertEqual(body["accepted"], 0)
+                    self.assertEqual(body["apply_rejected"], 1)
+            finally:
+                db.conn.close()
+
+
+if __name__ == "__main__":
+    unittest.main()

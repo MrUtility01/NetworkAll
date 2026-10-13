@@ -1,6 +1,7 @@
 package com.netenc.app.data
 
 import android.content.Context
+import android.provider.Settings
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import kotlin.math.max
@@ -14,6 +15,7 @@ import kotlin.math.roundToInt
 class StudyRepository(context: Context) {
     private val dao = AppDatabase.get(context).studyDao()
     private val prefs = context.getSharedPreferences("netenc_study", Context.MODE_PRIVATE)
+    private val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID) ?: "android"
 
     suspend fun mark(uid: String, action: String): StudyEntity {
         val old = dao.byUid(uid)
@@ -71,7 +73,10 @@ class StudyRepository(context: Context) {
             intervalHours = interval,
             lastStudied = now.toString(),
             nextReview = next.toString(),
-            timesStudied = times
+            timesStudied = times,
+            lastUpdated = now.toString(),
+            deviceId = deviceId,
+            deleted = false
         )
         dao.upsert(row)
         recordDailyActivity()

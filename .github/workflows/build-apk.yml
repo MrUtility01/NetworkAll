@@ -1,9 +1,67 @@
 name: Build APK v1
 
+# Each commit previously launched another full 90-minute Android build. Keep
+# only the newest validation for this PR/branch to avoid stale builds competing.
+concurrency:
+  group: build-apk-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
 
 jobs:
+  windows-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build the same merged curriculum index used by Android
+        run: |
+          set -e
+          python3 scripts/export_android_index.py
+          python3 scripts/merge_content_packs_into_android.py
+          mkdir -p shared
+          cp android/app/src/main/assets/curriculum_index.json.gz shared/curriculum_index.json.gz
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          path = Path("shared/curriculum_index.json.gz")
+          data = json.loads(gzip.open(path, "rt", encoding="utf-8").read())
+          orders = [int(ch["order"]) for ch in data["chapters"]]
+          assert len(orders) == 68 and len(set(orders)) == 68, "Windows shared curriculum must contain 68 unique chapters"
+          assert int(data.get("lesson_count") or 0) > 8000, "Merged curriculum is unexpectedly incomplete"
+          print("Windows shared curriculum:", len(orders), "chapters;", data["lesson_count"], "lessons;", path.stat().st_size, "compressed bytes")
+          PY
+      - name: Assemble portable Windows server package
+        run: |
+          set -e
+          mkdir -p dist/NetworkAll-Windows
+          cp -a server shared tools scripts docs windows README.md INSTALL_FA.md README_FA.txt dist/NetworkAll-Windows/
+          cat > dist/NetworkAll-Windows/BUILD-INFO.txt <<'EOF'
+          NetworkAll Windows portable package
+          Build source: GitHub Actions
+          Launch: windows\\Start-NetworkAll.bat
+          This is a Python-based portable package, not a standalone EXE.
+          Do not distribute server/data/session.key or server/data/sync-token.txt.
+          EOF
+          cd dist
+          zip -qr NetworkAll-Windows-Portable.zip NetworkAll-Windows
+          sha256sum NetworkAll-Windows-Portable.zip > NetworkAll-Windows-Portable.zip.sha256
+          ls -lh NetworkAll-Windows-Portable.zip NetworkAll-Windows-Portable.zip.sha256
+      - name: Upload Windows portable package
+        uses: actions/upload-artifact@v4
+        with:
+          name: NetworkAll-Windows-Portable
+          path: |
+            dist/NetworkAll-Windows-Portable.zip
+            dist/NetworkAll-Windows-Portable.zip.sha256
+          if-no-files-found: error
+          retention-days: 30
+
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -21,6 +79,49 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      - name: Install Python test dependencies
+        run: |
+          set -e
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r server/requirements.txt
+
+      - name: Python syntax and regression tests
+        run: |
+          set -e
+          python3 -m compileall -q server shared scripts tools tests
+          python3 -m unittest discover -s tests -v
+          python3 -m unittest discover -s server/tests -v
+
+      - name: Content quality audit (read-only)
+        run: |
+          set -e
+          python3 tools/audit_content.py --packs-only --json /tmp/content-audit.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = json.loads(Path("/tmp/content-audit.json").read_text(encoding="utf-8"))
+          audit = p.get("packs", {})
+          errors = audit.get("parse_errors", [])
+          if errors:
+              print(json.dumps(errors[:50], ensure_ascii=False, indent=2))
+              raise SystemExit(f"Invalid JSON content packs: {len(errors)}")
+          print("JSON packs parsed:", audit.get("json_files_parsed"))
+          print("Instructional records:", audit.get("instructional_records"))
+          print("Content bands:", audit.get("bands"))
+          print("Missing lab:", audit.get("missing_lab"))
+          print("Missing examples:", audit.get("missing_examples"))
+          print("Missing assessments:", audit.get("missing_questions"))
+          PY
+
+      - name: Upload content audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-quality-audit
+          path: /tmp/content-audit.json
+          if-no-files-found: ignore
+          retention-days: 30
 
       - name: Android SDK licenses + platform
         run: |
@@ -52,12 +153,139 @@ jobs:
           assert 1 in orders and 68 in orders
           PY
 
-      - name: Merge packs (best effort)
+      - name: Validate supplementary curriculum packs
+        run: python3 tools/validate_chapter_packs.py
+
+      - name: Merge content packs
         run: |
-          set +e
+          set -e
           python3 scripts/merge_content_packs_into_android.py
-          echo "merge_exit=$?"
-          exit 0
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          p = Path("android/app/src/main/assets/curriculum_index.json.gz")
+          data = json.loads(gzip.open(p, "rt", encoding="utf-8").read())
+          orders = [int(c["order"]) for c in data.get("chapters", [])]
+          if len(orders) != len(set(orders)):
+              raise SystemExit("duplicate chapter order after pack merge")
+          missing = sorted(set(range(1, 69)) - set(orders))
+          if missing:
+              raise SystemExit(f"missing chapter orders after pack merge: {missing}")
+          total = sum(len(s.get("lessons", [])) for ch in data["chapters"] for s in ch.get("subchapters", []))
+          if total != data.get("lesson_count"):
+              raise SystemExit(f"lesson_count mismatch: meta={data.get('lesson_count')} actual={total}")
+          print(f"merged index valid: chapters={len(orders)} lessons={total}")
+          PY
+
+      - name: Verify enriched lessons are present in Android curriculum
+        run: |
+          set -e
+          python3 - <<'PY'
+          import gzip
+          import json
+          from pathlib import Path
+
+          root = Path(".")
+          index_path = root / "android/app/src/main/assets/curriculum_index.json.gz"
+          data = json.loads(gzip.open(index_path, "rt", encoding="utf-8").read())
+          catalog = json.loads((root / "tools/packs/pack_catalog.json").read_text(encoding="utf-8"))
+          required_ids = {
+              "active-directory-domain-engineering-ch28",
+              "windows-file-services-smb-dfs-ch29",
+              "linux-server-administration-ch30",
+              "sql-database-engineering-ch31",
+              "monitoring-observability-engineering-ch32",
+              "switching-engineering-vlan-stp-ch13-v3",
+          }
+          entries = {item.get("id"): item for item in catalog.get("packs", [])}
+          missing_entries = sorted(required_ids - set(entries))
+          if missing_entries:
+              raise SystemExit(f"Missing active curriculum pack entries: {missing_entries}")
+
+          expected = {}
+          for pack_id in sorted(required_ids):
+              entry = entries[pack_id]
+              if entry.get("active_in_merge") is not True:
+                  raise SystemExit(f"{pack_id} is not active_in_merge")
+              pack_path = root / entry["path"]
+              pack = json.loads(pack_path.read_text(encoding="utf-8"))
+              chapter_order = int(pack["scope"]["chapter_order"])
+              expected.setdefault(chapter_order, {})
+              expected[chapter_order].update({lesson["uid"]: lesson for lesson in pack["lessons"]})
+
+          chapter_map = {int(ch.get("order") or 0): ch for ch in data.get("chapters", [])}
+          for chapter_order, expected_lessons in sorted(expected.items()):
+              chapter = chapter_map.get(chapter_order)
+              if chapter is None:
+                  raise SystemExit(f"Missing target chapter {chapter_order} in merged curriculum")
+              actual = {
+                  str(lesson.get("uid")): lesson
+                  for sub in chapter.get("subchapters", [])
+                  for lesson in sub.get("lessons", [])
+                  if lesson.get("uid")
+              }
+              missing = sorted(set(expected_lessons) - set(actual))
+              if missing:
+                  raise SystemExit(f"Chapter {chapter_order}: pack lessons not merged: {missing}")
+              for uid in expected_lessons:
+                  lesson = actual[uid]
+                  if not str(lesson.get("subchapter_title_fa") or "").strip():
+                      raise SystemExit(f"{uid}: descriptive subchapter title was not preserved")
+                  meta = json.loads(lesson.get("meta_json") or "{}")
+                  assessment = meta.get("assessment", {})
+                  questions = assessment.get("questions", [])
+                  answers = assessment.get("answer_key", [])
+                  if len(questions) != len(answers):
+                      raise SystemExit(f"{uid}: answer-key count does not match questions")
+                  if [q.get("id") for q in questions] != [a.get("id") for a in answers]:
+                      raise SystemExit(f"{uid}: answer-key IDs/order mismatch after merge")
+              print(f"Chapter {chapter_order}: verified {len(expected_lessons)} enriched lessons")
+          print(f"Verified {sum(map(len, expected.values()))} enriched lessons in merged Android curriculum")
+          PY
+
+      - name: Validate shared infographic assets
+        run: |
+          set -e
+          python3 - <<'PY'
+          import re
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          root = Path("shared/infographics")
+          page = (root / "index.html").read_text(encoding="utf-8")
+          refs = set(re.findall(r"""<img[^>]+src=["']([^"']+\.svg)["']""", page))
+          if len(refs) < 11:
+              raise SystemExit(f"Expected at least 11 infographic diagrams, found {len(refs)}")
+          for ref in sorted(refs):
+              path = (root / ref).resolve()
+              if root.resolve() not in path.parents or not path.is_file():
+                  raise SystemExit(f"Missing/unsafe infographic reference: {ref}")
+              ET.parse(path)
+          print(f"Validated {len(refs)} linked SVG diagrams")
+          PY
+
+      - name: Audit final active curriculum after merge
+        run: |
+          set -e
+          python3 tools/audit_content_packs.py --json /tmp/active-curriculum-audit.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("/tmp/active-curriculum-audit.json").read_text(encoding="utf-8"))
+          active = report.get("active_curriculum", {})
+          print("Active curriculum records:", active.get("records"))
+          print("Active curriculum warnings:", active.get("warnings"))
+          print("Pack records scanned:", report.get("records_scanned"))
+          print("Duplicate UIDs:", len(report.get("duplicate_ids", [])))
+          PY
+
+      - name: Upload active curriculum audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: active-curriculum-audit
+          path: /tmp/active-curriculum-audit.json
+          if-no-files-found: ignore
+          retention-days: 30
 
       - name: Gradle wrapper + local.properties
         working-directory: android

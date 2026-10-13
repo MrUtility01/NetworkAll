@@ -10,7 +10,7 @@
 5. پایش، تشخیص و پاسخ به رخداد بی‌سیم
 
 ## ساختار
-JSON از همان الگوی رکورد درس بسته امنیت استفاده می‌کند: `uid`, `chapter_order`, `subchapter_order`, `lesson_order`, `topic`, `level`, `summary`, `full_content`, `commands`, `examples`, `learning_objectives`, `meta`. پاسخ‌نامه در `meta.assessment.answer_key` جدا از `questions` نگهداری می‌شود.
+مسیر JSON نهایی: tools/packs/wireless_security/wireless_security_pack.json. JSON از همان الگوی رکورد درس بسته امنیت استفاده می‌کند: `uid`, `chapter_order`, `subchapter_order`, `lesson_order`, `topic`, `level`, `summary`, `full_content`, `commands`, `examples`, `learning_objectives`, `meta`. پاسخ‌نامه در `meta.assessment.answer_key` جدا از `questions` نگهداری می‌شود.
 
 ## ادغام امن
 1. از دیتابیس برنامه نسخه پشتیبان بگیرید.

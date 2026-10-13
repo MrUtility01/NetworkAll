@@ -162,6 +162,75 @@ reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion /v ProgramFilesDir
     return summary, full, commands, lab
 
 def _linux(topic, level):
+    topic_folded = (topic or "").casefold()
+    if any(term in topic_folded for term in ("سلسله‌مراتب fs", "filesystem hierarchy", "hierarchy fs", "fhs", "سلسله مراتب فایل")):
+        summary = f"«{topic}»: FHS نقشهٔ معنایی مسیرهای لینوکس است؛ مسیر فایل، فضای دیسک و mount واقعی سه مفهوم جدا هستند."
+        full = f"""# {topic}
+
+**سطح:** {level} — {_depth(level)}
+
+## مدل ذهنی
+Filesystem Hierarchy Standard (FHS) قرارداد مشترکِ محل قرارگیری فایل‌هاست؛ چیدمان دقیق می‌تواند میان توزیع‌ها تفاوت داشته باشد. ریشهٔ فضای نام / است. هر پارتیشن یا شبکه‌فایل‌سیستم پس از mount زیر یک مسیر ظاهر می‌شود. بنابراین نام /var به‌تنهایی نمی‌گوید داده روی کدام دیسک است؛ findmnt این رابطه را نشان می‌دهد.
+
+## مسیرهای مهم
+| مسیر | محتوای معمول | نکتهٔ عملیاتی |
+|---|---|---|
+| /etc | پیکربندی سراسری | قبل/بعد تغییر diff و backup داشته باش |
+| /usr/bin و /usr/sbin | ابزارها و برنامه‌های توزیع | در بسیاری از توزیع‌ها /bin و /sbin به /usr لینک شده‌اند |
+| /var/log | لاگ سرویس‌ها | rotation و فضای مصرفی را بررسی کن |
+| /var/lib | state سرویس‌ها | حذف دستی ممکن است دیتابیس یا سرویس را خراب کند |
+| /home | داده و تنظیمات کاربران | ممکن است filesystem جدا باشد |
+| /root | خانهٔ root | با ریشهٔ / اشتباه نشود |
+| /tmp | دادهٔ موقت | ماندگاری بعد reboot تضمین نیست |
+| /run | PID و socketهای زمان اجرا | معمولاً tmpfs و پس از reboot بازسازی می‌شود |
+| /proc | نمای مجازی process و kernel | مصرف آن را با اندازهٔ فایل روی دیسک یکی نگیر |
+| /sys | نمای دستگاه و kernel | نوشتن روی بعضی attributeها تنظیم زنده را تغییر می‌دهد |
+| /dev | device node | با فایل معمولی فرق دارد؛ روی آن rm یا echo آزمایشی اجرا نکن |
+| /boot و /boot/efi | kernel، initramfs و EFI System Partition | تغییر اشتباه می‌تواند بوت را مختل کند |
+| /mnt و /media | mountهای دستی و رسانهٔ جداشدنی | وضعیت واقعی را با findmnt بررسی کن |
+| /opt و /srv | برنامه‌های افزوده و دادهٔ سرویس‌ها | به طراحی توزیع و سازمان وابسته‌اند |
+
+## فرق مسیر، mount، فضا و مجوز
+- مسیر: نامی در فضای نام فایل‌ها مانند /var/log.
+- mount point: محل اتصال یک filesystem؛ با findmnt -T /var/log منبع واقعی را ببین.
+- df -hT ظرفیت و نوع filesystem را نشان می‌دهد؛ du -xhd1 /var مصرف شاخه‌ها را در همان filesystem برآورد می‌کند.
+- df -i وضعیت inode را نشان می‌دهد؛ تمام‌شدن inode می‌تواند ساخت فایل را متوقف کند حتی اگر فضا باقی باشد.
+- namei -l /etc/ssh/sshd_config مجوز تک‌تک اجزای مسیر را نشان می‌دهد؛ ACL و mount options هم مهم‌اند.
+
+## RCA: فضای دیسک تمام شده
+1. با df -hT mountهای پر را پیدا کن.
+2. df -i را هم بررسی کن؛ بین کمبود block و کمبود inode تفاوت بگذار.
+3. اگر /var پر است، du -xhd1 /var را برای یافتن شاخهٔ بزرگ اجرا کن.
+4. اگر df مصرف نشان می‌دهد ولی du همان اندازه را نمی‌یابد، فایل حذف‌شده‌ای که یک process باز نگه داشته یا reserved blocks را بررسی کن؛ lsof +L1 می‌تواند سرنخ بدهد.
+5. قبل از پاک‌کردن لاگ یا داده، مالک سرویس، retention و الزامات ممیزی را تعیین کن. صرف بزرگ‌بودن /var/lib دلیل حذف آن نیست.
+
+## امنیت و معیار قبولی
+روی /proc، /sys، /dev، /boot و /var/lib آزمایش تغییردهنده اجرا نکن. درس زمانی تکمیل است که بتوانی منبع mount مسیر /var/log را با شاهد نشان بدهی، تفاوت df و du و inode را توضیح بدهی و برای filesystem پر یک اقدام ایمن و قابل بازگشت پیشنهاد کنی.
+"""
+        fence = chr(96) * 3
+        commands = f"""# بررسی‌های فقط‌خواندنی
+{fence}bash
+findmnt -T /var/log
+findmnt -o TARGET,SOURCE,FSTYPE,OPTIONS
+df -hT
+df -i
+du -xhd1 /var 2>/dev/null | sort -h
+namei -l /etc/ssh/sshd_config
+stat /etc/hostname
+{fence}
+"""
+        lab = """# آزمایشگاه فقط‌خواندنی — FHS
+
+1. findmnt -T /var/log را اجرا و TARGET/SOURCE/FSTYPE را ثبت کن.
+2. df -hT و df -i را مقایسه کن؛ محدودیت bytes است یا inode؟
+3. du -xhd1 /var را اجرا کن؛ خروجی باید روی همان filesystem بماند و سطح اول را خلاصه کند.
+4. namei -l /etc/ssh/sshd_config را بخوان و نخستین جزء مسیر با مجوز محدود را مشخص کن.
+5. هیچ فایل سیستمی را حذف یا ویرایش نکن.
+
+معیار قبولی: گزارش شامل منبع mount، درصد استفادهٔ block و inode، بزرگ‌ترین شاخهٔ قابل مشاهده و یک اقدام بررسی‌شده بدون حذف داده باشد.
+"""
+        return summary, full, commands, lab
+
     summary = f"«{topic}»: لینوکس = همه‌چیز فایل + process + permission + systemd."
     full = f"""# {topic}
 
@@ -244,6 +313,112 @@ ls -l /etc/hostname
     return summary, full, commands, lab
 
 def _resource(topic, level):
+    topic_folded = (topic or "").casefold()
+    if any(term in topic_folded for term in ("network bottleneck", "گلوگاه شبکه", "تشخیص گلوگاه شبکه")):
+        summary = f"«{topic}»: با RTT، loss، retransmission، interface counters و DNS به‌جای حدس‌زدن محل گلوگاه شبکه را تعیین کن."
+        fence = chr(96) * 3
+        full = f"""# {topic}
+
+**سطح:** {level} — {_depth(level)}
+
+## مدل ذهنی: گلوگاه را در کدام بخش اندازه بگیریم؟
+گلوگاه شبکه به معنی «ping بالا» به‌تنهایی نیست. باید مسیر و نقطهٔ مشاهده را مشخص کنی: کلاینت، LAN/Wi-Fi، دروازه، لینک WAN، مسیر اینترنت، DNS، TCP یا خود برنامه. یک آزمون منفرد برای نتیجه‌گیری کافی نیست؛ baseline را در زمان عادی و زمان مشکل، از همان مبدأ به همان مقصد ثبت کن.
+
+## ماتریس علائم و شواهد
+| علامت | شاهد بعدی | تفسیر محتمل، نه حکم قطعی |
+|---|---|---|
+| IP مقصد قابل دسترس است ولی نام دامنه نه | مقایسهٔ Resolve-DnsName یا dig با دسترسی مستقیم IP | DNS، search suffix یا مسیر resolver |
+| RTT در همان subnet بالا است | counters، duplex، Wi-Fi RSSI/retry و لینک uplink | ازدحام محلی، خطای لایه ۲ یا رادیویی |
+| loss در مقصد دیده می‌شود ولی hop میانی پاسخ نمی‌دهد | آزمون چند مقصد و TCP application test | بعضی روترها ICMP را rate-limit یا filter می‌کنند |
+| throughput کم و retransmission TCP زیاد است | ss -ti، counters interface، دو سر مسیر | loss، congestion، MTU یا کیفیت مسیر |
+| فقط یک برنامه کند است | همان مقصد با ابزار متفاوت و بررسی DNS/TLS/server timing | مشکل application/server یا proxy |
+| لینک از نظر byte استفادهٔ بالا دارد | درصد utilization در بازهٔ اندازه‌گیری + queue/drop | اشباع احتمالی؛ peakهای کوتاه را جدا کن |
+| خطاهای CRC/FCS یا drops زیاد می‌شود | delta شمارنده‌ها طی بازهٔ ثابت | کابل/optic/duplex/صف یا overload؛ مدل تجهیز مهم است |
+
+## ترتیب آزمایش قابل تکرار
+1. **تعریف محدوده:** یک کاربر یا همه؟ یک سایت یا همهٔ سرویس‌ها؟ یک مقصد یا همهٔ مقصدها؟
+2. **Baseline:** مبدأ، مقصد، زمان، نوع اتصال، RTT min/median/p95، packet loss، throughput و تعداد نمونه‌ها را ثبت کن.
+3. **لایهٔ محلی:** آدرس، gateway، interface status/speed/duplex و counters errors/discards را بررسی کن.
+4. **نام و مسیر:** DNS را از همان کلاینت آزمایش کن، سپس مسیر را بررسی کن. یک hop میانی که پاسخ نمی‌دهد به‌تنهایی اثبات خرابی آن روتر نیست.
+5. **TCP/برنامه:** پورت مورد نیاز سرویس را با آزمون مجاز بررسی کن؛ ping موفق تضمین نمی‌کند TCP/TLS یا application سالم باشد.
+6. **هم‌بستگی زمانی:** counters را دو بار با فاصلهٔ مشخص بخوان و delta را مقایسه کن؛ counter تجمعی از زمان روشن‌شدن دستگاه به تنهایی نرخ فعلی نیست.
+7. **نتیجه:** فرضیه، شاهد موافق، شاهد مخالف و قدم بعدی را ثبت کن؛ پیش از تغییر شبکه مالک تغییر و rollback مشخص باشد.
+
+## شاخص‌های کمّی و محدودیت‌ها
+- RTT را برای مجموعه‌ای ثابت از نمونه‌ها گزارش کن؛ median و p95 معمولاً از یک minimum منفرد گویاترند.
+- Packet loss را همراه تعداد نمونه و پروتکل گزارش کن. ICMP loss ممکن است سیاست پاسخ‌دهی دستگاه باشد، نه loss ترافیک برنامه.
+- interface errors/discards را به‌صورت delta در یک بازهٔ زمان ثبت کن؛ عدد تجمعی بدون نرخ، زمان رخداد را مشخص نمی‌کند.
+- retransmission TCP و latency را در دو انتهای مسیر بررسی کن. بدون شاهد از دو سمت، محل loss را قطعی اعلام نکن.
+- آستانهٔ قابل‌قبول به SLA، نوع لینک و baseline وابسته است؛ یک عدد ثابت برای تمام شبکه‌ها تعیین نکن.
+
+## امنیت و Change Control
+دستورات این درس مشاهده‌ای‌اند. عمداً traffic flood، packet capture حاوی اطلاعات محرمانه، تغییر MTU، تغییر duplex یا restart رابط در این آزمایش انجام نده. هر تست throughput باید محدود، مجاز، زمان‌بندی‌شده و روی مسیر تست باشد. قبل از هر تغییر، خروجی پیش از تغییر و روش rollback را ثبت کن.
+
+## معیار قبولی
+گزارش باید مبدأ/مقصد و بازهٔ زمان، حداقل دو شاهد مستقل، RTT/loss یا throughput با تعداد نمونه، delta شمارنده‌های رابط و فرضیهٔ ریشه‌ای را داشته باشد. عبارت «شبکه کند بود» بدون داده، نتیجهٔ RCA محسوب نمی‌شود.
+"""
+        commands = f"""# ویندوز — فقط مشاهده
+{fence}powershell
+Get-NetAdapter | Format-Table Name, Status, LinkSpeed
+Get-NetAdapterStatistics
+Resolve-DnsName example.com
+Test-NetConnection example.com -Port 443 -InformationLevel Detailed
+ping -n 20 1.1.1.1
+tracert -d example.com
+{fence}
+
+# لینوکس — فقط مشاهده
+{fence}bash
+ip -s link
+ip route get 1.1.1.1
+resolvectl query example.com
+dig example.com
+ping -c 20 1.1.1.1
+tracepath example.com
+ss -ti
+{fence}
+
+# Cisco IOS / IOS XE — بسته به platform و privilege
+{fence}text
+show interfaces
+show interfaces counters errors
+show ip route
+show processes cpu sorted
+{fence}
+
+# MikroTik RouterOS — فقط مشاهده
+{fence}text
+/interface print stats
+/tool ping 1.1.1.1 count=20
+/tool traceroute example.com
+/ip dns cache print
+{fence}
+"""
+        lab = """# آزمایشگاه RCA — Network Bottleneck
+
+## سناریو
+یک سرویس HTTPS در بازه‌های تصادفی کند است. تغییر پیکربندی مجاز نیست؛ هدف محدودکردن دامنهٔ عیب است.
+
+## اجرای مرحله‌ای
+1. از یک کلاینت ثابت، 20 نمونه RTT به gateway و مقصد مجاز بگیر؛ timestamp و روش اتصال را ثبت کن.
+2. نام دامنه را resolve کن و IP حاصل را ذخیره کن؛ آزمون نام و آزمون IP را جداگانه اجرا کن.
+3. وضعیت interface و counters را در شروع و پایان یک بازهٔ 60 ثانیه‌ای ثبت کن؛ delta errors/discards را محاسبه کن.
+4. مسیر را با ابزار موجود ثبت کن؛ نبود پاسخ یک hop را مساوی قطع بودن آن hop فرض نکن.
+5. سرویس TCP واقعی (برای مثال TCP/443) را جدا از ICMP آزمایش کن.
+6. در جدولی برای هر فرضیه شاهد موافق، مخالف و آزمون بعدی را بنویس.
+
+## جدول تحویل
+- زمان و مبدأ/مقصد:
+- نوع اتصال و مسیر:
+- RTT median/p95 و تعداد نمونه:
+- loss و روش اندازه‌گیری:
+- interface errors/discards در ابتدا و پایان:
+- نتیجهٔ DNS و TCP:
+- فرضیهٔ اصلی و شاهد مخالف:
+- اقدام پیشنهادی بدون تغییر / نیاز به Change:
+"""
+        return summary, full, commands, lab
+
     summary = f"«{topic}»: کندی همیشه CPU نیست؛ گلوگاه CPU / RAM / Disk / Network را جدا کن."
     full = f"""# {topic}
 

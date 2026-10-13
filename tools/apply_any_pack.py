@@ -72,8 +72,12 @@ def find_packs(all_flag, pack):
             raise SystemExit(f"pack not found: {pack}")
         return [p]
     if all_flag:
-        found = list(ROOT.glob("tools/**/*_pack.json"))
+        # Canonical location first; recursive glob includes command packs whose names
+        # do not contain "_pack" or "curriculum".
+        found = list(ROOT.glob("tools/packs/**/*.json"))
+        found += list(ROOT.glob("tools/**/*_pack.json"))
         found += list(ROOT.glob("tools/**/*curriculum*.json"))
+        # Transitional support for old checkouts; exact duplicates are deduped by path below.
         found += list(ROOT.glob("tools/ENGINEER_JOKAR_*.json"))
         uniq, seen = [], set()
         for f in found:

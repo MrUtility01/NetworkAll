@@ -3,6 +3,8 @@ package com.netenc.app.data
 import android.content.Context
 import org.json.JSONArray
 import org.json.JSONObject
+import java.time.Instant
+import java.time.OffsetDateTime
 
 class LessonRepository(context: Context) {
     private val dao = AppDatabase.get(context).lessonDao()
@@ -22,7 +24,13 @@ class LessonRepository(context: Context) {
         for (i in 0 until arr.length()) {
             val r = arr.getJSONObject(i)
             val uid = r.optString("uid")
-            if (uid.isBlank()) continue
+            // Manifest pulls also contain scenarios, tasks, and notes. Never coerce
+            // those rows into the lessons table.
+            if (uid.isBlank() || r.optString("entity", "lesson") != "lesson") continue
+            // A sync payload may omit the Android-only hierarchy columns. Room's
+            // REPLACE strategy replaces the whole row, so preserve existing tree metadata
+            // rather than silently moving a lesson into the "no chapter" bucket.
+            val previous = dao.byUid(uid)
             list.add(
                 LessonEntity(
                     uid = uid,
@@ -42,7 +50,11 @@ class LessonRepository(context: Context) {
                     lastUpdated = r.optString("last_updated", ""),
                     contentHash = r.optString("content_hash", ""),
                     deviceId = r.optString("device_id", ""),
-                    deleted = r.optBoolean("deleted", false)
+                    deleted = r.optBoolean("deleted", false),
+                    chapterOrder = r.optInt("chapter_order", r.optInt("chapterOrder", previous?.chapterOrder ?: 0)),
+                    chapterTitle = r.optString("chapter_title", r.optString("chapterTitle", previous?.chapterTitle ?: "")),
+                    subTitle = r.optString("sub_title", r.optString("subTitle", previous?.subTitle ?: "")),
+                    lessonOrder = r.optInt("lesson_order", r.optInt("lessonOrder", previous?.lessonOrder ?: 0))
                 )
             )
         }
@@ -50,9 +62,16 @@ class LessonRepository(context: Context) {
         return list.size
     }
 
-    suspend fun buildPushArray(): JSONArray {
+    /**
+     * Curriculum is server-authored. On a first sync, never upload the entire
+     * offline seed/cache (thousands of rows). After the initial cursor is set,
+     * only send locally changed rows newer than that cursor, including tombstones.
+     */
+    suspend fun buildPushArray(since: String?): JSONArray {
         val out = JSONArray()
+        if (since.isNullOrBlank()) return out
         for (e in dao.allForPush()) {
+            if (!isAfter(e.lastUpdated, since)) continue
             out.put(
                 JSONObject()
                     .put("uid", e.uid)
@@ -76,5 +95,17 @@ class LessonRepository(context: Context) {
             )
         }
         return out
+    }
+
+    private fun isAfter(candidate: String, reference: String): Boolean {
+        if (candidate.isBlank() || reference.isBlank()) return false
+        return timestampMillis(candidate) > timestampMillis(reference)
+    }
+
+    private fun timestampMillis(value: String): Long = try {
+        Instant.parse(value).toEpochMilli()
+    } catch (_: Exception) {
+        try { OffsetDateTime.parse(value).toInstant().toEpochMilli() }
+        catch (_: Exception) { Long.MIN_VALUE }
     }
 }

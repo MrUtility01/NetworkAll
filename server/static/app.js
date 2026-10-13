@@ -5,6 +5,26 @@ const viewer = $("#viewer");
 const breadcrumb = $("#breadcrumb");
 const statsEl = $("#stats");
 
+// Theme preference is local to this browser/device; content and sync are unaffected.
+(function initTheme() {
+  const button = $("#btnTheme");
+  if (!button) return;
+  let theme = "light";
+  try { theme = localStorage.getItem("networkall-theme") || "light"; } catch (_) {}
+  applyTheme(theme);
+  button.addEventListener("click", () => {
+    const next = document.body.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(next);
+    try { localStorage.setItem("networkall-theme", next); } catch (_) {}
+  });
+  function applyTheme(value) {
+    if (value === "dark") document.body.dataset.theme = "dark";
+    else delete document.body.dataset.theme;
+    button.textContent = value === "dark" ? "حالت روشن" : "حالت تیره";
+    button.setAttribute("aria-pressed", value === "dark" ? "true" : "false");
+  }
+})();
+
 const state = {
   chapters: [],
   openCh: null,
@@ -13,10 +33,28 @@ const state = {
   lessonsCache: {}, // levelId -> lessons[]
 };
 
-async function api(path, opts) {
-  const r = await fetch(path, opts);
-  if (!r.ok) throw new Error(await r.text());
-  return r.json();
+const TOKEN_KEY = "netenc_api_token";
+
+async function api(path, opts = {}) {
+  let token = localStorage.getItem(TOKEN_KEY) || "";
+  let prompted = false;
+  while (true) {
+    const headers = new Headers(opts.headers || {});
+    if (token) headers.set("X-NetEnc-Token", token);
+    const r = await fetch(path, { ...opts, headers });
+    if (r.status === 401 && !prompted) {
+      prompted = true;
+      const entered = window.prompt("این سرور توکن می‌خواهد. مقدار NETENC_TOKEN را وارد کنید:");
+      if (entered === null) throw new Error("ورود توکن لغو شد.");
+      token = entered.trim();
+      if (token) localStorage.setItem(TOKEN_KEY, token);
+      else localStorage.removeItem(TOKEN_KEY);
+      window.dispatchEvent(new Event("netenc-token-set"));
+      continue;
+    }
+    if (!r.ok) throw new Error(await r.text());
+    return r.json();
+  }
 }
 
 async function loadStats() {

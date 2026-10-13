@@ -1,5 +1,6 @@
 package com.netenc.app.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -12,5 +13,8 @@ data class StudyEntity(
     val lastStudied: String = "",
     val nextReview: String = "",
     val timesStudied: Int = 0,
-    val notes: String = ""
+    val notes: String = "",
+    @ColumnInfo(defaultValue = "''") val lastUpdated: String = "",
+    @ColumnInfo(defaultValue = "'android'") val deviceId: String = "android",
+    @ColumnInfo(defaultValue = "0") val deleted: Boolean = false
 )

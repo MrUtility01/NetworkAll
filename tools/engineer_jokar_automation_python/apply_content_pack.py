@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-DEFAULT_PACK = ROOT / 'automation_python_curriculum_pack.json'
+DEFAULT_PACK = ROOT.parent / 'packs' / 'automation_python' / 'automation_python_curriculum_pack.json'
 DEFAULT_DB = Path('server/data/encyclopedia.db')
 TEACHING_COLUMNS = [
     'summary', 'full_content', 'commands', 'examples', 'notes', 'search_query',

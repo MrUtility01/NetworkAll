@@ -33,6 +33,13 @@ def insert_rich_lesson(cur, lv_id: int, oi: int, lfa: str, len_: str, now: str) 
         obj_text = "\n".join(str(x) for x in obj_list)
     meta["description"] = summary
     meta["learning_objectives"] = obj_list
+    meta["assessment"] = rich.get("assessment") or {}
+    meta["official_sources"] = rich.get("official_sources") or []
+    meta["prerequisites"] = rich.get("prerequisites") or []
+    meta["lab_status"] = rich.get("lab_status") or "designed_not_executed"
+    meta["content_status"] = rich.get("content_status") or "review_required"
+    meta["source_status"] = rich.get("source_status") or "review_required"
+    meta["category"] = rich.get("category") or "general"
     cur.execute(
         """INSERT INTO lessons(
             level_id, order_index, title_fa, title_en, tags,

@@ -1,67 +1,72 @@
-# چیدمان استاندارد مخزن (منبع حقیقت)
+# چیدمان استاندارد مخزن
 
-هدف: **سرعت، پایداری، یک مسیر مشخص** — نه پراکندگی فایل.
+هدف: یک مسیر مرجع برای هر نوع داده، بارگذاری تدریجی در UI و حفظ تمام محتوای ارزشمند. منبع canonical فایل‌های JSON آموزشی، tools/packs/ است.
 
-## ریشه مجاز
+## ریشه پروژه
 
-```
-NetworkEncyclopedia/
-  .github/workflows/build-android-apk.yml   ← تنها workflow
-  README.md / INSTALL_FA.md
-  android/          ← اپ اندروید
-  server/           ← Flask + SQLite
-  shared/           ← پروتکل sync مشترک
-  scripts/          ← export/merge/icon
+NetworkAll/
+  .github/workflows/ — آزمون و ساخت APK
+  android/ — اپ Kotlin آفلاین + Room + WorkManager
+  server/ — Flask، SQLite، رابط وب و برنامه‌ریز ویندوز
+  shared/ — منطق Sync مشترک و infographics/ (HTML + SVG، منبع مشترک هر دو سکو)
+  scripts/ — export، merge و ساخت asset اندروید
   tools/
-    packs/          ← فقط JSON محتوای نهایی (منبع ادغام)
-    chapter_prompts/ ← فقط پرامپت متنی
-    commands_encyclopedia/ ← پرامپت/SCHEMA دستورات (نه JSON حجیم)
-    scenarios_200/  ← پرامپت سناریو
-    audit_content.py / apply_any_pack.py
-    engineer_jokar_*/  ← پک‌های موضوعی قدیمی (مجاز)
-  docs/             ← مستندات
-  windows/          ← راهنمای ویندوز
-```
+    packs/ — تنها محل JSON نهایی آموزشی، به تفکیک موضوع
+    engineer_jokar_*/ — ابزار ساخت/اعتبارسنجی و READMEهای موضوعی
+    commands_encyclopedia/ — schema و prompt؛ نه JSON حجیم
+    chapter_prompts/ — پرامپت‌های فصل
+    scenarios_200/ — طرح‌ریزی سناریوها
+    audit_content.py / apply_any_pack.py — ممیزی و واردسازی
+  docs/ — معماری، Sync، استاندارد عمق L0–L4، کیفیت محتوا و وضعیت
+  windows/ — راهنمای ویندوز، در صورت وجود
 
-## قانون طلایی محتوا
+## نقشه بسته‌های JSON
 
-| نوع | کجا | کجا نگذار
-|-----|-----|----------|
-| JSON نهایی درس/دستور | `tools/packs/<موضوع>/` | `prompts/`، ریشه، `docs/` |
-| پرامپت ChatGPT | `tools/chapter_prompts/` یا `commands_encyclopedia/prompts/*.md` | کنار JSON ۱۰ مگابایتی |
-| آرشیو zip | `tools/_archive_zips/` | ریشه |
-| Asset اندروید | `android/.../curriculum_index.json.gz` | کپی پراکنده |
+| مسیر | دامنه |
+|---|---|
+| tools/packs/automation_python/ | پایتون شبکه و اتوماسیون |
+| tools/packs/security_ethical_hacking/ | امنیت دفاعی |
+| tools/packs/wireless_security/ | WLAN و امنیت بی‌سیم |
+| tools/packs/routing_deep/ | مسیریابی عمیق و CLI |
+| tools/packs/vpn_enterprise/ | VPN سازمانی |
+| tools/packs/switching_routing/ | سوئیچینگ/مسیریابی |
+| tools/packs/windows_server/ | Windows Server |
+| tools/packs/commands_encyclopedia/ | دستورات Cisco/MikroTik |
+| tools/packs/git_chapter64/ | محتوای Git متنی |
+
+تعریف ماشینی مسیرهای رسمی در tools/packs/pack_catalog.json نگه‌داری می‌شود.
 
 ## فصل‌های منطقی برنامه
 
-| order | معنی |
-|------|------|
+| شماره | حوزه |
+|---|---|
 | 1–63 | هسته curriculum |
 | 64 | Git |
-| 65 | امنیت دفاعی + وایرلس |
-| 66 | مسیریابی عمیق |
+| 65 | امنیت دفاعی و Wireless |
+| 66 | Routing عمیق |
 | 67 | VPN سازمانی |
-| 68 | دانشنامه دستورات |
+| 68 | مرجع دستورات |
 
-## ادغام (فقط packs)
+این شماره‌ها یک نقشهٔ منطقی هستند؛ کیفیت علمی و کامل بودن تک‌تک درس‌ها باید جداگانه با گزارش ممیزی و بررسی فنی تأیید شود.
 
-```bash
-python scripts/merge_content_packs_into_android.py
-```
+## گالری اینفوگرافیک
 
-اسکریپت **فقط** این‌ها را می‌خواند:
-- `tools/packs/**/*.json`
-- `tools/engineer_jokar_*/*pack*.json` و `*curriculum*.json`
-- `tools/ENGINEER_JOKAR_*.json`
+منبع واحد نمودارها در `shared/infographics/` است. صفحهٔ `index.html` در وب ویندوز با مسیر `/infographics` سرو می‌شود و همان پوشه به Android assets اضافه می‌شود؛ برای نگهداری نمودارها نسخهٔ جداگانهٔ Android نسازید. هر SVG باید XML معتبر، توضیح alt، شرح آموزشی و پشتیبانی از نمایش باریک/چاپ داشته باشد.
 
-نمی‌خواند: `prompts/`، zip، md، فایل با فاصله در نام (توصیه: rename).
+استاندارد حجم و عمق آموزشی در `docs/CONTENT_DEPTH_STANDARD_FA.md` تعریف شده است؛ تعداد رکوردها سقف کلی ندارد و باید از ماتریس پوشش مهارت‌ها و سناریوهای متمایز محاسبه شود.
 
-## Actions
+## قوانین مهم
 
-فقط یک workflow: **Build Android APK** (دستی).
-هیچ workflow اضافی نباید اضافه شود مگر نیاز قطعی.
+- هیچ JSON محتوایی جدیدی در ریشه tools یا engineer_jokar_* نسازید.
+- فایل‌های بسیار بزرگ به معنی مجاز بودن بارگذاری کل فایل در هر درخواست نیست: فهرست‌ها lazy-load و نتایج جست‌وجو محدود باشند.
+- محتوا را به دلیل کوتاه بودن پاک نکنید؛ ابتدا گزارش شکاف، سپس بازنویسی و تطبیق UID.
+- پایگاه داده و پیشرفت کاربر را با seed اجباری پاک نکنید.
+- محتوای آزمون و answer_key جدا باشند.
+- هر import بزرگ ابتدا dry-run، backup، تراکنش و گزارش دقیق تغییرات داشته باشد.
 
-## نام‌گذاری JSON
+## ممیزی و ساخت
 
-- انگلیسی، بدون فاصله: `cisco_switching.json`، `mikrotik.json`
-- نه: `chapter_68_ mikrotik.json`، `file.json.json`
+    python tools/audit_content.py --packs-only --json docs/audits/content-audit.json
+    python scripts/merge_content_packs_into_android.py
+
+Workflow ساخت APK ابتدا syntax و regression test را اجرا می‌کند و سپس JSONها را merge می‌کند. شکست merge نباید به‌صورت warning نادیده گرفته شود.

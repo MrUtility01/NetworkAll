@@ -29,20 +29,38 @@ def main() -> None:
                     lfa, len_ = str(les), str(les)
                 tag = lfa[1:3] if str(lfa).startswith("[L") else "L0"
                 rich = build_rich_lesson(lfa, len_, level=tag)
+                assessment = rich.get("assessment") or {}
+                meta = {
+                    "assessment": assessment,
+                    "official_sources": rich.get("official_sources") or [],
+                    "prerequisites": rich.get("prerequisites") or [],
+                    "lab_status": rich.get("lab_status") or "designed_not_executed",
+                    "content_status": rich.get("content_status") or "review_required",
+                    "category": rich.get("category") or "general",
+                    "level": tag,
+                    "topic": rich.get("topic") or lfa,
+                }
                 lesson_count += 1
                 uid = f"lesson:ch{int(order):02d}:s{si:03d}:l{li:04d}"
                 les_out.append({
                     "uid": uid, "title_fa": lfa, "title_en": len_, "level": tag,
+                    "chapter_order": int(order), "chapter_title_fa": tfa,
+                    "subchapter_order": si + 1, "subchapter_title_fa": sname,
+                    "lesson_order": li + 1, "official_sources": meta["official_sources"],
                     "summary": rich.get("summary") or "",
                     "full_content": rich.get("full_content") or "",
                     "commands": rich.get("commands") or "",
                     "examples": rich.get("examples") or "",
                     "notes": rich.get("notes") or "",
+                    "assessment": assessment,
+                    "meta_json": json.dumps(meta, ensure_ascii=False, separators=(",", ":")),
+                    "learning_objectives": "；".join(str(x) for x in (rich.get("learning_objectives") or [])),
+                    "source_status": rich.get("source_status") or "review_required",
                 })
             sub_out.append({"title_fa": sname, "lessons": les_out})
         chapters.append({"order": int(order), "title_fa": tfa, "title_en": ten, "subchapters": sub_out})
     chapters.sort(key=lambda c: c["order"])
-    payload = {"version": 10, "chapters": chapters, "lesson_count": lesson_count}
+    payload = {"version": 11, "chapters": chapters, "lesson_count": lesson_count}
     raw = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     out_dir = ROOT / "android" / "app" / "src" / "main" / "assets"
     out_dir.mkdir(parents=True, exist_ok=True)

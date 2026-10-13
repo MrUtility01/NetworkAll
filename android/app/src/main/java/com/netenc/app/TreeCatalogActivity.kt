@@ -13,12 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.netenc.app.data.AppDatabase
 import com.netenc.app.data.LessonEntity
+import com.netenc.app.data.OfflineSeeder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class TreeCatalogActivity : AppCompatActivity() {
-    data class SubNode(val title: String, val lessons: List<LessonEntity>)
+    data class SubNode(val title: String, val sourceTitle: String, val lessons: List<LessonEntity>)
     data class ChapterNode(val order: Int, val title: String, val subs: List<SubNode>)
 
     private lateinit var list: ExpandableListView
@@ -66,14 +67,46 @@ class TreeCatalogActivity : AppCompatActivity() {
     }
 
     private suspend fun loadTree() {
-        val lessons = withContext(Dispatchers.IO) {
-            AppDatabase.get(this@TreeCatalogActivity).lessonDao().allActive()
+        val lessons = try {
+            withContext(Dispatchers.IO) {
+                val dao = AppDatabase.get(this@TreeCatalogActivity).lessonDao()
+                // Seed synchronously before reading; retry once for databases created by
+                // older releases or interrupted first-run imports.
+                OfflineSeeder.ensureSeeded(this@TreeCatalogActivity)
+                var rows = dao.allActive()
+                if (rows.isEmpty()) {
+                    OfflineSeeder.ensureSeeded(this@TreeCatalogActivity, force = true)
+                    rows = dao.allActive()
+                }
+                rows
+            }
+        } catch (e: Exception) {
+            header.text = "خطا در بارگذاری دانشنامه: " + (e.message ?: e.javaClass.simpleName)
+            return
         }
-        val byChapter = lessons.groupBy { it.chapterOrder to it.chapterTitle }
-            .toSortedMap(compareBy({ it.first }, { it.second }))
+        if (lessons.isEmpty()) {
+            header.text = "فهرست خالی است: محتوای اولیه وارد پایگاه داده نشد. نسخهٔ جدید را نصب کنید و از تنظیمات، ورود/بازیابی JSON را بررسی کنید. اطلاعات برنامه را پیش از تهیهٔ پشتیبان پاک نکنید."
+            return
+        }
+        // Repair display hierarchy defensively for older or partially imported rows.
+        // The seeder normally fills these fields, but the UI must remain usable even
+        // if an earlier database version stored missing metadata.
+        val byChapter = lessons.groupBy {
+            val order = it.chapterOrder.takeIf { n -> n > 0 }
+                ?: Regex("""(?:ch|chapter)[-_: ]?(\d+)""", RegexOption.IGNORE_CASE)
+                    .find(it.uid)?.groupValues?.getOrNull(1)?.toIntOrNull() ?: 0
+            val title = it.chapterTitle.ifBlank {
+                if (order > 0) "فصل $order" else "فصل‌بندی نشده"
+            }
+            order to title
+        }.toSortedMap(compareBy({ it.first }, { it.second }))
         tree = byChapter.map { (key, listL) ->
-            val subs = listL.groupBy { it.subTitle.ifBlank { "عمومی" } }
-                .map { (st, ls) -> SubNode(st, ls.sortedBy { it.lessonOrder }) }
+            val subs = listL.groupBy { it.subTitle.ifBlank {
+                it.titleFa.substringBefore(" — ").ifBlank { "عمومی" }
+            } }
+                .map { (st, ls) ->
+                    SubNode(st, st, ls.sortedWith(compareBy<LessonEntity>({ it.lessonOrder }, { it.titleFa })))
+                }.sortedBy { it.title }
             ChapterNode(key.first, key.second, subs)
         }
         header.text = "${tree.size} فصل · ${lessons.size} درس"
@@ -99,33 +132,26 @@ class TreeCatalogActivity : AppCompatActivity() {
             }
             override fun getChildView(g: Int, c: Int, last: Boolean, convert: View?, parent: ViewGroup?): View {
                 val sub = tree[g].subs[c]
-                val box = LinearLayout(this@TreeCatalogActivity).apply {
-                    orientation = LinearLayout.VERTICAL
-                    setPadding(48, 12, 24, 12)
-                    setBackgroundColor(Ui.BG)
-                }
-                box.addView(TextView(this@TreeCatalogActivity).apply {
-                    text = "${sub.title} (${sub.lessons.size})"
-                    setTextColor(Ui.ACCENT)
+                // Keep the expandable tree lightweight: a child is one subchapter row,
+                // not a container that eagerly creates hundreds of lesson TextViews.
+                val row = (convert as? TextView) ?: TextView(this@TreeCatalogActivity).apply {
+                    setPadding(48, 22, 24, 22)
                     textSize = 14f
                     typeface = Ui.persianTypeface()
-                })
-                sub.lessons.take(80).forEach { les ->
-                    box.addView(TextView(this@TreeCatalogActivity).apply {
-                        text = "  · ${les.titleFa}"
-                        setTextColor(Ui.TEXT)
-                        textSize = 13f
-                        setPadding(8, 10, 8, 10)
-                        typeface = Ui.persianTypeface()
-                        setOnClickListener {
-                            startActivity(
-                                Intent(this@TreeCatalogActivity, LessonDetailActivity::class.java)
-                                    .putExtra("uid", les.uid)
-                            )
-                        }
-                    })
                 }
-                return box
+                row.text = "${sub.title}  (${sub.lessons.size} درس)  ›"
+                row.setTextColor(Ui.ACCENT)
+                row.setBackgroundColor(Ui.CARD)
+                row.setOnClickListener {
+                    startActivity(
+                        Intent(this@TreeCatalogActivity, SubchapterLessonsActivity::class.java)
+                            .putExtra("chapter_order", tree[g].order)
+                            .putExtra("chapter_title", tree[g].title)
+                            .putExtra("sub_title", sub.sourceTitle)
+                            .putExtra("sub_display_title", sub.title)
+                    )
+                }
+                return row
             }
         })
     }

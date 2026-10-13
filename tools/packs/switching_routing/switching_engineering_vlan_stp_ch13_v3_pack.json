@@ -1,0 +1,1812 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "Deep Cisco switching engineering curriculum, VLAN design and STP reliability",
+  "scope": {
+    "chapter_order": 13,
+    "chapter_title_fa": "سوئیچینگ سازمانی: طراحی VLAN و پایداری STP",
+    "domain": "switching-and-routing",
+    "platform": "Cisco IOS-XE"
+  },
+  "instructional_contract": {
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lab_required": true,
+    "answer_key_separate_in_meta_json": true,
+    "must_verify_on_target_platform": true
+  },
+  "content_quality": {
+    "status": "review_required",
+    "lab_status": "designed_not_executed",
+    "source_validation": "Check all commands against the exact target model and IOS-XE release before operational use.",
+    "no_template_text": true
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch13:switching-v3:vlan:l0",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "chapter_title_fa": "سوئیچینگ سازمانی: طراحی VLAN و پایداری STP",
+      "subchapter_order": 1,
+      "subchapter_title_fa": "طراحی VLAN و 802.1Q",
+      "lesson_order": 1,
+      "topic": "vlan",
+      "domain": "switching-and-routing",
+      "level": "L0",
+      "title_fa": "[L0] مفهوم VLAN و دامنهٔ broadcast",
+      "title_en": "[L0] مفهوم VLAN و دامنهٔ broadcast",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "VLAN",
+        "STP",
+        "lab",
+        "troubleshooting",
+        "L0",
+        "vlan"
+      ],
+      "summary": "VLAN یک دامنهٔ منطقی لایهٔ دوم می‌سازد؛ جداسازی VLAN به‌تنهایی سیاست امنیتی کامل نیست.",
+      "full_content": "# VLAN از دید مهندسی شبکه\n\n## مدل ذهنی\nVLAN دامنهٔ لایهٔ دوم را به گروه‌های منطقی تقسیم می‌کند. میزبان‌های یک VLAN می‌توانند در یک broadcast domain باشند، اما ارتباط بین VLANها به عملکرد لایهٔ سوم نیاز دارد. شمارهٔ VLAN صرفاً شناسه است و به‌خودی‌خود رمزگذاری، احراز هویت یا کنترل دسترسی ایجاد نمی‌کند.\n\n## سازوکار علت‌ومعلولی\nفریم ورودی روی پورت Access معمولاً بدون tag از میزبان دریافت می‌شود و سوئیچ آن را در VLAN پیکربندی‌شدهٔ همان پورت طبقه‌بندی می‌کند. جدول MAC با کلید ترکیبی VLAN و MAC تفسیر می‌شود؛ یک MAC مشابه در دو VLAN می‌تواند دو ورودی مجزا داشته باشد. broadcast و unknown-unicast در محدودهٔ VLAN مربوطه منتشر می‌شوند، نه در همهٔ VLANها.\n\n## مثال حل‌شده\nفرض کن VLAN 10 برای کاربران مالی و VLAN 20 برای کاربران فروش ساخته شده است. اگر هر دو میزبان IP هم‌شبکه داشته باشند ولی در VLANهای جدا باشند، صرف هم‌شبکه بودن IP مسیر لایهٔ دوم را ایجاد نمی‌کند. اگر آدرس‌دهی جداست، برای دسترسی کنترل‌شده به gateway و routing نیاز داریم.\n\n## آزمایشگاه ایمن\nدر Packet Tracer یا سوئیچ آزمایشگاهی دو VLAN بساز، دو میزبان را در VLAN 10 و دو میزبان را در VLAN 20 قرار بده. ابتدا ارتباط درون هر VLAN را آزمایش کن؛ سپس تلاش بین VLANها را بدون gateway بررسی کن. خروجی مورد انتظار: ارتباط درون VLAN برقرار و ارتباط بین VLANها بدون مسیریابی برقرار نباشد.\n\n## راستی‌آزمایی و عیب‌یابی\nاز `show vlan brief`، `show interfaces status` و `show mac address-table dynamic` استفاده کن. اگر میزبان‌ها ارتباط ندارند، ابتدا link، VLAN پورت، آدرس و mask، سپس STP و در نهایت gateway را بررسی کن. جدول MAC با ARP table یکی نیست.\n\n## امنیت و بازگشت\nVLAN را مرز امنیتی مطلق فرض نکن. برای جداسازی حساس، ACL یا firewall و کنترل مسیرهای بین VLAN را طراحی کن. پیش از تغییر VLAN پورت مدیریتی، مسیر دسترسی جایگزین و پیکربندی قبلی را ثبت کن.\n\n## معیار قبولی\nنقشهٔ پورت به VLAN مستند است، میزبان‌های هم‌VLAN ارتباط دارند، broadcast از VLAN دیگر مشاهده نمی‌شود و هر ارتباط بین VLANها سیاست صریح دارد.\n\n## تحلیل عملی تکمیلی: چه چیزی را باید مشاهده کرد؟\nدر این آزمایش، سه جدول را از هم جدا نگه دار: جدول VLAN پورت‌ها، جدول MAC سوئیچ و جدول ARP میزبان یا روتر. جدول VLAN می‌گوید پورت در کدام دامنهٔ منطقی قرار دارد؛ جدول MAC نشان می‌دهد سوئیچ MAC مبدأ را از کدام پورت در کدام VLAN آموخته؛ ARP نگاشت IPv4 به MAC را در میزبان یا gateway نشان می‌دهد. وجود یک ورودی در یکی از این جدول‌ها تضمین نمی‌کند ورودی دیگر نیز وجود داشته باشد. اگر ping شکست خورد، نتیجه را از یک جدول استنتاج نکن.\n\n### ثبت نتیجه\nبرای هر میزبان، نام، پورت، VLAN، IP، mask و gateway را در جدول آزمایش ثبت کن. سپس ترافیک درون VLAN را ایجاد کن و خروجی MAC table را ذخیره کن. یک بار با میزبان خاموش و یک بار بعد از ارسال ترافیک آزمایش کن تا تفاوت نبودن MAC به علت سکوت endpoint با خطای پیکربندی روشن شود. پاک‌کردن جدول MAC فقط یک آزمون موقت است و علت ریشه‌ای را رفع نمی‌کند.\n\n### واژگان کلیدی\nBroadcast domain محدودهٔ انتشار broadcast است؛ collision domain در Ethernet سوئیچ‌شده معمولاً به لینک اختصاصی هر پورت مربوط است؛ subnet مفهوم لایهٔ سوم است؛ VLAN مفهوم لایهٔ دوم است. این مرزها اغلب در طراحی هم‌راستا می‌شوند اما مترادف نیستند. معیار مهندسی این است که بتوانی با شواهد توضیح بدهی فریم در کدام VLAN طبقه‌بندی شده، کدام MAC مقصد را جست‌وجو کرده و چرا فریم فوروارد یا flood شده است.",
+      "commands": "show vlan brief\\nshow interfaces status\\nshow mac address-table dynamic",
+      "examples": "",
+      "notes": "منبع آموزشی اختصاصی NetworkAll؛ اجرای lab هنوز روی مدل/نسخهٔ هدف تأیید نشده است. depth_extension=2026-10-13; lab_status=designed_not_executed",
+      "learning_objectives": [
+        "شرح سازوکار و اثر عملیاتی موضوع",
+        "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+        "عیب‌یابی با شواهد و بازگشت امن"
+      ],
+      "prerequisites": [
+        "مبانی Ethernet و مدل OSI",
+        "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+      ],
+      "source_status": "review_required",
+      "assessment": {
+        "questions": [
+          {
+            "id": "ch13_vlan_l0_q1",
+            "prompt": "VLAN در درجهٔ اول چه چیزی را جدا می‌کند؟",
+            "options": [
+              "دامنهٔ لایهٔ دوم",
+              "کانال رمزگذاری‌شده",
+              "جدول مسیریابی جهانی",
+              "توان PoE"
+            ]
+          },
+          {
+            "id": "ch13_vlan_l0_q2",
+            "prompt": "برای ارتباط معمول بین دو VLAN چه چیزی لازم است؟",
+            "options": [
+              "فقط MAC مقصد",
+              "مسیریابی لایهٔ سوم",
+              "افزایش MTU",
+              "خاموش‌کردن STP"
+            ]
+          },
+          {
+            "id": "ch13_vlan_l0_q3",
+            "prompt": "آیا VLAN به‌تنهایی رمزگذاری ایجاد می‌کند؟",
+            "options": [
+              "بله، همیشه",
+              "فقط در VLAN 1",
+              "خیر",
+              "فقط با DHCP"
+            ]
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "ch13_vlan_l0_q1",
+            "correct_index": 0,
+            "explanation": "VLAN دامنهٔ broadcast لایهٔ دوم را جدا می‌کند؛ برای امنیت کامل به کنترل‌های تکمیلی نیاز است."
+          },
+          {
+            "id": "ch13_vlan_l0_q2",
+            "correct_index": 1,
+            "explanation": "ارتباط بین VLANها معمولاً به SVI یا روتر و سیاست مسیریابی نیاز دارد."
+          },
+          {
+            "id": "ch13_vlan_l0_q3",
+            "correct_index": 2,
+            "explanation": "VLAN جداسازی منطقی ایجاد می‌کند، نه رمزگذاری."
+          }
+        ]
+      },
+      "meta": {
+        "lab_status": "designed_not_executed",
+        "content_status": "review_required",
+        "category": "vlan",
+        "level": "L0",
+        "topic": "vlan",
+        "learning_objectives": [
+          "شرح سازوکار و اثر عملیاتی موضوع",
+          "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+          "عیب‌یابی با شواهد و بازگشت امن"
+        ],
+        "prerequisites": [
+          "مبانی Ethernet و مدل OSI",
+          "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "ch13_vlan_l0_q1",
+              "prompt": "VLAN در درجهٔ اول چه چیزی را جدا می‌کند؟",
+              "options": [
+                "دامنهٔ لایهٔ دوم",
+                "کانال رمزگذاری‌شده",
+                "جدول مسیریابی جهانی",
+                "توان PoE"
+              ]
+            },
+            {
+              "id": "ch13_vlan_l0_q2",
+              "prompt": "برای ارتباط معمول بین دو VLAN چه چیزی لازم است؟",
+              "options": [
+                "فقط MAC مقصد",
+                "مسیریابی لایهٔ سوم",
+                "افزایش MTU",
+                "خاموش‌کردن STP"
+              ]
+            },
+            {
+              "id": "ch13_vlan_l0_q3",
+              "prompt": "آیا VLAN به‌تنهایی رمزگذاری ایجاد می‌کند؟",
+              "options": [
+                "بله، همیشه",
+                "فقط در VLAN 1",
+                "خیر",
+                "فقط با DHCP"
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "ch13_vlan_l0_q1",
+              "correct_index": 0,
+              "explanation": "VLAN دامنهٔ broadcast لایهٔ دوم را جدا می‌کند؛ برای امنیت کامل به کنترل‌های تکمیلی نیاز است."
+            },
+            {
+              "id": "ch13_vlan_l0_q2",
+              "correct_index": 1,
+              "explanation": "ارتباط بین VLANها معمولاً به SVI یا روتر و سیاست مسیریابی نیاز دارد."
+            },
+            {
+              "id": "ch13_vlan_l0_q3",
+              "correct_index": 2,
+              "explanation": "VLAN جداسازی منطقی ایجاد می‌کند، نه رمزگذاری."
+            }
+          ]
+        },
+        "official_sources": [
+          {
+            "title": "Cisco IOS XE Configuration Guides",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          },
+          {
+            "title": "IEEE 802.1Q Standard",
+            "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+          }
+        ]
+      },
+      "official_sources": [
+        {
+          "title": "Cisco IOS XE Configuration Guides",
+          "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+        },
+        {
+          "title": "IEEE 802.1Q Standard",
+          "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+        }
+      ],
+      "meta_json": "{\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"category\":\"vlan\",\"level\":\"L0\",\"topic\":\"vlan\",\"learning_objectives\":[\"شرح سازوکار و اثر عملیاتی موضوع\",\"اجرای آزمایش کنترل‌شده و ثبت خروجی\",\"عیب‌یابی با شواهد و بازگشت امن\"],\"prerequisites\":[\"مبانی Ethernet و مدل OSI\",\"دسترسی به شبیه‌ساز یا لابراتوار ایزوله\"],\"assessment\":{\"questions\":[{\"id\":\"ch13_vlan_l0_q1\",\"prompt\":\"VLAN در درجهٔ اول چه چیزی را جدا می‌کند؟\",\"options\":[\"دامنهٔ لایهٔ دوم\",\"کانال رمزگذاری‌شده\",\"جدول مسیریابی جهانی\",\"توان PoE\"]},{\"id\":\"ch13_vlan_l0_q2\",\"prompt\":\"برای ارتباط معمول بین دو VLAN چه چیزی لازم است؟\",\"options\":[\"فقط MAC مقصد\",\"مسیریابی لایهٔ سوم\",\"افزایش MTU\",\"خاموش‌کردن STP\"]},{\"id\":\"ch13_vlan_l0_q3\",\"prompt\":\"آیا VLAN به‌تنهایی رمزگذاری ایجاد می‌کند؟\",\"options\":[\"بله، همیشه\",\"فقط در VLAN 1\",\"خیر\",\"فقط با DHCP\"]}],\"answer_key\":[{\"id\":\"ch13_vlan_l0_q1\",\"correct_index\":0,\"explanation\":\"VLAN دامنهٔ broadcast لایهٔ دوم را جدا می‌کند؛ برای امنیت کامل به کنترل‌های تکمیلی نیاز است.\"},{\"id\":\"ch13_vlan_l0_q2\",\"correct_index\":1,\"explanation\":\"ارتباط بین VLANها معمولاً به SVI یا روتر و سیاست مسیریابی نیاز دارد.\"},{\"id\":\"ch13_vlan_l0_q3\",\"correct_index\":2,\"explanation\":\"VLAN جداسازی منطقی ایجاد می‌کند، نه رمزگذاری.\"}]},\"official_sources\":[{\"title\":\"Cisco IOS XE Configuration Guides\",\"url\":\"https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html\"},{\"title\":\"IEEE 802.1Q Standard\",\"url\":\"https://standards.ieee.org/standard/802_1Q-2022.html\"}]}"
+    },
+    {
+      "uid": "lesson:ch13:switching-v3:vlan:l1",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "chapter_title_fa": "سوئیچینگ سازمانی: طراحی VLAN و پایداری STP",
+      "subchapter_order": 1,
+      "subchapter_title_fa": "طراحی VLAN و 802.1Q",
+      "lesson_order": 2,
+      "topic": "vlan",
+      "domain": "switching-and-routing",
+      "level": "L1",
+      "title_fa": "[L1] Access port، عضویت VLAN و عیب‌یابی",
+      "title_en": "[L1] Access port، عضویت VLAN و عیب‌یابی",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "VLAN",
+        "STP",
+        "lab",
+        "troubleshooting",
+        "L1",
+        "vlan"
+      ],
+      "summary": "پورت Access فریم‌های بدون tag را به VLAN تعیین‌شده نسبت می‌دهد؛ اشتباه عضویت یکی از علت‌های رایج قطعی لایهٔ دوم است.",
+      "full_content": "# پیکربندی و عیب‌یابی Access Port\n\n## پیش‌نیاز\nشناخت Ethernet، MAC، broadcast domain و تفاوت VLAN با subnet ضروری است.\n\n## رفتار پورت\nپورت Access برای اتصال endpointهایی مانند رایانه، چاپگر یا تلفن/رایانه با طراحی مناسب استفاده می‌شود. فریم‌های ورودی معمولاً untagged هستند و سوئیچ آن‌ها را به VLAN دسترسی نسبت می‌دهد. جزئیات voice VLAN، negotiation و رفتار مدل‌محور باید با نسخهٔ IOS-XE و نوع دستگاه تطبیق داده شود.\n\n## نمونهٔ پیکربندی کنترل‌شده\n```text\nconfigure terminal\nvlan 10\n name FINANCE\ninterface GigabitEthernet1/0/10\n description LAB-FINANCE-PC\n switchport mode access\n switchport access vlan 10\n spanning-tree portfast\nend\nshow vlan brief\nshow interfaces GigabitEthernet1/0/10 switchport\n```\nاین نمونه برای پورت آزمایشگاهی است. PortFast را برای پورت endpoint استفاده کن، نه uplink بین سوئیچ‌ها. پیش از اعمال، شمارهٔ پورت و قابلیت‌های دستگاه را تأیید کن.\n\n## تحلیل خروجی\nدر خروجی switchport باید Administrative Mode و Operational Mode با انتظار سازگار باشند و Access Mode VLAN مقدار 10 را نشان دهد. اگر VLAN وجود نداشته باشد، رفتار و پیام خطا می‌تواند بسته به نسخه متفاوت باشد؛ بعد از پیکربندی، وضعیت واقعی را بررسی کن، نه اینکه تنها به پذیرش فرمان تکیه کنی.\n\n## درخت عیب‌یابی\n۱) لینک فیزیکی و error counter؛ ۲) VLAN پورت؛ ۳) وضعیت VLAN در جدول؛ ۴) MAC یادگرفته‌شده؛ ۵) IP/mask و gateway؛ ۶) ACL و سیاست‌های endpoint. اگر MAC یاد گرفته نمی‌شود، تولید ترافیک و STP را بررسی کن. اگر MAC درست است ولی ping شکست می‌خورد، مشکل الزاماً VLAN نیست.\n\n## اثر جانبی و rollback\nتغییر VLAN پورت ممکن است اتصال راه دور همان میزبان را قطع کند. پیکربندی قبلی را ذخیره کن، تغییر را در بازهٔ نگهداری انجام بده و از کنسول یا پورت جایگزین استفاده کن. rollback یعنی بازگرداندن VLAN قبلی و تأیید مجدد مسیر.\n\n## معیار قبولی\nپورت در VLAN موردنظر قرار دارد، MAC میزبان در VLAN صحیح دیده می‌شود، endpoint آدرس درست می‌گیرد و آزمون درون VLAN با ثبت شواهد موفق است.\n\n## سناریوی عیب‌یابی پورت کاربر\nکاربر می‌گوید پس از جابه‌جایی میز، DHCP آدرس می‌دهد اما فایل‌سرور قابل دسترسی نیست. به‌جای تغییر هم‌زمان VLAN، IP و ACL، ابتدا پورت فیزیکی جدید و وضعیت operational VLAN را ثبت کن. سپس MAC میزبان را در جدول سوئیچ پیدا کن و مطمئن شو در VLAN مورد انتظار یاد گرفته شده است. بعد lease را بررسی کن: آیا scope صحیح به کلاینت رسیده؟ default gateway با subnet سازگار است؟ آیا کلاینت از DNS سازمانی استفاده می‌کند؟ در آخر مسیر تا فایل‌سرور و ACL را بررسی کن.\n\n### تفکیک خطا با آزمون‌های مستقل\n- اگر هیچ MAC دیده نمی‌شود، کابل، link state، تولید ترافیک، port security و STP را بررسی کن.\n- اگر MAC در VLAN اشتباه دیده می‌شود، عضویت Access، voice VLAN یا تنظیمات پورت را بررسی کن.\n- اگر IP در subnet اشتباه است، DHCP scope، relay و VLAN پورت را با هم تطبیق بده.\n- اگر gateway پاسخ می‌دهد اما فایل‌سرور نه، routing، ACL، DNS و سرویس مقصد را بررسی کن.\n\n### ثبت و بازگشت\nقبل از تغییر، خروجی پورت و config فعلی را ذخیره کن. یک تغییر انجام بده، همان آزمون را تکرار کن و نتیجه را ثبت کن. اگر وضعیت بدتر شد، فقط همان تغییر را بازگردان. این روش از چند تغییر هم‌زمان که علت را مبهم می‌کنند جلوگیری می‌کند.",
+      "commands": "show interfaces GigabitEthernet1/0/10 switchport\\nshow vlan brief\\nshow mac address-table interface GigabitEthernet1/0/10",
+      "examples": "## نمونهٔ پیکربندی کنترل‌شده\n```text\nconfigure terminal\nvlan 10\n name FINANCE\ninterface GigabitEthernet1/0/10\n description LAB-FINANCE-PC\n switchport mode access\n switchport access vlan 10\n spanning-tree portfast\nend\nshow vlan brief\nshow interfaces GigabitEthernet1/0/10 switchport\n```\nاین نمونه برای پورت آزمایشگاهی است. PortFast را برای پورت endpoint استفاده کن، نه uplink بین سوئیچ‌ها. پیش از اعمال، شمارهٔ پورت و قابلیت‌های دستگاه را تأیید کن.\n",
+      "notes": "منبع آموزشی اختصاصی NetworkAll؛ اجرای lab هنوز روی مدل/نسخهٔ هدف تأیید نشده است. depth_extension=2026-10-13; lab_status=designed_not_executed",
+      "learning_objectives": [
+        "شرح سازوکار و اثر عملیاتی موضوع",
+        "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+        "عیب‌یابی با شواهد و بازگشت امن"
+      ],
+      "prerequisites": [
+        "مبانی Ethernet و مدل OSI",
+        "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+      ],
+      "source_status": "review_required",
+      "assessment": {
+        "questions": [
+          {
+            "id": "ch13_vlan_l1_q1",
+            "prompt": "فریم untagged روی پورت Access چگونه طبقه‌بندی می‌شود؟",
+            "options": [
+              "بر اساس VLAN پورت",
+              "همیشه VLAN 1",
+              "بر اساس DNS",
+              "با استفاده از جدول route"
+            ]
+          },
+          {
+            "id": "ch13_vlan_l1_q2",
+            "prompt": "PortFast معمولاً برای کدام پورت مناسب است؟",
+            "options": [
+              "uplink بین سوئیچ‌ها",
+              "پورت endpoint",
+              "هر trunk ناشناخته",
+              "پورت WAN روتر"
+            ]
+          },
+          {
+            "id": "ch13_vlan_l1_q3",
+            "prompt": "اگر MAC در VLAN درست دیده شود ولی ping ناموفق باشد، چه نتیجه‌ای درست است؟",
+            "options": [
+              "VLAN قطعاً مقصر است",
+              "باید فقط جدول MAC پاک شود",
+              "باید IP، gateway و سیاست‌ها هم بررسی شوند",
+              "باید STP خاموش شود"
+            ]
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "ch13_vlan_l1_q1",
+            "correct_index": 0,
+            "explanation": "VLAN دسترسی پورت، فریم ورودی بدون tag را در دامنهٔ مربوط قرار می‌دهد."
+          },
+          {
+            "id": "ch13_vlan_l1_q2",
+            "correct_index": 1,
+            "explanation": "PortFast برای کاهش انتظار STP در پورت endpoint طراحی شده و روی لینک سوئیچ‌به‌سوئیچ خطر حلقه را بالا می‌برد."
+          },
+          {
+            "id": "ch13_vlan_l1_q3",
+            "correct_index": 2,
+            "explanation": "یادگیری MAC تنها بخشی از مسیر است؛ لایهٔ سوم و سیاست‌های امنیتی هم باید بررسی شوند."
+          }
+        ]
+      },
+      "meta": {
+        "lab_status": "designed_not_executed",
+        "content_status": "review_required",
+        "category": "vlan",
+        "level": "L1",
+        "topic": "vlan",
+        "learning_objectives": [
+          "شرح سازوکار و اثر عملیاتی موضوع",
+          "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+          "عیب‌یابی با شواهد و بازگشت امن"
+        ],
+        "prerequisites": [
+          "مبانی Ethernet و مدل OSI",
+          "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "ch13_vlan_l1_q1",
+              "prompt": "فریم untagged روی پورت Access چگونه طبقه‌بندی می‌شود؟",
+              "options": [
+                "بر اساس VLAN پورت",
+                "همیشه VLAN 1",
+                "بر اساس DNS",
+                "با استفاده از جدول route"
+              ]
+            },
+            {
+              "id": "ch13_vlan_l1_q2",
+              "prompt": "PortFast معمولاً برای کدام پورت مناسب است؟",
+              "options": [
+                "uplink بین سوئیچ‌ها",
+                "پورت endpoint",
+                "هر trunk ناشناخته",
+                "پورت WAN روتر"
+              ]
+            },
+            {
+              "id": "ch13_vlan_l1_q3",
+              "prompt": "اگر MAC در VLAN درست دیده شود ولی ping ناموفق باشد، چه نتیجه‌ای درست است؟",
+              "options": [
+                "VLAN قطعاً مقصر است",
+                "باید فقط جدول MAC پاک شود",
+                "باید IP، gateway و سیاست‌ها هم بررسی شوند",
+                "باید STP خاموش شود"
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "ch13_vlan_l1_q1",
+              "correct_index": 0,
+              "explanation": "VLAN دسترسی پورت، فریم ورودی بدون tag را در دامنهٔ مربوط قرار می‌دهد."
+            },
+            {
+              "id": "ch13_vlan_l1_q2",
+              "correct_index": 1,
+              "explanation": "PortFast برای کاهش انتظار STP در پورت endpoint طراحی شده و روی لینک سوئیچ‌به‌سوئیچ خطر حلقه را بالا می‌برد."
+            },
+            {
+              "id": "ch13_vlan_l1_q3",
+              "correct_index": 2,
+              "explanation": "یادگیری MAC تنها بخشی از مسیر است؛ لایهٔ سوم و سیاست‌های امنیتی هم باید بررسی شوند."
+            }
+          ]
+        },
+        "official_sources": [
+          {
+            "title": "Cisco IOS XE Configuration Guides",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          },
+          {
+            "title": "IEEE 802.1Q Standard",
+            "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+          }
+        ]
+      },
+      "official_sources": [
+        {
+          "title": "Cisco IOS XE Configuration Guides",
+          "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+        },
+        {
+          "title": "IEEE 802.1Q Standard",
+          "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+        }
+      ],
+      "meta_json": "{\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"category\":\"vlan\",\"level\":\"L1\",\"topic\":\"vlan\",\"learning_objectives\":[\"شرح سازوکار و اثر عملیاتی موضوع\",\"اجرای آزمایش کنترل‌شده و ثبت خروجی\",\"عیب‌یابی با شواهد و بازگشت امن\"],\"prerequisites\":[\"مبانی Ethernet و مدل OSI\",\"دسترسی به شبیه‌ساز یا لابراتوار ایزوله\"],\"assessment\":{\"questions\":[{\"id\":\"ch13_vlan_l1_q1\",\"prompt\":\"فریم untagged روی پورت Access چگونه طبقه‌بندی می‌شود؟\",\"options\":[\"بر اساس VLAN پورت\",\"همیشه VLAN 1\",\"بر اساس DNS\",\"با استفاده از جدول route\"]},{\"id\":\"ch13_vlan_l1_q2\",\"prompt\":\"PortFast معمولاً برای کدام پورت مناسب است؟\",\"options\":[\"uplink بین سوئیچ‌ها\",\"پورت endpoint\",\"هر trunk ناشناخته\",\"پورت WAN روتر\"]},{\"id\":\"ch13_vlan_l1_q3\",\"prompt\":\"اگر MAC در VLAN درست دیده شود ولی ping ناموفق باشد، چه نتیجه‌ای درست است؟\",\"options\":[\"VLAN قطعاً مقصر است\",\"باید فقط جدول MAC پاک شود\",\"باید IP، gateway و سیاست‌ها هم بررسی شوند\",\"باید STP خاموش شود\"]}],\"answer_key\":[{\"id\":\"ch13_vlan_l1_q1\",\"correct_index\":0,\"explanation\":\"VLAN دسترسی پورت، فریم ورودی بدون tag را در دامنهٔ مربوط قرار می‌دهد.\"},{\"id\":\"ch13_vlan_l1_q2\",\"correct_index\":1,\"explanation\":\"PortFast برای کاهش انتظار STP در پورت endpoint طراحی شده و روی لینک سوئیچ‌به‌سوئیچ خطر حلقه را بالا می‌برد.\"},{\"id\":\"ch13_vlan_l1_q3\",\"correct_index\":2,\"explanation\":\"یادگیری MAC تنها بخشی از مسیر است؛ لایهٔ سوم و سیاست‌های امنیتی هم باید بررسی شوند.\"}]},\"official_sources\":[{\"title\":\"Cisco IOS XE Configuration Guides\",\"url\":\"https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html\"},{\"title\":\"IEEE 802.1Q Standard\",\"url\":\"https://standards.ieee.org/standard/802_1Q-2022.html\"}]}"
+    },
+    {
+      "uid": "lesson:ch13:switching-v3:vlan:l2",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "chapter_title_fa": "سوئیچینگ سازمانی: طراحی VLAN و پایداری STP",
+      "subchapter_order": 1,
+      "subchapter_title_fa": "طراحی VLAN و 802.1Q",
+      "lesson_order": 3,
+      "topic": "vlan",
+      "domain": "switching-and-routing",
+      "level": "L2",
+      "title_fa": "[L2] طراحی VLAN، subnet و gateway در شبکه سازمانی",
+      "title_en": "[L2] طراحی VLAN، subnet و gateway در شبکه سازمانی",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "VLAN",
+        "STP",
+        "lab",
+        "troubleshooting",
+        "L2",
+        "vlan"
+      ],
+      "summary": "طراحی VLAN باید با طرح IP، DHCP، gateway، مسیرهای بین‌بخشی و نیازهای امنیتی هم‌راستا باشد.",
+      "full_content": "# طراحی VLAN و طرح آدرس‌دهی سازمانی\n\n## روش طراحی\nVLAN را بر اساس نیاز ارتباطی و مرز اعتماد طراحی کن، نه صرفاً بر اساس شماره اتاق. برای هر VLAN مالک، هدف، subnet، gateway، DHCP scope، DNS، مسیرهای مجاز، نیاز multicast و ظرفیت رشد ثبت شود. شبکه‌های کاربر، مدیریت، سرور، دوربین و مهمان معمولاً سیاست‌های متفاوتی دارند.\n\n## مثال حل‌شده\nبرای واحد مالی ۱۵ کاربر، یک subnet خصوصی با ظرفیت میزبان کافی و فضای رشد انتخاب کن؛ gateway رزروشده و DHCP pool را طوری تعریف کن که با آدرس‌های ثابت و زیرساخت تداخل نداشته باشد. سپس ماتریس جریان تعیین کن: مالی به سرور مالی مجاز، مهمان به شبکه داخلی مسدود، مدیریت سوئیچ فقط از jump host مجاز. VLAN ID به‌تنهایی این سیاست‌ها را اعمال نمی‌کند.\n\n## لابراتوار\n۱) VLAN و SVI یا subinterface در روتر بساز؛ ۲) DHCP scope و default-router را تعیین کن؛ ۳) ACL حداقلی اضافه کن؛ ۴) از هر subnet آدرس بگیر؛ ۵) مسیرهای مجاز و غیرمجاز را آزمایش کن؛ ۶) جدول route و شمارنده‌های ACL را ثبت کن. محیط آزمایشی باید از شبکه عملیاتی جدا باشد.\n\n## نمونهٔ IOS-XE مفهومی\n```text\nvlan 10\n name FINANCE\ninterface Vlan10\n description FINANCE-GATEWAY\n ip address 10.10.10.1 255.255.255.0\n no shutdown\nshow ip interface brief\nshow ip route connected\n```\nاین آدرس نمونه است؛ پیش از استفاده، عدم هم‌پوشانی با شبکه‌های واقعی را بررسی کن. در طراحی L2-only، gateway ممکن است روی روتر یا firewall باشد و SVI سوئیچ access ایجاد نشود.\n\n## تحلیل خرابی\nDHCP موفق ولی دسترسی سرور ناموفق: lease، gateway، route، ACL و DNS را جداگانه بررسی کن. ارتباط IP برقرار ولی نام حل نمی‌شود: DNS را بررسی کن. ارتباط درون VLAN ناموفق: VLAN/port/STP و سپس endpoint را بررسی کن. این جداسازی مانع تغییرات بی‌هدف می‌شود.\n\n## امنیت و ظرفیت\nVLAN بزرگ، broadcast و دامنهٔ رخداد را افزایش می‌دهد؛ VLAN بیش‌ازحد نیز مدیریت و trunkها را پیچیده می‌کند. اندازه را بر اساس تعداد endpoint، multicast، نرخ تغییر، نیاز عیب‌یابی و رشد انتخاب کن. شبکهٔ مدیریت را از کاربران جدا و دسترسی مدیریتی را با ACL، AAA و logging محدود کن.\n\n## معیار قبولی\nهر VLAN دارای subnet و gateway مستند، DHCP بدون تداخل، ماتریس جریان، آزمون مثبت/منفی و روش rollback است.\n\n## پروندهٔ طراحی: مالی، فروش، دوربین و مدیریت\nفرض کن یک دفتر شامل مالی، فروش، دوربین IP، تلفن و مدیریت تجهیزات است. نیازمندی را به جریان‌های کاری تبدیل کن، نه صرفاً به لیست VLAN. مالی ممکن است به ERP و DNS نیاز داشته باشد، فروش به CRM، دوربین‌ها به NVR و سرویس زمان، و مدیریت تجهیزات فقط از ایستگاه مدیریتی مجاز باشد. شبکهٔ مهمان نباید به هیچ‌کدام دسترسی پیش‌فرض داشته باشد. برای هر جریان مبدأ، مقصد، پروتکل، پورت، دلیل تجاری و مالک مشخص کن.\n\n### هم‌راستاسازی DHCP و آدرس‌دهی\nبرای هر VLAN subnet غیرهم‌پوشان انتخاب کن؛ ظرفیت را بر اساس تعداد فعلی، رشد، رزروها و آدرس‌های زیرساختی محاسبه کن. gateway، DHCP scope، DNS، lease time، exclusion و reservation را ثبت کن. در محیط دارای DHCP relay، آدرس helper و مسیر برگشت را بررسی کن. اگر VLAN در چند سایت امتداد دارد، خطر overlap و broadcast بین سایت‌ها را ارزیابی کن؛ در بسیاری از طراحی‌ها مرزبندی لایهٔ سوم در سایت مناسب‌تر است.\n\n### معیار پذیرش معماری\nتست مثبت فقط کافی نیست. باید ثابت شود مالی به سرویس مجاز دسترسی دارد و مهمان به همان سرویس دسترسی ندارد؛ مدیریت سوئیچ از شبکهٔ کاربر قابل دسترسی نیست؛ دوربین به اینترنت عمومی دسترسی غیرضروری ندارد؛ و DNS/DHCP از هر VLAN موردنیاز کار می‌کند. نتایج را به ماتریس جریان پیوند بده تا تغییر بعدی قابل بازبینی باشد.",
+      "commands": "show ip interface brief\\nshow ip route connected\\nshow ip dhcp binding\\nshow access-lists",
+      "examples": "",
+      "notes": "منبع آموزشی اختصاصی NetworkAll؛ اجرای lab هنوز روی مدل/نسخهٔ هدف تأیید نشده است. depth_extension=2026-10-13; lab_status=designed_not_executed",
+      "learning_objectives": [
+        "شرح سازوکار و اثر عملیاتی موضوع",
+        "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+        "عیب‌یابی با شواهد و بازگشت امن"
+      ],
+      "prerequisites": [
+        "مبانی Ethernet و مدل OSI",
+        "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+      ],
+      "source_status": "review_required",
+      "assessment": {
+        "questions": [
+          {
+            "id": "ch13_vlan_l2_q1",
+            "prompt": "کدام مورد باید همراه تعریف VLAN ثبت شود؟",
+            "options": [
+              "فقط نام رنگی",
+              "Subnet، gateway، DHCP و جریان‌های مجاز",
+              "فقط مدل مانیتور",
+              "فقط سرعت اینترنت"
+            ]
+          },
+          {
+            "id": "ch13_vlan_l2_q2",
+            "prompt": "DHCP کار می‌کند ولی یک سرویس داخلی در دسترس نیست؛ قدم درست چیست؟",
+            "options": [
+              "تغییر تصادفی VLAN",
+              "خاموش‌کردن firewall",
+              "بررسی gateway، route، ACL و DNS بر اساس نوع آزمون",
+              "حذف همهٔ scopeها"
+            ]
+          },
+          {
+            "id": "ch13_vlan_l2_q3",
+            "prompt": "آیا جداسازی VLAN خودبه‌خود کنترل دسترسی بین VLANها را تضمین می‌کند؟",
+            "options": [
+              "خیر، سیاست لایهٔ سوم/Firewall لازم است",
+              "بله، در همهٔ سوئیچ‌ها",
+              "فقط با VLAN ID زوج",
+              "فقط با DHCP"
+            ]
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "ch13_vlan_l2_q1",
+            "correct_index": 1,
+            "explanation": "VLAN باید در یک طرح عملیاتی شامل آدرس‌دهی و سیاست جریان تعریف شود."
+          },
+          {
+            "id": "ch13_vlan_l2_q2",
+            "correct_index": 2,
+            "explanation": "عیب‌یابی لایه‌به‌لایه شواهد را از هم جدا می‌کند."
+          },
+          {
+            "id": "ch13_vlan_l2_q3",
+            "correct_index": 0,
+            "explanation": "مسیریابی بین VLANها باید با سیاست صریح محدود شود."
+          }
+        ]
+      },
+      "meta": {
+        "lab_status": "designed_not_executed",
+        "content_status": "review_required",
+        "category": "vlan",
+        "level": "L2",
+        "topic": "vlan",
+        "learning_objectives": [
+          "شرح سازوکار و اثر عملیاتی موضوع",
+          "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+          "عیب‌یابی با شواهد و بازگشت امن"
+        ],
+        "prerequisites": [
+          "مبانی Ethernet و مدل OSI",
+          "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "ch13_vlan_l2_q1",
+              "prompt": "کدام مورد باید همراه تعریف VLAN ثبت شود؟",
+              "options": [
+                "فقط نام رنگی",
+                "Subnet، gateway، DHCP و جریان‌های مجاز",
+                "فقط مدل مانیتور",
+                "فقط سرعت اینترنت"
+              ]
+            },
+            {
+              "id": "ch13_vlan_l2_q2",
+              "prompt": "DHCP کار می‌کند ولی یک سرویس داخلی در دسترس نیست؛ قدم درست چیست؟",
+              "options": [
+                "تغییر تصادفی VLAN",
+                "خاموش‌کردن firewall",
+                "بررسی gateway، route، ACL و DNS بر اساس نوع آزمون",
+                "حذف همهٔ scopeها"
+              ]
+            },
+            {
+              "id": "ch13_vlan_l2_q3",
+              "prompt": "آیا جداسازی VLAN خودبه‌خود کنترل دسترسی بین VLANها را تضمین می‌کند؟",
+              "options": [
+                "خیر، سیاست لایهٔ سوم/Firewall لازم است",
+                "بله، در همهٔ سوئیچ‌ها",
+                "فقط با VLAN ID زوج",
+                "فقط با DHCP"
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "ch13_vlan_l2_q1",
+              "correct_index": 1,
+              "explanation": "VLAN باید در یک طرح عملیاتی شامل آدرس‌دهی و سیاست جریان تعریف شود."
+            },
+            {
+              "id": "ch13_vlan_l2_q2",
+              "correct_index": 2,
+              "explanation": "عیب‌یابی لایه‌به‌لایه شواهد را از هم جدا می‌کند."
+            },
+            {
+              "id": "ch13_vlan_l2_q3",
+              "correct_index": 0,
+              "explanation": "مسیریابی بین VLANها باید با سیاست صریح محدود شود."
+            }
+          ]
+        },
+        "official_sources": [
+          {
+            "title": "Cisco IOS XE Configuration Guides",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          },
+          {
+            "title": "IEEE 802.1Q Standard",
+            "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+          }
+        ]
+      },
+      "official_sources": [
+        {
+          "title": "Cisco IOS XE Configuration Guides",
+          "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+        },
+        {
+          "title": "IEEE 802.1Q Standard",
+          "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+        }
+      ],
+      "meta_json": "{\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"category\":\"vlan\",\"level\":\"L2\",\"topic\":\"vlan\",\"learning_objectives\":[\"شرح سازوکار و اثر عملیاتی موضوع\",\"اجرای آزمایش کنترل‌شده و ثبت خروجی\",\"عیب‌یابی با شواهد و بازگشت امن\"],\"prerequisites\":[\"مبانی Ethernet و مدل OSI\",\"دسترسی به شبیه‌ساز یا لابراتوار ایزوله\"],\"assessment\":{\"questions\":[{\"id\":\"ch13_vlan_l2_q1\",\"prompt\":\"کدام مورد باید همراه تعریف VLAN ثبت شود؟\",\"options\":[\"فقط نام رنگی\",\"Subnet، gateway، DHCP و جریان‌های مجاز\",\"فقط مدل مانیتور\",\"فقط سرعت اینترنت\"]},{\"id\":\"ch13_vlan_l2_q2\",\"prompt\":\"DHCP کار می‌کند ولی یک سرویس داخلی در دسترس نیست؛ قدم درست چیست؟\",\"options\":[\"تغییر تصادفی VLAN\",\"خاموش‌کردن firewall\",\"بررسی gateway، route، ACL و DNS بر اساس نوع آزمون\",\"حذف همهٔ scopeها\"]},{\"id\":\"ch13_vlan_l2_q3\",\"prompt\":\"آیا جداسازی VLAN خودبه‌خود کنترل دسترسی بین VLANها را تضمین می‌کند؟\",\"options\":[\"خیر، سیاست لایهٔ سوم/Firewall لازم است\",\"بله، در همهٔ سوئیچ‌ها\",\"فقط با VLAN ID زوج\",\"فقط با DHCP\"]}],\"answer_key\":[{\"id\":\"ch13_vlan_l2_q1\",\"correct_index\":1,\"explanation\":\"VLAN باید در یک طرح عملیاتی شامل آدرس‌دهی و سیاست جریان تعریف شود.\"},{\"id\":\"ch13_vlan_l2_q2\",\"correct_index\":2,\"explanation\":\"عیب‌یابی لایه‌به‌لایه شواهد را از هم جدا می‌کند.\"},{\"id\":\"ch13_vlan_l2_q3\",\"correct_index\":0,\"explanation\":\"مسیریابی بین VLANها باید با سیاست صریح محدود شود.\"}]},\"official_sources\":[{\"title\":\"Cisco IOS XE Configuration Guides\",\"url\":\"https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html\"},{\"title\":\"IEEE 802.1Q Standard\",\"url\":\"https://standards.ieee.org/standard/802_1Q-2022.html\"}]}"
+    },
+    {
+      "uid": "lesson:ch13:switching-v3:vlan:l3",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "chapter_title_fa": "سوئیچینگ سازمانی: طراحی VLAN و پایداری STP",
+      "subchapter_order": 1,
+      "subchapter_title_fa": "طراحی VLAN و 802.1Q",
+      "lesson_order": 4,
+      "topic": "vlan",
+      "domain": "switching-and-routing",
+      "level": "L3",
+      "title_fa": "[L3] Trunk، 802.1Q و ناسازگاری native VLAN",
+      "title_en": "[L3] Trunk، 802.1Q و ناسازگاری native VLAN",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "VLAN",
+        "STP",
+        "lab",
+        "troubleshooting",
+        "L3",
+        "vlan"
+      ],
+      "summary": "Trunk چند VLAN را روی یک لینک حمل می‌کند؛ دو سر لینک باید در allowed VLAN، native VLAN و وضعیت عملیاتی سازگار باشند.",
+      "full_content": "# مهندسی Trunk و 802.1Q\n\n## سازوکار\nTrunk فریم‌های چند VLAN را روی یک لینک حمل می‌کند. در 802.1Q، tag شناسهٔ VLAN را حمل می‌کند؛ در پیاده‌سازی‌های رایج، native VLAN ممکن است بدون tag منتقل شود. اختلاف native VLAN می‌تواند سبب طبقه‌بندی متفاوت ترافیک و هشدارهای امنیتی شود. مذاکرهٔ trunk، allowed VLAN و وضعیت عملیاتی باید صریح و قابل راستی‌آزمایی باشد.\n\n## الگوی پیکربندی نمونه\n```text\ninterface GigabitEthernet1/0/48\n description UPLINK-TO-DIST\n switchport mode trunk\n switchport trunk allowed vlan 10,20,30,99\n switchport trunk native vlan 999\nend\nshow interfaces trunk\nshow interfaces GigabitEthernet1/0/48 switchport\n```\nاین تنظیم باید با هر دو انتهای لینک هماهنگ باشد. VLAN 999 نمونهٔ native غیرکاربری است و باید در هر دو سمت تعریف شود؛ شماره را کورکورانه روی شبکهٔ عملیاتی اعمال نکن.\n\n## سناریوی خرابی\nVLAN 10 کار می‌کند اما VLAN 30 از سوئیچ access عبور نمی‌کند. ابتدا trunk operational، سپس allowed VLAN در هر دو سمت، وجود VLAN در هر دو دستگاه، STP state و در پایان routing/DHCP را بررسی کن. اگر فقط بعضی VLANها مشکل دارند، خاموش‌کردن کل trunk راه‌حل مناسبی نیست.\n\n## آزمایش قابل تکرار\nقبل از تغییر خروجی `show interfaces trunk`، `show spanning-tree vlan 30` و MAC table را ذخیره کن. یک VLAN آزمایشی را از allowed list خارج کن و قطع ارتباط مورد انتظار را مشاهده کن؛ سپس آن را بازگردان و بازیابی را تأیید کن. این آزمایش فقط در محیط آزمایشگاهی انجام شود.\n\n## کنترل‌های امنیتی\nاز trunk خودکار یا مذاکرهٔ غیرضروری روی پورت‌های کاربر اجتناب کن؛ پورت‌های endpoint را Access صریح تنظیم کن. allowed list را به VLANهای لازم محدود کن، VLAN مدیریت را بی‌دلیل روی تمام trunkها پخش نکن و native VLAN را مستند نگه دار. رفتار دقیق فرمان‌ها را با پلتفرم و نسخه بررسی کن.\n\n## Rollback و شواهد\nپیکربندی دو انتها، VLANهای مجاز قبلی، native VLAN، زمان تغییر و آزمون‌های قبل/بعد را ذخیره کن. در rollback هر دو انتها را به وضعیت سازگار برگردان؛ بازگردانی فقط یک سمت ممکن است مشکل را تشدید کند.\n\n## معیار قبولی\nدو سر trunk فهرست VLAN مجاز و native سازگار دارند؛ VLANهای لازم در STP forwarding هستند؛ ترافیک آزمون عبور می‌کند و VLAN غیرمجاز عبور نمی‌کند.\n\n## RCA پیشرفته: یک VLAN روی یک مسیر ناپدید شده است\nدر یک توپولوژی چندسوئیچی، VLAN 30 در access فعال است اما کلاینت‌های یک طبقه به gateway دسترسی ندارند. شواهد را از نزدیک‌ترین نقطه شروع کن: MAC کلاینت روی access دیده می‌شود؟ VLAN 30 در سوئیچ وجود دارد؟ trunk به distribution operational است؟ VLAN در allowed list هر دو انتها هست؟ STP برای VLAN 30 forwarding است؟ SVI یا subinterface gateway up/up است؟ ARP gateway ورودی دارد؟ این توالی، دامنهٔ مشکل را به یک لینک، VLAN، STP یا لایهٔ سوم محدود می‌کند.\n\n### تحلیل هم‌بستگی\nزمان آخرین تغییر config، topology change، link flap و افزایش error counter را مقایسه کن. اگر چند VLAN روی یک trunk هم‌زمان افتاده‌اند، به سلامت trunk یا لینک فیزیکی مشکوک شو؛ اگر فقط یک VLAN افتاده، allowed list، وجود VLAN یا STP همان VLAN محتمل‌تر است. اگر فقط یک endpoint متأثر است، endpoint، port security و آدرس‌دهی را بررسی کن. این‌ها فرضیه‌اند؛ هرکدام باید با خروجی تأیید یا رد شود.\n\n### مهار رخداد و rollback\nقبل از تغییر گسترده، دامنهٔ تاثیر را مشخص و سرویس‌های حیاتی را اولویت‌بندی کن. اگر تغییر اخیر علت محتمل است، diff را با baseline مقایسه و فقط تغییر مرتبط را rollback کن. پس از بازیابی، مسیر end-to-end و سیاست‌های امنیتی را آزمایش کن؛ صرف up شدن لینک پایان رخداد نیست. گزارش نهایی باید علت ریشه‌ای، عامل تشدیدکننده، زمان کشف، زمان بازیابی و اقدام پیشگیرانه را ثبت کند.",
+      "commands": "show interfaces trunk\\nshow interfaces GigabitEthernet1/0/48 switchport\\nshow spanning-tree vlan 30",
+      "examples": "",
+      "notes": "منبع آموزشی اختصاصی NetworkAll؛ اجرای lab هنوز روی مدل/نسخهٔ هدف تأیید نشده است. depth_extension=2026-10-13; lab_status=designed_not_executed",
+      "learning_objectives": [
+        "شرح سازوکار و اثر عملیاتی موضوع",
+        "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+        "عیب‌یابی با شواهد و بازگشت امن"
+      ],
+      "prerequisites": [
+        "مبانی Ethernet و مدل OSI",
+        "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+      ],
+      "source_status": "review_required",
+      "assessment": {
+        "questions": [
+          {
+            "id": "ch13_vlan_l3_q1",
+            "prompt": "فهرست allowed VLAN روی trunk چه کاری می‌کند؟",
+            "options": [
+              "تعیین می‌کند کدام VLANها اجازهٔ عبور دارند",
+              "IP میزبان‌ها را تخصیص می‌دهد",
+              "STP را حذف می‌کند",
+              "فریم را رمزگذاری می‌کند"
+            ]
+          },
+          {
+            "id": "ch13_vlan_l3_q2",
+            "prompt": "اختلاف native VLAN در دو سر لینک چه خطری دارد؟",
+            "options": [
+              "افزایش ظرفیت PoE",
+              "طبقه‌بندی ناهمسان ترافیک و ریسک امنیتی",
+              "حل خودکار DNS",
+              "حذف نیاز به STP"
+            ]
+          },
+          {
+            "id": "ch13_vlan_l3_q3",
+            "prompt": "در خرابی تنها یک VLAN روی trunk، چه رویکردی بهتر است؟",
+            "options": [
+              "خاموش‌کردن همهٔ trunkها",
+              "پاک‌کردن همهٔ MACها",
+              "بررسی allowed list، وجود VLAN و STP همان VLAN",
+              "تغییر subnet همهٔ واحدها"
+            ]
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "ch13_vlan_l3_q1",
+            "correct_index": 0,
+            "explanation": "Allowed VLAN کنترل می‌کند کدام VLANها از trunk عبور کنند."
+          },
+          {
+            "id": "ch13_vlan_l3_q2",
+            "correct_index": 1,
+            "explanation": "ترافیک بدون tag ممکن است در دو سمت به VLANهای متفاوت نسبت داده شود."
+          },
+          {
+            "id": "ch13_vlan_l3_q3",
+            "correct_index": 2,
+            "explanation": "تمرکز روی VLAN معیوب، اثر جانبی و زمان بازیابی را کم می‌کند."
+          }
+        ]
+      },
+      "meta": {
+        "lab_status": "designed_not_executed",
+        "content_status": "review_required",
+        "category": "vlan",
+        "level": "L3",
+        "topic": "vlan",
+        "learning_objectives": [
+          "شرح سازوکار و اثر عملیاتی موضوع",
+          "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+          "عیب‌یابی با شواهد و بازگشت امن"
+        ],
+        "prerequisites": [
+          "مبانی Ethernet و مدل OSI",
+          "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "ch13_vlan_l3_q1",
+              "prompt": "فهرست allowed VLAN روی trunk چه کاری می‌کند؟",
+              "options": [
+                "تعیین می‌کند کدام VLANها اجازهٔ عبور دارند",
+                "IP میزبان‌ها را تخصیص می‌دهد",
+                "STP را حذف می‌کند",
+                "فریم را رمزگذاری می‌کند"
+              ]
+            },
+            {
+              "id": "ch13_vlan_l3_q2",
+              "prompt": "اختلاف native VLAN در دو سر لینک چه خطری دارد؟",
+              "options": [
+                "افزایش ظرفیت PoE",
+                "طبقه‌بندی ناهمسان ترافیک و ریسک امنیتی",
+                "حل خودکار DNS",
+                "حذف نیاز به STP"
+              ]
+            },
+            {
+              "id": "ch13_vlan_l3_q3",
+              "prompt": "در خرابی تنها یک VLAN روی trunk، چه رویکردی بهتر است؟",
+              "options": [
+                "خاموش‌کردن همهٔ trunkها",
+                "پاک‌کردن همهٔ MACها",
+                "بررسی allowed list، وجود VLAN و STP همان VLAN",
+                "تغییر subnet همهٔ واحدها"
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "ch13_vlan_l3_q1",
+              "correct_index": 0,
+              "explanation": "Allowed VLAN کنترل می‌کند کدام VLANها از trunk عبور کنند."
+            },
+            {
+              "id": "ch13_vlan_l3_q2",
+              "correct_index": 1,
+              "explanation": "ترافیک بدون tag ممکن است در دو سمت به VLANهای متفاوت نسبت داده شود."
+            },
+            {
+              "id": "ch13_vlan_l3_q3",
+              "correct_index": 2,
+              "explanation": "تمرکز روی VLAN معیوب، اثر جانبی و زمان بازیابی را کم می‌کند."
+            }
+          ]
+        },
+        "official_sources": [
+          {
+            "title": "Cisco IOS XE Configuration Guides",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          },
+          {
+            "title": "IEEE 802.1Q Standard",
+            "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+          }
+        ]
+      },
+      "official_sources": [
+        {
+          "title": "Cisco IOS XE Configuration Guides",
+          "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+        },
+        {
+          "title": "IEEE 802.1Q Standard",
+          "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+        }
+      ],
+      "meta_json": "{\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"category\":\"vlan\",\"level\":\"L3\",\"topic\":\"vlan\",\"learning_objectives\":[\"شرح سازوکار و اثر عملیاتی موضوع\",\"اجرای آزمایش کنترل‌شده و ثبت خروجی\",\"عیب‌یابی با شواهد و بازگشت امن\"],\"prerequisites\":[\"مبانی Ethernet و مدل OSI\",\"دسترسی به شبیه‌ساز یا لابراتوار ایزوله\"],\"assessment\":{\"questions\":[{\"id\":\"ch13_vlan_l3_q1\",\"prompt\":\"فهرست allowed VLAN روی trunk چه کاری می‌کند؟\",\"options\":[\"تعیین می‌کند کدام VLANها اجازهٔ عبور دارند\",\"IP میزبان‌ها را تخصیص می‌دهد\",\"STP را حذف می‌کند\",\"فریم را رمزگذاری می‌کند\"]},{\"id\":\"ch13_vlan_l3_q2\",\"prompt\":\"اختلاف native VLAN در دو سر لینک چه خطری دارد؟\",\"options\":[\"افزایش ظرفیت PoE\",\"طبقه‌بندی ناهمسان ترافیک و ریسک امنیتی\",\"حل خودکار DNS\",\"حذف نیاز به STP\"]},{\"id\":\"ch13_vlan_l3_q3\",\"prompt\":\"در خرابی تنها یک VLAN روی trunk، چه رویکردی بهتر است؟\",\"options\":[\"خاموش‌کردن همهٔ trunkها\",\"پاک‌کردن همهٔ MACها\",\"بررسی allowed list، وجود VLAN و STP همان VLAN\",\"تغییر subnet همهٔ واحدها\"]}],\"answer_key\":[{\"id\":\"ch13_vlan_l3_q1\",\"correct_index\":0,\"explanation\":\"Allowed VLAN کنترل می‌کند کدام VLANها از trunk عبور کنند.\"},{\"id\":\"ch13_vlan_l3_q2\",\"correct_index\":1,\"explanation\":\"ترافیک بدون tag ممکن است در دو سمت به VLANهای متفاوت نسبت داده شود.\"},{\"id\":\"ch13_vlan_l3_q3\",\"correct_index\":2,\"explanation\":\"تمرکز روی VLAN معیوب، اثر جانبی و زمان بازیابی را کم می‌کند.\"}]},\"official_sources\":[{\"title\":\"Cisco IOS XE Configuration Guides\",\"url\":\"https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html\"},{\"title\":\"IEEE 802.1Q Standard\",\"url\":\"https://standards.ieee.org/standard/802_1Q-2022.html\"}]}"
+    },
+    {
+      "uid": "lesson:ch13:switching-v3:vlan:l4",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "chapter_title_fa": "سوئیچینگ سازمانی: طراحی VLAN و پایداری STP",
+      "subchapter_order": 1,
+      "subchapter_title_fa": "طراحی VLAN و 802.1Q",
+      "lesson_order": 5,
+      "topic": "vlan",
+      "domain": "switching-and-routing",
+      "level": "L4",
+      "title_fa": "[L4] بازبینی معماری VLAN و کنترل تغییر در مقیاس سازمانی",
+      "title_en": "[L4] بازبینی معماری VLAN و کنترل تغییر در مقیاس سازمانی",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "VLAN",
+        "STP",
+        "lab",
+        "troubleshooting",
+        "L4",
+        "vlan"
+      ],
+      "summary": "بازبینی حرفه‌ای VLAN شامل ماتریس جریان، مدیریت دامنهٔ خطا، همگرایی، اتوماسیون تغییر و شواهد بازگشت است.",
+      "full_content": "# بازبینی معماری VLAN در مقیاس سازمانی\n\n## مسئلهٔ معماری\nدر چند ساختمان با access/distribution/core، VLANهای کشیده‌شده در لایهٔ دوم می‌توانند دامنهٔ خرابی را بزرگ کنند. تصمیم بین routing در access، تجمیع لایهٔ دوم و طراحی مرزهای L3 باید با مقیاس، نیاز تحرک میزبان، همگرایی، multicast، قابلیت‌های پلتفرم و توان تیم عملیات سنجیده شود.\n\n## مدل تصمیم\nبرای هر VLAN این داده‌ها را جمع کن: تعداد endpoint، broadcast/unknown-unicast، محل gateway، وابستگی DHCP، وابستگی سرویس، trunkهای حامل، root bridge، مسیرهای جایگزین و مالک سرویس. سپس سه سناریو را مقایسه کن: گسترش VLAN در چند لایه، مرزبندی در distribution، و routing نزدیک access. هیچ الگو بدون محدودیت نیست؛ هدف کمینه‌کردن دامنهٔ رخداد و ساده‌کردن عیب‌یابی است.\n\n## تحلیل تغییر\nتغییر allowed VLAN روی trunk می‌تواند تعداد زیادی میزبان را هم‌زمان قطع کند. پیش از تغییر، وابستگی VLAN را از config و MAC table استخراج کن، دو انتهای trunk را مقایسه کن، پنجرهٔ تغییر و معیار توقف تعیین کن. معیار توقف باید عددی و قابل مشاهده باشد، مانند از دست رفتن دسترسی به gateway آزمایشی یا افزایش خطای interface از آستانهٔ تعیین‌شده.\n\n## آزمایش و شواهد\nدر محیط lab یک تغییر را به‌صورت canary روی یک uplink اجرا کن. ثبت کن: وضعیت پیش از تغییر، فرمان دقیق، زمان، خروجی‌های show، آزمون‌های مثبت و منفی، و rollback. سپس همان روش را در محیط شبیه‌سازی دوم تکرار کن. تفاوت مدل و نسخه را مستند کن و خروجی نمونه را به‌عنوان حقیقت جهانی تلقی نکن.\n\n## طراحی خودکارسازی\nاسکریپت باید قبل از اعمال، allowed list و native VLAN دو سر لینک را بخواند، diff قابل‌مرور تولید کند، پیش‌شرط‌ها را کنترل کند و در صورت اختلاف غیرمنتظره متوقف شود. پس از اعمال، invariantها را دوباره بررسی کند: VLAN وجود دارد، trunk up است، STP پایدار است و آزمون end-to-end موفق است. اجرای کورکورانهٔ تغییر روی همهٔ سوئیچ‌ها ممنوع باشد.\n\n## امنیت و حاکمیت\nتغییر VLAN باید مالک، ticket، زمان، تأیید، نسخهٔ پیکربندی، شواهد و نتیجه داشته باشد. شبکهٔ مدیریت و سرویس‌های حساس را با ACL و احراز هویت قوی جدا کن. دسترسی به CLI و secrets در سیستم اتوماسیون باید حداقلی باشد.\n\n## معیار قبولی\nطرح شامل تصمیم معماری مستدل، نقشهٔ VLAN، ماتریس جریان، روش canary، معیار توقف، rollback آزموده‌شده و گزارش پس از تغییر است.\n\n## طراحی سازمانی و حاکمیت تغییر VLAN\nدر شبکهٔ چندساختمانی، VLANهای لایهٔ دوم که بی‌نیاز از یکدیگر بین ساختمان‌ها کشیده می‌شوند، دامنهٔ رخداد و وابستگی عملیاتی را افزایش می‌دهند. مرزبندی لایهٔ سوم در لایهٔ توزیع یا نزدیک access، انتخابی معماری است که باید بر اساس تحرک میزبان، وابستگی سرویس، multicast، قابلیت پلتفرم، همگرایی و توان عملیاتی تیم انجام شود. هیچ قاعدهٔ عمومی جای ارزیابی جریان‌های واقعی و failure domain را نمی‌گیرد.\n\n### طرح تغییر قابل ممیزی\nهر تغییر VLAN یا trunk باید مالک، دلیل، فهرست دستگاه‌ها، diff، پیش‌شرط، آزمون مثبت/منفی، معیار توقف، پنجرهٔ اجرا و rollback داشته باشد. در اتوماسیون، قبل از اعمال تغییر وضعیت فعلی هر دو انتهای trunk را بخوان، اختلاف غیرمنتظره را fail-closed کن، و تنها پس از تأیید baseline اقدام کن. بعد از اعمال، وجود VLAN، allowed list، native VLAN، STP state، MAC learning و دسترسی سرویس را دوباره بررسی کن. گزارش باید شامل خروجی واقعی و شناسهٔ تغییر باشد.\n\n### ظرفیت و ریسک\nاندازهٔ VLAN را فقط با تعداد میزبان نسنج؛ broadcast rate، multicast، رفتار endpoint، نرخ جابه‌جایی MAC و اثر خرابی را هم بررسی کن. trunkهای طولانی، native VLAN مشترک، allowed list باز و دسترسی مدیریتی از شبکهٔ کاربر ریسک را افزایش می‌دهند. برای هر تصمیم، مزیت، هزینه، failure mode و روش بازگشت ثبت کن.\n\n### آزمون مستقل\nبازبین دیگری باید بتواند از روی نقشه، ماتریس جریان و خروجی قبل/بعد بفهمد چه چیزی تغییر کرده و چرا. معیار قبولی شامل آزمون منفی برای جریان ممنوع، آزمون مثبت برای سرویس لازم، عدم ایجاد حلقه و بازگشت موفق در آزمایشگاه است. اگر rollback آزمایش نشده باشد، آن را «طراحی‌شده» بنویس، نه «تأییدشده».",
+      "commands": "show interfaces trunk\\nshow spanning-tree root\\nshow mac address-table count\\nshow interfaces counters errors",
+      "examples": "",
+      "notes": "منبع آموزشی اختصاصی NetworkAll؛ اجرای lab هنوز روی مدل/نسخهٔ هدف تأیید نشده است. depth_extension=2026-10-13; lab_status=designed_not_executed",
+      "learning_objectives": [
+        "شرح سازوکار و اثر عملیاتی موضوع",
+        "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+        "عیب‌یابی با شواهد و بازگشت امن"
+      ],
+      "prerequisites": [
+        "مبانی Ethernet و مدل OSI",
+        "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+      ],
+      "source_status": "review_required",
+      "assessment": {
+        "questions": [
+          {
+            "id": "ch13_vlan_l4_q1",
+            "prompt": "مهم‌ترین دلیل محدودکردن دامنهٔ VLAN در معماری بزرگ چیست؟",
+            "options": [
+              "افزایش تعداد broadcast",
+              "کاهش دامنهٔ خرابی و ساده‌سازی عملیات",
+              "حذف routing",
+              "افزایش نیاز به native VLAN"
+            ]
+          },
+          {
+            "id": "ch13_vlan_l4_q2",
+            "prompt": "قبل از اعمال خودکار تغییر روی تمام سوئیچ‌ها چه چیزی لازم است؟",
+            "options": [
+              "اجرای بی‌قید و شرط",
+              "حذف پیکربندی قبلی",
+              "diff، پیش‌شرط، canary و معیار rollback",
+              "خاموش‌کردن logging"
+            ]
+          },
+          {
+            "id": "ch13_vlan_l4_q3",
+            "prompt": "کدام مورد شواهد معتبر پس از تغییر است؟",
+            "options": [
+              "صرفاً پیام موفقیت CLI",
+              "فقط فایل پیکربندی",
+              "خروجی وضعیت، آزمون end-to-end و نتیجهٔ rollback در صورت نیاز",
+              "نام VLAN"
+            ]
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "ch13_vlan_l4_q1",
+            "correct_index": 1,
+            "explanation": "مرزبندی مناسب، انتشار خطا و پیچیدگی عملیات را محدود می‌کند."
+          },
+          {
+            "id": "ch13_vlan_l4_q2",
+            "correct_index": 2,
+            "explanation": "تغییر مرحله‌ای با معیار قابل‌اندازه‌گیری ریسک را کاهش می‌دهد."
+          },
+          {
+            "id": "ch13_vlan_l4_q3",
+            "correct_index": 2,
+            "explanation": "تأیید باید رفتار واقعی شبکه را نشان دهد، نه فقط پذیرش فرمان."
+          }
+        ]
+      },
+      "meta": {
+        "lab_status": "designed_not_executed",
+        "content_status": "review_required",
+        "category": "vlan",
+        "level": "L4",
+        "topic": "vlan",
+        "learning_objectives": [
+          "شرح سازوکار و اثر عملیاتی موضوع",
+          "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+          "عیب‌یابی با شواهد و بازگشت امن"
+        ],
+        "prerequisites": [
+          "مبانی Ethernet و مدل OSI",
+          "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "ch13_vlan_l4_q1",
+              "prompt": "مهم‌ترین دلیل محدودکردن دامنهٔ VLAN در معماری بزرگ چیست؟",
+              "options": [
+                "افزایش تعداد broadcast",
+                "کاهش دامنهٔ خرابی و ساده‌سازی عملیات",
+                "حذف routing",
+                "افزایش نیاز به native VLAN"
+              ]
+            },
+            {
+              "id": "ch13_vlan_l4_q2",
+              "prompt": "قبل از اعمال خودکار تغییر روی تمام سوئیچ‌ها چه چیزی لازم است؟",
+              "options": [
+                "اجرای بی‌قید و شرط",
+                "حذف پیکربندی قبلی",
+                "diff، پیش‌شرط، canary و معیار rollback",
+                "خاموش‌کردن logging"
+              ]
+            },
+            {
+              "id": "ch13_vlan_l4_q3",
+              "prompt": "کدام مورد شواهد معتبر پس از تغییر است؟",
+              "options": [
+                "صرفاً پیام موفقیت CLI",
+                "فقط فایل پیکربندی",
+                "خروجی وضعیت، آزمون end-to-end و نتیجهٔ rollback در صورت نیاز",
+                "نام VLAN"
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "ch13_vlan_l4_q1",
+              "correct_index": 1,
+              "explanation": "مرزبندی مناسب، انتشار خطا و پیچیدگی عملیات را محدود می‌کند."
+            },
+            {
+              "id": "ch13_vlan_l4_q2",
+              "correct_index": 2,
+              "explanation": "تغییر مرحله‌ای با معیار قابل‌اندازه‌گیری ریسک را کاهش می‌دهد."
+            },
+            {
+              "id": "ch13_vlan_l4_q3",
+              "correct_index": 2,
+              "explanation": "تأیید باید رفتار واقعی شبکه را نشان دهد، نه فقط پذیرش فرمان."
+            }
+          ]
+        },
+        "official_sources": [
+          {
+            "title": "Cisco IOS XE Configuration Guides",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          },
+          {
+            "title": "IEEE 802.1Q Standard",
+            "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+          }
+        ]
+      },
+      "official_sources": [
+        {
+          "title": "Cisco IOS XE Configuration Guides",
+          "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+        },
+        {
+          "title": "IEEE 802.1Q Standard",
+          "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+        }
+      ],
+      "meta_json": "{\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"category\":\"vlan\",\"level\":\"L4\",\"topic\":\"vlan\",\"learning_objectives\":[\"شرح سازوکار و اثر عملیاتی موضوع\",\"اجرای آزمایش کنترل‌شده و ثبت خروجی\",\"عیب‌یابی با شواهد و بازگشت امن\"],\"prerequisites\":[\"مبانی Ethernet و مدل OSI\",\"دسترسی به شبیه‌ساز یا لابراتوار ایزوله\"],\"assessment\":{\"questions\":[{\"id\":\"ch13_vlan_l4_q1\",\"prompt\":\"مهم‌ترین دلیل محدودکردن دامنهٔ VLAN در معماری بزرگ چیست؟\",\"options\":[\"افزایش تعداد broadcast\",\"کاهش دامنهٔ خرابی و ساده‌سازی عملیات\",\"حذف routing\",\"افزایش نیاز به native VLAN\"]},{\"id\":\"ch13_vlan_l4_q2\",\"prompt\":\"قبل از اعمال خودکار تغییر روی تمام سوئیچ‌ها چه چیزی لازم است؟\",\"options\":[\"اجرای بی‌قید و شرط\",\"حذف پیکربندی قبلی\",\"diff، پیش‌شرط، canary و معیار rollback\",\"خاموش‌کردن logging\"]},{\"id\":\"ch13_vlan_l4_q3\",\"prompt\":\"کدام مورد شواهد معتبر پس از تغییر است؟\",\"options\":[\"صرفاً پیام موفقیت CLI\",\"فقط فایل پیکربندی\",\"خروجی وضعیت، آزمون end-to-end و نتیجهٔ rollback در صورت نیاز\",\"نام VLAN\"]}],\"answer_key\":[{\"id\":\"ch13_vlan_l4_q1\",\"correct_index\":1,\"explanation\":\"مرزبندی مناسب، انتشار خطا و پیچیدگی عملیات را محدود می‌کند.\"},{\"id\":\"ch13_vlan_l4_q2\",\"correct_index\":2,\"explanation\":\"تغییر مرحله‌ای با معیار قابل‌اندازه‌گیری ریسک را کاهش می‌دهد.\"},{\"id\":\"ch13_vlan_l4_q3\",\"correct_index\":2,\"explanation\":\"تأیید باید رفتار واقعی شبکه را نشان دهد، نه فقط پذیرش فرمان.\"}]},\"official_sources\":[{\"title\":\"Cisco IOS XE Configuration Guides\",\"url\":\"https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html\"},{\"title\":\"IEEE 802.1Q Standard\",\"url\":\"https://standards.ieee.org/standard/802_1Q-2022.html\"}]}"
+    },
+    {
+      "uid": "lesson:ch13:switching-v3:stp:l0",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "chapter_title_fa": "سوئیچینگ سازمانی: طراحی VLAN و پایداری STP",
+      "subchapter_order": 2,
+      "subchapter_title_fa": "STP، همگرایی و تاب‌آوری",
+      "lesson_order": 6,
+      "topic": "stp",
+      "domain": "switching-and-routing",
+      "level": "L0",
+      "title_fa": "[L0] STP و مسئلهٔ حلقه در Ethernet",
+      "title_en": "[L0] STP و مسئلهٔ حلقه در Ethernet",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "VLAN",
+        "STP",
+        "lab",
+        "troubleshooting",
+        "L0",
+        "stp"
+      ],
+      "summary": "STP مسیرهای اضافی لایهٔ دوم را کنترل می‌کند تا توپولوژی فعال بدون حلقه باقی بماند.",
+      "full_content": "# چرا به Spanning Tree نیاز داریم؟\n\n## مسئله\nEthernet در یک broadcast domain مکانیزم TTL لایهٔ دوم عمومی ندارد. اگر مسیرهای افزونه به شکل حلقهٔ فعال باقی بمانند، broadcast و unknown-unicast می‌توانند بارها بچرخند، جدول MAC نوسان کند و شبکه دچار broadcast storm شود.\n\n## مدل ذهنی\nSTP یک توپولوژی منطقی بدون حلقه انتخاب می‌کند. سوئیچ‌ها Bridge ID، هزینهٔ مسیر و اطلاعات پورت را برای انتخاب Root Bridge و پورت‌های نقش‌دار مقایسه می‌کنند. برخی لینک‌های فیزیکی افزونه در وضعیت مسدود/غیرفورواردینگ باقی می‌مانند تا حلقه ایجاد نشود؛ در صورت تغییر توپولوژی، محاسبه می‌تواند دوباره انجام شود.\n\n## آزمایشگاه\nدر شبیه‌ساز سه سوئیچ را به شکل مثلث وصل کن و STP را فعال نگه دار. خروجی قبل و بعد را ثبت کن. انتظار می‌رود یک مسیر لایهٔ دوم برای جلوگیری از حلقه در حالت forwarding نباشد. STP را در شبکهٔ عملیاتی خاموش نکن.\n\n## فرمان‌های مشاهده\n```text\nshow spanning-tree\nshow spanning-tree root\nshow spanning-tree summary\n```\nنقش و وضعیت پورت را در VLAN یا instance مشخص بخوان. وضعیت blocking به‌خودی‌خود خرابی نیست؛ ممکن است همان حفاظت لازم در برابر حلقه باشد.\n\n## عیب‌یابی مقدماتی\nاگر ارتباط قطع است، ابتدا مشخص کن پورت endpoint است یا uplink. نقش root/alternate/designated و توپولوژی فیزیکی را بررسی کن. پورت مسدود را بدون فهمیدن علت به forwarding مجبور نکن.\n\n## معیار قبولی\nRoot Bridge مشخص است، توپولوژی بدون حلقه است، مسیر افزونه نقش مشخص دارد و وضعیت پورت‌ها با طراحی تطبیق می‌کند.\n\n## مشاهدهٔ BPDU و نقش پورت\nSTP با تبادل BPDU اطلاعات توپولوژی و انتخاب root را به سوئیچ‌ها می‌رساند. لازم نیست در سطح مقدماتی همهٔ فیلدهای BPDU را حفظ کنی؛ ابتدا بفهم هر سوئیچ اطلاعاتی دربارهٔ root، هزینهٔ مسیر و bridge فرستنده اعلام می‌کند و تصمیم محلی با مقایسهٔ این اطلاعات شکل می‌گیرد. اگر پورت blocking یا alternate است، از آن بپرس چه حلقه‌ای را مهار می‌کند و اگر فعال شود چه مسیر اضافه‌ای ایجاد می‌شود.\n\n### آزمایش مشاهده‌ای\nدر توپولوژی مثلثی، خروجی `show spanning-tree vlan 10` را از هر سوئیچ بگیر. Root ID را در همهٔ سوئیچ‌ها مقایسه کن؛ Root Port را روی سوئیچ‌های غیر root پیدا کن؛ Designated Port را در هر segment مشخص کن. سپس یک لینک را در شبیه‌ساز قطع کن و دوباره خروجی را ثبت کن. هدف یادگیری نقش‌هاست، نه خاموش‌کردن حفاظت.\n\n### خطای رایج\nاینکه «همهٔ چراغ‌های لینک سبز باشند» معیار توپولوژی صحیح نیست. یک لینک فیزیکی ممکن است up باشد اما پورت STP آن فوروارد نکند. برعکس، فعال‌کردن اجباری همهٔ پورت‌ها می‌تواند حلقه بسازد. وضعیت فیزیکی، وضعیت پروتکل و دسترسی end-to-end سه شاهد جداگانه‌اند.",
+      "commands": "show spanning-tree\\nshow spanning-tree root\\nshow spanning-tree summary",
+      "examples": "## فرمان‌های مشاهده\n```text\nshow spanning-tree\nshow spanning-tree root\nshow spanning-tree summary\n```\nنقش و وضعیت پورت را در VLAN یا instance مشخص بخوان. وضعیت blocking به‌خودی‌خود خرابی نیست؛ ممکن است همان حفاظت لازم در برابر حلقه باشد.\n",
+      "notes": "منبع آموزشی اختصاصی NetworkAll؛ اجرای lab هنوز روی مدل/نسخهٔ هدف تأیید نشده است. depth_extension=2026-10-13; lab_status=designed_not_executed",
+      "learning_objectives": [
+        "شرح سازوکار و اثر عملیاتی موضوع",
+        "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+        "عیب‌یابی با شواهد و بازگشت امن"
+      ],
+      "prerequisites": [
+        "مبانی Ethernet و مدل OSI",
+        "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+      ],
+      "source_status": "review_required",
+      "assessment": {
+        "questions": [
+          {
+            "id": "ch13_stp_l0_q1",
+            "prompt": "STP عمدتاً از چه چیزی جلوگیری می‌کند؟",
+            "options": [
+              "حلقهٔ فعال لایهٔ دوم",
+              "تمام حملات IP",
+              "خرابی DNS",
+              "تداخل subnet"
+            ]
+          },
+          {
+            "id": "ch13_stp_l0_q2",
+            "prompt": "آیا پورت Blocking الزاماً خراب است؟",
+            "options": [
+              "بله",
+              "خیر، ممکن است مسیر افزونهٔ محافظت‌شده باشد",
+              "فقط اگر VLAN 1 باشد",
+              "فقط در trunk"
+            ]
+          },
+          {
+            "id": "ch13_stp_l0_q3",
+            "prompt": "قبل از تغییر نقش یک پورت STP چه باید کرد؟",
+            "options": [
+              "خاموش‌کردن همهٔ سوئیچ‌ها",
+              "پاک‌کردن DHCP",
+              "بررسی توپولوژی، نقش پورت و اثر حلقه",
+              "تغییر همهٔ MACها"
+            ]
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "ch13_stp_l0_q1",
+            "correct_index": 0,
+            "explanation": "STP توپولوژی منطقی بدون حلقه ایجاد می‌کند."
+          },
+          {
+            "id": "ch13_stp_l0_q2",
+            "correct_index": 1,
+            "explanation": "پورت غیرفورواردینگ می‌تواند بخشی از طراحی صحیح افزونگی باشد."
+          },
+          {
+            "id": "ch13_stp_l0_q3",
+            "correct_index": 2,
+            "explanation": "باید علت وضعیت و پیامد فعال‌کردن مسیر مشخص شود."
+          }
+        ]
+      },
+      "meta": {
+        "lab_status": "designed_not_executed",
+        "content_status": "review_required",
+        "category": "stp",
+        "level": "L0",
+        "topic": "stp",
+        "learning_objectives": [
+          "شرح سازوکار و اثر عملیاتی موضوع",
+          "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+          "عیب‌یابی با شواهد و بازگشت امن"
+        ],
+        "prerequisites": [
+          "مبانی Ethernet و مدل OSI",
+          "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "ch13_stp_l0_q1",
+              "prompt": "STP عمدتاً از چه چیزی جلوگیری می‌کند؟",
+              "options": [
+                "حلقهٔ فعال لایهٔ دوم",
+                "تمام حملات IP",
+                "خرابی DNS",
+                "تداخل subnet"
+              ]
+            },
+            {
+              "id": "ch13_stp_l0_q2",
+              "prompt": "آیا پورت Blocking الزاماً خراب است؟",
+              "options": [
+                "بله",
+                "خیر، ممکن است مسیر افزونهٔ محافظت‌شده باشد",
+                "فقط اگر VLAN 1 باشد",
+                "فقط در trunk"
+              ]
+            },
+            {
+              "id": "ch13_stp_l0_q3",
+              "prompt": "قبل از تغییر نقش یک پورت STP چه باید کرد؟",
+              "options": [
+                "خاموش‌کردن همهٔ سوئیچ‌ها",
+                "پاک‌کردن DHCP",
+                "بررسی توپولوژی، نقش پورت و اثر حلقه",
+                "تغییر همهٔ MACها"
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "ch13_stp_l0_q1",
+              "correct_index": 0,
+              "explanation": "STP توپولوژی منطقی بدون حلقه ایجاد می‌کند."
+            },
+            {
+              "id": "ch13_stp_l0_q2",
+              "correct_index": 1,
+              "explanation": "پورت غیرفورواردینگ می‌تواند بخشی از طراحی صحیح افزونگی باشد."
+            },
+            {
+              "id": "ch13_stp_l0_q3",
+              "correct_index": 2,
+              "explanation": "باید علت وضعیت و پیامد فعال‌کردن مسیر مشخص شود."
+            }
+          ]
+        },
+        "official_sources": [
+          {
+            "title": "Cisco IOS XE Configuration Guides",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          },
+          {
+            "title": "IEEE 802.1Q Standard",
+            "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+          }
+        ]
+      },
+      "official_sources": [
+        {
+          "title": "Cisco IOS XE Configuration Guides",
+          "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+        },
+        {
+          "title": "IEEE 802.1Q Standard",
+          "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+        }
+      ],
+      "meta_json": "{\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"category\":\"stp\",\"level\":\"L0\",\"topic\":\"stp\",\"learning_objectives\":[\"شرح سازوکار و اثر عملیاتی موضوع\",\"اجرای آزمایش کنترل‌شده و ثبت خروجی\",\"عیب‌یابی با شواهد و بازگشت امن\"],\"prerequisites\":[\"مبانی Ethernet و مدل OSI\",\"دسترسی به شبیه‌ساز یا لابراتوار ایزوله\"],\"assessment\":{\"questions\":[{\"id\":\"ch13_stp_l0_q1\",\"prompt\":\"STP عمدتاً از چه چیزی جلوگیری می‌کند؟\",\"options\":[\"حلقهٔ فعال لایهٔ دوم\",\"تمام حملات IP\",\"خرابی DNS\",\"تداخل subnet\"]},{\"id\":\"ch13_stp_l0_q2\",\"prompt\":\"آیا پورت Blocking الزاماً خراب است؟\",\"options\":[\"بله\",\"خیر، ممکن است مسیر افزونهٔ محافظت‌شده باشد\",\"فقط اگر VLAN 1 باشد\",\"فقط در trunk\"]},{\"id\":\"ch13_stp_l0_q3\",\"prompt\":\"قبل از تغییر نقش یک پورت STP چه باید کرد؟\",\"options\":[\"خاموش‌کردن همهٔ سوئیچ‌ها\",\"پاک‌کردن DHCP\",\"بررسی توپولوژی، نقش پورت و اثر حلقه\",\"تغییر همهٔ MACها\"]}],\"answer_key\":[{\"id\":\"ch13_stp_l0_q1\",\"correct_index\":0,\"explanation\":\"STP توپولوژی منطقی بدون حلقه ایجاد می‌کند.\"},{\"id\":\"ch13_stp_l0_q2\",\"correct_index\":1,\"explanation\":\"پورت غیرفورواردینگ می‌تواند بخشی از طراحی صحیح افزونگی باشد.\"},{\"id\":\"ch13_stp_l0_q3\",\"correct_index\":2,\"explanation\":\"باید علت وضعیت و پیامد فعال‌کردن مسیر مشخص شود.\"}]},\"official_sources\":[{\"title\":\"Cisco IOS XE Configuration Guides\",\"url\":\"https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html\"},{\"title\":\"IEEE 802.1Q Standard\",\"url\":\"https://standards.ieee.org/standard/802_1Q-2022.html\"}]}"
+    },
+    {
+      "uid": "lesson:ch13:switching-v3:stp:l1",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "chapter_title_fa": "سوئیچینگ سازمانی: طراحی VLAN و پایداری STP",
+      "subchapter_order": 2,
+      "subchapter_title_fa": "STP، همگرایی و تاب‌آوری",
+      "lesson_order": 7,
+      "topic": "stp",
+      "domain": "switching-and-routing",
+      "level": "L1",
+      "title_fa": "[L1] Root Bridge و انتخاب مسیر STP",
+      "title_en": "[L1] Root Bridge و انتخاب مسیر STP",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "VLAN",
+        "STP",
+        "lab",
+        "troubleshooting",
+        "L1",
+        "stp"
+      ],
+      "summary": "انتخاب Root Bridge بر پایهٔ Bridge ID و هزینهٔ مسیر انجام می‌شود؛ طراحی باید root را آگاهانه و پایدار تعیین کند.",
+      "full_content": "# انتخاب Root Bridge و نقش پورت‌ها\n\n## سازوکار انتخاب\nRoot Bridge نقطهٔ مرجع محاسبهٔ درخت است. انتخاب به Bridge ID وابسته است که اولویت و شناسهٔ سوئیچ را ترکیب می‌کند؛ مقدار کمتر برنده است. در صورت تساوی اولویت، شناسهٔ MAC در انتخاب اثر دارد. پورت‌ها بر اساس بهترین مسیر به root و tie-breakهای پروتکل نقش می‌گیرند. جزئیات tie-break باید در مستندات نسخه و خروجی واقعی بررسی شود.\n\n## نمونهٔ طراحی\nدر یک لایهٔ distribution دو سوئیچ افزونه وجود دارد. سوئیچ اصلی را برای VLANهای مربوط root primary و سوئیچ پشتیبان را root secondary تعیین کن. مقدارهای دقیق اولویت را بر اساس دامنهٔ موجود و روش‌های سازمان انتخاب کن، نه با حدس. اگر VLANها rootهای متفاوت دارند، توازن مسیر را با طراحی و ظرفیت لینک هماهنگ کن.\n\n## پیکربندی نمونهٔ آزمایشگاهی\n```text\nspanning-tree vlan 10 root primary\nspanning-tree vlan 10 root secondary\nshow spanning-tree vlan 10\nshow spanning-tree root\n```\nدو فرمان root primary و root secondary روی دو سوئیچ جداگانه اجرا می‌شوند. خروجی نهایی را بررسی کن؛ پیکربندی مورد انتظار جای مشاهدهٔ root واقعی را نمی‌گیرد.\n\n## روش عیب‌یابی\nاگر root ناخواسته عوض شده، Bridge ID فعلی، تغییرات اخیر، لینک‌های اضافه، سوئیچ تازه‌وصل‌شده و BPDUها را بررسی کن. تغییر root می‌تواند مسیر forwarding را عوض و ترافیک را روی لینک دیگری متمرکز کند.\n\n## آزمایش کنترل‌شده\nدر شبیه‌ساز یک سوئیچ با اولویت بهتر اضافه کن و تغییر root و نقش پورت‌ها را ثبت کن. سپس اولویت را بازگردان و زمان همگرایی را اندازه بگیر. آزمون باید از ترافیک حساس عملیاتی جدا باشد.\n\n## معیار قبولی\nRoot مورد انتظار در VLAN مشخص انتخاب شده، root secondary معلوم است، نقش پورت‌ها قابل توضیح‌اند و تغییر root موجب نقض مسیرهای طراحی‌شده نمی‌شود.\n\n## خواندن خروجی و تشخیص root ناخواسته\nدر خروجی STP، Root ID و Bridge ID را مقایسه کن. اگر Bridge ID یک سوئیچ با Root ID برابر است، همان سوئیچ root است. برای هر پورت، role و state را بخوان؛ root port بهترین مسیر سوئیچ غیر root به root است، designated port روی segment برای فورواردینگ انتخاب می‌شود و alternate مسیر جایگزین را نگه می‌دارد. نام‌گذاری و جزئیات خروجی با نسخه و mode پروتکل فرق می‌کند، بنابراین مدل و نسخه را در گزارش ثبت کن.\n\n### سناریوی سوئیچ تازه‌وصل‌شده\nپس از اضافه‌شدن یک سوئیچ، root عوض شده است. ابتدا تغییر Bridge ID و priority را تأیید کن، سپس بررسی کن آیا سوئیچ جدید واقعاً باید root باشد. پیکربندی root primary/secondary را روی دستگاه‌های طراحی‌شده بازبینی کن. اگر اتصال غیرمجاز یا خطای patching محتمل است، لینک را طبق runbook ایمن مهار کن؛ خاموش‌کردن عمومی STP راه‌حل نیست.\n\n### کنترل کیفیت\nدر مستندات توپولوژی برای هر VLAN یا instance، root مورد انتظار، root پشتیبان، uplinkها و پورت‌های edge را ثبت کن. تغییر root باید رویداد قابل مشاهده داشته باشد و بعد از تغییر، نقش پورت‌ها با طراحی تطبیق کند. اگر root پایدار نیست، timerها را بی‌هدف تغییر نده؛ ابتدا flap، BPDU و تغییرات اخیر را بررسی کن.",
+      "commands": "show spanning-tree vlan 10\\nshow spanning-tree root\\nshow spanning-tree detail",
+      "examples": "## پیکربندی نمونهٔ آزمایشگاهی\n```text\nspanning-tree vlan 10 root primary\nspanning-tree vlan 10 root secondary\nshow spanning-tree vlan 10\nshow spanning-tree root\n```\nدو فرمان root primary و root secondary روی دو سوئیچ جداگانه اجرا می‌شوند. خروجی نهایی را بررسی کن؛ پیکربندی مورد انتظار جای مشاهدهٔ root واقعی را نمی‌گیرد.\n",
+      "notes": "منبع آموزشی اختصاصی NetworkAll؛ اجرای lab هنوز روی مدل/نسخهٔ هدف تأیید نشده است. depth_extension=2026-10-13; lab_status=designed_not_executed",
+      "learning_objectives": [
+        "شرح سازوکار و اثر عملیاتی موضوع",
+        "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+        "عیب‌یابی با شواهد و بازگشت امن"
+      ],
+      "prerequisites": [
+        "مبانی Ethernet و مدل OSI",
+        "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+      ],
+      "source_status": "review_required",
+      "assessment": {
+        "questions": [
+          {
+            "id": "ch13_stp_l1_q1",
+            "prompt": "در مقایسهٔ Bridge ID، اولویت عددی پایین‌تر چه اثری دارد؟",
+            "options": [
+              "مزیت انتخاب Root دارد",
+              "همیشه پورت را خاموش می‌کند",
+              "فقط روی DHCP اثر دارد",
+              "هیچ اثری ندارد"
+            ]
+          },
+          {
+            "id": "ch13_stp_l1_q2",
+            "prompt": "پس از پیکربندی root primary چه چیزی باید بررسی شود؟",
+            "options": [
+              "فقط running-config",
+              "root واقعی و نقش پورت‌ها در خروجی STP",
+              "فقط جدول ARP",
+              "فقط سرعت WAN"
+            ]
+          },
+          {
+            "id": "ch13_stp_l1_q3",
+            "prompt": "چرا اضافه‌شدن سوئیچ با Bridge ID بهتر خطرساز است؟",
+            "options": [
+              "ممکن است root ناخواسته را تغییر دهد",
+              "DHCP را رمزگذاری می‌کند",
+              "VLANها را حذف می‌کند",
+              "MTU را خودکار بالا می‌برد"
+            ]
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "ch13_stp_l1_q1",
+            "correct_index": 0,
+            "explanation": "در STP، Bridge ID بهتر انتخاب می‌شود و priority پایین‌تر معمولاً برتری دارد."
+          },
+          {
+            "id": "ch13_stp_l1_q2",
+            "correct_index": 1,
+            "explanation": "توپولوژی فعال را خروجی پروتکل مشخص می‌کند."
+          },
+          {
+            "id": "ch13_stp_l1_q3",
+            "correct_index": 0,
+            "explanation": "سوئیچ تازه ممکن است انتخاب root و مسیرهای فعال را تغییر دهد."
+          }
+        ]
+      },
+      "meta": {
+        "lab_status": "designed_not_executed",
+        "content_status": "review_required",
+        "category": "stp",
+        "level": "L1",
+        "topic": "stp",
+        "learning_objectives": [
+          "شرح سازوکار و اثر عملیاتی موضوع",
+          "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+          "عیب‌یابی با شواهد و بازگشت امن"
+        ],
+        "prerequisites": [
+          "مبانی Ethernet و مدل OSI",
+          "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "ch13_stp_l1_q1",
+              "prompt": "در مقایسهٔ Bridge ID، اولویت عددی پایین‌تر چه اثری دارد؟",
+              "options": [
+                "مزیت انتخاب Root دارد",
+                "همیشه پورت را خاموش می‌کند",
+                "فقط روی DHCP اثر دارد",
+                "هیچ اثری ندارد"
+              ]
+            },
+            {
+              "id": "ch13_stp_l1_q2",
+              "prompt": "پس از پیکربندی root primary چه چیزی باید بررسی شود؟",
+              "options": [
+                "فقط running-config",
+                "root واقعی و نقش پورت‌ها در خروجی STP",
+                "فقط جدول ARP",
+                "فقط سرعت WAN"
+              ]
+            },
+            {
+              "id": "ch13_stp_l1_q3",
+              "prompt": "چرا اضافه‌شدن سوئیچ با Bridge ID بهتر خطرساز است؟",
+              "options": [
+                "ممکن است root ناخواسته را تغییر دهد",
+                "DHCP را رمزگذاری می‌کند",
+                "VLANها را حذف می‌کند",
+                "MTU را خودکار بالا می‌برد"
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "ch13_stp_l1_q1",
+              "correct_index": 0,
+              "explanation": "در STP، Bridge ID بهتر انتخاب می‌شود و priority پایین‌تر معمولاً برتری دارد."
+            },
+            {
+              "id": "ch13_stp_l1_q2",
+              "correct_index": 1,
+              "explanation": "توپولوژی فعال را خروجی پروتکل مشخص می‌کند."
+            },
+            {
+              "id": "ch13_stp_l1_q3",
+              "correct_index": 0,
+              "explanation": "سوئیچ تازه ممکن است انتخاب root و مسیرهای فعال را تغییر دهد."
+            }
+          ]
+        },
+        "official_sources": [
+          {
+            "title": "Cisco IOS XE Configuration Guides",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          },
+          {
+            "title": "IEEE 802.1Q Standard",
+            "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+          }
+        ]
+      },
+      "official_sources": [
+        {
+          "title": "Cisco IOS XE Configuration Guides",
+          "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+        },
+        {
+          "title": "IEEE 802.1Q Standard",
+          "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+        }
+      ],
+      "meta_json": "{\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"category\":\"stp\",\"level\":\"L1\",\"topic\":\"stp\",\"learning_objectives\":[\"شرح سازوکار و اثر عملیاتی موضوع\",\"اجرای آزمایش کنترل‌شده و ثبت خروجی\",\"عیب‌یابی با شواهد و بازگشت امن\"],\"prerequisites\":[\"مبانی Ethernet و مدل OSI\",\"دسترسی به شبیه‌ساز یا لابراتوار ایزوله\"],\"assessment\":{\"questions\":[{\"id\":\"ch13_stp_l1_q1\",\"prompt\":\"در مقایسهٔ Bridge ID، اولویت عددی پایین‌تر چه اثری دارد؟\",\"options\":[\"مزیت انتخاب Root دارد\",\"همیشه پورت را خاموش می‌کند\",\"فقط روی DHCP اثر دارد\",\"هیچ اثری ندارد\"]},{\"id\":\"ch13_stp_l1_q2\",\"prompt\":\"پس از پیکربندی root primary چه چیزی باید بررسی شود؟\",\"options\":[\"فقط running-config\",\"root واقعی و نقش پورت‌ها در خروجی STP\",\"فقط جدول ARP\",\"فقط سرعت WAN\"]},{\"id\":\"ch13_stp_l1_q3\",\"prompt\":\"چرا اضافه‌شدن سوئیچ با Bridge ID بهتر خطرساز است؟\",\"options\":[\"ممکن است root ناخواسته را تغییر دهد\",\"DHCP را رمزگذاری می‌کند\",\"VLANها را حذف می‌کند\",\"MTU را خودکار بالا می‌برد\"]}],\"answer_key\":[{\"id\":\"ch13_stp_l1_q1\",\"correct_index\":0,\"explanation\":\"در STP، Bridge ID بهتر انتخاب می‌شود و priority پایین‌تر معمولاً برتری دارد.\"},{\"id\":\"ch13_stp_l1_q2\",\"correct_index\":1,\"explanation\":\"توپولوژی فعال را خروجی پروتکل مشخص می‌کند.\"},{\"id\":\"ch13_stp_l1_q3\",\"correct_index\":0,\"explanation\":\"سوئیچ تازه ممکن است انتخاب root و مسیرهای فعال را تغییر دهد.\"}]},\"official_sources\":[{\"title\":\"Cisco IOS XE Configuration Guides\",\"url\":\"https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html\"},{\"title\":\"IEEE 802.1Q Standard\",\"url\":\"https://standards.ieee.org/standard/802_1Q-2022.html\"}]}"
+    },
+    {
+      "uid": "lesson:ch13:switching-v3:stp:l2",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "chapter_title_fa": "سوئیچینگ سازمانی: طراحی VLAN و پایداری STP",
+      "subchapter_order": 2,
+      "subchapter_title_fa": "STP، همگرایی و تاب‌آوری",
+      "lesson_order": 8,
+      "topic": "stp",
+      "domain": "switching-and-routing",
+      "level": "L2",
+      "title_fa": "[L2] RSTP، همگرایی و تحلیل تغییر توپولوژی",
+      "title_en": "[L2] RSTP، همگرایی و تحلیل تغییر توپولوژی",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "VLAN",
+        "STP",
+        "lab",
+        "troubleshooting",
+        "L2",
+        "stp"
+      ],
+      "summary": "RSTP با نقش‌ها و مکانیزم‌های سریع‌تر، همگرایی را بهبود می‌دهد؛ نتیجه به توپولوژی و سازگاری پیاده‌سازی وابسته است.",
+      "full_content": "# RSTP و همگرایی قابل‌اندازه‌گیری\n\n## تفاوت عملیاتی\nRSTP (IEEE 802.1w، که در استانداردهای جدیدتر در خانوادهٔ 802.1D ادغام شده) برای انتقال سریع‌تر به حالت forwarding، نقش‌های Alternate و Backup و مکانیزم‌های proposal/agreement را به کار می‌گیرد. سرعت همگرایی تضمین مطلق و مستقل از طراحی نیست؛ نوع لینک، edge configuration، سازگاری STP و توپولوژی واقعی اثرگذارند.\n\n## طراحی edge و لینک\nپورت edge برای endpoint طراحی می‌شود و نباید انتظار دریافت BPDU از bridge دیگر داشته باشد. پیکربندی edge/PortFast روی uplink می‌تواند محافظت حلقه را تضعیف کند؛ BPDU Guard معمولاً برای محافظت پورت edge در برابر اتصال سوئیچ ناخواسته استفاده می‌شود. Root Guard و Loop Guard اهداف متفاوتی دارند و نباید جایگزین یکدیگر فرض شوند.\n\n## لابراتوار اندازه‌گیری\nدر محیط شبیه‌سازی، RSTP را با یک توپولوژی افزونه آزمایش کن. با ابزار اندازه‌گیری یا timestamp، قطع یک لینک را ایجاد و زمان بازگشت ترافیک را ثبت کن. همین سناریو را با پیکربندی پایه و سپس RSTP مقایسه کن؛ تعداد بستهٔ ازدست‌رفته، زمان بازیابی و تغییر مسیر را ثبت کن.\n\n## فرمان‌های تشخیصی\n```text\nshow spanning-tree summary\nshow spanning-tree detail\nshow spanning-tree inconsistentports\nshow logging\n```\nنام دقیق بعضی فرمان‌ها به پلتفرم وابسته است. در خروجی دنبال تعداد topology change، آخرین تغییر، پورت منشأ و وضعیت inconsistent بگرد.\n\n## RCA\nتغییر توپولوژی مکرر را فقط با افزایش timer درمان نکن. پورت edge که اشتباه تنظیم شده، لینک ناپایدار، حلقهٔ موقت، NIC یا bridge نرم‌افزاری می‌تواند عامل باشد. لاگ‌ها را با interface counter و زمان رخداد تطبیق بده.\n\n## معیار قبولی\nزمان همگرایی در محیط آزمایش ثبت شده، توپولوژی change قابل انتساب است، پورت‌های edge حفاظت شده‌اند و هیچ پورت uplink به‌اشتباه edge نیست.\n\n## تحلیل همگرایی و تغییر توپولوژی\nهمگرایی را با عبارت مبهم «سریع شد» گزارش نکن. زمان قطع تا بازگشت موفق سرویس، packet loss، تغییر نقش پورت‌ها و تعداد topology change را اندازه بگیر. در لابراتوار، baseline بگیر، یک لینک را قطع کن، timestampها را ثبت کن و آزمایش را چند بار تکرار کن. نتایج به مدل سوئیچ، نسخه، نوع لینک، حالت STP و رفتار endpoint وابسته‌اند؛ یک نتیجهٔ آزمایشگاه را بدون قید به تمام شبکه تعمیم نده.\n\n### تشخیص علت تغییر مکرر\nاگر topology change زیاد است، آخرین تغییر، پورت منشأ، link flap، endpointهای bridge‌دار، loop نرم‌افزاری و patching را بررسی کن. PortFast/edge را فقط برای پورت endpoint استفاده کن. BPDU Guard برای دریافت BPDU غیرمنتظره روی edge، Root Guard برای جلوگیری از root برتر از جهت مشخص و Loop Guard برای شرایط خاص از دست‌رفتن BPDU کاربرد دارند؛ این کنترل‌ها قابل جایگزینی با یکدیگر نیستند.\n\n### گزارش آزمون\nبرای هر اجرا، شناسهٔ سناریو، توپولوژی، نسخهٔ سیستم‌عامل، config، روش قطع لینک، تعداد تکرار، زمان بازیابی و packet loss را ذخیره کن. اگر نتایج متغیرند، میانگین به‌تنهایی کافی نیست؛ بدترین حالت و پراکندگی را هم گزارش کن. هدف تعیین قابلیت اتکا و کشف failure mode است، نه تولید عدد زیبا.",
+      "commands": "show spanning-tree summary\\nshow spanning-tree detail\\nshow logging",
+      "examples": "## فرمان‌های تشخیصی\n```text\nshow spanning-tree summary\nshow spanning-tree detail\nshow spanning-tree inconsistentports\nshow logging\n```\nنام دقیق بعضی فرمان‌ها به پلتفرم وابسته است. در خروجی دنبال تعداد topology change، آخرین تغییر، پورت منشأ و وضعیت inconsistent بگرد.\n",
+      "notes": "منبع آموزشی اختصاصی NetworkAll؛ اجرای lab هنوز روی مدل/نسخهٔ هدف تأیید نشده است. depth_extension=2026-10-13; lab_status=designed_not_executed",
+      "learning_objectives": [
+        "شرح سازوکار و اثر عملیاتی موضوع",
+        "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+        "عیب‌یابی با شواهد و بازگشت امن"
+      ],
+      "prerequisites": [
+        "مبانی Ethernet و مدل OSI",
+        "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+      ],
+      "source_status": "review_required",
+      "assessment": {
+        "questions": [
+          {
+            "id": "ch13_stp_l2_q1",
+            "prompt": "RSTP چه هدف اصلی دارد؟",
+            "options": [
+              "بهبود همگرایی در توپولوژی لایهٔ دوم",
+              "جایگزینی IP routing",
+              "تخصیص آدرس DHCP",
+              "رمزگذاری trunk"
+            ]
+          },
+          {
+            "id": "ch13_stp_l2_q2",
+            "prompt": "BPDU Guard برای چه سناریویی مناسب است؟",
+            "options": [
+              "پورت edge که نباید BPDU دریافت کند",
+              "uplink بین دو core به‌عنوان قانون عمومی",
+              "DHCP relay",
+              "DNS cache"
+            ]
+          },
+          {
+            "id": "ch13_stp_l2_q3",
+            "prompt": "Topology change مکرر را چگونه باید بررسی کرد؟",
+            "options": [
+              "افزایش timer بدون بررسی",
+              "ترکیب لاگ، پورت، counter و تغییرات اخیر",
+              "خاموش‌کردن STP",
+              "تغییر همهٔ VLAN IDها"
+            ]
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "ch13_stp_l2_q1",
+            "correct_index": 0,
+            "explanation": "RSTP برای همگرایی سریع‌تر و نقش‌های مشخص پورت طراحی شده است."
+          },
+          {
+            "id": "ch13_stp_l2_q2",
+            "correct_index": 0,
+            "explanation": "دریافت BPDU روی edge می‌تواند نشانه اتصال bridge ناخواسته باشد."
+          },
+          {
+            "id": "ch13_stp_l2_q3",
+            "correct_index": 1,
+            "explanation": "RCA باید منبع تغییر را پیدا کند نه فقط نشانه را پنهان کند."
+          }
+        ]
+      },
+      "meta": {
+        "lab_status": "designed_not_executed",
+        "content_status": "review_required",
+        "category": "stp",
+        "level": "L2",
+        "topic": "stp",
+        "learning_objectives": [
+          "شرح سازوکار و اثر عملیاتی موضوع",
+          "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+          "عیب‌یابی با شواهد و بازگشت امن"
+        ],
+        "prerequisites": [
+          "مبانی Ethernet و مدل OSI",
+          "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "ch13_stp_l2_q1",
+              "prompt": "RSTP چه هدف اصلی دارد؟",
+              "options": [
+                "بهبود همگرایی در توپولوژی لایهٔ دوم",
+                "جایگزینی IP routing",
+                "تخصیص آدرس DHCP",
+                "رمزگذاری trunk"
+              ]
+            },
+            {
+              "id": "ch13_stp_l2_q2",
+              "prompt": "BPDU Guard برای چه سناریویی مناسب است؟",
+              "options": [
+                "پورت edge که نباید BPDU دریافت کند",
+                "uplink بین دو core به‌عنوان قانون عمومی",
+                "DHCP relay",
+                "DNS cache"
+              ]
+            },
+            {
+              "id": "ch13_stp_l2_q3",
+              "prompt": "Topology change مکرر را چگونه باید بررسی کرد؟",
+              "options": [
+                "افزایش timer بدون بررسی",
+                "ترکیب لاگ، پورت، counter و تغییرات اخیر",
+                "خاموش‌کردن STP",
+                "تغییر همهٔ VLAN IDها"
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "ch13_stp_l2_q1",
+              "correct_index": 0,
+              "explanation": "RSTP برای همگرایی سریع‌تر و نقش‌های مشخص پورت طراحی شده است."
+            },
+            {
+              "id": "ch13_stp_l2_q2",
+              "correct_index": 0,
+              "explanation": "دریافت BPDU روی edge می‌تواند نشانه اتصال bridge ناخواسته باشد."
+            },
+            {
+              "id": "ch13_stp_l2_q3",
+              "correct_index": 1,
+              "explanation": "RCA باید منبع تغییر را پیدا کند نه فقط نشانه را پنهان کند."
+            }
+          ]
+        },
+        "official_sources": [
+          {
+            "title": "Cisco IOS XE Configuration Guides",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          },
+          {
+            "title": "IEEE 802.1Q Standard",
+            "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+          }
+        ]
+      },
+      "official_sources": [
+        {
+          "title": "Cisco IOS XE Configuration Guides",
+          "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+        },
+        {
+          "title": "IEEE 802.1Q Standard",
+          "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+        }
+      ],
+      "meta_json": "{\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"category\":\"stp\",\"level\":\"L2\",\"topic\":\"stp\",\"learning_objectives\":[\"شرح سازوکار و اثر عملیاتی موضوع\",\"اجرای آزمایش کنترل‌شده و ثبت خروجی\",\"عیب‌یابی با شواهد و بازگشت امن\"],\"prerequisites\":[\"مبانی Ethernet و مدل OSI\",\"دسترسی به شبیه‌ساز یا لابراتوار ایزوله\"],\"assessment\":{\"questions\":[{\"id\":\"ch13_stp_l2_q1\",\"prompt\":\"RSTP چه هدف اصلی دارد؟\",\"options\":[\"بهبود همگرایی در توپولوژی لایهٔ دوم\",\"جایگزینی IP routing\",\"تخصیص آدرس DHCP\",\"رمزگذاری trunk\"]},{\"id\":\"ch13_stp_l2_q2\",\"prompt\":\"BPDU Guard برای چه سناریویی مناسب است؟\",\"options\":[\"پورت edge که نباید BPDU دریافت کند\",\"uplink بین دو core به‌عنوان قانون عمومی\",\"DHCP relay\",\"DNS cache\"]},{\"id\":\"ch13_stp_l2_q3\",\"prompt\":\"Topology change مکرر را چگونه باید بررسی کرد؟\",\"options\":[\"افزایش timer بدون بررسی\",\"ترکیب لاگ، پورت، counter و تغییرات اخیر\",\"خاموش‌کردن STP\",\"تغییر همهٔ VLAN IDها\"]}],\"answer_key\":[{\"id\":\"ch13_stp_l2_q1\",\"correct_index\":0,\"explanation\":\"RSTP برای همگرایی سریع‌تر و نقش‌های مشخص پورت طراحی شده است.\"},{\"id\":\"ch13_stp_l2_q2\",\"correct_index\":0,\"explanation\":\"دریافت BPDU روی edge می‌تواند نشانه اتصال bridge ناخواسته باشد.\"},{\"id\":\"ch13_stp_l2_q3\",\"correct_index\":1,\"explanation\":\"RCA باید منبع تغییر را پیدا کند نه فقط نشانه را پنهان کند.\"}]},\"official_sources\":[{\"title\":\"Cisco IOS XE Configuration Guides\",\"url\":\"https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html\"},{\"title\":\"IEEE 802.1Q Standard\",\"url\":\"https://standards.ieee.org/standard/802_1Q-2022.html\"}]}"
+    },
+    {
+      "uid": "lesson:ch13:switching-v3:stp:l3",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "chapter_title_fa": "سوئیچینگ سازمانی: طراحی VLAN و پایداری STP",
+      "subchapter_order": 2,
+      "subchapter_title_fa": "STP، همگرایی و تاب‌آوری",
+      "lesson_order": 9,
+      "topic": "stp",
+      "domain": "switching-and-routing",
+      "level": "L3",
+      "title_fa": "[L3] حفاظت STP و جلوگیری از تغییر root ناخواسته",
+      "title_en": "[L3] حفاظت STP و جلوگیری از تغییر root ناخواسته",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "VLAN",
+        "STP",
+        "lab",
+        "troubleshooting",
+        "L3",
+        "stp"
+      ],
+      "summary": "Root Guard، BPDU Guard و Loop Guard خطرهای متفاوت را مهار می‌کنند و باید متناسب با نقش پورت به‌کار روند.",
+      "full_content": "# کنترل‌های حفاظتی STP\n\n## تفکیک کنترل‌ها\nBPDU Guard روی edge port دریافت BPDU را به‌عنوان وضعیت غیرمجاز تلقی می‌کند و پورت را محافظت/غیرفعال می‌سازد. Root Guard از پذیرفته‌شدن root برتر از سمت پورتی مشخص جلوگیری می‌کند. Loop Guard در شرایط از دست‌رفتن غیرمنتظره BPDU، از انتقال اشتباه پورت به forwarding جلوگیری می‌کند. UDLD نیز مسئلهٔ یک‌طرفه‌شدن لینک را هدف می‌گیرد؛ این قابلیت‌ها جای یکدیگر نیستند.\n\n## انتخاب بر اساس نقش\n- Access edge: PortFast/edge به‌همراه BPDU Guard، پس از تأیید اینکه سوئیچ پایین‌دست مجاز نیست.\n- Uplink از access به distribution: Root Guard ممکن است در سمتی مناسب باشد که نباید root از پایین‌دست دریافت شود؛ طراحی دقیق مهم است.\n- لینک‌های redundant بین bridgeها: Loop Guard در سناریوهای مناسب و سازگار با پلتفرم.\n- لینک فیبر یا مسی حساس به یک‌طرفه‌شدن: بررسی UDLD و قابلیت‌های سخت‌افزار.\n\n## آزمایشگاه\nهر کنترل را جداگانه در شبیه‌ساز یا لابراتوار اجرا کن. قبل از فعال‌سازی، نقش پورت و رفتار مورد انتظار را بنویس. رویداد BPDU غیرمنتظره یا قطع BPDU را ایجاد کن و وضعیت err-disabled/inconsistent را مشاهده کن. پس از آزمایش، پورت و تنظیمات را به baseline بازگردان.\n\n## عیب‌یابی\nاگر پورت err-disabled شد، دلیل دقیق و لاگ را بخوان؛ فعال‌سازی کورکورانهٔ پورت بدون حذف علت ممکن است حلقه را بازگرداند. در root-inconsistent، سوئیچ ارسال‌کنندهٔ BPDU و تغییرات اخیر را بررسی کن. در loop-inconsistent، سلامت لینک و مسیر BPDU را بررسی کن.\n\n## ریسک و بازیابی\nاین حفاظت‌ها می‌توانند قطع ارتباط عمدی ایجاد کنند تا شبکه از حلقه یا root ناخواسته محافظت شود. Runbook باید شامل علت مجاز، معیار بازفعال‌سازی، تأیید توپولوژی و روش جلوگیری از تکرار باشد.\n\n## معیار قبولی\nهر کنترل روی نوع پورت درست قرار گرفته، رخداد آزمایشی رفتار پیش‌بینی‌شده دارد، لاگ قابل مشاهده است و بازیابی پس از حذف علت مستند شده است.\n\n## پروندهٔ رخداد: broadcast storm پس از اتصال uplink\nپس از اضافه‌کردن کابل، CPU سوئیچ‌ها بالا رفته، MAC addressها بین دو پورت نوسان می‌کنند و packet loss گسترده دیده می‌شود. این نشانه‌ها با loop لایهٔ دوم سازگارند اما به‌تنهایی اثبات قطعی نیستند. از کنسول یا مسیر مدیریتی خارج از دامنهٔ رخداد، توپولوژی فیزیکی، تغییرات اخیر، STP state، log و MAC flapping را بررسی کن. اگر حلقه محتمل و تاثیر گسترده است، مطابق runbook لینک مشکوک را کنترل‌شده جدا کن و اثر را مشاهده کن؛ پورت‌ها را تصادفی خاموش نکن.\n\n### شاخه‌های تشخیصی\n- MAC یک میزبان بین دو پورت تغییر می‌کند: حلقه، اتصال دوگانهٔ نامناسب یا bridge ناخواسته را بررسی کن.\n- root تغییر کرده: BPDU و Bridge ID سوئیچ تازه را بررسی کن.\n- یک لینک یک‌طرفه است: counter، optic، کابل و قابلیت تشخیص لینک یک‌طرفه را بررسی کن.\n- پورت edge با BPDU Guard خاموش شده: علت دریافت BPDU را حذف کن، سپس بازفعال‌سازی را طبق سیاست انجام بده.\n- فقط یک VLAN متاثر است: STP و allowed VLAN همان VLAN را مقایسه کن.\n\n### مهار، بازیابی و درس‌آموخته\nپس از مهار، سلامت CPU، MAC table، STP root، gateway و سرویس‌های حیاتی را تأیید کن. بازگرداندن کابل بدون اصلاح patching یا پیکربندی می‌تواند رخداد را تکرار کند. گزارش RCA باید خط زمانی، عامل آغازگر، علت ریشه‌ای، عامل تشدیدکننده، شواهد، اقدام اصلاحی و تست پیشگیری را تفکیک کند. «خاموش شد و درست شد» تحلیل ریشه‌ای نیست.",
+      "commands": "show spanning-tree inconsistentports\\nshow interfaces status err-disabled\\nshow logging",
+      "examples": "",
+      "notes": "منبع آموزشی اختصاصی NetworkAll؛ اجرای lab هنوز روی مدل/نسخهٔ هدف تأیید نشده است. depth_extension=2026-10-13; lab_status=designed_not_executed",
+      "learning_objectives": [
+        "شرح سازوکار و اثر عملیاتی موضوع",
+        "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+        "عیب‌یابی با شواهد و بازگشت امن"
+      ],
+      "prerequisites": [
+        "مبانی Ethernet و مدل OSI",
+        "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+      ],
+      "source_status": "review_required",
+      "assessment": {
+        "questions": [
+          {
+            "id": "ch13_stp_l3_q1",
+            "prompt": "کدام کنترل از root شدن bridge ناخواسته از یک جهت مشخص جلوگیری می‌کند؟",
+            "options": [
+              "Root Guard",
+              "DHCP Snooping",
+              "Port Security",
+              "LACP"
+            ]
+          },
+          {
+            "id": "ch13_stp_l3_q2",
+            "prompt": "BPDU Guard بیشتر در کدام جا استفاده می‌شود؟",
+            "options": [
+              "پورت edge که نباید bridge متصل شود",
+              "همهٔ لینک‌های بین core بدون بررسی",
+              "رابط WAN",
+              "SVI"
+            ]
+          },
+          {
+            "id": "ch13_stp_l3_q3",
+            "prompt": "پس از err-disabled شدن پورت چه اقدام درست است؟",
+            "options": [
+              "فقط no shutdown فوری",
+              "بررسی علت و لاگ، رفع علت، سپس بازیابی کنترل‌شده",
+              "خاموش‌کردن تمام STP",
+              "پاک‌کردن DNS"
+            ]
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "ch13_stp_l3_q1",
+            "correct_index": 0,
+            "explanation": "Root Guard به سیاست root در جهت مشخص کمک می‌کند."
+          },
+          {
+            "id": "ch13_stp_l3_q2",
+            "correct_index": 0,
+            "explanation": "هدف، محافظت پورت edge در برابر BPDU غیرمنتظره است."
+          },
+          {
+            "id": "ch13_stp_l3_q3",
+            "correct_index": 1,
+            "explanation": "رفع علت قبل از بازفعال‌سازی از بازگشت رخداد جلوگیری می‌کند."
+          }
+        ]
+      },
+      "meta": {
+        "lab_status": "designed_not_executed",
+        "content_status": "review_required",
+        "category": "stp",
+        "level": "L3",
+        "topic": "stp",
+        "learning_objectives": [
+          "شرح سازوکار و اثر عملیاتی موضوع",
+          "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+          "عیب‌یابی با شواهد و بازگشت امن"
+        ],
+        "prerequisites": [
+          "مبانی Ethernet و مدل OSI",
+          "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "ch13_stp_l3_q1",
+              "prompt": "کدام کنترل از root شدن bridge ناخواسته از یک جهت مشخص جلوگیری می‌کند؟",
+              "options": [
+                "Root Guard",
+                "DHCP Snooping",
+                "Port Security",
+                "LACP"
+              ]
+            },
+            {
+              "id": "ch13_stp_l3_q2",
+              "prompt": "BPDU Guard بیشتر در کدام جا استفاده می‌شود؟",
+              "options": [
+                "پورت edge که نباید bridge متصل شود",
+                "همهٔ لینک‌های بین core بدون بررسی",
+                "رابط WAN",
+                "SVI"
+              ]
+            },
+            {
+              "id": "ch13_stp_l3_q3",
+              "prompt": "پس از err-disabled شدن پورت چه اقدام درست است؟",
+              "options": [
+                "فقط no shutdown فوری",
+                "بررسی علت و لاگ، رفع علت، سپس بازیابی کنترل‌شده",
+                "خاموش‌کردن تمام STP",
+                "پاک‌کردن DNS"
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "ch13_stp_l3_q1",
+              "correct_index": 0,
+              "explanation": "Root Guard به سیاست root در جهت مشخص کمک می‌کند."
+            },
+            {
+              "id": "ch13_stp_l3_q2",
+              "correct_index": 0,
+              "explanation": "هدف، محافظت پورت edge در برابر BPDU غیرمنتظره است."
+            },
+            {
+              "id": "ch13_stp_l3_q3",
+              "correct_index": 1,
+              "explanation": "رفع علت قبل از بازفعال‌سازی از بازگشت رخداد جلوگیری می‌کند."
+            }
+          ]
+        },
+        "official_sources": [
+          {
+            "title": "Cisco IOS XE Configuration Guides",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          },
+          {
+            "title": "IEEE 802.1Q Standard",
+            "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+          }
+        ]
+      },
+      "official_sources": [
+        {
+          "title": "Cisco IOS XE Configuration Guides",
+          "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+        },
+        {
+          "title": "IEEE 802.1Q Standard",
+          "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+        }
+      ],
+      "meta_json": "{\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"category\":\"stp\",\"level\":\"L3\",\"topic\":\"stp\",\"learning_objectives\":[\"شرح سازوکار و اثر عملیاتی موضوع\",\"اجرای آزمایش کنترل‌شده و ثبت خروجی\",\"عیب‌یابی با شواهد و بازگشت امن\"],\"prerequisites\":[\"مبانی Ethernet و مدل OSI\",\"دسترسی به شبیه‌ساز یا لابراتوار ایزوله\"],\"assessment\":{\"questions\":[{\"id\":\"ch13_stp_l3_q1\",\"prompt\":\"کدام کنترل از root شدن bridge ناخواسته از یک جهت مشخص جلوگیری می‌کند؟\",\"options\":[\"Root Guard\",\"DHCP Snooping\",\"Port Security\",\"LACP\"]},{\"id\":\"ch13_stp_l3_q2\",\"prompt\":\"BPDU Guard بیشتر در کدام جا استفاده می‌شود؟\",\"options\":[\"پورت edge که نباید bridge متصل شود\",\"همهٔ لینک‌های بین core بدون بررسی\",\"رابط WAN\",\"SVI\"]},{\"id\":\"ch13_stp_l3_q3\",\"prompt\":\"پس از err-disabled شدن پورت چه اقدام درست است؟\",\"options\":[\"فقط no shutdown فوری\",\"بررسی علت و لاگ، رفع علت، سپس بازیابی کنترل‌شده\",\"خاموش‌کردن تمام STP\",\"پاک‌کردن DNS\"]}],\"answer_key\":[{\"id\":\"ch13_stp_l3_q1\",\"correct_index\":0,\"explanation\":\"Root Guard به سیاست root در جهت مشخص کمک می‌کند.\"},{\"id\":\"ch13_stp_l3_q2\",\"correct_index\":0,\"explanation\":\"هدف، محافظت پورت edge در برابر BPDU غیرمنتظره است.\"},{\"id\":\"ch13_stp_l3_q3\",\"correct_index\":1,\"explanation\":\"رفع علت قبل از بازفعال‌سازی از بازگشت رخداد جلوگیری می‌کند.\"}]},\"official_sources\":[{\"title\":\"Cisco IOS XE Configuration Guides\",\"url\":\"https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html\"},{\"title\":\"IEEE 802.1Q Standard\",\"url\":\"https://standards.ieee.org/standard/802_1Q-2022.html\"}]}"
+    },
+    {
+      "uid": "lesson:ch13:switching-v3:stp:l4",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "chapter_title_fa": "سوئیچینگ سازمانی: طراحی VLAN و پایداری STP",
+      "subchapter_order": 2,
+      "subchapter_title_fa": "STP، همگرایی و تاب‌آوری",
+      "lesson_order": 10,
+      "topic": "stp",
+      "domain": "switching-and-routing",
+      "level": "L4",
+      "title_fa": "[L4] مهندسی افزونگی لایهٔ دوم و آزمون تاب‌آوری",
+      "title_en": "[L4] مهندسی افزونگی لایهٔ دوم و آزمون تاب‌آوری",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "VLAN",
+        "STP",
+        "lab",
+        "troubleshooting",
+        "L4",
+        "stp"
+      ],
+      "summary": "طراحی حرفه‌ای افزونگی با تحلیل failure domain، اندازه‌گیری همگرایی، کنترل root و آزمون بازیابی همراه است.",
+      "full_content": "# مهندسی تاب‌آوری لایهٔ دوم\n\n## هدف طراحی\nافزونگی فیزیکی به‌تنهایی تاب‌آوری ایجاد نمی‌کند؛ اگر مسیرهای اضافی به حلقه، root ناپایدار یا تراکم ترافیک منجر شوند، ظرفیت و پایداری کاهش می‌یابد. معماری باید failure domain، نقاط تک‌خرابی، ظرفیت مسیر جایگزین، محل gateway و رفتار هنگام قطع یک لینک را روشن کند.\n\n## تحلیل سناریو\nبرای دو سوئیچ distribution و چند access، failure modeها را فهرست کن: قطع یک uplink، قطع هر دو uplink یک access، خرابی root، دریافت BPDU از سوئیچ غیرمجاز، لینک یک‌طرفه و flap پورت. برای هر مورد تشخیص، رفتار مورد انتظار، زمان بازیابی هدف، سرویس‌های متاثر و معیار بازگشت تعریف کن.\n\n## طرح آزمون\n۱) baseline توپولوژی و root؛ ۲) اندازه‌گیری loss/latency؛ ۳) قطع یک لینک آزمایشی؛ ۴) ثبت زمان همگرایی و مسیر جدید؛ ۵) تأیید عدم حلقه و سلامت MAC table؛ ۶) بازیابی لینک؛ ۷) بررسی اینکه root یا مسیر ناخواسته تغییر نکرده است. آزمون در production فقط با مجوز تغییر و روش توقف انجام شود.\n\n## تحلیل نتیجه\nزمان بازیابی را از چند تکرار گزارش کن، نه از یک نمونه. صدک ۹۵، packet loss، تعداد topology change و خطاهای interface را ثبت کن. اگر زمان هدف محقق نشد، مشخص کن علت در STP، negotiation، لینک فیزیکی، endpoint یا طراحی ظرفیت است. تنظیم timer بدون تحلیل علت می‌تواند پایداری را کم کند.\n\n## اتوماسیون و guardrail\nقبل از تغییر، اسکریپت باید root مورد انتظار، تعداد uplinkها، native/allowed VLAN و وضعیت STP را بررسی کند. در صورت مشاهدهٔ root غیرمنتظره، پورت inconsistent یا فقدان مسیر جایگزین، اجرا باید متوقف شود. بعد از تغییر، آزمون‌های سلامت و گزارش diff الزامی‌اند.\n\n## مستندسازی و rollback\nثبت کن: نسخهٔ config، topology diagram، شناسهٔ تغییر، زمان‌ها، خروجی قبل/بعد، سنجش loss، رخدادها، تصمیم go/no-go و مالک تأیید. rollback باید در همان محیط آزمایشی یک بار اجرا شود تا تنها روی کاغذ نباشد.\n\n## معیار قبولی\nهیچ حلقهٔ فعال ایجاد نمی‌شود، زمان همگرایی به هدف مصوب می‌رسد، مسیر جایگزین ظرفیت کافی دارد، root پایدار است و گزارش آزمون برای بازبینی مستقل آماده است.\n\n## معماری تاب‌آوری لایهٔ دوم در مقیاس سازمانی\nطراحی افزونگی باید به پرسش‌های مشخص پاسخ دهد: کدام لینک یا سوئیچ ممکن است از دست برود؟ سرویس چه مدت می‌تواند قطع باشد؟ مسیر جایگزین چه ظرفیتی دارد؟ root چگونه انتخاب و محافظت می‌شود؟ آیا VLAN در همهٔ مسیرهای لازم حمل می‌شود؟ آیا شکست یک مسیر می‌تواند ترافیک را روی لینک کم‌ظرفیت متمرکز کند؟ پاسخ باید در نقشهٔ توپولوژی و آزمون بازیابی منعکس شود.\n\n### ماتریس failure mode\nحداقل این رخدادها را ارزیابی کن: قطع یک uplink، قطع هر دو uplink یک access، root failure، دریافت BPDU برتر از پایین‌دست، قطع یک‌طرفهٔ لینک، loop ناشی از patching، VLAN مجازنشده روی trunk و ناپایداری پورت. برای هرکدام نشانهٔ اولیه، منبع شواهد، رفتار مورد انتظار، زمان بازیابی هدف، سرویس‌های متاثر و rollback تعیین کن. احتمال و شدت را جداگانه بسنج و کنترل پیشگیرانه را به رخداد متناظر پیوند بده.\n\n### Guardrail برای اتوماسیون\nقبل از اعمال تغییر، اسکریپت باید root و bridge ID مورد انتظار، تعداد uplinkها، STP mode، VLANهای مجاز، وضعیت inconsistent و خطاهای interface را بخواند. اگر root ناخواسته، پورت inconsistent یا فقدان مسیر جایگزین دیده شد، اجرای تغییر متوقف شود. پس از تغییر، invariantها دوباره بررسی شوند و گزارش diff، خروجی قبل/بعد و نتیجهٔ تست ذخیره شود. دسترسی اتوماسیون باید حداقلی باشد و secrets در فایل متنی قرار نگیرند.\n\n### آزمون تاب‌آوری\nدر محیط مجاز یک لینک را قطع کن و زمان بازیابی سرویس، packet loss، تغییر root، نقش پورت‌ها و سلامت جدول MAC را ثبت کن. پس از وصل مجدد، بررسی کن آیا مسیر به وضعیت مورد انتظار بازگشته یا بار روی لینک دیگری باقی مانده است. آزمایش را تکرار و بدترین زمان مشاهده‌شده را گزارش کن. اگر هدف بازیابی محقق نشد، علت را در پروتکل، لینک، ظرفیت یا طراحی endpoint جدا کن.\n\n### کنترل تغییر و بازبینی مستقل\nتغییر باید دارای مالک، ticket، baseline، diff، معیار go/no-go، پنجره، برنامهٔ ارتباطی و rollback باشد. بازبین مستقل باید بتواند از روی شواهد توضیح دهد چرا تغییر ایمن بوده است. اگر rollback در آزمایشگاه اجرا نشده، وضعیت آن «طراحی‌شده اما آزمایش‌نشده» باقی می‌ماند. هیچ گزارش مهندسی نباید نتیجهٔ شبیه‌سازی را به‌عنوان تایید قطعی رفتار سخت‌افزار هدف معرفی کند.",
+      "commands": "show spanning-tree root\\nshow spanning-tree detail\\nshow interfaces counters errors\\nshow logging",
+      "examples": "",
+      "notes": "منبع آموزشی اختصاصی NetworkAll؛ اجرای lab هنوز روی مدل/نسخهٔ هدف تأیید نشده است. depth_extension=2026-10-13; lab_status=designed_not_executed",
+      "learning_objectives": [
+        "شرح سازوکار و اثر عملیاتی موضوع",
+        "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+        "عیب‌یابی با شواهد و بازگشت امن"
+      ],
+      "prerequisites": [
+        "مبانی Ethernet و مدل OSI",
+        "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+      ],
+      "source_status": "review_required",
+      "assessment": {
+        "questions": [
+          {
+            "id": "ch13_stp_l4_q1",
+            "prompt": "کدام معیار برای سنجش تاب‌آوری کافی نیست؟",
+            "options": [
+              "زمان بازیابی",
+              "packet loss",
+              "صرفاً وجود دو کابل",
+              "تغییرات توپولوژی"
+            ]
+          },
+          {
+            "id": "ch13_stp_l4_q2",
+            "prompt": "چرا آزمون قطع لینک باید تکرار شود؟",
+            "options": [
+              "برای گزارش رفتار متغیر و اطمینان از تکرارپذیری",
+              "برای حذف نیاز به logging",
+              "برای افزایش VLAN ID",
+              "برای غیرفعال‌کردن route"
+            ]
+          },
+          {
+            "id": "ch13_stp_l4_q3",
+            "prompt": "چه زمانی باید اتوماسیون تغییر را متوقف کند؟",
+            "options": [
+              "وقتی root یا پیش‌شرط‌های سلامت خلاف انتظار است",
+              "هر بار که پورت up است",
+              "وقتی نام VLAN طولانی است",
+              "هر زمان که DNS پاسخ دهد"
+            ]
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "ch13_stp_l4_q1",
+            "correct_index": 2,
+            "explanation": "دو کابل بدون طراحی و آزمون، تاب‌آوری را تضمین نمی‌کنند."
+          },
+          {
+            "id": "ch13_stp_l4_q2",
+            "correct_index": 0,
+            "explanation": "چند تکرار، تفاوت شرایط و پراکندگی زمان بازیابی را نشان می‌دهد."
+          },
+          {
+            "id": "ch13_stp_l4_q3",
+            "correct_index": 0,
+            "explanation": "Guardrail باید از اعمال تغییر در شرایط ناامن جلوگیری کند."
+          }
+        ]
+      },
+      "meta": {
+        "lab_status": "designed_not_executed",
+        "content_status": "review_required",
+        "category": "stp",
+        "level": "L4",
+        "topic": "stp",
+        "learning_objectives": [
+          "شرح سازوکار و اثر عملیاتی موضوع",
+          "اجرای آزمایش کنترل‌شده و ثبت خروجی",
+          "عیب‌یابی با شواهد و بازگشت امن"
+        ],
+        "prerequisites": [
+          "مبانی Ethernet و مدل OSI",
+          "دسترسی به شبیه‌ساز یا لابراتوار ایزوله"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "ch13_stp_l4_q1",
+              "prompt": "کدام معیار برای سنجش تاب‌آوری کافی نیست؟",
+              "options": [
+                "زمان بازیابی",
+                "packet loss",
+                "صرفاً وجود دو کابل",
+                "تغییرات توپولوژی"
+              ]
+            },
+            {
+              "id": "ch13_stp_l4_q2",
+              "prompt": "چرا آزمون قطع لینک باید تکرار شود؟",
+              "options": [
+                "برای گزارش رفتار متغیر و اطمینان از تکرارپذیری",
+                "برای حذف نیاز به logging",
+                "برای افزایش VLAN ID",
+                "برای غیرفعال‌کردن route"
+              ]
+            },
+            {
+              "id": "ch13_stp_l4_q3",
+              "prompt": "چه زمانی باید اتوماسیون تغییر را متوقف کند؟",
+              "options": [
+                "وقتی root یا پیش‌شرط‌های سلامت خلاف انتظار است",
+                "هر بار که پورت up است",
+                "وقتی نام VLAN طولانی است",
+                "هر زمان که DNS پاسخ دهد"
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "ch13_stp_l4_q1",
+              "correct_index": 2,
+              "explanation": "دو کابل بدون طراحی و آزمون، تاب‌آوری را تضمین نمی‌کنند."
+            },
+            {
+              "id": "ch13_stp_l4_q2",
+              "correct_index": 0,
+              "explanation": "چند تکرار، تفاوت شرایط و پراکندگی زمان بازیابی را نشان می‌دهد."
+            },
+            {
+              "id": "ch13_stp_l4_q3",
+              "correct_index": 0,
+              "explanation": "Guardrail باید از اعمال تغییر در شرایط ناامن جلوگیری کند."
+            }
+          ]
+        },
+        "official_sources": [
+          {
+            "title": "Cisco IOS XE Configuration Guides",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          },
+          {
+            "title": "IEEE 802.1Q Standard",
+            "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+          }
+        ]
+      },
+      "official_sources": [
+        {
+          "title": "Cisco IOS XE Configuration Guides",
+          "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+        },
+        {
+          "title": "IEEE 802.1Q Standard",
+          "url": "https://standards.ieee.org/standard/802_1Q-2022.html"
+        }
+      ],
+      "meta_json": "{\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\",\"category\":\"stp\",\"level\":\"L4\",\"topic\":\"stp\",\"learning_objectives\":[\"شرح سازوکار و اثر عملیاتی موضوع\",\"اجرای آزمایش کنترل‌شده و ثبت خروجی\",\"عیب‌یابی با شواهد و بازگشت امن\"],\"prerequisites\":[\"مبانی Ethernet و مدل OSI\",\"دسترسی به شبیه‌ساز یا لابراتوار ایزوله\"],\"assessment\":{\"questions\":[{\"id\":\"ch13_stp_l4_q1\",\"prompt\":\"کدام معیار برای سنجش تاب‌آوری کافی نیست؟\",\"options\":[\"زمان بازیابی\",\"packet loss\",\"صرفاً وجود دو کابل\",\"تغییرات توپولوژی\"]},{\"id\":\"ch13_stp_l4_q2\",\"prompt\":\"چرا آزمون قطع لینک باید تکرار شود؟\",\"options\":[\"برای گزارش رفتار متغیر و اطمینان از تکرارپذیری\",\"برای حذف نیاز به logging\",\"برای افزایش VLAN ID\",\"برای غیرفعال‌کردن route\"]},{\"id\":\"ch13_stp_l4_q3\",\"prompt\":\"چه زمانی باید اتوماسیون تغییر را متوقف کند؟\",\"options\":[\"وقتی root یا پیش‌شرط‌های سلامت خلاف انتظار است\",\"هر بار که پورت up است\",\"وقتی نام VLAN طولانی است\",\"هر زمان که DNS پاسخ دهد\"]}],\"answer_key\":[{\"id\":\"ch13_stp_l4_q1\",\"correct_index\":2,\"explanation\":\"دو کابل بدون طراحی و آزمون، تاب‌آوری را تضمین نمی‌کنند.\"},{\"id\":\"ch13_stp_l4_q2\",\"correct_index\":0,\"explanation\":\"چند تکرار، تفاوت شرایط و پراکندگی زمان بازیابی را نشان می‌دهد.\"},{\"id\":\"ch13_stp_l4_q3\",\"correct_index\":0,\"explanation\":\"Guardrail باید از اعمال تغییر در شرایط ناامن جلوگیری کند.\"}]},\"official_sources\":[{\"title\":\"Cisco IOS XE Configuration Guides\",\"url\":\"https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html\"},{\"title\":\"IEEE 802.1Q Standard\",\"url\":\"https://standards.ieee.org/standard/802_1Q-2022.html\"}]}"
+    }
+  ]
+}

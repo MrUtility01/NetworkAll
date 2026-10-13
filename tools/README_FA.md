@@ -1,71 +1,42 @@
-# پوشه tools — بسته‌های محتوا (Content Packs)
+# راهنمای پوشه tools
 
-این پوشه **فقط** برای بسته‌های آموزشی JSON و اسکریپت واردسازی است.
-برنامهٔ ویندوز از `server/` و اندروید از `android/` اجرا می‌شود؛ اینجا «انبار محتوا» است.
+این پوشه ابزارهای مدیریت محتوا و اسکریپت‌های آموزشی را نگه‌داری می‌کند. **تنها محل JSONهای نهایی آموزشی، tools/packs/** است. اسکریپت‌های ساخت و اعتبارسنجی در پوشه‌های مهندسی باقی می‌مانند.
 
-## ساختار درست (همین را حفظ کن)
+## ساختار
 
-```text
-tools/
-  README_FA.md                          ← این راهنما
-  AI_CONTENT_PACK_PROMPT.md             ← پرامپت برای دادن به ChatGPT/Claude/Grok
-  apply_any_pack.py                     ← واردسازی هر JSON به دیتابیس ویندوز
-  reorganize_tools.sh                   ← یک‌بار برای مرتب‌کردن فایل‌های شلخته
+- tools/packs/ — مخزن استاندارد JSONهای نهایی، پوشه‌بندی‌شده بر اساس موضوع
+- tools/packs/pack_catalog.json — فهرست رسمی مسیرها و وضعیت ممیزی
+- tools/engineer_jokar_automation_python/ — سازنده، اعتبارسنجی و importer بسته Python/Automation؛ خروجی JSON در tools/packs/automation_python/
+- tools/engineer_jokar_security_ethical_hacking/ — اعتبارسنجی و راهنمای محتوای امنیت دفاعی؛ JSON زیر tools/packs/security_ethical_hacking/
+- tools/engineer_jokar_wireless_security/ — مستندات و ابزارهای WLAN؛ JSON زیر tools/packs/wireless_security/
+- tools/commands_encyclopedia/ — schema، پرامپت‌ها و مراحل نگارش؛ خروجی JSON زیر tools/packs/commands_encyclopedia/
+- tools/chapter_prompts/ — پرامپت‌های فصل
+- tools/audit_content.py — گزارش ممیزی فقط‌خواندنی
 
-  engineer_jokar_automation_python/     ← بسته Auto/Python (فصل ۲۱/۳۵/۵۱)
-    automation_python_curriculum_pack.json
-    validate_pack.py
-    apply_content_pack.py
+## واردسازی
 
-  engineer_jokar_security_ethical_hacking/  ← فصل ۶۴ امنیت
-    security_ethical_hacking_pack.json
+از ریشه مخزن، ابتدا فقط پیش‌نمایش بگیرید:
 
-  engineer_jokar_wireless_security/     ← امنیت بی‌سیم
-    wireless_security_pack.json
+    python tools/apply_any_pack.py --db server/data/encyclopedia.db --pack tools/packs/automation_python/automation_python_curriculum_pack.json
 
-  packs/                                ← بسته‌های دیگر (Switching، Windows Server، …)
-    switching_routing/
-      switching_routing_curriculum_pack.json
-    windows_server/
-      windows_server_complete_curriculum_pack.json
-```
+برای اعتبارسنجی بسته اتوماسیون:
 
-## اگر فایل را در ریشه tools گذاشتی
+    python tools/engineer_jokar_automation_python/validate_pack.py
 
-یک‌بار در Git Bash از ریشهٔ ریپو:
+برای گزارش کیفیت همه JSONها:
 
-```bash
-cd ~/NetworkEncyclopedia
-bash tools/reorganize_tools.sh
-git add tools
-git commit -m "chore: reorganize content packs into folders"
-git push
-```
+    python tools/audit_content.py --packs-only --json docs/audits/content-audit.json
 
-## واردسازی به ویندوز (بعد از اجرای سرور حداقل یک‌بار)
+فرمان --all اکنون فایل‌های tools/packs/**/*.json را هم شامل می‌کند. پیش از هر اعمال واقعی، دیتابیس را پشتیبان‌گیری کنید و dry-run را بررسی کنید.
 
-```bash
-cd ~/NetworkEncyclopedia
-python tools/apply_any_pack.py --db server/data/encyclopedia.db --pack tools/engineer_jokar_automation_python/automation_python_curriculum_pack.json --apply
-```
+## ساخت/بازسازی بسته Automation
 
-یا همهٔ JSONهای داخل tools را یکجا:
+    python tools/engineer_jokar_automation_python/build_content_pack.py
 
-```bash
-python tools/apply_any_pack.py --db server/data/encyclopedia.db --all --apply
-```
+این اسکریپت خروجی را مستقیماً در tools/packs/automation_python/ می‌نویسد. JSON نهایی را در پوشه اسکریپت کپی نکنید.
 
 ## اندروید
 
-بیلد Actions بعد از `export` اسکریپت `merge_content_packs_into_android.py` را اجرا می‌کند و هر بسته‌ای که در مسیرهای شناخته‌شده باشد را ادغام می‌کند.
-APK را از Actions بگیر و بعد از نصب **Clear data** بزن.
+Workflow ساخت اندروید پس از export، JSONهای canonical زیر tools/packs را برای ادغام بررسی می‌کند و در خروجی GZip آفلاین تولید می‌کند. نام فایل‌ها انگلیسی و بدون فاصله باشد. پرامپت، ZIP آرشیوی و JSON تولیدی را در یک پوشه مخلوط نکنید.
 
-## تولید بستهٔ جدید با هوش مصنوعی
-
-فایل `AI_CONTENT_PACK_PROMPT.md` را به مدل بده + آدرس گیت:
-
-```text
-https://github.com/MrUtility01/NetworkEncyclopedia
-```
-
-خروجی باید یک JSON مطابق schema همان پرامپت باشد. آن را در `tools/packs/نام_بسته/` بگذار و با `apply_any_pack.py` وارد کن.
+جزئیات بیشتر در [docs/CONTENT_GOVERNANCE_FA.md](../docs/CONTENT_GOVERNANCE_FA.md) آمده است.

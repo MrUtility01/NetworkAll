@@ -163,7 +163,17 @@ class QuizActivity : AppCompatActivity() {
                 }
             } catch (_: Exception) { }
         }
-        return out
+        // The merger stores assessments in both meta_json and an EJ_ASSESSMENT
+        // notes block for backward compatibility. Deduplicate the same question
+        // when QuizActivity reads both blobs, while preserving distinct lessons.
+        return out.distinctBy { q ->
+            listOf(
+                q.lessonUid,
+                q.prompt.trim().replace(Regex("\\s+"), " "),
+                q.options.joinToString("\\u001F") { it.trim() },
+                q.correctIndex.toString()
+            ).joinToString("\\u001E")
+        }
     }
 
     private fun nextQuestion() {

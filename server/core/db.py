@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+import re
 from pathlib import Path
 from datetime import datetime
 
@@ -18,8 +19,46 @@ class WebDB:
         self.conn = sqlite3.connect(str(self.path), check_same_thread=False)
         self.conn.row_factory = sqlite3.Row
         self.conn.execute("PRAGMA foreign_keys = ON")
+        self.conn.execute("PRAGMA journal_mode=WAL")
+        self.conn.execute("PRAGMA busy_timeout=5000")
         self.conn.execute("PRAGMA journal_mode = WAL")
         self._create()
+        self._ensure_search_index()
+
+    def _ensure_search_index(self):
+        """Create a maintained FTS5 index when SQLite supports it; LIKE remains fallback."""
+        try:
+            self.conn.executescript(
+                """
+                CREATE VIRTUAL TABLE IF NOT EXISTS lessons_fts USING fts5(
+                    title_fa, title_en, tags, summary, full_content, commands, examples,
+                    content='lessons', content_rowid='id', tokenize='unicode61'
+                );
+                CREATE TRIGGER IF NOT EXISTS lessons_fts_ai AFTER INSERT ON lessons BEGIN
+                    INSERT INTO lessons_fts(rowid, title_fa, title_en, tags, summary, full_content, commands, examples)
+                    VALUES (new.id, new.title_fa, new.title_en, new.tags, new.summary, new.full_content, new.commands, new.examples);
+                END;
+                CREATE TRIGGER IF NOT EXISTS lessons_fts_ad AFTER DELETE ON lessons BEGIN
+                    INSERT INTO lessons_fts(lessons_fts, rowid, title_fa, title_en, tags, summary, full_content, commands, examples)
+                    VALUES ('delete', old.id, old.title_fa, old.title_en, old.tags, old.summary, old.full_content, old.commands, old.examples);
+                END;
+                CREATE TRIGGER IF NOT EXISTS lessons_fts_au AFTER UPDATE ON lessons BEGIN
+                    INSERT INTO lessons_fts(lessons_fts, rowid, title_fa, title_en, tags, summary, full_content, commands, examples)
+                    VALUES ('delete', old.id, old.title_fa, old.title_en, old.tags, old.summary, old.full_content, old.commands, old.examples);
+                    INSERT INTO lessons_fts(rowid, title_fa, title_en, tags, summary, full_content, commands, examples)
+                    VALUES (new.id, new.title_fa, new.title_en, new.tags, new.summary, new.full_content, new.commands, new.examples);
+                END;
+                """
+            )
+            if self.get_meta("search_fts_ready") != "1":
+                self.conn.execute("INSERT INTO lessons_fts(lessons_fts) VALUES ('rebuild')")
+                self.set_meta("search_fts_ready", "1")
+            self._fts_available = True
+        except sqlite3.OperationalError as exc:
+            # Some bundled SQLite builds may omit FTS5; the app remains functional.
+            self._fts_available = False
+            print("FTS5 unavailable; using LIKE search fallback:", exc)
+
 
     def _create(self):
         self.conn.executescript(
@@ -112,6 +151,16 @@ class WebDB:
     def is_seeded(self):
         return self.chapter_count() >= 64
 
+    def backup(self, backup_dir=None):
+        """Create a consistent SQLite backup before destructive maintenance."""
+        directory = Path(backup_dir) if backup_dir else self.path.parent / "backups"
+        directory.mkdir(parents=True, exist_ok=True)
+        stamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        target = directory / f"{self.path.stem}_{stamp}.db"
+        with sqlite3.connect(str(target)) as destination:
+            self.conn.backup(destination)
+        return target
+
     def seed_full(self, force=False):
         """ساخت کامل فصل‌های ۱–۶۸ با محتوای غنی."""
         if self.is_seeded() and not force:
@@ -121,8 +170,10 @@ class WebDB:
         from core.phase_a import CAPSTONE_SCENARIOS, default_meta
         from core.seed_helpers import insert_rich_lesson
 
+        backup_path = None
         cur = self.conn.cursor()
         if force:
+            backup_path = self.backup()
             cur.executescript(
                 "DELETE FROM lessons; DELETE FROM levels; DELETE FROM chapters; DELETE FROM scenarios;"
             )
@@ -177,7 +228,7 @@ class WebDB:
         self.conn.commit()
         self.set_meta("seeded_version", "web-v3-ch68")
         self.set_meta("seeded_at", now)
-        return {"ok": True, "chapters": n_ch, "levels": n_lv, "lessons": n_les, "scenarios": len(CAPSTONE_SCENARIOS)}
+        return {"ok": True, "chapters": n_ch, "levels": n_lv, "lessons": n_les, "scenarios": len(CAPSTONE_SCENARIOS), "backup": str(backup_path) if backup_path else None}
 
     def list_chapters(self):
         rows = self.conn.execute(
@@ -230,17 +281,48 @@ class WebDB:
         q = (q or "").strip()
         if not q:
             return []
+        try:
+            limit = max(1, min(int(limit), 100))
+        except (TypeError, ValueError):
+            limit = 50
+
+        # FTS5 is much faster than scanning every long lesson body with LIKE.
+        # Tokenize conservatively and quote each token to avoid interpreting user
+        # input as FTS operators. Prefix matching supports partial English words.
+        tokens = re.findall(r"[\w\u0600-\u06FF]+", q, flags=re.UNICODE)
+        if self._fts_available and tokens:
+            match_query = " AND ".join('"' + t.replace('"', '""') + '"*' for t in tokens)
+            try:
+                rows = self.conn.execute(
+                    """SELECT l.id, l.title_fa, l.tags, lv.title_fa AS level_title,
+                              c.title_fa AS chapter_title, c.id AS chapter_id
+                       FROM lessons_fts
+                       JOIN lessons l ON l.id=lessons_fts.rowid
+                       JOIN levels lv ON lv.id=l.level_id
+                       JOIN chapters c ON c.id=lv.chapter_id
+                       WHERE lessons_fts MATCH ?
+                       ORDER BY bm25(lessons_fts), c.order_index, lv.order_index, l.order_index
+                       LIMIT ?""",
+                    (match_query, limit),
+                ).fetchall()
+                return [dict(r) for r in rows]
+            except sqlite3.OperationalError:
+                pass
+
         like = f"%{q}%"
         rows = self.conn.execute(
-            """SELECT l.id, l.title_fa, l.tags, lv.title_fa AS level_title, c.title_fa AS chapter_title, c.id AS chapter_id
+            """SELECT l.id, l.title_fa, l.tags, lv.title_fa AS level_title,
+                      c.title_fa AS chapter_title, c.id AS chapter_id
                FROM lessons l
                JOIN levels lv ON lv.id=l.level_id
                JOIN chapters c ON c.id=lv.chapter_id
-               WHERE l.title_fa LIKE ? OR l.summary LIKE ? OR l.full_content LIKE ?
+               WHERE l.title_fa LIKE ? OR l.title_en LIKE ? OR l.tags LIKE ?
+                  OR l.summary LIKE ? OR l.full_content LIKE ? OR l.commands LIKE ?
                ORDER BY c.order_index, lv.order_index, l.order_index LIMIT ?""",
-            (like, like, like, limit),
+            (like, like, like, like, like, like, limit),
         ).fetchall()
         return [dict(r) for r in rows]
+
 
     def stats(self):
         return {
@@ -315,6 +397,7 @@ class WebDB:
 
     def sync_apply(self, records):
         self.ensure_sync_columns()
+        applied = 0
         for rec in records:
             uid = rec.get("uid") or ""
             entity = rec.get("entity") or ("scenario" if uid.startswith("scenario:") else "lesson")
@@ -332,6 +415,7 @@ class WebDB:
                      rec.get("content_hash", ""), rec.get("device_id", ""),
                      1 if rec.get("deleted") else 0, uid),
                 )
+                applied += 1
             elif entity == "scenario":
                 if not self.conn.execute("SELECT id FROM scenarios WHERE uid=?", (uid,)).fetchone():
                     continue
@@ -342,4 +426,6 @@ class WebDB:
                      rec.get("verification", ""), rec.get("last_updated"), rec.get("content_hash", ""),
                      rec.get("device_id", ""), 1 if rec.get("deleted") else 0, uid),
                 )
+                applied += 1
         self.conn.commit()
+        return applied

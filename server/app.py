@@ -3,15 +3,22 @@
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import os
 import socket
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from flask import Flask, jsonify, render_template, request
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from flask import Flask, jsonify, render_template, render_template_string, request, send_from_directory, session, redirect
 
 from core.db import WebDB
+from core.study import study_sync_apply, study_sync_index, study_sync_pull
 
 try:
     from shared.sync_engine import SCHEMA_VERSION, build_manifest, compare_lww, content_hash, utc_now
@@ -26,12 +33,22 @@ except Exception:
         blob = json.dumps({k: payload[k] for k in keys}, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
         return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
+    def _timestamp_key(value):
+        raw = str(value or "")
+        try:
+            dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return (1, dt.timestamp(), "")
+        except (ValueError, TypeError, OverflowError):
+            return (0, 0.0, raw)
+
     def compare_lww(server, client):
         su, cu = server.get("last_updated") or "", client.get("last_updated") or ""
         sh, ch = server.get("content_hash") or "", client.get("content_hash") or content_hash(client)
-        if cu > su:
+        if _timestamp_key(cu) > _timestamp_key(su):
             return "accept_client"
-        if cu < su:
+        if _timestamp_key(cu) < _timestamp_key(su):
             return "keep_server"
         if sh == ch:
             return "equal"
@@ -40,7 +57,7 @@ except Exception:
     def build_manifest(records, since=None):
         items = []
         for r in records:
-            if since and (r.get("last_updated") or "") <= since:
+            if since and _timestamp_key(r.get("last_updated")) <= _timestamp_key(since):
                 continue
             items.append({
                 "uid": r["uid"], "entity": r.get("entity", "lesson"),
@@ -53,11 +70,93 @@ except Exception:
 BASE = Path(__file__).resolve().parent
 app = Flask(__name__, template_folder=str(BASE / "templates"), static_folder=str(BASE / "static"))
 app.config["JSON_AS_ASCII"] = False
+app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024
+
+# App-entry password for the local Windows UI. Override with NETENC_APP_PASSWORD if desired.
+# The built-in value is stored only as PBKDF2-HMAC-SHA256 (200k rounds), never as plaintext.
+_APP_PIN_SALT = bytes.fromhex("5f3a9c71d8e2046bb6f9012ac48d735e")
+_APP_PIN_HASH = bytes.fromhex("aaf49102a320825f15b1dc26866c722203ccffec8e9a7d49d186ac9119a1e540")
+_APP_PIN_ITERATIONS = 200_000
+_SESSION_KEY_PATH = BASE / "data" / "session.key"
+_SESSION_KEY_PATH.parent.mkdir(parents=True, exist_ok=True)
+if not _SESSION_KEY_PATH.exists():
+    try:
+        _SESSION_KEY_PATH.write_bytes(os.urandom(32))
+    except OSError:
+        pass
+try:
+    _session_key = _SESSION_KEY_PATH.read_bytes()
+    if len(_session_key) < 32:
+        raise ValueError("session key too short")
+except Exception:
+    # Do not silently create a predictable key; login sessions will be invalidated on restart.
+    _session_key = os.urandom(32)
+app.secret_key = _session_key
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+    PERMANENT_SESSION_LIFETIME=12 * 60 * 60,
+)
+
+def _verify_app_pin(candidate: str) -> bool:
+    override = os.environ.get("NETENC_APP_PASSWORD")
+    if override is not None:
+        return hmac.compare_digest(candidate, override)
+    if not candidate or len(candidate) > 128:
+        return False
+    derived = hashlib.pbkdf2_hmac("sha256", candidate.encode("utf-8"), _APP_PIN_SALT, _APP_PIN_ITERATIONS, dklen=32)
+    return hmac.compare_digest(derived, _APP_PIN_HASH)
+
+_APP_LOGIN_HTML = """<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>ورود به برنامه</title>
+<style>body{font-family:Tahoma,sans-serif;background:#0f172a;color:#e2e8f0;display:grid;place-items:center;min-height:95vh}
+form{background:#1e293b;padding:28px;border-radius:14px;width:min(360px,88vw)}input,button{box-sizing:border-box;width:100%;padding:12px;margin:8px 0;border:0;border-radius:8px}
+button{background:#2563eb;color:white;font-weight:bold}.err{color:#fca5a5}</style>
+<form method="post"><h2>ورود به Engineer Jokar</h2><p>رمز ورود برنامه را وارد کنید.</p>
+<input type="password" name="pin" inputmode="text" autocomplete="current-password" autofocus required>
+{% if error %}<p class="err">{{ error }}</p>{% endif %}<button type="submit">ورود</button></form></html>"""
+
+@app.route("/app-login", methods=["GET", "POST"])
+def app_login():
+    if request.method == "POST":
+        pin = request.form.get("pin", "")
+        if _verify_app_pin(pin):
+            session.clear()
+            session["app_authenticated"] = True
+            session.permanent = True
+            return redirect(request.args.get("next") or "/")
+        return render_template_string(_APP_LOGIN_HTML, error="رمز ورود صحیح نیست."), 401
+    return render_template_string(_APP_LOGIN_HTML, error="")
+
+@app.get("/app-logout")
+def app_logout():
+    session.clear()
+    return redirect("/app-login")
+
+@app.before_request
+def require_app_entry_for_browser_ui():
+    path = request.path
+    if path in {"/app-login", "/app-logout"} or path.startswith("/api/") or path.startswith("/static/") or path.startswith("/infographics"):
+        return None
+    if path.startswith("/workspace/login"):
+        return None
+    if not session.get("app_authenticated"):
+        return redirect("/app-login?next=" + path)
+    return None
 
 _MODULE_STATUS = {"workspace": False, "study": False, "workspace_error": "", "study_error": ""}
 
+workspace_sync_index = lambda: []
+workspace_sync_pull = lambda uids: []
+workspace_sync_apply = lambda records: 0
+
 try:
-    from workspace_routes import bp as workspace_bp, set_auth_checker
+    from workspace_routes import (
+        bp as workspace_bp, set_auth_checker,
+        sync_index as workspace_sync_index,
+        sync_pull as workspace_sync_pull,
+        sync_apply as workspace_sync_apply,
+    )
     app.register_blueprint(workspace_bp)
     _MODULE_STATUS["workspace"] = True
 except Exception as _e:
@@ -70,25 +169,40 @@ except Exception as _e:
     register_study_routes = None
     _MODULE_STATUS["study_error"] = str(_e)
 
-DEFAULT_DEV_TOKEN = "09136555866"
-SYNC_TOKEN = os.environ.get("NETENC_TOKEN", DEFAULT_DEV_TOKEN)
+DEFAULT_DEV_TOKEN = ""
+SYNC_TOKEN = os.environ.get("NETENC_TOKEN", DEFAULT_DEV_TOKEN).strip()
 DEVICE_ID = os.environ.get("NETENC_DEVICE", socket.gethostname() or "windows-host")
-BIND_HOST = os.environ.get("NETENC_HOST", "0.0.0.0")
+# Safer by default: personal use on this PC only. Set NETENC_HOST=0.0.0.0 explicitly for LAN sync.
+BIND_HOST = os.environ.get("NETENC_HOST", "127.0.0.1").strip()
+LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
+REMOTE_BIND = BIND_HOST not in LOCAL_HOSTS
 
-if SYNC_TOKEN == DEFAULT_DEV_TOKEN:
-    print("WARNING: using default NETENC_TOKEN — set env NETENC_TOKEN for LAN use")
+if REMOTE_BIND and len(SYNC_TOKEN) < 24:
+    print("ERROR: LAN bind requires NETENC_TOKEN with at least 24 characters.")
 
 _db = None
 
 
 def db() -> WebDB:
+    """Open local DB; never erase a non-empty DB as an automatic recovery step."""
     global _db
     if _db is None:
         _db = WebDB()
-        if not _db.is_seeded():
+        count = _db.chapter_count()
+        if count == 0:
             print("seed curriculum...")
-            print(_db.seed_full(force=True))
+            print(_db.seed_full(force=False))
+        elif not _db.is_seeded():
+            print(f"WARNING: partial curriculum detected ({count} chapters); data preserved, no automatic destructive reseed.")
         _db.ensure_sync_columns()
+        try:
+            from core.curriculum_import import sync_canonical_curriculum
+            curriculum_result = sync_canonical_curriculum(_db)
+            if not curriculum_result.get("skipped"):
+                print("shared curriculum refresh:", curriculum_result)
+        except Exception as exc:
+            # Import is transactional; the existing database remains intact on failure.
+            print("WARNING: shared curriculum refresh was not applied:", exc)
     return _db
 
 
@@ -99,20 +213,29 @@ def extract_token() -> str:
     t = request.headers.get("X-NetEnc-Token", "") or ""
     if t:
         return t.strip()
-    t = request.cookies.get("netenc_token") or request.args.get("token") or ""
+    t = request.cookies.get("netenc_token") or ""
     return (t or "").strip()
 
 
 def check_token() -> bool:
-    if not SYNC_TOKEN:
+    # LAN token policy must apply before browser-session authentication as well.
+    if REMOTE_BIND and len(SYNC_TOKEN) < 24:
+        return False
+    if session.get("app_authenticated"):
         return True
-    return extract_token() == SYNC_TOKEN
+    candidate = extract_token()
+    if SYNC_TOKEN:
+        return hmac.compare_digest(candidate, SYNC_TOKEN)
+    # No token is permitted only when listening on loopback for personal use.
+    return not REMOTE_BIND
 
 
 def require_token():
+    if REMOTE_BIND and len(SYNC_TOKEN) < 24:
+        return jsonify({"ok": False, "error": "server_not_secured", "hint": "Set a strong NETENC_TOKEN of at least 24 characters before enabling LAN access."}), 503
     if check_token():
         return None
-    return jsonify({"ok": False, "error": "unauthorized", "hint": "Authorization: Bearer <NETENC_TOKEN>"}), 401
+    return jsonify({"ok": False, "error": "unauthorized", "hint": "Enter NETENC_TOKEN in the web app or send Authorization: Bearer <token>."}), 401
 
 
 if _MODULE_STATUS["workspace"]:
@@ -122,6 +245,21 @@ if _MODULE_STATUS["workspace"]:
         print("workspace auth wire", e)
 
 
+# Public static learning graphics; the directory contains no user-specific data.
+INFOGRAPHICS_DIR = REPO_ROOT / "shared" / "infographics"
+
+
+@app.get("/infographics")
+@app.get("/infographics/")
+def infographic_gallery():
+    return send_from_directory(str(INFOGRAPHICS_DIR), "index.html")
+
+
+@app.get("/infographics/<path:filename>")
+def infographic_asset(filename: str):
+    return send_from_directory(str(INFOGRAPHICS_DIR), filename)
+
+
 @app.get("/")
 def index():
     return render_template("index.html")
@@ -129,26 +267,102 @@ def index():
 
 @app.get("/api/health")
 def health():
-    st = {}
-    try:
-        st = db().stats()
-    except Exception as e:
-        st = {"error": str(e)}
+    denied = require_token()
+    if denied:
+        return denied
     return jsonify({
         "ok": True,
-        "device": DEVICE_ID,
         "schema_version": SCHEMA_VERSION,
         "sync_protocol": "v1-aligned",
-        "token_required": bool(SYNC_TOKEN),
-        "default_token_in_use": SYNC_TOKEN == DEFAULT_DEV_TOKEN,
-        "modules": {
-            "workspace": _MODULE_STATUS["workspace"],
-            "study": bool(register_study_routes),
-            "workspace_error": _MODULE_STATUS.get("workspace_error") or None,
-            "study_error": _MODULE_STATUS.get("study_error") or None,
-        },
-        "stats": st,
+        "token_configured": bool(SYNC_TOKEN),
     })
+
+
+@app.get("/api/stats")
+def api_stats():
+    denied = require_token()
+    if denied:
+        return denied
+    return jsonify(db().stats())
+
+
+@app.get("/api/chapters/<int:chapter_id>/levels")
+def api_chapter_levels(chapter_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    chapter = db().get_chapter(chapter_id)
+    if not chapter:
+        return jsonify({"error": "chapter_not_found"}), 404
+    return jsonify({"levels": db().list_levels(chapter_id)})
+
+
+@app.get("/api/levels/<int:level_id>/lessons")
+def api_level_lessons(level_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    return jsonify({"lessons": db().list_lessons(level_id)})
+
+
+@app.get("/api/lessons/<int:lesson_id>")
+def api_lesson_by_id(lesson_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    row = db().get_lesson(lesson_id)
+    return jsonify(row) if row else (jsonify({"error": "lesson_not_found"}), 404)
+
+
+@app.get("/api/scenarios")
+def api_scenarios():
+    denied = require_token()
+    if denied:
+        return denied
+    return jsonify(db().list_scenarios())
+
+
+@app.get("/api/scenarios/<int:scenario_id>")
+def api_scenario(scenario_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    row = db().get_scenario(scenario_id)
+    return jsonify(row) if row else (jsonify({"error": "scenario_not_found"}), 404)
+
+
+@app.get("/api/search")
+def api_search():
+    denied = require_token()
+    if denied:
+        return denied
+    query = (request.args.get("q") or "").strip()
+    if len(query) > 200:
+        return jsonify({"error": "query_too_long"}), 400
+    try:
+        limit = max(1, min(100, int(request.args.get("limit", "50"))))
+    except ValueError:
+        return jsonify({"error": "invalid_limit"}), 400
+    return jsonify(db().search(query, limit=limit))
+
+
+@app.post("/api/reseed")
+def api_safe_reseed():
+    """Safe repair endpoint: never force-deletes user progress or a non-empty DB."""
+    denied = require_token()
+    if denied:
+        return denied
+    d = db()
+    count = d.chapter_count()
+    if count:
+        return jsonify({
+            "ok": True,
+            "skipped": True,
+            "chapters": count,
+            "stats": d.stats(),
+            "message": "پایگاه داده غیرخالی است؛ برای محافظت از پیشرفت و یادداشت‌ها، بازسازی مخرب خودکار انجام نشد."
+        })
+    return jsonify(d.seed_full(force=False))
 
 
 @app.get("/api/chapters")
@@ -211,6 +425,8 @@ def sync_hello():
         "schema_version": SCHEMA_VERSION,
         "device_id": DEVICE_ID,
         "lan_ip": lan,
+        "lan_enabled": REMOTE_BIND,
+        "bind_host": BIND_HOST,
         "stats": st,
         "protocol": {
             "hello": "GET /api/sync/hello",
@@ -228,7 +444,11 @@ def sync_manifest():
     if denied:
         return denied
     since = request.args.get("since") or None
-    records = db().sync_index()
+    d = db()
+    records = d.sync_index()
+    if _MODULE_STATUS["workspace"]:
+        records.extend(workspace_sync_index())
+    records.extend(study_sync_index(d.conn))
     return jsonify(build_manifest(records, since=since))
 
 
@@ -241,7 +461,11 @@ def sync_pull():
     uids = body.get("uids") or []
     if not isinstance(uids, list):
         return jsonify({"error": "uids must be a list"}), 400
-    records = db().sync_pull(uids)
+    d = db()
+    records = d.sync_pull(uids)
+    if _MODULE_STATUS["workspace"]:
+        records.extend(workspace_sync_pull(uids))
+    records.extend(study_sync_pull(d.conn, uids))
     return jsonify({"records": records, "count": len(records), "generated_at": utc_now()})
 
 
@@ -251,26 +475,160 @@ def sync_push():
     if denied:
         return denied
     body = request.get_json(force=True, silent=True) or {}
+    if not isinstance(body, dict):
+        return jsonify({"error": "JSON body must be an object"}), 400
     records = body.get("records") or body.get("items") or []
-    if not isinstance(records, list):
-        return jsonify({"error": "records must be a list"}), 400
-    accepted = kept = conflicts = 0
+    if not isinstance(records, list) or len(records) > 1000:
+        return jsonify({"error": "records must be a list with at most 1000 items"}), 400
+    accepted = kept = conflicts = unsupported = missing_targets = invalid = 0
     conflict_uids = []
-    index = {r["uid"]: r for r in db().sync_index()}
-    to_apply = []
+    unsupported_uids = []
+    missing_target_uids = []
+    invalid_uids = []
+    index = {}
+    d = db()
+    for row in d.sync_index():
+        index[(row["uid"], row.get("entity", "lesson"))] = row
+    if _MODULE_STATUS["workspace"]:
+        for row in workspace_sync_index():
+            index[(row["uid"], row.get("entity", ""))] = row
+    for row in study_sync_index(d.conn):
+        index[(row["uid"], row.get("entity", ""))] = row
+    curriculum_to_apply = []
+    workspace_to_apply = []
+    study_to_apply = []
+    # Vault entries are deliberately excluded: they require key-aware, encrypted
+    # transfer and must never be treated as ordinary notes or task records.
+    allowed_entities = {"lesson", "scenario", "task", "note", "study"}
     for item in records:
-        uid = (item or {}).get("uid") or ""
-        if not uid:
+        if not isinstance(item, dict):
             kept += 1
             continue
-        server = index.get(uid)
-        if not server:
-            to_apply.append(item)
-            accepted += 1
+        uid = str(item.get("uid") or "").strip()
+        entity = str(item.get("entity") or "lesson")
+        if not uid or len(uid) > 128:
+            kept += 1
             continue
-        decision = compare_lww(server, item)
+        if entity not in allowed_entities or (entity in ("task", "note") and not _MODULE_STATUS["workspace"]):
+            unsupported += 1
+            unsupported_uids.append(uid)
+            continue
+        try:
+            if len(json.dumps(item, ensure_ascii=False)) > 2_000_000:
+                kept += 1
+                continue
+        except (TypeError, ValueError):
+            kept += 1
+            continue
+        if entity == "study":
+            status_value = str(item.get("status") or "new").lower()
+            try:
+                ease_value = float(item.get("ease", 2.5))
+                interval_value = int(item.get("interval_hours", item.get("intervalHours", 1)))
+                times_value = int(item.get("times_studied", item.get("timesStudied", 0)))
+            except (TypeError, ValueError, OverflowError):
+                invalid += 1
+                invalid_uids.append(uid)
+                continue
+            notes_value = item.get("notes", "")
+            if notes_value is None:
+                notes_value = ""
+            invalid_study = (
+                status_value not in {"new", "learning", "known", "review"}
+                or not 1.0 <= ease_value <= 4.0
+                or not 0 <= interval_value <= 24 * 365
+                or not 0 <= times_value <= 10_000_000
+                or not isinstance(notes_value, str)
+            )
+            if invalid_study:
+                invalid += 1
+                invalid_uids.append(uid)
+                continue
+
+        # Reject malformed workspace items before reporting them as accepted.
+        # Coercing invalid task fields in sync_apply would silently change user data
+        # while still returning an "accepted" result to the originating device.
+        if entity in ("task", "note"):
+            title_value = item.get("title")
+            body_value = item.get("body", "")
+            tags_value = item.get("tags", "")
+            deleted_value = item.get("deleted", False)
+            if body_value is None:
+                body_value = ""
+            if tags_value is None:
+                tags_value = ""
+            valid_flag = lambda value: (
+                isinstance(value, bool) or (type(value) is int and value in (0, 1))
+            )
+            invalid_item = (
+                not isinstance(title_value, str)
+                or not title_value.strip()
+                or len(title_value.strip()) > 300
+                or not isinstance(body_value, str)
+                or len(body_value) > 2_000_000
+                or not valid_flag(deleted_value)
+                or (
+                    entity == "note"
+                    and (not isinstance(tags_value, str) or len(tags_value) > 2_000)
+                )
+            )
+            if entity == "task":
+                priority_value = item.get("priority", 1)
+                done_value = item.get("done", False)
+                due_value = item.get("due_at", item.get("dueAt", ""))
+                remind_value = item.get("remind_at", item.get("remindAt", ""))
+                def valid_local_time(value):
+                    if not isinstance(value, str) or len(value) > 32:
+                        return False
+                    if not value:
+                        return True
+                    try:
+                        if len(value) == 10:
+                            datetime.strptime(value, "%Y-%m-%d")
+                        else:
+                            datetime.strptime(value, "%Y-%m-%dT%H:%M")
+                        return True
+                    except ValueError:
+                        return False
+                valid_due = valid_local_time(due_value)
+                valid_remind = valid_local_time(remind_value)
+                # A reminder must be a timed date, not an all-day date.
+                if remind_value and (len(remind_value) == 10 or not due_value):
+                    valid_remind = False
+                invalid_item = invalid_item or (
+                    type(priority_value) is not int
+                    or priority_value not in (1, 2, 3)
+                    or not valid_flag(done_value)
+                    or not valid_due
+                    or not valid_remind
+                )
+            if invalid_item:
+                invalid += 1
+                invalid_uids.append(uid)
+                continue
+
+        if entity == "study" and not index.get((uid, "lesson")):
+            # Study progress is keyed by the canonical lesson UID. Never persist
+            # orphan progress that cannot be joined to a lesson on either client.
+            missing_targets += 1
+            missing_target_uids.append(f"study:{uid}")
+            continue
+
+        server = index.get((uid, entity))
+        if not server and entity in ("lesson", "scenario"):
+            # Curriculum sync may update existing rows only; creating a lesson
+            # requires valid chapter/level foreign-key relations.
+            missing_targets += 1
+            missing_target_uids.append(uid)
+            continue
+        decision = compare_lww(server, item) if server else "accept_client"
         if decision == "accept_client":
-            to_apply.append(item)
+            if entity in ("task", "note"):
+                workspace_to_apply.append(item)
+            elif entity == "study":
+                study_to_apply.append(item)
+            else:
+                curriculum_to_apply.append(item)
             accepted += 1
         elif decision == "conflict":
             conflicts += 1
@@ -278,28 +636,63 @@ def sync_push():
             kept += 1
         else:
             kept += 1
-    if to_apply:
-        db().sync_apply(to_apply)
+    apply_rejected = 0
+    if curriculum_to_apply:
+        applied_curriculum = d.sync_apply(curriculum_to_apply)
+        if applied_curriculum < len(curriculum_to_apply):
+            rejected_curriculum = len(curriculum_to_apply) - applied_curriculum
+            accepted -= rejected_curriculum
+            kept += rejected_curriculum
+            apply_rejected += rejected_curriculum
+    if workspace_to_apply:
+        applied_workspace = workspace_sync_apply(workspace_to_apply)
+        if applied_workspace < len(workspace_to_apply):
+            rejected_workspace = len(workspace_to_apply) - applied_workspace
+            accepted -= rejected_workspace
+            kept += rejected_workspace
+            apply_rejected += rejected_workspace
+    if study_to_apply:
+        applied_study = study_sync_apply(d.conn, study_to_apply)
+        if applied_study < len(study_to_apply):
+            rejected_study = len(study_to_apply) - applied_study
+            accepted -= rejected_study
+            kept += rejected_study
+            apply_rejected += rejected_study
     return jsonify({
         "accepted": accepted,
         "kept": kept,
         "conflicts": conflicts,
         "conflict_uids": conflict_uids,
+        "unsupported": unsupported,
+        "unsupported_uids": unsupported_uids,
+        "missing_targets": missing_targets,
+        "missing_target_uids": missing_target_uids,
+        "invalid": invalid,
+        "invalid_uids": invalid_uids,
+        "apply_rejected": apply_rejected,
         "server_time": utc_now(),
     })
 
 
 def main():
     host = BIND_HOST
+    if REMOTE_BIND and len(SYNC_TOKEN) < 24:
+        raise SystemExit("برای دسترسی LAN، NETENC_TOKEN تصادفی با حداقل ۲۴ نویسه تعیین کنید؛ در غیر این صورت NETENC_HOST را روی 127.0.0.1 نگه دارید.")
     port = int(os.environ.get("NETENC_PORT", "5050"))
     db()
     if register_study_routes:
         try:
-            register_study_routes(app, db)
+            register_study_routes(app, db, require_auth=require_token)
             _MODULE_STATUS["study"] = True
         except Exception as e:
             _MODULE_STATUS["study_error"] = str(e)
             print("study routes", e)
+    if os.name == "nt":
+        try:
+            from core.windows_reminders import start_windows_reminder_service
+            start_windows_reminder_service()
+        except Exception as e:
+            print("Windows reminder service skipped:", e)
     print(f"NetEnc listening on http://{host}:{port}")
     print("  sync: /api/sync/hello | manifest | pull | push")
     print(f"  token_required={bool(SYNC_TOKEN)} default_token={SYNC_TOKEN == DEFAULT_DEV_TOKEN}")

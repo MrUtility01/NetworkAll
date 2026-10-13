@@ -22,8 +22,16 @@ interface LessonDao {
     @Query("SELECT COUNT(*) FROM lessons WHERE deleted = 0 AND length(fullContent) > 80")
     suspend fun countFilled(): Int
 
-    @Query("SELECT * FROM lessons WHERE deleted = 0")
+    /** Rows with enough hierarchy metadata to appear in the chapter tree. */
+    @Query("SELECT COUNT(*) FROM lessons WHERE deleted = 0 AND chapterOrder > 0 AND length(trim(chapterTitle)) > 0 AND length(trim(subTitle)) > 0")
+    suspend fun countTreeReady(): Int
+
+    /** Include tombstones; otherwise deleting a lesson never propagates to the server. */
+    @Query("SELECT * FROM lessons")
     suspend fun allForPush(): List<LessonEntity>
+
+    @Query("SELECT uid, deleted FROM lessons")
+    suspend fun allDeletionStates(): List<LessonDeletionState>
 
     @Query(
         """SELECT * FROM lessons WHERE deleted = 0 AND (
@@ -52,4 +60,10 @@ interface LessonDao {
 data class ChapterRow(
     val chapterOrder: Int,
     val chapterTitle: String
+)
+
+
+data class LessonDeletionState(
+    val uid: String,
+    val deleted: Boolean
 )

@@ -1,0 +1,590 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "Deep practical Cisco switching engineering labbook v2",
+  "scope": {
+    "chapter_order": 13,
+    "chapter_title_fa": "سوئیچینگ سازمانی: لابراتوارهای مهندسی و عیب‌یابی",
+    "domain": "switching-and-routing",
+    "platform": "Cisco IOS-XE"
+  },
+  "instructional_contract": {
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lab_required": true,
+    "answer_key_separate_in_meta_json": true,
+    "must_verify_on_target_platform": true
+  },
+  "content_quality": {
+    "quality_status": "review_required",
+    "lab_execution": "not_yet_run",
+    "source_validation": "verify syntax and behavior against target model/version",
+    "no_template_text": true
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch13:switching-labbook-v2:mac",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "subchapter_order": 10,
+      "lesson_order": 1,
+      "topic": "switching-operations-engineering",
+      "domain": "switching-and-routing",
+      "level": "L0",
+      "title_fa": "[L0] یادگیری MAC و تحلیل جدول فورواردینگ",
+      "title_en": "[L0] MAC Learning and Forwarding Database",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "lab",
+        "troubleshooting",
+        "L0",
+        "mac"
+      ],
+      "summary": "یادگیری MAC و تحلیل جدول فورواردینگ: سوئیچ Ethernet معمولاً MAC مبدأ فریم ورودی را همراه VLAN و پورت دریافت‌کننده یاد می‌گیرد؛ برای ارسال، MAC مقصد را جست‌وجو می‌کند. مقصد ناشناخته معمولاً در همان VLAN و به‌جز پورت ورودی flood می‌شود. جدول MAC جدول forwardi",
+      "full_content": "# یادگیری MAC و تحلیل جدول فورواردینگ\n\n## نظریه و مدل ذهنی\nسوئیچ Ethernet معمولاً MAC مبدأ فریم ورودی را همراه VLAN و پورت دریافت‌کننده یاد می‌گیرد؛ برای ارسال، MAC مقصد را جست‌وجو می‌کند. مقصد ناشناخته معمولاً در همان VLAN و به‌جز پورت ورودی flood می‌شود. جدول MAC جدول forwarding لایهٔ دوم است و با ARP table یا routing table تفاوت دارد. جابه‌جایی میزبان، aging، loop و اتصال چندگانه می‌توانند باعث تغییر یا flapping شوند.\n\n## آزمایشگاه کنترل‌شده\nدو میزبان را در یک VLAN آزمایشگاهی قرار دهید. قبل از ترافیک، جدول MAC را ثبت کنید؛ سپس ping بفرستید و جدول را دوباره بررسی کنید. یک میزبان را به پورت دیگر منتقل کنید، ترافیک تولید کنید و تغییر MAC-to-port را ثبت کنید. این آزمایش را فقط در محیط مجاز انجام دهید.\n\n## راستی‌آزمایی\nاز `show mac address-table dynamic`، `show mac address-table vlan 10` و `show interfaces status` استفاده کنید. MAC باید در VLAN و پورت واقعی دیده شود. مدل و نسخهٔ IOS-XE را ثبت کنید؛ شکل خروجی ممکن است متفاوت باشد.\n\n## عیب‌یابی مرحله‌ای\nاگر MAC دیده نمی‌شود، link، VLAN، تولید ترافیک و STP را به ترتیب بررسی کنید. اگر MAC بین پورت‌ها نوسان دارد، loop، اتصال bridge ناخواسته یا dual-homing را بررسی کنید. پاک‌کردن جدول به‌تنهایی علت را رفع نمی‌کند.\n\n## ملاحظات پیشرفته\nدر گزارش رخداد، زمان، VLAN، MAC، پورت قبلی/جدید، لاگ‌ها و تغییرات اخیر را ثبت کنید. MAC churn بالا می‌تواند علامت جابه‌جایی گستردهٔ میزبان یا loop باشد.\n\n## معیار پذیرش\n- baseline و نتیجهٔ بعد از تغییر ثبت شود.\n- هر تغییر دارای مجوز، هدف و روش بازگشت باشد.\n- خروجی واقعی با انتظار طراحی مقایسه شود.\n- نسخه و مدل هدف مستند شود.\n- آزمایش فقط در محیط مجاز انجام شود.\n\n## گزارش لابراتوار\nتوپولوژی، نسخهٔ سیستم‌عامل، پورت‌ها، VLANها، فرمان‌ها، خروجی‌ها، زمان رخداد و نتیجهٔ آزمون را ثبت کنید. اگر نتیجه متفاوت است، فرضیه‌ها را جداگانه آزمایش کنید و موفقیت را بدون شواهد اعلام نکنید.",
+      "learning_objectives": [
+        "توضیح مفاهیم یادگیری MAC و تحلیل جدول فورواردینگ",
+        "اجرای آزمایش کنترل‌شده",
+        "تشخیص خرابی با شواهد",
+        "ثبت معیار پذیرش و rollback"
+      ],
+      "prerequisites": [
+        "محیط آزمایشگاهی مجاز",
+        "ثبت مدل و نسخهٔ دستگاه",
+        "توپولوژی و روش بازگشت"
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "mac-q1",
+            "prompt": "سوئیچ معمولاً کدام MAC را یاد می‌گیرد؟",
+            "options": [
+              "MAC مقصد",
+              "MAC مبدأ",
+              "DNS name",
+              "TCP port"
+            ],
+            "type": "mcq"
+          },
+          {
+            "id": "mac-q2",
+            "prompt": "مقصد ناشناخته معمولاً چه می‌شود؟",
+            "options": [
+              "Drop همیشه",
+              "Flood در همان VLAN به‌جز پورت ورودی",
+              "ارسال فقط به روتر",
+              "تبدیل به ARP"
+            ],
+            "type": "mcq"
+          },
+          {
+            "id": "mac-q3",
+            "prompt": "MAC flapping چه چیزی را مطرح می‌کند؟",
+            "options": [
+              "فقط DNS",
+              "تغییر مکرر پورت یادگیری؛ احتمال loop یا اتصال چندگانه",
+              "خرابی DHCP قطعی",
+              "کمبود IP"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "mac-q1",
+            "correct_index": 1,
+            "explain_fa": "یادگیری از MAC مبدأ فریم ورودی انجام می‌شود."
+          },
+          {
+            "id": "mac-q2",
+            "correct_index": 1,
+            "explain_fa": "Unknown unicast معمولاً در VLAN مربوط flood می‌شود."
+          },
+          {
+            "id": "mac-q3",
+            "correct_index": 1,
+            "explain_fa": "باید توپولوژی و مسیرهای لایهٔ دوم بررسی شود."
+          }
+        ]
+      },
+      "content_quality": {
+        "quality_status": "review_required",
+        "lab_execution": "designed_not_executed",
+        "version_validation": "verify_on_target_platform",
+        "template_text": false
+      }
+    },
+    {
+      "uid": "lesson:ch13:switching-labbook-v2:vlan",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "subchapter_order": 11,
+      "lesson_order": 2,
+      "topic": "switching-operations-engineering",
+      "domain": "switching-and-routing",
+      "level": "L1",
+      "title_fa": "[L1] طراحی VLAN و پورت Access",
+      "title_en": "[L1] VLAN Design and Access Ports",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "lab",
+        "troubleshooting",
+        "L1",
+        "vlan"
+      ],
+      "summary": "طراحی VLAN و پورت Access: VLAN دامنهٔ broadcast لایهٔ دوم را منطقی تقسیم می‌کند اما به‌تنهایی firewall یا مرز امنیتی کامل نیست. پورت access endpoint را به VLAN مشخص نسبت می‌دهد. طرح VLAN باید با subnet، gateway، DHCP scope، سیاست ارتباط و مستندات",
+      "full_content": "# طراحی VLAN و پورت Access\n\n## نظریه و مدل ذهنی\nVLAN دامنهٔ broadcast لایهٔ دوم را منطقی تقسیم می‌کند اما به‌تنهایی firewall یا مرز امنیتی کامل نیست. پورت access endpoint را به VLAN مشخص نسبت می‌دهد. طرح VLAN باید با subnet، gateway، DHCP scope، سیاست ارتباط و مستندات پورت سازگار باشد. ارتباط بین VLANها نیازمند routing و سیاست لایهٔ سوم است.\n\n## آزمایشگاه کنترل‌شده\nسه VLAN برای کاربران، voice و management تعریف کنید. پورت‌های access را طبق ماتریس پورت تنظیم کنید و ثبت کنید هر گروه باید به کدام سرویس دسترسی داشته باشد. سپس IP، gateway، DHCP و ارتباط بین VLANها را جداگانه آزمایش کنید.\n\n## راستی‌آزمایی\n`show vlan brief`، `show interfaces switchport` و `show ip interface brief` را بررسی کنید. دریافت IP به معنی دسترسی end-to-end نیست؛ تست مقصدهای مجاز و غیرمجاز را ثبت کنید.\n\n## عیب‌یابی مرحله‌ای\nاگر IP وجود دارد اما ارتباط برقرار نیست، link، VLAN، DHCP scope، subnet/gateway، routing و ACL را مرحله‌ای بررسی کنید. هنگام انتقال پورت، VLAN و سیاست قبلی را با نیاز endpoint تطبیق دهید.\n\n## ملاحظات پیشرفته\nبرای هر VLAN مالک، هدف، subnet، gateway، DHCP relay، zone امنیتی، سرویس‌های مجاز و چرخهٔ عمر تعریف کنید. VLANهای بسیار بزرگ دامنهٔ broadcast و خطا را افزایش می‌دهند؛ VLANهای بیش‌ازحد ریز نیز هزینهٔ عملیات را بالا می‌برند.\n\n## معیار پذیرش\n- baseline و نتیجهٔ بعد از تغییر ثبت شود.\n- هر تغییر دارای مجوز، هدف و روش بازگشت باشد.\n- خروجی واقعی با انتظار طراحی مقایسه شود.\n- نسخه و مدل هدف مستند شود.\n- آزمایش فقط در محیط مجاز انجام شود.\n\n## گزارش لابراتوار\nتوپولوژی، نسخهٔ سیستم‌عامل، پورت‌ها، VLANها، فرمان‌ها، خروجی‌ها، زمان رخداد و نتیجهٔ آزمون را ثبت کنید. اگر نتیجه متفاوت است، فرضیه‌ها را جداگانه آزمایش کنید و موفقیت را بدون شواهد اعلام نکنید.",
+      "learning_objectives": [
+        "توضیح مفاهیم طراحی VLAN و پورت Access",
+        "اجرای آزمایش کنترل‌شده",
+        "تشخیص خرابی با شواهد",
+        "ثبت معیار پذیرش و rollback"
+      ],
+      "prerequisites": [
+        "محیط آزمایشگاهی مجاز",
+        "ثبت مدل و نسخهٔ دستگاه",
+        "توپولوژی و روش بازگشت"
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "vlan-q1",
+            "prompt": "VLAN به‌تنهایی چه چیزی را تضمین نمی‌کند؟",
+            "options": [
+              "تقسیم broadcast domain",
+              "کنترل دسترسی کامل بین VLANها",
+              "عضویت منطقی پورت",
+              "شناسه VLAN"
+            ],
+            "type": "mcq"
+          },
+          {
+            "id": "vlan-q2",
+            "prompt": "پورت access معمولاً برای چیست؟",
+            "options": [
+              "اتصال endpoint در VLAN مشخص",
+              "حمل همه VLANها",
+              "مسیریابی BGP",
+              "تخصیص DNS"
+            ],
+            "type": "mcq"
+          },
+          {
+            "id": "vlan-q3",
+            "prompt": "پس از ساخت VLAN چه چیزی باید آزمایش شود؟",
+            "options": [
+              "فقط نام VLAN",
+              "IP، gateway، DHCP و سیاست ارتباط",
+              "فقط سرعت اینترنت",
+              "هیچ‌چیز"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "vlan-q1",
+            "correct_index": 1,
+            "explain_fa": "برای کنترل دسترسی بین VLANها باید سیاست لایهٔ سوم داشت."
+          },
+          {
+            "id": "vlan-q2",
+            "correct_index": 0,
+            "explain_fa": "پورت access ترافیک endpoint را به VLAN مشخص نسبت می‌دهد."
+          },
+          {
+            "id": "vlan-q3",
+            "correct_index": 1,
+            "explain_fa": "عضویت VLAN فقط یک جزء از ارتباط است."
+          }
+        ]
+      },
+      "content_quality": {
+        "quality_status": "review_required",
+        "lab_execution": "designed_not_executed",
+        "version_validation": "verify_on_target_platform",
+        "template_text": false
+      }
+    },
+    {
+      "uid": "lesson:ch13:switching-labbook-v2:trunk",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "subchapter_order": 12,
+      "lesson_order": 3,
+      "topic": "switching-operations-engineering",
+      "domain": "switching-and-routing",
+      "level": "L2",
+      "title_fa": "[L2] Trunk و 802.1Q",
+      "title_en": "[L2] 802.1Q Trunk Operations",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "lab",
+        "troubleshooting",
+        "L2",
+        "trunk"
+      ],
+      "summary": "Trunk و 802.1Q: Trunk چند VLAN را روی یک لینک حمل می‌کند. در 802.1Q شناسهٔ VLAN در tag قرار می‌گیرد؛ native VLAN و فریم‌های بدون tag به پلتفرم و تنظیمات وابسته‌اند. دو سر لینک باید mode، allowed VLAN list و native VLAN سازگار داشته باشن",
+      "full_content": "# Trunk و 802.1Q\n\n## نظریه و مدل ذهنی\nTrunk چند VLAN را روی یک لینک حمل می‌کند. در 802.1Q شناسهٔ VLAN در tag قرار می‌گیرد؛ native VLAN و فریم‌های بدون tag به پلتفرم و تنظیمات وابسته‌اند. دو سر لینک باید mode، allowed VLAN list و native VLAN سازگار داشته باشند. لینک فیزیکی up به معنی عبور همهٔ VLANها نیست.\n\n## آزمایشگاه کنترل‌شده\nدر محیط آزمایشی trunk بسازید و فقط VLANهای 10، 20 و 99 را مجاز کنید. VLAN آزمایشی دیگری بسازید و ثابت کنید از لینک عبور نمی‌کند. mismatch را فقط در لابراتوار کنترل‌شده ایجاد و بلافاصله اصلاح کنید.\n\n## راستی‌آزمایی\n`show interfaces trunk`، `show interfaces <port> switchport` و `show vlan brief` را بررسی کنید. VLAN باید موجود، مجاز و در وضعیت forwarding مناسب باشد.\n\n## عیب‌یابی مرحله‌ای\nاگر VLAN عبور نمی‌کند، وجود VLAN در هر دو سمت، allowed list، native VLAN، STP و mode پورت را بررسی کنید. هر بار فقط یک متغیر را تغییر دهید و خروجی قبل/بعد نگه دارید.\n\n## ملاحظات پیشرفته\nAllowed list حداقلی، native VLAN متناسب با استاندارد سازمان، کنترل مذاکره و غیرفعال‌سازی پورت‌های بلااستفاده را در baseline بیاورید. در شبکهٔ چندفروشنده defaultها را مستند کنید.\n\n## معیار پذیرش\n- baseline و نتیجهٔ بعد از تغییر ثبت شود.\n- هر تغییر دارای مجوز، هدف و روش بازگشت باشد.\n- خروجی واقعی با انتظار طراحی مقایسه شود.\n- نسخه و مدل هدف مستند شود.\n- آزمایش فقط در محیط مجاز انجام شود.\n\n## گزارش لابراتوار\nتوپولوژی، نسخهٔ سیستم‌عامل، پورت‌ها، VLANها، فرمان‌ها، خروجی‌ها، زمان رخداد و نتیجهٔ آزمون را ثبت کنید. اگر نتیجه متفاوت است، فرضیه‌ها را جداگانه آزمایش کنید و موفقیت را بدون شواهد اعلام نکنید.",
+      "learning_objectives": [
+        "توضیح مفاهیم Trunk و 802.1Q",
+        "اجرای آزمایش کنترل‌شده",
+        "تشخیص خرابی با شواهد",
+        "ثبت معیار پذیرش و rollback"
+      ],
+      "prerequisites": [
+        "محیط آزمایشگاهی مجاز",
+        "ثبت مدل و نسخهٔ دستگاه",
+        "توپولوژی و روش بازگشت"
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "trunk-q1",
+            "prompt": "هدف trunk چیست؟",
+            "options": [
+              "اتصال تک endpoint",
+              "حمل چند VLAN روی یک لینک",
+              "جایگزینی routing",
+              "اختصاص IP"
+            ],
+            "type": "mcq"
+          },
+          {
+            "id": "trunk-q2",
+            "prompt": "چرا allowed list محدود می‌شود؟",
+            "options": [
+              "برای افزایش broadcast",
+              "برای عبور فقط VLANهای موردنیاز",
+              "برای خاموشی STP",
+              "برای حذف MAC table"
+            ],
+            "type": "mcq"
+          },
+          {
+            "id": "trunk-q3",
+            "prompt": "اگر VLAN در database هست ولی عبور ندارد؟",
+            "options": [
+              "reboot فوری",
+              "بررسی allowed list، STP و دو سر لینک",
+              "تغییر DNS",
+              "حذف همه VLANها"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "trunk-q1",
+            "correct_index": 1,
+            "explain_fa": "Trunk چند VLAN را حمل می‌کند."
+          },
+          {
+            "id": "trunk-q2",
+            "correct_index": 1,
+            "explain_fa": "محدودسازی VLAN دامنهٔ خطا و سطح حمله را کاهش می‌دهد."
+          },
+          {
+            "id": "trunk-q3",
+            "correct_index": 1,
+            "explain_fa": "عبور VLAN به تنظیم trunk و وضعیت forwarding وابسته است."
+          }
+        ]
+      },
+      "content_quality": {
+        "quality_status": "review_required",
+        "lab_execution": "designed_not_executed",
+        "version_validation": "verify_on_target_platform",
+        "template_text": false
+      }
+    },
+    {
+      "uid": "lesson:ch13:switching-labbook-v2:stp",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "subchapter_order": 13,
+      "lesson_order": 4,
+      "topic": "switching-operations-engineering",
+      "domain": "switching-and-routing",
+      "level": "L2",
+      "title_fa": "[L2] STP و انتخاب Root Bridge",
+      "title_en": "[L2] STP Root Election and Loop Prevention",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "lab",
+        "troubleshooting",
+        "L2",
+        "stp"
+      ],
+      "summary": "STP و انتخاب Root Bridge: STP مسیرهای افزونهٔ لایهٔ دوم را بدون ایجاد loop منطقی کنترل می‌کند. Root بر اساس کمترین Bridge ID انتخاب می‌شود؛ priority و MAC در Bridge ID نقش دارند. loop می‌تواند broadcast storm، MAC flapping و قطعی گسترده بسازد. Ro",
+      "full_content": "# STP و انتخاب Root Bridge\n\n## نظریه و مدل ذهنی\nSTP مسیرهای افزونهٔ لایهٔ دوم را بدون ایجاد loop منطقی کنترل می‌کند. Root بر اساس کمترین Bridge ID انتخاب می‌شود؛ priority و MAC در Bridge ID نقش دارند. loop می‌تواند broadcast storm، MAC flapping و قطعی گسترده بسازد. Root باید آگاهانه در لایهٔ مناسب طراحی شود، نه اینکه به‌صورت تصادفی انتخاب شود.\n\n## آزمایشگاه کنترل‌شده\nدر توپولوژی سه سوئیچی با لینک افزونه، خروجی STP را ذخیره کنید، root اصلی و ثانویه را در لابراتوار تعیین کنید و role/state پورت‌ها را ثبت کنید. یک لینک را قطع کنید و زمان همگرایی و مسیر جایگزین را اندازه بگیرید.\n\n## راستی‌آزمایی\n`show spanning-tree` و `show spanning-tree vlan 10` را اجرا کنید. root باید همان دستگاه طراحی‌شده باشد و مسیرهای افزونه نقش مورد انتظار داشته باشند. نوع STP و نسخهٔ نرم‌افزار را ثبت کنید.\n\n## عیب‌یابی مرحله‌ای\nاگر root ناخواسته عوض شد، priority، سوئیچ تازه‌وصل‌شده، BPDUها و تغییرات اخیر را بررسی کنید. هنگام loop، uplinkها، bridge غیرمجاز و وضعیت STP را بررسی کنید؛ خاموش‌کردن STP راه‌حل امن نیست.\n\n## ملاحظات پیشرفته\nroot primary/secondary، دامنهٔ instanceها، نگاشت VLAN و مسیرهای لایهٔ سوم را مستند کنید. تغییر توپولوژی باید با baseline و زمان‌بندی رخداد مقایسه شود.\n\n## معیار پذیرش\n- baseline و نتیجهٔ بعد از تغییر ثبت شود.\n- هر تغییر دارای مجوز، هدف و روش بازگشت باشد.\n- خروجی واقعی با انتظار طراحی مقایسه شود.\n- نسخه و مدل هدف مستند شود.\n- آزمایش فقط در محیط مجاز انجام شود.\n\n## گزارش لابراتوار\nتوپولوژی، نسخهٔ سیستم‌عامل، پورت‌ها، VLANها، فرمان‌ها، خروجی‌ها، زمان رخداد و نتیجهٔ آزمون را ثبت کنید. اگر نتیجه متفاوت است، فرضیه‌ها را جداگانه آزمایش کنید و موفقیت را بدون شواهد اعلام نکنید.",
+      "learning_objectives": [
+        "توضیح مفاهیم STP و انتخاب Root Bridge",
+        "اجرای آزمایش کنترل‌شده",
+        "تشخیص خرابی با شواهد",
+        "ثبت معیار پذیرش و rollback"
+      ],
+      "prerequisites": [
+        "محیط آزمایشگاهی مجاز",
+        "ثبت مدل و نسخهٔ دستگاه",
+        "توپولوژی و روش بازگشت"
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "stp-q1",
+            "prompt": "Root Bridge بر چه اساسی انتخاب می‌شود؟",
+            "options": [
+              "بالاترین IP",
+              "کمترین Bridge ID",
+              "بیشترین سرعت همیشه",
+              "اولین دستگاه روشن"
+            ],
+            "type": "mcq"
+          },
+          {
+            "id": "stp-q2",
+            "prompt": "STP کدام خطر را کاهش می‌دهد؟",
+            "options": [
+              "loop لایهٔ دوم و broadcast storm",
+              "خطای DNS",
+              "تمام حملات IP",
+              "کمبود DHCP"
+            ],
+            "type": "mcq"
+          },
+          {
+            "id": "stp-q3",
+            "prompt": "پس از قطع لینک افزونه چه ثبت می‌شود؟",
+            "options": [
+              "فقط نام دستگاه",
+              "زمان همگرایی، مسیر جدید و لاگ",
+              "رمز عبور",
+              "فقط سرعت اینترنت"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "stp-q1",
+            "correct_index": 1,
+            "explain_fa": "کمترین Bridge ID برندهٔ انتخاب root است."
+          },
+          {
+            "id": "stp-q2",
+            "correct_index": 0,
+            "explain_fa": "STP مسیرهای افزونه را بدون loop منطقی می‌کند."
+          },
+          {
+            "id": "stp-q3",
+            "correct_index": 1,
+            "explain_fa": "این داده‌ها نشان می‌دهند همگرایی مطابق انتظار بوده یا خیر."
+          }
+        ]
+      },
+      "content_quality": {
+        "quality_status": "review_required",
+        "lab_execution": "designed_not_executed",
+        "version_validation": "verify_on_target_platform",
+        "template_text": false
+      }
+    },
+    {
+      "uid": "lesson:ch13:switching-labbook-v2:lacp",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "subchapter_order": 14,
+      "lesson_order": 5,
+      "topic": "switching-operations-engineering",
+      "domain": "switching-and-routing",
+      "level": "L3",
+      "title_fa": "[L3] EtherChannel و LACP",
+      "title_en": "[L3] EtherChannel and LACP",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "lab",
+        "troubleshooting",
+        "L3",
+        "lacp"
+      ],
+      "summary": "EtherChannel و LACP: EtherChannel چند لینک فیزیکی را به یک لینک منطقی تبدیل می‌کند. LACP عضویت و سازگاری تجمیع را مذاکره می‌کند. پارامترهای access/trunk، VLANها، native VLAN، سرعت و mode باید سازگار باشند. الگوریتم hash جریان‌ها را توزیع می‌",
+      "full_content": "# EtherChannel و LACP\n\n## نظریه و مدل ذهنی\nEtherChannel چند لینک فیزیکی را به یک لینک منطقی تبدیل می‌کند. LACP عضویت و سازگاری تجمیع را مذاکره می‌کند. پارامترهای access/trunk، VLANها، native VLAN، سرعت و mode باید سازگار باشند. الگوریتم hash جریان‌ها را توزیع می‌کند؛ یک جریان TCP منفرد الزاماً مجموع ظرفیت همه اعضا را نمی‌گیرد.\n\n## آزمایشگاه کنترل‌شده\nدو لینک بین دو سوئیچ آزمایشی تجمیع کنید. قبل از اتصال، پیکربندی دو سر را مقایسه کنید؛ پس از فعال‌سازی وضعیت Port-channel و اعضا را ثبت کنید. سپس یک عضو را قطع کنید و اثر روی ارتباط و توزیع جریان‌ها را اندازه بگیرید.\n\n## راستی‌آزمایی\n`show etherchannel summary`، `show lacp neighbor` و `show interfaces port-channel` را بررسی کنید. همهٔ اعضای مورد انتظار باید bundled باشند و پیکربندی VLAN روی interface منطقی با طراحی سازگار باشد.\n\n## عیب‌یابی مرحله‌ای\nاگر عضو suspended یا individual است، mode، VLAN/native، سرعت/duplex و LACP سمت مقابل را بررسی کنید. تغییر یک‌طرفه ممکن است ترافیک را مختل کند؛ هر تغییر باید با برنامهٔ بازگشت باشد.\n\n## ملاحظات پیشرفته\nظرفیت را با الگوی flowها و hash بسنجید، نه فقط جمع سرعت لینک‌ها. سلامت اعضا، خطاهای فیزیکی، توزیع بار و رفتار هنگام خرابی عضو باید مانیتور شود.\n\n## معیار پذیرش\n- baseline و نتیجهٔ بعد از تغییر ثبت شود.\n- هر تغییر دارای مجوز، هدف و روش بازگشت باشد.\n- خروجی واقعی با انتظار طراحی مقایسه شود.\n- نسخه و مدل هدف مستند شود.\n- آزمایش فقط در محیط مجاز انجام شود.\n\n## گزارش لابراتوار\nتوپولوژی، نسخهٔ سیستم‌عامل، پورت‌ها، VLANها، فرمان‌ها، خروجی‌ها، زمان رخداد و نتیجهٔ آزمون را ثبت کنید. اگر نتیجه متفاوت است، فرضیه‌ها را جداگانه آزمایش کنید و موفقیت را بدون شواهد اعلام نکنید.",
+      "learning_objectives": [
+        "توضیح مفاهیم EtherChannel و LACP",
+        "اجرای آزمایش کنترل‌شده",
+        "تشخیص خرابی با شواهد",
+        "ثبت معیار پذیرش و rollback"
+      ],
+      "prerequisites": [
+        "محیط آزمایشگاهی مجاز",
+        "ثبت مدل و نسخهٔ دستگاه",
+        "توپولوژی و روش بازگشت"
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "lacp-q1",
+            "prompt": "LACP چه کاری می‌کند؟",
+            "options": [
+              "تخصیص IP",
+              "مذاکره و مدیریت اعضای تجمیع",
+              "جایگزینی STP همه شبکه",
+              "رمزنگاری"
+            ],
+            "type": "mcq"
+          },
+          {
+            "id": "lacp-q2",
+            "prompt": "آیا یک TCP flow تمام ظرفیت اعضا را می‌گیرد؟",
+            "options": [
+              "همیشه",
+              "خیر؛ hash می‌تواند آن را روی یک عضو نگه دارد",
+              "فقط در VLAN 1",
+              "فقط با DNS"
+            ],
+            "type": "mcq"
+          },
+          {
+            "id": "lacp-q3",
+            "prompt": "عضو suspended چه چیزی را مطرح می‌کند؟",
+            "options": [
+              "حتماً خرابی اینترنت",
+              "ناسازگاری تنظیمات یا مذاکره LACP",
+              "خرابی DHCP",
+              "کمبود دیسک"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "lacp-q1",
+            "correct_index": 1,
+            "explain_fa": "LACP عضویت و سازگاری لینک‌ها را مدیریت می‌کند."
+          },
+          {
+            "id": "lacp-q2",
+            "correct_index": 1,
+            "explain_fa": "ظرفیت تجمیع با throughput یک جریان یکسان نیست."
+          },
+          {
+            "id": "lacp-q3",
+            "correct_index": 1,
+            "explain_fa": "باید سازگاری دو سر و وضعیت LACP بررسی شود."
+          }
+        ]
+      },
+      "content_quality": {
+        "quality_status": "review_required",
+        "lab_execution": "designed_not_executed",
+        "version_validation": "verify_on_target_platform",
+        "template_text": false
+      }
+    },
+    {
+      "uid": "lesson:ch13:switching-labbook-v2:security-poe",
+      "entity": "lesson",
+      "chapter_order": 13,
+      "subchapter_order": 15,
+      "lesson_order": 6,
+      "topic": "switching-operations-engineering",
+      "domain": "switching-and-routing",
+      "level": "L4",
+      "title_fa": "[L4] امنیت لایهٔ دوم و ظرفیت PoE",
+      "title_en": "[L4] Layer 2 Security and PoE Capacity",
+      "tags": [
+        "Cisco IOS-XE",
+        "switching",
+        "lab",
+        "troubleshooting",
+        "L4",
+        "security-poe"
+      ],
+      "summary": "امنیت لایهٔ دوم و ظرفیت PoE: Port Security تعداد/هویت MACهای مجاز را محدود می‌کند؛ DHCP Snooping پیام‌های DHCP را بر اساس trusted/untrusted کنترل می‌کند و DAI در صورت پشتیبانی از bindingهای معتبر استفاده می‌کند. این کنترل‌ها جایگزین 802.1X یا firewa",
+      "full_content": "# امنیت لایهٔ دوم و ظرفیت PoE\n\n## نظریه و مدل ذهنی\nPort Security تعداد/هویت MACهای مجاز را محدود می‌کند؛ DHCP Snooping پیام‌های DHCP را بر اساس trusted/untrusted کنترل می‌کند و DAI در صورت پشتیبانی از bindingهای معتبر استفاده می‌کند. این کنترل‌ها جایگزین 802.1X یا firewall نیستند. در PoE نیز توان کل شاسی، توان هر پورت، کلاس endpoint، رشد، boot هم‌زمان و خرابی منبع تغذیه باید محاسبه شود؛ تعداد پورت آزاد به معنی توان آزاد نیست.\n\n## آزمایشگاه کنترل‌شده\nدر لابراتوار محدودیت MAC را روی یک پورت endpoint تنظیم کنید و رخداد violation را مشاهده کنید. در سناریوی ایزوله trusted/untrusted برای DHCP را آزمایش کنید. جداگانه فهرست endpointهای PoE، توان معمول/اوج و حاشیه رشد تهیه و با بودجهٔ واقعی سوئیچ مقایسه کنید.\n\n## راستی‌آزمایی\nوضعیت port-security، شمارندهٔ violation، DHCP snooping binding و فرمان‌های platform-specific توان PoE را ثبت کنید. مدل سوئیچ، منبع تغذیه و نسخه را مستند کنید؛ trusted فقط باید به مسیرهای مورداعتماد داده شود.\n\n## عیب‌یابی مرحله‌ای\nقطع کاربر پس از violation نیازمند ثبت رخداد، بررسی تعداد MAC، تلفن IP، docking و hypervisor است. برای PoE، کابل، کلاس endpoint، تخصیص توان، منبع تغذیه و رویدادهای restart را بررسی کنید. خاموش‌کردن عمومی کنترل امنیتی یا جابه‌جایی تصادفی endpoint راه‌حل ریشه‌ای نیست.\n\n## ملاحظات پیشرفته\nبرای هر کنترل، مالک، هدف، اعلان، استثنا و rollback تعریف کنید. بودجهٔ PoE را برای اوج مصرف، رشد و حالت single-PSU بسنجید. معیار پذیرش باید هم رفتار امنیتی و هم بازیابی سرویس را پوشش دهد.\n\n## معیار پذیرش\n- baseline و نتیجهٔ بعد از تغییر ثبت شود.\n- هر تغییر دارای مجوز، هدف و روش بازگشت باشد.\n- خروجی واقعی با انتظار طراحی مقایسه شود.\n- نسخه و مدل هدف مستند شود.\n- آزمایش فقط در محیط مجاز انجام شود.\n\n## گزارش لابراتوار\nتوپولوژی، نسخهٔ سیستم‌عامل، پورت‌ها، VLANها، فرمان‌ها، خروجی‌ها، زمان رخداد و نتیجهٔ آزمون را ثبت کنید. اگر نتیجه متفاوت است، فرضیه‌ها را جداگانه آزمایش کنید و موفقیت را بدون شواهد اعلام نکنید.",
+      "learning_objectives": [
+        "توضیح مفاهیم امنیت لایهٔ دوم و ظرفیت PoE",
+        "اجرای آزمایش کنترل‌شده",
+        "تشخیص خرابی با شواهد",
+        "ثبت معیار پذیرش و rollback"
+      ],
+      "prerequisites": [
+        "محیط آزمایشگاهی مجاز",
+        "ثبت مدل و نسخهٔ دستگاه",
+        "توپولوژی و روش بازگشت"
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "security-poe-q1",
+            "prompt": "DHCP Snooping از چه چیزی کمک می‌کند جلوگیری شود؟",
+            "options": [
+              "DHCP غیرمجاز از پورت untrusted",
+              "همه حملات اینترنتی",
+              "خرابی DNS",
+              "loop STP"
+            ],
+            "type": "mcq"
+          },
+          {
+            "id": "security-poe-q2",
+            "prompt": "چرا همه پورت‌ها trusted نمی‌شوند؟",
+            "options": [
+              "چون سرعت را کم می‌کند",
+              "چون مرز اعتماد از بین می‌رود",
+              "چون VLAN حذف می‌شود",
+              "چون LACP خاموش می‌شود"
+            ],
+            "type": "mcq"
+          },
+          {
+            "id": "security-poe-q3",
+            "prompt": "چرا تعداد پورت آزاد برای PoE کافی نیست؟",
+            "options": [
+              "هر پورت IP متفاوت دارد",
+              "بودجهٔ توان کل و هر پورت محدود است",
+              "VLAN یک پورت دارد",
+              "DNS توان مصرف می‌کند"
+            ],
+            "type": "mcq"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "security-poe-q1",
+            "correct_index": 0,
+            "explain_fa": "این کنترل پیام‌های DHCP را بر اساس اعتماد پورت محدود می‌کند."
+          },
+          {
+            "id": "security-poe-q2",
+            "correct_index": 1,
+            "explain_fa": "اعتماد عمومی، اثر حفاظتی کنترل را از بین می‌برد."
+          },
+          {
+            "id": "security-poe-q3",
+            "correct_index": 1,
+            "explain_fa": "توان PoE محدودیت مستقل از تعداد فیزیکی پورت‌هاست."
+          }
+        ]
+      },
+      "content_quality": {
+        "quality_status": "review_required",
+        "lab_execution": "designed_not_executed",
+        "version_validation": "verify_on_target_platform",
+        "template_text": false
+      }
+    }
+  ]
+}

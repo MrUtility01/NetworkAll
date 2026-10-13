@@ -1,0 +1,361 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "Progressive L0-L4 curriculum for AAA, IEEE 802.1X, EAP, RADIUS, TACACS+, NAC, authorization, accounting, fallback and security operations.",
+  "scope": {
+    "chapter_order": 27,
+    "subchapter_order": 4,
+    "subchapter_title_fa": "مهندسی AAA، 802.1X، RADIUS و NAC",
+    "levels": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
+    "lesson_count": 5,
+    "topics": [
+      {
+        "id": "aaa-8021x-nac",
+        "title_fa": "AAA، 802.1X و NAC",
+        "title_en": "AAA, 802.1X and NAC Engineering"
+      }
+    ]
+  },
+  "instructional_contract": {
+    "level_floors": {
+      "L0": 600,
+      "L1": 800,
+      "L2": 1200,
+      "L3": 1600,
+      "L4": 2200
+    },
+    "volume_rule": "Add distinct competencies, vendor/version cases, policy failures and measurable tests; no duplicate/template-based record inflation.",
+    "lab_status": "designed_not_executed",
+    "separate_answer_key": true
+  },
+  "compatibility": {
+    "radius_legacy": "RADIUS/UDP legacy behavior differs from TLS-protected profiles; RFC 9765 RADIUS/1.1 is Experimental and only usable where both endpoints support it.",
+    "tacacs_tls": "RFC 9887 defines TACACS+ over TLS 1.3; verify client/server support and certificate handling."
+  },
+  "content_quality": {
+    "status": "review_required",
+    "reason": "Lessons and assessment pairs authored; 802.1X/EAP, RADIUS/TACACS+ transport, failover and enforcement labs remain unexecuted."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch27:aaa-nac-engineering:l0",
+      "entity": "lesson",
+      "chapter_order": 27,
+      "subchapter_order": 4,
+      "lesson_order": 1,
+      "topic": "aaa-8021x-nac",
+      "domain": "identity-and-network-access",
+      "level": "L0",
+      "title_fa": "[L0] AAA، 802.1X و NAC — آشنایی",
+      "title_en": "[L0] AAA, 802.1X and NAC Engineering — آشنایی",
+      "tags": [
+        "AAA",
+        "802.1X",
+        "EAP",
+        "RADIUS",
+        "TACACS+",
+        "NAC",
+        "L0"
+      ],
+      "summary": "Authentication، Authorization و Accounting را از هم جدا کند؛ نقش Supplicant، Authenticator و RADIUS Server را بشناسد؛ هدف NAC و کنترل دسترسی پورت را توضیح دهد",
+      "full_content": "# AAA، 802.1X و NAC — آشنایی\n\n## AAA چیست؟\nAAA سه وظیفهٔ مستقل اما مرتبط است. Authentication بررسی می‌کند هویت ادعاشده چیست و آیا مدرک ارائه‌شده معتبر است. Authorization تصمیم می‌گیرد آن هویت چه اجازه‌هایی دارد؛ مثلاً فقط دسترسی اینترنت، دسترسی به subnet کاری یا مجوز اجرای یک فرمان مدیریتی. Accounting رویدادهای دسترسی و استفاده را ثبت می‌کند تا بتوان رخدادها را پیگیری و پاسخ‌گویی را انجام داد. موفقیت Authentication به معنی مجوز کامل نیست. کاربر می‌تواند درست احراز هویت شود ولی به یک سرویس خاص اجازه نداشته باشد.\n\n## NAC چیست؟\nNetwork Access Control روش‌ها و سامانه‌هایی را شامل می‌شود که تصمیم می‌گیرند یک دستگاه یا هویت تحت چه شرایطی به شبکه دسترسی پیدا کند. داده‌های مورد استفاده می‌تواند هویت کاربر، گواهی دستگاه، عضویت گروه، نوع endpoint، وضعیت posture یا محل اتصال باشد. نتیجه ممکن است VLAN اختصاصی، نقش/ACL، دسترسی محدود مهمان یا quarantine باشد. NAC به‌تنهایی امنیت endpoint را تضمین نمی‌کند؛ به identity provider، policy، شبکهٔ اجراکننده و فرآیند اصلاح نیاز دارد.\n\n## نقش‌های 802.1X\nدر IEEE 802.1X، Supplicant طرفی است که می‌خواهد به شبکه دسترسی بگیرد؛ Authenticator معمولاً سوئیچ یا access point است که نقطهٔ ورود را کنترل می‌کند؛ Authentication Server معمولاً سرویسی مانند RADIUS است که اعتبارنامه و policy را ارزیابی می‌کند. ترافیک EAP بین کلاینت و پورت شبکه معمولاً با EAPOL حمل می‌شود. Authenticator پیام‌ها را به سرور احراز هویت relay می‌کند. این نقش‌ها را با دستگاه فیزیکی اشتباه نکن؛ یک appliance ممکن است چند نقش را پیاده‌سازی کند.\n\n## جریان سادهٔ دسترسی\nوقتی لپ‌تاپ به یک پورت 802.1X وصل می‌شود، ابتدا تبادل احراز هویت رخ می‌دهد. سرور براساس روش EAP و credentials تصمیم می‌گیرد. اگر موفق باشد، policy نتیجه را به Authenticator می‌رساند و پورت controlled به سرویس‌های مجاز دسترسی می‌دهد. اگر رد شود، دسترسی عادی ممکن است مسدود یا به شبکهٔ remediation هدایت شود. دقیقاً چه چیزی باز می‌ماند، به design و پیکربندی platform بستگی دارد؛ فرض نکن همهٔ دستگاه‌ها در حالت failure یکسان رفتار می‌کنند.\n\n## RADIUS و TACACS+\nRADIUS به‌طور گسترده برای دسترسی کاربران به شبکه، Wi-Fi سازمانی و VPN به‌کار می‌رود. TACACS+ بیشتر برای مدیریت دستگاه‌های شبکه و کنترل مجوز فرمان‌ها استفاده می‌شود. هر دو به AAA مرتبط‌اند اما کاربرد و پروتکل یکسان ندارند. RADIUS می‌تواند authentication/authorization/accounting شبکه را حمل کند؛ TACACS+ تفکیک‌پذیری مناسبی برای command authorization و accounting مدیریتی ارائه می‌دهد. انتخاب باید براساس موردکاربرد، سازگاری و امنیت انتقال باشد.\n\n## تمرین\nروی کاغذ سه سناریو بنویس: کارمند با گواهی معتبر به Wi-Fi وصل می‌شود؛ حساب کاربری معتبر است ولی به VLAN دوربین‌ها مجوز ندارد؛ مدیر سوئیچ وارد CLI می‌شود و باید فقط فرمان‌های مجاز را اجرا کند. برای هر کدام مشخص کن چه بخش Authentication، Authorization و Accounting است و کدام سیستم باید تصمیم بگیرد.\n\n## واژه‌نامه\nSupplicant کلاینت درخواست‌کنندهٔ دسترسی است؛ Authenticator نقطهٔ اعمال 802.1X؛ RADIUS سرور AAA متداول برای network access؛ EAP چارچوب روش‌های احراز هویت؛ NAC سامانه/سیاست کنترل دسترسی شبکه؛ MAB روش fallback مبتنی بر MAC در برخی محیط‌هاست که از هویت قوی‌تر ضعیف‌تر است.\n\n## تفاوت «هویت معتبر» با «دسترسی مجاز»\nاگر کارمند با گواهی معتبر به شبکه وصل شود، سامانه فقط هویت مورد تأیید را شناخته است. سیاست Authorization هنوز باید تعیین کند آن هویت به کدام منابع دسترسی دارد. به همین علت، پذیرش موفق EAP را با آزمون دسترسی به سرویس مجاز و ممنوع تکمیل کن. هر دو نوع تست مهم‌اند: اگر فقط تست مثبت باشد، ممکن است policy بیش از حد باز باشد.\n\n## مثال کوتاه از سه تصمیم\nکاربر password صحیح وارد کرده و RADIUS هویت او را قبول می‌کند؛ این Authentication است. RADIUS او را به نقش کارمند با دسترسی محدود به برنامه‌های کاری نسبت می‌دهد؛ این Authorization است. ثبت زمان شروع نشست و قطع اتصال برای بررسی رخداد؛ این Accounting است. اگر یکی از این وظایف را با دیگری اشتباه بگیری، ممکن است کاربر را از دسترسی مجاز محروم کنی یا دسترسی بیش از اندازه بدهی.",
+      "commands": "Use read-only authentication logs, RADIUS server test tools and lab-only supplicants. Vendor-specific show/debug commands, attributes, ports and TLS profiles must be verified against exact product versions.",
+      "examples": "Isolated test VLAN with one managed switch/AP, controlled supplicant, RADIUS server and test identity store. Never test rogue authentication, fail-open or MAB bypass on the production access network.",
+      "notes": "source=tools/packs/security_identity/aaa_8021x_nac_engineering_ch27_pack.json; status=review_required; labs=designed_not_executed; infographic=dot1x_flow.svg",
+      "learning_objectives": [
+        "Authentication، Authorization و Accounting را از هم جدا کند",
+        "نقش Supplicant، Authenticator و RADIUS Server را بشناسد",
+        "هدف NAC و کنترل دسترسی پورت را توضیح دهد"
+      ],
+      "prerequisites": [],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"aaa-l0-1\",\"prompt\":\"AAA مخفف چه سه وظیفه‌ای است؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"aaa-l0-2\",\"prompt\":\"802.1X چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"aaa-l0-3\",\"prompt\":\"Supplicant، Authenticator و RADIUS Server چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"aaa-l0-4\",\"prompt\":\"Access-Accept چه چیزی را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L0\"},{\"id\":\"aaa-l0-5\",\"prompt\":\"چرا MAB هویت قوی محسوب نمی‌شود؟\",\"type\":\"short_answer\",\"level\":\"L0\"}],\"answer_key\":[{\"id\":\"aaa-l0-1\",\"answer\":\"Authentication، Authorization و Accounting.\",\"rationale\":\"درستی هویت، مجوز و ثبت استفاده سه وظیفهٔ متفاوت‌اند.\"},{\"id\":\"aaa-l0-2\",\"answer\":\"کنترل دسترسی port-based و استفاده از EAP برای احراز هویت/ایجاد دسترسی کنترل‌شده.\",\"rationale\":\"Authenticator می‌تواند switch یا AP باشد.\"},{\"id\":\"aaa-l0-3\",\"answer\":\"کلاینت درخواست‌کننده، نقطهٔ اعمال دسترسی و سرور تصمیم‌گیرنده/AAA.\",\"rationale\":\"نقش منطقی را با chassis فیزیکی اشتباه نکن.\"},{\"id\":\"aaa-l0-4\",\"answer\":\"اجرای موفق policy روی پورت و دسترسی end-to-end را تضمین نمی‌کند.\",\"rationale\":\"VLAN, ACL, DHCP, routing و service باید جدا بررسی شوند.\"},{\"id\":\"aaa-l0-5\",\"answer\":\"MAC address قابل جعل است و به‌تنهایی اثبات مالکیت دستگاه نیست.\",\"rationale\":\"MAB باید به نقش محدود و monitoring گره بخورد.\"}]},\"related_infographics\":[\"dot1x_flow.svg\",\"pki_certificate_chain.svg\",\"vlan_trunk.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "IEEE 802.1X-2020 — Port-Based Network Access Control",
+          "url": "https://standards.ieee.org/ieee/802.1X/7345/"
+        },
+        {
+          "title": "RFC 3748 — Extensible Authentication Protocol (EAP)",
+          "url": "https://www.rfc-editor.org/rfc/rfc3748.html"
+        },
+        {
+          "title": "RFC 9765 — RADIUS/1.1 (Experimental)",
+          "url": "https://www.rfc-editor.org/rfc/rfc9765.html"
+        },
+        {
+          "title": "RFC 9887 — TACACS+ over TLS 1.3",
+          "url": "https://www.rfc-editor.org/rfc/rfc9887.html"
+        },
+        {
+          "title": "RFC 9190 — EAP-TLS 1.3, updated by RFC 9965",
+          "url": "https://www.rfc-editor.org/rfc/rfc9190.html"
+        },
+        {
+          "title": "RFC 9965 — eap.arpa and EAP provisioning",
+          "url": "https://www.rfc-editor.org/rfc/rfc9965.html"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی AAA، 802.1X، RADIUS و NAC"
+    },
+    {
+      "uid": "lesson:ch27:aaa-nac-engineering:l1",
+      "entity": "lesson",
+      "chapter_order": 27,
+      "subchapter_order": 4,
+      "lesson_order": 2,
+      "topic": "aaa-8021x-nac",
+      "domain": "identity-and-network-access",
+      "level": "L1",
+      "title_fa": "[L1] AAA، 802.1X و NAC — مقدماتی",
+      "title_en": "[L1] AAA, 802.1X and NAC Engineering — مقدماتی",
+      "tags": [
+        "AAA",
+        "802.1X",
+        "EAP",
+        "RADIUS",
+        "TACACS+",
+        "NAC",
+        "L1"
+      ],
+      "summary": "جریان EAPOL و RADIUS را مرحله‌ای رسم کند؛ policy و نقش VLAN/ACL در نتیجه را بفهمد؛ خطای احراز هویت را از خطای authorization تفکیک کند",
+      "full_content": "# AAA، 802.1X و NAC — مقدماتی\n\n## جریان پیام و تصمیم\n802.1X کنترل دسترسی را نزدیک پورت پیاده می‌کند. Supplicant با Authenticator در تبادل EAP/EAPOL شرکت می‌کند؛ Authenticator پیام مناسب را از طریق پروتکل AAA به RADIUS server می‌رساند. سرور روش EAP را ارزیابی و Accept، Reject یا در بعضی شرایط Challenge می‌دهد. پس از موفقیت، ممکن است policyهایی مانند VLAN assignment یا ACL به پورت برگردند. در نتیجه سه نقطهٔ failure جدا وجود دارد: supplicant/client، مسیر Authenticator تا RADIUS، و policy/identity backend سرور.\n\nRADIUS می‌تواند Access-Request، Access-Accept، Access-Reject و Access-Challenge و پیام‌های Accounting مرتبط داشته باشد. دیدن Access-Accept هنوز ثابت نمی‌کند policy در پورت نهایی اجرا شده یا کلاینت به سرویس دسترسی دارد؛ VLAN، ACL، DHCP، DNS و route باید جدا بررسی شوند.\n\n## انتخاب روش EAP\nروش EAP تعیین می‌کند credentials چگونه ارائه و سرور/کلاینت چگونه authenticate شوند. EAP-TLS از گواهی و TLS استفاده می‌کند و در صورت طراحی درست امکان احراز هویت متقابل دارد. روش‌های tunneled یا password-based trade-off متفاوتی دارند و به اعتبارسنجی certificate سرور، تنظیم supplicant و policy وابسته‌اند. استفاده از روش ضعیف‌تر برای سازگاری باید risk decision مستند داشته باشد؛ صرف اینکه دستگاه «وصل شد» اثبات امنیت روش نیست. در rollout سازمانی، profile، trust anchors، certificate enrollment، renewal و recovery باید از قبل طراحی شوند.\n\n## Authorization و dynamic policy\nپس از Authentication، گروه/نقش کاربر یا دستگاه باید به policy شبکه ترجمه شود. این policy می‌تواند VLAN، downloadable ACL، role-based access، session timeout یا محدودیت‌های دیگر باشد، مشروط به پشتیبانی vendor. اگر سرور Accept می‌دهد ولی دستگاه به VLAN اشتباه می‌رود، باید policy attributes، mapping گروه، switch/AP version و اجرای آن روی Authenticator بررسی شوند. اگر اتصال موفق است اما سرویس داخلی در دسترس نیست، نتیجهٔ AAA را از routing/firewall/service diagnosis جدا کن.\n\n## RADIUS در برابر TACACS+\nRADIUS معمولاً برای Network Access Server، Wi-Fi، VPN و NAC استفاده می‌شود. TACACS+ برای مدیریت دستگاه‌های زیرساخت شبکه و امکان کنترل granular command authorization رایج است. RADIUS attributeها برای network session policy مفیدند؛ TACACS+ می‌تواند authorization درخواست‌های مدیریتی را در سطح فرمان مدل کند. جزئیات رمزنگاری و transport مهم‌اند؛ نباید shared secret یا obfuscation قدیمی را با رمزنگاری سراسری و مقاوم یکسان دانست. RFC 9887 پروفایل TACACS+ روی TLS 1.3 را تعریف می‌کند؛ پشتیبانی عملی وابسته به client/server نسخهٔ واقعی است.\n\n## Accounting و audit\nAccounting می‌تواند start/interim/stop event، شناسهٔ session، زمان و حجم یا ویژگی‌های مرتبط را ثبت کند. این داده برای بررسی «چه کسی، چه وقت، از کجا و با چه policy متصل شد» کاربرد دارد. اگر clock دستگاه‌ها هم‌زمان نباشد، correlation رخدادها اشتباه می‌شود. شناسه‌های کاربر، MAC و محل اتصال دادهٔ حساس هستند؛ دسترسی و retention باید مطابق policy باشد و گزارش آموزشی از دادهٔ واقعی کاربران استفاده نکند.\n\n## لابراتوار امن\nدر شبیه‌ساز یا VLAN اختصاصی، یک Supplicant، switch/AP آزمایشی و RADIUS server تعریف کن. حالت credentials صحیح و اشتباه را اجرا و نتیجهٔ Accept/Reject را ثبت کن. سپس به‌صورت کنترل‌شده policy VLAN نامتناسب بده تا ببینی Authentication موفق می‌تواند با Authorization نادرست همراه شود. هرگز مسیر مدیریت یا Wi-Fi عملیاتی را بدون change plan با policyهای آزمایشی تغییر نده. در پایان تنظیم و test users را پاک کن.\n\n## چک‌لیست عیب‌یابی\nاگر هیچ EAP تبادلی دیده نمی‌شود، supplicant، port mode و EAPOL handling را بررسی کن. اگر EAP شروع می‌شود اما RADIUS response نیست، IP reachability، shared configuration، transport، firewall و server logs را بررسی کن. اگر Reject برمی‌گردد، credentials، CA trust، certificate expiry، time و EAP policy مطرح‌اند. اگر Accept است ولی دسترسی شبکه نیست، VLAN/ACL اعمال‌شده، DHCP، IP addressing و route را بررسی کن. این شاخه‌ها را یکی نکن.\n\n## ملاحظات عیب‌یابی زمان و گواهی\nدر EAP-TLS، زمان نادرست روی supplicant یا RADIUS server می‌تواند certificate معتبر را به‌صورت expired/not-yet-valid جلوه دهد. trust anchor اشتباه، intermediate missing، EKU نامتناسب و revocation status نیز ممکن است باعث Reject شوند. قبل از re-enrollment گروهی، روی یک endpoint آزمایشی خطای دقیق، clock، certificate chain و سرور RADIUS را ثبت کن. اگر Authentication قبول شد، مرحلهٔ policy enforcement را با VLAN/role و سرویس واقعی جدا بررسی کن.\n\n## آزمون مثبت و منفی\nبرای policy NAC، فقط ورود موفق کافی نیست. یک identity مجاز باید به سرویس تعیین‌شده دسترسی داشته باشد و به یک سرویس ممنوع‌شده دسترسی نداشته باشد. در تست منفی، timeout به‌تنهایی اثبات deny نیست؛ ممکن است مقصد خاموش یا مسیر خراب باشد. policy decision و enforcement counters/log را همراه با flow test مشاهده کن. هر test باید source، destination، protocol/port، role، expected outcome و نتیجهٔ ثبت‌شده داشته باشد.\n\n## تشخیص یک رخداد نمونه\nاگر Wi-Fi سازمانی نام کاربری و password را می‌پذیرد اما کاربر به شبکهٔ کاری دسترسی نمی‌گیرد، نتیجهٔ ورود را با role و VLAN واقعی مقایسه کن. بررسی کن آیا RADIUS Accept داده، آیا AP role درست را اعمال کرده، آیا کلاینت DHCP lease مناسب دریافت کرده و آیا policy لایهٔ سه دسترسی لازم را می‌دهد یا نه. این تست‌ها مانع از آن می‌شوند که تغییر credential را برای مشکلی در DHCP یا ACL انجام دهی.",
+      "commands": "Use read-only authentication logs, RADIUS server test tools and lab-only supplicants. Vendor-specific show/debug commands, attributes, ports and TLS profiles must be verified against exact product versions.",
+      "examples": "Isolated test VLAN with one managed switch/AP, controlled supplicant, RADIUS server and test identity store. Never test rogue authentication, fail-open or MAB bypass on the production access network.",
+      "notes": "source=tools/packs/security_identity/aaa_8021x_nac_engineering_ch27_pack.json; status=review_required; labs=designed_not_executed; infographic=dot1x_flow.svg",
+      "learning_objectives": [
+        "جریان EAPOL و RADIUS را مرحله‌ای رسم کند",
+        "policy و نقش VLAN/ACL در نتیجه را بفهمد",
+        "خطای احراز هویت را از خطای authorization تفکیک کند"
+      ],
+      "prerequisites": [
+        "Ethernet/VLAN basics, identity and certificates, basic client/server networking"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"aaa-l1-1\",\"prompt\":\"AAA مخفف چه سه وظیفه‌ای است؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"aaa-l1-2\",\"prompt\":\"802.1X چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"aaa-l1-3\",\"prompt\":\"Supplicant، Authenticator و RADIUS Server چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"aaa-l1-4\",\"prompt\":\"Access-Accept چه چیزی را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"aaa-l1-5\",\"prompt\":\"چرا MAB هویت قوی محسوب نمی‌شود؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"aaa-l1-6\",\"prompt\":\"EAP-TLS به چه چیزهایی وابسته است؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"aaa-l1-7\",\"prompt\":\"چه چیزی بین RADIUS و TACACS+ یک تفاوت کاربردی مهم است؟\",\"type\":\"short_answer\",\"level\":\"L1\"},{\"id\":\"aaa-l1-8\",\"prompt\":\"چرا Fail-open و Fail-closed باید بر اساس نقش دستگاه انتخاب شوند؟\",\"type\":\"short_answer\",\"level\":\"L1\"}],\"answer_key\":[{\"id\":\"aaa-l1-1\",\"answer\":\"Authentication، Authorization و Accounting.\",\"rationale\":\"درستی هویت، مجوز و ثبت استفاده سه وظیفهٔ متفاوت‌اند.\"},{\"id\":\"aaa-l1-2\",\"answer\":\"کنترل دسترسی port-based و استفاده از EAP برای احراز هویت/ایجاد دسترسی کنترل‌شده.\",\"rationale\":\"Authenticator می‌تواند switch یا AP باشد.\"},{\"id\":\"aaa-l1-3\",\"answer\":\"کلاینت درخواست‌کننده، نقطهٔ اعمال دسترسی و سرور تصمیم‌گیرنده/AAA.\",\"rationale\":\"نقش منطقی را با chassis فیزیکی اشتباه نکن.\"},{\"id\":\"aaa-l1-4\",\"answer\":\"اجرای موفق policy روی پورت و دسترسی end-to-end را تضمین نمی‌کند.\",\"rationale\":\"VLAN, ACL, DHCP, routing و service باید جدا بررسی شوند.\"},{\"id\":\"aaa-l1-5\",\"answer\":\"MAC address قابل جعل است و به‌تنهایی اثبات مالکیت دستگاه نیست.\",\"rationale\":\"MAB باید به نقش محدود و monitoring گره بخورد.\"},{\"id\":\"aaa-l1-6\",\"answer\":\"Certificate trust، private-key protection، identity policy، validity و revocation.\",\"rationale\":\"گواهی درست باید در هر دو سمت مناسب و قابل‌اعتبارسنجی باشد.\"},{\"id\":\"aaa-l1-7\",\"answer\":\"RADIUS رایج برای network access؛ TACACS+ برای device administration و command authorization.\",\"rationale\":\"جزئیات و transport باید با نسخه واقعی هماهنگ شود.\"},{\"id\":\"aaa-l1-8\",\"answer\":\"ریسک قطعی خدمت و ریسک دسترسی غیرمجاز بین endpointها متفاوت است.\",\"rationale\":\"استثنا باید محدود، مستند و زمان‌دار باشد.\"}]},\"related_infographics\":[\"dot1x_flow.svg\",\"pki_certificate_chain.svg\",\"vlan_trunk.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "IEEE 802.1X-2020 — Port-Based Network Access Control",
+          "url": "https://standards.ieee.org/ieee/802.1X/7345/"
+        },
+        {
+          "title": "RFC 3748 — Extensible Authentication Protocol (EAP)",
+          "url": "https://www.rfc-editor.org/rfc/rfc3748.html"
+        },
+        {
+          "title": "RFC 9765 — RADIUS/1.1 (Experimental)",
+          "url": "https://www.rfc-editor.org/rfc/rfc9765.html"
+        },
+        {
+          "title": "RFC 9887 — TACACS+ over TLS 1.3",
+          "url": "https://www.rfc-editor.org/rfc/rfc9887.html"
+        },
+        {
+          "title": "RFC 9190 — EAP-TLS 1.3, updated by RFC 9965",
+          "url": "https://www.rfc-editor.org/rfc/rfc9190.html"
+        },
+        {
+          "title": "RFC 9965 — eap.arpa and EAP provisioning",
+          "url": "https://www.rfc-editor.org/rfc/rfc9965.html"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی AAA، 802.1X، RADIUS و NAC"
+    },
+    {
+      "uid": "lesson:ch27:aaa-nac-engineering:l2",
+      "entity": "lesson",
+      "chapter_order": 27,
+      "subchapter_order": 4,
+      "lesson_order": 3,
+      "topic": "aaa-8021x-nac",
+      "domain": "identity-and-network-access",
+      "level": "L2",
+      "title_fa": "[L2] AAA، 802.1X و NAC — ادمین",
+      "title_en": "[L2] AAA, 802.1X and NAC Engineering — ادمین",
+      "tags": [
+        "AAA",
+        "802.1X",
+        "EAP",
+        "RADIUS",
+        "TACACS+",
+        "NAC",
+        "L2"
+      ],
+      "summary": "802.1X و RADIUS را در محیط آزمایشی مستقر کند؛ policy failure، timeout و fallback را جدا کند؛ دسترسی مدیریتی و accounting را امن نگه دارد",
+      "full_content": "# AAA، 802.1X و NAC — ادمین\n\n## معماری اجرایی\nیک استقرار متداول شامل supplicant روی Windows/macOS/Linux یا دستگاه موبایل، Authenticator در switch/AP، یک یا چند RADIUS server و identity store مانند directory است. مسیر RADIUS باید از نظر source IP، secret یا TLS trust، timeout، retry، NAS identifier، realm و policy دقیق باشد. اگر چند RADIUS server تعریف شده‌اند، ترتیب و failover behavior باید با نسخهٔ واقعی دستگاه آزموده شود. وجود دو سرور که هر دو processشان running است، دسترس‌پذیری end-to-end را ثابت نمی‌کند.\n\n## Certificate-based EAP\nدر EAP-TLS، کلاینت و سرور باید certificateها و trust chainهای مورد انتظار را بررسی کنند. برای گواهی کلاینت، identity mapping، SAN/subject policy، EKU، expiry و revocation مهم‌اند. برای گواهی سرور، Supplicant باید نام و CA صحیح را verify کند؛ قبول‌کردن هر certificate برای راحتی onboarding، امکان credential harvesting از طریق سرور جعلی را افزایش می‌دهد. Auto-enrollment، MDM/GPO یا سامانهٔ provisioning باید renewal و recovery را پوشش دهد، وگرنه انقضای گروهی certificateها می‌تواند دسترسی سازمان را قطع کند.\n\n## Fallback و MAB\nMAC Authentication Bypass در برخی تجهیزات legacy یا IoT استفاده می‌شود، اما MAC address secret یا هویت قوی نیست؛ جعل آن ممکن است. اگر fallback از 802.1X به MAB فعال است، باید مشخص باشد چه endpointهایی اجازه دارند از این مسیر استفاده کنند، به کدام VLAN/ACL می‌روند، چه مدت مجازند و چطور شناسایی/monitor می‌شوند. Fail-open و fail-closed باید risk-based و با testهای outage بررسی شوند. برای مثال، دوربین فاقد supplicant ممکن است در VLAN محدود و فقط به NVR/DNS/NTP مجوز بگیرد؛ نباید از MAB به آن دسترسی گستردهٔ کاربر داده شود.\n\n## Guest، BYOD و posture\nNAC ممکن است guest portal، BYOD onboarding، device profiling، posture assessment و remediation فراهم کند. Profiling براساس DHCP fingerprints، OUI، SNMP، agent یا telemetry همیشه قطعی نیست؛ داده‌هایش می‌توانند تقلید یا تغییر کنند. Posture compliance مانند patch level یا EDR health نیز فقط با agent، API و freshness مناسب قابل‌اتکا است. Policy باید محدودیت داده، حریم خصوصی، حداقل جمع‌آوری و مسیر اعتراض/بازیابی کاربر را در نظر بگیرد.\n\n## CoA و تغییر policy نشست\nدر بعضی شبکه‌ها RADIUS Change of Authorization یا Disconnect می‌تواند policy جلسهٔ موجود را تغییر دهد. پشتیبانی و attributeها وابسته به Authenticator/RADIUS نسخه‌اند. اگر CoA به NAS درست نمی‌رسد، source validation، shared secret یا TLS transport، session identifiers، UDP path، firewall و compatibility را بررسی کن. عملیات disconnect روی production می‌تواند کاربران را قطع کند؛ تست فقط با session مصنوعی در محیط ایزوله انجام شود و rollback/re-authentication plan داشته باشد.\n\n## امنیت انتقال RADIUS/TACACS+\nLegacy RADIUS/UDP معمولاً امنیت لایهٔ انتقال یک TLS tunnel کامل را فراهم نمی‌کند؛ shared secret و حفاظت‌های پروتکل قدیمی را با confidentiality کامل اشتباه نگیر. RFC 9765 یک پروفایل Experimental به نام RADIUS/1.1 برای RADIUS over TLS/DTLS و حذف سازوکارهای MD5 خاص تعریف می‌کند؛ این به معنی پشتیبانی خودکار همهٔ محصولات نیست. TACACS+ over TLS 1.3 طبق RFC 9887 پروفایل Standards Track دارد. هر migration باید قابلیت client/server، certificate trust، port، failover و log behavior را بررسی کند.\n\n## لابراتوارهای ادمین\nA — wrong password/credential: Reject و server logs را ثبت کن.\nB — server certificate wrong/expired: رفتار supplicant را بدون خاموش‌کردن validation مشاهده کن.\nC — RADIUS timeout: در محیط ایزوله مسیر server را محدود کن و timeout/failover را اندازه بگیر.\nD — VLAN policy mismatch: Accept را با access واقعی مقایسه کن.\nE — MAB fallback: endpoint legacy را به role محدود هدایت کن و آزمون منفی برای سرویس ممنوع انجام بده.\nهر آزمایش با device model/OS version، policy، expected result، observed logs، cleanup و rollback مستند شود.\n\n## Runbook و telemetry\nبرای هر event، user/device identity، NAS/AP، port/BSSID، session ID، EAP method، RADIUS server، policy decision، VLAN/role و timestamps را به هم مرتبط کن. اگر رمز یا certificate private key در log ظاهر می‌شود، logging خطرناک است و باید متوقف/اصلاح شود. Accounting logs و identity metadata را محدود و محافظت کن. علت قطعی را فقط وقتی ثبت کن که evidence نشان دهد شکست در credential، trust, transport, authorization یا enforcement کدام است.\n\n## Acceptance matrix ادمین\nبرای هر گروه endpoint، روش EAP مجاز، certificate requirement، fallback policy، role/VLAN، permitted services، denied services، session timeout و accounting requirement را جدولی کن. تست مثبت باید سرویسی را که مجاز است ثابت کند؛ تست منفی باید policy block را از مقصد خاموش یا route خراب تفکیک کند. در حالت RADIUS outage نیز رفتار fail-open/closed باید برای هر گروه طبق design ثبت شود، نه اینکه از رفتار یک دستگاه به کل شبکه تعمیم داده شود.\n\n## سناریوی تغییر سیاست با کمترین ریسک\nفرض کن گروه دوربین‌ها باید فقط به NVR، DNS و NTP دسترسی داشته باشد. سیاست باید role مربوط را به VLAN/ACL مناسب نگاشت کند، مسیر به این سرویس‌ها را باز بگذارد و بقیهٔ مقصدهای داخلی را محدود کند. تغییر را روی endpoint آزمایشی اجرا کن؛ بعد از Access-Accept، VLAN واقعی، IP، gateway، DNS و flow مجاز و ممنوع را بررسی کن. اگر Authentication موفق اما ارتباط NVR قطع است، این مسئله الزاماً مشکل credential نیست؛ ممکن است ACL، DHCP، route یا service allowlist اشتباه باشد.\n\n## ثبت نسخه و سازگاری\nدر deployment واقعی، مدل switch/AP، firmware، supplicant OS، RADIUS product/release و EAP method را ثبت کن. قابلیت dynamic VLAN، downloadable ACL، CoA و fallback بین vendorها و نسخه‌ها متفاوت است. نام attribute مشترک تضمین نمی‌کند دو محصول آن را به‌صورت یکسان اعمال کنند. قبل از rollout گسترده، یک گروه canary نماینده و ماتریس پشتیبانی تهیه کن.\n\n## جدول تصمیم برای rollout\nپیش از فعال‌کردن 802.1X، endpointها را به کلاس‌های قابل مدیریت تقسیم کن: workstation دارای supplicant، تلفن/دوربین legacy، printer، مهمان و شبکهٔ مدیریت. برای هر کلاس روش احراز هویت، fallback، role، allowed flows و owner تعریف کن. اگر یک دستگاه 802.1X را پشتیبانی نمی‌کند، آن را به‌صورت دائمی در VLAN گستردهٔ مشترک قرار نده؛ role محدود و exception زمان‌دار داشته باش. Rollout را با canary گروه کوچک آغاز و در هر مرحله success, reject, timeout و رخدادهای پشتیبانی را بررسی کن.\n\n## نکتهٔ logging\nلاگ باید علت تصمیم را به اندازه‌ای نشان دهد که troubleshooting ممکن باشد، اما نباید shared secret، password یا private key را افشا کند. در رخداد، RADIUS server و Authenticator باید با session ID و timestamp correlate شوند. اگر usernameها یا محل فیزیکی پورت در گزارش عمومی قرار می‌گیرند، باید حذف یا ناشناس‌سازی شوند.\n\n## رفتار پس از قطع سرور\nدر لابراتوار، مسیر RADIUS را برای زمان محدود از دسترس خارج کن و رفتار supplicant/Authenticator را مشاهده کن. برای هر device class ثبت کن آیا نشست فعلی باقی می‌ماند، کلاینت تازه پذیرفته می‌شود یا access به نقش fallback می‌رود. سپس server را بازگردان و reauthentication/session recovery را بسنج. صرف دیدن server Running پس از restore تضمین نمی‌کند همهٔ NASها session سالم دارند.\n\n## کنترل نهایی ادمین\nقبل از پایان incident، یک client دیگر از همان role را آزمایش کن تا مشکل اختصاصی یک endpoint را با خرابی policy عمومی اشتباه نگیری. تفاوت config intended و session state عملیاتی را ثبت کن. نتیجه باید شامل سرویس‌های مجاز، سرویس‌های ممنوع، accounting event و زمان بازگشت باشد.\n\nدر گزارش تحویل، نام دقیق policy و نسخهٔ پلتفرم را ثبت کن تا همکار بعدی بداند خروجی متعلق به کدام implementation بوده است. Configuration snippet بدون مدل دستگاه و نسخه ممکن است گمراه‌کننده باشد.\n\nبرای هر تغییر، زمان اجرا، اپراتور، config diff و نتیجهٔ آزمون ثبت شود. اگر شواهد کافی موجود نیست، مورد را pending review نگه‌دار.",
+      "commands": "Use read-only authentication logs, RADIUS server test tools and lab-only supplicants. Vendor-specific show/debug commands, attributes, ports and TLS profiles must be verified against exact product versions.",
+      "examples": "Isolated test VLAN with one managed switch/AP, controlled supplicant, RADIUS server and test identity store. Never test rogue authentication, fail-open or MAB bypass on the production access network.",
+      "notes": "source=tools/packs/security_identity/aaa_8021x_nac_engineering_ch27_pack.json; status=review_required; labs=designed_not_executed; infographic=dot1x_flow.svg",
+      "learning_objectives": [
+        "802.1X و RADIUS را در محیط آزمایشی مستقر کند",
+        "policy failure، timeout و fallback را جدا کند",
+        "دسترسی مدیریتی و accounting را امن نگه دارد"
+      ],
+      "prerequisites": [
+        "Ethernet/VLAN basics, identity and certificates, basic client/server networking"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"aaa-l2-1\",\"prompt\":\"AAA مخفف چه سه وظیفه‌ای است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"aaa-l2-2\",\"prompt\":\"802.1X چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"aaa-l2-3\",\"prompt\":\"Supplicant، Authenticator و RADIUS Server چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"aaa-l2-4\",\"prompt\":\"Access-Accept چه چیزی را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"aaa-l2-5\",\"prompt\":\"چرا MAB هویت قوی محسوب نمی‌شود؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"aaa-l2-6\",\"prompt\":\"EAP-TLS به چه چیزهایی وابسته است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"aaa-l2-7\",\"prompt\":\"چه چیزی بین RADIUS و TACACS+ یک تفاوت کاربردی مهم است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"aaa-l2-8\",\"prompt\":\"چرا Fail-open و Fail-closed باید بر اساس نقش دستگاه انتخاب شوند؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"aaa-l2-9\",\"prompt\":\"چرا Accounting نیازمند clock/session correlation است؟\",\"type\":\"short_answer\",\"level\":\"L2\"},{\"id\":\"aaa-l2-10\",\"prompt\":\"RADIUS/1.1 طبق RFC 9765 چیست؟\",\"type\":\"short_answer\",\"level\":\"L2\"}],\"answer_key\":[{\"id\":\"aaa-l2-1\",\"answer\":\"Authentication، Authorization و Accounting.\",\"rationale\":\"درستی هویت، مجوز و ثبت استفاده سه وظیفهٔ متفاوت‌اند.\"},{\"id\":\"aaa-l2-2\",\"answer\":\"کنترل دسترسی port-based و استفاده از EAP برای احراز هویت/ایجاد دسترسی کنترل‌شده.\",\"rationale\":\"Authenticator می‌تواند switch یا AP باشد.\"},{\"id\":\"aaa-l2-3\",\"answer\":\"کلاینت درخواست‌کننده، نقطهٔ اعمال دسترسی و سرور تصمیم‌گیرنده/AAA.\",\"rationale\":\"نقش منطقی را با chassis فیزیکی اشتباه نکن.\"},{\"id\":\"aaa-l2-4\",\"answer\":\"اجرای موفق policy روی پورت و دسترسی end-to-end را تضمین نمی‌کند.\",\"rationale\":\"VLAN, ACL, DHCP, routing و service باید جدا بررسی شوند.\"},{\"id\":\"aaa-l2-5\",\"answer\":\"MAC address قابل جعل است و به‌تنهایی اثبات مالکیت دستگاه نیست.\",\"rationale\":\"MAB باید به نقش محدود و monitoring گره بخورد.\"},{\"id\":\"aaa-l2-6\",\"answer\":\"Certificate trust، private-key protection، identity policy، validity و revocation.\",\"rationale\":\"گواهی درست باید در هر دو سمت مناسب و قابل‌اعتبارسنجی باشد.\"},{\"id\":\"aaa-l2-7\",\"answer\":\"RADIUS رایج برای network access؛ TACACS+ برای device administration و command authorization.\",\"rationale\":\"جزئیات و transport باید با نسخه واقعی هماهنگ شود.\"},{\"id\":\"aaa-l2-8\",\"answer\":\"ریسک قطعی خدمت و ریسک دسترسی غیرمجاز بین endpointها متفاوت است.\",\"rationale\":\"استثنا باید محدود، مستند و زمان‌دار باشد.\"},{\"id\":\"aaa-l2-9\",\"answer\":\"برای نسبت‌دادن start/interim/stop و policy به session صحیح.\",\"rationale\":\"clock skew و session ID ناسازگار timeline را خراب می‌کند.\"},{\"id\":\"aaa-l2-10\",\"answer\":\"یک پروفایل Experimental برای RADIUS over TLS/DTLS با ALPN و حذف برخی MD5-based mechanisms.\",\"rationale\":\"پشتیبانی محصول و سازگاری endpointها باید تأیید شود.\"}]},\"related_infographics\":[\"dot1x_flow.svg\",\"pki_certificate_chain.svg\",\"vlan_trunk.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "IEEE 802.1X-2020 — Port-Based Network Access Control",
+          "url": "https://standards.ieee.org/ieee/802.1X/7345/"
+        },
+        {
+          "title": "RFC 3748 — Extensible Authentication Protocol (EAP)",
+          "url": "https://www.rfc-editor.org/rfc/rfc3748.html"
+        },
+        {
+          "title": "RFC 9765 — RADIUS/1.1 (Experimental)",
+          "url": "https://www.rfc-editor.org/rfc/rfc9765.html"
+        },
+        {
+          "title": "RFC 9887 — TACACS+ over TLS 1.3",
+          "url": "https://www.rfc-editor.org/rfc/rfc9887.html"
+        },
+        {
+          "title": "RFC 9190 — EAP-TLS 1.3, updated by RFC 9965",
+          "url": "https://www.rfc-editor.org/rfc/rfc9190.html"
+        },
+        {
+          "title": "RFC 9965 — eap.arpa and EAP provisioning",
+          "url": "https://www.rfc-editor.org/rfc/rfc9965.html"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی AAA، 802.1X، RADIUS و NAC"
+    },
+    {
+      "uid": "lesson:ch27:aaa-nac-engineering:l3",
+      "entity": "lesson",
+      "chapter_order": 27,
+      "subchapter_order": 4,
+      "lesson_order": 4,
+      "topic": "aaa-8021x-nac",
+      "domain": "identity-and-network-access",
+      "level": "L3",
+      "title_fa": "[L3] AAA، 802.1X و NAC — مهندس",
+      "title_en": "[L3] AAA, 802.1X and NAC Engineering — مهندس",
+      "tags": [
+        "AAA",
+        "802.1X",
+        "EAP",
+        "RADIUS",
+        "TACACS+",
+        "NAC",
+        "L3"
+      ],
+      "summary": "معماری identity-driven access را چندلایه طراحی کند؛ داده‌های EAP/RADIUS و policy enforcement را correlation کند؛ failure mode و bypassهای NAC را کنترل کند",
+      "full_content": "# AAA، 802.1X و NAC — مهندس\n\n## NAC در معماری zero-trust\nNetwork Access Control نقطه‌ای برای اجرای policy است اما به‌تنهایی معماری zero-trust کامل نیست. تصمیم دسترسی باید از identity، نوع دستگاه، trust state، محل اتصال، هدف دسترسی و سیگنال‌های context ساخته شود. policy engine و policy enforcement point باید جدا شناخته شوند: RADIUS/NAC decision می‌دهد؛ switch/AP/firewall/VPN policy را اجرا می‌کند. بین این دو، mapping role به VLAN/ACL/dACL و رفتار هنگام تغییر posture باید قابل مشاهده و testable باشد. VLAN صرفاً یکی از ابزارهای enforcement است و نقش identity یا service authorization را جایگزین نمی‌کند.\n\n## EAP state و trace\nEAP methods متفاوت‌اند؛ EAP-TLS، PEAP/TTLS و روش‌های دیگر دارای trust/credential model متفاوت‌اند. در تحلیل trace باید مشخص باشد هویت outer و inner چه معنایی دارند، server certificate چه زمانی verify شده، EAP success چه نتیجه‌ای داده و accounting session کدام شناسه را دارد. از روی username دیده‌شده در log به‌تنهایی نتیجه نگیر که همان identity نهایی policy بوده است. Privacy identity protection و credential exposure باید بخشی از design باشد.\n\n## RADIUS attributes و enforcement\nRADIUS attributes ممکن است role، VLAN ID/name، ACL reference، session timeout، idle timeout یا اطلاعات accounting را حمل کنند؛ دقیقاً چه attribute پذیرفته و اجرا شود وابسته به vendor/firmware است. خروجی Access-Accept فقط تصمیم سرور است. پس از آن، باید پورت Authenticator واقعاً به role/VLAN صحیح برسد، DHCP در subnet آن کار کند و policy مسیر، سرویس‌های لازم را اجازه دهد. اگر switch attribute را نادیده بگیرد، VLAN mismatch ممکن است با authentication ظاهراً موفق همراه شود.\n\n## Authentication، Authorization و Accounting جدا\nدر رخداد NAC، این سه را به‌صورت جدا تست کن. Authentication: آیا credentials/certificate طبق trust policy معتبر بودند؟ Authorization: چه role/policy به هویت اختصاص یافت و چرا؟ Accounting: آیا session start/interim/stop ثبت شد؟ Accounting از نظر billing و incident response مفید است، اما می‌تواند دادهٔ شخصی و اطلاعات محل اتصال داشته باشد. نگهداری log باید با minimum necessary و زمان retention متناسب با نیاز انجام شود. Clock synchronization و session-ID correlation حیاتی‌اند.\n\n## High availability و fallback\nدو RADIUS server زمانی HA واقعی می‌دهند که data/config/policy سازگار، شبکه و certificate trust قابل‌دسترس، timeout/retry متناسب و failover behavior آزموده باشد. اگر directory backend مشترک fail شود، دو RADIUS server ممکن است هر دو آسیب ببینند. در disconnect کردن تمام server paths، authenticator ممکن است بسته به policy fail-open/closed یا local fallback انجام دهد. هر حالت خطر متفاوت دارد: fail-open می‌تواند access غیرمجاز بدهد؛ fail-closed ممکن است سرویس ضروری را قطع کند. policy per device class/criticality را مستند کن و failover را با testهای مثبت/منفی بسنج.\n\n## MAB، device profiling و محدودیت هویت\nMAB بر اساس MAC دسترسی می‌دهد؛ MAC قابل جعل است و نباید برای endpoint پرریسک نقش هویت قوی بازی کند. اگر legacy devices لازم‌اند، isolate them: VLAN/role جدا، مقصد/پورت محدود، DHCP/DNS/NTP minimum, monitoring و owner مشخص. Profiling با OUI/DHCP fingerprint ممکن است confidence محدود داشته باشد. Policy نباید صرفاً به یک fingerprint متکی باشد؛ اگر endpoint ناشناخته است، یک محدودیت امن و فرایند exception لازم است. اعتماد به profiler باید با false positive/negative و data freshness اندازه‌گیری شود.\n\n## RADIUS security profile و TACACS+ admin access\nLegacy RADIUS shared secret و obfuscationهای پروتکل قدیمی را نباید معادل محرمانگی کامل TLS دانست. RFC 9765 پروفایل Experimental RADIUS/1.1 روی RADIUS/TLS/DTLS را معرفی می‌کند؛ compatibility و operational port/profile باید از محصول واقعی بررسی شود. RFC 9887 برای TACACS+ over TLS 1.3 مشخصات Standards Track ارائه می‌دهد و obfuscation ضعیف قدیمی را کنار می‌گذارد. اگر مدیریت CLI از TACACS+ استفاده می‌کند، local break-glass account کنترل‌شده و logging امن لازم است؛ در outage AAA باید روش بازیابی بدون افشای credential مشخص باشد.\n\n## Labهای failure و bypass\n1. RADIUS server در دسترس نیست: رفتار timeout و fallback را ثبت کن.\n2. Certificate کلاینت revoke/expire شده: policy مورد انتظار را بررسی کن.\n3. Accept همراه VLAN assignment نادرست: enforcement point و DHCP را جدا بررسی کن.\n4. MAB با MAC تقلیدی در VLAN آزمایشگاه: نشان بده چرا identity قوی محسوب نمی‌شود.\n5. CoA session نامعتبر: رفتار server و NAS را در session مصنوعی آزمایش کن.\n6. Accounting stop گم‌شده: correlation و cleanup session را بررسی کن.\nهر case باید یک failure در هر اجرا، baseline، expected behavior، capture/log، cleanup، rollback و test recovery داشته باشد.\n\n## RCA برای رخداد دسترسی\nRoot cause باید با evidence نشان دهد failure در supplicant، EAP method/trust، مسیر RADIUS، identity backend، policy decision یا enforcement رخ داده است. برای مثال، Reject در RADIUS علت و شاهد متفاوتی از Access-Accept با VLAN اشتباه است. اگر user در role صحیح قرار می‌گیرد ولی برنامه‌اش دسترسی ندارد، policy firewall/service یا route هم باید بررسی شود. تغییر سراسری EAP method، shared secret یا fail-open بدون محدودهٔ تغییر و recovery plan قابل قبول نیست.\n\n## معیار مهندسی\nDesign باید identity source، EAP methods، certificate lifecycle، policy mapping، enforcement points، fallback, availability, accounting, privacy, recovery, compatibility matrix و acceptance tests را پوشش دهد. نتیجهٔ آزمایش‌نشده را verified اعلام نکن.\n\n## Correlation بین NAS و RADIUS\nNAS identity، source IP، shared-secret/TLS trust، session ID و timestamp باید میان Authenticator و RADIUS server تطبیق‌پذیر باشند. اگر Access-Request می‌رسد ولی response به NAS برنمی‌گردد، پاسخ server را با مسیر برگشت و ACL مقایسه کن. اگر server Accept می‌دهد اما port unauthorized می‌ماند، state machine خود Authenticator، attribute parsing و policy enforcement را بررسی کن. در rolloutهای بزرگ، یک successful test روی یک مدل switch/AP برای تمام firmwareها proof نیست؛ ماتریس سازگاری و canary group لازم است.\n\n## RADIUS timeout و علت‌یابی مبتنی بر پیام\nاگر هیچ پاسخ RADIUS مشاهده نمی‌شود، ابتدا بررسی کن آیا Authenticator درخواست را با NAS identity و source IP مورد انتظار ارسال می‌کند، آیا RADIUS server آن را دریافت می‌کند و آیا response به NAS بازمی‌گردد. اگر Access-Reject آمده، باید reason log، EAP method، certificate validation و identity policy بررسی شود؛ این حالت با timeout متفاوت است. اگر Access-Accept آمده اما data plane هنوز blocked است، وضعیت controlled port، assigned VLAN/ACL و DHCP را بررسی کن. در هر مورد یک flow/session مشخص انتخاب کن تا پیام و packetهای مرتبط با هم قاطی نشوند.\n\n## Controlهای EAP-TLS\nدر EAP-TLS، trust anchor مورد انتظار باید در supplicant پیکربندی شده باشد و نام/هویت سرور بررسی شود. Client certificate نیز باید از CA مجاز صادر، در بازهٔ اعتبار، دارای کاربرد مناسب و به هویت درست map شود. Revocation availability و رفتار هنگام inaccessible بودن CRL/OCSP باید با policy سازمان هماهنگ باشد. Renewal گروهی اگر از قبل آزمایش نشده باشد می‌تواند همهٔ دستگاه‌ها را هم‌زمان قطع کند؛ آزمایش با گواهی در حال انقضا و rollout canary لازم است.\n\n## CoA و lifecycle نشست\nChange of Authorization باید به session مشخص اشاره کند و فقط همان session هدف را تغییر دهد. در عملیات production، CoA می‌تواند اتصال کاربر را تغییر یا terminate کند؛ بنابراین آزمون اولیه باید روی session مصنوعی انجام شود و دسترسی اضطراری حفظ گردد. اگر CoA response نشان می‌دهد پیام پذیرفته شده اما نقش تغییر نکرده، session identifiers، attributeهای پشتیبانی‌شده و state ماشین Authenticator را بررسی کن. Accounting و policy logs باید زمان تغییر role را با session تطبیق دهند.\n\n## سناریوی عیب‌یابی مرحله‌ای\nتصور کن سوئیچ EAPOL را از کلاینت می‌گیرد، RADIUS server جواب Access-Accept می‌دهد ولی پورت هنوز به VLAN قبلی دسترسی دارد. در این وضعیت، ابتدا identity method را تغییر نده. خروجی RADIUS attributes را با policy مورد انتظار مقایسه کن؛ سپس بررسی کن firmware سوئیچ آن attribute را پشتیبانی می‌کند، role/VLAN را در session state اجرا کرده و DHCP renew یا reauthentication لازم انجام شده است یا نه. اگر policy روی device اجرا شده ولی ترافیک همچنان عبور نمی‌کند، route/ACL downstream را جدا بررسی کن.\n\nبرای هر مرحله، یک شاهد مشخص بنویس: EAP success/failure، RADIUS decision، assigned role، port state، IP/subnet client و نتیجهٔ flow مجاز/ممنوع. اگر شاهدی در دسترس نیست، آن بخش را تأییدنشده علامت بزن. تغییر هم‌زمان EAP method، VLAN و firewall policy امکان مشخص‌کردن علت را از بین می‌برد.\n\n## Runbook outage AAA\nهنگام timeout عمومی، ابتدا scope خرابی را مشخص کن: یک NAS، یک سایت، یک RADIUS server یا backend هویت. بررسی کن packet به server می‌رسد و response برمی‌گردد؛ سپس server health، identity backend، certificate status endpoint و clock را مقایسه کن. رفتار fail-open/closed باید از پیش مستند باشد. پس از restore، sessionهایی را که در دوران outage به fallback رفتند بازبینی و در صورت نیاز reauthenticate کن؛ بازگشت process به حالت running، پاک‌شدن همهٔ sessionهای ناسازگار را تضمین نمی‌کند.\n\n## ملاحظات زمان و کلیدهای مشترک\nClock skew میان NAS و RADIUS می‌تواند certificate validation، log correlation و تحلیل timeout را دشوار کند. Shared secret اشتباه معمولاً مسئله‌ای متفاوت از Access-Reject ناشی از credential است؛ نوع خطا و server log را بررسی کن. اگر transport با TLS محافظت می‌شود، certificate identity و trust باید در دو سمت درست باشد. در هیچ گزارش یا مخزن کد، shared secret واقعی را قرار نده؛ برای Lab از مقادیر مصنوعی استفاده کن.\n\n## بررسی چرخهٔ عمر هویت\nحذف کاربر یا دستگاه از directory به‌تنهایی تضمین نمی‌کند session فعال بلافاصله بسته شود. تعریف کن تغییر عضویت گروه، لغو گواهی یا غیرفعال‌سازی identity چگونه از طریق reauthentication، CoA یا timeout نشست به enforcement point منتقل می‌شود. زمان انتشار تغییر و رفتار sessionهای موجود باید در threat model و acceptance tests لحاظ شود.\n\nاگر تغییر policy روی یک site موفق است، همان نتیجه را به تمام sites تعمیم نده؛ NASهای مختلف، مسیر RADIUS متفاوت، CA store مستقل و firmwareهای متفاوت می‌توانند رفتار دیگری نشان دهند. rollout باید مرحله‌ای باشد و هر موج با health metric کنترل شود.\n\nوقتی چند دستگاه هم‌زمان خطا می‌دهند، dependencyهای مشترک مثل RADIUS backend، directory، trust chain و transport را بررسی کن. هم‌بستگی زمانی می‌تواند دامنهٔ root cause را کوچک کند، اما بدون شاهد مستقیم علت قطعی محسوب نمی‌شود.\n\nدر پایان، نقش‌ها و محدودیت‌های باقیمانده را مستند کن.",
+      "commands": "Use read-only authentication logs, RADIUS server test tools and lab-only supplicants. Vendor-specific show/debug commands, attributes, ports and TLS profiles must be verified against exact product versions.",
+      "examples": "Isolated test VLAN with one managed switch/AP, controlled supplicant, RADIUS server and test identity store. Never test rogue authentication, fail-open or MAB bypass on the production access network.",
+      "notes": "source=tools/packs/security_identity/aaa_8021x_nac_engineering_ch27_pack.json; status=review_required; labs=designed_not_executed; infographic=dot1x_flow.svg",
+      "learning_objectives": [
+        "معماری identity-driven access را چندلایه طراحی کند",
+        "داده‌های EAP/RADIUS و policy enforcement را correlation کند",
+        "failure mode و bypassهای NAC را کنترل کند"
+      ],
+      "prerequisites": [
+        "Ethernet/VLAN basics, identity and certificates, basic client/server networking"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"aaa-l3-1\",\"prompt\":\"AAA مخفف چه سه وظیفه‌ای است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"aaa-l3-2\",\"prompt\":\"802.1X چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"aaa-l3-3\",\"prompt\":\"Supplicant، Authenticator و RADIUS Server چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"aaa-l3-4\",\"prompt\":\"Access-Accept چه چیزی را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"aaa-l3-5\",\"prompt\":\"چرا MAB هویت قوی محسوب نمی‌شود؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"aaa-l3-6\",\"prompt\":\"EAP-TLS به چه چیزهایی وابسته است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"aaa-l3-7\",\"prompt\":\"چه چیزی بین RADIUS و TACACS+ یک تفاوت کاربردی مهم است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"aaa-l3-8\",\"prompt\":\"چرا Fail-open و Fail-closed باید بر اساس نقش دستگاه انتخاب شوند؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"aaa-l3-9\",\"prompt\":\"چرا Accounting نیازمند clock/session correlation است؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"aaa-l3-10\",\"prompt\":\"RADIUS/1.1 طبق RFC 9765 چیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"aaa-l3-11\",\"prompt\":\"RFC 9887 در TACACS+ چه تغییر مهمی می‌آورد؟\",\"type\":\"short_answer\",\"level\":\"L3\"},{\"id\":\"aaa-l3-12\",\"prompt\":\"چرا profiling دستگاه به‌تنهایی کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L3\"}],\"answer_key\":[{\"id\":\"aaa-l3-1\",\"answer\":\"Authentication، Authorization و Accounting.\",\"rationale\":\"درستی هویت، مجوز و ثبت استفاده سه وظیفهٔ متفاوت‌اند.\"},{\"id\":\"aaa-l3-2\",\"answer\":\"کنترل دسترسی port-based و استفاده از EAP برای احراز هویت/ایجاد دسترسی کنترل‌شده.\",\"rationale\":\"Authenticator می‌تواند switch یا AP باشد.\"},{\"id\":\"aaa-l3-3\",\"answer\":\"کلاینت درخواست‌کننده، نقطهٔ اعمال دسترسی و سرور تصمیم‌گیرنده/AAA.\",\"rationale\":\"نقش منطقی را با chassis فیزیکی اشتباه نکن.\"},{\"id\":\"aaa-l3-4\",\"answer\":\"اجرای موفق policy روی پورت و دسترسی end-to-end را تضمین نمی‌کند.\",\"rationale\":\"VLAN, ACL, DHCP, routing و service باید جدا بررسی شوند.\"},{\"id\":\"aaa-l3-5\",\"answer\":\"MAC address قابل جعل است و به‌تنهایی اثبات مالکیت دستگاه نیست.\",\"rationale\":\"MAB باید به نقش محدود و monitoring گره بخورد.\"},{\"id\":\"aaa-l3-6\",\"answer\":\"Certificate trust، private-key protection، identity policy، validity و revocation.\",\"rationale\":\"گواهی درست باید در هر دو سمت مناسب و قابل‌اعتبارسنجی باشد.\"},{\"id\":\"aaa-l3-7\",\"answer\":\"RADIUS رایج برای network access؛ TACACS+ برای device administration و command authorization.\",\"rationale\":\"جزئیات و transport باید با نسخه واقعی هماهنگ شود.\"},{\"id\":\"aaa-l3-8\",\"answer\":\"ریسک قطعی خدمت و ریسک دسترسی غیرمجاز بین endpointها متفاوت است.\",\"rationale\":\"استثنا باید محدود، مستند و زمان‌دار باشد.\"},{\"id\":\"aaa-l3-9\",\"answer\":\"برای نسبت‌دادن start/interim/stop و policy به session صحیح.\",\"rationale\":\"clock skew و session ID ناسازگار timeline را خراب می‌کند.\"},{\"id\":\"aaa-l3-10\",\"answer\":\"یک پروفایل Experimental برای RADIUS over TLS/DTLS با ALPN و حذف برخی MD5-based mechanisms.\",\"rationale\":\"پشتیبانی محصول و سازگاری endpointها باید تأیید شود.\"},{\"id\":\"aaa-l3-11\",\"answer\":\"پروفایل TACACS+ over TLS 1.3 را تعریف می‌کند و RFC 8907 را به‌روز می‌کند.\",\"rationale\":\"استقرار نیازمند پشتیبانی client/server و certificate trust است.\"},{\"id\":\"aaa-l3-12\",\"answer\":\"Fingerprint می‌تواند تقلید شود یا stale/مبهم باشد.\",\"rationale\":\"به هویت، رفتار، policy محدود و آزمون مستقل ترکیب شود.\"}]},\"related_infographics\":[\"dot1x_flow.svg\",\"pki_certificate_chain.svg\",\"vlan_trunk.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "IEEE 802.1X-2020 — Port-Based Network Access Control",
+          "url": "https://standards.ieee.org/ieee/802.1X/7345/"
+        },
+        {
+          "title": "RFC 3748 — Extensible Authentication Protocol (EAP)",
+          "url": "https://www.rfc-editor.org/rfc/rfc3748.html"
+        },
+        {
+          "title": "RFC 9765 — RADIUS/1.1 (Experimental)",
+          "url": "https://www.rfc-editor.org/rfc/rfc9765.html"
+        },
+        {
+          "title": "RFC 9887 — TACACS+ over TLS 1.3",
+          "url": "https://www.rfc-editor.org/rfc/rfc9887.html"
+        },
+        {
+          "title": "RFC 9190 — EAP-TLS 1.3, updated by RFC 9965",
+          "url": "https://www.rfc-editor.org/rfc/rfc9190.html"
+        },
+        {
+          "title": "RFC 9965 — eap.arpa and EAP provisioning",
+          "url": "https://www.rfc-editor.org/rfc/rfc9965.html"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی AAA، 802.1X، RADIUS و NAC"
+    },
+    {
+      "uid": "lesson:ch27:aaa-nac-engineering:l4",
+      "entity": "lesson",
+      "chapter_order": 27,
+      "subchapter_order": 4,
+      "lesson_order": 5,
+      "topic": "aaa-8021x-nac",
+      "domain": "identity-and-network-access",
+      "level": "L4",
+      "title_fa": "[L4] AAA، 802.1X و NAC — خبره",
+      "title_en": "[L4] AAA, 802.1X and NAC Engineering — خبره",
+      "tags": [
+        "AAA",
+        "802.1X",
+        "EAP",
+        "RADIUS",
+        "TACACS+",
+        "NAC",
+        "L4"
+      ],
+      "summary": "AAA/NAC را با least privilege و تاب‌آوری طراحی کند؛ سازگاری RADIUS/TACACS+/EAP را با ریسک انتقال ارزیابی کند؛ acceptance suite، threat model و change plan بسازد",
+      "full_content": "# AAA، 802.1X و NAC — خبره و طراحی معماری\n\n## قرارداد تصمیم دسترسی\nNAC معماری control-plane برای تصمیم identity و enforcement است. باید مشخص شود decision subject چه کسی/چه دستگاهی است، evidence از کجا می‌آید، confidence آن چقدر است، policy engine چه تصمیمی می‌دهد، enforcement point چه دسترسی‌ای اعمال می‌کند و کدام log پاسخ‌گویی را تأمین می‌کند. «احراز هویت موفق» پایان تصمیم نیست؛ دسترسی باید در سطح network segment و application service کمینه باشد. VLAN mapping تنها یک outcome ممکن است؛ role-based ACL، dynamic ACL، firewall policy و application identity می‌توانند لایه‌های مکمل باشند.\n\n## Threat model و trust boundaries\nتهدیدها شامل rogue RADIUS, spoofed NAS/client attributes, stolen credentials/certificates, weak EAP method, fake server certificate, MAB spoofing, policy misconfiguration, fallback fail-open, stale device profiling, CoA misuse, accounting log tampering و shared-secret exposure هستند. برای هر threat، prevention/detection/response/owner/test مشخص کن. Supplicant باید server certificate را verify کند؛ اگر onboarding آن را خاموش کند، credential theft ممکن است. Authenticator باید RADIUS peer را درست authenticate کند؛ RADIUS client list یا shared secret ضعیف می‌تواند منبع اعتماد را تضعیف کند.\n\n## EAP-TLS و certificate enrollment\nEAP-TLS می‌تواند هویت دستگاه/کاربر و سرور را با certificateها بررسی کند؛ امنیت به issuance policy، trust anchors، private-key protection و revocation وابسته است. Enrollment باید به هویت سازمانی bind شود و renewal بدون مراجعهٔ دستی در صورت مناسب بودن design انجام شود. Certificate expired یا revoked باید به policy مورد انتظار منجر شود؛ fallback ناخواسته به password/MAB می‌تواند control را دور بزند. RFC 9190 و به‌روزرسانی‌های آن را برای EAP-TLS 1.3 و provisioning behavior بررسی کن؛ RFC 9965 در مه ۲۰۲۶ eap.arpa provisioning و مسیر محدود/unauthenticated provisioning را تکمیل کرده است. این نوع provisioning باید فقط دسترسی محدود و policy صریح داشته باشد، نه اعتماد ضمنی عمومی.\n\n## RADIUS و RADIUS/1.1\nRADIUS over UDP در بسیاری از deployments legacy رایج است؛ shared secret و سازوکارهای قدیمی packet protection معادل confidentiality کامل یک TLS channel نیستند. RFC 9765 یک پروفایل Experimental به نام RADIUS/1.1 را برای RADIUS over TLS/DTLS تعریف می‌کند که با ALPN انتخاب می‌شود و روش‌های MD5-based موردبحث را حذف می‌کند. این RFC به معنای پشتیبانی خودکار تمام NAS و RADIUS servers نیست. برای migration باید پروفایل endpoint، ALPN, TLS trust, certificate identity, port, firewall, redundancy, attribute interoperability و fallback را با release واقعی test کنی. Profile امنیتی transport و attributes application دو سطح جدا هستند.\n\n## TACACS+ برای device administration\nTACACS+ در مدیریت تجهیزات امکان authentication، per-command authorization و accounting را فراهم می‌کند. RFC 9887 مشخصات TACACS+ over TLS 1.3 را منتشر کرده و RFC 8907 را به‌روز می‌کند؛ سازوکار obfuscation ضعیف سنتی باید با profile امن سازگار جایگزین شود. Client/server باید certificate-based mutual authentication را طبق profile پشتیبانی کنند. Port، TLS profile، certificate renewal، local break-glass، command privilege mapping و audit باید در acceptance matrix باشند. اگر AAA مرکزی در دسترس نباشد، مسیر اضطراری باید محدود، مانیتور شده و بعد از outage حسابرسی شود.\n\n## Availability و fail-open/fail-closed\nFail-open و fail-closed تصمیم‌های خطرمحورند، نه checkboxهای یکسان برای تمام endpointها. یک guest endpoint شاید در outage به شبکهٔ محدود captive portal هدایت شود؛ یک workstation اداری حساس ممکن است access را رد کند؛ تلفن اضطراری/IoT نیازمندی‌های availability جدا دارد. هر exception باید owner، محدودیت مقصد، زمان انقضا و پس از بازیابی validation داشته باشد. RADIUS HA باید server/transport/backend/identity store/control network را به‌عنوان failure domains بررسی کند. دو server که directory، switch path یا certificate chain مشترک معیوب دارند redundancy کامل نیستند.\n\n## Authorization matrix و least privilege\nبرای هر device/user class، جدول بساز: identity source، authentication method، permitted VLAN/role، allowed destinations/ports، denied flows، session lifetime، accounting requirements، fallback behavior و owner. VLAN cameras نباید صرفاً به‌سبب موفقیت MAB دسترسی گسترده به workstation subnet بگیرد. Device profiling confidence محدود دارد و باید با کنترل‌های دیگر ترکیب شود. اگر posture status stale یا agent unavailable است، policy مشخص کند session محدود می‌شود یا دسترسی رد می‌شود؛ تصمیم نباید بر اساس حدس عمل کند.\n\n## Accounting، privacy و audit\nAccounting record باید با session ID، user/device identity، NAS, port/BSSID، policy version و timestamps قابل correlation باشد. Logها می‌توانند location/device metadata و هویت کاربران را آشکار کنند؛ access, retention, export, deletion و incident use باید حداقلی و مطابق policy باشد. Shared secret، password، private key یا sensitive inner identity نباید در logهای عادی منتشر شود. Audit trail باید نشان دهد چه policy decision، با چه evidence و به‌وسیلهٔ کدام نسخه اعمال شده است.\n\n## Acceptance suite\n- هویت معتبر با EAP-TLS از مسیر تعریف‌شده پذیرفته شود.\n- certificate با CA/SAN/EKU نامعتبر رد شود.\n- نقش معتبر به policy صحیح نگاشت و دسترسی منفی به subnet/service ممنوع مسدود شود.\n- RADIUS server primary قطع و failover رفتار مورد انتظار را نشان دهد.\n- مسیر fallback/MAB فقط endpointهای مجاز را با role محدود بپذیرد.\n- Accounting start/interim/stop با session identity و timestamp هماهنگ باشد.\n- CoA یا disconnect فقط session هدف را تغییر دهد.\n- TACACS+ per-command authorization و audit روی دستگاه آزمایشی اعمال شود.\n- TLS transport migration برای RADIUS/TACACS+ با endpointهای پشتیبانی‌شده verify شود.\n- rollback، break-glass و recovery بدون باقی‌ماندن مجوزهای گسترده آزموده شود.\n\n## Performance و عملیات\nاندازه‌گیری باید authentication latency، timeout/retry، EAP round trips، certificate validation, RADIUS QPS, concurrent sessions, failover time, CoA success و accounting loss را پوشش دهد. Client/device mix مهم است؛ صدور و اعتبارسنجی certificate، smart-card یا EAP-TLS روی endpointهای مختلف رفتار متفاوتی دارد. Boot storm یا shift change می‌تواند burst authentication بسازد؛ ظرفیت با average QPS تنها مشخص نمی‌شود. p95/p99, reject reason distribution, backend latency و retry rate را با baseline/SLO مرتبط کن.\n\n## Change و Definition of Done\nChange plan شامل rollout مرحله‌ای، canary group، rollback، emergency admin path، notification، monitor window و compatibility matrix باشد. بازبینی باید نشان دهد identity source، EAP method، CA chain، policy mapping و enforcement همه هماهنگ‌اند. اگر RADIUS Accept موجود اما شبکه اشتباه است، باید enforcement path به‌طور مستقل بررسی شود. اگر failure در server certificate است، خاموش‌کردن validation پذیرفته نیست؛ trust chain را اصلاح کن. طراحی زمانی production-ready است که threats، policy، support matrix، positive/negative tests، availability, privacy, logs, rollback و results واقعی ثبت شده باشند. این بسته تا اجرای آزمایش‌ها review_required باقی می‌ماند.\n\n## Architecture review و سناریوی failover\nبرای هر identity class، تصمیم بده که outage AAA باید access را متوقف کند یا به نقش محدود fallback کند. سپس اثر business و security را برای هر حالت تحلیل کن. کاربر اداری، دوربین، تلفن، مهمان و مدیر شبکه الزام یکسان ندارند. Test failover باید client جدید، session فعال، reauthentication، authorization change و accounting را پوشش دهد. پس از بازگشت server اصلی، policy version و session state باید به حالت مورد انتظار برسند؛ صرفاً از دست‌رس خارج‌کردن یک IP و مشاهدهٔ یک login موفق کافی نیست.\n\n## ثبت exception\nهر endpoint فاقد 802.1X باید owner، business reason، نقش محدود، destination/port allowlist، روش monitor و زمان انقضای exception داشته باشد. اگر دستگاه قدیمی تنها MAB را پشتیبانی می‌کند، شناسهٔ MAC آن را یک secret فرض نکن. بازبینی دوره‌ای باید endpointهای حذف‌شده، MAC address change، profiling drift و نیاز واقعی exception را شناسایی کند.\n\n## معماری لایه‌های سیاست و enforcement\nبرای NAC سازمانی، policy engine باید از محل enforce شدن جدا مدل شود. Identity provider می‌تواند هویت/گروه را تأیید کند؛ RADIUS policy نقش را انتخاب می‌کند؛ switch/AP دسترسی لایهٔ ۲/۳ را اجرا می‌کند؛ firewall و application layer هنوز policy دیگری دارند. یک policy موفق در مرحلهٔ اول به معنی enforce شدن در تمام مرزها نیست. Design باید برای هر role، allowed/denied flows، محل اعمال، telemetry و مسیر پاسخ‌گویی مشخص کند. اگر VLAN role change روی switch اعمال شده اما routing/firewall آن را در subnet مربوط محدود نکرده است، هدف least privilege محقق نشده.\n\n## انتخاب fail-open/fail-closed با تحلیل ریسک\nبرای هر device class ماتریس جدا بساز. Workstation اداری می‌تواند fail-closed شود ولی نیازمند break-glass کنترل‌شده است؛ دوربین امنیتی ممکن است در outage AAA به نقش محدود از پیش تعریف‌شده نیاز داشته باشد؛ guest می‌تواند به شبکهٔ onboarding محدود هدایت شود؛ مدیر شبکه نیازمند مسیر اضطراری auditشده است. این‌ها default عمومی نیستند، بلکه مثال طراحی هستند. برای هر مورد impact قطعی سرویس، احتمال سوءاستفاده، محدودیت مقصد، timeout، مدت exception و رفتار پس از بازگشت AAA تعریف کن.\n\n## Threat analysis برای MAB و profiling\nMAB هویت cryptographic فراهم نمی‌کند. اگر MAC مجاز را کپی کنند، یک endpoint دیگر می‌تواند تلاش کند در همان role وارد شود؛ بنابراین segmentation و allowed destinations باید حتی پس از پذیرش MAB محدود بماند. Profiling نیز ممکن است از OUI و DHCP fingerprint نتیجه بگیرد که دستگاه دوربین یا printer است، اما این شواهد قابل تقلید یا مبهم‌اند. برای نقش حساس، device certificate یا 802.1X قوی‌تر ترجیح دارد. هر exception باید owner و expiry داشته باشد و استفادهٔ واقعی مانیتور شود.\n\n## آزمون بار و failover\nدر شروع شیفت یا پس از قطع برق ممکن است تعداد زیادی endpoint هم‌زمان reauthenticate شوند. Capacity plan باید EAP handshake rate، RADIUS request rate، directory latency، certificate validation، retry timers، queue length، p95/p99 authentication latency و reject/timeout ratio را پوشش دهد. Failover test باید primary unavailable، secondary lag، shared identity store outage، certificate/status endpoint outage و بازگشت server را در محیط کنترل‌شده بسنجد. دو RADIUS IP بدون dependency diversity ممکن است در یک رخداد مشترک از کار بیفتند.\n\n## RADIUS/TACACS+ transport migration\nبرای مهاجرت RADIUS/UDP به TLS profile، باید ناسازگاری NAS/client، certificate lifecycle، server name verification، ALPN/transport profile، port/firewall و fallback روشن باشد. RFC 9765 دربارهٔ RADIUS/1.1 یک سند Experimental است؛ آن را به‌عنوان الزام عمومی هر RADIUS server معرفی نکن. RFC 9887 برای TACACS+ over TLS 1.3 یک پروفایل جدیدتر دارد که به پشتیبانی client/server وابسته است. مهاجرت باید هر دو سر را با release دقیق inventory و ابتدا در گروه آزمایشی اعتبارسنجی کند.\n\n## Privacy و نگهداری شواهد\nAccounting، location/port data، identity names و profiling results می‌توانند رفتار کاربر یا محل فیزیکی endpoint را افشا کنند. Retention، role-based access، export، masking و پاسخ به درخواست‌های incident باید مستند باشند. در گزارش عمومی، MAC، username، internal IP و certificate metadata حساس ناشناس‌سازی شوند؛ private key، shared secret، password یا session token نباید در log یا pack آموزشی ذخیره شوند.\n\n## Acceptance tests و rollback\n- یک identity مجاز از EAP مورد انتظار عبور کند و role صحیح دریافت کند.\n- certificate یا credential نامعتبر رد شود.\n- role مجاز فقط به destination/port لازم دسترسی داشته باشد؛ تست منفی با counter/policy شاهد داشته باشد.\n- قطع RADIUS به fallback تعریف‌شده برای همان device class منجر شود.\n- MAB فقط برای endpointهای inventory شده و با role محدود مجاز باشد.\n- CoA فقط session موردنظر را تغییر دهد و accounting مطابق تغییر باشد.\n- failover و recovery بدون policy drift انجام شود.\n- TACACS+ command authorization و accounting روی دستگاه آزمایشی برقرار باشد.\n- transport migration و certificate rotation سازگاری و rollback را اثبات کند.\nاین acceptance suite زمانی معتبر است که خروجی واقعی، نسخه‌ها، زمان، ابزار، cleanup و reviewer ثبت شوند؛ طراحی متن به تنهایی verified نیست.\n\n## ماتریس تصمیم معماری\nبرای هر device class باید risk و availability را در کنار هم ارزیابی کنی. Endpointهای حساس با گواهی device identity می‌توانند policy قوی‌تری داشته باشند؛ دستگاه legacy باید با ACL محدود، segmentation و inventory جبران شود؛ guest باید به onboarding و اینترنت کنترل‌شده دسترسی داشته باشد؛ management plane باید MFA یا credential strategy متناسب و accounting داشته باشد. این نمونه‌ها policy پیش‌فرض همهٔ محیط‌ها نیستند؛ design واقعی باید business owner، threat model و ظرفیت پشتیبانی دستگاه‌ها را منعکس کند.\n\n## مدیریت تغییر و rollback\nهر change در RADIUS/EAP profile، certificate trust یا VLAN assignment می‌تواند تعداد زیادی endpoint را هم‌زمان قطع کند. Change plan باید canary scope، pre-check، backup config، alternate management path، expected reject rate، rollback trigger و post-change validation داشته باشد. در rollback، تنظیمات و رفتار شبکه هر دو باید verify شوند؛ rollback متن config بدون آزمون client واقعی کافی نیست.\n\n## معیار پذیرش امنیتی\nAcceptance باید هم اثبات دسترسی مجاز و هم رد دسترسی غیرمجاز را داشته باشد. تست منفی باید evidence از policy deny یا controlled endpoint ارائه دهد، نه صرفاً timeout. همچنین باید نشان دهد حساب مدیر فقط مجوزهای لازم را دریافت می‌کند، accounting در دسترس است، logs رازهای احراز هویت را افشا نمی‌کنند و در outage مسیر اضطراری از پیش تعریف‌شده و قابل حسابرسی عمل می‌کند.\n\n## مستندات خروج از پروژه\nدر پایان design review، یک ماتریس support ارائه کن که در آن مدل NAS، نسخهٔ firmware، supplicant/OS، EAP methods، attributeها، CoA، transport security و روش recovery برای هر ترکیب مهم مشخص باشد. ترکیب‌هایی که تست نشده‌اند باید به‌عنوان unsupported یا pending review علامت‌گذاری شوند. این سند برای جلوگیری از تعمیم یک آزمایش موفق در یک مدل دستگاه به همهٔ شبکه ضروری است.\n\n## پایش drift سیاست\nPolicy version در RADIUS، configuration روی NAS و نقش اعمال‌شده در session باید قابل مقایسه باشند. Drift ممکن است از template قدیمی، firmware، manual override یا automation ناقص ناشی شود. reconciliation دوره‌ای و alert برای اختلاف role/ACL باید با source-of-truth مستند همگام شود؛ اصلاح خودکار بدون شناخت اثر قطع سرویس ممکن است خطر بیشتری ایجاد کند.\n\nبازبینی مستقل باید هم فرضیه‌های امنیتی و هم فرضیه‌های availability را بررسی کند. اگر یک کنترل فقط در test مثبت کار می‌کند اما مسیر bypass یا failure behavior آزموده نشده، acceptance ناقص است. نتیجهٔ معماری را با evidence ثبت‌شده و owner مشخص ببند.\n\nاین مرحله باید با ثبت نهایی owner، موعد بازبینی policy و مسیر escalation پایان یابد.\n\nنتیجه باید برای ممیزی بعدی قابل بازتولید باشد.",
+      "commands": "Use read-only authentication logs, RADIUS server test tools and lab-only supplicants. Vendor-specific show/debug commands, attributes, ports and TLS profiles must be verified against exact product versions.",
+      "examples": "Isolated test VLAN with one managed switch/AP, controlled supplicant, RADIUS server and test identity store. Never test rogue authentication, fail-open or MAB bypass on the production access network.",
+      "notes": "source=tools/packs/security_identity/aaa_8021x_nac_engineering_ch27_pack.json; status=review_required; labs=designed_not_executed; infographic=dot1x_flow.svg",
+      "learning_objectives": [
+        "AAA/NAC را با least privilege و تاب‌آوری طراحی کند",
+        "سازگاری RADIUS/TACACS+/EAP را با ریسک انتقال ارزیابی کند",
+        "acceptance suite، threat model و change plan بسازد"
+      ],
+      "prerequisites": [
+        "Ethernet/VLAN basics, identity and certificates, basic client/server networking"
+      ],
+      "meta_json": "{\"assessment\":{\"questions\":[{\"id\":\"aaa-l4-1\",\"prompt\":\"AAA مخفف چه سه وظیفه‌ای است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-2\",\"prompt\":\"802.1X چه نقشی دارد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-3\",\"prompt\":\"Supplicant، Authenticator و RADIUS Server چه تفاوتی دارند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-4\",\"prompt\":\"Access-Accept چه چیزی را تضمین نمی‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-5\",\"prompt\":\"چرا MAB هویت قوی محسوب نمی‌شود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-6\",\"prompt\":\"EAP-TLS به چه چیزهایی وابسته است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-7\",\"prompt\":\"چه چیزی بین RADIUS و TACACS+ یک تفاوت کاربردی مهم است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-8\",\"prompt\":\"چرا Fail-open و Fail-closed باید بر اساس نقش دستگاه انتخاب شوند؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-9\",\"prompt\":\"چرا Accounting نیازمند clock/session correlation است؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-10\",\"prompt\":\"RADIUS/1.1 طبق RFC 9765 چیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-11\",\"prompt\":\"RFC 9887 در TACACS+ چه تغییر مهمی می‌آورد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-12\",\"prompt\":\"چرا profiling دستگاه به‌تنهایی کافی نیست؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-13\",\"prompt\":\"چرا Accept و دسترسی واقعی را جدا باید ثبت کرد؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-14\",\"prompt\":\"برای failover دو RADIUS server چه باید آزمود؟\",\"type\":\"short_answer\",\"level\":\"L4\"},{\"id\":\"aaa-l4-15\",\"prompt\":\"چه چیزی NAC را production-ready می‌کند؟\",\"type\":\"short_answer\",\"level\":\"L4\"}],\"answer_key\":[{\"id\":\"aaa-l4-1\",\"answer\":\"Authentication، Authorization و Accounting.\",\"rationale\":\"درستی هویت، مجوز و ثبت استفاده سه وظیفهٔ متفاوت‌اند.\"},{\"id\":\"aaa-l4-2\",\"answer\":\"کنترل دسترسی port-based و استفاده از EAP برای احراز هویت/ایجاد دسترسی کنترل‌شده.\",\"rationale\":\"Authenticator می‌تواند switch یا AP باشد.\"},{\"id\":\"aaa-l4-3\",\"answer\":\"کلاینت درخواست‌کننده، نقطهٔ اعمال دسترسی و سرور تصمیم‌گیرنده/AAA.\",\"rationale\":\"نقش منطقی را با chassis فیزیکی اشتباه نکن.\"},{\"id\":\"aaa-l4-4\",\"answer\":\"اجرای موفق policy روی پورت و دسترسی end-to-end را تضمین نمی‌کند.\",\"rationale\":\"VLAN, ACL, DHCP, routing و service باید جدا بررسی شوند.\"},{\"id\":\"aaa-l4-5\",\"answer\":\"MAC address قابل جعل است و به‌تنهایی اثبات مالکیت دستگاه نیست.\",\"rationale\":\"MAB باید به نقش محدود و monitoring گره بخورد.\"},{\"id\":\"aaa-l4-6\",\"answer\":\"Certificate trust، private-key protection، identity policy، validity و revocation.\",\"rationale\":\"گواهی درست باید در هر دو سمت مناسب و قابل‌اعتبارسنجی باشد.\"},{\"id\":\"aaa-l4-7\",\"answer\":\"RADIUS رایج برای network access؛ TACACS+ برای device administration و command authorization.\",\"rationale\":\"جزئیات و transport باید با نسخه واقعی هماهنگ شود.\"},{\"id\":\"aaa-l4-8\",\"answer\":\"ریسک قطعی خدمت و ریسک دسترسی غیرمجاز بین endpointها متفاوت است.\",\"rationale\":\"استثنا باید محدود، مستند و زمان‌دار باشد.\"},{\"id\":\"aaa-l4-9\",\"answer\":\"برای نسبت‌دادن start/interim/stop و policy به session صحیح.\",\"rationale\":\"clock skew و session ID ناسازگار timeline را خراب می‌کند.\"},{\"id\":\"aaa-l4-10\",\"answer\":\"یک پروفایل Experimental برای RADIUS over TLS/DTLS با ALPN و حذف برخی MD5-based mechanisms.\",\"rationale\":\"پشتیبانی محصول و سازگاری endpointها باید تأیید شود.\"},{\"id\":\"aaa-l4-11\",\"answer\":\"پروفایل TACACS+ over TLS 1.3 را تعریف می‌کند و RFC 8907 را به‌روز می‌کند.\",\"rationale\":\"استقرار نیازمند پشتیبانی client/server و certificate trust است.\"},{\"id\":\"aaa-l4-12\",\"answer\":\"Fingerprint می‌تواند تقلید شود یا stale/مبهم باشد.\",\"rationale\":\"به هویت، رفتار، policy محدود و آزمون مستقل ترکیب شود.\"},{\"id\":\"aaa-l4-13\",\"answer\":\"تصمیم AAA و enforcement روی switch/AP/firewall دو stage جداست.\",\"rationale\":\"پورت ممکن است VLAN یا ACL نادرست اعمال کند.\"},{\"id\":\"aaa-l4-14\",\"answer\":\"قطع primary، renewal/authentication، backend dependency و زمان بازگشت با client واقعی.\",\"rationale\":\"وجود دو process running redundancy end-to-end را ثابت نمی‌کند.\"},{\"id\":\"aaa-l4-15\",\"answer\":\"Identity/policy/enforcement، failure modes، privacy, logging، HA، positive/negative tests، rollback و نتایج اجراشده.\",\"rationale\":\"اسناد و پیکربندی به تنهایی پذیرش نیستند.\"}]},\"related_infographics\":[\"dot1x_flow.svg\",\"pki_certificate_chain.svg\",\"vlan_trunk.svg\"],\"lab_status\":\"designed_not_executed\",\"content_status\":\"review_required\"}",
+      "official_sources": [
+        {
+          "title": "IEEE 802.1X-2020 — Port-Based Network Access Control",
+          "url": "https://standards.ieee.org/ieee/802.1X/7345/"
+        },
+        {
+          "title": "RFC 3748 — Extensible Authentication Protocol (EAP)",
+          "url": "https://www.rfc-editor.org/rfc/rfc3748.html"
+        },
+        {
+          "title": "RFC 9765 — RADIUS/1.1 (Experimental)",
+          "url": "https://www.rfc-editor.org/rfc/rfc9765.html"
+        },
+        {
+          "title": "RFC 9887 — TACACS+ over TLS 1.3",
+          "url": "https://www.rfc-editor.org/rfc/rfc9887.html"
+        },
+        {
+          "title": "RFC 9190 — EAP-TLS 1.3, updated by RFC 9965",
+          "url": "https://www.rfc-editor.org/rfc/rfc9190.html"
+        },
+        {
+          "title": "RFC 9965 — eap.arpa and EAP provisioning",
+          "url": "https://www.rfc-editor.org/rfc/rfc9965.html"
+        }
+      ],
+      "source_status": "review_required",
+      "subchapter_title_fa": "مهندسی AAA، 802.1X، RADIUS و NAC"
+    }
+  ]
+}

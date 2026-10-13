@@ -31,6 +31,13 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    // One source of truth for vector infographics shared with the Windows web UI.
+    sourceSets {
+        getByName("main") {
+            assets.srcDir(rootProject.file("../shared/infographics"))
+        }
+    }
 }
 
 dependencies {

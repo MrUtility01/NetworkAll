@@ -15,14 +15,20 @@ import com.netenc.app.data.AppDatabase
 import com.netenc.app.data.NoteEntity
 import com.netenc.app.data.TaskEntity
 import com.netenc.app.data.VaultEntity
+import com.netenc.app.reminder.TaskReminderScheduler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.util.UUID
 import android.util.Base64
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
+import java.security.KeyStore
 import javax.crypto.Cipher
-import javax.crypto.spec.SecretKeySpec
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+import javax.crypto.spec.GCMParameterSpec
 
 class WorkspaceActivity : AppCompatActivity() {
     private val db by lazy { AppDatabase.get(this) }
@@ -63,12 +69,19 @@ class WorkspaceActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val rows = withContext(Dispatchers.IO) {
                 when (mode) {
-                    "notes" -> db.workspaceDao().allNotes().map { Triple(it.uid, it.title, it.body) }
+                    "notes" -> db.workspaceDao().allNotes().map {
+                        val tags = it.tags.split(",").map { tag -> tag.trim() }.filter { tag -> tag.isNotBlank() }
+                        Triple(it.uid, it.title, (if (tags.isEmpty()) "" else tags.joinToString(" · ", prefix = "برچسب: ") + "\n") + it.body)
+                    }
                     "vault" -> db.workspaceDao().allVault().map { Triple(it.uid, it.title, it.username) }
                     else -> db.workspaceDao().allTasks().map {
                         Triple(it.uid, (if (it.done) "✓ " else "○ ") + it.title, it.body)
                     }
                 }
+            }
+            if (mode == "tasks") {
+                runCatching { TaskReminderScheduler.reconcileAll(this@WorkspaceActivity) }
+                    .onFailure { Toast.makeText(this@WorkspaceActivity, "یادآوری کارها: ${it.message}", Toast.LENGTH_SHORT).show() }
             }
             listView.removeAllViews()
             if (rows.isEmpty()) {
@@ -83,18 +96,25 @@ class WorkspaceActivity : AppCompatActivity() {
                     textSize = 15f
                     setPadding(8, 16, 8, 16)
                     setTextColor(Color.parseColor("#1E293B"))
-                    setOnClickListener { editItem(uid) }
+                    setOnClickListener { if (mode == "vault") showVaultItem(uid) else editItem(uid) }
                     setOnLongClickListener {
-                        lifecycleScope.launch {
-                            withContext(Dispatchers.IO) {
-                                when (mode) {
-                                    "notes" -> db.workspaceDao().deleteNote(uid)
-                                    "vault" -> db.workspaceDao().deleteVault(uid)
-                                    else -> db.workspaceDao().deleteTask(uid)
+                        AlertDialog.Builder(this@WorkspaceActivity)
+                            .setTitle("حذف مورد")
+                            .setMessage("این مورد حذف شود؟ این کار قابل بازگشت نیست.")
+                            .setNegativeButton("لغو", null)
+                            .setPositiveButton("حذف") { _, _ ->
+                                lifecycleScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        when (mode) {
+                                            "notes" -> db.workspaceDao().deleteNote(uid)
+                                            "vault" -> db.workspaceDao().deleteVault(uid)
+                                            else -> db.workspaceDao().deleteTask(uid)
+                                        }
+                                    }
+                                    refresh()
                                 }
                             }
-                            refresh()
-                        }
+                            .show()
                         true
                     }
                 })
@@ -104,11 +124,20 @@ class WorkspaceActivity : AppCompatActivity() {
 
     private fun addItem() {
         val title = EditText(this).apply { hint = "عنوان" }
-        val body = EditText(this).apply { hint = if (mode == "vault") "رمز / توضیحات" else "متن" }
+        val body = EditText(this).apply {
+            hint = if (mode == "vault") "رمز / توضیحات" else "متن کامل"
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or
+                android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+            minLines = if (mode == "notes") 6 else 2
+            gravity = android.view.Gravity.TOP or android.view.Gravity.START
+        }
+        val tags = EditText(this).apply { hint = "برچسب‌ها با ویرگول (مثلاً شبکه، ایده، کار)" }
         val user = EditText(this).apply { hint = "نام کاربری (اختیاری)" }
         val box = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             addView(title); addView(body)
+            if (mode == "notes") addView(tags)
             if (mode == "vault") addView(user)
         }
         AlertDialog.Builder(this)
@@ -118,25 +147,29 @@ class WorkspaceActivity : AppCompatActivity() {
                 val t = title.text.toString().trim()
                 if (t.isEmpty()) return@setPositiveButton
                 lifecycleScope.launch {
-                    withContext(Dispatchers.IO) {
-                        val id = UUID.randomUUID().toString()
-                        when (mode) {
-                            "notes" -> db.workspaceDao().upsertNote(
-                                NoteEntity(id, t, body.text.toString(), lastUpdated = now())
-                            )
-                            "vault" -> db.workspaceDao().upsertVault(
-                                VaultEntity(
-                                    id, t, user.text.toString(),
-                                    secretEnc = simpleEnc(body.text.toString()),
-                                    lastUpdated = now()
+                    try {
+                        withContext(Dispatchers.IO) {
+                            val id = UUID.randomUUID().toString()
+                            when (mode) {
+                                "notes" -> db.workspaceDao().upsertNote(
+                                    NoteEntity(id, t, body.text.toString(), tags = tags.text.toString().trim(), lastUpdated = now())
                                 )
-                            )
-                            else -> db.workspaceDao().upsertTask(
-                                TaskEntity(id, t, body.text.toString(), lastUpdated = now())
-                            )
+                                "vault" -> db.workspaceDao().upsertVault(
+                                    VaultEntity(
+                                        id, t, user.text.toString(),
+                                        secretEnc = encryptVaultSecret(body.text.toString()),
+                                        lastUpdated = now()
+                                    )
+                                )
+                                else -> db.workspaceDao().upsertTask(
+                                    TaskEntity(id, t, body.text.toString(), lastUpdated = now())
+                                )
+                            }
                         }
+                        refresh()
+                    } catch (e: Exception) {
+                        Toast.makeText(this@WorkspaceActivity, "ذخیره امن انجام نشد: " + (e.message ?: "خطای رمزنگاری"), Toast.LENGTH_LONG).show()
                     }
-                    refresh()
                 }
             }
             .setNegativeButton("لغو", null)
@@ -144,28 +177,142 @@ class WorkspaceActivity : AppCompatActivity() {
     }
 
     private fun editItem(uid: String) {
+        if (mode == "notes") {
+            lifecycleScope.launch {
+                val note = withContext(Dispatchers.IO) {
+                    db.workspaceDao().allNotes().find { it.uid == uid }
+                } ?: return@launch
+                val title = EditText(this@WorkspaceActivity).apply { setText(note.title); hint = "عنوان یادداشت" }
+                val body = EditText(this@WorkspaceActivity).apply {
+                    setText(note.body); hint = "متن کامل یادداشت"; minLines = 7
+                    inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE or android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+                    gravity = android.view.Gravity.TOP or android.view.Gravity.START
+                }
+                val tags = EditText(this@WorkspaceActivity).apply { setText(note.tags); hint = "برچسب‌ها با ویرگول" }
+                val box = LinearLayout(this@WorkspaceActivity).apply {
+                    orientation = LinearLayout.VERTICAL; setPadding(12, 4, 12, 4)
+                    addView(title); addView(tags); addView(body)
+                }
+                AlertDialog.Builder(this@WorkspaceActivity)
+                    .setTitle("ویرایش یادداشت")
+                    .setView(box)
+                    .setPositiveButton("ذخیره تغییرات") { _, _ ->
+                        val t = title.text.toString().trim()
+                        if (t.isBlank()) { Toast.makeText(this@WorkspaceActivity, "عنوان الزامی است", Toast.LENGTH_SHORT).show(); return@setPositiveButton }
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO) {
+                                db.workspaceDao().upsertNote(note.copy(title = t, body = body.text.toString(), tags = tags.text.toString().trim(), lastUpdated = now()))
+                            }
+                            refresh()
+                        }
+                    }
+                    .setNegativeButton("لغو", null)
+                    .show()
+            }
+            return
+        }
         if (mode != "tasks") return
         lifecycleScope.launch {
             val task = withContext(Dispatchers.IO) {
                 db.workspaceDao().allTasks().find { it.uid == uid }
             } ?: return@launch
             withContext(Dispatchers.IO) {
-                db.workspaceDao().upsertTask(task.copy(done = !task.done, lastUpdated = now()))
+                db.workspaceDao().upsertTask(
+                    task.copy(
+                        done = !task.done,
+                        lastUpdated = now(),
+                        remindedAt = if (task.done) "" else task.remindedAt
+                    )
+                )
             }
             refresh()
             Toast.makeText(this@WorkspaceActivity, if (!task.done) "انجام شد" else "باز شد", Toast.LENGTH_SHORT).show()
         }
     }
+    private fun vaultKey(): SecretKey {
+        val alias = "netenc.vault.aesgcm.v1"
+        val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
+        if (store.containsAlias(alias)) return store.getKey(alias, null) as SecretKey
+        val generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
+        generator.init(
+            KeyGenParameterSpec.Builder(
+                alias,
+                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+            )
+                .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                .setRandomizedEncryptionRequired(true)
+                .build()
+        )
+        return generator.generateKey()
+    }
 
-    /** ساده برای ذخیره محلی؛ برای امنیت سازمانی از Keystore استفاده کنید */
-    private fun simpleEnc(plain: String): String {
+    /** New secrets use authenticated AES-GCM and a device-bound Android Keystore key. */
+    private fun encryptVaultSecret(plain: String): String {
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        cipher.init(Cipher.ENCRYPT_MODE, vaultKey())
+        val encrypted = cipher.doFinal(plain.toByteArray(Charsets.UTF_8))
+        val payload = cipher.iv + encrypted
+        return "v2:" + Base64.encodeToString(payload, Base64.NO_WRAP)
+    }
+
+    private fun decryptVaultSecret(blob: String): String {
+        if (!blob.startsWith("v2:")) {
+            throw IllegalStateException("این رکورد از نسخه قدیمی است؛ در حال مهاجرت امن آن هستیم.")
+        }
+        val payload = Base64.decode(blob.removePrefix("v2:"), Base64.NO_WRAP)
+        if (payload.size <= 12) throw IllegalArgumentException("داده رمزگذاری‌شده ناقص است.")
+        val iv = payload.copyOfRange(0, 12)
+        val encrypted = payload.copyOfRange(12, payload.size)
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        cipher.init(Cipher.DECRYPT_MODE, vaultKey(), GCMParameterSpec(128, iv))
+        return String(cipher.doFinal(encrypted), Charsets.UTF_8)
+    }
+
+    /** Decrypt older static-key AES/ECB values so they can be re-sealed. */
+    private fun decryptLegacyVaultSecret(blob: String): String {
         return try {
-            val key = SecretKeySpec("NetEncJokarKey16".toByteArray(), "AES")
-            val c = Cipher.getInstance("AES/ECB/PKCS5Padding")
-            c.init(Cipher.ENCRYPT_MODE, key)
-            Base64.encodeToString(c.doFinal(plain.toByteArray()), Base64.NO_WRAP)
+            val key = javax.crypto.spec.SecretKeySpec("NetEncJokarKey16".toByteArray(Charsets.UTF_8), "AES")
+            val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+            cipher.init(Cipher.DECRYPT_MODE, key)
+            String(cipher.doFinal(Base64.decode(blob, Base64.DEFAULT)), Charsets.UTF_8)
         } catch (_: Exception) {
-            plain
+            // Previous versions could fall back to plaintext when encryption failed.
+            blob
+        }
+    }
+
+    private fun showVaultItem(uid: String) {
+        lifecycleScope.launch {
+            val item = withContext(Dispatchers.IO) {
+                db.workspaceDao().allVault().find { it.uid == uid }
+            } ?: return@launch
+            try {
+                val secret = withContext(Dispatchers.IO) {
+                    val value = if (item.secretEnc.startsWith("v2:")) {
+                        decryptVaultSecret(item.secretEnc)
+                    } else {
+                        decryptLegacyVaultSecret(item.secretEnc)
+                    }
+                    if (!item.secretEnc.startsWith("v2:")) {
+                        db.workspaceDao().upsertVault(
+                            item.copy(secretEnc = encryptVaultSecret(value), lastUpdated = now())
+                        )
+                    }
+                    value
+                }
+                AlertDialog.Builder(this@WorkspaceActivity)
+                    .setTitle(item.title)
+                    .setMessage("نام کاربری: " + item.username + "\n\nرمز: " + secret)
+                    .setPositiveButton("باشه", null)
+                    .show()
+            } catch (e: Exception) {
+                AlertDialog.Builder(this@WorkspaceActivity)
+                    .setTitle("رمز قابل نمایش نیست")
+                    .setMessage(e.message ?: "داده رمز شده قابل خواندن نیست.")
+                    .setPositiveButton("باشه", null)
+                    .show()
+            }
         }
     }
 }

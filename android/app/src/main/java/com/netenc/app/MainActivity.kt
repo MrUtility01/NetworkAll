@@ -1,10 +1,19 @@
 package com.netenc.app
 
 import android.content.Intent
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.content.ContextCompat
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import android.text.InputType
+import java.security.MessageDigest
+import javax.crypto.SecretKeyFactory
+import javax.crypto.spec.PBEKeySpec
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +23,11 @@ import com.netenc.app.data.LessonRepository
 import com.netenc.app.data.OfflineSeeder
 import com.netenc.app.data.ScenarioSeeder
 import com.netenc.app.data.StudyRepository
+import com.netenc.app.data.WorkspaceSyncRepository
+import com.netenc.app.data.ScenarioSyncRepository
+import com.netenc.app.data.StudySyncRepository
 import com.netenc.app.reminder.ReminderScheduler
+import com.netenc.app.reminder.TaskReminderScheduler
 import com.netenc.app.sync.SyncClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,27 +39,92 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tokenInput: EditText
     private lateinit var logView: TextView
     private lateinit var repo: LessonRepository
+    private lateinit var workspaceSyncRepo: WorkspaceSyncRepository
+    private lateinit var scenarioSyncRepo: ScenarioSyncRepository
+    private lateinit var studySyncRepo: StudySyncRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        showPinGate()
+    }
+
+    /**
+     * Local app gate. PIN verification uses PBKDF2-HMAC-SHA256 and never stores
+     * the PIN in source or SharedPreferences. Re-open the gate on a new Activity.
+     */
+    private fun showPinGate() {
+        val pinInput = EditText(this).apply {
+            hint = "رمز ورود"
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            setSingleLine(true)
+            layoutDirection = android.view.View.LAYOUT_DIRECTION_RTL
+        }
+        AlertDialog.Builder(this)
+            .setTitle("ورود به Engineer Jokar")
+            .setMessage("برای ورود به برنامه رمز را وارد کنید.")
+            .setView(pinInput)
+            .setCancelable(false)
+            .setPositiveButton("ورود") { _, _ ->
+                if (verifyLocalPin(pinInput.text.toString())) {
+                    initializeMainUi()
+                } else {
+                    Toast.makeText(this, "رمز ورود نادرست است", Toast.LENGTH_SHORT).show()
+                    showPinGate()
+                }
+            }
+            .show()
+    }
+
+    private fun verifyLocalPin(candidate: String): Boolean {
+        if (candidate.isEmpty() || candidate.length > 128) return false
+        val salt = byteArrayOf(
+            0x5f, 0x3a, 0x9c.toByte(), 0x71, 0xd8.toByte(), 0xe2.toByte(), 0x04, 0x6b,
+            0xb6.toByte(), 0xf9.toByte(), 0x01, 0x2a, 0xc4.toByte(), 0x8d.toByte(), 0x73, 0x5e
+        )
+        val expected = hexToBytes("aaf49102a320825f15b1dc26866c722203ccffec8e9a7d49d186ac9119a1e540")
+        val spec = PBEKeySpec(candidate.toCharArray(), salt, 200_000, 256)
+        return try {
+            val actual = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
+                .generateSecret(spec).encoded
+            MessageDigest.isEqual(expected, actual)
+        } catch (_: Exception) {
+            false
+        } finally {
+            spec.clearPassword()
+        }
+    }
+
+    private fun hexToBytes(value: String): ByteArray =
+        value.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
+
+    private fun initializeMainUi() {
         setContentView(R.layout.activity_main)
         repo = LessonRepository(this)
+        workspaceSyncRepo = WorkspaceSyncRepository(this)
+        scenarioSyncRepo = ScenarioSyncRepository(this)
+        studySyncRepo = StudySyncRepository(this)
         hostInput = findViewById(R.id.hostInput)
         tokenInput = findViewById(R.id.tokenInput)
         logView = findViewById(R.id.logView)
 
         val prefs = getSharedPreferences("netenc", MODE_PRIVATE)
+        // Remove an older hard-coded numeric token from previous builds.
+        if (prefs.getString("token", "")?.matches(Regex("[0-9]{11}")) == true) {
+            prefs.edit().putString("token", "").apply()
+        }
         hostInput.setText(prefs.getString("host", ""))
-        tokenInput.setText(prefs.getString("token", SettingsActivity.DEFAULT_TOKEN) ?: SettingsActivity.DEFAULT_TOKEN)
+        tokenInput.setText(prefs.getString("token", SettingsActivity.DEFAULT_TOKEN) ?: "")
 
         ReminderScheduler.scheduleHourly(this)
+        requestNotificationPermissionIfNeeded()
+        lifecycleScope.launch { TaskReminderScheduler.reconcileAll(this@MainActivity) }
 
         findViewById<Button>(R.id.btnStudyHub).setOnClickListener {
             startActivity(Intent(this, StudyHubActivity::class.java))
         }
         // Workspace
         safeBtn(R.id.btnTasks) {
-            startActivity(Intent(this, WorkspaceActivity::class.java).putExtra("mode", "tasks"))
+            startActivity(Intent(this, PlannerActivity::class.java))
         }
         safeBtn(R.id.btnNotes) {
             startActivity(Intent(this, WorkspaceActivity::class.java).putExtra("mode", "notes"))
@@ -70,6 +148,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnScenarios).setOnClickListener {
             startActivity(Intent(this, ScenarioListActivity::class.java))
         }
+        findViewById<Button>(R.id.btnInfographics).setOnClickListener {
+            startActivity(Intent(this, InfographicsActivity::class.java))
+        }
         findViewById<Button>(R.id.btnStats).setOnClickListener { showStats() }
         findViewById<Button>(R.id.btnApi).setOnClickListener {
             startActivity(Intent(this, ApiExplorerActivity::class.java))
@@ -91,14 +172,36 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnAbout).setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Engineer Jokar")
-                .setMessage("یادگیری عمیق + کارها + یادداشت + رمز\nتوکن: 09136555866")
+                .setMessage("یادگیری عمیق + کارها + یادداشت + رمز")
                 .setPositiveButton("باشه", null)
                 .show()
         }
 
         lifecycleScope.launch { seedAll(force = false) }
+        lifecycleScope.launch {
+            runCatching { TaskReminderScheduler.reconcileAll(this@MainActivity) }
+                .onFailure { log("یادآوری کارها: ${it.message}") }
+        }
         if (prefs.getBoolean("auto_sync", false) && !prefs.getString("host", "").isNullOrBlank()) {
             hostInput.postDelayed({ sync() }, 2500)
+        }
+    }
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= 33 &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 7102)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (::repo.isInitialized) {
+            lifecycleScope.launch {
+                runCatching { TaskReminderScheduler.reconcileAll(this@MainActivity) }
+                    .onFailure { log("یادآوری کارها: ${it.message}") }
+            }
         }
     }
 
@@ -109,19 +212,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun forceReseed() {
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                val dao = AppDatabase.get(this@MainActivity).lessonDao()
-                dao.putMeta(com.netenc.app.data.SyncMetaEntity("offline_seeded_v11", "0"))
-            }
-            seedAll(force = true)
-        }
+        // Force is passed to the current seeder version; resetting an obsolete v11 marker
+        // did not invalidate the v13 marker and therefore did not actually force a reseed.
+        lifecycleScope.launch { seedAll(force = true) }
     }
 
     private suspend fun seedAll(force: Boolean) {
         log(if (force) "بازسازی…" else "بارگذاری…")
         try {
-            val n = withContext(Dispatchers.IO) { OfflineSeeder.ensureSeeded(this@MainActivity) }
+            val n = withContext(Dispatchers.IO) { OfflineSeeder.ensureSeeded(this@MainActivity, force = force) }
             val sc = withContext(Dispatchers.IO) { ScenarioSeeder.ensure(this@MainActivity) }
             val st = withContext(Dispatchers.IO) { StudyRepository(this@MainActivity).stats() }
             log("✓ درس=$n سناریو=$sc")
@@ -138,9 +237,11 @@ class MainActivity : AppCompatActivity() {
             val filled = withContext(Dispatchers.IO) { db.lessonDao().countFilled() }
             val sc = withContext(Dispatchers.IO) { db.scenarioDao().count() }
             val st = withContext(Dispatchers.IO) { StudyRepository(this@MainActivity).stats() }
+            val today = st["today"]
+            val goal = st["goal"]
             AlertDialog.Builder(this@MainActivity)
                 .setTitle("آمار")
-                .setMessage("درس: $lessons\nمتن‌دار: $filled\nسناریو: $sc\nامروز: ${st[\"today\"]}/${st[\"goal\"]}")
+                .setMessage("درس: $lessons\nمتن‌دار: $filled\nسناریو: $sc\nامروز: $today/$goal")
                 .setPositiveButton("باشه", null)
                 .show()
         }
@@ -195,14 +296,82 @@ class MainActivity : AppCompatActivity() {
                 val since = withContext(Dispatchers.IO) { repo.getLastSync() }.ifBlank { null }
                 val m = withContext(Dispatchers.IO) { c.manifest(since) }
                 var pulled = 0
-                for (chunk in m.items.map { it.uid }.chunked(80)) {
+                // Lesson and study records intentionally share a lesson UID; pull each UID once and let entity routing split the returned records.
+                for (chunk in m.items.map { it.uid }.distinct().chunked(80)) {
                     val body = withContext(Dispatchers.IO) { c.pull(chunk) }
                     pulled += withContext(Dispatchers.IO) { repo.upsertFromPullJson(body) }
+                    pulled += withContext(Dispatchers.IO) { workspaceSyncRepo.upsertFromPullJson(body) }
+                    pulled += withContext(Dispatchers.IO) { scenarioSyncRepo.upsertFromPullJson(body) }
+                    pulled += withContext(Dispatchers.IO) { studySyncRepo.upsertFromPullJson(body) }
                 }
-                val pushArr = withContext(Dispatchers.IO) { repo.buildPushArray() }
-                if (pushArr.length() > 0) withContext(Dispatchers.IO) { c.push(pushArr) }
-                withContext(Dispatchers.IO) { repo.setLastSync(Instant.now().toString()) }
-                log("✓ sync pull=$pulled")
+                // Pulled tasks may contain a reminder created on Windows; schedule it locally now.
+                TaskReminderScheduler.reconcileAll(this@MainActivity)
+                val pushArr = withContext(Dispatchers.IO) {
+                    val combined = repo.buildPushArray(since)
+                    val workspace = workspaceSyncRepo.buildPushArray()
+                    for (i in 0 until workspace.length()) combined.put(workspace.get(i))
+                    val study = studySyncRepo.buildPushArray()
+                    for (i in 0 until study.length()) combined.put(study.get(i))
+                    combined
+                }
+                var pushSummary = "push=0"
+                if (pushArr.length() > 0) {
+                    var accepted = 0
+                    var kept = 0
+                    var conflicts = 0
+                    var unsupported = 0
+                    var missing = 0
+                    var invalid = 0
+                    var applyRejected = 0
+                    var start = 0
+                    // Bound the actual UTF-8 request size as well as record count.
+                    // Notes and lessons vary widely; 25 large records can exceed Flask's 8 MiB cap.
+                    val maxBatchBytes = 7 * 1024 * 1024
+                    while (start < pushArr.length()) {
+                        val batch = org.json.JSONArray()
+                        while (start < pushArr.length() && batch.length() < 25) {
+                            batch.put(pushArr.get(start))
+                            val requestBytes = org.json.JSONObject()
+                                .put("records", batch)
+                                .toString()
+                                .toByteArray(Charsets.UTF_8)
+                                .size
+                            if (requestBytes > maxBatchBytes) {
+                                // Keep this record for the next batch and measure it alone.
+                                batch.remove(batch.length() - 1)
+                                if (batch.length() == 0) {
+                                    throw IllegalStateException(
+                                        "یک رکورد همگام‌سازی از سقف امن ۷ MiB بزرگ‌تر است؛ انتقال متوقف شد تا درخواست ردشده یا ناقص ارسال نشود."
+                                    )
+                                }
+                                break
+                            }
+                            start++
+                        }
+                        val pushBody = withContext(Dispatchers.IO) { c.push(batch) }
+                        val result = org.json.JSONObject(pushBody)
+                        accepted += result.optInt("accepted", 0)
+                        kept += result.optInt("kept", 0)
+                        conflicts += result.optInt("conflicts", 0)
+                        unsupported += result.optInt("unsupported", 0)
+                        missing += result.optInt("missing_targets", 0)
+                        invalid += result.optInt("invalid", 0)
+                        applyRejected += result.optInt("apply_rejected", 0)
+                        // Don't advance the cursor or continue a misleading partial push.
+                        if (unsupported > 0 || missing > 0 || conflicts > 0 || invalid > 0 || applyRejected > 0) break
+                    }
+                    pushSummary = "push=${pushArr.length()} accepted=$accepted kept=$kept conflicts=$conflicts unsupported=$unsupported missing=$missing invalid=$invalid rejected=$applyRejected"
+                    if (unsupported > 0 || missing > 0 || conflicts > 0 || invalid > 0 || applyRejected > 0) {
+                        log("⚠ sync ناقص: pull=$pulled $pushSummary")
+                        return@launch
+                    }
+                }
+                // Use the server's manifest snapshot, not the phone clock after the
+                // sync. This prevents edits made during sync from falling behind the cursor.
+                val cursor = m.generated_at?.takeIf { it.isNotBlank() } ?: Instant.now().toString()
+                withContext(Dispatchers.IO) { repo.setLastSync(cursor) }
+                TaskReminderScheduler.reconcileAll(this@MainActivity)
+                log("✓ sync pull=$pulled $pushSummary")
             } catch (e: Exception) { log("sync: ${e.message}") }
         }
     }

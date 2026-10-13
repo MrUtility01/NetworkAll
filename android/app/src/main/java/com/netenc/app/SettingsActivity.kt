@@ -12,11 +12,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class SettingsActivity : AppCompatActivity() {
-    companion object { const val DEFAULT_TOKEN = "09136555866" }
+    companion object { const val DEFAULT_TOKEN = "" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val prefs = getSharedPreferences("netenc", MODE_PRIVATE)
+        // Remove an older hard-coded numeric token from previous builds.
+        if (prefs.getString("token", "")?.matches(Regex("[0-9]{11}")) == true) {
+            prefs.edit().putString("token", "").apply()
+        }
         fun field(hint: String, key: String, password: Boolean = false, def: String = "") =
             EditText(this).apply {
                 this.hint = hint

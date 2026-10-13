@@ -1,7 +1,7 @@
 # ENGINEER JOKAR — فصل امنیت سایبری و هک اخلاقی
 
 ## محتویات
-- `security_ethical_hacking_pack.json`: بسته مستقل 110 درس (22 موضوع × 5 سطح L0 تا L4)
+- JSON نهایی: `tools/packs/security_ethical_hacking/security_ethical_hacking_pack.json` (بسته مستقل 110 درس) (22 موضوع × 5 سطح L0 تا L4)
 - `validate_pack.py`: اعتبارسنجی ساختار بسته، UIDها و جدابودن سؤال/پاسخ
 - `README_FA.md`: راهنمای ادغام امن
 

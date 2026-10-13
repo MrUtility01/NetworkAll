@@ -1,5 +1,6 @@
 package com.netenc.app.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -27,5 +28,9 @@ data class ScenarioEntity(
     val solution: String = "",
     val verification: String = "",
     val skillsRequired: String = "",
-    val estimatedHours: Int = 8
+    val estimatedHours: Int = 8,
+    @ColumnInfo(defaultValue = "''") val lastUpdated: String = "",
+    @ColumnInfo(defaultValue = "''") val contentHash: String = "",
+    @ColumnInfo(defaultValue = "'android'") val deviceId: String = "android",
+    @ColumnInfo(defaultValue = "0") val deleted: Boolean = false
 )
