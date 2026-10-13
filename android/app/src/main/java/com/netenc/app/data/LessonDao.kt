@@ -54,6 +54,10 @@ interface LessonDao {
     @Query("SELECT * FROM lessons WHERE deleted = 0 AND chapterOrder = :co ORDER BY lessonOrder, titleFa")
     suspend fun byChapter(co: Int): List<LessonEntity>
 
+    /** Sequential, bounded lesson page for the beginner-to-professional learning path. */
+    @Query("SELECT * FROM lessons WHERE deleted = 0 AND chapterTitle = :chapterTitle ORDER BY chapterOrder, lessonOrder, titleFa LIMIT :limit OFFSET :offset")
+    suspend fun learningPathPage(chapterTitle: String, offset: Int, limit: Int = 30): List<LessonEntity>
+
     @Query("SELECT value FROM sync_meta WHERE key = :key LIMIT 1")
     suspend fun getMeta(key: String): String?
 
