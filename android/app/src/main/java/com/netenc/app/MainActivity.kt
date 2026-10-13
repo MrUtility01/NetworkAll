@@ -198,6 +198,11 @@ class MainActivity : AppCompatActivity() {
         if (hostInput.text.toString().trim().isBlank()) { log("IP لازم است"); return }
         lifecycleScope.launch {
             try {
+                // Seed first so pulled lesson updates cannot replace a missing tree with defaults.
+                val seededCount = withContext(Dispatchers.IO) {
+                    OfflineSeeder.ensureSeeded(this@MainActivity)
+                }
+                if (seededCount <= 0) throw IllegalStateException("درخت محتوای آفلاین خالی است")
                 val c = client()
                 val since = withContext(Dispatchers.IO) { repo.getLastSync() }.ifBlank { null }
                 val m = withContext(Dispatchers.IO) { c.manifest(since) }
