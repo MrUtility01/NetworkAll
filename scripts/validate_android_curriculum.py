@@ -74,6 +74,9 @@ def main() -> None:
     empty_titles = []
     empty_content = []
     thin_content = []
+    depth_by_chapter = {}
+    source_status_counts = Counter()
+    assessments_by_chapter = Counter()
     for order, lesson in lessons:
         uid = str(lesson.get("uid") or "").strip()
         title = str(lesson.get("title_fa") or "").strip()
@@ -85,8 +88,14 @@ def main() -> None:
             empty_titles.append(uid)
         if not full:
             empty_content.append(uid)
-        elif len(full) < 120:
+        if len(full) < 120:
             thin_content.append(uid)
+        band = "deep" if len(full) >= 2000 else ("mid" if len(full) >= 800 else "thin")
+        depth_by_chapter.setdefault(order, Counter())[band] += 1
+        source_status_counts[str(lesson.get("source_status") or "missing")] += 1
+        meta = lesson.get("meta") if isinstance(lesson.get("meta"), dict) else {}
+        if isinstance(meta.get("assessment"), dict) and meta["assessment"]:
+            assessments_by_chapter[order] += 1
 
     if len(uids) != len(set(uids)):
         duplicates = [uid for uid, n in Counter(uids).items() if n > 1]
@@ -98,11 +107,23 @@ def main() -> None:
 
     print(
         "VALID NetworkAll curriculum: "
-        f"asset_version={data.get('version')} chapters={len(orders)} "
-        f"lessons={len(lessons)} chapter68={chapter_counts.get(68, 0)} "
-        f"empty_content={len(empty_content)} thin_content(<120 chars)={len(thin_content)} "
+        f"asset_version={data.get('version')} release={data.get('release_version')} "
+        f"chapters={len(orders)} lessons={len(lessons)} chapter68={chapter_counts.get(68, 0)} "
+        f"empty_content={len(empty_content)} very_short(<120 chars)={len(thin_content)} "
         f"gzip_bytes={ASSET.stat().st_size}"
     )
+    print("QUALITY SUMMARY (length only, not a factual review):")
+    total_depth = Counter()
+    for count in depth_by_chapter.values():
+        total_depth.update(count)
+    print("  all chapters:", dict(total_depth))
+    for order in sorted(depth_by_chapter):
+        bands = depth_by_chapter[order]
+        total = sum(bands.values())
+        if bands.get("thin", 0):
+            print(f"  chapter {order:02d}: lessons={total} thin(<800)={bands.get('thin',0)} mid(800-1999)={bands.get('mid',0)} deep(>=2000)={bands.get('deep',0)}")
+    print("  lessons with meta.assessment:", sum(assessments_by_chapter.values()), "/", len(lessons))
+    print("  source_status counts:", dict(source_status_counts))
     if chapter_counts.get(68, 0) == 0:
         fail("chapter 68 has no command lessons")
 
