@@ -9,6 +9,8 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 import sqlite3
+import os
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 from flask import Blueprint, request, jsonify, render_template_string, make_response, redirect
 
@@ -32,27 +34,53 @@ def _authorized() -> bool:
     return bool(_check_token())
 
 
+def _vault_key() -> bytes:
+    """Load a separate per-install 256-bit key; back it up securely with vault data."""
+    key_file = _db_path().parent / "networkall.vaultkey"
+    key_file.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        encoded = key_file.read_text(encoding="ascii").strip()
+        key = base64.urlsafe_b64decode(encoded.encode("ascii"))
+        if len(key) == 32:
+            return key
+    except (OSError, ValueError, UnicodeError):
+        pass
+    key = os.urandom(32)
+    key_file.write_text(base64.urlsafe_b64encode(key).decode("ascii") + "\\n", encoding="ascii")
+    try:
+        os.chmod(key_file, 0o600)
+    except OSError:
+        pass
+    return key
+
+
 def _seal(plain: str) -> str:
     if not plain:
         return ""
-    if plain.startswith("enc1:"):
+    if plain.startswith("enc2:"):
         return plain
-    key = hashlib.sha256((_sync_token or "dev").encode("utf-8")).digest()
-    raw = plain.encode("utf-8")
-    out = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
-    return "enc1:" + base64.urlsafe_b64encode(out).decode("ascii")
+    nonce = os.urandom(12)
+    cipher = AESGCM(_vault_key()).encrypt(nonce, plain.encode("utf-8"), b"NetworkAll/vault/v2")
+    return "enc2:" + base64.urlsafe_b64encode(nonce + cipher).decode("ascii")
 
 
 def _unseal(blob: str) -> str:
     if not blob:
         return ""
-    if not blob.startswith("enc1:"):
-        return "•••• (legacy — edit to re-seal)"
     try:
-        key = hashlib.sha256((_sync_token or "dev").encode("utf-8")).digest()
-        raw = base64.urlsafe_b64decode(blob[5:].encode("ascii"))
-        out = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
-        return out.decode("utf-8")
+        if blob.startswith("enc2:"):
+            raw = base64.urlsafe_b64decode(blob[5:].encode("ascii"))
+            if len(raw) < 29:
+                return "••••"
+            return AESGCM(_vault_key()).decrypt(raw[:12], raw[12:], b"NetworkAll/vault/v2").decode("utf-8")
+        if blob.startswith("enc1:"):
+            # Compatibility only: decrypt the legacy XOR format so it can be
+            # re-encrypted with AES-GCM on the next authenticated vault view.
+            legacy_key = hashlib.sha256((_sync_token or "dev").encode("utf-8")).digest()
+            old = base64.urlsafe_b64decode(blob[5:].encode("ascii"))
+            plain = bytes(b ^ legacy_key[i % len(legacy_key)] for i, b in enumerate(old))
+            return plain.decode("utf-8")
+        return "•••• (legacy — edit to re-seal)"
     except Exception:
         return "••••"
 
@@ -202,8 +230,13 @@ def workspace_page():
         rows = c.execute("SELECT uid,title,username,secret FROM ws_vault ORDER BY title").fetchall()
         items = []
         for r in rows:
-            secret_show = _unseal(r["secret"]) if (_authorized() or _cookie_ok()) else "••••"
+            stored = r["secret"] or ""
+            secret_show = _unseal(stored) if (_authorized() or _cookie_ok()) else "••••"
+            if stored.startswith("enc1:") and not secret_show.startswith("••••"):
+                # Transparently migrate legacy vault data after successful decrypt.
+                c.execute("UPDATE ws_vault SET secret=? WHERE uid=?", (_seal(secret_show), r["uid"]))
             items.append({"uid": r["uid"], "title": r["title"], "body": f"{r['username']}\n{secret_show}"})
+        c.commit()
         title = "مدیریت رمز ورود (sealed)"
     else:
         items = c.execute("SELECT uid,title,body FROM ws_tasks ORDER BY last_updated DESC").fetchall()
