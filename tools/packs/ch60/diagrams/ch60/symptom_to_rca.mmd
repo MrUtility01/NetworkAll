@@ -1,0 +1,15 @@
+flowchart TD
+    A[دریافت Symptom] --> B[ثبت دقیق علامت]
+    B --> C[جمع‌آوری Evidence]
+    C --> D[ساخت حداقل ۳ فرضیه]
+    D --> E{فرضیه بعدی؟}
+    E -->|بله| F[طراحی تست کنترل‌شده + Backup]
+    F --> G[اجرای تست]
+    G --> H{نتیجه مطابقت دارد؟}
+    H -->|خیر| E
+    H -->|بله| I[تأیید Root Cause]
+    I --> J[اعمال Fix]
+    J --> K[Verify کامل]
+    K --> L[Post-Incident Review]
+    E -->|فرضیه‌ها تمام شد| M[Escalation یا Evidence بیشتر]
+    M --> C
