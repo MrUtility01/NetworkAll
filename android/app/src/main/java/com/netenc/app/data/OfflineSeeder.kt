@@ -8,7 +8,7 @@ import java.io.BufferedInputStream
 import java.util.zip.GZIPInputStream
 
 object OfflineSeeder {
-    private const val META_SEEDED = "offline_seeded_v15"
+    private const val META_SEEDED = "offline_seeded_v16"
 
     suspend fun ensureSeeded(context: Context): Int = withContext(Dispatchers.IO) {
         val dao = AppDatabase.get(context).lessonDao()
@@ -52,7 +52,7 @@ object OfflineSeeder {
                             examples = les.optString("examples"),
                             notes = les.optString("notes"),
                             lastUpdated = "2026-10-11T12:00:00Z",
-                            contentHash = "offline-v13-ch68",
+                            contentHash = "offline-v16-ch68",
                             deviceId = "android-offline",
                             chapterOrder = chOrder,
                             chapterTitle = chTitle,
