@@ -10,7 +10,15 @@ from collections import Counter
 ROOT = Path(__file__).resolve().parents[1]
 PACKS = ROOT / "tools/packs/commands_encyclopedia"
 REQUIRED = {
-    "cisco_routing.json": ("cisco_routing", 30),
+    "cisco_routing.json": ("cisco_routing", 151),
+    "cisco_routing_addon_01.json": ("cisco_routing", 200),
+    "cisco_routing_addon_02.json": ("cisco_routing", 200),
+    "cisco_routing_addon_03.json": ("cisco_routing", 200),
+    "cisco_routing_addon_04.json": ("cisco_routing", 200),
+    "cisco_routing_addon_05.json": ("cisco_routing", 200),
+    "cisco_routing_addon_06.json": ("cisco_routing", 200),
+    "cisco_routing_addon_07.json": ("cisco_routing", 200),
+    "cisco_routing_addon_08.json": ("cisco_routing", 49),
     "cisco_switching.json": ("cisco_switching", 20),
     "mikrotik_ops_addon.json": ("mikrotik", 20),
     "powershell.json": ("powershell", 20),
@@ -121,7 +129,7 @@ def main() -> None:
     print("CH68 ADDITIVE PACKS VALID")
     print("Command counts:", dict(totals))
     print(f"Examples={len(examples)} scenarios={len(scenarios)} questions={len(questions)} answers={len(answers)} sources={len(source_data['sources'])}")
-    print(f"Cisco Routing progress: {totals['cisco_routing']}/1600 curated records in this dedicated pack.")
+    if totals["cisco_routing"] != 1600:\n        fail(f"Cisco Routing must total exactly 1600 records across the dedicated base/add-on packs; found {totals['cisco_routing']}")\n    print(f"Cisco Routing total: {totals['cisco_routing']}/1600 records across 9 JSON files; source review and IOS-XE lab validation remain required.")
     print("Note: structural validation does not replace vendor/version review or real-device labs.")
 
 if __name__ == "__main__":
