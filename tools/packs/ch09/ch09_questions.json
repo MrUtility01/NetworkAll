@@ -1,0 +1,779 @@
+{
+  "package_schema_version": 1,
+  "chapter_order": 9,
+  "chapter_title_fa": "ARP ICMP TCP UDP",
+  "questions": [
+    {
+      "id": "ch09-q-001",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:arp:v1",
+      "level": "L0",
+      "question_fa": "برای مقصد خارج از subnet، میزبان معمولاً فریم Ethernet را به MAC کدام دستگاه می‌فرستد؟",
+      "options": [
+        "سرور DNS",
+        "default gateway",
+        "MAC مقصد نهایی در اینترنت",
+        "broadcast در هر hop"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-002",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:arp-cache:v1",
+      "level": "L1",
+      "question_fa": "ARP Request معمولاً چگونه منتشر می‌شود؟",
+      "options": [
+        "به صورت TCP SYN",
+        "به صورت Ethernet broadcast در broadcast domain محلی",
+        "به صورت DNS multicast",
+        "از طریق روترهای اینترنت forward می‌شود"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-003",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:icmp-role:v1",
+      "level": "L2",
+      "question_fa": "وضعیت INCOMPLETE در جدول neighbor چه معنایی دارد؟",
+      "options": [
+        "اتصال TCP کامل شده",
+        "نگاشت همسایه هنوز resolve نشده",
+        "DNS پاسخ NXDOMAIN داده",
+        "MTU مسیر مناسب است"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-004",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:traceroute:v1",
+      "level": "L3",
+      "question_fa": "IPv6 برای کشف همسایه به چه مکانیزمی تکیه می‌کند؟",
+      "options": [
+        "ARP",
+        "ICMPv6 Neighbor Discovery",
+        "TCP handshake",
+        "DNS A record"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-005",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "level": "L4",
+      "question_fa": "مشاهده Gratuitous ARP به تنهایی چه چیزی را ثابت می‌کند؟",
+      "options": [
+        "قطعاً حمله است",
+        "قطعاً IP تکراری است",
+        "هیچ‌کدام؛ باید با context و شواهد هم‌بسته شود",
+        "DNS از کار افتاده است"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-006",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-state:v1",
+      "level": "L0",
+      "question_fa": "Proxy ARP چه رفتاری دارد؟",
+      "options": [
+        "روتر برای آدرس دیگری به ARP پاسخ می‌دهد",
+        "DNS را رمزنگاری می‌کند",
+        "TCP را به UDP تبدیل می‌کند",
+        "MTU را مذاکره می‌کند"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-007",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-seq:v1",
+      "level": "L1",
+      "question_fa": "کدام جمله درباره ping دقیق‌تر است؟",
+      "options": [
+        "موفقیت آن سلامت کامل برنامه را تضمین می‌کند",
+        "عدم پاسخ ثابت می‌کند میزبان خاموش است",
+        "فقط نتیجه آزمون ICMP در شرایط مشخص را نشان می‌دهد",
+        "به IP وابسته نیست"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-008",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-window:v1",
+      "level": "L2",
+      "question_fa": "Destination Unreachable چه نوع پیامی است؟",
+      "options": [
+        "TCP control",
+        "ICMP error/control",
+        "ARP Reply",
+        "UDP handshake"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-009",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-close:v1",
+      "level": "L3",
+      "question_fa": "Traceroute معمولاً با چه سازوکاری hopها را آشکار می‌کند؟",
+      "options": [
+        "تغییر پورت DNS",
+        "افزایش TTL/Hop Limit و تحلیل Time Exceeded",
+        "ARP روی اینترنت",
+        "تغییر MAC مقصد نهایی"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-010",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:udp-apps:v1",
+      "level": "L4",
+      "question_fa": "ستاره در یک hop traceroute چه نتیجه‌ای دارد؟",
+      "options": [
+        "مسیر قطع است",
+        "پاسخ probe نرسیده؛ ممکن است filtering یا rate limit باشد",
+        "DNS حتماً خراب است",
+        "MTU برابر صفر است"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-011",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:mtu-pmtud:v1",
+      "level": "L0",
+      "question_fa": "TCP چه چیزی را ارائه می‌کند؟",
+      "options": [
+        "جریان بایتی مرتب و قابل‌اعتماد",
+        "datagram بدون تضمین",
+        "تحویل multicast اجباری",
+        "نگاشت IP به MAC"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-012",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:capture:v1",
+      "level": "L1",
+      "question_fa": "UDP چه چیزی را تضمین می‌کند؟",
+      "options": [
+        "تحویل",
+        "ترتیب",
+        "نه تحویل و نه ترتیب را در خود پروتکل تضمین نمی‌کند",
+        "سه‌مرحله‌ای handshake"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-013",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:security:v1",
+      "level": "L2",
+      "question_fa": "ترتیب معمول TCP three-way handshake چیست؟",
+      "options": [
+        "ACK, FIN, SYN",
+        "SYN, SYN-ACK, ACK",
+        "SYN-ACK, RST, FIN",
+        "ARP, DNS, ACK"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-014",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:ipv6-nd:v1",
+      "level": "L3",
+      "question_fa": "SYN بدون SYN-ACK می‌تواند ناشی از چه چیزی باشد؟",
+      "options": [
+        "فقط DNS",
+        "سرویس، ACL یا مسیر برگشت؛ نیازمند شواهد بیشتر",
+        "فقط Zero Window",
+        "ARP در IPv6"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-015",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:arp:v1",
+      "level": "L4",
+      "question_fa": "TCP socket در حالت LISTEN چه می‌کند؟",
+      "options": [
+        "منتظر اتصال ورودی است",
+        "همیشه در حال انتقال داده است",
+        "ARP table را پاک می‌کند",
+        "UDP datagram را تأیید می‌کند"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-016",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:arp-cache:v1",
+      "level": "L0",
+      "question_fa": "CLOSE_WAIT معمولاً چه وضعیتی را نشان می‌دهد؟",
+      "options": [
+        "peer پایان سمت خود را اعلام کرده و برنامه محلی هنوز close نکرده",
+        "TCP هنوز SYN ندیده",
+        "UDP retransmit شده",
+        "DNS cache منقضی است"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-017",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:icmp-role:v1",
+      "level": "L1",
+      "question_fa": "FIN در برابر RST چه تفاوتی دارد؟",
+      "options": [
+        "هیچ تفاوتی ندارد",
+        "FIN پایان مرتب را اعلام می‌کند؛ RST reset است",
+        "FIN فقط در UDP است",
+        "RST یعنی handshake موفق است"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-018",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:traceroute:v1",
+      "level": "L2",
+      "question_fa": "Retransmission در TCP capture چه می‌گوید؟",
+      "options": [
+        "قطعاً کابل خراب است",
+        "نیاز به بررسی loss، congestion، reordering و capture point است",
+        "ثابت می‌کند DNS سالم است",
+        "ثابت می‌کند packet loss وجود ندارد"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-019",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "level": "L3",
+      "question_fa": "TCP Zero Window معمولاً به چه اشاره دارد؟",
+      "options": [
+        "گیرنده فعلاً فضای دریافت اعلام نمی‌کند",
+        "ARP Reply دریافت شده",
+        "UDP port باز است",
+        "PMTUD کامل است"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-020",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-state:v1",
+      "level": "L4",
+      "question_fa": "DNS همیشه فقط UDP/53 است؟",
+      "options": [
+        "بله",
+        "خیر، TCP نیز در شرایطی استفاده می‌شود",
+        "فقط ICMP است",
+        "فقط ARP است"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-021",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-seq:v1",
+      "level": "L0",
+      "question_fa": "مسدود شدن پیام‌های لازم PMTUD چه پیامدی دارد؟",
+      "options": [
+        "همیشه throughput را بالا می‌برد",
+        "ممکن است انتقال‌های بزرگ را مختل کند ولی بسته کوچک عبور کند",
+        "ARP از بین می‌رود",
+        "TCP به UDP تبدیل می‌شود"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-022",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-window:v1",
+      "level": "L1",
+      "question_fa": "Capture filter با display filter چه تفاوتی دارد؟",
+      "options": [
+        "هیچ تفاوتی ندارند",
+        "capture filter هنگام گرفتن بسته‌ها اعمال می‌شود؛ display filter نمایش را پالایش می‌کند",
+        "display filter کابل را تنظیم می‌کند",
+        "capture filter بسته را اصلاح می‌کند"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-023",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-close:v1",
+      "level": "L2",
+      "question_fa": "کدام فرمان Linux جدول همسایه را نشان می‌دهد؟",
+      "options": [
+        "ip neigh show",
+        "ss -lnt",
+        "nslookup -type=MX",
+        "ping -t"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-024",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:udp-apps:v1",
+      "level": "L3",
+      "question_fa": "کدام فرمان برای دیدن TCP listener در Linux مناسب است؟",
+      "options": [
+        "ss -lnt",
+        "ip neigh flush",
+        "arp -d",
+        "traceroute -m 0"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-025",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:mtu-pmtud:v1",
+      "level": "L4",
+      "question_fa": "Test-NetConnection -Port برای چه استفاده می‌شود؟",
+      "options": [
+        "مشاهده/آزمون اتصال TCP به host و port",
+        "پاک کردن ARP cache",
+        "تنظیم MTU روتر",
+        "تغییر DNS server روی شبکه"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-026",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:capture:v1",
+      "level": "L0",
+      "question_fa": "کدام ترکیب برای بررسی duplicate IP بهتر است؟",
+      "options": [
+        "یک ping موفق",
+        "MACهای متفاوت برای IP یکسان به‌علاوه DHCP/IPAM و رخدادهای زمانی",
+        "فقط نام DNS",
+        "فقط تست MTU"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-027",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:security:v1",
+      "level": "L1",
+      "question_fa": "کدام پیام مرتبط با انقضای TTL در traceroute IPv4 است؟",
+      "options": [
+        "Time Exceeded",
+        "SYN-ACK",
+        "ARP Reply",
+        "DNS NXDOMAIN"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-028",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:ipv6-nd:v1",
+      "level": "L2",
+      "question_fa": "اگر Echo Reply دریافت نشد، قدم کم‌خطرتر چیست؟",
+      "options": [
+        "reboot تمام شبکه",
+        "policy، مسیر، rate limit و آزمون مستقل برنامه را بررسی کن",
+        "همه ICMP را بی‌قید باز کن",
+        "DNS را حذف کن"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-029",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:arp:v1",
+      "level": "L3",
+      "question_fa": "چرا capture در دو نقطه مسیر مفید است؟",
+      "options": [
+        "حجم فایل را صفر می‌کند",
+        "محل ناپدید شدن بسته و مسیر برگشت را محدود می‌کند",
+        "firewall را خودکار اصلاح می‌کند",
+        "پاسخ را تضمین می‌کند"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-030",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:arp-cache:v1",
+      "level": "L4",
+      "question_fa": "محدودیت امنیتی ذاتی ARP کلاسیک چیست؟",
+      "options": [
+        "احراز هویت رمزنگاری‌شده ندارد",
+        "همیشه end-to-end رمزنگاری شده",
+        "فقط روی TCP کار می‌کند",
+        "هر پاسخ با گواهی امضا می‌شود"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-031",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:icmp-role:v1",
+      "level": "L0",
+      "question_fa": "DAI را چگونه باید در شبکه فعال کرد؟",
+      "options": [
+        "بدون بررسی روی همه VLANها",
+        "پس از بررسی پشتیبانی، binding، طراحی و rollback",
+        "برای حل DNS",
+        "به عنوان جایگزین backup"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-032",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:traceroute:v1",
+      "level": "L1",
+      "question_fa": "RST سریع از مقصد چه چیزی را ممکن است نشان دهد؟",
+      "options": [
+        "پورت بسته یا اتصال رد شده، اما منبع RST باید تأیید شود",
+        "حتماً DNS مشکل دارد",
+        "قطعاً ARP در IPv6 است",
+        "MTU درست است"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-033",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "level": "L2",
+      "question_fa": "UDP بدون پاسخ ممکن است ناشی از چه چیزی باشد؟",
+      "options": [
+        "فقط checksum",
+        "برنامه، ACL/NAT، loss یا مسیر برگشت",
+        "همیشه SYN flood",
+        "TCP FIN"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-034",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-state:v1",
+      "level": "L3",
+      "question_fa": "چرا ping کوتاه نماینده کامل کیفیت برنامه نیست؟",
+      "options": [
+        "ICMP probe با رفتار application و TCP/UDP یکی نیست",
+        "ping از IP استفاده نمی‌کند",
+        "ping همیشه DNS است",
+        "ping پورت TCP باز می‌کند"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-035",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-seq:v1",
+      "level": "L4",
+      "question_fa": "اگر TCP handshake کامل است ولی TLS شکست می‌خورد، چه برداشتی درست‌تر است؟",
+      "options": [
+        "لایه انتقال تا اتصال کار کرده؛ TLS و برنامه جدا بررسی شوند",
+        "حتماً ARP خراب است",
+        "UDP بسته است",
+        "ICMP حتماً مسدود است"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-036",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-window:v1",
+      "level": "L0",
+      "question_fa": "NIC offload چه اثری می‌تواند روی capture میزبان داشته باشد؟",
+      "options": [
+        "ظاهر checksum یا segmentation را تغییر دهد",
+        "ARP را همیشه حذف کند",
+        "DNS را رمز کند",
+        "مسیر را تضمین کند"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-037",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-close:v1",
+      "level": "L1",
+      "question_fa": "ثبت timestamp در RCA چرا مهم است؟",
+      "options": [
+        "برای زیبایی گزارش",
+        "برای هم‌بستگی packet، log، counter و change event",
+        "برای افزایش MTU",
+        "برای فعال‌کردن TCP"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-038",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:udp-apps:v1",
+      "level": "L2",
+      "question_fa": "چه نتیجه‌ای را نباید فقط از دیدن RST گرفت؟",
+      "options": [
+        "RST مشاهده شده",
+        "حتماً برنامه مقصد آن را ساخته است",
+        "tuple و timestamp مهم‌اند",
+        "middlebox نیز باید بررسی شود"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-039",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:mtu-pmtud:v1",
+      "level": "L3",
+      "question_fa": "چرا مسدودکردن blanket ICMPv6 خطرناک است؟",
+      "options": [
+        "چون جای DNS است",
+        "چون ND و PMTUD به ICMPv6 وابسته‌اند",
+        "چون TCP روی MAC است",
+        "چون IPv6 از ARP استفاده می‌کند"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-040",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:capture:v1",
+      "level": "L4",
+      "question_fa": "روش مناسب تغییر MTU چیست؟",
+      "options": [
+        "تغییر کورکورانه روی production",
+        "آزمون کنترل‌شده، backup، verify و rollback",
+        "حذف gateway",
+        "خاموش‌کردن همه ICMP"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-041",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:security:v1",
+      "level": "L0",
+      "question_fa": "فرضیه مناسب در RCA چه ویژگی دارد؟",
+      "options": [
+        "هیچ شاهدی نمی‌تواند ردش کند",
+        "شاهد مشخص برای تأیید و رد دارد",
+        "از روی symptom قطعی است",
+        "بدون verify است"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-042",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:ipv6-nd:v1",
+      "level": "L1",
+      "question_fa": "پیش از اشتراک‌گذاری PCAP چه باید کرد؟",
+      "options": [
+        "ارسال خام در کانال عمومی",
+        "پاک‌سازی آدرس و payload حساس مطابق سیاست",
+        "حذف timestamp",
+        "افزودن credential"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-043",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:arp:v1",
+      "level": "L2",
+      "question_fa": "آیا traceroute مسیر تمام بسته‌های برنامه را به‌طور قطعی ثابت می‌کند؟",
+      "options": [
+        "بله همیشه",
+        "خیر، probe و ECMP/policy ممکن است متفاوت باشند",
+        "فقط در DNS",
+        "فقط با ARP"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-044",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:arp-cache:v1",
+      "level": "L3",
+      "question_fa": "اگر سرویس فقط روی 127.0.0.1 bind شده باشد چه پیامدی دارد؟",
+      "options": [
+        "دسترسی فقط از loopback ممکن است",
+        "همه میزبان‌های شبکه به آن دسترسی دارند",
+        "ARP به IPv6 تبدیل می‌شود",
+        "UDP تحویل قطعی می‌شود"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-045",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:icmp-role:v1",
+      "level": "L4",
+      "question_fa": "TCP sequence number چه چیزی را شماره‌گذاری می‌کند؟",
+      "options": [
+        "بایت‌های جریان TCP",
+        "MAC مقصد",
+        "رکورد DNS",
+        "فریم Ethernet"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-046",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:traceroute:v1",
+      "level": "L0",
+      "question_fa": "SYN flood معمولاً چه منبعی را هدف می‌گیرد؟",
+      "options": [
+        "جدول DNS فقط",
+        "منابع اتصال نیمه‌باز و پردازش handshake",
+        "ARP cache فقط",
+        "MTU سوئیچ"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-047",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "level": "L1",
+      "question_fa": "کدام نشانه بیشتر به ظرفیت دریافت اشاره می‌کند؟",
+      "options": [
+        "TCP Zero Window",
+        "ARP Reply",
+        "DNS NXDOMAIN",
+        "ICMP Echo Reply"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-048",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-state:v1",
+      "level": "L2",
+      "question_fa": "چرا UDP برای بعضی برنامه‌های بلادرنگ انتخاب می‌شود؟",
+      "options": [
+        "تضمین تحویل دارد",
+        "سربار/راه‌اندازی ساده‌تر می‌تواند تأخیر را کم کند، اما loss باید مدیریت شود",
+        "همیشه امن‌تر است",
+        "پورت ندارد"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-049",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-seq:v1",
+      "level": "L3",
+      "question_fa": "کدام روند تشخیصی کلی منطقی است؟",
+      "options": [
+        "تغییر MTU قبل از شواهد",
+        "link/IP/route و neighbor سپس transport و application متناسب با symptom",
+        "حذف firewall",
+        "reinstall قبل از جمع‌آوری شواهد"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-050",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-window:v1",
+      "level": "L4",
+      "question_fa": "چرا پاسخ آزمون در فایل جدا نگه داشته می‌شود؟",
+      "options": [
+        "برای افشای پاسخ در گزینه‌ها",
+        "برای جلوگیری از لو رفتن پاسخ صحیح و پشتیبانی از ارزیابی مستقل",
+        "فقط برای ARP",
+        "برای حذف سؤال"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-051",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:tcp-close:v1",
+      "level": "L0",
+      "question_fa": "PCAP یک‌طرفه چه محدودیتی دارد؟",
+      "options": [
+        "هیچ محدودیتی ندارد",
+        "ممکن است مسیر برگشت، محل loss یا اثر offload را پنهان کند",
+        "هر بسته شبکه را نشان می‌دهد",
+        "DNS را رمزگشایی می‌کند"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-052",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:udp-apps:v1",
+      "level": "L1",
+      "question_fa": "چه چیزی رفع مشکل را بهتر اثبات می‌کند؟",
+      "options": [
+        "گفتن «درست شد»",
+        "تکرار آزمون در شرایط مشابه و ثبت نتیجه بعد از تغییر",
+        "فقط reboot",
+        "حذف log"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-053",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:mtu-pmtud:v1",
+      "level": "L2",
+      "question_fa": "ARP Reply چه اطلاعاتی را نگاشت می‌کند؟",
+      "options": [
+        "IPv4 address به link-layer address در لینک محلی",
+        "نام دامنه به IP عمومی",
+        "پورت TCP به process",
+        "MTU به TTL"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-054",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:capture:v1",
+      "level": "L3",
+      "question_fa": "UDP header شامل کدام فیلدهاست؟",
+      "options": [
+        "Source port, destination port, length, checksum",
+        "SYN, ACK, FIN",
+        "MAC, VLAN, TTL",
+        "DNS name, TTL, MX"
+      ],
+      "type": "single_choice"
+    },
+    {
+      "id": "ch09-q-055",
+      "chapter_order": 9,
+      "lesson_uid": "ch09:security:v1",
+      "level": "L4",
+      "question_fa": "Path MTU Discovery در IPv6 به چه نوع پیام‌هایی نیاز دارد؟",
+      "options": [
+        "ICMPv6 Packet Too Big",
+        "ARP Reply",
+        "TCP RST",
+        "DNS NXDOMAIN"
+      ],
+      "type": "single_choice"
+    }
+  ],
+  "answer_key_file": "ch09_answer_key.json",
+  "source_status": "review_required"
+}
