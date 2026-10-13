@@ -17,14 +17,14 @@ OUT = OUT_DIR / f"NetworkAll-Windows-v{VERSION}.zip"
 PACKAGE_ROOT = f"NetworkAll-Windows-v{VERSION}"
 INCLUDE_ROOTS = [
     "server", "windows", "shared", "tools", "scripts", "docs",
-    "INSTALL_FA.md", "README.md", "README_FA.txt",
+    "INSTALL_FA.md", "README.md", "README_FA.txt", "VERSION.txt",
     "android/app/src/main/assets/curriculum_index.json.gz",
 ]
 EXCLUDE_DIRS = {
     ".git", ".venv", "venv", "__pycache__", "node_modules", "build",
-    ".gradle", ".idea", ".vscode", "data", "dist",
+    ".gradle", ".idea", ".vscode", "data", "dist", "_archive_zips",
 }
-EXCLUDE_SUFFIXES = {".pyc", ".pyo", ".apk", ".aab", ".db", ".sqlite", ".sqlite3", ".pem", ".key"}
+EXCLUDE_SUFFIXES = {".pyc", ".pyo", ".apk", ".aab", ".db", ".sqlite", ".sqlite3", ".pem", ".key", ".zip", ".7z", ".rar", ".exe", ".log"}
 REQUIRED = [
     "server/app.py",
     "server/core/db.py",
