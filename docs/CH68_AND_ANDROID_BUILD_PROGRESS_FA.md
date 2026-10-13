@@ -59,3 +59,28 @@ PR کاندید: https://github.com/MrUtility01/NetworkAll/pull/5
 ## خطای ساخت اندروید
 
 برای عیب‌یابی خطای جدید باید URL اجرای ناموفق یا log مرحلهٔ شکست در اختیار باشد. اجرای موفق قبلی نمی‌تواند علت خطای جدید را اثبات کند. هر اصلاح Kotlin/Gradle باید با ساخت تازه و audit نهایی APK تأیید شود.
+
+
+## مرحله افزایشی فصل ۹ — ARP / ICMP / TCP / UDP
+
+- [x] C9-P1 — بسته درس‌های فصل ۹ ساخته شد: ۲۱ درس افزایشی با UIDهای یکتا، سطح‌های L0 تا L4، مدل ذهنی، لاب امن، RCA، امنیت و rollback.
+- [x] C9-P2 — ۵۰ مثال عملی با فرمان/ورودی، گام‌ها، خروجی مورد انتظار و تفسیر ساخته شد.
+- [x] C9-P3 — ۵۰ سناریوی عیب‌یابی با شواهد، فرضیه، اقدام اصلاحی، verification و rollback ساخته شد.
+- [x] C9-P4 — ۵۵ سؤال و پاسخ‌نامه مستقل ساخته شد؛ IDها تطبیق دارند و پاسخ صحیح در فایل سؤال‌ها علامت نخورده است.
+- [x] C9-P5 — ۱۶ منبع رسمی/استاندارد و ۸ نمودار با Mermaid، SVG و manifest ثبت شدند.
+- [x] C9-P6 — اسکریپت `scripts/validate_ch09_pack.py` افزوده شد و در Workflow پیش از اعتبارسنجی نهایی اجرا خواهد شد.
+- [x] C9-P7 — ادغام‌گر برای افزودن درس‌های تازه فصل ۹ بدون حذف درس‌های موجود توسعه یافت.
+- [ ] C9-P8 — اجرای تازه GitHub Actions و تأیید نهایی merge/APK هنوز باید از run واقعی بررسی شود.
+
+### فایل‌های فصل ۹
+
+- [بسته درس‌ها](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/ch09/ch09_pack.json)
+- [۵۰ مثال](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/ch09/ch09_examples.json)
+- [۵۰ سناریو](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/ch09/ch09_scenarios.json)
+- [۵۵ سؤال](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/ch09/ch09_questions.json)
+- [پاسخ‌نامه مستقل](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/ch09/ch09_answer_key.json)
+- [منابع](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/ch09/ch09_sources.json)
+- [نمودارها و manifest](https://github.com/MrUtility01/NetworkAll/tree/codex/android-repair-port86-20261013/tools/packs/ch09/diagrams)
+- [گزارش اعتبارسنجی](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/ch09/VALIDATION.md)
+
+**محدودیت مهم:** محتوا هنوز `review_required` است. فایل‌های SVG/Mermaid در repository هستند، اما تا زمان اجرای موفق workflow و بررسی loader، نمایش همهٔ نمودارها در UI یا نصب موفق APK ادعا نمی‌شود.
