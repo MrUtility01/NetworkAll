@@ -18,13 +18,13 @@
 - `ch68_examples.json` — ۵۰ مثال عملی
 - `ch68_scenarios.json` — ۵۰ سناریوی لابراتوری و RCA
 - `ch68_questions.json` و `ch68_answer_key.json` — ۵۰ سؤال عمومی و پاسخ‌نامه مستقل
-- `cisco_routing_exam.json` و `cisco_routing_exam_answer_key.json` — ۲۵ سؤال تخصصی Cisco Routing / ACL / NAT
-- `routeros_exam.json` و `routeros_exam_answer_key.json` — ۲۰ سؤال تخصصی RouterOS v7
-- `powershell_exam.json` و `powershell_exam_answer_key.json` — ۲۱ سؤال تخصصی PowerShell
+- `cisco_routing_exam.json` و `cisco_routing_exam_answer_key.json` — ۲۵ سؤال پایه Cisco Routing / ACL / NAT؛ به‌علاوه addon با ۲۰ سؤال
+- `routeros_exam.json` و `routeros_exam_answer_key.json` — ۳۰ سؤال پایه RouterOS v7؛ به‌علاوه addon با ۲۰ سؤال
+- `powershell_exam.json` و `powershell_exam_answer_key.json` — ۲۱ سؤال پایه PowerShell؛ به‌علاوه addon با ۲۰ سؤال
 - `ch68_sources.json` — منابع رسمی/سازمانی برای بازبینی
 - `VALIDATION.md` — گزارش شمارش، معیارهای ساختاری و محدودیت‌ها
 
-مجموع آزمون‌های فایل‌شده **۱۱۶ سؤال و ۱۱۶ پاسخ مستقل** است. شناسهٔ سؤال‌ها و پاسخ‌ها باید یکسان باشد و پاسخ صحیح داخل فایل سؤال‌ها ذخیره نمی‌شود.
+مجموع آزمون‌های تخصصی فعلی **۱۳۶ سؤال و ۱۳۶ پاسخ مستقل** است؛ آزمون عمومی فصل ۶۸ نیز جداگانه ۵۰ سؤال و ۵۰ پاسخ دارد. شناسهٔ سؤال‌ها و پاسخ‌ها باید یکسان باشد و پاسخ صحیح داخل فایل سؤال‌ها ذخیره نمی‌شود.
 
 ## بسته‌های قدیمی که حفظ شده‌اند
 
