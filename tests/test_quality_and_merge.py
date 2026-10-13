@@ -416,6 +416,11 @@ class ContentMergeTests(unittest.TestCase):
                     self.assertIsNotNone(answer)
                     options = question.get("options", [])
                     self.assertTrue(0 <= answer.get("correct_index", -1) < len(options))
+                    self.assertEqual(answer.get("question_id"), question.get("id"))
+                    self.assertEqual(
+                        answer.get("correct_option_id"),
+                        options[answer["correct_index"]].get("id"),
+                    )
                     self.assertTrue(answer.get("explanation") or answer.get("rationale"))
 
     def test_new_scenario_packs_are_catalogued_and_have_separate_assessment_keys(self):
