@@ -293,7 +293,7 @@ class WorkspaceActivity : AppCompatActivity() {
                 setSingleLine(true)
                 inputType = InputType.TYPE_CLASS_DATETIME
                 isFocusable = false
-                setOnClickListener { openTimePicker(time) }
+                setOnClickListener { openTimePicker(this) }
             }
             val reminder = CheckBox(this@WorkspaceActivity).apply {
                 text = "یادآوری در تاریخ و ساعت بالا"
