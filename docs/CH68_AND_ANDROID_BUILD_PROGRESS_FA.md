@@ -101,3 +101,30 @@ PR کاندید: https://github.com/MrUtility01/NetworkAll/pull/5
 - ادغام افزایشی اندروید: `0700211b2c879dd7e31f146a3bfd6dad3e6ca5f7`
 - Workflow validation: `86b477914d42425af20878168980638653554a6b`
 - ثبت گزارش فصل ۹: `4b16628cfd8b6d4a4331caca9d2787e629fa02d6`
+
+
+## به‌روزرسانی واقعی شمارش و رفع خطای ساخت — 2026-10-13
+
+### Cisco Routing و آزمون‌های تخصصی
+
+- بستهٔ Cisco IOS-XE Routing اکنون دقیقاً **۱۶۰۰ رکورد فرمان** دارد: `cisco_routing.json` با ۱۵۱ رکورد و `cisco_routing_addon_01.json` تا `cisco_routing_addon_08.json` با مجموع ۱۴۴۹ رکورد.
+- شمارش بسته‌های فرمان مستقل: Cisco Routing ۱۶۰۰، Cisco Switching ۲۰، RouterOS ۱۴۳، PowerShell ۱۴۹، Windows Batch ۲۰ و Linux ۲۰؛ مجموع **۱۹۵۲ رکورد**.
+- آزمون‌های مستقل پلتفرمی افزوده شدند: Cisco Routing/ACL/NAT با ۲۵ سؤال، RouterOS v7 با ۲۰ سؤال، PowerShell با ۲۱ سؤال؛ هرکدام answer key جدا دارد. آزمون عمومی ۵۰ سؤال نیز حفظ شده است.
+- Validator فصل ۶۸ به بررسی فایل‌های آزمون تخصصی، شناسهٔ command UID، چهار گزینه و تطبیق answer key گسترش یافت.
+- گزارش شمارش: [VALIDATION.md](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/commands_encyclopedia/VALIDATION.md)
+- README بسته‌ها: [commands_encyclopedia/README.md](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/commands_encyclopedia/README.md)
+
+### تکمیل بیشتر فصل ۹
+
+- علاوه بر ۲۱ درس، ۵۰ مثال، ۵۰ سناریوی پایه و ۵۵ سؤال/پاسخ مستقل، **۱۲ لابراتوار مرحله‌ای** و **۱۵ مطالعهٔ موردی عیب‌یابی/RCA** افزوده شد.
+- validator فصل ۹ اکنون وجود و ارجاع lesson UID در هر دو مجموعهٔ تازه را هم بررسی می‌کند.
+- [۱۲ لابراتوار](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/ch09/ch09_labs.json) · [۱۵ مطالعهٔ موردی](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/ch09/ch09_case_studies.json)
+
+### خطای واقعی Android
+
+- اجرای ناموفق [38456468352](https://github.com/MrUtility01/NetworkAll/actions/runs/38456468352) در مرحلهٔ Assemble APK شکست خورد؛ خطاهای اصلی Kotlin عبارت بودند از `Unresolved reference: PersianCalendar` در `JalaliDate.kt` و `Unresolved reference: time` در `WorkspaceActivity.kt`.
+- کد تقویم شمسی از وابستگی ناموجود `PersianCalendar` جدا شد و خطای listener انتخاب زمان نیز اصلاح شد.
+- اجرای [38458239136](https://github.com/MrUtility01/NetworkAll/actions/runs/38458239136) برای اصلاح انتخاب زمان **موفق** شد. این نتیجه ثابت می‌کند که اصلاح مذکور build را رفع کرده، اما نتیجهٔ CI برای تمام تغییرات تازهٔ فصل ۹/۶۸ باید روی آخرین SHA نیز سبز باشد.
+- وضعیت اجرای جاری: [GitHub Actions](https://github.com/MrUtility01/NetworkAll/actions). نصب روی گوشی واقعی هنوز انجام/تأیید نشده است.
+
+تمام رکوردهای جدید همچنان `review_required` هستند؛ شمارش و اعتبارسنجی ساختاری جایگزین بازبینی release-specific و آزمون عملی روی تجهیزات/سیستم‌های هدف نیست.
