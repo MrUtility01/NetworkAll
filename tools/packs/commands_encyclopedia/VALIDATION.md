@@ -7,7 +7,8 @@
 
 | بسته | رکورد تازه |
 |---|---:|
-| Cisco IOS-XE / Routing | 30 |\n| Cisco IOS/IOS-XE Switching | 20 |
+| Cisco IOS-XE / Routing | 30 |
+| Cisco IOS/IOS-XE Switching | 20 |
 | MikroTik RouterOS v7 | 20 |
 | PowerShell | 20 |
 | Windows Batch | 20 |
@@ -23,7 +24,8 @@
 
 ## فایل‌ها
 
-- `cisco_routing.json`\n- `cisco_switching.json`
+- `cisco_routing.json`
+- `cisco_switching.json`
 - `mikrotik_ops_addon.json`
 - `powershell.json`
 - `windows_batch.json`
