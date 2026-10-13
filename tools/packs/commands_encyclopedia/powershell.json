@@ -1,0 +1,1178 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "Chapter 68 PowerShell command pack; additive first batch",
+  "chapter_order": 68,
+  "chapter_title_fa": "دانشنامه جامع دستورات",
+  "vendor_pack": "powershell",
+  "vendor": "Microsoft",
+  "platform": "PowerShell",
+  "scope": "Network, system administration, logging, diagnostics and automation",
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true
+  },
+  "commands": [
+    {
+      "uid": "cmd:powershell:admin:0001",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Get-NetIPConfiguration",
+      "title_fa": "[L1] نمایش پیکربندی IP رابط‌ها",
+      "title_en": "نمایش پیکربندی IP رابط‌ها",
+      "syntax": "Get-NetIPConfiguration",
+      "when_to_use_fa": "network",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nگزارش IP، gateway و رابط فعال",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "InterfaceAlias : Ethernet; IPv4Address : 192.0.2.10"
+      ],
+      "rollback_fa": "با ipconfig /all و تنظیمات adapter مقایسه کنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "نمایش پیکربندی IP رابط‌ها",
+        "PowerShell",
+        "Get-NetIPConfiguration"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-NetIPConfiguration» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "network؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0002",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Get-NetRoute -AddressFamily IPv4 | Sort-Object RouteMetric",
+      "title_fa": "[L1] بررسی جدول مسیر IPv4",
+      "title_en": "بررسی جدول مسیر IPv4",
+      "syntax": "Get-NetRoute -AddressFamily IPv4 | Sort-Object RouteMetric",
+      "when_to_use_fa": "network",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nمرتب‌کردن مسیرها برای تحلیل انتخاب مسیر",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "DestinationPrefix NextHop RouteMetric InterfaceAlias"
+      ],
+      "rollback_fa": "با Get-NetIPInterface و مقصد موردنظر بررسی کنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "بررسی جدول مسیر IPv4",
+        "PowerShell",
+        "Get-NetRoute -AddressFamily IPv4 | Sort-Object RouteMetric"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-NetRoute -AddressFamily IPv4 | Sort-Object RouteMetric» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "network؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0003",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Test-NetConnection -ComputerName 192.0.2.80 -Port 443 -InformationLevel Detailed",
+      "title_fa": "[L1] آزمون TCP و پورت مقصد",
+      "title_en": "آزمون TCP و پورت مقصد",
+      "syntax": "Test-NetConnection -ComputerName 192.0.2.80 -Port 443 -InformationLevel Detailed",
+      "when_to_use_fa": "network",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nتفکیک مشکل DNS/route از دسترس‌پذیری پورت TCP",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "TcpTestSucceeded : True"
+      ],
+      "rollback_fa": "این تست جایگزین بررسی TLS یا health برنامه نیست",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "آزمون TCP و پورت مقصد",
+        "PowerShell",
+        "Test-NetConnection -ComputerName 192.0.2.80 -Port 443 -InformationLevel Detailed"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Test-NetConnection -ComputerName 192.0.2.80 -Port 443 -InformationLevel Detailed» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "network؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0004",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Resolve-DnsName example.com",
+      "title_fa": "[L1] پرس‌وجوی DNS",
+      "title_en": "پرس‌وجوی DNS",
+      "syntax": "Resolve-DnsName example.com",
+      "when_to_use_fa": "dns",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nبررسی پاسخ A/AAAA/CNAME از resolver ویندوز",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "Name Type TTL Section IPAddress"
+      ],
+      "rollback_fa": "سرور DNS و suffix search را در صورت نیاز جدا بررسی کنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "پرس‌وجوی DNS",
+        "PowerShell",
+        "Resolve-DnsName example.com"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Resolve-DnsName example.com» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "dns؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0005",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Get-DnsClientServerAddress",
+      "title_fa": "[L1] نمایش DNS هر رابط",
+      "title_en": "نمایش DNS هر رابط",
+      "syntax": "Get-DnsClientServerAddress",
+      "when_to_use_fa": "dns",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nتشخیص DNS ناخواسته یا اختلاف رابط‌ها",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "InterfaceAlias ServerAddresses"
+      ],
+      "rollback_fa": "با policy، VPN و DHCP مقایسه کنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "نمایش DNS هر رابط",
+        "PowerShell",
+        "Get-DnsClientServerAddress"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-DnsClientServerAddress» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "dns؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0006",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "logs",
+      "command": "Get-Service | Where-Object Status -eq 'Running'",
+      "title_fa": "[L1] فیلتر سرویس‌های در حال اجرا",
+      "title_en": "فیلتر سرویس‌های در حال اجرا",
+      "syntax": "Get-Service | Where-Object Status -eq 'Running'",
+      "when_to_use_fa": "services",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nگزارش سرویس‌های فعال برای inventory",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "Status Name DisplayName"
+      ],
+      "rollback_fa": "فیلتر باید فقط گزارش بدهد؛ سرویس را بی‌دلیل متوقف نکنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "فیلتر سرویس‌های در حال اجرا",
+        "PowerShell",
+        "Get-Service | Where-Object Status -eq 'Running'"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-Service | Where-Object Status -eq 'Running'» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "services؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0007",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "logs",
+      "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10",
+      "title_fa": "[L2] نمایش فرایندهای پرمصرف CPU",
+      "title_en": "نمایش فرایندهای پرمصرف CPU",
+      "syntax": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10",
+      "when_to_use_fa": "process",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nتشخیص اولیه مصرف CPU در زمان نمونه‌برداری",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "Handles NPM PM CPU Id ProcessName"
+      ],
+      "rollback_fa": "CPU تجمعی را با نرخ لحظه‌ای اشتباه نگیرید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "نمایش فرایندهای پرمصرف CPU",
+        "PowerShell",
+        "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-Process | Sort-Object CPU -Descending | Select-Object -First 10» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "process؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0008",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "logs",
+      "command": "Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddHours(-2)} -MaxEvents 100",
+      "title_fa": "[L2] خواندن رخدادهای دو ساعت اخیر",
+      "title_en": "خواندن رخدادهای دو ساعت اخیر",
+      "syntax": "Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddHours(-2)} -MaxEvents 100",
+      "when_to_use_fa": "logs",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nRCA خطاهای سرویس، درایور و شبکه",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "TimeCreated Id LevelDisplayName ProviderName Message"
+      ],
+      "rollback_fa": "بازه زمانی و timezone را مستند کنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "خواندن رخدادهای دو ساعت اخیر",
+        "PowerShell",
+        "Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddHours(-2)} -MaxEvents 100"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddHours(-2)} -MaxEvents 100» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "logs؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0009",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "system",
+      "command": "Get-ChildItem -LiteralPath 'C:\\Logs' -File | Sort-Object Length -Descending | Select-Object -First 10",
+      "title_fa": "[L2] پیداکردن فایل‌های بزرگ",
+      "title_en": "پیداکردن فایل‌های بزرگ",
+      "syntax": "Get-ChildItem -LiteralPath 'C:\\Logs' -File | Sort-Object Length -Descending | Select-Object -First 10",
+      "when_to_use_fa": "files",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nیافتن logهای حجیم بدون حذف خودکار",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "Name Length LastWriteTime"
+      ],
+      "rollback_fa": "قبل از cleanup retention و owner را تأیید کنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "پیداکردن فایل‌های بزرگ",
+        "PowerShell",
+        "Get-ChildItem -LiteralPath 'C:\\Logs' -File | Sort-Object Length -Descending | Select-Object -First 10"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-ChildItem -LiteralPath 'C:\\Logs' -File | Sort-Object Length -Descending | Select-Object -First 10» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "files؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0010",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "system",
+      "command": "Get-FileHash -Algorithm SHA256 -LiteralPath '.\\artifact.zip'",
+      "title_fa": "[L2] محاسبه SHA-256 فایل",
+      "title_en": "محاسبه SHA-256 فایل",
+      "syntax": "Get-FileHash -Algorithm SHA256 -LiteralPath '.\\artifact.zip'",
+      "when_to_use_fa": "files",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nتأیید یکپارچگی فایل دریافت‌شده",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "Algorithm Hash Path"
+      ],
+      "rollback_fa": "hash را با منبع مورد اعتماد مقایسه کنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "محاسبه SHA-256 فایل",
+        "PowerShell",
+        "Get-FileHash -Algorithm SHA256 -LiteralPath '.\\artifact.zip'"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-FileHash -Algorithm SHA256 -LiteralPath '.\\artifact.zip'» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "files؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0011",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "system",
+      "command": "Get-Acl -LiteralPath 'C:\\Data' | Format-List",
+      "title_fa": "[L2] بازبینی ACL مسیر",
+      "title_en": "بازبینی ACL مسیر",
+      "syntax": "Get-Acl -LiteralPath 'C:\\Data' | Format-List",
+      "when_to_use_fa": "security",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nتحلیل دسترسی NTFS پیش از اصلاح permission",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "Owner Access Sddl Path"
+      ],
+      "rollback_fa": "inheritance و گروه‌ها را قبل از تغییر بررسی کنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "بازبینی ACL مسیر",
+        "PowerShell",
+        "Get-Acl -LiteralPath 'C:\\Data' | Format-List"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-Acl -LiteralPath 'C:\\Data' | Format-List» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "security؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0012",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "system",
+      "command": "Get-NetTCPConnection -State Listen | Sort-Object LocalPort",
+      "title_fa": "[L2] فهرست پورت‌های TCP در حالت Listen",
+      "title_en": "فهرست پورت‌های TCP در حالت Listen",
+      "syntax": "Get-NetTCPConnection -State Listen | Sort-Object LocalPort",
+      "when_to_use_fa": "network",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nشناسایی listener و PID برای عیب‌یابی پورت",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "LocalAddress LocalPort OwningProcess"
+      ],
+      "rollback_fa": "PID را با Get-Process تطبیق دهید؛ listener به معنی دسترسی از بیرون نیست",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "فهرست پورت‌های TCP در حالت Listen",
+        "PowerShell",
+        "Get-NetTCPConnection -State Listen | Sort-Object LocalPort"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-NetTCPConnection -State Listen | Sort-Object LocalPort» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "network؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0013",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "security",
+      "command": "Get-ScheduledTask | Where-Object State -eq 'Ready'",
+      "title_fa": "[L2] فهرست taskهای زمان‌بندی‌شده آماده",
+      "title_en": "فهرست taskهای زمان‌بندی‌شده آماده",
+      "syntax": "Get-ScheduledTask | Where-Object State -eq 'Ready'",
+      "when_to_use_fa": "automation",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nبازبینی taskهای ثبت‌شده بدون اجرا یا تغییر",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "TaskName TaskPath State"
+      ],
+      "rollback_fa": "Action و Principal را جدا بررسی کنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "فهرست taskهای زمان‌بندی‌شده آماده",
+        "PowerShell",
+        "Get-ScheduledTask | Where-Object State -eq 'Ready'"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-ScheduledTask | Where-Object State -eq 'Ready'» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "automation؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0014",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "security",
+      "command": "Get-ExecutionPolicy -List",
+      "title_fa": "[L2] مشاهده execution policyها",
+      "title_en": "مشاهده execution policyها",
+      "syntax": "Get-ExecutionPolicy -List",
+      "when_to_use_fa": "security",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nدرک policy مؤثر و scopeهای تعریف‌شده",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "Scope ExecutionPolicy"
+      ],
+      "rollback_fa": "Execution Policy مرز امنیتی کامل نیست؛ به جای دورزدن، script را بررسی و امضا کنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "مشاهده execution policyها",
+        "PowerShell",
+        "Get-ExecutionPolicy -List"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-ExecutionPolicy -List» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "security؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0015",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "security",
+      "command": "$Error[0] | Format-List * -Force",
+      "title_fa": "[L2] بررسی آخرین خطای PowerShell",
+      "title_en": "بررسی آخرین خطای PowerShell",
+      "syntax": "$Error[0] | Format-List * -Force",
+      "when_to_use_fa": "errors",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nتحلیل exception و metadata خطای اخیر",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "Exception CategoryInfo FullyQualifiedErrorId"
+      ],
+      "rollback_fa": "خطای قبلی ممکن است به فرمان فعلی مربوط نباشد",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "بررسی آخرین خطای PowerShell",
+        "PowerShell",
+        "$Error[0] | Format-List * -Force"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «$Error[0] | Format-List * -Force» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "errors؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0016",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "scripting",
+      "command": "try { Get-Item -LiteralPath '.\\config.json' -ErrorAction Stop } catch { Write-Error $_ }",
+      "title_fa": "[L3] مدیریت خطا با try/catch",
+      "title_en": "مدیریت خطا با try/catch",
+      "syntax": "try { Get-Item -LiteralPath '.\\config.json' -ErrorAction Stop } catch { Write-Error $_ }",
+      "when_to_use_fa": "scripting",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nتبدیل خطای non-terminating به خطای قابل catch",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "Write-Error output with ErrorRecord"
+      ],
+      "rollback_fa": "در صورت نیاز finally برای cleanup اضافه کنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "مدیریت خطا با try/catch",
+        "PowerShell",
+        "try { Get-Item -LiteralPath '.\\config.json' -ErrorAction Stop } catch { Write-Error $_ }"
+      ],
+      "source_urls": [
+        "Read-only example"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «try { Get-Item -LiteralPath '.\\config.json' -ErrorAction Stop } catch { Write-Error $_ }» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "scripting؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0017",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "scripting",
+      "command": "Import-Csv -LiteralPath '.\\inventory.csv' | Group-Object Vendor | Sort-Object Count -Descending",
+      "title_fa": "[L3] گروه‌بندی CSV با pipeline شیءگرا",
+      "title_en": "گروه‌بندی CSV با pipeline شیءگرا",
+      "syntax": "Import-Csv -LiteralPath '.\\inventory.csv' | Group-Object Vendor | Sort-Object Count -Descending",
+      "when_to_use_fa": "automation",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nخلاصه‌سازی inventory بدون تبدیل دستی متن",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "Name Count Group"
+      ],
+      "rollback_fa": "encoding و delimiter فایل منبع را تأیید کنید",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "گروه‌بندی CSV با pipeline شیءگرا",
+        "PowerShell",
+        "Import-Csv -LiteralPath '.\\inventory.csv' | Group-Object Vendor | Sort-Object Count -Descending"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Import-Csv -LiteralPath '.\\inventory.csv' | Group-Object Vendor | Sort-Object Count -Descending» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "automation؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0018",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "scripting",
+      "command": "Compare-Object (Get-Content '.\\before.txt') (Get-Content '.\\after.txt')",
+      "title_fa": "[L3] مقایسه دو خروجی متنی",
+      "title_en": "مقایسه دو خروجی متنی",
+      "syntax": "Compare-Object (Get-Content '.\\before.txt') (Get-Content '.\\after.txt')",
+      "when_to_use_fa": "troubleshoot",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nیافتن اختلاف قبل و بعد از تغییر",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "<= only reference; => only difference"
+      ],
+      "rollback_fa": "مقایسه متن خام ممکن است تفاوت ترتیب را نیز نشان دهد",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "مقایسه دو خروجی متنی",
+        "PowerShell",
+        "Compare-Object (Get-Content '.\\before.txt') (Get-Content '.\\after.txt')"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Compare-Object (Get-Content '.\\before.txt') (Get-Content '.\\after.txt')» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "troubleshoot؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0019",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "help",
+      "command": "Start-Transcript -Path '.\\session-transcript.txt' -Append",
+      "title_fa": "[L3] ثبت transcript جلسه PowerShell",
+      "title_en": "ثبت transcript جلسه PowerShell",
+      "syntax": "Start-Transcript -Path '.\\session-transcript.txt' -Append",
+      "when_to_use_fa": "logging",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nثبت فرمان‌ها و خروجی برای audit مجاز",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "Transcript started, output saved to path"
+      ],
+      "rollback_fa": "قبل از ثبت مطمئن شوید secrets چاپ نمی‌شوند",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "ثبت transcript جلسه PowerShell",
+        "PowerShell",
+        "Start-Transcript -Path '.\\session-transcript.txt' -Append"
+      ],
+      "source_urls": [
+        "Rollback: Stop-Transcript؛ فایل لاگ را طبق policy محافظت کنید"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Start-Transcript -Path '.\\session-transcript.txt' -Append» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "logging؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0020",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "version_scope": "Windows PowerShell 5.1 or PowerShell 7+ as noted per module",
+      "privilege": "standard user unless target module requires elevation",
+      "category": "powershell",
+      "subcategory": "help",
+      "command": "Get-Command -Name Get-NetRoute -Syntax",
+      "title_fa": "[L3] نمایش syntax و پارامترهای فرمان",
+      "title_en": "نمایش syntax و پارامترهای فرمان",
+      "syntax": "Get-Command -Name Get-NetRoute -Syntax",
+      "when_to_use_fa": "help",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "sample_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nبررسی syntax موجود در نسخه نصب‌شده",
+      "output_fields_fa": [
+        {
+          "field": "Object properties",
+          "meaning": "PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن اینکه خروجی همه نسخه‌ها یکسان است.",
+        "استفاده از Invoke-Expression برای ساخت فرمان از ورودی کنترل‌نشده."
+      ],
+      "security_notes_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "lab_hint_fa": "روی VM ویندوز و داده نمونه اجرا کنید؛ در ابتدا از cmdletهای read-only استفاده کنید و تغییرات را با -WhatIf در cmdletهای پشتیبان‌شده تمرین کنید.",
+      "verify_steps_fa": [
+        "Get-NetRoute [[-DestinationPrefix] ...]"
+      ],
+      "rollback_fa": "برای نسخه‌های مختلف PowerShell و module، خروجی محلی مرجع نهایی syntax است",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "نمایش syntax و پارامترهای فرمان",
+        "PowerShell",
+        "Get-Command -Name Get-NetRoute -Syntax"
+      ],
+      "source_urls": [
+        "Read-only"
+      ],
+      "assessment": {
+        "question_fa": "چرا فرمان «Get-Command -Name Get-NetRoute -Syntax» در عیب‌یابی مفید است؟",
+        "answer_key_fa": "help؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    }
+  ]
+}
