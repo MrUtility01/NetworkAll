@@ -159,14 +159,15 @@ def main() -> None:
             "2) Install Python 3.11+ and enable 'Add Python to PATH'.\n"
             "3) Open windows\\start.bat. Dependencies are installed on first run.\n"
             "4) Web UI: http://127.0.0.1:86\n"
-            "5) The release seeds Windows from the same merged curriculum index as Android.\n"
+            "5) Technical diagrams: http://127.0.0.1:86/diagrams\n"
+            "6) The release seeds Windows from the same merged curriculum index as Android.\n"
             "This is a portable source bundle, not a standalone EXE.\n"
             "Back up server\\data before replacing or resetting an existing installation.\n"
         )
         z.writestr(f"{PACKAGE_ROOT}/PACKAGE_README.txt", readme.encode("utf-8"))
         z.writestr(
             f"{PACKAGE_ROOT}/VERSION.txt",
-            f"NetworkAll\nVersion: {VERSION}\nPort: 86\nCurriculum chapters: 68\nLessons: {report['lessons']}\n",
+            f"NetworkAll\nVersion: {VERSION}\nPort: 86\nCurriculum chapters: 68\nLessons: {report['lessons']}\nDiagrams: {report['diagrams']}\n",
         )
         z.writestr(
             f"{PACKAGE_ROOT}/PACKAGE_MANIFEST.json",
