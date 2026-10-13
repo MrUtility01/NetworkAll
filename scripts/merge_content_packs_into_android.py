@@ -256,7 +256,7 @@ def blueprint_to_lessons(d, focus_keywords, default_ch):
 
 def normalize_pack(path: Path, data: dict):
     if data.get("commands"):
-        return commands_to_lessons(data, path.relative_to(ROOT).as_posix().removesuffix(".json"))
+        return commands_to_lessons(data, path.stem)
     if data.get("lessons"):
         lessons = data.get("lessons") or []
         if int(data.get("chapter_order") or 0) == 68 or "chapter_68" in path.name.lower():
