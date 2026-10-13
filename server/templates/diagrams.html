@@ -62,11 +62,12 @@
     }
     status.textContent = shown.length + " مورد از " + entries.length + " دیاگرام";
   };
-  fetch("/static/diagrams/combined_index.json", {cache: "no-store"})
-    .then(response => {
-      if (!response.ok) throw new Error("HTTP " + response.status);
-      return response.json();
-    })
+  const loadIndex = (url) => fetch(url, {cache: "no-store"}).then(response => {
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    return response.json();
+  });
+  loadIndex("/static/diagrams/combined_index.json")
+    .catch(() => loadIndex("/static/diagrams/index.json"))
     .then(data => {
       entries = Array.isArray(data.diagrams) ? data.diagrams : [];
       render();
