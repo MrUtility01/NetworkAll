@@ -125,6 +125,43 @@ def main() -> None:
         if not answer.get("explanation_fa"):
             fail(f"{qid}: answer key has no explanation")
 
+    # Platform-specific exams and their separate answer keys.
+    exam_specs = (
+        ("cisco_routing_exam.json", "cisco_routing_exam_answer_key.json", "cisco", 20),
+        ("routeros_exam.json", "routeros_exam_answer_key.json", "mikrotik", 20),
+        ("powershell_exam.json", "powershell_exam_answer_key.json", "powershell", 20),
+    )
+    exam_counts = {}
+    for qfile, afile, vendor, minimum in exam_specs:
+        qdata = json.loads((PACKS / qfile).read_text(encoding="utf-8"))
+        adata = json.loads((PACKS / afile).read_text(encoding="utf-8"))
+        qs = qdata.get("questions")
+        ans = adata.get("answers")
+        if not isinstance(qs, list) or len(qs) < minimum:
+            fail(f"{qfile}: expected at least {minimum} specialized questions")
+        if not isinstance(ans, list) or len(ans) != len(qs):
+            fail(f"{afile}: answer count must match question count")
+        qmap = {str(q.get("id")): q for q in qs}
+        amap = {str(a.get("id")): a for a in ans}
+        if len(qmap) != len(qs) or set(qmap) != set(amap):
+            fail(f"{qfile}/{afile}: duplicate or mismatched IDs")
+        for qid, q in qmap.items():
+            if q.get("vendor") != vendor or q.get("source_status") != "review_required":
+                fail(f"{qfile}:{qid}: wrong vendor or source status")
+            if q.get("command_uid") not in command_uids:
+                fail(f"{qfile}:{qid}: unknown command_uid")
+            options = q.get("options") or []
+            if len(options) != 4:
+                fail(f"{qfile}:{qid}: expected four options")
+            a = amap[qid]
+            idx = a.get("correct_option_index")
+            if not isinstance(idx, int) or idx < 0 or idx >= len(options):
+                fail(f"{afile}:{qid}: invalid correct_option_index")
+            if options[idx] != a.get("correct_answer_fa") or not a.get("explanation_fa"):
+                fail(f"{afile}:{qid}: answer key does not match option or lacks explanation")
+        exam_counts[vendor] = len(qs)
+        print(f"OK {qfile}: questions={len(qs)} answers={len(ans)}")
+
     source_data = json.loads((PACKS / "ch68_sources.json").read_text(encoding="utf-8"))
     if len(source_data.get("sources") or []) < 5:
         fail("Chapter 68 must have at least five source entries")
