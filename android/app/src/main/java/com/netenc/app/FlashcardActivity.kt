@@ -154,7 +154,7 @@ class FlashcardActivity : AppCompatActivity() {
             sessionDone++
             if (grade == "again") {
                 // keep in queue near end
-            } else if (queue.size > 1) {
+            } else if (learningPath || queue.size > 1) {
                 queue.removeAt(index % queue.size)
                 if (index >= queue.size) index = 0
             }
