@@ -19,7 +19,6 @@ INCLUDE_ROOTS = [
     "server", "windows", "shared", "tools", "scripts", "docs",
     "INSTALL_FA.md", "README.md", "README_FA.txt", "VERSION.txt",
     "android/app/src/main/assets/curriculum_index.json.gz",
-    "server/static/diagrams/index.json",
 ]
 EXCLUDE_DIRS = {
     ".git", ".venv", "venv", "__pycache__", "node_modules", "build",
@@ -32,6 +31,7 @@ REQUIRED = [
     "server/requirements.txt",
     "windows/start.bat",
     "android/app/src/main/assets/curriculum_index.json.gz",
+    "server/static/diagrams/index.json",
     "scripts/export_android_index.py",
     "scripts/merge_content_packs_into_android.py",
     "docs/V1_RELEASE_AUDIT_FA.md",
