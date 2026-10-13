@@ -332,9 +332,27 @@ def apply_fields(les, src):
         "summary", "full_content", "commands", "examples", "notes",
         "learning_objectives", "search_keywords", "search_query", "source_status",
     )
+    incoming_meta = src.get("meta") if isinstance(src.get("meta"), dict) else {}
+    enrichment = incoming_meta.get("chapter_enrichment") if isinstance(incoming_meta.get("chapter_enrichment"), dict) else {}
+    append_mode = enrichment.get("merge_mode") == "append"
     for field in content_fields:
-        if field in src and src[field] is not None:
-            les[field] = src[field]
+        if field not in src or src[field] is None:
+            continue
+        incoming, existing = src[field], les.get(field)
+        if append_mode and field in ("summary", "full_content", "commands", "examples", "notes"):
+            old_text, new_text = as_text(existing).strip(), as_text(incoming).strip()
+            if new_text and new_text not in old_text:
+                les[field] = (old_text + "\\n\\n--- تکمیل افزایشی فصل ۰۲ ---\\n\\n" + new_text).strip() if old_text else new_text
+        elif append_mode and field in ("learning_objectives", "search_keywords"):
+            old_items = existing if isinstance(existing, list) else ([existing] if existing else [])
+            new_items = incoming if isinstance(incoming, list) else ([incoming] if incoming else [])
+            les[field] = list(dict.fromkeys(str(x) for x in old_items + new_items if str(x).strip()))
+        elif append_mode and field == "search_query":
+            old_text, new_text = as_text(existing).strip(), as_text(incoming).strip()
+            if new_text and new_text not in old_text:
+                les[field] = (old_text + " " + new_text).strip()
+        else:
+            les[field] = incoming
     # Merge metadata without discarding existing AI prompts or other metadata.
     incoming_meta = src.get("meta")
     if isinstance(incoming_meta, dict):
