@@ -1,0 +1,335 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll",
+  "purpose": "غنی‌سازی پیشرفته فصل ۶۸ با عیب‌یابی عملیاتی، کنترل خطا، لاگ و امنیت؛ مناسب آزمایشگاه مجاز",
+  "chapter_order": 68,
+  "chapter_title_fa": "دانشنامه جامع دستورات",
+  "vendor": "cross-platform",
+  "platform": "Linux, Bash, Windows PowerShell, Windows CMD",
+  "commands": [
+    {
+      "level": "L3",
+      "category": "powershell",
+      "subcategory": "troubleshoot",
+      "command": "Test-NetConnection -ComputerName 192.0.2.10 -Port 443 -InformationLevel Detailed",
+      "title_fa": "[L3] تفکیک عیب‌یابی DNS، مسیر و اتصال TCP در PowerShell",
+      "title_en": "Diagnose TCP reachability with Test-NetConnection",
+      "syntax": "Test-NetConnection -ComputerName <host-or-ip> -Port <tcp-port> -InformationLevel Detailed",
+      "when_to_use_fa": "هنگامی که کاربر می‌گوید یک سرویس وب یا API باز نمی‌شود و باید تشخیص داد مشکل نام‌گشایی، مسیر یا برقراری TCP است. از آدرس مستنداتی 192.0.2.10 فقط به‌عنوان نمونه استفاده شده است.",
+      "prerequisites_fa": [
+        "شناخت DNS، TCP handshake، پورت مقصد و فایروال",
+        "اجازهٔ آزمون اتصال به مقصد موردنظر"
+      ],
+      "steps_fa": [
+        "ابتدا نام میزبان را با Resolve-DnsName بررسی کنید؛ در صورت استفاده از IP این مرحله را متناسب با سناریو تطبیق دهید.",
+        "فرمان را برای پورت واقعی سرویس اجرا کنید.",
+        "مقدار TcpTestSucceeded، RemoteAddress و SourceAddress را ثبت کنید.",
+        "اگر TCP ناموفق است، از میزبان مبدأ مسیر، ACL، فایروال میزبان مقصد و وضعیت listener را جداگانه بررسی کنید.",
+        "نتیجه را با آزمون از یک مبدأ سالم مقایسه کنید تا دامنهٔ خرابی مشخص شود."
+      ],
+      "sample_output": "ComputerName: 192.0.2.10\nRemotePort: 443\nTcpTestSucceeded: False",
+      "output_fields_fa": [
+        {
+          "field": "TcpTestSucceeded",
+          "meaning": "موفق بودن برقراری اتصال TCP؛ موفقیت آن سلامت برنامه در لایهٔ کاربرد را تضمین نمی‌کند."
+        },
+        {
+          "field": "RemoteAddress",
+          "meaning": "آدرسی که برای آزمون استفاده شده است."
+        }
+      ],
+      "related_commands": [
+        "Resolve-DnsName",
+        "Get-NetRoute",
+        "Get-NetFirewallProfile",
+        "curl.exe -vk"
+      ],
+      "common_mistakes_fa": [
+        "نتیجهٔ ping را معادل سلامت TCP دانستن؛ ICMP و TCP ممکن است سیاست‌های متفاوت داشته باشند.",
+        "استفاده از پورت اشتباه یا تست روی IP متفاوت با رکورد DNS.",
+        "نتیجه‌گیری دربارهٔ TLS یا HTTP صرفاً از موفقیت TCP."
+      ],
+      "lab_hint_fa": "در یک شبکهٔ آزمایشگاهی، ابتدا روی سرویس آزمایشی با پورت باز تست کنید؛ سپس در محیط کنترل‌شده پورت را مسدود کرده و تفاوت خروجی را ثبت کنید. هیچ قانون فایروالی را روی سیستم عملیاتی بدون مجوز تغییر ندهید.",
+      "security_notes_fa": "این فرمان آزمون اتصال انجام می‌دهد؛ برای اسکن گستردهٔ پورت‌ها یا مقصدهای فاقد مجوز استفاده نشود.",
+      "search_keywords": [
+        "PowerShell TCP test",
+        "Test-NetConnection",
+        "troubleshoot port",
+        "TCP firewall"
+      ],
+      "assessment": {
+        "question_fa": "TcpTestSucceeded=True چه چیزی را ثابت نمی‌کند؟",
+        "answer_key": "فقط اتصال TCP به مقصد و پورت در زمان آزمون برقرار شده؛ سلامت HTTP، احراز هویت، TLS و منطق برنامه را ثابت نمی‌کند."
+      }
+    },
+    {
+      "level": "L3",
+      "category": "powershell",
+      "subcategory": "logs",
+      "command": "Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddHours(-2)} -MaxEvents 100",
+      "title_fa": "[L3] استخراج هدفمند رخدادهای دو ساعت اخیر ویندوز",
+      "title_en": "Query recent Windows System events",
+      "syntax": "Get-WinEvent -FilterHashtable @{LogName='<log>'; StartTime=(Get-Date).AddHours(-N)} -MaxEvents <count>",
+      "when_to_use_fa": "برای هم‌بسته‌سازی رخدادهای سرویس، درایور و شبکه در یک بازهٔ زمانی مشخص، بدون خواندن بی‌هدف کل Event Log.",
+      "prerequisites_fa": [
+        "مجوز خواندن لاگ موردنظر",
+        "آشنایی با Event ID، Provider، Level و زمان رخداد"
+      ],
+      "steps_fa": [
+        "بازهٔ زمانی را با زمان شروع حادثه هماهنگ کنید.",
+        "LogName را با System یا Application متناسب با فرضیه انتخاب کنید.",
+        "خروجی را بر اساس TimeCreated مرتب کنید و ProviderName، Id و LevelDisplayName را ثبت کنید.",
+        "رخدادهای قبل و بعد از تغییر سرویس یا قطع ارتباط را کنار هم قرار دهید.",
+        "پس از شکل‌گیری فرضیه، فیلتر را با ProviderName یا Id محدودتر کنید."
+      ],
+      "sample_output": "TimeCreated           ProviderName        Id   LevelDisplayName\n2026-10-13 14:22:00   Service Control Mgr 7036 Information",
+      "output_fields_fa": [
+        {
+          "field": "TimeCreated",
+          "meaning": "زمان رخداد؛ اختلاف ساعت سیستم‌ها می‌تواند تحلیل هم‌بستگی را خراب کند."
+        },
+        {
+          "field": "Id",
+          "meaning": "شناسهٔ رخداد که باید همراه ProviderName و متن پیام تفسیر شود."
+        }
+      ],
+      "related_commands": [
+        "Get-WinEvent -ListLog *",
+        "wevtutil qe System",
+        "Get-Service",
+        "Get-Date"
+      ],
+      "common_mistakes_fa": [
+        "تفسیر Event ID بدون توجه به Provider و نسخهٔ سیستم‌عامل.",
+        "فرض اینکه رخداد هم‌زمان الزاماً علت اصلی است.",
+        "نادیده گرفتن منطقهٔ زمانی و اختلاف ساعت میزبان‌ها."
+      ],
+      "lab_hint_fa": "در ماشین مجازی آزمایشگاهی، یک سرویس را متوقف و راه‌اندازی کنید؛ رخدادهای مرتبط را استخراج و خط زمانی قبل و بعد را مستند کنید.",
+      "security_notes_fa": "لاگ‌ها را با حداقل دسترسی بخوانید و هنگام ارسال گزارش، نام کاربری، مسیرها و داده‌های حساس را پالایش کنید.",
+      "search_keywords": [
+        "Get-WinEvent",
+        "Windows Event Log",
+        "System log",
+        "event correlation"
+      ],
+      "assessment": {
+        "question_fa": "چرا Event ID به‌تنهایی برای تشخیص کافی نیست؟",
+        "answer_key": "شناسه در کنار Provider، کانال، متن رخداد، زمان، نسخهٔ سیستم و رخدادهای هم‌بسته معنا پیدا می‌کند."
+      }
+    },
+    {
+      "level": "L3",
+      "category": "linux",
+      "subcategory": "permissions",
+      "command": "namei -l /srv/app/config.yml",
+      "title_fa": "[L3] یافتن مشکل مجوز در تمام اجزای مسیر فایل لینوکس",
+      "title_en": "Inspect permissions along a Linux path",
+      "syntax": "namei -l <path>",
+      "when_to_use_fa": "وقتی سرویس با وجود مجوز ظاهراً درست فایل، خطای Permission denied می‌دهد؛ ممکن است یکی از دایرکتوری‌های والد اجازهٔ عبور نداشته باشد.",
+      "prerequisites_fa": [
+        "مبانی مالکیت user/group و بیت‌های rwx",
+        "دسترسی خواندن metadata مسیر"
+      ],
+      "steps_fa": [
+        "مسیر کامل فایل را وارد کنید.",
+        "مالک، گروه و مجوز هر جزء مسیر را بررسی کنید.",
+        "مشخص کنید سرویس با کدام کاربر و گروه اجرا می‌شود.",
+        "مجوز execute روی دایرکتوری‌های والد و مجوز موردنیاز روی فایل را تطبیق دهید.",
+        "به‌جای chmod گسترده، فقط کمترین مجوز لازم را روی جزء مشکل‌دار اصلاح کنید."
+      ],
+      "sample_output": "f: /srv/app/config.yml\ndrwxr-xr-x root root /\ndrwxr-xr-x root root srv\ndrwxr-x--- appops appops app\ndrwxr-x--- appops appops config.yml",
+      "output_fields_fa": [
+        {
+          "field": "x روی دایرکتوری",
+          "meaning": "اجازهٔ عبور/جست‌وجو در دایرکتوری است و با اجازهٔ خواندن فهرست فایل‌ها یکسان نیست."
+        }
+      ],
+      "related_commands": [
+        "id <service-user>",
+        "stat /srv/app/config.yml",
+        "getfacl /srv/app/config.yml",
+        "sudo -u <user> test -r <path>"
+      ],
+      "common_mistakes_fa": [
+        "اجرای chmod -R 777 به‌عنوان راه‌حل عمومی.",
+        "بررسی مجوز فایل بدون بررسی دایرکتوری‌های والد.",
+        "نادیده گرفتن ACL، SELinux یا AppArmor."
+      ],
+      "lab_hint_fa": "در یک VM آزمایشی، مجوز عبور یکی از دایرکتوری‌های والد را محدود کنید؛ خطا را بازتولید کرده، با namei محل مشکل را مشخص و فقط همان مجوز را بازگردانید.",
+      "security_notes_fa": "مجوزهای فایل پیکربندی ممکن است اسرار سرویس را محافظت کنند؛ دسترسی را به کاربر سرویس و مدیران مجاز محدود کنید.",
+      "search_keywords": [
+        "Linux permissions",
+        "namei -l",
+        "Permission denied",
+        "directory execute bit"
+      ],
+      "assessment": {
+        "question_fa": "چرا فایل با مجوز خواندن مناسب همچنان قابل دسترسی نیست؟",
+        "answer_key": "اگر کاربر روی یکی از دایرکتوری‌های والد مجوز execute/عبور نداشته باشد یا ACL/سیاست امنیتی دسترسی را منع کند، فایل قابل دسترسی نیست."
+      }
+    },
+    {
+      "level": "L3",
+      "category": "bash",
+      "subcategory": "automation",
+      "command": "tmp=$(mktemp) && trap 'rm -f -- \"$tmp\"' EXIT",
+      "title_fa": "[L3] ساخت فایل موقت امن و پاک‌سازی هنگام خروج از Bash",
+      "title_en": "Create and clean up a temporary Bash file",
+      "syntax": "tmp=$(mktemp) ; trap 'rm -f -- \"$tmp\"' EXIT",
+      "when_to_use_fa": "برای نگهداری خروجی میانی اسکریپت بدون استفاده از نام ثابت و قابل حدس؛ پاک‌سازی باید در خروج عادی یا خطا انجام شود.",
+      "prerequisites_fa": [
+        "آشنایی با command substitution و trap",
+        "شناخت فایل موقت و مجوزهای سیستم‌عامل"
+      ],
+      "steps_fa": [
+        "فایل موقت را با mktemp بسازید و نتیجه را در متغیر ذخیره کنید.",
+        "در صورت شکست ایجاد فایل، پیش از ادامه خطا را مدیریت کنید.",
+        "trap پاک‌سازی را پس از ایجاد موفق فایل تنظیم کنید.",
+        "مسیر فایل را همیشه quote کنید و از نام فایل ثابت در /tmp پرهیز کنید.",
+        "سناریوهای موفقیت، شکست فرمان میانی و خروج با سیگنال را در محیط آزمایشی تست کنید."
+      ],
+      "sample_output": "Temporary file created under /tmp with a randomized name; removed when the shell exits.",
+      "output_fields_fa": [
+        {
+          "field": "mktemp",
+          "meaning": "مسیر فایل موقت تازه‌ساخته‌شده را برمی‌گرداند؛ رفتار و گزینه‌ها را در سیستم هدف بررسی کنید."
+        },
+        {
+          "field": "trap ... EXIT",
+          "meaning": "فرمان پاک‌سازی هنگام خروج shell اجرا می‌شود؛ برای همهٔ نوع خاموشی ناگهانی تضمین مطلق نیست."
+        }
+      ],
+      "related_commands": [
+        "umask",
+        "mktemp -d",
+        "trap -p",
+        "set -Eeuo pipefail"
+      ],
+      "common_mistakes_fa": [
+        "استفاده از مسیر ثابت مانند /tmp/output.tmp و ایجاد race condition.",
+        "استفاده از متغیر بدون quote و ایجاد خطا با فاصله در مسیر.",
+        "فرض اینکه trap در قطع برق یا kill -9 اجرا می‌شود."
+      ],
+      "lab_hint_fa": "در VM یک فایل موقت بسازید، مسیرش را ثبت کنید، فرمان موفق و فرمان ناموفق را آزمایش کنید و پس از خروج بررسی کنید فایل پاک شده باشد.",
+      "security_notes_fa": "فایل موقت را با مجوزهای پیش‌فرض امن ایجاد کنید؛ دادهٔ حساس را در فایل موقت بدون رمزنگاری یا کنترل دسترسی ذخیره نکنید.",
+      "search_keywords": [
+        "Bash mktemp",
+        "trap EXIT",
+        "temporary file cleanup",
+        "shell automation"
+      ],
+      "assessment": {
+        "question_fa": "چرا نام ثابت در /tmp خطرناک‌تر از mktemp است؟",
+        "answer_key": "نام ثابت قابل پیش‌بینی است و ممکن است باعث برخورد، سوءاستفاده از symlink یا تداخل هم‌زمانی شود."
+      }
+    },
+    {
+      "level": "L3",
+      "category": "cmd",
+      "subcategory": "troubleshoot",
+      "command": "netstat -ano | findstr LISTENING",
+      "title_fa": "[L3] اتصال پورت Listening ویندوز به PID فرایند",
+      "title_en": "Map listening TCP ports to process IDs in CMD",
+      "syntax": "netstat -ano | findstr LISTENING",
+      "when_to_use_fa": "برای بررسی اینکه کدام پورت TCP در حال Listen است و استخراج PID جهت تطبیق با فرایند، به‌ویژه هنگام خطای اشغال بودن پورت.",
+      "prerequisites_fa": [
+        "آشنایی با TCP و PID",
+        "در صورت نیاز مجوز مشاهدهٔ جزئیات فرایند"
+      ],
+      "steps_fa": [
+        "فهرست Listening را ثبت کنید.",
+        "پورت محلی موردنظر را در ستون Local Address پیدا کنید.",
+        "PID ستون آخر را یادداشت کنید.",
+        "با tasklist /FI \"PID eq <PID>\" نام فرایند را پیدا کنید.",
+        "قبل از توقف فرایند، مالکیت و اثر سرویس را بررسی کنید."
+      ],
+      "sample_output": "TCP    0.0.0.0:8080    0.0.0.0:0    LISTENING    4321",
+      "output_fields_fa": [
+        {
+          "field": "0.0.0.0:8080",
+          "meaning": "روی همهٔ رابط‌های IPv4 محلی برای پورت 8080 گوش می‌دهد؛ دسترسی شبکه هنوز به firewall و سیاست‌ها وابسته است."
+        },
+        {
+          "field": "4321",
+          "meaning": "PID فرایند مرتبط با سوکت در این نمونه."
+        }
+      ],
+      "related_commands": [
+        "tasklist /FI \"PID eq 4321\"",
+        "Get-NetTCPConnection -State Listen",
+        "Get-Process -Id 4321"
+      ],
+      "common_mistakes_fa": [
+        "توقف PID ناشناس بدون بررسی نقش سرویس.",
+        "تعمیم خروجی TCP به UDP.",
+        "فرض اینکه LISTENING از بیرون شبکه قابل دسترسی است."
+      ],
+      "lab_hint_fa": "در ماشین آزمایشی یک وب‌سرور محلی روی پورت مشخص اجرا کنید، PID را پیدا کنید و پس از توقف کنترل‌شده سرویس تغییر خروجی را مقایسه کنید.",
+      "security_notes_fa": "فرایند را صرفاً برای آزاد کردن پورت متوقف نکنید؛ ابتدا سرویس و وابستگی‌های آن را شناسایی کنید.",
+      "search_keywords": [
+        "CMD netstat",
+        "findstr LISTENING",
+        "PID port Windows",
+        "port conflict"
+      ],
+      "assessment": {
+        "question_fa": "پس از یافتن PID، چرا نباید فوراً taskkill اجرا کرد؟",
+        "answer_key": "ممکن است فرایند سرویس حیاتی یا وابستگی برنامه باشد؛ باید هویت، مالکیت و روش توقف امن آن مشخص شود."
+      }
+    },
+    {
+      "level": "L3",
+      "category": "powershell",
+      "subcategory": "firewall",
+      "command": "Get-NetFirewallProfile | Select-Object Name, Enabled, DefaultInboundAction, DefaultOutboundAction",
+      "title_fa": "[L3] ممیزی سیاست پیش‌فرض پروفایل‌های فایروال ویندوز",
+      "title_en": "Audit Windows Defender Firewall profiles",
+      "syntax": "Get-NetFirewallProfile | Select-Object Name, Enabled, DefaultInboundAction, DefaultOutboundAction",
+      "when_to_use_fa": "برای ممیزی وضعیت Domain، Private و Public و تشخیص سیاست پیش‌فرض ورودی/خروجی پیش از عیب‌یابی دسترسی شبکه.",
+      "prerequisites_fa": [
+        "مبانی Stateful Firewall و پروفایل شبکه ویندوز",
+        "دسترسی خواندن تنظیمات امنیتی"
+      ],
+      "steps_fa": [
+        "هر سه پروفایل را بررسی کنید.",
+        "وضعیت Enabled را با سیاست سازمان مقایسه کنید.",
+        "DefaultInboundAction را جدا از قوانین Allow/Block تفسیر کنید.",
+        "قوانین مؤثر را با Get-NetFirewallRule و فیلترهای مربوط بررسی کنید.",
+        "هر تغییر را با change record و روش rollback مستند کنید."
+      ],
+      "sample_output": "Name    Enabled DefaultInboundAction DefaultOutboundAction\nDomain  True    NotConfigured       NotConfigured\nPrivate True    NotConfigured       NotConfigured\nPublic  True    NotConfigured       NotConfigured",
+      "output_fields_fa": [
+        {
+          "field": "Enabled",
+          "meaning": "فعال بودن پروفایل را نشان می‌دهد."
+        },
+        {
+          "field": "DefaultInboundAction",
+          "meaning": "سیاست پیش‌فرض ورودی؛ NotConfigured به معنی خاموش بودن فایروال نیست و باید سیاست مؤثر را کامل بررسی کرد."
+        }
+      ],
+      "related_commands": [
+        "Get-NetFirewallRule",
+        "Get-NetConnectionProfile",
+        "Get-NetFirewallProfile"
+      ],
+      "common_mistakes_fa": [
+        "غیرفعال کردن کل فایروال برای رفع یک اتصال.",
+        "تفسیر NotConfigured به‌عنوان Allow.",
+        "نادیده گرفتن Group Policy یا سیاست مدیریت مرکزی."
+      ],
+      "lab_hint_fa": "در ماشین مجازی آزمایشگاهی، خروجی هر سه پروفایل را ثبت کنید و با سیاست مورد انتظار مقایسه کنید؛ قوانین را بدون مجوز تغییر ندهید.",
+      "security_notes_fa": "فایروال را برای عیب‌یابی خاموش نکنید؛ ابتدا قانون محدود و مشخص برای مقصد، مبدأ، پروتکل و پورت بررسی شود.",
+      "search_keywords": [
+        "Windows Defender Firewall",
+        "Get-NetFirewallProfile",
+        "inbound policy",
+        "firewall audit"
+      ],
+      "assessment": {
+        "question_fa": "آیا Enabled=True به معنی مجاز بودن پورت 86 است؟",
+        "answer_key": "خیر؛ باید پروفایل فعال، قواعد مؤثر، آدرس bind سرویس و مسیر شبکه بررسی شوند."
+      }
+    }
+  ]
+}
