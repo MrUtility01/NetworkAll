@@ -1,26 +1,23 @@
-# ادغام cisco_switching در اندروید
+# ادغام فصل ۶۸ — NetworkAll
 
-فایل شما اعتبارسنجی شد: **۱۳۲۳ دستور**.
+فصل دستورات پس از ادغام باید در مجموعه‌های واضح مانند Linux، Bash، PowerShell، Windows CMD/Batch، Cisco و MikroTik دیده شود. عدد نهایی رکورد از JSON فشردهٔ تولیدشده به دست می‌آید؛ به عدد ثابت قدیمی تکیه نکنید.
 
-اسکریپت `scripts/merge_content_packs_into_android.py` آن‌ها را به **فصل ۶۸** تبدیل می‌کند.
+## زنجیرهٔ ساخت
 
-## روی ویندوز / Git Bash
+از ریشهٔ مخزن:
 
 ```bash
-cd ~/NetworkAll
-git pull
+python scripts/export_android_index.py
 python scripts/merge_content_packs_into_android.py
-# باید ببینید: ch68 commands 1323
-git add android/app/src/main/assets/curriculum_index.json.gz
-git add scripts/merge_content_packs_into_android.py
-git commit -m "content: embed cisco_switching commands as chapter 68"
-git push
+python scripts/validate_android_curriculum.py
+python scripts/generate_android_diagrams.py
+python scripts/package_windows_v1.py
 ```
 
-سپس GitHub → Actions → **Build Android APK** → Run workflow.
+Workflow اصلی همین زنجیره را اجرا می‌کند؛ سپس APK را assemble و دارایی‌های واقعی داخل آن را بررسی می‌کند. بستهٔ Windows از همان curriculum فشرده استفاده می‌کند تا در Seed دیتابیس تازه، عنوان‌ها و UIDها با Android هماهنگ باشند.
 
-بعد از نصب APK: Settings → Clear data برنامه تا seed v12 فصل ۶۸ را بار کند.
+برای دریافت خروجی قابل‌تأیید، فقط Artifact یک اجرای سبز در [GitHub Actions](https://github.com/MrUtility01/NetworkAll/actions) را دریافت کنید.
 
-## ویندوز سرور (SQLite)
+## SQLite ویندوز
 
-فعلاً `apply_any_pack` برای `commands[]` به‌صورت مستقیم درس insert نمی‌کند؛ اولویت اندروید asset است. برای ویندوز در مرحله بعد importer اختصاصی اضافه می‌شود.
+`tools/apply_any_pack.py` فقط رکوردهای موجودی را که match می‌کند به‌روزرسانی می‌کند؛ برای ورود مجموعهٔ جدید `commands[]` به مسیر seed مشترک اعتماد کنید. پیش از دستکاری دیتابیس موجود، بکاپ بگیرید.
