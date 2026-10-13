@@ -1,0 +1,7 @@
+flowchart TD
+ A[IPv4 packet to local next hop] --> B{Neighbor cache entry?}
+ B -- yes --> C[Build Ethernet frame]
+ B -- no --> D[Broadcast ARP Request]
+ D --> E[Owner sends ARP Reply]
+ E --> F[Update neighbor cache]
+ F --> C
