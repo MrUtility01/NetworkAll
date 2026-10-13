@@ -10,7 +10,7 @@ import java.security.MessageDigest
 import java.time.Instant
 
 object OfflineSeeder {
-    private const val META_SEEDED = "offline_seeded_v18"
+    private const val META_SEEDED = "offline_seeded_v19"
 
     suspend fun ensureSeeded(context: Context): Int = withContext(Dispatchers.IO) {
         val dao = AppDatabase.get(context).lessonDao()
