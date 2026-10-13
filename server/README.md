@@ -1,4 +1,4 @@
-# دایرةالمعارف شبکه — نسخه وب v1
+# NetworkAll — دانشنامه شبکه، نسخه وب
 
 ## ویژگی‌ها
 - **۶۳ فصل کامل** از Blueprint (نه ساختار قدیمی ۱۴ فصلی)
@@ -10,7 +10,7 @@
 ## اجرا روی ویندوز
 
 ```bat
-cd /d مسیر\NetworkEncyclopediaWeb
+cd /d مسیر\NetworkAll
 python -m pip install -r requirements.txt
 python app.py
 ```
@@ -18,7 +18,7 @@ python app.py
 مرورگر را باز کنید:
 
 ```text
-http://127.0.0.1:5050
+http://127.0.0.1:86
 ```
 
 اولین اجرا ساختار (~۵۰۰۰ درس عنوان‌دار) را یک‌بار می‌سازد؛ بعد سریع است.
