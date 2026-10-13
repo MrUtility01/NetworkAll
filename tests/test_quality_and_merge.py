@@ -421,6 +421,19 @@ class ContentMergeTests(unittest.TestCase):
                         {question.get("id") for question in questions},
                         {answer.get("question_id") for answer in answer_key},
                     )
+                    answers_by_id = {answer.get("id"): answer for answer in answer_key}
+                    self.assertEqual({question.get("id") for question in questions}, set(answers_by_id))
+                    for question in questions:
+                        answer = answers_by_id[question["id"]]
+                        option_ids = [option.get("id") for option in question.get("options", [])]
+                        self.assertEqual(len(option_ids), 4)
+                        self.assertIn(answer.get("correct_option_id"), option_ids)
+                        self.assertEqual(
+                            answer.get("correct_index"),
+                            option_ids.index(answer.get("correct_option_id")),
+                            "Android QuizActivity requires a correct_index aligned with question option order",
+                        )
+                        self.assertTrue(answer.get("explanation"))
                     self.assertTrue(lesson.get("meta", {}).get("official_sources"))
                     self.assertEqual(lesson.get("source_status"), "review_required")
 
