@@ -1,26 +1,30 @@
 # JSON دانشنامه دستورات — NetworkAll فصل ۶۸
 
-این پوشه شامل بسته‌های واقعی ورودی برای merge به فهرست آموزشی است. رکوردهای جدید با `source_status=review_required` باقی می‌مانند تا بازبینی تخصصی انجام شود.
+این پوشه بسته‌های ورودی برای ادغام افزایشی در curriculum را نگه می‌دارد. رکوردهای جدید با `source_status=review_required` هستند تا بازبینی تخصصی syntax، نسخه و رفتار واقعی انجام شود.
 
-## بسته‌های مستقل افزوده‌شده در مرحله اول
+## شمارش واقعی بسته‌های فرمان مستقل
 
-- `cisco_routing.json` — ۳۰ فرمان Cisco IOS-XE در حوزه routing، ACL، NAT و verification.
-- `cisco_switching.json` — ۲۰ فرمان Cisco switching برای VLAN، STP، EtherChannel، PoE و عیب‌یابی لایه ۲.
-- `mikrotik_ops_addon.json` — ۲۰ فرمان افزایشی MikroTik RouterOS v7.
-- `powershell.json` — ۲۰ فرمان PowerShell برای شبکه، سرویس، لاگ، فایل و اتوماسیون.
-- `windows_batch.json` — ۲۰ نمونه Windows Batch/CMD برای کنترل خطا، فایل، logging و job.
-- `linux.json` — ۲۰ فرمان Linux برای شبکه، DNS، سرویس، storage، process و logs.
+- **Cisco IOS-XE Routing: ۱۶۰۰ رکورد** در `cisco_routing.json` و `cisco_routing_addon_01.json` تا `cisco_routing_addon_08.json`.
+- **Cisco Switching: ۲۰ رکورد** در `cisco_switching.json`.
+- **MikroTik RouterOS v7: ۱۴۳ رکورد** در `mikrotik_ops_addon.json` و `mikrotik_ops_addon_02.json`.
+- **PowerShell: ۱۴۹ رکورد** در `powershell.json` و `powershell_addon_01.json`.
+- **Windows Batch: ۲۰ رکورد** در `windows_batch.json`.
+- **Linux: ۲۰ رکورد** در `linux.json`.
 
-مجموع این مرحله ۱۳۰ رکورد فرمان تازه است؛ این تعداد به معنی تکمیل کل دانشنامه نیست. هدف Cisco Routing برابر ۱۶۰۰ رکورد مستقل است و فعلاً ۳۰ رکورد از آن هدف ثبت شده است.
+جمع بسته‌های مستقل بالا **۱۹۵۲ رکورد فرمان** است. رکوردهای قدیمی/ترکیبی در این جمع نیستند تا شمارش دوباره رخ ندهد.
 
-## فایل‌های جانبی آموزشی
+## آزمون‌ها و مواد تمرینی
 
 - `ch68_examples.json` — ۵۰ مثال عملی
 - `ch68_scenarios.json` — ۵۰ سناریوی لابراتوری و RCA
-- `ch68_questions.json` — ۵۰ سؤال چهارگزینه‌ای؛ پاسخ صحیح در این فایل نیست
-- `ch68_answer_key.json` — پاسخ‌نامه مستقل با IDهای مشترک
-- `ch68_sources.json` — ۱۷ URL رسمی/سازمانی یکتا برای شروع بازبینی
-- `VALIDATION.md` — شمارش واقعی و محدودیت‌ها
+- `ch68_questions.json` و `ch68_answer_key.json` — ۵۰ سؤال عمومی و پاسخ‌نامه مستقل
+- `cisco_routing_exam.json` و `cisco_routing_exam_answer_key.json` — ۲۵ سؤال تخصصی Cisco Routing / ACL / NAT
+- `routeros_exam.json` و `routeros_exam_answer_key.json` — ۲۰ سؤال تخصصی RouterOS v7
+- `powershell_exam.json` و `powershell_exam_answer_key.json` — ۲۱ سؤال تخصصی PowerShell
+- `ch68_sources.json` — منابع رسمی/سازمانی برای بازبینی
+- `VALIDATION.md` — گزارش شمارش، معیارهای ساختاری و محدودیت‌ها
+
+مجموع آزمون‌های فایل‌شده **۱۱۶ سؤال و ۱۱۶ پاسخ مستقل** است. شناسهٔ سؤال‌ها و پاسخ‌ها باید یکسان باشد و پاسخ صحیح داخل فایل سؤال‌ها ذخیره نمی‌شود.
 
 ## بسته‌های قدیمی که حفظ شده‌اند
 
@@ -29,18 +33,20 @@
 - `networkall_ops_advanced.json` — ۶ رکورد عملیات/عیب‌یابی
 - `networkall_shell_expanded.json` — ۵۰ رکورد ترکیبی Linux، Bash، PowerShell، Windows CMD و Windows Batch
 
+این بسته‌های قدیمی جدا از شمار ۱۹۵۲ گزارش می‌شوند؛ schema متفاوت آن‌ها نیازمند ممیزی مستقل است.
+
 ## ساخت و اعتبارسنجی
 
 از ریشهٔ مخزن:
 
 ```bash
-python scripts/export_android_index.py
-python scripts/merge_content_packs_into_android.py
-python scripts/validate_ch68_command_packs.py
-python scripts/validate_android_curriculum.py
+python3 scripts/validate_ch68_command_packs.py
+python3 scripts/export_android_index.py
+python3 scripts/merge_content_packs_into_android.py
+python3 scripts/validate_android_curriculum.py
 ```
 
-Workflow اندروید اکنون باید اعتبارسنجی مستقل بسته‌های فصل ۶۸ را قبل از build اجرا کند. نتیجه CI باید پس از آخرین commitها بررسی شود؛ در این گزارش هنوز اجرای جدید CI تأیید نشده است.
+Workflow اندروید اعتبارسنجی مستقل فصل ۶۸ را پیش از ساخت APK اجرا می‌کند. وضعیت آخرین اجرای CI را از [GitHub Actions](https://github.com/MrUtility01/NetworkAll/actions) بررسی کنید؛ موفقیت اعتبارسنجی JSON به‌تنهایی به معنی APK نصب‌شده و آزمایش‌شده روی گوشی نیست.
 
 ## معیار کیفیت
 
