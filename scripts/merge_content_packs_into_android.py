@@ -74,6 +74,9 @@ def commands_to_lessons(data: dict, source_key: str = "pack") -> list:
         level = c.get("level") or "L1"
         category_raw = str(c.get("category") or data.get("platform") or "general").strip().lower().replace("-", "_").replace("/", "_")
         collection, collection_order = collection_map.get(category_raw, (str(c.get("platform") or data.get("platform") or category_raw).strip() or "عمومی", 199))
+        raw_title = str(c.get("title_fa") or cmd)
+        if category_raw == "cmd" and any(token in (raw_title + " " + cmd).lower() for token in ("batch", "errorlevel", "delayed expansion", "setlocal", "goto ", "@echo off", "for /f", "if errorlevel")):
+            collection, collection_order = ("Windows Batch", 105)
         title_fa = c.get("title_fa") or cmd
         if not str(title_fa).startswith("[L"):
             title_fa = f"[{level}] {title_fa}"
