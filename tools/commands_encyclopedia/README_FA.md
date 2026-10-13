@@ -1,38 +1,29 @@
-# دانشنامهٔ دستورات — NetworkAll فصل ۶۸
+# دانشنامه جامع دستورات — فصل ۶۸ NetworkAll
 
-فصل دستورات باید بر اساس مجموعه/پلتفرم واضح باشد، نه فقط یک فهرست تخت:
+این پوشه **قالب، Schema و دستورالعمل تولید** را نگه می‌دارد. بسته‌های JSON واقعی که merge می‌شوند در `tools/packs/commands_encyclopedia/` قرار دارند.
 
-- Cisco IOS/IOS-XE
-- MikroTik RouterOS 7
-- Linux
-- Bash
-- PowerShell
-- Windows CMD
-- Windows Batch
-- FortiGate CLI
-- Issabel/Asterisk و ابزارهای عمومی، در صورت وجود بستهٔ ممیزی‌شده
+## ساختار هر رکورد
+هر فرمان باید پلتفرم/فروشنده، کاربرد، syntax، آرگومان‌ها، پیش‌نیاز، مراحل، خروجی نمونه و تفسیر آن، خطاهای رایج، دستورهای مرتبط، Lab، ملاحظات امنیتی، کلمات جست‌وجو، فلش‌کارت‌ها و ارزیابی داشته باشد. در ارزیابی، `questions` و `answer_key` جدا هستند.
 
-## قرارداد هر رکورد
+## مجموعه‌های فصل ۶۸
+1. Cisco IOS/IOS-XE
+2. MikroTik RouterOS 7
+3. Linux
+4. Bash
+5. PowerShell
+6. Windows CMD
+7. Windows Batch
+8. FortiGate CLI و Issabel/Asterisk، فقط وقتی JSON معتبر آن‌ها در پوشهٔ pack موجود باشد.
 
-رکورد کامل باید command/title_fa/title_en، platform/vendor/category، syntax، آرگومان‌ها، پیش‌نیاز، کاربرد، مراحل، خروجی نمونه، تفسیر خروجی، دستورات مرتبط، خطاهای رایج، لابراتوار کنترل‌شده، ملاحظات امنیتی و کلمات جست‌وجو داشته باشد. `assessment.questions` و `assessment.answer_key` باید جدا باشند. UID پایدار و یکتا باشد.
+## بسته‌های shell اضافه‌شده در v1
+`networkall_shell_expanded.json` شامل ۵۰ فرمان عملیاتی تکمیلی (۱۰ مورد برای هر یک از پنج پلتفرم/شل Linux، Bash، PowerShell، CMD و Batch) با نمونه خروجی آموزشی، مراحل، Lab، امنیت، دو فلش‌کارت و MCQ با پاسخ مجزا است. خروجی نمونه برای نمایش روش تفسیر است؛ باید با نسخه و پیکربندی واقعی تطبیق داده شود.
 
-## مسیر فایل‌ها
-
-```text
-tools/commands_encyclopedia/       # SCHEMA، پرامپت‌ها و مراحل کار
-tools/packs/commands_encyclopedia/ # JSONهای واقعیِ واردشونده
-scripts/merge_content_packs_into_android.py
-scripts/validate_android_curriculum.py
-```
-
-## روند ساخت
-
+## اعتبارسنجی و خروجی
 ```bash
 python scripts/export_android_index.py
 python scripts/merge_content_packs_into_android.py
 python scripts/validate_android_curriculum.py
+python scripts/generate_android_diagrams.py
 ```
 
-برای Release از GitHub Actions استفاده کنید تا asset نهایی داخل APK بررسی شود. Windows v1 نیز همان Asset ادغام‌شده را برای Seed دیتابیس تازه می‌خواند.
-
-**نکتهٔ مهم:** فایل‌های پرامپت/مرحله، خودشان رکورد آموزشی واردشده نیستند. همین‌طور `tools/apply_any_pack.py` تنها محتوای درس‌هایی را که بتواند match کند به‌روزرسانی می‌کند و برای همهٔ شکل‌های `commands[]` جایگزین merge/loader نیست. تعداد هدف در پرامپت را با تعداد واقعی بستهٔ validate‌شده اشتباه نگیرید.
+تعداد نهایی را از گزارش واقعی بخوانید. وجود prompt یا نام فایل در README، به معنی وجود pack کامل نیست. بسته‌های موجود اما ناقص را قبل از انتشار اصلاح یا از فهرست «تکمیل‌شده» حذف کنید.
