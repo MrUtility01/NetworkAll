@@ -52,12 +52,58 @@ jobs:
           assert 1 in orders and 68 in orders
           PY
 
-      - name: Merge packs (best effort)
+      - name: Merge content packs (required)
         run: |
-          set +e
+          set -euo pipefail
           python3 scripts/merge_content_packs_into_android.py
-          echo "merge_exit=$?"
-          exit 0
+
+      - name: Validate final curriculum asset
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+
+          p = Path("android/app/src/main/assets/curriculum_index.json.gz")
+          if not p.is_file() or p.stat().st_size < 1024:
+              raise SystemExit(f"ERROR: missing or suspiciously small curriculum asset: {p}")
+          with gzip.open(p, "rt", encoding="utf-8") as f:
+              d = json.load(f)
+
+          chapters = d.get("chapters")
+          if not isinstance(chapters, list) or not chapters:
+              raise SystemExit("ERROR: chapters must be a non-empty list")
+          orders = [int(c["order"]) for c in chapters]
+          if len(orders) != len(set(orders)):
+              raise SystemExit("ERROR: duplicate chapter order")
+          if 1 not in orders or 68 not in orders:
+              raise SystemExit(f"ERROR: required chapters 1 and 68 missing; found {orders}")
+
+          lessons = [
+              lesson
+              for chapter in chapters
+              for sub in chapter.get("subchapters", [])
+              for lesson in sub.get("lessons", [])
+          ]
+          if int(d.get("lesson_count", -1)) != len(lessons):
+              raise SystemExit(
+                  f"ERROR: lesson_count={d.get('lesson_count')} but actual={len(lessons)}"
+              )
+          uids = [lesson.get("uid") for lesson in lessons]
+          if any(not uid for uid in uids):
+              raise SystemExit("ERROR: at least one lesson has no uid")
+          if len(uids) != len(set(uids)):
+              raise SystemExit("ERROR: duplicate lesson uid detected")
+
+          ch68 = next(c for c in chapters if int(c["order"]) == 68)
+          ch68_count = sum(len(s.get("lessons", [])) for s in ch68.get("subchapters", []))
+          if ch68_count == 0:
+              raise SystemExit("ERROR: chapter 68 contains no lessons")
+
+          print(f"VALID curriculum: chapters={len(chapters)} lessons={len(lessons)} "
+                f"chapter68_lessons={ch68_count} version={d.get('version')} "
+                f"gzip_bytes={p.stat().st_size}")
+          PY
 
       - name: Gradle wrapper + local.properties
         working-directory: android
