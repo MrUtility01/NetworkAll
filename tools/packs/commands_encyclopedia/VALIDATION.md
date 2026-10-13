@@ -9,8 +9,8 @@
 |---|---|---:|
 | Cisco IOS-XE Routing | `cisco_routing.json` + `cisco_routing_addon_01..08.json` | **۱۶۰۰** |
 | Cisco Switching | `cisco_switching.json` | ۲۰ |
-| MikroTik RouterOS v7 | `mikrotik_ops_addon.json` (43) + `mikrotik_ops_addon_02.json` (100) + `mikrotik_ops_addon_03.json` (41) + `mikrotik_ops_addon_03.json` | **۱۸۴** |
-| PowerShell | `powershell.json` (49) + `powershell_addon_01.json` (100) + `powershell_addon_02.json` (25) + `powershell_addon_02.json` | **۱۷۴** |
+| MikroTik RouterOS v7 | `mikrotik_ops_addon.json` (43) + `mikrotik_ops_addon_02.json` (100) + `mikrotik_ops_addon_03.json` (41) | **۱۸۴** |
+| PowerShell | `powershell.json` (49) + `powershell_addon_01.json` (100) + `powershell_addon_02.json` (25) | **۱۷۴** |
 | Windows Batch | `windows_batch.json` | ۲۰ |
 | Linux | `linux.json` | ۲۰ |
 | **مجموع رکوردهای فرمان در بسته‌های مستقل بالا** | | **۲۰۱۸** |
@@ -25,21 +25,21 @@
 | سناریوهای چندپلتفرمی | ۵۰ |
 | آزمون عمومی فصل ۶۸ | ۵۰ سؤال |
 | پاسخ‌نامه مستقل آزمون عمومی | ۵۰ پاسخ |
-| آزمون تخصصی Cisco Routing / ACL / NAT | ۲۵ سؤال |
-| پاسخ‌نامه مستقل Cisco | ۲۵ پاسخ |
-| آزمون تخصصی MikroTik RouterOS v7 | ۲۰ سؤال |
-| پاسخ‌نامه مستقل MikroTik | ۲۰ پاسخ |
-| آزمون تخصصی PowerShell | ۲۱ سؤال |
-| پاسخ‌نامه مستقل PowerShell | ۲۱ پاسخ |
+| آزمون تخصصی Cisco Routing / ACL / NAT (base + addon 01) | **۴۰ سؤال** |
+| پاسخ‌نامه مستقل Cisco | **۴۰ پاسخ** |
+| آزمون تخصصی MikroTik RouterOS v7 (base + addon 01) | **۴۵ سؤال** |
+| پاسخ‌نامه مستقل MikroTik | **۴۵ پاسخ** |
+| آزمون تخصصی PowerShell (base + addon 01) | **۳۶ سؤال** |
+| پاسخ‌نامه مستقل PowerShell | **۳۶ پاسخ** |
 | منابع مستقل فصل ۶۸ | ۱۷ URL در فایل منابع پایه |
 
 مجموع آزمون‌های تخصصی موجود در فایل‌های جداگانه: **۱۲۱ سؤال و ۱۲۱ پاسخ** (Cisco=40، RouterOS=45، PowerShell=36)؛ به‌علاوه آزمون عمومی فصل ۶۸ با ۵۰ سؤال و ۵۰ پاسخ. پاسخ‌های درست در فایل‌های answer key نگهداری می‌شوند؛ validator شناسه‌ها، فرمان مرجع، تعداد گزینه‌ها و تطبیق پاسخ با گزینه را بررسی می‌کند.
 
 ## فایل‌های آزمون تخصصی جدید
 
-- `cisco_routing_exam.json` و `cisco_routing_exam_answer_key.json`
-- `routeros_exam.json` و `routeros_exam_answer_key.json`
-- `powershell_exam.json` و `powershell_exam_answer_key.json`
+- `cisco_routing_exam.json` + `cisco_routing_exam_addon_01.json`؛ هر کدام answer key جدا
+- `routeros_exam.json` + `routeros_exam_addon_01.json`؛ هر کدام answer key جدا
+- `powershell_exam.json` + `powershell_exam_addon_01.json`؛ هر کدام answer key جدا
 
 ## اعتبارسنجی و محدودیت‌ها
 
@@ -68,3 +68,11 @@ python3 scripts/validate_android_curriculum.py
 - آزمون‌های تخصصی هر پلتفرم در فایل‌های addon جدا و answer key مستقل نگهداری می‌شوند: Cisco ۱۵ سؤال جدید (جمع ۴۰)، RouterOS ۱۵ (جمع ۴۵)، PowerShell ۱۵ (جمع ۳۶).
 - جمع بسته‌های فرمان در جدول بالا **۲۰۱۸ رکورد** است؛ شمارش بر اساس آرایه‌های `commands` فایل‌های مستقل انجام شده است.
 - validator به‌روزرسانی شده تا فایل‌های جدید، UIDها، ارجاع آزمون به فرمان و تطبیق پاسخ‌نامه را در CI بررسی کند. نتیجه اجرای CI پس از این commitها باید جداگانه تأیید شود.
+
+
+## رفع خطای CI و ممیزی جدید
+
+- اجرای ناموفق [38460964232](https://github.com/MrUtility01/NetworkAll/actions/runs/38460964232) در مرحلهٔ `Validate Chapter 68 command packs` متوقف شد: `routeros_exam.json` دارای ۳۰ سؤال و `routeros_exam_answer_key.json` فقط ۲۰ پاسخ بود.
+- ۱۰ پاسخِ مفقود برای `routeros-exam-021..030` افزوده شد؛ اکنون آزمون پایه RouterOS برابر ۳۰ سؤال/۳۰ پاسخ و با addon جدید مجموع RouterOS برابر ۴۵/۴۵ است.
+- ممیزی مستقل فایل‌های فرمان: Cisco Routing=۱۶۰۰، RouterOS=۱۸۴، PowerShell=۱۷۴؛ جمع تمام بسته‌های فرمان جدول بالا=۲۰۱۸. در ممیزی فایل‌های فعلی ۲۰۱۸ UID یکتا و هیچ UID/رشته فرمان تکراری مشاهده نشد.
+- سه آزمون افزایشی تخصصی، هرکدام با ۱۵ سؤال و پاسخ‌نامهٔ جدا، به بسته‌ها افزوده شدند؛ شمار کل آزمون‌های تخصصی اکنون Cisco=۴۰، RouterOS=۴۵ و PowerShell=۳۶ است.
