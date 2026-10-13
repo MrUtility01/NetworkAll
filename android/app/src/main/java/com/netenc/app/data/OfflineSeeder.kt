@@ -4,6 +4,7 @@ import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import org.json.JSONArray
 import java.io.BufferedInputStream
 import java.util.zip.GZIPInputStream
 import java.security.MessageDigest
@@ -49,21 +50,29 @@ object OfflineSeeder {
                     val commands = les.optString("commands")
                     val examples = les.optString("examples")
                     val notes = les.optString("notes")
-                    val metaJson = les.optJSONObject("meta")?.toString() ?: "{}"
+                    val metaJson = les.optJSONObject("meta")?.let { canonicalJson(it) } ?: "{}"
                     val objectives = les.optJSONArray("learning_objectives")
                     val objectivesText = if (objectives == null) "" else
                         (0 until objectives.length()).joinToString("\n") { objectives.optString(it) }
-                    val searchQuery = les.optString("search_query",
-                        (les.optJSONArray("search_keywords")?.let { arr ->
-                            (0 until arr.length()).joinToString(" ") { arr.optString(it) }
-                        } ?: ""))
+                    val keywords = les.optJSONArray("search_keywords")?.let { arr ->
+                        (0 until arr.length()).joinToString(" ") { arr.optString(it) }
+                    } ?: ""
+                    val searchQuery = les.optString("search_query").ifBlank { keywords }
+                    val levelTag = les.optString("level", "L0")
+                    val sourceStatus = les.optString("source_status", "review_required")
                     val generatedAt = root.optString("generated_at", Instant.now().toString())
+                    val contentHash = syncContentHash(
+                        uid, titleFa, titleEn, levelTag, summary, fullContent,
+                        commands, examples, notes, metaJson, searchQuery,
+                        objectivesText, sourceStatus
+                    )
                     batch.add(
                         LessonEntity(
                             uid = uid,
+                            entity = "lesson",
                             titleFa = titleFa,
                             titleEn = titleEn,
-                            tags = les.optString("level", "L0"),
+                            tags = levelTag,
                             summary = summary,
                             fullContent = fullContent,
                             commands = commands,
@@ -72,9 +81,9 @@ object OfflineSeeder {
                             metaJson = metaJson,
                             searchQuery = searchQuery,
                             learningObjectives = objectivesText,
-                            sourceStatus = les.optString("source_status", "review_required"),
+                            sourceStatus = sourceStatus,
                             lastUpdated = generatedAt,
-                            contentHash = sha256(uid, titleFa, titleEn, summary, fullContent, commands, examples, notes, metaJson),
+                            contentHash = contentHash,
                             deviceId = "android-offline-v1",
                             chapterOrder = chOrder,
                             chapterTitle = chTitle,
@@ -96,10 +105,63 @@ object OfflineSeeder {
         finalCount
     }
 
-    private fun sha256(vararg values: String): String {
-        val source = values.joinToString("\u001f")
-        val bytes = MessageDigest.getInstance("SHA-256").digest(source.toByteArray(Charsets.UTF_8))
-        return bytes.joinToString("") { "%02x".format(it.toInt() and 0xff) }
+    /**
+     * Mirrors shared.sync_engine.content_hash: canonical JSON with sorted keys,
+     * omitting device_id, last_updated and content_hash. Keep this in lockstep
+     * with server/core/db.py so an unchanged lesson is not a false sync conflict.
+     */
+    private fun syncContentHash(
+        uid: String,
+        titleFa: String,
+        titleEn: String,
+        tags: String,
+        summary: String,
+        fullContent: String,
+        commands: String,
+        examples: String,
+        notes: String,
+        metaJson: String,
+        searchQuery: String,
+        learningObjectives: String,
+        sourceStatus: String
+    ): String {
+        val payload = JSONObject()
+            .put("uid", uid)
+            .put("entity", "lesson")
+            .put("title_fa", titleFa)
+            .put("title_en", titleEn)
+            .put("tags", tags)
+            .put("summary", summary)
+            .put("full_content", fullContent)
+            .put("commands", commands)
+            .put("examples", examples)
+            .put("notes", notes)
+            .put("meta_json", metaJson)
+            .put("search_query", searchQuery)
+            .put("learning_objectives", learningObjectives)
+            .put("source_status", sourceStatus)
+            .put("deleted", false)
+        val canonical = canonicalJson(payload)
+        val digest = MessageDigest.getInstance("SHA-256")
+            .digest(canonical.toByteArray(Charsets.UTF_8))
+        return digest.joinToString("") { "%02x".format(it.toInt() and 0xff) }
+    }
+
+    private fun canonicalJson(value: Any?): String = when (value) {
+        null, JSONObject.NULL -> "null"
+        is JSONObject -> {
+            val keys = value.keys().asSequence().toList().sorted()
+            keys.joinToString(prefix = "{", postfix = "}", separator = ",") { key ->
+                JSONObject.quote(key) + ":" + canonicalJson(value.get(key))
+            }
+        }
+        is JSONArray -> (0 until value.length()).joinToString(prefix = "[", postfix = "]", separator = ",") { i ->
+            canonicalJson(value.get(i))
+        }
+        is String -> JSONObject.quote(value)
+        is Boolean, is Int, is Long, is Short, is Byte -> value.toString()
+        is Number -> value.toString()
+        else -> JSONObject.quote(value.toString())
     }
 
     private fun readCurriculumAsset(context: Context): String? {
