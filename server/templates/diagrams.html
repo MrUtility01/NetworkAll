@@ -29,7 +29,7 @@
   <a href="/">بازگشت به دانشنامه</a>
 </header>
 <main>
-  <p class="notice">مجموعهٔ آفلاین ۱۰۰ دیاگرام SVG؛ برخی نمودارها از قالب‌های موضوعی ساخته شده‌اند و برای آموزش تکمیلی، با مستند هر فناوری تطبیق داده شوند.</p>
+  <p class="notice">مجموعهٔ مشترک دیاگرام‌های SVG: کتابخانهٔ مرجع شبکه و نمودارهای اختصاصی فصل‌های تکمیل‌شده؛ محتوای آموزشی با مستند رسمی فناوری تطبیق داده شود.</p>
   <p id="status" role="status">در حال بارگذاری فهرست دیاگرام‌ها…</p>
   <section id="grid" aria-label="دیاگرام‌های آموزشی"></section>
 </main>
@@ -47,7 +47,7 @@
       String(item.collection || "").toLocaleLowerCase().includes(q)
     );
     for (const item of shown) {
-      if (!/^diagram_\d{3}\.svg$/.test(String(item.asset || ""))) continue;
+      if (!/^(?:ch\d{2}\/)?[A-Za-z0-9_-]+\.svg$/.test(String(item.asset || ""))) continue;
       const card = document.createElement("article");
       const img = document.createElement("img");
       img.loading = "lazy";
