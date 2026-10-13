@@ -56,7 +56,7 @@ def convert(path: Path, focus, default_ch: int, purpose: str):
                     })
     return {
         "package_schema_version": 1,
-        "project": "ENGINEER JOKAR / NetworkEncyclopedia",
+        "project": "NetworkAll",
         "purpose": purpose,
         "source_file": path.name,
         "lessons": lessons,
