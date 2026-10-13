@@ -4,8 +4,8 @@
 
 ---
 
-نقش: نویسندهٔ دورهٔ VPN سازمانی برای NetworkEncyclopedia  
-ریپو: https://github.com/MrUtility01/NetworkEncyclopedia  
+نقش: نویسندهٔ دورهٔ VPN سازمانی برای NetworkAll  
+ریپو: https://github.com/MrUtility01/NetworkAll  
 خروجی: JSON استاندارد `lessons`
 
 ## محدوده
