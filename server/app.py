@@ -438,28 +438,48 @@ def lesson_specialized_depth(lesson_id: int):
 
 @app.get("/api/infographics")
 def api_infographics():
-    """Compatibility API backed by the shared Android/Windows SVG diagram index."""
+    """Compatibility API backed by the shared Android/Windows combined SVG diagram index."""
     denied = require_token()
     if denied:
         return denied
-    index_path = Path(app.static_folder) / "diagrams" / "index.json"
+    index_path = Path(app.static_folder) / "diagrams" / "combined_index.json"
     try:
         payload = json.loads(index_path.read_text(encoding="utf-8"))
     except Exception as exc:
         return jsonify({"error": "diagram_index_unavailable", "detail": str(exc), "items": [], "count": 0}), 503
 
     items = []
+    root = index_path.parent.resolve()
+    allowed_chapters = {"ch01", "ch02", "ch03", "ch09"}
     for row in payload.get("diagrams", []):
         asset = str(row.get("asset") or "")
-        # Whitelist the generated asset naming scheme; never accept arbitrary paths.
-        if not (asset.startswith("diagram_") and len(asset) == 15 and
-                asset[8:11].isdigit() and asset.endswith(".svg")):
+        parts = Path(asset).parts
+        # Whitelist flat generic names and the curated chapter folders; reject traversal.
+        if len(parts) == 1:
+            safe_name = (
+                parts[0].startswith("diagram_")
+                and len(parts[0]) == 15
+                and parts[0][8:11].isdigit()
+                and parts[0].endswith(".svg")
+            )
+        elif len(parts) == 2:
+            folder, filename = parts
+            safe_name = (
+                folder in allowed_chapters
+                and filename.endswith(".svg")
+                and filename.replace("_", "").replace("-", "").replace(".svg", "").isalnum()
+            )
+        else:
+            safe_name = False
+        if not safe_name or any(part in {"", ".", ".."} for part in parts):
             continue
-        svg_path = index_path.parent / asset
-        if not svg_path.is_file():
+        svg_path = (root / Path(*parts)).resolve()
+        if root not in svg_path.parents or not svg_path.is_file():
             continue
         items.append({
             "title": str(row.get("title_fa") or row.get("collection") or row.get("id") or "NetworkAll"),
+            "asset": asset,
+            "alt": str(row.get("alt_fa") or ""),
             "svg": svg_path.read_text(encoding="utf-8"),
         })
     return jsonify({"items": items, "count": len(items)})
