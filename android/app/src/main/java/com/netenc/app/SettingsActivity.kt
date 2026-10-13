@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class SettingsActivity : AppCompatActivity() {
-    companion object { const val DEFAULT_TOKEN = "09136555866" }
+    companion object { const val DEFAULT_TOKEN = "" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class SettingsActivity : AppCompatActivity() {
         val gitUser = field("Git user", "git_user")
         val gitPass = field("Git token", "git_pass", true)
         val driveEmail = field("Drive email", "drive_email")
-        val driveFolder = field("پوشه Drive", "drive_folder", def = "NetworkEncyclopedia-Backup")
+        val driveFolder = field("پوشه Drive", "drive_folder", def = "NetworkAll-Backup")
         val save = Button(this).apply {
             text = "ذخیره همه"
             setOnClickListener {
