@@ -52,6 +52,18 @@ def find_pack_files():
 def commands_to_lessons(data: dict, source_key: str = "pack") -> list:
     ch = int(data.get("chapter_order") or 68)
     out = []
+    # Stable, human-readable collection buckets for Chapter 68.
+    collection_map = {
+        "linux": ("Linux", 101), "bash": ("Bash", 102),
+        "powershell": ("PowerShell", 103), "power_shell": ("PowerShell", 103),
+        "cmd": ("Windows CMD", 104), "batch": ("Windows Batch", 105),
+        "windows_batch": ("Windows Batch", 105), "windows_cmd": ("Windows CMD", 104),
+        "cisco": ("Cisco IOS/IOS-XE", 106), "routeros": ("MikroTik RouterOS", 107),
+        "mikrotik": ("MikroTik RouterOS", 107), "fortigate": ("FortiGate", 108),
+        "issabel": ("Issabel / Asterisk", 109),
+    }
+    category_raw = str((data.get("commands") or [{}])[0].get("category") or data.get("platform") or "general").strip().lower().replace("-", "_").replace("/", "_")
+    collection, collection_order = collection_map.get(category_raw, (str(data.get("platform") or category_raw).strip() or "عمومی", 199))
     sub_map = {
         "basics": 1, "interface": 2, "vlan": 3, "trunk": 3, "stp": 4, "spanning-tree": 4,
         "etherchannel": 5, "port-security": 6, "mac": 7, "cdp": 8, "lldp": 8,
@@ -65,8 +77,12 @@ def commands_to_lessons(data: dict, source_key: str = "pack") -> list:
         title_fa = c.get("title_fa") or cmd
         if not str(title_fa).startswith("[L"):
             title_fa = f"[{level}] {title_fa}"
+        # Put the collection in every lesson title so it remains identifiable
+        # in flat search results and screens that do not display the tree path.
+        if not str(title_fa).startswith(f"[{collection}]"):
+            title_fa = f"[{collection}] {title_fa}"
         sub = (c.get("subcategory") or c.get("category") or "general").strip().lower()
-        sub_order = sub_map.get(sub, 10)
+        sub_order = collection_order + sub_map.get(sub, 10)
         args = c.get("arguments") or []
         arg_lines = []
         for a in args:
@@ -130,6 +146,10 @@ def commands_to_lessons(data: dict, source_key: str = "pack") -> list:
             "uid": lesson_uid,
             "chapter_order": ch,
             "subchapter_order": sub_order,
+            "subchapter_title_fa": f"{collection} — {sub.replace('_', ' ').title()}",
+            "collection": collection,
+            "platform": str(data.get("platform") or collection),
+            "vendor": str(data.get("vendor") or collection),
             "lesson_order": i,
             "level": level,
             "title_fa": title_fa,
@@ -234,8 +254,14 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
         return 0
     data["chapters"] = [c for c in data["chapters"] if c.get("order") != order]
     subs = defaultdict(list)
+    sub_titles = {}
     for src in lessons:
-        subs[src.get("subchapter_order") or 1].append(src)
+        si = int(src.get("subchapter_order") or 1)
+        subs[si].append(src)
+        label = str(src.get("subchapter_title_fa") or src.get("collection") or "").strip()
+        if not label:
+            label = f"گروه دستورات {si}"
+        sub_titles[si] = label
     out_subs = []
     for si in sorted(subs):
         les_out = []
@@ -255,7 +281,7 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
                 "examples": as_text(src.get("examples")),
                 "notes": notes,
             })
-        out_subs.append({"title_fa": f"زیرفصل {si}", "lessons": les_out})
+        out_subs.append({"title_fa": sub_titles.get(si, f"گروه دستورات {si}"), "lessons": les_out})
     data["chapters"].append({
         "order": order,
         "title_fa": title_fa,
