@@ -427,9 +427,15 @@ class WebDB:
                        meta_json, search_query, learning_objectives, source_status, last_updated,
                        content_hash, device_id, COALESCE(deleted,0) AS deleted
                 FROM lessons WHERE uid IN ({qmarks})""", list(uids)).fetchall():
-            d = dict(r); d["entity"] = "lesson"; out.append(d)
+            d = dict(r)
+            d["entity"] = "lesson"
+            d["deleted"] = bool(d.get("deleted"))
+            out.append(d)
         for r in self.conn.execute(f"SELECT * FROM scenarios WHERE uid IN ({qmarks})", list(uids)).fetchall():
-            d = dict(r); d["entity"] = "scenario"; out.append(d)
+            d = dict(r)
+            d["entity"] = "scenario"
+            d["deleted"] = bool(d.get("deleted"))
+            out.append(d)
         return out
 
     def sync_apply(self, records):
