@@ -11,7 +11,7 @@ import secrets
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, redirect, render_template, render_template_string, request, session
 
 from core.db import WebDB
 
@@ -140,7 +140,7 @@ def _verify_app_password(password: str) -> bool:
         return False
 
 
-_LOGIN_TEMPLATE = r\'''<!doctype html>
+_LOGIN_TEMPLATE = r'''\n<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -166,10 +166,7 @@ button{margin-top:18px;width:100%;padding:12px;border:0;border-radius:8px;backgr
 <button type="submit">{% if setup_mode %}ثبت رمز و ورود{% else %}ورود{% endif %}</button>
 </form>
 <small>این قفل دسترسی رابط وب را محدود می‌کند؛ جایگزین HTTPS، توکن API، فایروال یا رمزگذاری دیتابیس نیست. برای میزبان LAN فقط شبکهٔ خصوصی و مورداعتماد را مجاز کنید.</small>
-</main></body></html>\'''
-
-
-@app.before_request
+</main></body></html>\n'''\n\n\n@app.before_request
 def require_web_unlock():
     path = request.path
     if (
