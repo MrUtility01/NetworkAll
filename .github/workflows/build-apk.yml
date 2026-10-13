@@ -175,13 +175,25 @@ jobs:
               raise SystemExit(f"No application APK found under {out_dir}")
           with zipfile.ZipFile(apk) as z:
               names = set(z.namelist())
-              curriculum_path = "assets/curriculum_index.json.gz"
+              # Android assets may be packaged as plain JSON or gzip. OfflineSeeder
+              # supports both, so the audit must validate either supported form.
+              curriculum_candidates = (
+                  "assets/curriculum_index.json",
+                  "assets/curriculum_index.json.gz",
+              )
+              curriculum_path = next((p for p in curriculum_candidates if p in names), None)
               diagram_index_path = "assets/diagrams/index.json"
-              if curriculum_path not in names:
-                  raise SystemExit(f"APK {apk.name} missing {curriculum_path}; assets found: {[n for n in sorted(names) if n.startswith('assets/')][:40]}")
+              if curriculum_path is None:
+                  raise SystemExit(
+                      f"APK {apk.name} missing curriculum_index.json[.gz]; "
+                      f"assets found: {[n for n in sorted(names) if n.startswith('assets/')][:60]}"
+                  )
               if diagram_index_path not in names:
-                  raise SystemExit(f"APK {apk.name} missing {diagram_index_path}; assets found: {[n for n in sorted(names) if n.startswith('assets/')][:40]}")
-              curriculum = json.loads(gzip.decompress(z.read(curriculum_path)))
+                  raise SystemExit(f"APK {apk.name} missing {diagram_index_path}; assets found: {[n for n in sorted(names) if n.startswith('assets/')][:60]}")
+              curriculum_bytes = z.read(curriculum_path)
+              if curriculum_path.endswith(".gz"):
+                  curriculum_bytes = gzip.decompress(curriculum_bytes)
+              curriculum = json.loads(curriculum_bytes.decode("utf-8"))
               diagrams = json.loads(z.read(diagram_index_path))
               svg_count = sum(1 for n in names if n.startswith("assets/diagrams/") and n.endswith(".svg"))
               actual_lessons = sum(len(s.get("lessons", [])) for ch in curriculum["chapters"] for s in ch.get("subchapters", []))
