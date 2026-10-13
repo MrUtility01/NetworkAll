@@ -306,6 +306,10 @@ def check_token() -> bool:
 
 
 def require_token():
+    # The authenticated Windows browser session may use the web-learning API.
+    # Android/other clients must still present the per-install API token.
+    if session.get("networkall_unlocked") is True:
+        return None
     if check_token():
         return None
     return jsonify({"ok": False, "error": "unauthorized", "hint": "Authorization: Bearer <NETENC_TOKEN>"}), 401
@@ -352,12 +356,75 @@ def health():
     })
 
 
+@app.get("/api/stats")
+def api_stats():
+    denied = require_token()
+    if denied:
+        return denied
+    return jsonify(db().stats())
+
+
 @app.get("/api/chapters")
 def chapters():
     denied = require_token()
     if denied:
         return denied
     return jsonify(db().list_chapters())
+
+
+@app.get("/api/chapters/<int:chapter_id>/levels")
+def chapter_levels(chapter_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    return jsonify(db().list_levels(chapter_id))
+
+
+@app.get("/api/levels/<int:level_id>/lessons")
+def level_lessons(level_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    return jsonify(db().list_lessons(level_id))
+
+
+@app.get("/api/lessons/<int:lesson_id>")
+def lesson_by_id(lesson_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    result = db().get_lesson(lesson_id)
+    if result is None:
+        return jsonify({"error": "not found"}), 404
+    return jsonify(result)
+
+
+@app.get("/api/scenarios")
+def scenarios_list():
+    denied = require_token()
+    if denied:
+        return denied
+    return jsonify(db().list_scenarios())
+
+
+@app.get("/api/scenarios/<int:scenario_id>")
+def scenario_detail(scenario_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    result = db().get_scenario(scenario_id)
+    if result is None:
+        return jsonify({"error": "not found"}), 404
+    return jsonify(result)
+
+
+@app.get("/api/search")
+def search_lessons():
+    denied = require_token()
+    if denied:
+        return denied
+    query = (request.args.get("q") or "").strip()
+    return jsonify(db().search(query, limit=100))
 
 
 @app.get("/api/lessons")
