@@ -115,32 +115,40 @@ jobs:
           set -euo pipefail
           python3 scripts/validate_android_curriculum.py
 
-      - name: Generate 100 SVG diagrams for Android and Windows web
+      - name: Generate shared diagram library for Android and Windows web
         run: |
           set -euo pipefail
+          python3 -m py_compile scripts/generate_android_diagrams.py server/core/infographics.py
           python3 scripts/generate_android_diagrams.py
           python3 - <<'PY'
           import json
           from pathlib import Path
           root = Path("android/app/src/main/assets/diagrams")
           web_root = Path("server/static/diagrams")
-          index = json.loads((root / "index.json").read_text(encoding="utf-8"))
-          web_index = json.loads((web_root / "index.json").read_text(encoding="utf-8"))
-          ch1 = json.loads((root / "ch01" / "index.json").read_text(encoding="utf-8"))
-          web_ch1 = json.loads((web_root / "ch01" / "index.json").read_text(encoding="utf-8"))
-          combined = json.loads((root / "combined_index.json").read_text(encoding="utf-8"))
-          web_combined = json.loads((web_root / "combined_index.json").read_text(encoding="utf-8"))
+          def read(base, rel):
+              return json.loads((base / rel).read_text(encoding="utf-8"))
+          index = read(root, "index.json")
+          web_index = read(web_root, "index.json")
+          combined = read(root, "combined_index.json")
+          web_combined = read(web_root, "combined_index.json")
           assert index["count"] == 100 and len(index["diagrams"]) == 100
           assert web_index["count"] == 100 and len(web_index["diagrams"]) == 100
-          assert ch1["count"] == 41 and len(ch1["diagrams"]) == 41
-          assert web_ch1["count"] == 41 and len(web_ch1["diagrams"]) == 41
-          assert combined["count"] == 141 and len(combined["diagrams"]) == 141
-          assert web_combined["count"] == 141 and len(web_combined["diagrams"]) == 141
-          assert all((root / x["asset"]).is_file() for x in index["diagrams"])
-          assert all((web_root / x["asset"]).is_file() for x in web_index["diagrams"])
-          assert {x["asset"] for x in index["diagrams"]} == {x["asset"] for x in web_index["diagrams"]}
-          print("Android diagrams", index["count"], "bytes", sum(p.stat().st_size for p in root.glob("*.svg")))
-          print("Windows web diagrams", web_index["count"], "bytes", sum(p.stat().st_size for p in web_root.glob("*.svg")))
+          expected = {1: 41, 2: 12, 3: 10, 9: 8}
+          for chapter, count in expected.items():
+              rel = f"ch{chapter:02d}/index.json"
+              idx, web_idx = read(root, rel), read(web_root, rel)
+              assert idx["count"] == count and len(idx["diagrams"]) == count, f"{rel}: bad Android count"
+              assert web_idx["count"] == count and len(web_idx["diagrams"]) == count, f"{rel}: bad web count"
+              assert {x["asset"] for x in idx["diagrams"]} == {x["asset"] for x in web_idx["diagrams"]}
+          expected_total = 100 + sum(expected.values())
+          assert combined["count"] == expected_total and len(combined["diagrams"]) == expected_total
+          assert web_combined["count"] == expected_total and len(web_combined["diagrams"]) == expected_total
+          for item in combined["diagrams"]:
+              assert (root / item["asset"]).is_file(), f"Missing Android diagram: {item['asset']}"
+              assert (web_root / item["asset"]).is_file(), f"Missing web diagram: {item['asset']}"
+          assert {x["asset"] for x in combined["diagrams"]} == {x["asset"] for x in web_combined["diagrams"]}
+          print("Android general diagrams", index["count"], "combined", combined["count"])
+          print("Windows web general diagrams", web_index["count"], "combined", web_combined["count"])
           PY
 
       - name: Build and audit Windows v1 package
@@ -230,9 +238,22 @@ jobs:
               diagrams = json.loads(z.read(diagram_index_path))
               svg_count = sum(1 for n in names if n.startswith("assets/diagrams/diagram_") and n.endswith(".svg"))
               chapter1_svg_count = sum(1 for n in names if n.startswith("assets/diagrams/ch01/") and n.endswith(".svg"))
-              if "assets/diagrams/ch01/index.json" not in names or "assets/diagrams/combined_index.json" not in names:
-                  raise SystemExit("APK missing Chapter 1 / combined diagram indexes")
+              chapter2_svg_count = sum(1 for n in names if n.startswith("assets/diagrams/ch02/") and n.endswith(".svg"))
+              chapter3_svg_count = sum(1 for n in names if n.startswith("assets/diagrams/ch03/") and n.endswith(".svg"))
+              chapter9_svg_count = sum(1 for n in names if n.startswith("assets/diagrams/ch09/") and n.endswith(".svg"))
+              required_indexes = [
+                  "assets/diagrams/ch01/index.json",
+                  "assets/diagrams/ch02/index.json",
+                  "assets/diagrams/ch03/index.json",
+                  "assets/diagrams/ch09/index.json",
+                  "assets/diagrams/combined_index.json",
+              ]
+              if any(path not in names for path in required_indexes):
+                  raise SystemExit(f"APK missing curated diagram indexes: {[p for p in required_indexes if p not in names]}")
               ch1_diagrams = json.loads(z.read("assets/diagrams/ch01/index.json"))
+              ch2_diagrams = json.loads(z.read("assets/diagrams/ch02/index.json"))
+              ch3_diagrams = json.loads(z.read("assets/diagrams/ch03/index.json"))
+              ch9_diagrams = json.loads(z.read("assets/diagrams/ch09/index.json"))
               combined_diagrams = json.loads(z.read("assets/diagrams/combined_index.json"))
               actual_lessons = sum(len(s.get("lessons", [])) for ch in curriculum["chapters"] for s in ch.get("subchapters", []))
               orders = {int(ch.get("order", -1)) for ch in curriculum["chapters"]}
@@ -240,7 +261,12 @@ jobs:
               assert curriculum["lesson_count"] == actual_lessons, f"APK lesson_count mismatch: declared={curriculum['lesson_count']} actual={actual_lessons}"
               assert diagrams.get("count") == 100 and svg_count == 100, f"APK diagram count mismatch: index={diagrams.get('count')} svg={svg_count}"
               assert ch1_diagrams.get("count") == 41 and chapter1_svg_count == 41, f"Chapter 1 diagram count mismatch: index={ch1_diagrams.get('count')} svg={chapter1_svg_count}"
-              assert combined_diagrams.get("count") == 141, f"Combined diagram count mismatch: {combined_diagrams.get('count')}"
+              assert ch2_diagrams.get("count") == 12 and chapter2_svg_count == 12, f"Chapter 2 diagram count mismatch: index={ch2_diagrams.get('count')} svg={chapter2_svg_count}"
+              assert ch3_diagrams.get("count") == 10 and chapter3_svg_count == 10, f"Chapter 3 diagram count mismatch: index={ch3_diagrams.get('count')} svg={chapter3_svg_count}"
+              assert ch9_diagrams.get("count") == 8 and chapter9_svg_count == 8, f"Chapter 9 diagram count mismatch: index={ch9_diagrams.get('count')} svg={chapter9_svg_count}"
+              assert combined_diagrams.get("count") == 171, f"Combined diagram count mismatch: {combined_diagrams.get('count')}"
+              missing_diagrams = [f"assets/diagrams/{item['asset']}" for item in combined_diagrams.get("diagrams", []) if f"assets/diagrams/{item['asset']}" not in names]
+              assert not missing_diagrams, f"APK is missing indexed diagram files: {missing_diagrams[:10]}"
               chapter68 = next((ch for ch in curriculum["chapters"] if int(ch.get("order", -1)) == 68), None)
               assert chapter68 and chapter68.get("subchapters"), "Chapter 68 has no collections"
               print("APK asset audit details:", {"apk": str(apk), "apk_bytes": apk.stat().st_size, "lessons": actual_lessons, "svg_count": svg_count, "asset_entries": sum(n.startswith("assets/") for n in names)})
