@@ -1,31 +1,32 @@
-# NetworkAll — Windows Host
+# NetworkAll v1.0.0 — Windows Host
 
-## اجرا
-```bat
-start.bat
-```
+## نیازمندی و اجرا
 
-- سرور روی پورت **86**
-- توکن پیش‌فرض: **09136555866** (متغیر `NETENC_TOKEN`)
-- اندروید روی همان Wi‑Fi با همین توکن همگام می‌شود
+- Python 3.11+ و دسترسی شبکه برای نصب وابستگی‌های اولیه
+- استخراج کامل بسته به پوشهٔ قابل‌نوشتن
+- اجرا: `windows\start.bat`
 
-## تغییر توکن
-```bat
-set NETENC_TOKEN=رمز_دلخواه
-start.bat
-```
+Launcher یک `.venv` خصوصی در ریشه می‌سازد، وابستگی‌ها را نصب می‌کند و وب/API را روی TCP/86 بالا می‌آورد.
 
-## نیازمندی
-Python 3.10+ و دسترسی به `pip`
+- مرورگر محلی: `http://127.0.0.1:86`
+- آدرس گوشی: `http://IP-کامپیوتر:86`
 
-مرورگر: http://127.0.0.1:86
+## توکن Sync
 
-## Windows Firewall (فقط یک‌بار، با دسترسی Administrator)
+برای هر نصب یک توکن تصادفی در `server\data\networkall.token` ساخته می‌شود. این مقدار را در Android → Settings → API token وارد کنید. توکن واقعی را در Git یا مستندات عمومی commit نکنید.
 
-برای اجازهٔ اتصال گوشی از شبکهٔ محلی به وب‌سرور NetworkAll روی TCP/86:
+برای اجرای مستقیم `python server\app.py`، سرور به‌صورت پیش‌فرض فقط روی loopback گوش می‌دهد. Launcher ویندوز برای اتصال LAN، `NETENC_HOST=0.0.0.0` را تنظیم می‌کند.
+
+## Windows Firewall
+
+فقط در شبکهٔ خصوصی مورداعتماد، پنجرهٔ CMD را با دسترسی Administrator باز کنید و قانون TCP/86 را اضافه کنید:
 
 ```bat
-netsh advfirewall firewall add rule name="NetworkAll Web TCP 86" dir=in action=allow protocol=TCP localport=86
+netsh advfirewall firewall add rule name="NetworkAll Web TCP 86" dir=in action=allow protocol=TCP localport=86 profile=private
 ```
 
-آدرس در گوشی: `http://IP-کامپیوتر:86`. کامپیوتر و گوشی باید روی شبکه‌ای باشند که ارتباط بین دستگاه‌ها را مسدود نکرده باشد.
+این برنامه برای expose شدن مستقیم به اینترنت عمومی طراحی نشده است.
+
+## داده‌ها و نسخهٔ قبلی
+
+فایل `server\data\encyclopedia.db` حاوی دادهٔ محلی است. پیش از Reset/Clear data یا جایگزینی دستی دیتابیس، نسخهٔ پشتیبان بگیرید. بستهٔ Windows v1 دیتابیس شخصی همراه ندارد و در نصب تازه، فهرست آموزشی مشترک با اندروید را Seed می‌کند. این خروجی یک ZIP از سورس/میزبان Python است، نه EXE مستقل.
