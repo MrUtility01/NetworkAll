@@ -1,0 +1,1823 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkEncyclopedia",
+  "generated_on": "2026-10-13",
+  "purpose": "Chapter 20.3 — RouterOS 7 applied labs for route resolution, recursive WAN failover, NAT/conntrack, policy routing, PCC, firewall/FastTrack, asymmetric return paths and recovery runbooks.",
+  "scope": [
+    {
+      "chapter_order": 20,
+      "subchapter_order": 3,
+      "title": "۲۰.۳ سناریوهای عملی Multi-WAN، NAT و Policy Routing",
+      "topics": [
+        "خواندن RIB/FIB و حل next-hop در RouterOS 7",
+        "Failover دو WAN با Recursive Routing",
+        "NAT و Connection Tracking در عیب‌یابی ارتباط",
+        "Policy Routing در RouterOS 7: Tables، Rules و Marks",
+        "PCC و Load Balancing مبتنی بر Connection",
+        "Firewall Filter، مسیر Packet و اثر FastTrack",
+        "مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN",
+        "پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "content_quality": {
+    "status": "review_required",
+    "lab_status": "designed_not_executed",
+    "notes_fa": "مطالب بر پایهٔ مستندات رسمی RouterOS تهیه شده‌اند؛ اجرای واقعی و بازبینی syntax روی release هدف pending است."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch20:routeros-multiwan-scenarios:l01",
+      "entity": "lesson",
+      "chapter_order": 20,
+      "subchapter_order": 3,
+      "lesson_order": 1,
+      "topic": "routeros-rib-fib-route-resolution",
+      "domain": "mikrotik-routeros",
+      "level": "L1",
+      "title_fa": "[L1] خواندن RIB/FIB و حل next-hop در RouterOS 7",
+      "title_en": "[L1] RouterOS 7 RIB/FIB and Next-Hop Resolution",
+      "subchapter_title_fa": "۲۰.۳ سناریوهای عملی Multi-WAN، NAT و Policy Routing",
+      "tags": [
+        "RouterOS7",
+        "MikroTik",
+        "Lab",
+        "RCA",
+        "L1"
+      ],
+      "summary": "تفکیک routeهای candidate از routeهای فعال و مسیر واقعی forwarding در RouterOS 7.",
+      "full_content": "# خواندن RIB/FIB و حل next-hop در RouterOS 7\n\n## عنوان انگلیسی\nRouterOS 7 RIB/FIB and Next-Hop Resolution\n\n## خلاصه\nتفکیک routeهای candidate از routeهای فعال و مسیر واقعی forwarding در RouterOS 7.\n\n## اهداف یادگیری\n- خواندن Active route flags و انتخاب route\n- تفکیک مسیر موجود از next-hop قابل‌حل\n- استفاده از `/routing route` و ابزارهای مشاهده\n\n## پیش‌نیازها\nIPv4 subnetting، route distance، gateway، interface و تفاوت RIB/FIB.\n\n## مقدمهٔ مفهومی\nدر RouterOS 7، RIB مجموعهٔ routeهای شناخته‌شده از منابع مختلف مانند connected، static، OSPF و BGP است؛ FIB اطلاعات لازم برای تصمیم forwarding را در مسیر داده نگه می‌دارد. دیدن یک route در خروجی verbose الزاماً به معنی فعال‌بودن آن نیست. Route ممکن است inactive باشد چون gateway قابل‌حل نیست، distance پایین‌تری برای مسیر دیگر وجود دارد، routing table اشتباه انتخاب شده یا شرط recursive lookup برقرار نیست.\n\n## مفاهیم اصلی\nدر RouterOS 7، RIB مجموعهٔ routeهای شناخته‌شده از منابع مختلف مانند connected، static، OSPF و BGP است؛ FIB اطلاعات لازم برای تصمیم forwarding را در مسیر داده نگه می‌دارد. دیدن یک route در خروجی verbose الزاماً به معنی فعال‌بودن آن نیست. Route ممکن است inactive باشد چون gateway قابل‌حل نیست، distance پایین‌تری برای مسیر دیگر وجود دارد، routing table اشتباه انتخاب شده یا شرط recursive lookup برقرار نیست. در عملیات روزانه، نام منو یا وجود rule به‌تنهایی معیار قبولی نیست. باید مشخص شود کدام packet در کدام chain یا table دیده شده، چه decision گرفته شده و نتیجه در سمت مقصد چه بوده است.\n\n## سازوکار داخلی و معماری\nRouterOS ابتدا route candidates را نگه می‌دارد و با توجه به routing table، specificity، distance و قواعد پروتکل مسیر فعال را تعیین می‌کند. Longest-prefix match برای مقصد واقعی مهم است؛ route مشخص‌تر ممکن است default route را کنار بزند. برای recursive route، gateway باید از مسیر مجاز و قابل‌حل resolve شود. دستورهای v7 در منوی `/routing route` جزئیات بیشتری از منوی سادهٔ `/ip route` می‌دهند؛ منو و flags را با release هدف تطبیق بده.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nدر lab دو route برای مقصد تستی داشته باش: یک route عمومی‌تر و یک route مشخص‌تر، به‌علاوه default. مقصد 203.0.113.8 باید با prefix مشخص‌تر match شود. سپس gateway آن route را غیرقابل‌دسترسی کن و مشاهده کن route فعال چه تغییری دارد. یک خروجی route را به‌تنهایی ملاک ندان؛ table، gateway status، routing rules و نتیجهٔ `/tool traceroute` را هم ثبت کن.\n\n### دستورات مشاهده‌ای\n- ``/routing route print detail``\n- ``/ip route print detail``\n- ``/routing table print``\n- ``/routing rule print``\n- ``/tool traceroute 203.0.113.8``\n\n## مثال محیط کار\nمعیار خروجی: route منتخب برای مقصد مشخص، جدول lookup، gateway حل‌شده، interface خروجی و نتیجهٔ traceroute ثبت شوند. در گزارش فرق «route وجود دارد»، «route active است» و «packet از آن عبور می‌کند» با شواهد نشان داده شود. اطلاعات قبل/بعد را با زمان، نسخهٔ RouterOS، model/CHR، interfaceها و آدرس‌دهی آزمایش ثبت کن. آدرس‌ها و outputهای مثال باید پیش از انتقال به محیط واقعی با plan سازمان تطبیق داده شوند.\n\n## آزمایشگاه عملی\nروی CHR در شبکهٔ ایزوله، دو routing table آزمایش بساز و routeهای RFC 5737 را استفاده کن. قبل از هر تغییر `/export file=before` بگیر. خروجی `/routing route print detail`، `/ip route print detail`، `/routing rule print` و `/ip address print` را ذخیره کن. برای هر destination مسیر منتخب و gateway را روی کاغذ پیش‌بینی و با خروجی تطبیق بده. پس از آزمایش، config را از فایل یا snapshot بازگردان.\n\n## عیب‌یابی مرحله‌ای\nاگر ترافیک مسیر مورد انتظار را نمی‌رود: مقصد/مبدأ و routing table را مشخص کن؛ active/inactive flags را بررسی کن؛ longest-prefix و distance را مقایسه کن؛ gateway recursion و interface reachability را تأیید کن؛ routing rules و mangle marks را بررسی کن؛ در نهایت با traceroute و capture محدود data plane را تأیید کن. route غیرفعال را قبل از فهم دلیل صرفاً حذف نکن.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nخروجی export ممکن است IP داخلی، peer و تنظیمات حساس داشته باشد؛ پیش از اشتراک‌گذاری sanitize کن. تغییر route در روتر راه دور خطر قطع management دارد؛ Safe Mode، console و rollback لازم‌اند. routeها و gateways تستی از شبکهٔ واقعی انتخاب نشوند.\n\n## نکات پیشرفته\n`/ip route` برای بسیاری از عملیات روزمره مناسب است، اما جزئیات همهٔ route attributes در v7 زیر `/routing route` دیده می‌شود. FIB representation و hardware offload می‌تواند بسته به دستگاه فرق کند. معیار RCA باید انتخاب route، نصب/فعال‌بودن و forwarding یک flow را از هم جدا کند.\n\n## جمع‌بندی\nاین درس وقتی تکمیل است که وضعیت اولیه، فرضیه، تغییر مجاز، خروجی قبل/بعد، معیار قبولی و rollback ثبت شده باشند. آزمایش packet-path باید مشاهدهٔ هر دو جهت را پوشش دهد؛ خروجی ساختاری نمونه به‌عنوان شواهد اجرای واقعی ارائه نشود.\n\n## واژه‌نامه\nRIB: مجموعهٔ routeهای شناخته‌شده؛ FIB: اطلاعات forwarding؛ active route: route منتخب و قابل استفاده؛ recursion: حل gateway با route دیگر؛ distance: ترجیح بین منابع route؛ routing table: فضای جدا برای lookup.\n\n## خودآزمایی\nچهار سؤال چندگزینه‌ای این درس در metadata نگهداری شده‌اند؛ متن سؤال پاسخ صحیح را افشا نمی‌کند و تشریح جواب در answer_key جدا قرار دارد.\n\n## وضعیت اعتبارسنجی\nمحتوا و JSON از نظر ساختار بررسی می‌شود؛ Labها باید روی RouterOS 7 release هدف اجرا شوند. وضعیت `review_required` تا ثبت خروجی واقعی، counterها و نتیجهٔ restore حفظ می‌شود.",
+      "commands": "`/routing route print detail`; `/ip route print detail`; `/routing table print`; `/routing rule print`; `/tool traceroute 203.0.113.8`",
+      "examples": "معیار خروجی: route منتخب برای مقصد مشخص، جدول lookup، gateway حل‌شده، interface خروجی و نتیجهٔ traceroute ثبت شوند. در گزارش فرق «route وجود دارد»، «route active است» و «packet از آن عبور می‌کند» با شواهد نشان داده شود.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "RouterOS 7 release-specific syntax must be verified",
+        "answer_key_separate"
+      ],
+      "learning_objectives": [
+        "خواندن Active route flags و انتخاب route",
+        "تفکیک مسیر موجود از next-hop قابل‌حل",
+        "استفاده از `/routing route` و ابزارهای مشاهده"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "MikroTik — IP Routing",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/328084/IP%2BRouting"
+          },
+          {
+            "title": "MikroTik — Moving from RouterOS v6 to v7 with examples",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/30474256/Moving%2Bfrom%2BROSv6%2Bto%2Bv7%2Bwith%2Bexamples"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "کدام تفاوت دربارهٔ RIB و FIB صحیح است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "RIB فقط DNS را نگه می‌دارد"
+                },
+                {
+                  "id": "B",
+                  "label": "RIB route information را نگه می‌دارد و FIB برای forwarding استفاده می‌شود"
+                },
+                {
+                  "id": "C",
+                  "label": "FIB فقط برای IPv6 است"
+                },
+                {
+                  "id": "D",
+                  "label": "هیچ تفاوتی ندارند"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "route در خروجی verbose دیده می‌شود اما ترافیک از آن عبور نمی‌کند؛ قدم بعدی چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط نام route را عوض کن"
+                },
+                {
+                  "id": "B",
+                  "label": "همهٔ routeها را حذف کن"
+                },
+                {
+                  "id": "C",
+                  "label": "Active state، table، gateway resolution و rules را بررسی کن"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط DNS را restart کن"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "چرا destination ممکن است از default route استفاده نکند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "route مشخص‌تر با longest-prefix match وجود دارد"
+                },
+                {
+                  "id": "B",
+                  "label": "Default همیشه بالاترین اولویت را دارد"
+                },
+                {
+                  "id": "C",
+                  "label": "به علت MAC address همواره"
+                },
+                {
+                  "id": "D",
+                  "label": "چون NAT اجرا شده"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "چه چیزی بعد از انتخاب route برای اثبات رفتار لازم است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط screenshot از config"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط uptime"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط router identity"
+                },
+                {
+                  "id": "D",
+                  "label": "تأیید gateway/forwarding و یک آزمون dataplane قابل تکرار"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "B",
+              "explanation": "RIB برای route knowledge/selection و FIB برای forwarding dataplane است.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. RIB برای route knowledge/selection و FIB برای forwarding dataplane است."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. RIB برای route knowledge/selection و FIB برای forwarding dataplane است."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. RIB برای route knowledge/selection و FIB برای forwarding dataplane است."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "C",
+              "explanation": "وجود یک candidate مساوی نصب یا forwarding موفق نیست.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. وجود یک candidate مساوی نصب یا forwarding موفق نیست."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. وجود یک candidate مساوی نصب یا forwarding موفق نیست."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. وجود یک candidate مساوی نصب یا forwarding موفق نیست."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "A",
+              "explanation": "prefix مشخص‌تر برای مقصد انتخاب می‌شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. prefix مشخص‌تر برای مقصد انتخاب می‌شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. prefix مشخص‌تر برای مقصد انتخاب می‌شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. prefix مشخص‌تر برای مقصد انتخاب می‌شود."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "باید route resolution و ارسال واقعی بسته مستقل بررسی شوند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید route resolution و ارسال واقعی بسته مستقل بررسی شوند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید route resolution و ارسال واقعی بسته مستقل بررسی شوند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید route resolution و ارسال واقعی بسته مستقل بررسی شوند."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch20:routeros-multiwan-scenarios:l02",
+      "entity": "lesson",
+      "chapter_order": 20,
+      "subchapter_order": 3,
+      "lesson_order": 2,
+      "topic": "routeros-recursive-wan-failover",
+      "domain": "mikrotik-routeros",
+      "level": "L2",
+      "title_fa": "[L2] Failover دو WAN با Recursive Routing",
+      "title_en": "[L2] RouterOS Recursive Routing for Dual-WAN Failover",
+      "subchapter_title_fa": "۲۰.۳ سناریوهای عملی Multi-WAN، NAT و Policy Routing",
+      "tags": [
+        "RouterOS7",
+        "MikroTik",
+        "Lab",
+        "RCA",
+        "L2"
+      ],
+      "summary": "ساخت failover مبتنی بر probeهای مستقل، scope/target-scope و پرهیز از اعلام WAN سالم صرفاً به‌دلیل up بودن gateway.",
+      "full_content": "# Failover دو WAN با Recursive Routing\n\n## عنوان انگلیسی\nRouterOS Recursive Routing for Dual-WAN Failover\n\n## خلاصه\nساخت failover مبتنی بر probeهای مستقل، scope/target-scope و پرهیز از اعلام WAN سالم صرفاً به‌دلیل up بودن gateway.\n\n## اهداف یادگیری\n- مقایسهٔ gateway-check و recursive check\n- طراحی probeهای وابسته به هر uplink\n- سنجش failure detection و recovery\n\n## پیش‌نیازها\nRouting tables، route distance، gateway recursion، srcnat و مسیر خروجی WAN.\n\n## مقدمهٔ مفهومی\nGateway محلی ممکن است پاسخ بدهد اما مسیر فراتر از ISP خراب باشد. Recursive routing می‌تواند default route را وابسته به دسترسی به probe target کند، نه فقط لینک فیزیکی یا gateway. یک probe برای هر WAN باید از همان WAN خارج شود و به مسیری که خودش از uplink دیگر قابل‌دسترسی است وابسته نشود؛ وگرنه false positive می‌سازد. در RouterOS جزئیات `scope` و `target-scope` در طراحی recursion تعیین‌کننده‌اند.\n\n## مفاهیم اصلی\nGateway محلی ممکن است پاسخ بدهد اما مسیر فراتر از ISP خراب باشد. Recursive routing می‌تواند default route را وابسته به دسترسی به probe target کند، نه فقط لینک فیزیکی یا gateway. یک probe برای هر WAN باید از همان WAN خارج شود و به مسیری که خودش از uplink دیگر قابل‌دسترسی است وابسته نشود؛ وگرنه false positive می‌سازد. در RouterOS جزئیات `scope` و `target-scope` در طراحی recursion تعیین‌کننده‌اند. در عملیات روزانه، نام منو یا وجود rule به‌تنهایی معیار قبولی نیست. باید مشخص شود کدام packet در کدام chain یا table دیده شده، چه decision گرفته شده و نتیجه در سمت مقصد چه بوده است.\n\n## سازوکار داخلی و معماری\nRoute اختصاصی برای probe target از gateway مستقیم ISP ساخته می‌شود. default route سپس gateway منطقی probe را resolve می‌کند و با `check-gateway=ping` وضعیت مسیر را پایش می‌کند. scope/target-scope محدود می‌کند lookup بعدی از چه routeهایی استفاده کند. برای اطمینان بیشتر می‌توان چند probe مستقل تعریف کرد؛ یک هدف ICMP-only که خاموش شده است نباید تنها شرط تصمیم WAN باشد. health-check خارج از routing path واقعی مدل مورد انتظار می‌سازد.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nWAN1 primary و WAN2 backup هستند. برای هر لینک یک target آزمایش مستند تعیین کن و route probe را به gateway مستقیم همان uplink bind کن. دو default route با distance متفاوت بساز. در آزمایش اول فقط gateway محلی را reachable نگه دار ولی مسیر upstream را قطع کن؛ بررسی کن آیا health-check طراحی‌شده شکست را تشخیص می‌دهد. در آزمایش دوم WAN1 را restore کن و اثر failback را اندازه بگیر.\n\n### دستورات مشاهده‌ای\n- ``/ip route print detail``\n- ``/routing route print detail``\n- ``/ping <probe-ip> routing-table=main``\n- ``/tool traceroute <probe-ip>`؛ نمونهٔ رسمی failover را با gatewayها و address plan لابراتوار بازنویسی کن.`\n\n## مثال محیط کار\nدر گزارش باید زمان شروع outage، زمان inactive شدن default primary، route منتخب، اولین پاسخ از backup و زمان failback جدا ثبت شوند. صرفاً down شدن interface برای اثبات failover end-to-end کافی نیست. اطلاعات قبل/بعد را با زمان، نسخهٔ RouterOS، model/CHR، interfaceها و آدرس‌دهی آزمایش ثبت کن. آدرس‌ها و outputهای مثال باید پیش از انتقال به محیط واقعی با plan سازمان تطبیق داده شوند.\n\n## آزمایشگاه عملی\nاز CHR و دو upstream مجازی استفاده کن؛ دستورهای نمونهٔ رسمی را قبل از اجرا با IPهای آزمایشگاهی و release هدف تطبیق بده. قبل از تغییر export بگیر و دسترسی management را از کنسول حفظ کن. وضعیت baseline، probe route، default route، counters و timestamp را ذخیره کن. خرابی gateway، مسیر upstream و خود probe را جداگانه شبیه‌سازی کن. پس از تست تمام routeها و NAT rules را به baseline برگردان.\n\n## عیب‌یابی مرحله‌ای\nWAN failover نشد: active default route و route probe را بررسی کن؛ آیا probe با WAN مربوط route می‌شود یا از WAN دیگر؟ scope/target-scope مناسب است؟ gateway check پاسخ می‌گیرد؟ probe target خارج از دسترس عمومی نیست؟ NAT/firewall ICMP آن را نمی‌بندد؟ failback ناخواسته route flap ایجاد می‌کند؟ هر احتمال را با route detail و capture محدود بررسی کن.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nپروتکل health check و مقصد probe باید مستند باشد. هدف probe را به سیستم ثالثی که اجازهٔ تست آن را نداری گره نزن؛ ترجیحاً endpoint مورد تایید ISP یا مقصد سازمانی قابل اتکا انتخاب کن. config تغییر‌یافته را به شکل کورکورانه روی روتر remote اعمال نکن.\n\n## نکات پیشرفته\nبرای دسترس‌پذیری، چند probe مستقل و معیار quorum می‌تواند اثر خرابی یک target را کاهش دهد، ولی طراحی باید جلوی وابستگی مشترک هر دو probe به یک upstream را بگیرد. انتخاب distance و recursion فقط با latency و loss واقعی جمع‌بندی شود. عوض‌شدن route لزوماً sessionهای NATشده را زنده نگه نمی‌دارد.\n\n## جمع‌بندی\nاین درس وقتی تکمیل است که وضعیت اولیه، فرضیه، تغییر مجاز، خروجی قبل/بعد، معیار قبولی و rollback ثبت شده باشند. آزمایش packet-path باید مشاهدهٔ هر دو جهت را پوشش دهد؛ خروجی ساختاری نمونه به‌عنوان شواهد اجرای واقعی ارائه نشود.\n\n## واژه‌نامه\nRecursive route: route با next-hop غیرمستقیم؛ scope/target-scope: دامنهٔ حل gateway؛ probe target: مقصد health-check؛ failover: عبور به مسیر جایگزین؛ failback: بازگشت به primary.\n\n## خودآزمایی\nچهار سؤال چندگزینه‌ای این درس در metadata نگهداری شده‌اند؛ متن سؤال پاسخ صحیح را افشا نمی‌کند و تشریح جواب در answer_key جدا قرار دارد.\n\n## وضعیت اعتبارسنجی\nمحتوا و JSON از نظر ساختار بررسی می‌شود؛ Labها باید روی RouterOS 7 release هدف اجرا شوند. وضعیت `review_required` تا ثبت خروجی واقعی، counterها و نتیجهٔ restore حفظ می‌شود.",
+      "commands": "`/ip route print detail`; `/routing route print detail`; `/ping <probe-ip> routing-table=main`; `/tool traceroute <probe-ip>`؛ نمونهٔ رسمی failover را با gatewayها و address plan لابراتوار بازنویسی کن.",
+      "examples": "در گزارش باید زمان شروع outage، زمان inactive شدن default primary، route منتخب، اولین پاسخ از backup و زمان failback جدا ثبت شوند. صرفاً down شدن interface برای اثبات failover end-to-end کافی نیست.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "RouterOS 7 release-specific syntax must be verified",
+        "answer_key_separate"
+      ],
+      "learning_objectives": [
+        "مقایسهٔ gateway-check و recursive check",
+        "طراحی probeهای وابسته به هر uplink",
+        "سنجش failure detection و recovery"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "MikroTik — Failover (WAN Backup)",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/26476608/Failover%2BWAN%2BBackup"
+          },
+          {
+            "title": "MikroTik — IP Routing",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/328084/IP%2BRouting"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "چرا بررسی فقط gateway محلی ممکن است failover ناقص باشد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "چون gateway همیشه unreachable است"
+                },
+                {
+                  "id": "B",
+                  "label": "چون WAN فقط IPv6 دارد"
+                },
+                {
+                  "id": "C",
+                  "label": "چون gateway پاسخ می‌دهد اما upstream هنوز ممکن است قطع باشد"
+                },
+                {
+                  "id": "D",
+                  "label": "چون distance روی NAT اثر می‌گذارد"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "recursive route برای چه هدفی در failover استفاده می‌شود؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "وابسته کردن route به قابل‌حل‌بودن مسیر از طریق probe target"
+                },
+                {
+                  "id": "B",
+                  "label": "تغییر MAC آدرس کاربران"
+                },
+                {
+                  "id": "C",
+                  "label": "جایگزینی connection tracking"
+                },
+                {
+                  "id": "D",
+                  "label": "خاموش کردن WAN پشتیبان"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "چرا probeهای دو WAN نباید هر دو از یک uplink resolve شوند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "چون ICMP غیرقانونی است"
+                },
+                {
+                  "id": "B",
+                  "label": "چون هر دو آدرس باید برابر باشند"
+                },
+                {
+                  "id": "C",
+                  "label": "چون routeها نباید monitor شوند"
+                },
+                {
+                  "id": "D",
+                  "label": "چون ممکن است وضعیت WAN اشتباه گزارش شود و false positive بسازد"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "چه خروجی برای اثبات failover بهتر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط interface running"
+                },
+                {
+                  "id": "B",
+                  "label": "timestamp route primary، backup، probe و تست جریان"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط log startup"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط DNS cache"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "C",
+              "explanation": "gateway reachable به معنی دسترسی انتهابه‌انتها به مسیر اینترنت نیست.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. gateway reachable به معنی دسترسی انتهابه‌انتها به مسیر اینترنت نیست."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. gateway reachable به معنی دسترسی انتهابه‌انتها به مسیر اینترنت نیست."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. gateway reachable به معنی دسترسی انتهابه‌انتها به مسیر اینترنت نیست."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "A",
+              "explanation": "default route از طریق route probe resolve می‌شود تا دسترسی upstream نیز بررسی شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. default route از طریق route probe resolve می‌شود تا دسترسی upstream نیز بررسی شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. default route از طریق route probe resolve می‌شود تا دسترسی upstream نیز بررسی شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. default route از طریق route probe resolve می‌شود تا دسترسی upstream نیز بررسی شود."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "D",
+              "explanation": "probe باید وابستگی واقعی به uplink خودش داشته باشد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. probe باید وابستگی واقعی به uplink خودش داشته باشد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. probe باید وابستگی واقعی به uplink خودش داشته باشد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. probe باید وابستگی واقعی به uplink خودش داشته باشد."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "B",
+              "explanation": "باید تغییر route و نتیجهٔ service flow زمان‌دار سنجیده شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید تغییر route و نتیجهٔ service flow زمان‌دار سنجیده شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید تغییر route و نتیجهٔ service flow زمان‌دار سنجیده شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید تغییر route و نتیجهٔ service flow زمان‌دار سنجیده شود."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch20:routeros-multiwan-scenarios:l03",
+      "entity": "lesson",
+      "chapter_order": 20,
+      "subchapter_order": 3,
+      "lesson_order": 3,
+      "topic": "routeros-nat-conntrack",
+      "domain": "mikrotik-routeros",
+      "level": "L2",
+      "title_fa": "[L2] NAT و Connection Tracking در عیب‌یابی ارتباط",
+      "title_en": "[L2] RouterOS NAT and Connection Tracking Diagnostics",
+      "subchapter_title_fa": "۲۰.۳ سناریوهای عملی Multi-WAN، NAT و Policy Routing",
+      "tags": [
+        "RouterOS7",
+        "MikroTik",
+        "Lab",
+        "RCA",
+        "L2"
+      ],
+      "summary": "درک first-packet NAT rule matching، تفاوت srcnat/dstnat و تشخیص اثر connection tracking پس از تغییر rule.",
+      "full_content": "# NAT و Connection Tracking در عیب‌یابی ارتباط\n\n## عنوان انگلیسی\nRouterOS NAT and Connection Tracking Diagnostics\n\n## خلاصه\nدرک first-packet NAT rule matching، تفاوت srcnat/dstnat و تشخیص اثر connection tracking پس از تغییر rule.\n\n## اهداف یادگیری\n- توضیح چرخهٔ NAT در connection tracking\n- بررسی rule order و counters\n- آزمون port-forward فقط در محیط مجاز\n\n## پیش‌نیازها\nFirewall chains، connection-state، routing، private/public addressing.\n\n## مقدمهٔ مفهومی\nRouterOS NAT معمولاً بر اساس اولین packet یک connection تصمیم می‌گیرد و connection tracking تصمیم را برای بسته‌های بعدی همان connection نگه می‌دارد. بنابراین تغییر NAT rule لزوماً connectionهای موجود را با تصمیم جدید بازسازی نمی‌کند. `srcnat` برای rewrite مبدأ و `dstnat` برای rewrite مقصد رایج است. NAT جایگزین firewall filter نیست و فعال‌بودن dstnat لزوماً دسترسی ایمن به سرویس را تضمین نمی‌کند.\n\n## مفاهیم اصلی\nRouterOS NAT معمولاً بر اساس اولین packet یک connection تصمیم می‌گیرد و connection tracking تصمیم را برای بسته‌های بعدی همان connection نگه می‌دارد. بنابراین تغییر NAT rule لزوماً connectionهای موجود را با تصمیم جدید بازسازی نمی‌کند. `srcnat` برای rewrite مبدأ و `dstnat` برای rewrite مقصد رایج است. NAT جایگزین firewall filter نیست و فعال‌بودن dstnat لزوماً دسترسی ایمن به سرویس را تضمین نمی‌کند. در عملیات روزانه، نام منو یا وجود rule به‌تنهایی معیار قبولی نیست. باید مشخص شود کدام packet در کدام chain یا table دیده شده، چه decision گرفته شده و نتیجه در سمت مقصد چه بوده است.\n\n## سازوکار داخلی و معماری\nPacket باید از chain درست عبور کند. `dstnat` معمولاً قبل از route decision مقصد packet را تغییر می‌دهد و در نتیجه routing بعدی بر اساس مقصد translate‌شده انجام می‌شود؛ `srcnat` معمولاً هنگام خروج بر اساس اتصال و مسیر انتخاب‌شده اعمال می‌شود. Connection tracking stateful رفتار reverse translation را نگه می‌دارد. NAT rules با ترتیب و match criteria ارزیابی می‌شوند؛ اگر rule بالاتر match کند، rule پایین ممکن است هرگز استفاده نشود. IPv4 NAT و IPv6 firewall/NAT behavior را یکسان فرض نکن.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nیک web server تستی 192.0.2.10:8080 داخل lab است و پورت تستی روی WAN به آن forward می‌شود. بررسی کن external dstnat rule، internal route، forward-chain permission، server listening و return path همگی درست‌اند. اگر rule را اصلاح کردی، یک connection تازه بساز و counters را بررسی کن. فقط پس از وجود authorization و محدودیت source address، port-forward مجاز باشد.\n\n### دستورات مشاهده‌ای\n- ``/ip firewall nat print stats``\n- ``/ip firewall filter print stats``\n- ``/ip firewall connection print detail``\n- ``/tool torch <interface>`؛ با permission مناسب و capture محدود.`\n\n## مثال محیط کار\nمعیار قبولی: counter مربوط به rule درست افزایش یابد، tuple قبل/بعد از translation ثبت شود، firewall اجازهٔ تنها ترافیک مجاز را بدهد و reply به flow برگردد. خروجی NAT بدون بررسی forward filter یا host مقصد کافی نیست. اطلاعات قبل/بعد را با زمان، نسخهٔ RouterOS، model/CHR، interfaceها و آدرس‌دهی آزمایش ثبت کن. آدرس‌ها و outputهای مثال باید پیش از انتقال به محیط واقعی با plan سازمان تطبیق داده شوند.\n\n## آزمایشگاه عملی\nدو interface مجازی LAN/WAN، client داخلی و server آزمایشی بساز. قبل از هر rule `/export file=before-nat` بگیر. اول connection بدون NAT را بررسی کن؛ سپس srcnat برای outbound؛ در Lab جداگانه dstnat به server داخلی. counter، `/ip firewall connection print`، packet capture در دو سمت و logs را ثبت کن. پس از تغییر rule از connection جدید استفاده کن؛ پاک‌کردن connection tracking در محیط عملیاتی بدون بررسی اثر مجاز نیست.\n\n## عیب‌یابی مرحله‌ای\nClient به سرویس نرسید: آیا DNS/IP/port درست است؟ آیا packet وارد WAN می‌شود؟ آیا dstnat counter افزایش دارد؟ بعد از translation route و forward filter اجازه می‌دهد؟ server روی آدرس/port گوش می‌دهد؟ reply packet برمی‌گردد؟ آیا connection tracking entry از قبل با mapping قدیمی ساخته شده؟ با capture پیش و پس از NAT مسیر را به‌صورت مرحله‌ای دنبال کن.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nبرای port forwarding دسترسی source را محدود کن، input chain و forward chain را قاطی نکن و خدمات مدیریتی روتر را به WAN باز نگذار. نمونهٔ port-forward فقط به host و پورت lab اشاره کند. export و capture شامل آدرس‌ها و ruleها را sanitize کن. helperهای protocol قدیمی/ناامن را فقط در صورت نیاز مستند و محدود کن.\n\n## نکات پیشرفته\nمستند رسمی می‌گوید NAT فقط اولین packet اتصال را match می‌کند و connection tracking تصمیم را حفظ می‌کند؛ پس آزمایش باید جریان جدید و جاری را تفکیک کند. `masquerade` آدرس interface خروجی را انتخاب می‌کند و با interface-based WAN failover اثرهای خاص خود را دارد؛ انتخاب src-nat/static mapping به سناریو وابسته است.\n\n## جمع‌بندی\nاین درس وقتی تکمیل است که وضعیت اولیه، فرضیه، تغییر مجاز، خروجی قبل/بعد، معیار قبولی و rollback ثبت شده باشند. آزمایش packet-path باید مشاهدهٔ هر دو جهت را پوشش دهد؛ خروجی ساختاری نمونه به‌عنوان شواهد اجرای واقعی ارائه نشود.\n\n## واژه‌نامه\nsrcnat: تغییر مبدأ؛ dstnat: تغییر مقصد؛ connection tracking: نگهداری state اتصال؛ reverse translation: اعمال mapping معکوس؛ rule counter: تعداد packet/bytes match‌شده.\n\n## خودآزمایی\nچهار سؤال چندگزینه‌ای این درس در metadata نگهداری شده‌اند؛ متن سؤال پاسخ صحیح را افشا نمی‌کند و تشریح جواب در answer_key جدا قرار دارد.\n\n## وضعیت اعتبارسنجی\nمحتوا و JSON از نظر ساختار بررسی می‌شود؛ Labها باید روی RouterOS 7 release هدف اجرا شوند. وضعیت `review_required` تا ثبت خروجی واقعی، counterها و نتیجهٔ restore حفظ می‌شود.",
+      "commands": "`/ip firewall nat print stats`; `/ip firewall filter print stats`; `/ip firewall connection print detail`; `/tool torch <interface>`؛ با permission مناسب و capture محدود.",
+      "examples": "معیار قبولی: counter مربوط به rule درست افزایش یابد، tuple قبل/بعد از translation ثبت شود، firewall اجازهٔ تنها ترافیک مجاز را بدهد و reply به flow برگردد. خروجی NAT بدون بررسی forward filter یا host مقصد کافی نیست.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "RouterOS 7 release-specific syntax must be verified",
+        "answer_key_separate"
+      ],
+      "learning_objectives": [
+        "توضیح چرخهٔ NAT در connection tracking",
+        "بررسی rule order و counters",
+        "آزمون port-forward فقط در محیط مجاز"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "MikroTik — NAT",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/3211299/NAT"
+          },
+          {
+            "title": "MikroTik — Connection Tracking",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/130220087/Connection%2Btracking"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "RouterOS NAT معمولاً بر چه زمانی از connection تصمیم می‌گیرد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "برای هر packet کاملاً مستقل"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط هنگام boot"
+                },
+                {
+                  "id": "C",
+                  "label": "روی اولین packet و سپس state در connection tracking"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط پس از DNS response"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "بعد از تغییر NAT rule چرا تست با connection تازه مهم است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "چون connection موجود ممکن است mapping قبلی را نگه دارد"
+                },
+                {
+                  "id": "B",
+                  "label": "چون routeها هرگز عوض نمی‌شوند"
+                },
+                {
+                  "id": "C",
+                  "label": "چون NAT فقط روی IPv6 است"
+                },
+                {
+                  "id": "D",
+                  "label": "چون filter chain حذف می‌شود"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "dstnat موفق شد ولی سرویس هنوز پاسخ نمی‌دهد؛ کدام مرحله هنوز باید بررسی شود؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط نام interface"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط RouterOS license"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط address-list DNS"
+                },
+                {
+                  "id": "D",
+                  "label": "route/forward filter، listener سرور و مسیر برگشت"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "آیا port forwarding به‌تنهایی دسترسی را ایمن می‌کند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "بله، NAT همان firewall کامل است"
+                },
+                {
+                  "id": "B",
+                  "label": "خیر؛ firewall filtering و محدودسازی منبع لازم است"
+                },
+                {
+                  "id": "C",
+                  "label": "بله، چون تمام packetها رمز می‌شوند"
+                },
+                {
+                  "id": "D",
+                  "label": "خیر، چون IPv4 هیچ NAT ندارد"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "C",
+              "explanation": "NAT rule selection برای connection جدید رخ می‌دهد و CT state را نگه می‌دارد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. NAT rule selection برای connection جدید رخ می‌دهد و CT state را نگه می‌دارد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. NAT rule selection برای connection جدید رخ می‌دهد و CT state را نگه می‌دارد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. NAT rule selection برای connection جدید رخ می‌دهد و CT state را نگه می‌دارد."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "A",
+              "explanation": "connection tracking تصمیم قبلی را برای جریان فعلی حفظ می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. connection tracking تصمیم قبلی را برای جریان فعلی حفظ می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. connection tracking تصمیم قبلی را برای جریان فعلی حفظ می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. connection tracking تصمیم قبلی را برای جریان فعلی حفظ می‌کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "D",
+              "explanation": "translation فقط یک مرحله از ارتباط است.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. translation فقط یک مرحله از ارتباط است."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. translation فقط یک مرحله از ارتباط است."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. translation فقط یک مرحله از ارتباط است."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "B",
+              "explanation": "NAT با policy دسترسی و hardening جایگزین نمی‌شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. NAT با policy دسترسی و hardening جایگزین نمی‌شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. NAT با policy دسترسی و hardening جایگزین نمی‌شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. NAT با policy دسترسی و hardening جایگزین نمی‌شود."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch20:routeros-multiwan-scenarios:l04",
+      "entity": "lesson",
+      "chapter_order": 20,
+      "subchapter_order": 3,
+      "lesson_order": 4,
+      "topic": "routeros-policy-routing",
+      "domain": "mikrotik-routeros",
+      "level": "L3",
+      "title_fa": "[L3] Policy Routing در RouterOS 7: Tables، Rules و Marks",
+      "title_en": "[L3] RouterOS 7 Policy Routing: Tables, Rules and Marks",
+      "subchapter_title_fa": "۲۰.۳ سناریوهای عملی Multi-WAN، NAT و Policy Routing",
+      "tags": [
+        "RouterOS7",
+        "MikroTik",
+        "Lab",
+        "RCA",
+        "L3"
+      ],
+      "summary": "مقایسهٔ routing rules و mangle marks، ساخت routing table و انتخاب lookup در برابر lookup-only-in-table.",
+      "full_content": "# Policy Routing در RouterOS 7: Tables، Rules و Marks\n\n## عنوان انگلیسی\nRouterOS 7 Policy Routing: Tables, Rules and Marks\n\n## خلاصه\nمقایسهٔ routing rules و mangle marks، ساخت routing table و انتخاب lookup در برابر lookup-only-in-table.\n\n## اهداف یادگیری\n- طراحی lookup table صحیح\n- تفکیک traffic classification از route lookup\n- تشخیص recursion/mark precedence\n\n## پیش‌نیازها\nRouterOS 7 routing tables، mangle، connection tracking و routing rule.\n\n## مقدمهٔ مفهومی\nPolicy routing یعنی هدایت flow به table یا gateway براساس source، destination، ingress interface یا classification. RouterOS 7 ابزارهایی مانند routing tables، routing rules و mangle routing marks دارد. این ابزارها یکسان نیستند و قواعد precedence/packet path می‌تواند نتیجه را تغییر دهد. Routing table سفارشی باید برای fib فعال شود و مسیرهای لازم در آن وجود داشته باشند. traffic متعلق به خود روتر ممکن است با traffic عبوری رفتار متفاوتی داشته باشد.\n\n## مفاهیم اصلی\nPolicy routing یعنی هدایت flow به table یا gateway براساس source، destination، ingress interface یا classification. RouterOS 7 ابزارهایی مانند routing tables، routing rules و mangle routing marks دارد. این ابزارها یکسان نیستند و قواعد precedence/packet path می‌تواند نتیجه را تغییر دهد. Routing table سفارشی باید برای fib فعال شود و مسیرهای لازم در آن وجود داشته باشند. traffic متعلق به خود روتر ممکن است با traffic عبوری رفتار متفاوتی داشته باشد. در عملیات روزانه، نام منو یا وجود rule به‌تنهایی معیار قبولی نیست. باید مشخص شود کدام packet در کدام chain یا table دیده شده، چه decision گرفته شده و نتیجه در سمت مقصد چه بوده است.\n\n## سازوکار داخلی و معماری\nMangle می‌تواند packet یا connection را mark کند و سپس routing mark انتخاب table را هدایت کند. Routing rules برای معیارهای ساده و explicit می‌توانند مناسب‌تر باشند. `lookup` امکان ادامهٔ lookup طبق طراحی را می‌دهد، درحالی‌که `lookup-only-in-table` در صورت نبود route مناسب در همان table lookup را fail می‌کند و fallback ندارد. این انتخاب در backup design تعیین‌کننده است. route gateway باید از routing context مناسب قابل‌حل باشد؛ mark اشتباه می‌تواند مدیریت روتر را از دسترس خارج کند.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nکاربر آزمایشی از LAN-A باید از WAN1 خارج شود و LAN-B از WAN2. برای هر table default route مناسب بساز و در هر flow source/connection mark و routing mark را ثبت کن. یک جدول را عمداً بدون default route بگذار و فرق `lookup` و `lookup-only-in-table` را در lab بررسی کن. مقصد و source مستندسازی‌شده را از RFC 5737 انتخاب کن و verify کن ترافیک router-local مطابق policy جداگانه رفتار می‌کند.\n\n### دستورات مشاهده‌ای\n- ``/routing table print``\n- ``/routing rule print detail``\n- ``/ip firewall mangle print stats``\n- ``/routing route print detail``\n- ``/tool traceroute <destination> src-address=<test-source>``\n\n## مثال محیط کار\nگزارش هر flow باید ingress, source/destination, routing mark, chosen table, chosen route, output interface و نتیجهٔ reply را نشان دهد. rule match بدون بررسی route انتخاب‌شده کافی نیست. اطلاعات قبل/بعد را با زمان، نسخهٔ RouterOS، model/CHR، interfaceها و آدرس‌دهی آزمایش ثبت کن. آدرس‌ها و outputهای مثال باید پیش از انتقال به محیط واقعی با plan سازمان تطبیق داده شوند.\n\n## آزمایشگاه عملی\nروی CHR با دو WAN مجازی دو table بساز. قبل از تغییر export و مسیر مدیریت را بررسی کن. یک policy ساده ابتدا با routing rule و در آزمایش مجزا با mangle mark اجرا کن؛ هر دو را همزمان فعال نکن تا اثرشان قابل تفکیک باشد. از `/tool traceroute` با source مناسب، Torch و counters برای مشاهده استفاده کن. در پایان ruleهای آزمایشی را حذف و route مدیریت را verify کن.\n\n## عیب‌یابی مرحله‌ای\nترافیک از WAN اشتباه می‌رود: بررسی کن packet از کدام interface وارد شد، rule/mangle کدام‌یک match شد، routing-mark/table چیست، table fib-enabled است، route active است و gateway در همان context resolve می‌شود. برای router-generated traffic، output path و source selection را جدا بررسی کن. تداخل fasttrack و connection marks را در صورت کاربرد بررسی کن.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nRouting mark می‌تواند دسترسی مدیریتی، ترافیک DNS یا مسیر برگشت را منحرف کند. allow-list source/destination را دقیق تعریف کن؛ روی همهٔ traffic بدون برنامه mark نزن. قبل از اعمال روی router remote از Safe Mode و console استفاده کن و rollback را با یک اتصال مستقل آزمایش کن.\n\n## نکات پیشرفته\nPolicy routing، NAT و connection tracking به یکدیگر اثر می‌گذارند. NAT connection state و routing change می‌تواند mapping ناپایدار بسازد. برای طراحی production، matrix «source subnet × destination class × desired table × failover behavior» بنویس و هر سلول را تست کن. مستندات v7 را استفاده کن و configهای v6 را بدون بازبینی کپی نکن.\n\n## جمع‌بندی\nاین درس وقتی تکمیل است که وضعیت اولیه، فرضیه، تغییر مجاز، خروجی قبل/بعد، معیار قبولی و rollback ثبت شده باشند. آزمایش packet-path باید مشاهدهٔ هر دو جهت را پوشش دهد؛ خروجی ساختاری نمونه به‌عنوان شواهد اجرای واقعی ارائه نشود.\n\n## واژه‌نامه\nRouting table: context lookup؛ Routing rule: قاعدهٔ انتخاب مسیر؛ routing mark: label برای lookup؛ connection mark: state علامت‌گذاری connection؛ lookup: امکان ادامه طبق قواعد lookup؛ lookup-only-in-table: محدودکردن lookup به همان table.\n\n## خودآزمایی\nچهار سؤال چندگزینه‌ای این درس در metadata نگهداری شده‌اند؛ متن سؤال پاسخ صحیح را افشا نمی‌کند و تشریح جواب در answer_key جدا قرار دارد.\n\n## وضعیت اعتبارسنجی\nمحتوا و JSON از نظر ساختار بررسی می‌شود؛ Labها باید روی RouterOS 7 release هدف اجرا شوند. وضعیت `review_required` تا ثبت خروجی واقعی، counterها و نتیجهٔ restore حفظ می‌شود.",
+      "commands": "`/routing table print`; `/routing rule print detail`; `/ip firewall mangle print stats`; `/routing route print detail`; `/tool traceroute <destination> src-address=<test-source>`",
+      "examples": "گزارش هر flow باید ingress, source/destination, routing mark, chosen table, chosen route, output interface و نتیجهٔ reply را نشان دهد. rule match بدون بررسی route انتخاب‌شده کافی نیست.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "RouterOS 7 release-specific syntax must be verified",
+        "answer_key_separate"
+      ],
+      "learning_objectives": [
+        "طراحی lookup table صحیح",
+        "تفکیک traffic classification از route lookup",
+        "تشخیص recursion/mark precedence"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "MikroTik — Policy Routing",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/59965508/Policy%2BRouting"
+          },
+          {
+            "title": "MikroTik — Moving from RouterOS v6 to v7 with examples",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/30474256/Moving%2Bfrom%2BROSv6%2Bto%2Bv7%2Bwith%2Bexamples"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "کدام مؤلفه‌ها از روش‌های policy routing در RouterOS هستند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "routing tables، routing rules و mangle marks"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط DNS cache"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط bridge MAC table"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط ARP timeout"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "تفاوت مهم `lookup` و `lookup-only-in-table` چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "هیچ تفاوتی ندارند"
+                },
+                {
+                  "id": "B",
+                  "label": "اولی NAT را خاموش می‌کند"
+                },
+                {
+                  "id": "C",
+                  "label": "lookup می‌تواند fallback طبق قواعد داشته باشد؛ lookup-only همان table را محدود می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "دومی فقط برای IPv6 است"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "چرا باید rule-based و mangle-based policy را ابتدا جدا تست کرد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "چون هر دو همیشه packet را drop می‌کنند"
+                },
+                {
+                  "id": "B",
+                  "label": "تا match و precedence هر کدام مستقل قابل مشاهده باشد"
+                },
+                {
+                  "id": "C",
+                  "label": "چون RouterOS فقط یک rule را ذخیره می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "تا connection tracking خاموش بماند"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "ترافیک از table درست انتخاب شده ولی از WAN اشتباه خارج می‌شود؛ چه باید بررسی شود؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط hostname"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط license key"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط clock"
+                },
+                {
+                  "id": "D",
+                  "label": "route active/gateway resolution، marks، NAT و flow واقعی"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "A",
+              "explanation": "RouterOS routing policy می‌تواند از این اجزا استفاده کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. RouterOS routing policy می‌تواند از این اجزا استفاده کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. RouterOS routing policy می‌تواند از این اجزا استفاده کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. RouterOS routing policy می‌تواند از این اجزا استفاده کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "C",
+              "explanation": "رفتار fallback برای سناریوی failover مهم است.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. رفتار fallback برای سناریوی failover مهم است."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. رفتار fallback برای سناریوی failover مهم است."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. رفتار fallback برای سناریوی failover مهم است."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "B",
+              "explanation": "آزمایش هم‌زمان چند سازوکار تشخیص علت را دشوار می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. آزمایش هم‌زمان چند سازوکار تشخیص علت را دشوار می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. آزمایش هم‌زمان چند سازوکار تشخیص علت را دشوار می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. آزمایش هم‌زمان چند سازوکار تشخیص علت را دشوار می‌کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "تمام مسیر lookup و forwarding باید مشاهده شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. تمام مسیر lookup و forwarding باید مشاهده شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. تمام مسیر lookup و forwarding باید مشاهده شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. تمام مسیر lookup و forwarding باید مشاهده شود."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch20:routeros-multiwan-scenarios:l05",
+      "entity": "lesson",
+      "chapter_order": 20,
+      "subchapter_order": 3,
+      "lesson_order": 5,
+      "topic": "routeros-pcc-symmetric-flow",
+      "domain": "mikrotik-routeros",
+      "level": "L3",
+      "title_fa": "[L3] PCC و Load Balancing مبتنی بر Connection",
+      "title_en": "[L3] Per-Connection Classifier Load Balancing",
+      "subchapter_title_fa": "۲۰.۳ سناریوهای عملی Multi-WAN، NAT و Policy Routing",
+      "tags": [
+        "RouterOS7",
+        "MikroTik",
+        "Lab",
+        "RCA",
+        "L3"
+      ],
+      "summary": "طراحی PCC برای حفظ وابستگی جریان به یک WAN و تحلیل مسیر برگشت، NAT و معیار توزیع ترافیک.",
+      "full_content": "# PCC و Load Balancing مبتنی بر Connection\n\n## عنوان انگلیسی\nPer-Connection Classifier Load Balancing\n\n## خلاصه\nطراحی PCC برای حفظ وابستگی جریان به یک WAN و تحلیل مسیر برگشت، NAT و معیار توزیع ترافیک.\n\n## اهداف یادگیری\n- تفاوت per-connection و per-packet\n- طراحی classifier و routing-mark\n- تست session persistence و failover\n\n## پیش‌نیازها\nConnection tracking، mangle، routing-mark، NAT، multi-WAN.\n\n## مقدمهٔ مفهومی\nPCC (Per Connection Classifier) جریان‌های جدید را براساس فیلدهایی مانند آدرس/پورت به کلاس‌هایی تقسیم می‌کند تا هر connection به WAN خاصی هدایت شود. برای کاربردهایی مثل TCP و VPN، پخش packetهای یک connection بین دو WAN معمولاً مناسب نیست؛ ترجیح per-connection به حفظ مسیر و state کمک می‌کند. PCC به‌تنهایی تضمین‌کنندهٔ load balance دقیق یا session failover بدون قطع نیست.\n\n## مفاهیم اصلی\nPCC (Per Connection Classifier) جریان‌های جدید را براساس فیلدهایی مانند آدرس/پورت به کلاس‌هایی تقسیم می‌کند تا هر connection به WAN خاصی هدایت شود. برای کاربردهایی مثل TCP و VPN، پخش packetهای یک connection بین دو WAN معمولاً مناسب نیست؛ ترجیح per-connection به حفظ مسیر و state کمک می‌کند. PCC به‌تنهایی تضمین‌کنندهٔ load balance دقیق یا session failover بدون قطع نیست. در عملیات روزانه، نام منو یا وجود rule به‌تنهایی معیار قبولی نیست. باید مشخص شود کدام packet در کدام chain یا table دیده شده، چه decision گرفته شده و نتیجه در سمت مقصد چه بوده است.\n\n## سازوکار داخلی و معماری\nClassifier بر hash یک مجموعهٔ فیلد ساخته می‌شود و نتیجه در connection mark ذخیره می‌شود. packet بعدی همان connection باید از همان policy پیروی کند؛ سپس routing mark/table مسیر gateway را تعیین می‌کند. NAT mapping و آدرس public هر uplink نیز روی session اثر دارند. وقتی WAN قطع شود، connectionهای موجود ممکن است به دلیل public source address و state قبلی از دست بروند؛ route جدید بیشتر به connectionهای جدید کمک می‌کند.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nدو WAN با ظرفیت متفاوت و یک LAN تستی بساز. classifier دو bucket دارد؛ برای هر bucket routing table و default route مناسب تعریف کن. با تعداد معین connection جدید به چند مقصد آزمایشی، distribution را اندازه بگیر؛ تعداد connectionها نباید با byte volume یکسان تلقی شود، چون یک download بزرگ می‌تواند یک connection و مصرف زیادی داشته باشد. سپس WAN1 را قطع کن و sessionهای موجود و اتصال‌های جدید را جدا بسنج.\n\n### دستورات مشاهده‌ای\n- ``/ip firewall mangle print stats``\n- ``/ip firewall connection print detail``\n- ``/routing route print detail``\n- ``/ip firewall nat print stats``\n- ``/tool torch <wan-interface>``\n\n## مثال محیط کار\nمعیار قبولی: connectionهای جدید به bucketهای مورد انتظار تقسیم شوند، تمام packetهای یک session از WAN طراحی‌شده عبور کنند و نتیجهٔ failover برای sessionهای موجود و جدید جدا گزارش شود. اطلاعات قبل/بعد را با زمان، نسخهٔ RouterOS، model/CHR، interfaceها و آدرس‌دهی آزمایش ثبت کن. آدرس‌ها و outputهای مثال باید پیش از انتقال به محیط واقعی با plan سازمان تطبیق داده شوند.\n\n## آزمایشگاه عملی\nCHR به دو upstream مجازی وصل باشد. قبل از تغییر backup/export بگیر. آزمایش را از connectionهای جدید و ثابت انجام بده؛ هر flow باید source/destination/port، connection mark، routing mark، WAN خروجی و NAT source را داشته باشد. ۲۰ connection آزمایشی بساز، سپس یک uplink را قطع کن. نتیجهٔ loss/rediscovery را گزارش کن، ruleهای آزمایشی را حذف و routing را برگردان.\n\n## عیب‌یابی مرحله‌ای\nیک کاربر از WAN اشتباه خارج می‌شود: بررسی کن آیا connection از قبل ساخته شده، classifier بر کدام tuple اعمال شده، connection mark و routing mark درست است، routing table gateway فعال دارد، NAT rule بر اساس WAN صحیح match می‌کند و FastTrack/exceptionها ruleهای mark را bypass نکرده‌اند. اختلاف byte distribution به‌تنهایی اثبات خرابی PCC نیست.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nPCC نباید راه فرار از segmentation/security policy باشد. mark تمام ترافیک حساس یا مدیریت روتر را بی‌هدف متوازن نکن. قواعد connection-state و exemptionها را طبق مستندات بنویس. هرگز با load-balancing traffic کاربر را از policy یا logging اجباری سازمان دور نکن.\n\n## نکات پیشرفته\nPCC معمولاً per-connection است و flowها را بر اساس hash تقسیم می‌کند، نه بر اساس مصرف واقعی byte یا latency؛ توزیع بار می‌تواند نامتوازن بماند. اگر NAT روی دو uplink دارای public address مختلف است، sessionهای موجود اغلب با تغییر WAN زنده نمی‌مانند. سیاست sticky sessions، source-based routing و health-check باید از اول طراحی شود.\n\n## جمع‌بندی\nاین درس وقتی تکمیل است که وضعیت اولیه، فرضیه، تغییر مجاز، خروجی قبل/بعد، معیار قبولی و rollback ثبت شده باشند. آزمایش packet-path باید مشاهدهٔ هر دو جهت را پوشش دهد؛ خروجی ساختاری نمونه به‌عنوان شواهد اجرای واقعی ارائه نشود.\n\n## واژه‌نامه\nPCC: Per Connection Classifier؛ bucket: کلاس hash؛ connection mark: برچسب state اتصال؛ routing mark: انتخاب table؛ sticky flow: حفظ مسیر یک جریان؛ NAT mapping: ترجمهٔ آدرس/پورت.\n\n## خودآزمایی\nچهار سؤال چندگزینه‌ای این درس در metadata نگهداری شده‌اند؛ متن سؤال پاسخ صحیح را افشا نمی‌کند و تشریح جواب در answer_key جدا قرار دارد.\n\n## وضعیت اعتبارسنجی\nمحتوا و JSON از نظر ساختار بررسی می‌شود؛ Labها باید روی RouterOS 7 release هدف اجرا شوند. وضعیت `review_required` تا ثبت خروجی واقعی، counterها و نتیجهٔ restore حفظ می‌شود.",
+      "commands": "`/ip firewall mangle print stats`; `/ip firewall connection print detail`; `/routing route print detail`; `/ip firewall nat print stats`; `/tool torch <wan-interface>`",
+      "examples": "معیار قبولی: connectionهای جدید به bucketهای مورد انتظار تقسیم شوند، تمام packetهای یک session از WAN طراحی‌شده عبور کنند و نتیجهٔ failover برای sessionهای موجود و جدید جدا گزارش شود.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "RouterOS 7 release-specific syntax must be verified",
+        "answer_key_separate"
+      ],
+      "learning_objectives": [
+        "تفاوت per-connection و per-packet",
+        "طراحی classifier و routing-mark",
+        "تست session persistence و failover"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "MikroTik — Load Balancing",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/4390920/Load%2BBalancing"
+          },
+          {
+            "title": "MikroTik — Connection Tracking",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/130220087/Connection%2Btracking"
+          },
+          {
+            "title": "MikroTik — Policy Routing",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/59965508/Policy%2BRouting"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "PCC به‌طور معمول چه چیزی را توزیع می‌کند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "هر packet مستقل به هر WAN"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط DNS queryها"
+                },
+                {
+                  "id": "C",
+                  "label": "connectionها/flowهای جدید به کلاس‌های مشخص"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط routeهای OSPF"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "چرا قطع WAN ممکن است connectionهای قبلی را قطع کند حتی وقتی route backup فعال است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "به علت NAT mapping/public address و state قبلی"
+                },
+                {
+                  "id": "B",
+                  "label": "چون routing table حذف شده است"
+                },
+                {
+                  "id": "C",
+                  "label": "چون PCC فقط IPv6 است"
+                },
+                {
+                  "id": "D",
+                  "label": "چون TCP نیازی به مسیر برگشت ندارد"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "آیا توزیع ۵۰/۵۰ connectionها لزوماً توزیع ۵۰/۵۰ مصرف پهنای باند ایجاد می‌کند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "بله، همیشه"
+                },
+                {
+                  "id": "B",
+                  "label": "بله، اگر DNS فعال باشد"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط روی per-packet"
+                },
+                {
+                  "id": "D",
+                  "label": "خیر؛ اندازهٔ هر connection متفاوت است"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "چه آزمونی برای PCC کامل‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط نگاه به config"
+                },
+                {
+                  "id": "B",
+                  "label": "ثبت marks/WAN/NAT برای connectionهای جدید و سنجش failover sessionهای موجود و جدید"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط ping یک‌باره"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط reboot router"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "C",
+              "explanation": "PCC بر اساس classifier یک connection را در کلاس مشخصی قرار می‌دهد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. PCC بر اساس classifier یک connection را در کلاس مشخصی قرار می‌دهد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. PCC بر اساس classifier یک connection را در کلاس مشخصی قرار می‌دهد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. PCC بر اساس classifier یک connection را در کلاس مشخصی قرار می‌دهد."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "A",
+              "explanation": "route failover لزوماً state و آدرس public session قبلی را منتقل نمی‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. route failover لزوماً state و آدرس public session قبلی را منتقل نمی‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. route failover لزوماً state و آدرس public session قبلی را منتقل نمی‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. route failover لزوماً state و آدرس public session قبلی را منتقل نمی‌کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "D",
+              "explanation": "تعداد flow با حجم bytes برابر نیست.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. تعداد flow با حجم bytes برابر نیست."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. تعداد flow با حجم bytes برابر نیست."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. تعداد flow با حجم bytes برابر نیست."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "B",
+              "explanation": "باید مسیر واقعی جریان و اثر failover دیده شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید مسیر واقعی جریان و اثر failover دیده شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید مسیر واقعی جریان و اثر failover دیده شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید مسیر واقعی جریان و اثر failover دیده شود."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch20:routeros-multiwan-scenarios:l06",
+      "entity": "lesson",
+      "chapter_order": 20,
+      "subchapter_order": 3,
+      "lesson_order": 6,
+      "topic": "routeros-filter-chains-fasttrack",
+      "domain": "mikrotik-routeros",
+      "level": "L3",
+      "title_fa": "[L3] Firewall Filter، مسیر Packet و اثر FastTrack",
+      "title_en": "[L3] RouterOS Firewall Filter Packet Flow and FastTrack",
+      "subchapter_title_fa": "۲۰.۳ سناریوهای عملی Multi-WAN، NAT و Policy Routing",
+      "tags": [
+        "RouterOS7",
+        "MikroTik",
+        "Lab",
+        "RCA",
+        "L3"
+      ],
+      "summary": "تفکیک input/forward/output، stateful filtering و آزمایش FastTrack در کنار connection marks و queueing.",
+      "full_content": "# Firewall Filter، مسیر Packet و اثر FastTrack\n\n## عنوان انگلیسی\nRouterOS Firewall Filter Packet Flow and FastTrack\n\n## خلاصه\nتفکیک input/forward/output، stateful filtering و آزمایش FastTrack در کنار connection marks و queueing.\n\n## اهداف یادگیری\n- تشخیص chain مناسب برای packet\n- طراحی سیاست input/forward با اصل حداقل دسترسی\n- ارزیابی اثر FastTrack بر مشاهده‌پذیری و پردازش\n\n## پیش‌نیازها\nPacket flow، connection tracking، NAT، interface lists و stateful firewall.\n\n## مقدمهٔ مفهومی\nPacket مقصد خود روتر وارد input chain می‌شود؛ packet عبوری از روتر در forward chain ارزیابی می‌شود؛ packet ساخته‌شده توسط خود روتر از output chain می‌گذرد. اشتباه‌گرفتن input با forward سبب می‌شود مدیریت روتر باز بماند یا سرویس عبوری ناخواسته مسدود شود. FastTrack در برخی مسیرهای اتصال ترافیک را با هزینهٔ پردازشی کمتر عبور می‌دهد، اما می‌تواند از بخشی از پردازش‌ها و counters/queues مورد انتظار عبور کند؛ سازگاری آن باید با mark، queue و policy هدف بررسی شود.\n\n## مفاهیم اصلی\nPacket مقصد خود روتر وارد input chain می‌شود؛ packet عبوری از روتر در forward chain ارزیابی می‌شود؛ packet ساخته‌شده توسط خود روتر از output chain می‌گذرد. اشتباه‌گرفتن input با forward سبب می‌شود مدیریت روتر باز بماند یا سرویس عبوری ناخواسته مسدود شود. FastTrack در برخی مسیرهای اتصال ترافیک را با هزینهٔ پردازشی کمتر عبور می‌دهد، اما می‌تواند از بخشی از پردازش‌ها و counters/queues مورد انتظار عبور کند؛ سازگاری آن باید با mark، queue و policy هدف بررسی شود. در عملیات روزانه، نام منو یا وجود rule به‌تنهایی معیار قبولی نیست. باید مشخص شود کدام packet در کدام chain یا table دیده شده، چه decision گرفته شده و نتیجه در سمت مقصد چه بوده است.\n\n## سازوکار داخلی و معماری\nFilter ruleها به ترتیب اجرا می‌شوند و chain و connection-state match تعیین می‌کند packet کجا پذیرفته/رد شود. Established/related policy معمولاً برای ترافیک مجاز موجود مهم است اما نمی‌تواند جایگزین drop صریح ورودی ناخواسته شود. FastTrack برای جریان‌های واجد شرایط مسیر سریع‌تری دارد و همهٔ ویژگی‌های firewall/QoS/mangle برای تمام packetهای fasttracked به شکل عادی اجرا نمی‌شوند. ترتیب ruleها، exceptions و hardware/software path وابسته به نسخه و پلتفرم‌اند.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nیک router lab از WAN به خود روتر و از WAN به یک سرور LAN دو مسیر متفاوت دارد. اجازهٔ WinBox/SSH فقط از management subnet؛ دسترسی به web server فقط روی پورت تستی مجاز. اول قوانین input و forward جدا بساز، counters را بخوان، بعد در آزمایش مستقل FastTrack را روی established/related فعال کن و اثر روی simple queues/marks/counters را اندازه بگیر. هیچ پورت مدیریتی را از WAN واقعی باز نکن.\n\n### دستورات مشاهده‌ای\n- ``/ip firewall filter print stats``\n- ``/ip firewall connection print detail``\n- ``/ip firewall filter print detail``\n- ``/queue simple print stats``\n- ``/ip firewall mangle print stats``\n\n## مثال محیط کار\nمعیار قبولی: management فقط از source مجاز وصل شود، flowهای مجاز forward شوند، flowهای غیرمجاز reject/drop شوند و اثر FastTrack روی queue/counters با دادهٔ قبل/بعد ثبت شود. اطلاعات قبل/بعد را با زمان، نسخهٔ RouterOS، model/CHR، interfaceها و آدرس‌دهی آزمایش ثبت کن. آدرس‌ها و outputهای مثال باید پیش از انتقال به محیط واقعی با plan سازمان تطبیق داده شوند.\n\n## آزمایشگاه عملی\nCHR با یک management subnet و یک server تستی راه‌اندازی کن. قبل از تغییر export بگیر و console داشته باش. ruleهای input را با source allow-list و forward را با destination/port allow-list تنظیم کن. تست‌های منفی از host lab و تست‌های مثبت از management subnet ثبت شود. در آزمایش دوم FastTrack را اضافه/حذف کن و counters/queues را قبل و بعد مقایسه کن. پس از اتمام، backup baseline را restore و access control را تأیید کن.\n\n## عیب‌یابی مرحله‌ای\nاگر مدیریت روتر از دست رفته، ابتدا console/Safe Mode را حفظ کن و ترتیب input rules، interface list، source address، connection-state و rule counters را بررسی کن. اگر queues یا marks درست عمل نمی‌کنند، مشخص کن flow FastTracked هست، connection mark در چه زمانی می‌خورد و FastTrack قبل/بعد از چه rules آمده است. از log کردن بی‌محدود تمام packetها در production بپرهیز.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nInput chain باید management plane را محدود کند؛ forward chain سیاست ارتباط کاربران و سرورها را اعمال می‌کند. default drop بدون allow مدیریت، ریسک lockout دارد. قبل از تغییر remote Safe Mode و مسیر OOB الزامی است. خروجی config حاوی کاربران/شبکه‌ها را عمومی نکن.\n\n## نکات پیشرفته\nFastTrack feature coverage وابسته به release و مسیر dataplane است. اگر نیاز به per-packet shaping, IPsec, accounting یا mangle processing خاص داری، مستندات رسمی را بررسی و benchmark واقعی اجرا کن. وجود FastTrack rule در config اثبات نمی‌کند هر flow سریع‌مسیر شده یا صف‌ها دقیق مانده‌اند.\n\n## جمع‌بندی\nاین درس وقتی تکمیل است که وضعیت اولیه، فرضیه، تغییر مجاز، خروجی قبل/بعد، معیار قبولی و rollback ثبت شده باشند. آزمایش packet-path باید مشاهدهٔ هر دو جهت را پوشش دهد؛ خروجی ساختاری نمونه به‌عنوان شواهد اجرای واقعی ارائه نشود.\n\n## واژه‌نامه\ninput: packet مقصد خود روتر؛ forward: packet عبوری؛ output: packet تولیدشده توسط روتر؛ connection-state: وضعیت اتصال؛ FastTrack: مسیر سریع برای flowهای واجد شرایط؛ interface list: دسته‌بندی رابط‌ها.\n\n## خودآزمایی\nچهار سؤال چندگزینه‌ای این درس در metadata نگهداری شده‌اند؛ متن سؤال پاسخ صحیح را افشا نمی‌کند و تشریح جواب در answer_key جدا قرار دارد.\n\n## وضعیت اعتبارسنجی\nمحتوا و JSON از نظر ساختار بررسی می‌شود؛ Labها باید روی RouterOS 7 release هدف اجرا شوند. وضعیت `review_required` تا ثبت خروجی واقعی، counterها و نتیجهٔ restore حفظ می‌شود.",
+      "commands": "`/ip firewall filter print stats`; `/ip firewall connection print detail`; `/ip firewall filter print detail`; `/queue simple print stats`; `/ip firewall mangle print stats`",
+      "examples": "معیار قبولی: management فقط از source مجاز وصل شود، flowهای مجاز forward شوند، flowهای غیرمجاز reject/drop شوند و اثر FastTrack روی queue/counters با دادهٔ قبل/بعد ثبت شود.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "RouterOS 7 release-specific syntax must be verified",
+        "answer_key_separate"
+      ],
+      "learning_objectives": [
+        "تشخیص chain مناسب برای packet",
+        "طراحی سیاست input/forward با اصل حداقل دسترسی",
+        "ارزیابی اثر FastTrack بر مشاهده‌پذیری و پردازش"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "MikroTik — Connection Tracking",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/130220087/Connection%2Btracking"
+          },
+          {
+            "title": "MikroTik — Software Specifications (Firewall/PCC features)",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/19136707/Software%2BSpecifications"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "packet مقصد خود روتر معمولاً در کدام filter chain بررسی می‌شود؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "forward"
+                },
+                {
+                  "id": "B",
+                  "label": "input"
+                },
+                {
+                  "id": "C",
+                  "label": "output"
+                },
+                {
+                  "id": "D",
+                  "label": "postrouting-only"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "packet عبوری از router به server داخل کدام chain اصلی می‌گذرد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "forward"
+                },
+                {
+                  "id": "B",
+                  "label": "input فقط"
+                },
+                {
+                  "id": "C",
+                  "label": "output فقط"
+                },
+                {
+                  "id": "D",
+                  "label": "DHCP chain"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "چرا FastTrack ممکن است با queue یا mangle accounting تداخل عملیاتی داشته باشد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "چون FastTrack routeها را رمز می‌کند"
+                },
+                {
+                  "id": "B",
+                  "label": "چون همهٔ packetها را به input می‌فرستد"
+                },
+                {
+                  "id": "C",
+                  "label": "چون بخشی از پردازش عادی را برای flowهای واجد شرایط bypass می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "چون به connection tracking وابسته نیست"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "چه روش امن‌تری برای آزمایش تغییر input rules از راه دور است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "default drop را بدون allow اعمال کن"
+                },
+                {
+                  "id": "B",
+                  "label": "هر پورت مدیریتی را روی WAN باز کن"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط reboot انجام بده"
+                },
+                {
+                  "id": "D",
+                  "label": "کنسول/Safe Mode، allow مدیریت، backup و تست منفی/مثبت"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "B",
+              "explanation": "input برای packetهایی است که به خود روتر تحویل داده می‌شوند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. input برای packetهایی است که به خود روتر تحویل داده می‌شوند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. input برای packetهایی است که به خود روتر تحویل داده می‌شوند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. input برای packetهایی است که به خود روتر تحویل داده می‌شوند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "A",
+              "explanation": "ترافیک عبوری توسط forward policy کنترل می‌شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. ترافیک عبوری توسط forward policy کنترل می‌شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. ترافیک عبوری توسط forward policy کنترل می‌شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. ترافیک عبوری توسط forward policy کنترل می‌شود."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "C",
+              "explanation": "باید پوشش ویژگی‌ها و رفتار نسخهٔ هدف آزموده شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید پوشش ویژگی‌ها و رفتار نسخهٔ هدف آزموده شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید پوشش ویژگی‌ها و رفتار نسخهٔ هدف آزموده شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید پوشش ویژگی‌ها و رفتار نسخهٔ هدف آزموده شود."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "مسیر برگشت به دسترسی مدیریتی باید پیش از change آماده باشد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. مسیر برگشت به دسترسی مدیریتی باید پیش از change آماده باشد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. مسیر برگشت به دسترسی مدیریتی باید پیش از change آماده باشد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. مسیر برگشت به دسترسی مدیریتی باید پیش از change آماده باشد."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch20:routeros-multiwan-scenarios:l07",
+      "entity": "lesson",
+      "chapter_order": 20,
+      "subchapter_order": 3,
+      "lesson_order": 7,
+      "topic": "routeros-asymmetric-path-return",
+      "domain": "mikrotik-routeros",
+      "level": "L4",
+      "title_fa": "[L4] مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN",
+      "title_en": "[L4] Asymmetric Return Path, NAT and Multi-WAN RCA",
+      "subchapter_title_fa": "۲۰.۳ سناریوهای عملی Multi-WAN، NAT و Policy Routing",
+      "tags": [
+        "RouterOS7",
+        "MikroTik",
+        "Lab",
+        "RCA",
+        "L4"
+      ],
+      "summary": "توضیح اینکه چرا خروج رفت و برگشت از دو WAN می‌تواند session state، NAT mapping و stateful firewall را بشکند.",
+      "full_content": "# مسیر برگشت نامتقارن، NAT و عیب‌یابی چند-WAN\n\n## عنوان انگلیسی\nAsymmetric Return Path, NAT and Multi-WAN RCA\n\n## خلاصه\nتوضیح اینکه چرا خروج رفت و برگشت از دو WAN می‌تواند session state، NAT mapping و stateful firewall را بشکند.\n\n## اهداف یادگیری\n- ردیابی مسیر رفت و برگشت مستقل\n- تحلیل اثر NAT و connection tracking روی failover\n- ایجاد RCA flow-based با شواهد از دو سمت\n\n## پیش‌نیازها\nPCC، routing rules، NAT، connection tracking، stateful firewall و packet capture.\n\n## مقدمهٔ مفهومی\nبرای یک flow، مسیر رفت ممکن است از WAN1 خارج شود اما route برگشت از WAN2 بیاید. این نامتقارنی ذاتاً در همهٔ شبکه‌ها ممنوع نیست، ولی NAT stateful و policy وابسته به connection می‌تواند آن را بشکند؛ reply ممکن است با آدرس یا state نامتوقع برسد. در multi-WAN، source NAT، connection marks و routing marks باید با هم طراحی شوند تا خروج و برگشت سازگار بمانند یا رفتار نامتقارن عمداً پشتیبانی شود.\n\n## مفاهیم اصلی\nبرای یک flow، مسیر رفت ممکن است از WAN1 خارج شود اما route برگشت از WAN2 بیاید. این نامتقارنی ذاتاً در همهٔ شبکه‌ها ممنوع نیست، ولی NAT stateful و policy وابسته به connection می‌تواند آن را بشکند؛ reply ممکن است با آدرس یا state نامتوقع برسد. در multi-WAN، source NAT، connection marks و routing marks باید با هم طراحی شوند تا خروج و برگشت سازگار بمانند یا رفتار نامتقارن عمداً پشتیبانی شود. در عملیات روزانه، نام منو یا وجود rule به‌تنهایی معیار قبولی نیست. باید مشخص شود کدام packet در کدام chain یا table دیده شده، چه decision گرفته شده و نتیجه در سمت مقصد چه بوده است.\n\n## سازوکار داخلی و معماری\nاولین packet connection با مسیر، mark و NAT mapping مرتبط می‌شود. اگر route عوض شود یا peer پاسخ را به WAN دیگری بفرستد، packet می‌تواند با conntrack state فعلی سازگار نباشد یا به interface غیرمتوقع برسد. NAT masquerade به آدرس interface خروجی تکیه دارد و failover ممکن است entryها را پاک کند؛ sessionهای تازه ممکن است روی backup ساخته شوند، در حالی که بازگشت primary رفتار مختلفی نشان دهد. blackhole/health-check و persistence هرکدام اثرهای خاص خود را دارند.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nLAN host به test server در اینترنت آزمایشگاهی وصل می‌شود؛ connection از WAN1 NAT شده است. قطع WAN1 و فعال‌شدن WAN2 ممکن است connection فعلی را قطع کند؛ session جدید می‌تواند کار کند. در بررسی، packet پیش از NAT، packet پس از NAT و reply packet را با tuple و timestamp ثبت کن. اگر reply به WAN2 می‌رسد اما conntrack mapping هنوز به WAN1 وابسته است، root cause از routing alone گسترده‌تر است.\n\n### دستورات مشاهده‌ای\n- ``/ip firewall connection print detail``\n- ``/ip firewall nat print stats``\n- ``/ip route print detail``\n- ``/routing rule print detail``\n- ``/tool torch <interface>``\n\n## مثال محیط کار\nRCA باید برای یک flow نشان دهد: tuple داخلی، NAT source/port، WAN خروجی، tuple reply، ingress reply، conntrack state و route active قبل و بعد از failover. نتیجهٔ «backup route فعال است» به‌تنهایی پاسخ نهایی نیست. اطلاعات قبل/بعد را با زمان، نسخهٔ RouterOS، model/CHR، interfaceها و آدرس‌دهی آزمایش ثبت کن. آدرس‌ها و outputهای مثال باید پیش از انتقال به محیط واقعی با plan سازمان تطبیق داده شوند.\n\n## آزمایشگاه عملی\nدو WAN و یک upstream test server در CHR lab. capture محدود روی LAN/WAN1/WAN2 بگیر، یک TCP flow بساز و سپس primary را قطع کن. flow موجود و flow جدید را جدا بررسی کن، conntrack entries و src address را ثبت کن و primary را restore کن تا رفتار failback آشکار شود. پس از آزمایش config را restore کن و مطمئن شو اتصال مدیریتی پایدار مانده است.\n\n## عیب‌یابی مرحله‌ای\nعلامت: SYN از LAN خارج می‌شود اما پاسخ به session نمی‌رسد. شواهد را در LAN-side، WAN egress و WAN ingress مقایسه کن. بررسی کن NAT rule کدام WAN را match کرده، source public IP چیست، connection state به چه interface/tuple وابسته است، reply وارد کدام WAN شده، ruleهای mark و routes چه تصمیمی داده‌اند. سپس یک flow جدید بساز تا stale state از policy اصلی جدا شود.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nPacket capture حاوی IPهای عمومی/خصوصی و اطلاعات کاربران است؛ capture را به flow و زمان محدود کن. Failover change روی روتر ارائه‌دهندهٔ سرویس باید پنجرهٔ تغییر، backup، OOB و اطلاع‌رسانی داشته باشد. برای آزمایش از serverها و آدرس‌های مجاز استفاده کن.\n\n## نکات پیشرفته\nMikroTik docs تفاوت masquerade و src-nat را توضیح می‌دهد و به پاک‌شدن connectionهای مربوط در بعضی حالت‌های interface disconnect اشاره می‌کند؛ دقیقاً release target و topology را بررسی کن. در معماری enterprise، session survival، routing convergence و application retry سه معیار جدا هستند. هیچ طرح failover را بدون آزمون restore و primary recovery تایید نکن.\n\n## جمع‌بندی\nاین درس وقتی تکمیل است که وضعیت اولیه، فرضیه، تغییر مجاز، خروجی قبل/بعد، معیار قبولی و rollback ثبت شده باشند. آزمایش packet-path باید مشاهدهٔ هر دو جهت را پوشش دهد؛ خروجی ساختاری نمونه به‌عنوان شواهد اجرای واقعی ارائه نشود.\n\n## واژه‌نامه\nAsymmetric routing: مسیرهای متفاوت رفت/برگشت؛ conntrack: state اتصال؛ NAT mapping: ترجمهٔ آدرس/پورت؛ masquerade: srcnat مبتنی بر آدرس interface خروجی؛ stale entry: state باقی‌مانده که دیگر با مسیر فعلی سازگار نیست.\n\n## خودآزمایی\nچهار سؤال چندگزینه‌ای این درس در metadata نگهداری شده‌اند؛ متن سؤال پاسخ صحیح را افشا نمی‌کند و تشریح جواب در answer_key جدا قرار دارد.\n\n## وضعیت اعتبارسنجی\nمحتوا و JSON از نظر ساختار بررسی می‌شود؛ Labها باید روی RouterOS 7 release هدف اجرا شوند. وضعیت `review_required` تا ثبت خروجی واقعی، counterها و نتیجهٔ restore حفظ می‌شود.",
+      "commands": "`/ip firewall connection print detail`; `/ip firewall nat print stats`; `/ip route print detail`; `/routing rule print detail`; `/tool torch <interface>`",
+      "examples": "RCA باید برای یک flow نشان دهد: tuple داخلی، NAT source/port، WAN خروجی، tuple reply، ingress reply، conntrack state و route active قبل و بعد از failover. نتیجهٔ «backup route فعال است» به‌تنهایی پاسخ نهایی نیست.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "RouterOS 7 release-specific syntax must be verified",
+        "answer_key_separate"
+      ],
+      "learning_objectives": [
+        "ردیابی مسیر رفت و برگشت مستقل",
+        "تحلیل اثر NAT و connection tracking روی failover",
+        "ایجاد RCA flow-based با شواهد از دو سمت"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "MikroTik — NAT",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/3211299/NAT"
+          },
+          {
+            "title": "MikroTik — Connection Tracking",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/130220087/Connection%2Btracking"
+          },
+          {
+            "title": "MikroTik — Failover (WAN Backup)",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/26476608/Failover%2BWAN%2BBackup"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "چرا route backup فعال‌شده لزوماً session قبلی را حفظ نمی‌کند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "به دلیل NAT mapping، conntrack و وابستگی session به WAN قبلی"
+                },
+                {
+                  "id": "B",
+                  "label": "چون routeها در RouterOS وجود ندارند"
+                },
+                {
+                  "id": "C",
+                  "label": "چون TCP بدون آدرس کار می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "چون فقط DNS در failover نقش دارد"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "برای بررسی asymmetric return path، کدام شواهد لازم است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط route print روی یک سمت"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط uptime روتر"
+                },
+                {
+                  "id": "C",
+                  "label": "packet قبل/بعد NAT و route/conntrack در هر دو جهت"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط نام ISP"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "چرا flow موجود و flow تازه باید جدا آزمایش شوند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "چون flow تازه همیشه از WAN1 است"
+                },
+                {
+                  "id": "B",
+                  "label": "چون state قبلی ممکن است mapping قدیمی داشته باشد، اما connection جدید با policy فعلی ساخته می‌شود"
+                },
+                {
+                  "id": "C",
+                  "label": "چون NAT فقط روی packetهای reply است"
+                },
+                {
+                  "id": "D",
+                  "label": "چون PCC به TCP کاری ندارد"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "چه چیزی برای تصویب نهایی failover لازم است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "صرف وجود دو WAN در config"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط قطع یک interface"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط یک traceroute"
+                },
+                {
+                  "id": "D",
+                  "label": "آزمون outage، flow جدید/موجود، مسیر برگشت و recovery به primary"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "A",
+              "explanation": "مسیر جدید الزاماً state و ترجمهٔ session موجود را به روز نمی‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. مسیر جدید الزاماً state و ترجمهٔ session موجود را به روز نمی‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. مسیر جدید الزاماً state و ترجمهٔ session موجود را به روز نمی‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. مسیر جدید الزاماً state و ترجمهٔ session موجود را به روز نمی‌کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "C",
+              "explanation": "باید مسیر رفت، translation و reply را با هم دید.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید مسیر رفت، translation و reply را با هم دید."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید مسیر رفت، translation و reply را با هم دید."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. باید مسیر رفت، translation و reply را با هم دید."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "B",
+              "explanation": "این تفکیک stale connection state را از policy اشتباه جدا می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. این تفکیک stale connection state را از policy اشتباه جدا می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. این تفکیک stale connection state را از policy اشتباه جدا می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. این تفکیک stale connection state را از policy اشتباه جدا می‌کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "تمام چرخهٔ خرابی و بازگشت باید آزموده شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. تمام چرخهٔ خرابی و بازگشت باید آزموده شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. تمام چرخهٔ خرابی و بازگشت باید آزموده شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. تمام چرخهٔ خرابی و بازگشت باید آزموده شود."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch20:routeros-multiwan-scenarios:l08",
+      "entity": "lesson",
+      "chapter_order": 20,
+      "subchapter_order": 3,
+      "lesson_order": 8,
+      "topic": "routeros-failover-observability",
+      "domain": "mikrotik-routeros",
+      "level": "L4",
+      "title_fa": "[L4] پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery",
+      "title_en": "[L4] Multi-WAN Observability and Recovery Runbook",
+      "subchapter_title_fa": "۲۰.۳ سناریوهای عملی Multi-WAN، NAT و Policy Routing",
+      "tags": [
+        "RouterOS7",
+        "MikroTik",
+        "Lab",
+        "RCA",
+        "L4"
+      ],
+      "summary": "ساخت runbook شامل baseline، probeهای مستقل، alert، failover، failback و بازگشت امن.",
+      "full_content": "# پایش Multi-WAN، تشخیص سلامت و برنامهٔ Recovery\n\n## عنوان انگلیسی\nMulti-WAN Observability and Recovery Runbook\n\n## خلاصه\nساخت runbook شامل baseline، probeهای مستقل، alert، failover، failback و بازگشت امن.\n\n## اهداف یادگیری\n- تعیین SLI/SLO برای WAN failover\n- ثبت timestamp و تشخیص false positive\n- نوشتن runbook و rollback اجرایی\n\n## پیش‌نیازها\nRecursive routing، interface monitoring، logging، NAT، test flow و آشنایی با alerting.\n\n## مقدمهٔ مفهومی\nFailover زمانی قابل اعتماد است که معیار سلامت، رفتار خرابی و بازگشت تعریف شده باشد. وضعیت link-up، gateway پاسخ‌گو، probe target reachable و application transaction چهار مشاهدهٔ متفاوت هستند. پایش فقط یک ICMP target می‌تواند false positive یا false negative بدهد؛ هدف باید از مسیر واقعی WAN قابل‌دسترسی و تحت کنترل/مجاز باشد. Runbook باید بگوید چه کسی alert را دریافت می‌کند، چه شواهدی می‌گیرد، چه تغییری مجاز است و چه زمانی escalate می‌کند.\n\n## مفاهیم اصلی\nFailover زمانی قابل اعتماد است که معیار سلامت، رفتار خرابی و بازگشت تعریف شده باشد. وضعیت link-up، gateway پاسخ‌گو، probe target reachable و application transaction چهار مشاهدهٔ متفاوت هستند. پایش فقط یک ICMP target می‌تواند false positive یا false negative بدهد؛ هدف باید از مسیر واقعی WAN قابل‌دسترسی و تحت کنترل/مجاز باشد. Runbook باید بگوید چه کسی alert را دریافت می‌کند، چه شواهدی می‌گیرد، چه تغییری مجاز است و چه زمانی escalate می‌کند. در عملیات روزانه، نام منو یا وجود rule به‌تنهایی معیار قبولی نیست. باید مشخص شود کدام packet در کدام chain یا table دیده شده، چه decision گرفته شده و نتیجه در سمت مقصد چه بوده است.\n\n## سازوکار داخلی و معماری\nhealth checks ممکن است از `/ip route check-gateway`، recursive routes، Netwatch یا سامانهٔ مانیتورینگ بیرونی استفاده کنند. هرکدام horizon و semantics متفاوت دارند. thresholdها باید با latency/loss واقعی و نیاز سرویس هماهنگ شوند. alert باید route selected, probe, interface state, packet loss and affected services را کنار هم قرار دهد. failback نیز یک رویداد فعال است: primary برگشت، route انتخاب شد، NAT/sessionها چه شدند و آیا service دوباره stable است؟\n\n## مثال مرحله‌به‌مرحله و ابزارها\nSLO آزمایشی: after WAN1 outage، route backup باید در threshold تعریف‌شده فعال شود و flowهای جدید بعد از آن موفق باشند؛ sessionهای موجود جدا اندازه‌گیری شوند. سه بار قطع WAN1، دو بار خرابی upstream با interface-up و سه بار recovery به primary اجرا کن. latency/loss و زمان هر مرحله را ثبت کن؛ معیار و timeoutها را قبل از شروع تعیین کن.\n\n### دستورات مشاهده‌ای\n- ``/log print where topics~\"route\"``\n- ``/interface print detail``\n- ``/ip route print detail``\n- ``/tool ping <authorized-probe>``\n- ``/tool netwatch print detail` (اگر در طرح استفاده شده است).`\n\n## مثال محیط کار\nrunbook باید برای هر سناریو شامل trigger، evidence، تصمیم route، اثبات service، اقدام دستی/اتوماتیک، deadline، rollback و owner باشد. مقدار latency یا failover threshold را از این درس کپی نکن؛ از baseline شبکهٔ خودت تعیین کن. اطلاعات قبل/بعد را با زمان، نسخهٔ RouterOS، model/CHR، interfaceها و آدرس‌دهی آزمایش ثبت کن. آدرس‌ها و outputهای مثال باید پیش از انتقال به محیط واقعی با plan سازمان تطبیق داده شوند.\n\n## آزمایشگاه عملی\nروی CHR دو WAN آزمایشگاهی و یک host monitoring بگذار. با timestamp ثابت log، probe و route table را هم‌زمان ثبت کن. سناریوهای کابل قطع، gateway unreachable، upstream failure، probe host failure و recovery را جدا اجرا کن. برای هر سناریو expected behavior، alert name، owner، remediation، rollback و test result داشته باش. بعد از هر آزمایش baseline را restore کن.\n\n## عیب‌یابی مرحله‌ای\nAlert: WAN degraded. بررسی کن آیا interface down است یا فقط probe fail است؛ آیا probe از uplink صحیح می‌رود؛ چند target مستقل نتیجهٔ مشابه دارند؛ route candidate/active چه وضعی دارد؛ آیا سرویس‌های کلیدی واقعاً fail هستند؛ و آیا primary برگشته ولی failback به تأخیر افتاده است. در صورت conflict میان telemetry، issue را حل‌شده اعلام نکن؛ اختلاف شاهدها را ثبت کن.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nمنابع alert، credentials و export config امن نگه داشته شوند. probeها نباید به targetهایی که سازمان اجازهٔ تست آن‌ها را ندارد بار ایجاد کنند. automation نباید بدون guardrail روی WAN route یا firewall را تغییر دهد. برای auto-recovery، maximum attempts, cool-down, audit log و manual override لازم است.\n\n## نکات پیشرفته\nبیش از یک probe مستقل، threshold hysteresis و hold-down می‌تواند flap را کاهش دهد؛ در مقابل، حساسیت پایین detection زمان outage را طولانی می‌کند. SLO باید به سطح application متصل باشد نه فقط interface. در شبکهٔ ISP/enterprise، با تغییر route، QoS، session tracking و مسیر مدیریت نیز باید آزمون شود.\n\n## جمع‌بندی\nاین درس وقتی تکمیل است که وضعیت اولیه، فرضیه، تغییر مجاز، خروجی قبل/بعد، معیار قبولی و rollback ثبت شده باشند. آزمایش packet-path باید مشاهدهٔ هر دو جهت را پوشش دهد؛ خروجی ساختاری نمونه به‌عنوان شواهد اجرای واقعی ارائه نشود.\n\n## واژه‌نامه\nSLI: شاخص اندازه‌گیری سرویس؛ SLO: هدف سطح سرویس؛ hysteresis: تفاوت شرط ورود/خروج برای جلوگیری از flap؛ hold-down: تأخیر کنترل‌شدهٔ transition؛ false positive: اعلام خرابی در نبود خرابی واقعی؛ failback: بازگشت به primary.\n\n## خودآزمایی\nچهار سؤال چندگزینه‌ای این درس در metadata نگهداری شده‌اند؛ متن سؤال پاسخ صحیح را افشا نمی‌کند و تشریح جواب در answer_key جدا قرار دارد.\n\n## وضعیت اعتبارسنجی\nمحتوا و JSON از نظر ساختار بررسی می‌شود؛ Labها باید روی RouterOS 7 release هدف اجرا شوند. وضعیت `review_required` تا ثبت خروجی واقعی، counterها و نتیجهٔ restore حفظ می‌شود.",
+      "commands": "`/log print where topics~\"route\"`; `/interface print detail`; `/ip route print detail`; `/tool ping <authorized-probe>`; `/tool netwatch print detail` (اگر در طرح استفاده شده است).",
+      "examples": "runbook باید برای هر سناریو شامل trigger، evidence، تصمیم route، اثبات service، اقدام دستی/اتوماتیک، deadline، rollback و owner باشد. مقدار latency یا failover threshold را از این درس کپی نکن؛ از baseline شبکهٔ خودت تعیین کن.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "RouterOS 7 release-specific syntax must be verified",
+        "answer_key_separate"
+      ],
+      "learning_objectives": [
+        "تعیین SLI/SLO برای WAN failover",
+        "ثبت timestamp و تشخیص false positive",
+        "نوشتن runbook و rollback اجرایی"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "MikroTik — Failover (WAN Backup)",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/26476608/Failover%2BWAN%2BBackup"
+          },
+          {
+            "title": "MikroTik — IP Routing",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/328084/IP%2BRouting"
+          },
+          {
+            "title": "MikroTik — Connection Tracking",
+            "url": "https://help.mikrotik.com/docs/spaces/ROS/pages/130220087/Connection%2Btracking"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "کدام مجموعه، وضعیت سلامت WAN را بهتر مشخص می‌کند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط چراغ link"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط یک ping از روتر"
+                },
+                {
+                  "id": "C",
+                  "label": "interface، probe مستقل، route decision و یک آزمون service flow"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط تعداد routeها"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "چرا چند probe با وابستگی مستقل مفید است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "برای حذف کامل مانیتورینگ"
+                },
+                {
+                  "id": "B",
+                  "label": "برای کاهش احتمال تصمیم‌گیری بر اساس خرابی یک target"
+                },
+                {
+                  "id": "C",
+                  "label": "برای تبدیل NAT به firewall"
+                },
+                {
+                  "id": "D",
+                  "label": "برای غیرفعال‌کردن backup"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "برای جلوگیری از route flap چه تکنیک طراحی ممکن است مفید باشد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "هزاران route موقت"
+                },
+                {
+                  "id": "B",
+                  "label": "خاموش‌کردن تمام logها"
+                },
+                {
+                  "id": "C",
+                  "label": "تغییر تصادفی distance"
+                },
+                {
+                  "id": "D",
+                  "label": "hysteresis یا hold-down بر اساس دادهٔ اندازه‌گیری‌شده"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "چه زمانی runbook را می‌توان تأیید کرد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "پس از اجرای outage و recovery، ثبت شواهد و اثبات service طبق معیار از پیش تعیین‌شده"
+                },
+                {
+                  "id": "B",
+                  "label": "وقتی فقط فایل config وجود دارد"
+                },
+                {
+                  "id": "C",
+                  "label": "وقتی فقط Interface بالا می‌آید"
+                },
+                {
+                  "id": "D",
+                  "label": "بدون آزمون failback"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "C",
+              "explanation": "health واقعی چند سطح دارد و باید شواهد مستقل داشته باشد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. health واقعی چند سطح دارد و باید شواهد مستقل داشته باشد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. health واقعی چند سطح دارد و باید شواهد مستقل داشته باشد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. health واقعی چند سطح دارد و باید شواهد مستقل داشته باشد."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "B",
+              "explanation": "یک مقصد probe خاموش می‌تواند false alarm ایجاد کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. یک مقصد probe خاموش می‌تواند false alarm ایجاد کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. یک مقصد probe خاموش می‌تواند false alarm ایجاد کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. یک مقصد probe خاموش می‌تواند false alarm ایجاد کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "D",
+              "explanation": "transition guard می‌تواند نوسان را کاهش دهد؛ مقدار آن باید سنجیده شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. transition guard می‌تواند نوسان را کاهش دهد؛ مقدار آن باید سنجیده شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. transition guard می‌تواند نوسان را کاهش دهد؛ مقدار آن باید سنجیده شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. transition guard می‌تواند نوسان را کاهش دهد؛ مقدار آن باید سنجیده شود."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "A",
+              "explanation": "runbook بدون آزمون end-to-end و recovery کامل نیست.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. runbook بدون آزمون end-to-end و recovery کامل نیست."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. runbook بدون آزمون end-to-end و recovery کامل نیست."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "گزینه با سازوکار و شواهد این درس سازگار نیست. runbook بدون آزمون end-to-end و recovery کامل نیست."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
