@@ -1,0 +1,1788 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkAll",
+  "generated_on": "2026-10-13",
+  "purpose": "Chapter 68 Cisco IOS-XE routing and operations command starter pack; curated additive batch 1",
+  "chapter_order": 68,
+  "chapter_title_fa": "دانشنامه جامع دستورات",
+  "vendor_pack": "cisco",
+  "vendor": "Cisco",
+  "platform": "IOS-XE",
+  "scope": "Routing, verification, switching diagnostics and configuration safety",
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true
+  },
+  "commands": [
+    {
+      "uid": "cmd:cisco:routing:0001",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "routing",
+      "subcategory": "routing",
+      "command": "show ip route",
+      "title_fa": "[L1] نمایش جدول مسیریابی IPv4",
+      "title_en": "نمایش جدول مسیریابی IPv4",
+      "syntax": "show ip route",
+      "when_to_use_fa": "بررسی مسیر انتخابی و next-hop پیش از تغییر route",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nO 10.20.0.0/16 [110/20] via 192.0.2.2, 00:02:10, GigabitEthernet1/0/1",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "مقصد را با show ip route 10.20.1.1 بررسی کنید"
+      ],
+      "rollback_fa": "این فرمان فقط‌خواندنی است؛ تغییری لازم نیست",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "نمایش جدول مسیریابی IPv4",
+        "Cisco IOS-XE",
+        "routing",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip route» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی مسیر انتخابی و next-hop پیش از تغییر route؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0002",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "routing",
+      "subcategory": "routing",
+      "command": "show ip route 192.0.2.80",
+      "title_fa": "[L1] انتخاب مسیر برای مقصد مشخص",
+      "title_en": "انتخاب مسیر برای مقصد مشخص",
+      "syntax": "show ip route 192.0.2.80",
+      "when_to_use_fa": "مشخص‌کردن longest-prefix match برای یک مقصد",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nRouting entry for 192.0.2.0/24, Known via static",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "با traceroute و جدول همسایه‌ها مسیر را تطبیق دهید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "انتخاب مسیر برای مقصد مشخص",
+        "Cisco IOS-XE",
+        "routing",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip route 192.0.2.80» استفاده می‌شود؟",
+        "answer_key_fa": "مشخص‌کردن longest-prefix match برای یک مقصد؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0003",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "interface",
+      "subcategory": "interface",
+      "command": "show ip interface brief",
+      "title_fa": "[L1] خلاصه وضعیت رابط‌ها",
+      "title_en": "خلاصه وضعیت رابط‌ها",
+      "syntax": "show ip interface brief",
+      "when_to_use_fa": "بررسی سریع up/down و آدرس IP رابط‌ها",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nGigabitEthernet1/0/1 192.0.2.1 YES manual up up",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "سپس show interfaces <interface> را اجرا کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "خلاصه وضعیت رابط‌ها",
+        "Cisco IOS-XE",
+        "interface",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip interface brief» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی سریع up/down و آدرس IP رابط‌ها؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0004",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "troubleshoot",
+      "subcategory": "troubleshoot",
+      "command": "show interfaces counters errors",
+      "title_fa": "[L1] بررسی خطاهای لایه فیزیکی",
+      "title_en": "بررسی خطاهای لایه فیزیکی",
+      "syntax": "show interfaces counters errors",
+      "when_to_use_fa": "تشخیص CRC، input errors و drops",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nPort  CRC  Frame  Overrun  ...",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "شمارنده‌ها را با بازه زمانی و سمت مقابل مقایسه کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "بررسی خطاهای لایه فیزیکی",
+        "Cisco IOS-XE",
+        "troubleshoot",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show interfaces counters errors» استفاده می‌شود؟",
+        "answer_key_fa": "تشخیص CRC، input errors و drops؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0005",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "troubleshoot",
+      "subcategory": "troubleshoot",
+      "command": "show arp",
+      "title_fa": "[L1] مشاهده جدول ARP",
+      "title_en": "مشاهده جدول ARP",
+      "syntax": "show arp",
+      "when_to_use_fa": "تطبیق IP با MAC در همان broadcast domain",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nInternet 192.0.2.10  0 aabb.cc00.0100 ARPA Vlan10",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "با MAC table و ARP دستگاه مقصد مقایسه کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "مشاهده جدول ARP",
+        "Cisco IOS-XE",
+        "troubleshoot",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show arp» استفاده می‌شود؟",
+        "answer_key_fa": "تطبیق IP با MAC در همان broadcast domain؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0006",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "ospf",
+      "subcategory": "ospf",
+      "command": "show ip ospf neighbor",
+      "title_fa": "[L1] بررسی همسایه‌های OSPF",
+      "title_en": "بررسی همسایه‌های OSPF",
+      "syntax": "show ip ospf neighbor",
+      "when_to_use_fa": "عیب‌یابی adjacency و state همسایه",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nNeighbor ID Pri State Dead Time Address Interface",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "Network type، area، timers و authentication را بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "بررسی همسایه‌های OSPF",
+        "Cisco IOS-XE",
+        "ospf",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip ospf neighbor» استفاده می‌شود؟",
+        "answer_key_fa": "عیب‌یابی adjacency و state همسایه؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0007",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "ospf",
+      "subcategory": "ospf",
+      "command": "show ip ospf interface brief",
+      "title_fa": "[L1] خلاصه رابط‌های OSPF",
+      "title_en": "خلاصه رابط‌های OSPF",
+      "syntax": "show ip ospf interface brief",
+      "when_to_use_fa": "تأیید area و فعال‌بودن OSPF روی رابط",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nInterface PID Area IP Address/Mask Cost State",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "با طراحی area و passive-interface تطبیق دهید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "خلاصه رابط‌های OSPF",
+        "Cisco IOS-XE",
+        "ospf",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip ospf interface brief» استفاده می‌شود؟",
+        "answer_key_fa": "تأیید area و فعال‌بودن OSPF روی رابط؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0008",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "routing",
+      "subcategory": "routing",
+      "command": "show ip protocols",
+      "title_fa": "[L1] نمایش پارامترهای پروتکل مسیریابی",
+      "title_en": "نمایش پارامترهای پروتکل مسیریابی",
+      "syntax": "show ip protocols",
+      "when_to_use_fa": "بررسی منابع route، timers و network statements",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nRouting Protocol is 'ospf ...'",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "با running-config و route table تطبیق دهید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "نمایش پارامترهای پروتکل مسیریابی",
+        "Cisco IOS-XE",
+        "routing",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip protocols» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی منابع route، timers و network statements؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0009",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "bgp",
+      "subcategory": "bgp",
+      "command": "show ip bgp summary",
+      "title_fa": "[L1] خلاصه وضعیت BGP peers",
+      "title_en": "خلاصه وضعیت BGP peers",
+      "syntax": "show ip bgp summary",
+      "when_to_use_fa": "بررسی Established بودن همسایگی BGP",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nNeighbor V AS MsgRcvd MsgSent Up/Down State/PfxRcd",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "اگر state عدد نیست، TCP/179، ASN و policy را بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "خلاصه وضعیت BGP peers",
+        "Cisco IOS-XE",
+        "bgp",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip bgp summary» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی Established بودن همسایگی BGP؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0010",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "bgp",
+      "subcategory": "bgp",
+      "command": "show ip bgp",
+      "title_fa": "[L1] مشاهده مسیرهای BGP",
+      "title_en": "مشاهده مسیرهای BGP",
+      "syntax": "show ip bgp",
+      "when_to_use_fa": "تحلیل مسیرهای دریافتی و بهترین مسیر",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nNetwork Next Hop Metric LocPrf Weight Path",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "با route-map، prefix-list و best-path criteria مقایسه کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "مشاهده مسیرهای BGP",
+        "Cisco IOS-XE",
+        "bgp",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip bgp» استفاده می‌شود؟",
+        "answer_key_fa": "تحلیل مسیرهای دریافتی و بهترین مسیر؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0011",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "ospf",
+      "subcategory": "ospf",
+      "command": "show ip route ospf",
+      "title_fa": "[L2] فیلتر routeهای OSPF",
+      "title_en": "فیلتر routeهای OSPF",
+      "syntax": "show ip route ospf",
+      "when_to_use_fa": "جداکردن مسیرهای یادگرفته‌شده از OSPF",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nO 10.40.0.0/16 ...",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "وجود مسیر در جدول را با LSDB و neighbor بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "فیلتر routeهای OSPF",
+        "Cisco IOS-XE",
+        "ospf",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip route ospf» استفاده می‌شود؟",
+        "answer_key_fa": "جداکردن مسیرهای یادگرفته‌شده از OSPF؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0012",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "ospf",
+      "subcategory": "ospf",
+      "command": "show ip ospf database",
+      "title_fa": "[L2] مشاهده LSDB مربوط به OSPF",
+      "title_en": "مشاهده LSDB مربوط به OSPF",
+      "syntax": "show ip ospf database",
+      "when_to_use_fa": "بررسی LSA و تفاوت دیدگاه همسایه‌ها",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nLS age, Link ID, ADV Router, Seq#",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "LSDB را بین روترهای یک area مقایسه کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "مشاهده LSDB مربوط به OSPF",
+        "Cisco IOS-XE",
+        "ospf",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip ospf database» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی LSA و تفاوت دیدگاه همسایه‌ها؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0013",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "routing",
+      "subcategory": "routing",
+      "command": "show ip eigrp neighbors",
+      "title_fa": "[L2] مشاهده همسایه‌های EIGRP",
+      "title_en": "مشاهده همسایه‌های EIGRP",
+      "syntax": "show ip eigrp neighbors",
+      "when_to_use_fa": "عیب‌یابی adjacency در شبکه‌هایی که EIGRP فعال است",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nAddress Interface Hold Uptime SRTT RTO Q Seq",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "K-values، AS، authentication و multicast reachability را بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "مشاهده همسایه‌های EIGRP",
+        "Cisco IOS-XE",
+        "routing",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip eigrp neighbors» استفاده می‌شود؟",
+        "answer_key_fa": "عیب‌یابی adjacency در شبکه‌هایی که EIGRP فعال است؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0014",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "acl",
+      "subcategory": "acl",
+      "command": "show ip access-lists",
+      "title_fa": "[L2] مشاهده ACL و hit counters",
+      "title_en": "مشاهده ACL و hit counters",
+      "syntax": "show ip access-lists",
+      "when_to_use_fa": "تأیید ترتیب ACEها و شمارنده تطبیق",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nExtended IP access list ...",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "جهت و محل اعمال ACL را با show ip interface بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "مشاهده ACL و hit counters",
+        "Cisco IOS-XE",
+        "acl",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip access-lists» استفاده می‌شود؟",
+        "answer_key_fa": "تأیید ترتیب ACEها و شمارنده تطبیق؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0015",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "route-map",
+      "subcategory": "route-map",
+      "command": "show route-map",
+      "title_fa": "[L2] نمایش route-mapها",
+      "title_en": "نمایش route-mapها",
+      "syntax": "show route-map",
+      "when_to_use_fa": "بررسی match/set و ترتیب sequenceها",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nroute-map RM-OUT, permit, sequence 10",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "با prefix-list و سیاست همسایه تطبیق دهید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "نمایش route-mapها",
+        "Cisco IOS-XE",
+        "route-map",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show route-map» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی match/set و ترتیب sequenceها؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0016",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "prefix-list",
+      "subcategory": "prefix-list",
+      "command": "show ip prefix-list",
+      "title_fa": "[L2] مشاهده prefix-listها",
+      "title_en": "مشاهده prefix-listها",
+      "syntax": "show ip prefix-list",
+      "when_to_use_fa": "بررسی prefix و ge/le پیش از policy routing",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nip prefix-list PL-OUT seq 10 permit 10.20.0.0/16 le 24",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "با جدول route و route-map تست کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "مشاهده prefix-listها",
+        "Cisco IOS-XE",
+        "prefix-list",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip prefix-list» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی prefix و ge/le پیش از policy routing؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0017",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "ospf",
+      "subcategory": "ospf",
+      "command": "show running-config | section router ospf",
+      "title_fa": "[L2] نمایش پیکربندی OSPF",
+      "title_en": "نمایش پیکربندی OSPF",
+      "syntax": "show running-config | section router ospf",
+      "when_to_use_fa": "بازبینی پیکربندی جاری بدون dump کامل",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nrouter ospf 10 ...",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "قبل از تغییر، نسخه امن پیکربندی را ذخیره کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "نمایش پیکربندی OSPF",
+        "Cisco IOS-XE",
+        "ospf",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show running-config | section router ospf» استفاده می‌شود؟",
+        "answer_key_fa": "بازبینی پیکربندی جاری بدون dump کامل؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0018",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "bgp",
+      "subcategory": "bgp",
+      "command": "show running-config | section router bgp",
+      "title_fa": "[L2] نمایش پیکربندی BGP",
+      "title_en": "نمایش پیکربندی BGP",
+      "syntax": "show running-config | section router bgp",
+      "when_to_use_fa": "بازبینی peer، address-family و policy",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nrouter bgp 65010 ...",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "neighbor policy و remote-as را با طراحی تطبیق دهید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "نمایش پیکربندی BGP",
+        "Cisco IOS-XE",
+        "bgp",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show running-config | section router bgp» استفاده می‌شود؟",
+        "answer_key_fa": "بازبینی peer، address-family و policy؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0019",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "logs",
+      "subcategory": "logs",
+      "command": "show logging",
+      "title_fa": "[L2] بررسی رخدادها و پیام‌های سیستم",
+      "title_en": "بررسی رخدادها و پیام‌های سیستم",
+      "syntax": "show logging",
+      "when_to_use_fa": "تحلیل flaps، adjacency reset و interface errors",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\n%LINK-3-UPDOWN: Interface ... changed state",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "timestamp و sequence را با NTP و counters تطبیق دهید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "بررسی رخدادها و پیام‌های سیستم",
+        "Cisco IOS-XE",
+        "logs",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show logging» استفاده می‌شود؟",
+        "answer_key_fa": "تحلیل flaps، adjacency reset و interface errors؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0020",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "troubleshoot",
+      "subcategory": "troubleshoot",
+      "command": "show clock detail",
+      "title_fa": "[L2] بررسی ساعت و timezone",
+      "title_en": "بررسی ساعت و timezone",
+      "syntax": "show clock detail",
+      "when_to_use_fa": "هم‌ترازکردن timestamp لاگ‌های چند تجهیز",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\n... Time source is NTP",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "NTP association و timezone را جداگانه بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "بررسی ساعت و timezone",
+        "Cisco IOS-XE",
+        "troubleshoot",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show clock detail» استفاده می‌شود؟",
+        "answer_key_fa": "هم‌ترازکردن timestamp لاگ‌های چند تجهیز؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0021",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "discovery",
+      "subcategory": "discovery",
+      "command": "show cdp neighbors detail",
+      "title_fa": "[L2] نمایش همسایه‌های CDP",
+      "title_en": "نمایش همسایه‌های CDP",
+      "syntax": "show cdp neighbors detail",
+      "when_to_use_fa": "شناسایی پورت مقابل و مدل دستگاه Cisco",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nDevice ID, IP address, Platform, Port ID",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "با کابل‌کشی و LLDP/مدارک تطبیق دهید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "نمایش همسایه‌های CDP",
+        "Cisco IOS-XE",
+        "discovery",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show cdp neighbors detail» استفاده می‌شود؟",
+        "answer_key_fa": "شناسایی پورت مقابل و مدل دستگاه Cisco؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0022",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "discovery",
+      "subcategory": "discovery",
+      "command": "show lldp neighbors detail",
+      "title_fa": "[L2] نمایش همسایه‌های LLDP",
+      "title_en": "نمایش همسایه‌های LLDP",
+      "syntax": "show lldp neighbors detail",
+      "when_to_use_fa": "کشف دستگاه‌های چندفروشنده در لایه ۲",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nLocal Intf, Chassis id, Port id, System Name",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "داده discovery را به‌تنهایی مبنای تغییر نگذارید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "نمایش همسایه‌های LLDP",
+        "Cisco IOS-XE",
+        "discovery",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show lldp neighbors detail» استفاده می‌شود؟",
+        "answer_key_fa": "کشف دستگاه‌های چندفروشنده در لایه ۲؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0023",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "switching",
+      "subcategory": "switching",
+      "command": "show spanning-tree vlan 10",
+      "title_fa": "[L3] بررسی STP برای VLAN مشخص",
+      "title_en": "بررسی STP برای VLAN مشخص",
+      "syntax": "show spanning-tree vlan 10",
+      "when_to_use_fa": "تشخیص root bridge، role و blocking port",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nRoot ID, Bridge ID, Interface Role Sts",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "با توپولوژی فیزیکی و root design مقایسه کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "بررسی STP برای VLAN مشخص",
+        "Cisco IOS-XE",
+        "switching",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show spanning-tree vlan 10» استفاده می‌شود؟",
+        "answer_key_fa": "تشخیص root bridge، role و blocking port؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0024",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "trunk",
+      "subcategory": "trunk",
+      "command": "show interfaces trunk",
+      "title_fa": "[L3] بررسی trunk و VLANهای مجاز",
+      "title_en": "بررسی trunk و VLANهای مجاز",
+      "syntax": "show interfaces trunk",
+      "when_to_use_fa": "عیب‌یابی VLANهای عبوری از trunk",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nPort Mode Encapsulation Status Native vlan",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "هر دو سمت را مقایسه و VLAN allowed/native را بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "بررسی trunk و VLANهای مجاز",
+        "Cisco IOS-XE",
+        "trunk",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show interfaces trunk» استفاده می‌شود؟",
+        "answer_key_fa": "عیب‌یابی VLANهای عبوری از trunk؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0025",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "etherchannel",
+      "subcategory": "etherchannel",
+      "command": "show etherchannel summary",
+      "title_fa": "[L3] بررسی وضعیت EtherChannel",
+      "title_en": "بررسی وضعیت EtherChannel",
+      "syntax": "show etherchannel summary",
+      "when_to_use_fa": "تشخیص memberهای bundle نشده",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nGroup Port-channel Protocol Ports",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "mode و پارامترهای دو سمت باید سازگار باشند"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "بررسی وضعیت EtherChannel",
+        "Cisco IOS-XE",
+        "etherchannel",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show etherchannel summary» استفاده می‌شود؟",
+        "answer_key_fa": "تشخیص memberهای bundle نشده؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0026",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "mac",
+      "subcategory": "mac",
+      "command": "show mac address-table dynamic",
+      "title_fa": "[L3] نمایش MACهای یادگرفته‌شده",
+      "title_en": "نمایش MACهای یادگرفته‌شده",
+      "syntax": "show mac address-table dynamic",
+      "when_to_use_fa": "ردیابی endpoint و تشخیص MAC move",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nVlan Mac Address Type Ports",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "با ARP، VLAN و port security تطبیق دهید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "نمایش MACهای یادگرفته‌شده",
+        "Cisco IOS-XE",
+        "mac",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show mac address-table dynamic» استفاده می‌شود؟",
+        "answer_key_fa": "ردیابی endpoint و تشخیص MAC move؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0027",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "nat",
+      "subcategory": "nat",
+      "command": "show ip nat translations",
+      "title_fa": "[L3] مشاهده ترجمه‌های NAT",
+      "title_en": "مشاهده ترجمه‌های NAT",
+      "syntax": "show ip nat translations",
+      "when_to_use_fa": "عیب‌یابی اتصال‌هایی که باید NAT شوند",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nInside local/global Outside local/global",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "ACL و counters مربوط به NAT را هم بررسی کنید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "مشاهده ترجمه‌های NAT",
+        "Cisco IOS-XE",
+        "nat",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip nat translations» استفاده می‌شود؟",
+        "answer_key_fa": "عیب‌یابی اتصال‌هایی که باید NAT شوند؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0028",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "nat",
+      "subcategory": "nat",
+      "command": "show ip nat statistics",
+      "title_fa": "[L3] آمار NAT",
+      "title_en": "آمار NAT",
+      "syntax": "show ip nat statistics",
+      "when_to_use_fa": "بررسی pool، hits، misses و translation count",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nTotal active translations ... hits ... misses ...",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "با ترافیک آزمایشی و ACL تطبیق دهید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "آمار NAT",
+        "Cisco IOS-XE",
+        "nat",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show ip nat statistics» استفاده می‌شود؟",
+        "answer_key_fa": "بررسی pool، hits، misses و translation count؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0029",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "EXEC or privileged EXEC",
+      "category": "interface",
+      "subcategory": "interface",
+      "command": "show interfaces description",
+      "title_fa": "[L3] نمایش توضیحات و وضعیت رابط‌ها",
+      "title_en": "نمایش توضیحات و وضعیت رابط‌ها",
+      "syntax": "show interfaces description",
+      "when_to_use_fa": "بازبینی inventory و وضعیت لینک‌ها",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nInterface Status Protocol Description",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "نام‌گذاری استاندارد را با مستندات شبکه تطبیق دهید"
+      ],
+      "rollback_fa": "فقط‌خواندنی",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "نمایش توضیحات و وضعیت رابط‌ها",
+        "Cisco IOS-XE",
+        "interface",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «show interfaces description» استفاده می‌شود؟",
+        "answer_key_fa": "بازبینی inventory و وضعیت لینک‌ها؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:routing:0030",
+      "vendor": "cisco",
+      "platform": "IOS-XE",
+      "version_scope": "IOS-XE; verify exact support on target release",
+      "privilege": "privileged EXEC",
+      "category": "configuration",
+      "subcategory": "configuration",
+      "command": "copy running-config startup-config",
+      "title_fa": "[L3] ذخیره پیکربندی جاری در startup",
+      "title_en": "ذخیره پیکربندی جاری در startup",
+      "syntax": "copy running-config startup-config",
+      "when_to_use_fa": "ذخیره تغییر تأییدشده پس از verify و change approval",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "sample_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nDestination filename [startup-config]?",
+      "output_fields_fa": [
+        {
+          "field": "State/Status/Route",
+          "meaning": "مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض‌کردن یکسان بودن syntax یا ستون خروجی در تمام نسخه‌ها.",
+        "اعمال تغییر بدون بررسی اثر جانبی یا مسیر مدیریت جایگزین."
+      ],
+      "security_notes_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "lab_hint_fa": "در Packet Tracer، CML، EVE-NG یا تجهیز آزمایشگاهی مجاز اجرا کنید؛ از تغییر ناگهانی روی شبکه production خودداری کنید.",
+      "verify_steps_fa": [
+        "قبل از ذخیره، diff/backup و تست connectivity انجام دهید"
+      ],
+      "rollback_fa": "rollback نیازمند فایل پشتیبان معتبر و دسترسی console/out-of-band است",
+      "related_commands": [
+        "show version",
+        "show running-config",
+        "show logging"
+      ],
+      "search_keywords": [
+        "ذخیره پیکربندی جاری در startup",
+        "Cisco IOS-XE",
+        "configuration",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "assessment": {
+        "question_fa": "برای چه هدفی از «copy running-config startup-config» استفاده می‌شود؟",
+        "answer_key_fa": "ذخیره تغییر تأییدشده پس از verify و change approval؛ خروجی را با وضعیت واقعی تجهیز و مستندات همان نسخه تأیید کنید."
+      },
+      "source_status": "review_required"
+    }
+  ]
+}
