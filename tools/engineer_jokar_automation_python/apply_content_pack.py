@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Safely apply automation/Python lesson content to NetworkEncyclopedia SQLite.
+"""Safely apply automation/Python lesson content to NetworkAll SQLite.
 
 Default mode is read-only/dry-run. Use --apply to write. Use --overwrite to replace
 existing teaching fields on the targeted lessons. Existing IDs, UIDs, titles, structure,
@@ -66,7 +66,7 @@ def load_pack(path: Path) -> dict:
 
 def connect_db(db_path: Path) -> sqlite3.Connection:
     if not db_path.exists():
-        raise FileNotFoundError(f'Database not found: {db_path}\nExpected NetworkEncyclopedia path: server/data/encyclopedia.db')
+        raise FileNotFoundError(f'Database not found: {db_path}\nExpected NetworkAll path: server/data/encyclopedia.db')
     conn = sqlite3.connect(str(db_path))
     conn.row_factory = sqlite3.Row
     conn.execute('PRAGMA foreign_keys=ON')
