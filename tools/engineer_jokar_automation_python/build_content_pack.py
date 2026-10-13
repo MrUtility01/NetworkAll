@@ -745,7 +745,7 @@ def build_pack():
             lessons.append(make_lesson(topic, order, level, idx))
     return {
         'package_schema_version': 1,
-        'project': 'ENGINEER JOKAR / NetworkEncyclopedia',
+        'project': 'NetworkAll',
         'generated_on': date.today().isoformat(),
         'purpose': 'محتوای تکمیلی سطح L0-L4 برای پایتون شبکه و اتوماسیون؛ سازگار با جدول lessons در SQLite مخزن.',
         'scope': [
