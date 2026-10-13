@@ -174,16 +174,17 @@ jobs:
           path: /tmp/gradle-assemble.log
           if-no-files-found: ignore
 
-      - name: Upload APK or fail
+      - name: Verify application APK path
         run: |
-          set -e
-          APK=$(find android -name "*.apk" -path "*/outputs/*" | head -n 1 || true)
-          if [ -z "$APK" ]; then
-            echo "APK missing — see artifact gradle-assemble-log"
-            tail -80 /tmp/gradle-assemble.log || true
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          if [ ! -s "$APK" ]; then
+            echo "Application APK missing: $APK"
+            echo "Do not substitute an androidTest APK."
+            tail -100 /tmp/gradle-assemble.log || true
             exit 1
           fi
-          echo "APK=$APK"
+          echo "Application APK: $APK"
           ls -lh "$APK"
 
       - name: Upload NetworkAll Windows v1.0.0
