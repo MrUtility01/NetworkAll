@@ -1,4 +1,4 @@
-# NetworkEncyclopedia / ENGINEER JOKAR
+# NetworkAll — ENGINEER JOKAR
 
 دانشنامه آموزشی شبکه و زیرساخت IT — ویندوز (Flask) + اندروید (Kotlin) + همگام‌سازی LAN.
 
@@ -6,14 +6,15 @@
 
 **ویندوز**
 ```bash
-git clone https://github.com/MrUtility01/NetworkEncyclopedia.git
-cd NetworkEncyclopedia/server
+git clone https://github.com/MrUtility01/NetworkAll.git
+cd NetworkAll/server
 python -m pip install -r requirements.txt
+set NETENC_PORT=86
 set NETENC_TOKEN=change-me
 python app.py
 ```
 
-**اندروید:** Actions → Build Android APK → نصب → در صورت نیاز Clear data.
+**اندروید:** Actions → NetworkAll Android APK (validated) → دریافت artifact → نصب؛ برای بازسازی محتوای آفلاین از گزینهٔ بازسازی استفاده کنید.
 
 ## ساختار
 
