@@ -84,3 +84,19 @@ PR کاندید: https://github.com/MrUtility01/NetworkAll/pull/5
 - [گزارش اعتبارسنجی](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/tools/packs/ch09/VALIDATION.md)
 
 **محدودیت مهم:** محتوا هنوز `review_required` است. فایل‌های SVG/Mermaid در repository هستند، اما تا زمان اجرای موفق workflow و بررسی loader، نمایش همهٔ نمودارها در UI یا نصب موفق APK ادعا نمی‌شود.
+
+### Commitهای مستقل فصل ۹
+
+- بسته ۲۱ درس: `78143cb8d15ba4e307729bd46c26fbb60dc53925`
+- ۵۰ مثال: `42fd3d6b936a1c382a7f8bcdae9883c60457e9db`
+- ۵۰ سناریو: `e544e81d67944a5b4fb63f8efa9277bd24fa3265`
+- ۵۵ سؤال: `a406263c755354b309e2b716a693b59014b9a99f`
+- پاسخ‌نامه مستقل: `ee872595201624d72f9cf6383c74e1b4fd5fe079`
+- منابع: `7a1fdb625b0c6f70a5fcf8d0788378b550d63b3e`
+- manifest: `3f94462fbc0f9a1c504d0ab9af229816146bf309`
+- اعتبارسنجی و محدودیت‌ها: `e683d3ce63ed0108ce4e79c36642dd0e44732912`
+- نمایه بسته: `797b5356df6800b905ddbc35004c41120c539e98`
+- validator: `9818033f21944007f14a7806999832187d4c1e36`
+- ادغام افزایشی اندروید: `0700211b2c879dd7e31f146a3bfd6dad3e6ca5f7`
+- Workflow validation: `86b477914d42425af20878168980638653554a6b`
+- ثبت گزارش فصل ۹: `4b16628cfd8b6d4a4331caca9d2787e629fa02d6`
