@@ -339,6 +339,7 @@ class WorkspaceActivity : AppCompatActivity() {
                                 title.error = "عنوان الزامی است"
                                 return@setOnClickListener
                             }
+                            val savedId = uid ?: UUID.randomUUID().toString()
                             val dueAt = if (mode == "tasks" && reminder.isChecked) {
                                 try { JalaliDate.parseJalali(date.text.toString(), time.text.toString()) }
                                 catch (e: Exception) {
@@ -353,7 +354,7 @@ class WorkspaceActivity : AppCompatActivity() {
                             }
                             lifecycleScope.launch {
                                 withContext(Dispatchers.IO) {
-                                    val id = uid ?: UUID.randomUUID().toString()
+                                    val id = savedId
                                     when (mode) {
                                         "notes" -> db.workspaceDao().upsertNote(NoteEntity(
                                             id, t, body.text.toString().trim(), tags.text.toString().trim(), now()
@@ -370,8 +371,8 @@ class WorkspaceActivity : AppCompatActivity() {
                                     }
                                 }
                                 if (mode == "tasks") {
-                                    if (dueAt.isBlank()) TaskReminderScheduler.cancel(this@WorkspaceActivity, uid ?: "")
-                                    else TaskReminderScheduler.schedule(this@WorkspaceActivity, uid ?: findTaskUid(t), t, body.text.toString(), dueAt)
+                                    if (dueAt.isBlank()) TaskReminderScheduler.cancel(this@WorkspaceActivity, savedId)
+                                    else TaskReminderScheduler.schedule(this@WorkspaceActivity, savedId, t, body.text.toString(), dueAt)
                                 }
                                 dialog.dismiss()
                                 Toast.makeText(this@WorkspaceActivity, "ذخیره شد", Toast.LENGTH_SHORT).show()
@@ -383,9 +384,6 @@ class WorkspaceActivity : AppCompatActivity() {
                 }
         }
     }
-
-    private suspend fun findTaskUid(title: String): String =
-        withContext(Dispatchers.IO) { db.workspaceDao().allTasks().firstOrNull { it.title == title }?.uid ?: title }
 
     private fun openTimePicker(field: EditText) {
         val pieces = field.text.toString().split(":")
