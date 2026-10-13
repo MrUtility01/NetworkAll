@@ -69,6 +69,9 @@ def _unseal(blob: str) -> str:
         return ""
     try:
         if blob.startswith("enc2:"):
+            key_file = _db_path().parent / "networkall.vaultkey"
+            if not key_file.is_file():
+                return "•••• (کلید Vault وجود ندارد؛ فایل networkall.vaultkey را از پشتیبان بازیابی کنید)"
             raw = base64.urlsafe_b64decode(blob[5:].encode("ascii"))
             if len(raw) < 29:
                 return "••••"
