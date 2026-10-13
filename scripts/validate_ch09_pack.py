@@ -27,6 +27,8 @@ def main() -> None:
     questions = read_json("ch09_questions.json").get("questions")
     answers = read_json("ch09_answer_key.json").get("answer_key")
     sources = read_json("ch09_sources.json").get("sources")
+    labs = read_json("ch09_labs.json").get("labs")
+    case_studies = read_json("ch09_case_studies.json").get("case_studies")
     manifest = read_json("diagrams/manifest.json")
     lessons = pack.get("lessons")
     if pack.get("chapter_order") != 9 or not isinstance(lessons, list):
@@ -41,8 +43,8 @@ def main() -> None:
             fail(f"{lesson.get('uid')}: missing fields {missing}")
         if lesson.get("chapter_order") != 9 or lesson.get("source_status") != "review_required":
             fail(f"{lesson.get('uid')}: incorrect chapter/source status")
-    if len(examples) < 50 or len(scenarios) < 50 or len(questions) < 50 or len(answers) < 50 or len(sources) < 10:
-        fail("minimum examples/scenarios/questions/answers/sources not met")
+    if len(examples) < 50 or len(scenarios) < 50 or len(questions) < 50 or len(answers) < 50 or len(sources) < 10 or len(labs) < 10 or len(case_studies) < 10:
+        fail("minimum examples/scenarios/questions/answers/sources/labs/case-studies not met")
     for name, rows in (("examples", examples), ("scenarios", scenarios), ("questions", questions), ("answers", answers)):
         ids = [str(x.get("id") or "") for x in rows]
         if any(not x for x in ids) or len(ids) != len(set(ids)):
@@ -58,7 +60,7 @@ def main() -> None:
             fail(f"{qid}: invalid correct_option_index")
         if q["options"][idx] != ans.get("correct_answer_fa") or not ans.get("explanation_fa"):
             fail(f"{qid}: answer key does not match options or has no explanation")
-    for kind, rows in (("examples", examples), ("scenarios", scenarios), ("questions", questions)):
+    for kind, rows in (("examples", examples), ("scenarios", scenarios), ("questions", questions), ("labs", labs), ("case_studies", case_studies)):
         for row in rows:
             if row.get("lesson_uid") not in set(uids):
                 fail(f"{kind} {row.get('id')} refers to unknown lesson_uid")
@@ -93,7 +95,7 @@ def main() -> None:
     missing = sorted(set(uids) - merged_uids)
     if missing:
         fail(f"{len(missing)} chapter-pack lessons not merged; examples: {missing[:5]}")
-    print(f"CH09 VALID: lessons={len(lessons)} examples={len(examples)} scenarios={len(scenarios)} questions={len(questions)} answers={len(answers)} sources={len(sources)} diagrams={len(diagrams)} merged={len(set(uids) & merged_uids)}")
+    print(f"CH09 VALID: lessons={len(lessons)} examples={len(examples)} scenarios={len(scenarios)} questions={len(questions)} answers={len(answers)} labs={len(labs)} case_studies={len(case_studies)} sources={len(sources)} diagrams={len(diagrams)} merged={len(set(uids) & merged_uids)}")
     print("Structural validation only; technical review and real-network testing remain required.")
 
 if __name__ == "__main__":
