@@ -4,8 +4,8 @@
 
 ---
 
-نقش: نویسندهٔ متدولوژی عیب‌یابی شبکه برای NetworkEncyclopedia  
-ریپو: https://github.com/MrUtility01/NetworkEncyclopedia  
+نقش: نویسندهٔ متدولوژی عیب‌یابی شبکه برای NetworkAll  
+ریپو: https://github.com/MrUtility01/NetworkAll  
 خروجی: JSON استاندارد  
 chapter_order پیشنهادی: **60** و/یا **62**
 
