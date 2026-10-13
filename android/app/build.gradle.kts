@@ -33,6 +33,26 @@ android {
     }
 }
 
+// Generate the offline diagram assets before Android packages assets. This makes a
+// direct Android Studio/Gradle build behave like CI, instead of relying on a prior
+// manual invocation of the Python generator.
+val generateNetworkAllDiagrams by tasks.registering(Exec::class) {
+    val repositoryRoot = rootProject.projectDir.parentFile
+    workingDir(repositoryRoot)
+    commandLine("python3", "scripts/generate_android_diagrams.py")
+    inputs.file(repositoryRoot.resolve("scripts/generate_android_diagrams.py"))
+    inputs.file(repositoryRoot.resolve("server/core/infographics.py"))
+    inputs.files(fileTree(repositoryRoot.resolve("tools/packs")) {
+        include("ch01/diagrams/**", "ch02/diagrams/**", "ch03/diagrams/**", "ch09/diagrams/**")
+    })
+    outputs.dir(repositoryRoot.resolve("android/app/src/main/assets/diagrams"))
+    outputs.dir(repositoryRoot.resolve("server/static/diagrams"))
+}
+
+tasks.named("preBuild").configure {
+    dependsOn(generateNetworkAllDiagrams)
+}
+
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
