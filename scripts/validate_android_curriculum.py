@@ -105,6 +105,22 @@ def main() -> None:
     )
     if chapter_counts.get(68, 0) == 0:
         fail("chapter 68 has no command lessons")
+
+    # Chapter 68 must remain navigable by platform/collection, not just a flat
+    # list of similarly named commands.
+    chapter68 = next((ch for ch in chapters if int(ch.get("order", 0)) == 68), {})
+    groups = chapter68.get("subchapters", [])
+    group_titles = [str(s.get("title_fa") or "").split("—", 1)[0].strip() for s in groups]
+    required_groups = {"Linux", "Bash", "PowerShell", "Windows CMD", "Windows Batch"}
+    missing_groups = sorted(required_groups - set(group_titles))
+    if missing_groups:
+        fail(f"chapter 68 missing command collections: {missing_groups}")
+    ch68_lessons = [les for order, les in lessons if order == 68]
+    unlabeled = [str(les.get("uid")) for les in ch68_lessons
+                 if not any(str(les.get("title_fa") or "").startswith(f"[{g}]") for g in required_groups)]
+    if unlabeled:
+        fail(f"chapter 68 lessons missing collection prefix: {unlabeled[:8]}")
+
     if thin_content:
         print("QUALITY WARNING: thin lesson examples (first 10 uids):", thin_content[:10])
 
