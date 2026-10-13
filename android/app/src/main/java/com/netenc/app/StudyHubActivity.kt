@@ -58,8 +58,11 @@ class StudyHubActivity : AppCompatActivity() {
                 study.setDailyGoal(goalInput.text.toString().toIntOrNull() ?: 15)
                 refresh()
             })
-            addView(section("شروع هوشمند"))
-            addView(btn("انتخاب فصل → کارت از سطح سبک", Ui.ACCENT) { pickChapterForCards() })
+            addView(section("مسیر یادگیری واحد"))
+            addView(Ui.text(this@StudyHubActivity,
+                "یک مسیر پیوسته از مبتدی تا حرفه‌ای؛ لازم نیست سطح را دستی انتخاب کنی. ابتدا مفهوم، سپس مثال و لاب، بعد عیب‌یابی و طراحی سازمانی.",
+                13f, Ui.MUTED))
+            addView(btn("شروع مسیر یادگیری از مبتدی تا حرفه‌ای", Ui.ACCENT) { pickChapterForCards() })
             addView(section("مرور SRS"))
             addView(btn("مرور مفهوم", Color.parseColor("#1D4ED8")) {
                 startActivity(Intent(this@StudyHubActivity, FlashcardActivity::class.java).putExtra("mode", "review"))
@@ -148,8 +151,8 @@ class StudyHubActivity : AppCompatActivity() {
     private fun pickChapterForCards() {
         lifecycleScope.launch {
             val chapters = withContext(Dispatchers.IO) {
-                AppDatabase.get(this@StudyHubActivity).lessonDao().allActive()
-                    .map { it.chapterTitle }.filter { it.isNotBlank() }.distinct().sorted()
+                AppDatabase.get(this@StudyHubActivity).lessonDao().chapters()
+                    .map { it.chapterTitle }.filter { it.isNotBlank() }.distinct()
             }
             if (chapters.isEmpty()) {
                 Toast.makeText(this@StudyHubActivity, "بانک خالی — اول فهرست درختی یا بازسازی محتوا", Toast.LENGTH_LONG).show()
@@ -157,13 +160,13 @@ class StudyHubActivity : AppCompatActivity() {
             }
             val arr = chapters.toTypedArray()
             AlertDialog.Builder(this@StudyHubActivity)
-                .setTitle("کدام فصل؟ (از سطح سبک)")
+                .setTitle("از کدام فصل مسیر را شروع کنیم؟")
                 .setItems(arr) { _, which ->
                     startActivity(
                         Intent(this@StudyHubActivity, FlashcardActivity::class.java)
                             .putExtra("mode", "review")
                             .putExtra("chapter", arr[which])
-                            .putExtra("from_easy", true)
+                            .putExtra("learning_path", true)
                     )
                 }
                 .setNegativeButton("لغو", null).show()
