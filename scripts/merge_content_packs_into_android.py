@@ -132,7 +132,21 @@ def commands_to_lessons(data: dict, source_key: str = "pack") -> list:
             f"## امنیت\n{c.get('security_notes_fa') or ''}\n\n"
             f"## کلیدواژه جستجو\n{kw_txt}\n"
         )
-        notes = ""
+        tip_items = c.get("tips_fa") or c.get("key_points_fa") or c.get("tips") or []
+        if not isinstance(tip_items, list):
+            tip_items = [str(tip_items)]
+        note_sections = []
+        if tip_items:
+            note_sections.append("## نکات کلیدی\n" + "\n".join(f"- {x}" for x in tip_items))
+        if mistakes:
+            note_sections.append("## خطاهای رایج\n" + mist_txt)
+        security_tip = c.get("security_notes_fa") or ""
+        if security_tip:
+            note_sections.append("## نکات امنیتی\n" + str(security_tip))
+        lab_tip = c.get("lab_hint_fa") or ""
+        if lab_tip:
+            note_sections.append("## معیار تمرین / آزمایشگاه\n" + str(lab_tip))
+        notes = "\n\n".join(note_sections)
         flash = c.get("flashcards")
         assess = c.get("assessment")
         meta = {}
