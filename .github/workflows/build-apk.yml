@@ -98,6 +98,31 @@ jobs:
           set -o pipefail
           ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee /tmp/gradle-assemble.log
  
+      - name: Audit packaged APK contents and size
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json, zipfile
+          from pathlib import Path
+          apks = list(Path("android/app/build/outputs/apk").rglob("*.apk"))
+          assert apks, "No APK found"
+          apk = apks[0]
+          with zipfile.ZipFile(apk) as z:
+              names = set(z.namelist())
+              curriculum_path = "assets/curriculum_index.json.gz"
+              diagram_index_path = "assets/diagrams/index.json"
+              assert curriculum_path in names, "APK is missing curriculum_index.json.gz"
+              assert diagram_index_path in names, "APK is missing diagrams/index.json"
+              curriculum = json.loads(gzip.decompress(z.read(curriculum_path)))
+              diagrams = json.loads(z.read(diagram_index_path))
+              svg_count = sum(1 for n in names if n.startswith("assets/diagrams/") and n.endswith(".svg"))
+              assert len(curriculum["chapters"]) == 68, "APK must contain all 68 chapters"
+              assert curriculum["lesson_count"] == sum(len(s.get("lessons", [])) for ch in curriculum["chapters"] for s in ch.get("subchapters", [])), "APK lesson_count mismatch"
+              assert diagrams.get("count") == 100 and svg_count == 100, f"APK diagram count mismatch: index={diagrams.get('count')} svg={svg_count}"
+              assert next(ch for ch in curriculum["chapters"] if ch["order"] == 68)["subchapters"], "Chapter 68 has no collections"
+          print(f"APK AUDIT OK: {apk} bytes={apk.stat().st_size} chapters=68 lessons={curriculum['lesson_count']} diagrams={svg_count}")
+          PY
+
       - name: Upload gradle log
         if: always()
         uses: actions/upload-artifact@v4
