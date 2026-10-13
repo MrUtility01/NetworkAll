@@ -93,6 +93,16 @@ def commands_to_lessons(data: dict, source_key: str = "pack") -> list:
         }
         if category_raw in shell_collection:
             collection, collection_order = shell_collection[category_raw]
+        elif "windows batch" in vendor_blob or "win batch" in vendor_blob:
+            collection, collection_order = ("Windows Batch", 105)
+        elif "windows cmd" in vendor_blob or "command prompt" in vendor_blob or "cmd" in vendor_blob:
+            collection, collection_order = ("Windows CMD", 104)
+        elif "powershell" in vendor_blob or "power shell" in vendor_blob:
+            collection, collection_order = ("PowerShell", 103)
+        elif "bash" in vendor_blob:
+            collection, collection_order = ("Bash", 102)
+        elif "linux" in vendor_blob:
+            collection, collection_order = ("Linux", 101)
         elif any(k in vendor_blob for k in ("mikrotik", "routeros", "ros7")):
             collection, collection_order = ("MikroTik RouterOS", 107)
         elif any(k in vendor_blob for k in ("cisco", "ios xe", "ios-xe")):
@@ -271,16 +281,22 @@ def normalize_pack(path: Path, data: dict):
                 collection, group_order = "Linux", 101
             elif "bash" in stem:
                 collection, group_order = "Bash", 102
-            elif "batch" in stem or "cmd" in stem:
-                collection, group_order = "Windows Batch/CMD", 104
+            elif "batch" in stem:
+                collection, group_order = "Windows Batch", 105
+            elif "cmd" in stem:
+                collection, group_order = "Windows CMD", 104
             else:
                 collection, group_order = path.stem.replace("_", " ").title(), 199
             for idx, lesson in enumerate(lessons, 1):
                 if not isinstance(lesson, dict):
                     continue
-                title = str(lesson.get("title_fa") or lesson.get("title") or "درس")
-                if not title.startswith("["):
-                    lesson["title_fa"] = f"[{collection}] {title}"
+                title = str(lesson.get("title_fa") or lesson.get("title") or "درس").strip()
+                prefix = f"[{collection}]"
+                if not title.startswith(prefix):
+                    # Source packs often prefix titles with [L1] or a vendor
+                    # alias. Keep the collection as the first visible label.
+                    title = re.sub(r"^\[[^\]]+\]\s*", "", title).strip()
+                    lesson["title_fa"] = f"{prefix} {title}"
                 lesson.setdefault("chapter_order", 68)
                 lesson.setdefault("subchapter_order", group_order * 100 + 10)
                 lesson.setdefault("subchapter_title_fa", f"{collection} — عمومی")
