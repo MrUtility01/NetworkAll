@@ -183,6 +183,22 @@ footer{color:#5f7188;text-align:center;margin-top:24px;font-size:.85rem}
       <figure><img src="wireless_site_survey.svg" alt="نقشهٔ مفهومی Site Survey شامل سه Access Point، هم‌پوشانی رادیویی، نقاط اندازه‌گیری RSSI/SNR، مسیر roaming و RADIUS/EAP" loading="lazy"><figcaption>Coverage تنها یکی از معیارهاست؛ capacity، roaming و authentication هم باید سنجیده شوند.</figcaption></figure>
       <div class="body"><p>در survey، RSSI/SNR، retry rate، channel utilization، latency، packet loss و application metrics را با client model و تنظیمات رادیویی ثبت کن. اتصال به SSID به معنی تکمیل EAP/RADIUS، دریافت IP، انتخاب VLAN درست یا دسترسی به سرویس نیست.</p><p>Channel width و power را براساس survey و regulatory domain تنظیم کن. Wi-Fi 7/MLO و 6 GHz به پشتیبانی AP/client، certification و مقررات محل نصب وابسته‌اند؛ قابلیت اسمی، نتیجهٔ اجرایی را تضمین نمی‌کند.</p></div>
     </article>
+
+    <article>
+      <h2>۲۵. مهندسی لینک فیبر و بودجهٔ نوری</h2>
+      <figure><img src="fiber_link_budget.svg" alt="مسیر فیبر از Tx optic تا patch panel، fiber route و Rx optic، همراه با مفهوم بودجهٔ نوری و تفاوت DOM، OLTS و OTDR" loading="lazy"><figcaption>سازگاری optics، polarity و اندازه‌گیری calibrated باید قبل از پذیرش لینک بررسی شوند.</figcaption></figure>
+      <div class="body"><p>Budget طراحی را با حداقل توان Tx، حساسیت Rx و حداکثر توان ورودی optic مشخص محاسبه کن. Loss کابل، connector pair، splice و passive components باید در نظر گرفته شود. DOM یک telemetry مفید است؛ OLTS insertion loss مسیر را می‌سنجد و OTDR برای تحلیل طول و eventها به‌کار می‌آید. روش و threshold از استاندارد پروژه و مدل واقعی optics گرفته شود.</p><p>ایمنی: هرگز از داخل فیبر یا کانکتور نگاه نکن. Inspect-clean-reinspect را با ابزار مناسب انجام بده و polarity را از روی طرح/آزمون تأیید کن.</p></div>
+    </article>
+    <article>
+      <h2>۲۶. PKI، زنجیرهٔ گواهی و هویت سرویس</h2>
+      <figure><img src="pki_certificate_chain.svg" alt="زنجیرهٔ اعتماد از Root CA به Intermediate و Leaf certificate با دو بررسی جدا برای path validation و تطبیق hostname" loading="lazy"><figcaption>گواهی معتبر برای نام اشتباه، هویت سرویس صحیحی را ثابت نمی‌کند.</figcaption></figure>
+      <div class="body"><p>Path validation امضاها، constraints، usage، زمان و trust anchor را بررسی می‌کند؛ service identity validation نام مورد انتظار را با هویت گواهی مقایسه می‌کند. SAN، chain، EKU، revocation، rotation و حفاظت از private key باید در lifecycle لحاظ شوند. مرجع جاری TLS 1.3 در این پروژه RFC 9846 است؛ رفتار عملی را با نسخهٔ TLS library و endpoint واقعی تطبیق بده.</p></div>
+    </article>
+    <article>
+      <h2>۲۷. جریان 802.1X، RADIUS و NAC</h2>
+      <figure><img src="dot1x_flow.svg" alt="جریان Supplicant و EAPOL به Authenticator و RADIUS/AAA، سپس اعمال policy VLAN/ACL و ثبت Accounting" loading="lazy"><figcaption>Access-Accept به معنی اجرای موفق policy یا دسترسی end-to-end نیست.</figcaption></figure>
+      <div class="body"><p>Supplicant با Authenticator تبادل EAP دارد؛ Authenticator درخواست AAA را به RADIUS می‌رساند و نتیجهٔ policy را دریافت می‌کند. پس از Accept باید role/VLAN/ACL واقعی، DHCP، route و دسترسی مجاز و ممنوع آزموده شود. MAB فقط برای endpointهای مشخص و role محدود استفاده شود. Fail-open/closed باید براساس نوع دستگاه و ریسک طراحی شود.</p></div>
+    </article>
   </section>
   <footer>NetworkAll · اینفوگرافیک‌های برداری آفلاین · قابل استفاده در ویندوز و اندروید · منابع و آزمایشگاه‌های تفصیلی در درس‌های مرتبط قرار می‌گیرند.</footer>
 </main>
