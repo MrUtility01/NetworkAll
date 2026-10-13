@@ -25,7 +25,7 @@ class SettingsActivity : AppCompatActivity() {
                 layoutDirection = android.view.View.LAYOUT_DIRECTION_LTR
                 textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_START
             }
-        val host = field("API ویندوز http://IP:5050", "host")
+        val host = field("API ویندوز http://IP:86", "host")
         val token = field("توکن API", "token", true, DEFAULT_TOKEN)
         val autoSync = Switch(this).apply { text = "همگام خودکار"; isChecked = prefs.getBoolean("auto_sync", false) }
         val aiProvider = field("AI: openai | grok | openai-compat", "ai_provider", def = "openai")
