@@ -27,10 +27,10 @@ Launcher یک محیط مجازی محلی در `.venv` می‌سازد و سر�
 
 1. در [GitHub Actions](https://github.com/MrUtility01/NetworkAll/actions)، اجرای موفق `NetworkAll Android APK (validated)` را باز کنید.
 2. Artifact با نام `NetworkAll-Android-v1.0.0` را دانلود و APK داخل آن را نصب کنید.
-3. مجوز اعلان را در Android، در صورت درخواست، بدهید.
-4. Settings → API host: `http://IP-کامپیوتر:86`.
-5. Settings → API token: همان متن فایل `server\data\networkall.token` در ویندوز.
-6. روی هر دو دستگاه از یک شبکهٔ محلی قابل‌دسترسی استفاده کنید و ابتدا Sync/Hello را بررسی کنید.
+3. در اولین اجرا یک رمز ورود محلی و تأیید آن تنظیم کنید (رمز را در اولین اجرا خودتان انتخاب می‌کنید). این قفل رمزگذاری دیتابیس نیست.\n4. مجوز اعلان را در Android، در صورت درخواست، بدهید.
+5. Settings → API host: `http://IP-کامپیوتر:86`.
+6. Settings → API token: همان متن فایل `server\data\networkall.token` در ویندوز.
+7. روی هر دو دستگاه از یک شبکهٔ محلی قابل‌دسترسی استفاده کنید و ابتدا Sync/Hello را بررسی کنید.
 
 **هشدار به‌روزرسانی:** Application ID برابر `com.netenc.app` باقی مانده است. بااین‌حال، پیش از uninstall یا Clear data از اطلاعات شخصی بکاپ بگیرید. Clear data داده‌های محلی را پاک می‌کند و فقط برای رفع seed ناقص، با داشتن بکاپ، استفاده شود.
 
