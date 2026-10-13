@@ -137,22 +137,26 @@ def main() -> None:
             if index.get("count") != 100 or len(index.get("diagrams", [])) != 100:
                 raise SystemExit("Windows web diagram index does not contain 100 items")
             infographics = get_json("/api/infographics")
-            if infographics.get("count") != 100 or len(infographics.get("items", [])) != 100:
-                raise SystemExit("compatibility /api/infographics should return all 100 SVG items")
+            if infographics.get("count") != 171 or len(infographics.get("items", [])) != 171:
+                raise SystemExit("compatibility /api/infographics should return 171 shared SVG items")
             combined_response = client.get("/static/diagrams/combined_index.json")
             if combined_response.status_code != 200:
                 raise SystemExit(f"combined diagram index HTTP {combined_response.status_code}")
             combined = combined_response.get_json()
-            if combined.get("count") != 141 or len(combined.get("diagrams", [])) != 141:
-                raise SystemExit("combined gallery should contain 100 existing + 41 Chapter 1 diagrams")
-            ch1_response = client.get("/static/diagrams/ch01/index.json")
-            if ch1_response.status_code != 200:
-                raise SystemExit(f"Chapter 1 diagram index HTTP {ch1_response.status_code}")
-            ch1_index = ch1_response.get_json()
-            if ch1_index.get("count") != 41 or len(ch1_index.get("diagrams", [])) != 41:
-                raise SystemExit("Chapter 1 gallery should expose 41 diagrams")
+            if combined.get("count") != 171 or len(combined.get("diagrams", [])) != 171:
+                raise SystemExit("combined gallery should contain 100 general + 71 curated chapter diagrams")
+            expected_chapters = {1: 41, 2: 12, 3: 10, 9: 8}
+            for chapter, expected_count in expected_chapters.items():
+                response = client.get(f"/static/diagrams/ch{chapter:02d}/index.json")
+                if response.status_code != 200:
+                    raise SystemExit(f"Chapter {chapter} diagram index HTTP {response.status_code}")
+                chapter_index = response.get_json()
+                if chapter_index.get("count") != expected_count or len(chapter_index.get("diagrams", [])) != expected_count:
+                    raise SystemExit(f"Chapter {chapter} gallery should expose {expected_count} diagrams")
             if not infographics["items"][0].get("svg", "").lstrip().startswith("<svg"):
                 raise SystemExit("/api/infographics returned invalid SVG content")
+            if not any(item.get("asset", "").startswith("ch09/") for item in infographics["items"]):
+                raise SystemExit("/api/infographics omitted Chapter 9 diagrams")
 
             disabled = client.post("/api/reseed")
             if disabled.status_code != 404:
