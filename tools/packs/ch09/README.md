@@ -2,12 +2,14 @@
 
 بستهٔ افزایشی NetworkAll؛ محتوای قبلی حفظ می‌شود.
 
-- `ch09_pack.json`: ۲۱ درس کتاب‌محور با سطوح L0–L4.
+- `ch09_pack.json`: ۳۱ درس کتاب‌محور با سطوح L0–L4.
 - `ch09_examples.json`: ۵۰ مثال با فرمان، مراحل، خروجی مورد انتظار و تفسیر.
 - `ch09_scenarios.json`: ۵۰ سناریو با شواهد، فرضیه، verify و rollback.
 - `ch09_questions.json`: ۵۵ سؤال؛ پاسخ داخل گزینه‌ها افشا نشده.
 - `ch09_answer_key.json`: پاسخ‌نامه مستقل و توضیح.
 - `ch09_sources.json`: ۱۶ منبع رسمی/استاندارد.
+- `ch09_labs.json`: ۱۲ لابراتوار عملی.
+- `ch09_case_studies.json`: ۱۵ مطالعه موردی مبتنی بر شواهد.
 - `diagrams/manifest.json` و ۸ جفت فایل `.mmd` و `.svg`.
 - `VALIDATION.md`: شمارش و محدودیت‌ها.
 
