@@ -129,7 +129,9 @@ def main() -> None:
     print("CH68 ADDITIVE PACKS VALID")
     print("Command counts:", dict(totals))
     print(f"Examples={len(examples)} scenarios={len(scenarios)} questions={len(questions)} answers={len(answers)} sources={len(source_data['sources'])}")
-    if totals["cisco_routing"] != 1600:\n        fail(f"Cisco Routing must total exactly 1600 records across the dedicated base/add-on packs; found {totals['cisco_routing']}")\n    print(f"Cisco Routing total: {totals['cisco_routing']}/1600 records across 9 JSON files; source review and IOS-XE lab validation remain required.")
+    if totals["cisco_routing"] != 1600:
+        fail(f"Cisco Routing must total exactly 1600 records across the dedicated base/add-on packs; found {totals['cisco_routing']}")
+    print(f"Cisco Routing total: {totals['cisco_routing']}/1600 records across 9 JSON files; source review and IOS-XE lab validation remain required.")
     print("Note: structural validation does not replace vendor/version review or real-device labs.")
 
 if __name__ == "__main__":
