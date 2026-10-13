@@ -86,8 +86,8 @@ def body(n: int, title: str, kw: str) -> str:
 
 ---
 
-نقش: تولیدکننده محتوا برای NetworkEncyclopedia / ENGINEER JOKAR  
-ریپو: https://github.com/MrUtility01/NetworkEncyclopedia  
+نقش: تولیدکننده محتوا برای NetworkAll / ENGINEER JOKAR  
+ریپو: https://github.com/MrUtility01/NetworkAll  
 
 ## موضوع
 - **شماره فصل:** {n}
