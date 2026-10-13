@@ -382,6 +382,48 @@ class ContentMergeTests(unittest.TestCase):
         self.assertFalse(is_legacy_routing_pack(windows_style_chapter14_path))
         self.assertTrue(is_legacy_routing_pack(legacy_routing_pack))
 
+    def test_new_scenario_packs_are_catalogued_and_have_separate_assessment_keys(self):
+        pack_paths = (
+            ("tools/packs/chapter14/ospf_bgp_lab_scenarios_ch14_pack.json", 14, 11),
+            ("tools/packs/mikrotik/routeros_multiwan_applied_labs_ch20_pack.json", 20, 8),
+        )
+        catalog_path = ROOT / "tools/packs/pack_catalog.json"
+        catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+        active_paths = {
+            item.get("path")
+            for item in catalog.get("packs", [])
+            if item.get("active_in_merge") is True
+        }
+
+        for relative_path, expected_chapter, expected_count in pack_paths:
+            with self.subTest(path=relative_path):
+                path = ROOT / relative_path
+                pack = json.loads(path.read_text(encoding="utf-8"))
+                lessons = pack.get("lessons", [])
+                self.assertEqual(len(lessons), expected_count)
+                self.assertIn(relative_path, active_paths)
+                self.assertEqual({lesson.get("chapter_order") for lesson in lessons}, {expected_chapter})
+                self.assertEqual(len({lesson.get("uid") for lesson in lessons}), len(lessons))
+                self.assertEqual(
+                    len({
+                        (lesson.get("chapter_order"), lesson.get("subchapter_order"), lesson.get("lesson_order"))
+                        for lesson in lessons
+                    }),
+                    len(lessons),
+                )
+                for lesson in lessons:
+                    assessment = lesson.get("meta", {}).get("assessment", {})
+                    questions = assessment.get("questions", [])
+                    answer_key = assessment.get("answer_key", [])
+                    self.assertEqual(len(questions), 4)
+                    self.assertEqual(len(answer_key), 4)
+                    self.assertEqual(
+                        {question.get("id") for question in questions},
+                        {answer.get("question_id") for answer in answer_key},
+                    )
+                    self.assertTrue(lesson.get("meta", {}).get("official_sources"))
+                    self.assertEqual(lesson.get("source_status"), "review_required")
+
     def test_git_markdown_enriches_same_level_lesson_without_duplicate_uid(self):
         existing_lesson = {
             "uid": "lesson:ch64:s000:l0002",
