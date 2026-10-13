@@ -1,0 +1,1058 @@
+{
+  "package_schema_version": 1,
+  "chapter_order": 9,
+  "chapter_title_fa": "ARP ICMP TCP UDP",
+  "examples": [
+    {
+      "id": "ch09-ex-001",
+      "lesson_uid": "ch09:arp-cache:v1",
+      "topic": "ARP neighbor resolution",
+      "title_fa": "مثال 1 — ARP neighbor resolution / حالت 1",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 1",
+      "input_or_command": "ip neigh show",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 1.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: neighbor entry state and link-layer address.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "neighbor entry state and link-layer address",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 1 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc826",
+        "linux-ip-neigh"
+      ]
+    },
+    {
+      "id": "ch09-ex-002",
+      "lesson_uid": "ch09:ping:v1",
+      "topic": "ICMP Echo reachability",
+      "title_fa": "مثال 2 — ICMP Echo reachability / حالت 1",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 1",
+      "input_or_command": "ping -c 4 192.0.2.1",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 1.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: packet loss and RTT summary.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "packet loss and RTT summary",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 1 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc792",
+        "ms-ping"
+      ]
+    },
+    {
+      "id": "ch09-ex-003",
+      "lesson_uid": "ch09:traceroute:v1",
+      "topic": "TTL-based path clues",
+      "title_fa": "مثال 3 — TTL-based path clues / حالت 1",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 1",
+      "input_or_command": "traceroute -n 192.0.2.1",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 1.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: hop responses or timeouts.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "hop responses or timeouts",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 1 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc792",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-004",
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "topic": "TCP SYN observation",
+      "title_fa": "مثال 4 — TCP SYN observation / حالت 1",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 1",
+      "input_or_command": "tcpdump -ni eth0 'tcp[tcpflags] & tcp-syn != 0'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 1.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: SYN-bearing packets at capture point.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "SYN-bearing packets at capture point",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 1 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc9293",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-005",
+      "lesson_uid": "ch09:tcp-state:v1",
+      "topic": "TCP listening sockets",
+      "title_fa": "مثال 5 — TCP listening sockets / حالت 1",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 1",
+      "input_or_command": "ss -lnt",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 1.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: TCP sockets in listening state.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "TCP sockets in listening state",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 1 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "linux-ss",
+        "rfc9293"
+      ]
+    },
+    {
+      "id": "ch09-ex-006",
+      "lesson_uid": "ch09:tcp-close:v1",
+      "topic": "TCP reset investigation",
+      "title_fa": "مثال 6 — TCP reset investigation / حالت 1",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 1",
+      "input_or_command": "tcpdump -ni eth0 'tcp[tcpflags] & tcp-rst != 0'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 1.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: RST-bearing packets and endpoint tuple.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "RST-bearing packets and endpoint tuple",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 1 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc9293",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-007",
+      "lesson_uid": "ch09:udp-apps:v1",
+      "topic": "UDP DNS traffic",
+      "title_fa": "مثال 7 — UDP DNS traffic / حالت 1",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 1",
+      "input_or_command": "tcpdump -ni eth0 'udp port 53'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 1.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: DNS-like UDP/53 queries and responses.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "DNS-like UDP/53 queries and responses",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 1 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc768",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-008",
+      "lesson_uid": "ch09:ipv6-nd:v1",
+      "topic": "IPv6 neighbor table",
+      "title_fa": "مثال 8 — IPv6 neighbor table / حالت 1",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 1",
+      "input_or_command": "ip -6 neigh show",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 1.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: IPv6 neighbor states for the selected namespace.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "IPv6 neighbor states for the selected namespace",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 1 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc4861",
+        "linux-ip-neigh"
+      ]
+    },
+    {
+      "id": "ch09-ex-009",
+      "lesson_uid": "ch09:mtu-pmtud:v1",
+      "topic": "PMTUD signal investigation",
+      "title_fa": "مثال 9 — PMTUD signal investigation / حالت 1",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 1",
+      "input_or_command": "tcpdump -ni eth0 'icmp or icmp6'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 1.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: ICMP/ICMPv6 control signals if visible.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "ICMP/ICMPv6 control signals if visible",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 1 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc1191",
+        "rfc8201"
+      ]
+    },
+    {
+      "id": "ch09-ex-010",
+      "lesson_uid": "ch09:capture:v1",
+      "topic": "Focused packet capture",
+      "title_fa": "مثال 10 — Focused packet capture / حالت 1",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 1",
+      "input_or_command": "tcpdump -ni eth0 -c 30 arp",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 1.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: up to 30 matching ARP packets or timeout/none.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "up to 30 matching ARP packets or timeout/none",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 1 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "tcpdump",
+        "wireshark-display"
+      ]
+    },
+    {
+      "id": "ch09-ex-011",
+      "lesson_uid": "ch09:arp-cache:v1",
+      "topic": "ARP neighbor resolution",
+      "title_fa": "مثال 11 — ARP neighbor resolution / حالت 2",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 2",
+      "input_or_command": "ip neigh show",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 2.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: neighbor entry state and link-layer address.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "neighbor entry state and link-layer address",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 2 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc826",
+        "linux-ip-neigh"
+      ]
+    },
+    {
+      "id": "ch09-ex-012",
+      "lesson_uid": "ch09:ping:v1",
+      "topic": "ICMP Echo reachability",
+      "title_fa": "مثال 12 — ICMP Echo reachability / حالت 2",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 2",
+      "input_or_command": "ping -c 4 192.0.2.10",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 2.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: packet loss and RTT summary.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "packet loss and RTT summary",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 2 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc792",
+        "ms-ping"
+      ]
+    },
+    {
+      "id": "ch09-ex-013",
+      "lesson_uid": "ch09:traceroute:v1",
+      "topic": "TTL-based path clues",
+      "title_fa": "مثال 13 — TTL-based path clues / حالت 2",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 2",
+      "input_or_command": "traceroute -n 192.0.2.10",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 2.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: hop responses or timeouts.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "hop responses or timeouts",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 2 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc792",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-014",
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "topic": "TCP SYN observation",
+      "title_fa": "مثال 14 — TCP SYN observation / حالت 2",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 2",
+      "input_or_command": "tcpdump -ni eth0 'tcp[tcpflags] & tcp-syn != 0'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 2.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: SYN-bearing packets at capture point.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "SYN-bearing packets at capture point",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 2 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc9293",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-015",
+      "lesson_uid": "ch09:tcp-state:v1",
+      "topic": "TCP listening sockets",
+      "title_fa": "مثال 15 — TCP listening sockets / حالت 2",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 2",
+      "input_or_command": "ss -lnt",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 2.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: TCP sockets in listening state.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "TCP sockets in listening state",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 2 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "linux-ss",
+        "rfc9293"
+      ]
+    },
+    {
+      "id": "ch09-ex-016",
+      "lesson_uid": "ch09:tcp-close:v1",
+      "topic": "TCP reset investigation",
+      "title_fa": "مثال 16 — TCP reset investigation / حالت 2",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 2",
+      "input_or_command": "tcpdump -ni eth0 'tcp[tcpflags] & tcp-rst != 0'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 2.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: RST-bearing packets and endpoint tuple.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "RST-bearing packets and endpoint tuple",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 2 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc9293",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-017",
+      "lesson_uid": "ch09:udp-apps:v1",
+      "topic": "UDP DNS traffic",
+      "title_fa": "مثال 17 — UDP DNS traffic / حالت 2",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 2",
+      "input_or_command": "tcpdump -ni eth0 'udp port 53'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 2.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: DNS-like UDP/53 queries and responses.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "DNS-like UDP/53 queries and responses",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 2 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc768",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-018",
+      "lesson_uid": "ch09:ipv6-nd:v1",
+      "topic": "IPv6 neighbor table",
+      "title_fa": "مثال 18 — IPv6 neighbor table / حالت 2",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 2",
+      "input_or_command": "ip -6 neigh show",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 2.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: IPv6 neighbor states for the selected namespace.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "IPv6 neighbor states for the selected namespace",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 2 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc4861",
+        "linux-ip-neigh"
+      ]
+    },
+    {
+      "id": "ch09-ex-019",
+      "lesson_uid": "ch09:mtu-pmtud:v1",
+      "topic": "PMTUD signal investigation",
+      "title_fa": "مثال 19 — PMTUD signal investigation / حالت 2",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 2",
+      "input_or_command": "tcpdump -ni eth0 'icmp or icmp6'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 2.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: ICMP/ICMPv6 control signals if visible.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "ICMP/ICMPv6 control signals if visible",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 2 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc1191",
+        "rfc8201"
+      ]
+    },
+    {
+      "id": "ch09-ex-020",
+      "lesson_uid": "ch09:capture:v1",
+      "topic": "Focused packet capture",
+      "title_fa": "مثال 20 — Focused packet capture / حالت 2",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 2",
+      "input_or_command": "tcpdump -ni eth0 -c 30 arp",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 2.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: up to 30 matching ARP packets or timeout/none.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "up to 30 matching ARP packets or timeout/none",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 2 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "tcpdump",
+        "wireshark-display"
+      ]
+    },
+    {
+      "id": "ch09-ex-021",
+      "lesson_uid": "ch09:arp-cache:v1",
+      "topic": "ARP neighbor resolution",
+      "title_fa": "مثال 21 — ARP neighbor resolution / حالت 3",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 3",
+      "input_or_command": "ip neigh show",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 3.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: neighbor entry state and link-layer address.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "neighbor entry state and link-layer address",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 3 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc826",
+        "linux-ip-neigh"
+      ]
+    },
+    {
+      "id": "ch09-ex-022",
+      "lesson_uid": "ch09:ping:v1",
+      "topic": "ICMP Echo reachability",
+      "title_fa": "مثال 22 — ICMP Echo reachability / حالت 3",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 3",
+      "input_or_command": "ping -c 4 198.51.100.7",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 3.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: packet loss and RTT summary.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "packet loss and RTT summary",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 3 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc792",
+        "ms-ping"
+      ]
+    },
+    {
+      "id": "ch09-ex-023",
+      "lesson_uid": "ch09:traceroute:v1",
+      "topic": "TTL-based path clues",
+      "title_fa": "مثال 23 — TTL-based path clues / حالت 3",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 3",
+      "input_or_command": "traceroute -n 198.51.100.7",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 3.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: hop responses or timeouts.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "hop responses or timeouts",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 3 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc792",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-024",
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "topic": "TCP SYN observation",
+      "title_fa": "مثال 24 — TCP SYN observation / حالت 3",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 3",
+      "input_or_command": "tcpdump -ni eth0 'tcp[tcpflags] & tcp-syn != 0'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 3.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: SYN-bearing packets at capture point.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "SYN-bearing packets at capture point",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 3 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc9293",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-025",
+      "lesson_uid": "ch09:tcp-state:v1",
+      "topic": "TCP listening sockets",
+      "title_fa": "مثال 25 — TCP listening sockets / حالت 3",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 3",
+      "input_or_command": "ss -lnt",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 3.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: TCP sockets in listening state.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "TCP sockets in listening state",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 3 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "linux-ss",
+        "rfc9293"
+      ]
+    },
+    {
+      "id": "ch09-ex-026",
+      "lesson_uid": "ch09:tcp-close:v1",
+      "topic": "TCP reset investigation",
+      "title_fa": "مثال 26 — TCP reset investigation / حالت 3",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 3",
+      "input_or_command": "tcpdump -ni eth0 'tcp[tcpflags] & tcp-rst != 0'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 3.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: RST-bearing packets and endpoint tuple.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "RST-bearing packets and endpoint tuple",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 3 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc9293",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-027",
+      "lesson_uid": "ch09:udp-apps:v1",
+      "topic": "UDP DNS traffic",
+      "title_fa": "مثال 27 — UDP DNS traffic / حالت 3",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 3",
+      "input_or_command": "tcpdump -ni eth0 'udp port 53'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 3.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: DNS-like UDP/53 queries and responses.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "DNS-like UDP/53 queries and responses",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 3 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc768",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-028",
+      "lesson_uid": "ch09:ipv6-nd:v1",
+      "topic": "IPv6 neighbor table",
+      "title_fa": "مثال 28 — IPv6 neighbor table / حالت 3",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 3",
+      "input_or_command": "ip -6 neigh show",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 3.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: IPv6 neighbor states for the selected namespace.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "IPv6 neighbor states for the selected namespace",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 3 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc4861",
+        "linux-ip-neigh"
+      ]
+    },
+    {
+      "id": "ch09-ex-029",
+      "lesson_uid": "ch09:mtu-pmtud:v1",
+      "topic": "PMTUD signal investigation",
+      "title_fa": "مثال 29 — PMTUD signal investigation / حالت 3",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 3",
+      "input_or_command": "tcpdump -ni eth0 'icmp or icmp6'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 3.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: ICMP/ICMPv6 control signals if visible.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "ICMP/ICMPv6 control signals if visible",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 3 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc1191",
+        "rfc8201"
+      ]
+    },
+    {
+      "id": "ch09-ex-030",
+      "lesson_uid": "ch09:capture:v1",
+      "topic": "Focused packet capture",
+      "title_fa": "مثال 30 — Focused packet capture / حالت 3",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 3",
+      "input_or_command": "tcpdump -ni eth0 -c 30 arp",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 3.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: up to 30 matching ARP packets or timeout/none.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "up to 30 matching ARP packets or timeout/none",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 3 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "tcpdump",
+        "wireshark-display"
+      ]
+    },
+    {
+      "id": "ch09-ex-031",
+      "lesson_uid": "ch09:arp-cache:v1",
+      "topic": "ARP neighbor resolution",
+      "title_fa": "مثال 31 — ARP neighbor resolution / حالت 4",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 4",
+      "input_or_command": "ip neigh show",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 4.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: neighbor entry state and link-layer address.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "neighbor entry state and link-layer address",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 4 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc826",
+        "linux-ip-neigh"
+      ]
+    },
+    {
+      "id": "ch09-ex-032",
+      "lesson_uid": "ch09:ping:v1",
+      "topic": "ICMP Echo reachability",
+      "title_fa": "مثال 32 — ICMP Echo reachability / حالت 4",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 4",
+      "input_or_command": "ping -c 4 203.0.113.9",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 4.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: packet loss and RTT summary.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "packet loss and RTT summary",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 4 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc792",
+        "ms-ping"
+      ]
+    },
+    {
+      "id": "ch09-ex-033",
+      "lesson_uid": "ch09:traceroute:v1",
+      "topic": "TTL-based path clues",
+      "title_fa": "مثال 33 — TTL-based path clues / حالت 4",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 4",
+      "input_or_command": "traceroute -n 203.0.113.9",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 4.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: hop responses or timeouts.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "hop responses or timeouts",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 4 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc792",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-034",
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "topic": "TCP SYN observation",
+      "title_fa": "مثال 34 — TCP SYN observation / حالت 4",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 4",
+      "input_or_command": "tcpdump -ni eth0 'tcp[tcpflags] & tcp-syn != 0'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 4.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: SYN-bearing packets at capture point.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "SYN-bearing packets at capture point",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 4 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc9293",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-035",
+      "lesson_uid": "ch09:tcp-state:v1",
+      "topic": "TCP listening sockets",
+      "title_fa": "مثال 35 — TCP listening sockets / حالت 4",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 4",
+      "input_or_command": "ss -lnt",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 4.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: TCP sockets in listening state.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "TCP sockets in listening state",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 4 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "linux-ss",
+        "rfc9293"
+      ]
+    },
+    {
+      "id": "ch09-ex-036",
+      "lesson_uid": "ch09:tcp-close:v1",
+      "topic": "TCP reset investigation",
+      "title_fa": "مثال 36 — TCP reset investigation / حالت 4",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 4",
+      "input_or_command": "tcpdump -ni eth0 'tcp[tcpflags] & tcp-rst != 0'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 4.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: RST-bearing packets and endpoint tuple.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "RST-bearing packets and endpoint tuple",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 4 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc9293",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-037",
+      "lesson_uid": "ch09:udp-apps:v1",
+      "topic": "UDP DNS traffic",
+      "title_fa": "مثال 37 — UDP DNS traffic / حالت 4",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 4",
+      "input_or_command": "tcpdump -ni eth0 'udp port 53'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 4.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: DNS-like UDP/53 queries and responses.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "DNS-like UDP/53 queries and responses",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 4 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc768",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-038",
+      "lesson_uid": "ch09:ipv6-nd:v1",
+      "topic": "IPv6 neighbor table",
+      "title_fa": "مثال 38 — IPv6 neighbor table / حالت 4",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 4",
+      "input_or_command": "ip -6 neigh show",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 4.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: IPv6 neighbor states for the selected namespace.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "IPv6 neighbor states for the selected namespace",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 4 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc4861",
+        "linux-ip-neigh"
+      ]
+    },
+    {
+      "id": "ch09-ex-039",
+      "lesson_uid": "ch09:mtu-pmtud:v1",
+      "topic": "PMTUD signal investigation",
+      "title_fa": "مثال 39 — PMTUD signal investigation / حالت 4",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 4",
+      "input_or_command": "tcpdump -ni eth0 'icmp or icmp6'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 4.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: ICMP/ICMPv6 control signals if visible.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "ICMP/ICMPv6 control signals if visible",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 4 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc1191",
+        "rfc8201"
+      ]
+    },
+    {
+      "id": "ch09-ex-040",
+      "lesson_uid": "ch09:capture:v1",
+      "topic": "Focused packet capture",
+      "title_fa": "مثال 40 — Focused packet capture / حالت 4",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 4",
+      "input_or_command": "tcpdump -ni eth0 -c 30 arp",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 4.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: up to 30 matching ARP packets or timeout/none.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "up to 30 matching ARP packets or timeout/none",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 4 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "tcpdump",
+        "wireshark-display"
+      ]
+    },
+    {
+      "id": "ch09-ex-041",
+      "lesson_uid": "ch09:arp-cache:v1",
+      "topic": "ARP neighbor resolution",
+      "title_fa": "مثال 41 — ARP neighbor resolution / حالت 5",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 5",
+      "input_or_command": "ip neigh show",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 5.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: neighbor entry state and link-layer address.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "neighbor entry state and link-layer address",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 5 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc826",
+        "linux-ip-neigh"
+      ]
+    },
+    {
+      "id": "ch09-ex-042",
+      "lesson_uid": "ch09:ping:v1",
+      "topic": "ICMP Echo reachability",
+      "title_fa": "مثال 42 — ICMP Echo reachability / حالت 5",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 5",
+      "input_or_command": "ping -c 4 192.0.2.20",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 5.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: packet loss and RTT summary.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "packet loss and RTT summary",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 5 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc792",
+        "ms-ping"
+      ]
+    },
+    {
+      "id": "ch09-ex-043",
+      "lesson_uid": "ch09:traceroute:v1",
+      "topic": "TTL-based path clues",
+      "title_fa": "مثال 43 — TTL-based path clues / حالت 5",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 5",
+      "input_or_command": "traceroute -n 192.0.2.20",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 5.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: hop responses or timeouts.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "hop responses or timeouts",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 5 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc792",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-044",
+      "lesson_uid": "ch09:tcp-handshake:v1",
+      "topic": "TCP SYN observation",
+      "title_fa": "مثال 44 — TCP SYN observation / حالت 5",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 5",
+      "input_or_command": "tcpdump -ni eth0 'tcp[tcpflags] & tcp-syn != 0'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 5.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: SYN-bearing packets at capture point.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "SYN-bearing packets at capture point",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 5 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc9293",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-045",
+      "lesson_uid": "ch09:tcp-state:v1",
+      "topic": "TCP listening sockets",
+      "title_fa": "مثال 45 — TCP listening sockets / حالت 5",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 5",
+      "input_or_command": "ss -lnt",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 5.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: TCP sockets in listening state.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "TCP sockets in listening state",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 5 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "linux-ss",
+        "rfc9293"
+      ]
+    },
+    {
+      "id": "ch09-ex-046",
+      "lesson_uid": "ch09:tcp-close:v1",
+      "topic": "TCP reset investigation",
+      "title_fa": "مثال 46 — TCP reset investigation / حالت 5",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 5",
+      "input_or_command": "tcpdump -ni eth0 'tcp[tcpflags] & tcp-rst != 0'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 5.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: RST-bearing packets and endpoint tuple.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "RST-bearing packets and endpoint tuple",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 5 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc9293",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-047",
+      "lesson_uid": "ch09:udp-apps:v1",
+      "topic": "UDP DNS traffic",
+      "title_fa": "مثال 47 — UDP DNS traffic / حالت 5",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 5",
+      "input_or_command": "tcpdump -ni eth0 'udp port 53'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 5.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: DNS-like UDP/53 queries and responses.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "DNS-like UDP/53 queries and responses",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 5 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc768",
+        "tcpdump"
+      ]
+    },
+    {
+      "id": "ch09-ex-048",
+      "lesson_uid": "ch09:ipv6-nd:v1",
+      "topic": "IPv6 neighbor table",
+      "title_fa": "مثال 48 — IPv6 neighbor table / حالت 5",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 5",
+      "input_or_command": "ip -6 neigh show",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 5.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: IPv6 neighbor states for the selected namespace.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "IPv6 neighbor states for the selected namespace",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 5 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc4861",
+        "linux-ip-neigh"
+      ]
+    },
+    {
+      "id": "ch09-ex-049",
+      "lesson_uid": "ch09:mtu-pmtud:v1",
+      "topic": "PMTUD signal investigation",
+      "title_fa": "مثال 49 — PMTUD signal investigation / حالت 5",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 5",
+      "input_or_command": "tcpdump -ni eth0 'icmp or icmp6'",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 5.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: ICMP/ICMPv6 control signals if visible.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "ICMP/ICMPv6 control signals if visible",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 5 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "rfc1191",
+        "rfc8201"
+      ]
+    },
+    {
+      "id": "ch09-ex-050",
+      "lesson_uid": "ch09:capture:v1",
+      "topic": "Focused packet capture",
+      "title_fa": "مثال 50 — Focused packet capture / حالت 5",
+      "environment": "لابراتوار ایزوله با VMهای مستندسازی‌شده و interface مشخص؛ حالت آزمون 5",
+      "input_or_command": "tcpdump -ni eth0 -c 30 arp",
+      "steps_fa": [
+        "ثبت IP/interface و timestamp قبل از آزمایش 5.",
+        "اجرای فرمان read-only در محیط مجاز؛ در صورت نیاز capture فقط روی interface لاب.",
+        "مقایسه نتیجه با معیار مورد انتظار: up to 30 matching ARP packets or timeout/none.",
+        "در صورت اختلاف، بررسی نسخه ابزار، مسیر، مجوز capture و policy؛ ثبت نتیجه بدون نتیجه‌گیری قطعی."
+      ],
+      "expected_output": "up to 30 matching ARP packets or timeout/none",
+      "interpretation_fa": "این نتیجه تنها وضعیت مشاهده‌شده در این نقطه و بازه را نشان می‌دهد. برای تعیین علت، آن را با جدول route/neighbor، socket، log یا capture سمت مقابل تطبیق بده. حالت 5 برای تکرارپذیری با baseline مقایسه می‌شود.",
+      "safety_fa": "فقط در شبکه مجاز/ایزوله؛ capture را محدود کن و پیش از ارسال، IP و payload حساس را پاک‌سازی کن.",
+      "source_ids": [
+        "tcpdump",
+        "wireshark-display"
+      ]
+    }
+  ],
+  "source_status": "review_required"
+}
