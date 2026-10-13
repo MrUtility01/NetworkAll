@@ -58,8 +58,8 @@ object OfflineSeeder {
                         (0 until arr.length()).joinToString(" ") { arr.optString(it) }
                     } ?: ""
                     val searchQuery = les.optString("search_query").ifBlank { keywords }
-                    val levelTag = les.optString("level", "L0")
-                    val sourceStatus = les.optString("source_status", "review_required")
+                    val levelTag = les.optString("level").ifBlank { "L0" }
+                    val sourceStatus = les.optString("source_status").ifBlank { "review_required" }
                     val generatedAt = root.optString("generated_at", Instant.now().toString())
                     val contentHash = syncContentHash(
                         uid, titleFa, titleEn, levelTag, summary, fullContent,
