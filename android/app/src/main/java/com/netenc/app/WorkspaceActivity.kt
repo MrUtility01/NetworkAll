@@ -67,7 +67,8 @@ class WorkspaceActivity : AppCompatActivity() {
                     "notes" -> db.workspaceDao().allNotes().map { Triple(it.uid, it.title, it.body) }
                     "vault" -> db.workspaceDao().allVault().map { Triple(it.uid, it.title, it.username) }
                     else -> db.workspaceDao().allTasks().map {
-                        Triple(it.uid, (if (it.done) "✓ " else "○ ") + it.title, it.body)
+                        val dueLabel = if (it.dueAt.isNotBlank()) "\n⏰ یادآوری: ${it.dueAt}" else ""
+                        Triple(it.uid, (if (it.done) "✓ " else "○ ") + it.title, it.body + dueLabel)
                     }
                 }
             }
