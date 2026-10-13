@@ -47,6 +47,8 @@ PACKS = [
      "active-directory-domain-engineering-ch28", 28),
     ("tools/packs/windows_server/windows_file_services_smb_dfs_ch29_pack.json",
      "windows-file-services-smb-dfs-ch29", 29),
+    ("tools/packs/linux/linux_server_administration_ch30_pack.json",
+     "linux-server-administration-ch30", 30),
 ]
 errors: list[str] = []
 checked_lessons = 0
