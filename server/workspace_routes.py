@@ -253,13 +253,24 @@ def workspace_export():
         return jsonify({"error": "unauthorized"}), 401
     c = _conn()
     vault = []
+    needs_legacy_token = False
+    needs_vault_key = False
     for r in c.execute("SELECT * FROM ws_vault").fetchall():
         d = dict(r)
-        d["secret"] = _unseal(d.get("secret") or "")
-        d["secret_sealed"] = True
+        secret_blob = d.get("secret") or ""
+        # Keep backup output encrypted; never serialize a plaintext secret.
+        d["secret_sealed"] = secret_blob.startswith(("enc1:", "enc2:"))
+        d["encryption"] = "AES-256-GCM" if secret_blob.startswith("enc2:") else (
+            "legacy-XOR" if secret_blob.startswith("enc1:") else "none"
+        )
+        needs_vault_key = needs_vault_key or secret_blob.startswith("enc2:")
+        needs_legacy_token = needs_legacy_token or secret_blob.startswith("enc1:")
         vault.append(d)
     return jsonify({
+        "format": "NetworkAll-workspace-backup-v1",
         "tasks": [dict(r) for r in c.execute("SELECT * FROM ws_tasks").fetchall()],
         "notes": [dict(r) for r in c.execute("SELECT * FROM ws_notes").fetchall()],
         "vault": vault,
+        "vault_key_backup_required": needs_vault_key,
+        "legacy_sync_token_required_for_enc1": needs_legacy_token,
     })
