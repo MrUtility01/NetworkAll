@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "NetworkEncyclopedia"
+rootProject.name = "NetworkAll"
 include(":app")
