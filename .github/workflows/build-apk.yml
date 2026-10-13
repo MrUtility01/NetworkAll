@@ -68,7 +68,7 @@ jobs:
           set -euo pipefail
           python3 scripts/validate_android_curriculum.py
 
-      - name: Generate 100 offline SVG diagrams
+      - name: Generate 100 SVG diagrams for Android and Windows web
         run: |
           set -euo pipefail
           python3 scripts/generate_android_diagrams.py
@@ -76,10 +76,16 @@ jobs:
           import json
           from pathlib import Path
           root = Path("android/app/src/main/assets/diagrams")
+          web_root = Path("server/static/diagrams")
           index = json.loads((root / "index.json").read_text(encoding="utf-8"))
+          web_index = json.loads((web_root / "index.json").read_text(encoding="utf-8"))
           assert index["count"] == 100 and len(index["diagrams"]) == 100
+          assert web_index["count"] == 100 and len(web_index["diagrams"]) == 100
           assert all((root / x["asset"]).is_file() for x in index["diagrams"])
-          print("diagrams", index["count"], "svg bytes", sum(p.stat().st_size for p in root.glob("*.svg")))
+          assert all((web_root / x["asset"]).is_file() for x in web_index["diagrams"])
+          assert {x["asset"] for x in index["diagrams"]} == {x["asset"] for x in web_index["diagrams"]}
+          print("Android diagrams", index["count"], "bytes", sum(p.stat().st_size for p in root.glob("*.svg")))
+          print("Windows web diagrams", web_index["count"], "bytes", sum(p.stat().st_size for p in web_root.glob("*.svg")))
           PY
 
       - name: Build and audit Windows v1 package
