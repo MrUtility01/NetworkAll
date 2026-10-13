@@ -1,0 +1,2503 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkEncyclopedia",
+  "generated_on": "2026-10-13",
+  "purpose": "Chapter 14.7 — original OSPF/BGP implementation scenarios, diagnostics, route-policy and convergence labs. Supplementary pack; existing lessons remain unchanged.",
+  "scope": [
+    {
+      "chapter_order": 14,
+      "subchapter_order": 7,
+      "title": "۱۴.۷ آزمایشگاه‌های سناریومحور OSPF و BGP",
+      "topics": [
+        "OSPF چندناحیه‌ای و نقش ABR",
+        "OSPF Stub، Totally Stubby و NSSA",
+        "عیب‌یابی OSPF در حالت EXSTART/EXCHANGE",
+        "DR/BDR و نوع شبکهٔ OSPF",
+        "عیب‌یابی نشست BGP در Idle و Active",
+        "تحلیل انتخاب مسیر BGP: Local Preference، AS_PATH و MED",
+        "iBGP، Route Reflector و دسترس‌پذیری Next-Hop",
+        "Redistribution امن OSPF و BGP با Tag و Policy",
+        "جلوگیری از Route Leak، Prefix Filtering و Max-Prefix",
+        "همگرایی BGP، Route Flap و طراحی Failover",
+        "تحلیل ریشه‌ای مسیر نامطلوب: RIB، FIB، ECMP و مسیر برگشت"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "content_quality": {
+    "status": "review_required",
+    "lab_status": "designed_not_executed",
+    "notes_fa": "متن‌ها سناریومحور نوشته شده‌اند؛ خروجی‌های CLI باید روی نسخهٔ واقعی اجرا و ثبت شوند."
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch14:ospf-bgp-lab-cases:l01",
+      "entity": "lesson",
+      "chapter_order": 14,
+      "subchapter_order": 7,
+      "lesson_order": 1,
+      "topic": "ospf-multiarea-abr",
+      "domain": "advanced-routing",
+      "level": "L1",
+      "title_fa": "[L1] OSPF چندناحیه‌ای و نقش ABR",
+      "title_en": "[L1] OSPF Multi-Area Design and ABR",
+      "subchapter_title_fa": "۱۴.۷ آزمایشگاه‌های سناریومحور OSPF و BGP",
+      "tags": [
+        "OSPF",
+        "BGP",
+        "Routing",
+        "Lab",
+        "RCA",
+        "L1"
+      ],
+      "summary": "طراحی دو Area، تشخیص نقش ABR و تحلیل انتشار routeهای بین‌ناحیه‌ای بدون مخلوط‌کردن LSDB و RIB.",
+      "full_content": "# OSPF چندناحیه‌ای و نقش ABR\n\n## عنوان انگلیسی\nOSPF Multi-Area Design and ABR\n\n## خلاصه\nطراحی دو Area، تشخیص نقش ABR و تحلیل انتشار routeهای بین‌ناحیه‌ای بدون مخلوط‌کردن LSDB و RIB.\n\n## اهداف یادگیری\n- تشخیص Area 0 و جایگاه ABR\n- ردیابی route از Area غیر backbone تا جدول مسیریابی\n- عیب‌یابی مسیر مفقود با شواهد LSDB و RIB\n\n## پیش‌نیازها\nIP addressing، مفهوم neighbor، subnet mask، route table و OSPF neighbor state.\n\n## مقدمهٔ مفهومی\nOSPF چندناحیه‌ای برای محدودکردن دامنهٔ محاسبات و کنترل خلاصه‌سازی طراحی می‌شود. Area 0 هستهٔ منطقی توپولوژی است و ABR به Areaها متصل می‌شود و اطلاعات بین‌ناحیه‌ای را طبق قواعد OSPF منتشر می‌کند. یک router صرفاً به دلیل داشتن دو interface، ABR صحیح نیست؛ وضعیت process، عضویت interfaceها در Areaها و اتصال طراحی به backbone مهم است.\n\n## مفاهیم اصلی\nOSPF چندناحیه‌ای برای محدودکردن دامنهٔ محاسبات و کنترل خلاصه‌سازی طراحی می‌شود. Area 0 هستهٔ منطقی توپولوژی است و ABR به Areaها متصل می‌شود و اطلاعات بین‌ناحیه‌ای را طبق قواعد OSPF منتشر می‌کند. یک router صرفاً به دلیل داشتن دو interface، ABR صحیح نیست؛ وضعیت process، عضویت interfaceها در Areaها و اتصال طراحی به backbone مهم است. نکتهٔ عملی مهم این است که هر ادعا به یک شاهد قابل مشاهده متصل شود. نام پروتکل یا state به‌تنهایی دلیل ریشه‌ای نیست. پیش از تغییر، baseline و محدودهٔ اثر را ثبت کن؛ بعد از تغییر نیز باید همان معیارها دوباره اندازه‌گیری شوند.\n\n## سازوکار داخلی و معماری\nروتر در هر Area اطلاعات توپولوژی همان Area را در LSDB نگه می‌دارد. ABR اطلاعات مناسب را به صورت Summary LSA (نوع 3 در OSPFv2) تبلیغ می‌کند؛ روتر مقصد این اطلاعات را با SPF و route selection ترکیب می‌کند. Full adjacency در یک Area، به‌تنهایی اثبات نمی‌کند که prefix در Area دیگر advertise یا نصب شده است. هنگام طراحی، area range و خلاصه‌سازی باید با مرزهای واقعی آدرس‌دهی هم‌راستا باشد تا black hole ایجاد نشود.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nتوپولوژی آزمایش: R1 در Area 0، R2 به‌عنوان ABR با رابط در Area 0 و Area 10، و R3 در Area 10. Loopback روی R3 برابر 10.10.10.10/32 است. پس از برقراری adjacency، روی R2 وجود route محلی/LSDB و سپس LSA بین‌ناحیه‌ای در Area 0 را بررسی کن؛ روی R1 باید prefix مقصد به‌عنوان route OSPF مناسب نصب شود. اگر R1 route را ندارد، ابتدا رابط‌های Area و LSA را بررسی کن؛ ping آخرین گام اعتبارسنجی است، نه تنها شاهد.\n\n### فرمان‌های تشخیصی\n- `Cisco IOS/IOS-XE: `show ip ospf neighbor``\n- ``show ip ospf database summary``\n- ``show ip route 10.10.10.10``\n- ``show ip protocols`. FRRouting: `show ip ospf neighbor``\n- ``show ip ospf database``\n- ``show ip route 10.10.10.10`. خروجی و syntax نهایی به نسخه وابسته است.`\n\n## مثال محیط کار\nانتظار مفهومی: روی ABR همسایه‌های هر دو طرف باید در state مورد انتظار باشند؛ LSDB باید LSA مربوط به مقصد/ناحیه را نشان دهد؛ روتر Area 0 باید route با منبع OSPF و next-hop معقول داشته باشد. از نقل خروجی ساختگی خودداری کن و خروجی واقعی لابراتوار را پیوست کن. در گزارش نهایی وضعیت اولیه، تغییر کنترل‌شده، خروجی قبل/بعد و محدودیت مشاهده را از یکدیگر جدا کن. خروجی مثال، خروجی اجراشده محسوب نمی‌شود مگر timestamp و محیط آن ثبت شده باشد.\n\n## آزمایشگاه عملی\nGNS3/EVE-NG با سه روتر مجازی و subnetهای مستندسازی‌شده بساز. پیش از شروع، نسخهٔ image، process ID، network type، interface-area mapping و وضعیت اولیه را ثبت کن. گام‌ها: (۱) آدرس‌دهی و loopback؛ (۲) OSPF و Areaها؛ (۳) تأیید neighbor در هر دو لینک ABR؛ (۴) بررسی LSDB/summary؛ (۵) بررسی RIB در R1؛ (۶) قطع کنترل‌شدهٔ لینک Area 0 و ثبت تغییر. معیار قبولی: prefix آزمایشی در حالت سالم قابل‌مشاهده باشد و پس از restore، با زمان همگرایی ثبت‌شده دوباره نصب شود. بعد از آزمایش تنظیم اولیه را بازیابی کن.\n\n## عیب‌یابی مرحله‌ای\nعلامت: adjacency برقرار است اما prefix در R1 نیست. دامنه: فقط همان prefix را دنبال کن. شواهد: `show ip ospf neighbor`، `show ip ospf database summary`، `show ip route <prefix>` و روی FRR دستورهای `show ip ospf database`/`show ip route`. فرضیه‌ها را جدا کن: prefix اصلاً در Area 10 ایجاد نشده؛ ABR آن را در LSDB مناسب نمی‌بیند؛ range یا filter/route policy تبلیغ را تغییر داده؛ route در RIB به‌علت route بهتر انتخاب نشده است. پس از هر تغییر یک شاهد را دوباره جمع کن.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nArea 0 و Areaهای کاربری را با طراحی آدرس‌دهی مستند کن؛ summary اشتباه ممکن است subnetهای غایب را reachable جلوه دهد و black hole بسازد. تغییر Area روی شبکهٔ عملیاتی بدون backup، دسترسی console و تغییر ثبت‌شده انجام نشود. فقط در لابراتوار این سناریو را عمداً قطع کن.\n\n## نکات پیشرفته\nVirtual Link راهکار پیش‌فرض برای طراحی بی‌نظم نیست؛ وابستگی و پیچیدگی به وجود می‌آورد و باید با قیود استاندارد و release سازنده بررسی شود. خلاصه‌سازی می‌تواند اندازهٔ اطلاعات مسیریابی را کم کند، اما اگر مقصدهای واقعی داخل محدودهٔ خلاصه قابل دسترسی نباشند، تشخیص خرابی دشوارتر می‌شود. OSPFv3 جزئیات و دستورهای متفاوتی دارد؛ دستورات این درس برای OSPFv2 است.\n\n## جمع‌بندی\nاین درس زمانی تمام است که بتوانی سازوکار را با واژه‌های خود توضیح دهی، یک آزمایش را در محیط مجاز تکرار کنی، معیار قبولی را نشان دهی و پس از رفع اشکال نتیجه را مستقل verify کنی. اگر command در release هدف وجود ندارد، معادل مستند آن را ثبت کن؛ حدس‌زدن syntax جایگزین مستندات نیست.\n\n## واژه‌نامه\nABR: روتر مرزی Area؛ LSDB: پایگاه دادهٔ وضعیت لینک؛ LSA: اعلان وضعیت لینک؛ Summary LSA: تبلیغ بین‌ناحیه‌ای؛ SPF: محاسبهٔ کوتاه‌ترین مسیر؛ RIB: جدول routeهای نصب‌شده.\n\n## خودآزمایی\nسؤالات ساختاریافتهٔ این درس در `meta.assessment.questions` ذخیره شده‌اند. پاسخ و دلیل هر distractor فقط در `meta.assessment.answer_key` نگهداری می‌شود تا برنامه بتواند آزمون و پاسخ‌نامه را مستقل نمایش دهد.\n\n## وضعیت اعتبارسنجی\nبسته با JSON و ساختار داده‌ای تولید شده است؛ لابراتوارهای توصیف‌شده هنوز روی image/نسخهٔ واقعی اجرا نشده‌اند. وضعیت `review_required` عمداً حفظ می‌شود. قبل از انتشار نهایی، خروجی واقعی IOS/IOS-XE یا FRR به‌همراه نسخه و تاریخ اجرای Lab ثبت و بازبینی شود.",
+      "commands": "Cisco IOS/IOS-XE: `show ip ospf neighbor`; `show ip ospf database summary`; `show ip route 10.10.10.10`; `show ip protocols`. FRRouting: `show ip ospf neighbor`; `show ip ospf database`; `show ip route 10.10.10.10`. خروجی و syntax نهایی به نسخه وابسته است.",
+      "examples": "انتظار مفهومی: روی ABR همسایه‌های هر دو طرف باید در state مورد انتظار باشند؛ LSDB باید LSA مربوط به مقصد/ناحیه را نشان دهد؛ روتر Area 0 باید route با منبع OSPF و next-hop معقول داشته باشد. از نقل خروجی ساختگی خودداری کن و خروجی واقعی لابراتوار را پیوست کن.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "answers_stored_separately",
+        "source_status=RFC_and_vendor_docs"
+      ],
+      "learning_objectives": [
+        "تشخیص Area 0 و جایگاه ABR",
+        "ردیابی route از Area غیر backbone تا جدول مسیریابی",
+        "عیب‌یابی مسیر مفقود با شواهد LSDB و RIB"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "RFC 2328 — OSPF Version 2",
+            "url": "https://www.rfc-editor.org/rfc/rfc2328.html"
+          },
+          {
+            "title": "Cisco IOS XE OSPF Configuration Guide",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "کدام نقش برای اتصال Area 10 به backbone و انتشار اطلاعات بین‌ناحیه‌ای ضروری است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "ASBR در هر شرایطی"
+                },
+                {
+                  "id": "B",
+                  "label": "ABR متصل به Area 0 و Area 10"
+                },
+                {
+                  "id": "C",
+                  "label": "DR روی تمام لینک‌ها"
+                },
+                {
+                  "id": "D",
+                  "label": "BGP route reflector"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "Neighbor در Area 0 کامل است اما prefix شبکهٔ Area 10 روی R1 وجود ندارد؛ قدم تشخیصی بهتر چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "بی‌درنگ MTU تمام روترها را تغییر بده"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط ping را تکرار کن"
+                },
+                {
+                  "id": "C",
+                  "label": "LSDB، LSA بین‌ناحیه‌ای، RIB و policy را جدا بررسی کن"
+                },
+                {
+                  "id": "D",
+                  "label": "OSPF را روی همهٔ رابط‌ها خاموش کن"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "Summary LSA نوع 3 در OSPFv2 عموماً به چه کاری مربوط است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "اطلاعات بین‌ناحیه‌ای دربارهٔ prefixها"
+                },
+                {
+                  "id": "B",
+                  "label": "تبادل TCP بین BGP peerها"
+                },
+                {
+                  "id": "C",
+                  "label": "تأیید ARP"
+                },
+                {
+                  "id": "D",
+                  "label": "رمزنگاری control plane"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "چه چیزی معیار قبولی مناسب آزمایش چندناحیه‌ای است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط روشن‌بودن رابط‌ها"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط یک ping موفق"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط state برابر Full"
+                },
+                {
+                  "id": "D",
+                  "label": "وجود شواهد neighbor/LSDB/RIB و برگشت صحیح بعد از restore"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "B",
+              "explanation": "ABR مرز Areaها را تشکیل می‌دهد؛ ASBR مفهوم متفاوتی برای ورود routeهای خارجی است.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: ABR مرز Areaها را تشکیل می‌دهد؛ ASBR مفهوم متفاوتی برای ورود routeهای خارجی است."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: ABR مرز Areaها را تشکیل می‌دهد؛ ASBR مفهوم متفاوتی برای ورود routeهای خارجی است."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: ABR مرز Areaها را تشکیل می‌دهد؛ ASBR مفهوم متفاوتی برای ورود routeهای خارجی است."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "C",
+              "explanation": "باید مسیر انتشار و نصب route با شواهد مستقل بررسی شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: باید مسیر انتشار و نصب route با شواهد مستقل بررسی شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: باید مسیر انتشار و نصب route با شواهد مستقل بررسی شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: باید مسیر انتشار و نصب route با شواهد مستقل بررسی شود."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "A",
+              "explanation": "LSA نوع 3 برای network summary بین Areaها استفاده می‌شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: LSA نوع 3 برای network summary بین Areaها استفاده می‌شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: LSA نوع 3 برای network summary بین Areaها استفاده می‌شود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: LSA نوع 3 برای network summary بین Areaها استفاده می‌شود."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "معیار پایان باید مسیر کنترل و نصب route را بسنجد و تغییر را قابل بازگشت نگه دارد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: معیار پایان باید مسیر کنترل و نصب route را بسنجد و تغییر را قابل بازگشت نگه دارد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: معیار پایان باید مسیر کنترل و نصب route را بسنجد و تغییر را قابل بازگشت نگه دارد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: معیار پایان باید مسیر کنترل و نصب route را بسنجد و تغییر را قابل بازگشت نگه دارد."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch14:ospf-bgp-lab-cases:l02",
+      "entity": "lesson",
+      "chapter_order": 14,
+      "subchapter_order": 7,
+      "lesson_order": 2,
+      "topic": "ospf-stub-nssa-lsa",
+      "domain": "advanced-routing",
+      "level": "L2",
+      "title_fa": "[L2] OSPF Stub، Totally Stubby و NSSA",
+      "title_en": "[L2] OSPF Stub Areas, NSSA and LSA Control",
+      "subchapter_title_fa": "۱۴.۷ آزمایشگاه‌های سناریومحور OSPF و BGP",
+      "tags": [
+        "OSPF",
+        "BGP",
+        "Routing",
+        "Lab",
+        "RCA",
+        "L2"
+      ],
+      "summary": "مقایسهٔ Stub/NSSA، تشخیص LSAهای مجاز و ترجمهٔ LSA نوع 7 به نوع 5 در مرز NSSA.",
+      "full_content": "# OSPF Stub، Totally Stubby و NSSA\n\n## عنوان انگلیسی\nOSPF Stub Areas, NSSA and LSA Control\n\n## خلاصه\nمقایسهٔ Stub/NSSA، تشخیص LSAهای مجاز و ترجمهٔ LSA نوع 7 به نوع 5 در مرز NSSA.\n\n## اهداف یادگیری\n- مقایسهٔ LSA نوع 3/5/7 و نقش آن‌ها\n- انتخاب Area type براساس نیاز عملیاتی\n- عیب‌یابی مسیر خارجی یا default مفقود\n\n## پیش‌نیازها\nOSPF Area و LSDB، ABR/ASBR، مفهوم external route و default route.\n\n## مقدمهٔ مفهومی\nStub Area نوعی محدودسازی اطلاعات خارجی است؛ NSSA به Area اجازه می‌دهد routeهای خارجی منتخب را از ASBR داخلی وارد کند. اصطلاح Totally Stubby در برخی پیاده‌سازی‌ها نام تجاری/رفتار اختصاصی سازنده دارد و نباید بدون بررسی مستندات به همهٔ vendorها تعمیم داده شود. انتخاب Area type تصمیم طراحی است: سادگی LSDB در برابر نیاز به دریافت/تزریق routeهای خارجی.\n\n## مفاهیم اصلی\nStub Area نوعی محدودسازی اطلاعات خارجی است؛ NSSA به Area اجازه می‌دهد routeهای خارجی منتخب را از ASBR داخلی وارد کند. اصطلاح Totally Stubby در برخی پیاده‌سازی‌ها نام تجاری/رفتار اختصاصی سازنده دارد و نباید بدون بررسی مستندات به همهٔ vendorها تعمیم داده شود. انتخاب Area type تصمیم طراحی است: سادگی LSDB در برابر نیاز به دریافت/تزریق routeهای خارجی. نکتهٔ عملی مهم این است که هر ادعا به یک شاهد قابل مشاهده متصل شود. نام پروتکل یا state به‌تنهایی دلیل ریشه‌ای نیست. پیش از تغییر، baseline و محدودهٔ اثر را ثبت کن؛ بعد از تغییر نیز باید همان معیارها دوباره اندازه‌گیری شوند.\n\n## سازوکار داخلی و معماری\nدر OSPFv2، نوع 5 معمولاً external route را در دامنهٔ مجاز منتشر می‌کند؛ نوع 7 برای external داخل NSSA کاربرد دارد و ABR می‌تواند طبق قواعد انتخاب‌شده آن را به Type 5 ترجمه کند. Stubها معمولاً LSAهای خارجی را نمی‌پذیرند و اغلب default route جایگزین دریافت می‌کنند؛ جزئیات دقیق و اصطلاح Totally Stubby بسته به سازنده متفاوت است. ناسازگاری نوع Area، تنظیمات ABR/ASBR و default-information می‌توانند موجب تشکیل‌نشدن adjacency یا نبود مسیر شوند.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nدر شبیه‌ساز، R3 به‌عنوان ASBR در NSSA یک loopback تستی 198.51.100.0/24 را وارد OSPF می‌کند. بررسی کن که Type 7 در NSSA دیده شود و در Area مقصد، در صورت فعال بودن translation و policy مناسب، Type 5 قابل مشاهده باشد. سپس حالت ترجمه/انتشار را در لابراتوار تغییر بده و تفاوت LSDB و route table را ثبت کن. این prefix فقط برای آزمایش مستندسازی شده است و نباید به شبکهٔ واقعی advertise شود.\n\n### فرمان‌های تشخیصی\n- `Cisco IOS/IOS-XE: `show ip ospf database``\n- ``show ip ospf``\n- ``show ip route ospf``\n- ``show ip protocols`. FRR: `show ip ospf database``\n- ``show ip route`. برای دستورهای `area ... stub` و `area ... nssa` به راهنمای همان نسخه رجوع کن؛ جزئیات کلیدواژه‌ها همه‌جا یکسان نیست.`\n\n## مثال محیط کار\nنمونهٔ قابل انتظار، نه خروجی اجراشده: داخل NSSA باید LSA نوع 7 برای prefix آزمایشی دیده شود؛ بیرون آن ممکن است پس از ترجمه Type 5 دیده شود. در یک Stub معمولی انتظار انتشار همان external LSA را نداشته باش و default را مستقل تأیید کن. در گزارش نهایی وضعیت اولیه، تغییر کنترل‌شده، خروجی قبل/بعد و محدودیت مشاهده را از یکدیگر جدا کن. خروجی مثال، خروجی اجراشده محسوب نمی‌شود مگر timestamp و محیط آن ثبت شده باشد.\n\n## آزمایشگاه عملی\nچهار روتر بساز: backbone، ABR، یک روتر در NSSA و یک مقصد خارجی آزمایشی. از baseline خروجی `show ip ospf database` و `show ip route` بگیر؛ سپس Area type را مطابق release تنظیم کن. هر بار فقط یک عامل را تغییر بده. ثبت لازم: نوع Area، وجود Type 7، نقش translator، Type 5 سمت دیگر، default route، adjacency و زمان همگرایی. نتیجه را با RFC و راهنمای vendor تطبیق بده؛ در پایان پیکربندی اولیه را بازگردان.\n\n## عیب‌یابی مرحله‌ای\nعلامت: prefix خارجی در بعضی Areaها دیده نمی‌شود. ابتدا مشخص کن انتظار کدام LSA وجود دارد. اگر Stub است، نبود Type 5 می‌تواند رفتار مورد انتظار باشد. اگر NSSA است، بررسی کن route واقعاً در آن Area تولید می‌شود، Type 7 در LSDB قرار دارد و ABR ترجمه/انتشار را طبق policy انجام می‌دهد. سپس route install و route preference را بررسی کن. صرف عبارت external در RIB نمی‌گوید LSA اولیه چه بوده است.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nواردکردن route خارجی بدون فیلتر prefix می‌تواند default یا محدوده‌های ناخواسته را پخش کند. Area type را برای دورزدن عیب‌یابی تغییر نده؛ تغییر نوع باید روی تمام روترهای مرتبط سازگار باشد. routeهای lab از رنج‌های مستندسازی‌شده باشند و هیچ اعلان تستی از مرز شبکهٔ مجاز خارج نشود.\n\n## نکات پیشرفته\nType 7 translation، P-bit و انتخاب translator جزئیاتی هستند که باید برای سناریوی واقعی از استاندارد و مستندات پیاده‌سازی خوانده شوند. در OSPFv3 ساختارهای LSA و برخی تفاوت‌ها متفاوت است؛ نام و رفتار را به IPv4/OSPFv2 محدود نکن مگر که مستقلاً بررسی شده باشد.\n\n## جمع‌بندی\nاین درس زمانی تمام است که بتوانی سازوکار را با واژه‌های خود توضیح دهی، یک آزمایش را در محیط مجاز تکرار کنی، معیار قبولی را نشان دهی و پس از رفع اشکال نتیجه را مستقل verify کنی. اگر command در release هدف وجود ندارد، معادل مستند آن را ثبت کن؛ حدس‌زدن syntax جایگزین مستندات نیست.\n\n## واژه‌نامه\nStub: Area محدودکنندهٔ برخی LSAهای خارجی؛ NSSA: Not-So-Stubby Area؛ Type 5: external LSA؛ Type 7: NSSA external LSA؛ translator: ABR ترجمه‌کننده؛ default: مسیر پیش‌فرض.\n\n## خودآزمایی\nسؤالات ساختاریافتهٔ این درس در `meta.assessment.questions` ذخیره شده‌اند. پاسخ و دلیل هر distractor فقط در `meta.assessment.answer_key` نگهداری می‌شود تا برنامه بتواند آزمون و پاسخ‌نامه را مستقل نمایش دهد.\n\n## وضعیت اعتبارسنجی\nبسته با JSON و ساختار داده‌ای تولید شده است؛ لابراتوارهای توصیف‌شده هنوز روی image/نسخهٔ واقعی اجرا نشده‌اند. وضعیت `review_required` عمداً حفظ می‌شود. قبل از انتشار نهایی، خروجی واقعی IOS/IOS-XE یا FRR به‌همراه نسخه و تاریخ اجرای Lab ثبت و بازبینی شود.",
+      "commands": "Cisco IOS/IOS-XE: `show ip ospf database`; `show ip ospf`; `show ip route ospf`; `show ip protocols`. FRR: `show ip ospf database`; `show ip route`. برای دستورهای `area ... stub` و `area ... nssa` به راهنمای همان نسخه رجوع کن؛ جزئیات کلیدواژه‌ها همه‌جا یکسان نیست.",
+      "examples": "نمونهٔ قابل انتظار، نه خروجی اجراشده: داخل NSSA باید LSA نوع 7 برای prefix آزمایشی دیده شود؛ بیرون آن ممکن است پس از ترجمه Type 5 دیده شود. در یک Stub معمولی انتظار انتشار همان external LSA را نداشته باش و default را مستقل تأیید کن.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "answers_stored_separately",
+        "source_status=RFC_and_vendor_docs"
+      ],
+      "learning_objectives": [
+        "مقایسهٔ LSA نوع 3/5/7 و نقش آن‌ها",
+        "انتخاب Area type براساس نیاز عملیاتی",
+        "عیب‌یابی مسیر خارجی یا default مفقود"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "RFC 2328 — OSPF Version 2",
+            "url": "https://www.rfc-editor.org/rfc/rfc2328.html"
+          },
+          {
+            "title": "Cisco OSPF Configuration Guides",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "در OSPFv2 کدام LSA به‌طور معمول برای external route در NSSA استفاده می‌شود؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "Type 1"
+                },
+                {
+                  "id": "B",
+                  "label": "Type 2 در هر مورد"
+                },
+                {
+                  "id": "C",
+                  "label": "Type 7"
+                },
+                {
+                  "id": "D",
+                  "label": "BGP UPDATE"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "چرا یک prefix خارجی در Stub Area دیده نمی‌شود؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "این الزاماً خرابی CPU است"
+                },
+                {
+                  "id": "B",
+                  "label": "ممکن است محدودیت طراحی Stub رفتار مورد انتظار باشد"
+                },
+                {
+                  "id": "C",
+                  "label": "چون همهٔ routeها باید از BGP بیایند"
+                },
+                {
+                  "id": "D",
+                  "label": "چون OSPF هیچ defaultی ندارد"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "در NSSA، برای بررسی route مفقود چه زنجیره‌ای بهتر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط بررسی DNS"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط بررسی کابل WAN"
+                },
+                {
+                  "id": "C",
+                  "label": "بررسی فقط جدول ARP"
+                },
+                {
+                  "id": "D",
+                  "label": "تأیید prefix، Type 7، ترجمه/انتشار، RIB و policy"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "آیا اصطلاح Totally Stubby با جزئیات یکسان در همهٔ vendorها تضمین می‌شود؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "خیر؛ باید رفتار و syntax همان release بررسی شود"
+                },
+                {
+                  "id": "B",
+                  "label": "بله، تمام دستورها جهانی‌اند"
+                },
+                {
+                  "id": "C",
+                  "label": "این فقط اصطلاح BGP است"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط در IPv6 وجود دارد"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "C",
+              "explanation": "NSSA external route با Type 7 نمایش داده می‌شود؛ ترجمه به Type 5 موضوع جداست.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: NSSA external route با Type 7 نمایش داده می‌شود؛ ترجمه به Type 5 موضوع جداست."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: NSSA external route با Type 7 نمایش داده می‌شود؛ ترجمه به Type 5 موضوع جداست."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: NSSA external route با Type 7 نمایش داده می‌شود؛ ترجمه به Type 5 موضوع جداست."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "B",
+              "explanation": "Stub برای کاهش اطلاعات، برخی LSAهای خارجی را محدود می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: Stub برای کاهش اطلاعات، برخی LSAهای خارجی را محدود می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: Stub برای کاهش اطلاعات، برخی LSAهای خارجی را محدود می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: Stub برای کاهش اطلاعات، برخی LSAهای خارجی را محدود می‌کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "D",
+              "explanation": "هر مرحله دلیل احتمالی متفاوتی دارد و باید با شواهد بررسی شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: هر مرحله دلیل احتمالی متفاوتی دارد و باید با شواهد بررسی شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: هر مرحله دلیل احتمالی متفاوتی دارد و باید با شواهد بررسی شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: هر مرحله دلیل احتمالی متفاوتی دارد و باید با شواهد بررسی شود."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "A",
+              "explanation": "برخی نام‌ها و رفتارها extension پیاده‌سازی هستند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: برخی نام‌ها و رفتارها extension پیاده‌سازی هستند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: برخی نام‌ها و رفتارها extension پیاده‌سازی هستند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: برخی نام‌ها و رفتارها extension پیاده‌سازی هستند."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch14:ospf-bgp-lab-cases:l03",
+      "entity": "lesson",
+      "chapter_order": 14,
+      "subchapter_order": 7,
+      "lesson_order": 3,
+      "topic": "ospf-exstart-mtu",
+      "domain": "advanced-routing",
+      "level": "L2",
+      "title_fa": "[L2] عیب‌یابی OSPF در حالت EXSTART/EXCHANGE",
+      "title_en": "[L2] OSPF EXSTART and EXCHANGE Troubleshooting",
+      "subchapter_title_fa": "۱۴.۷ آزمایشگاه‌های سناریومحور OSPF و BGP",
+      "tags": [
+        "OSPF",
+        "BGP",
+        "Routing",
+        "Lab",
+        "RCA",
+        "L2"
+      ],
+      "summary": "تشخیص علت‌های گیرکردن همسایگی در EXSTART/EXCHANGE با تفکیک MTU، network type، شناسه و شواهد packet-level.",
+      "full_content": "# عیب‌یابی OSPF در حالت EXSTART/EXCHANGE\n\n## عنوان انگلیسی\nOSPF EXSTART and EXCHANGE Troubleshooting\n\n## خلاصه\nتشخیص علت‌های گیرکردن همسایگی در EXSTART/EXCHANGE با تفکیک MTU، network type، شناسه و شواهد packet-level.\n\n## اهداف یادگیری\n- تفسیر stateهای neighbor\n- ساختن فرضیه و جمع‌آوری شاهد برای EXSTART\n- تغییر امن با verification و rollback\n\n## پیش‌نیازها\nOSPF adjacency states، MTU/Ethernet، network type، LSA database.\n\n## مقدمهٔ مفهومی\nEXSTART و EXCHANGE مراحل همگام‌سازی پایگاه دادهٔ OSPF هستند، نه وضعیت عادیِ نهایی برای adjacency روی اکثر انواع شبکه. خطای MTU یکی از علت‌های رایج ماندن در این مراحل است؛ اما تنها علت نیست. تفاوت network type، رابط یک‌طرفه، packet loss، duplicate Router ID، ناسازگاری پارامترها یا رفتار نسخه می‌تواند ظاهری مشابه ایجاد کند.\n\n## مفاهیم اصلی\nEXSTART و EXCHANGE مراحل همگام‌سازی پایگاه دادهٔ OSPF هستند، نه وضعیت عادیِ نهایی برای adjacency روی اکثر انواع شبکه. خطای MTU یکی از علت‌های رایج ماندن در این مراحل است؛ اما تنها علت نیست. تفاوت network type، رابط یک‌طرفه، packet loss، duplicate Router ID، ناسازگاری پارامترها یا رفتار نسخه می‌تواند ظاهری مشابه ایجاد کند. نکتهٔ عملی مهم این است که هر ادعا به یک شاهد قابل مشاهده متصل شود. نام پروتکل یا state به‌تنهایی دلیل ریشه‌ای نیست. پیش از تغییر، baseline و محدودهٔ اثر را ثبت کن؛ بعد از تغییر نیز باید همان معیارها دوباره اندازه‌گیری شوند.\n\n## سازوکار داخلی و معماری\nروترها در Database Description packets دربارهٔ LSAهای موجود و فرایند تبادل metadata مذاکره می‌کنند. اگر دو طرف از نظر اندازهٔ قابل‌قبول packet یا پارامترهای مجاور سازگار نباشند، تبادل پیش نمی‌رود. دستور `mtu-ignore` در برخی نسخه‌ها می‌تواند علائم را پنهان کند و باید آخرین راهکار موجه باشد، نه نخستین fix؛ زیرا MTU ناسازگار ممکن است در data plane fragmentation یا black-hole ایجاد کند.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nR1 و R2 روی لینک Ethernet در Full نیستند و خروجی نشان می‌دهد یکی در EXSTART می‌ماند. ابتدا از هر دو طرف interface detail، IP/mask، OSPF network type، MTU، Router ID و log timestamp بگیر. اگر MTU برابر نیست، در لابراتوار یا مقدار مسیر را اصلاح کن یا مستنداً دلیل اختلاف را روشن کن؛ سپس neighbor state و تبادل LSA را دوباره بررسی کن. صرف Full شدن پس از نادیده‌گرفتن MTU معیار پایان کافی نیست.\n\n### فرمان‌های تشخیصی\n- `Cisco: `show ip ospf neighbor detail``\n- ``show ip interface <interface>``\n- ``show interfaces <interface>``\n- ``show logging`. FRR: `show ip ospf neighbor detail``\n- ``show interface <interface>`. Packet capture: فیلتر OSPF/IP protocol 89 در محیط آزمایشی.`\n\n## مثال محیط کار\nمعیار: در خروجی هر دو روتر مقادیر MTU و network type با طراحی سازگارند، neighbor به حالت مورد انتظار می‌رسد، LSDB همگام می‌شود و آزمایش transit هم موفق است. «neighbor Full» بدون بررسی data plane برای MTU کافی نیست. در گزارش نهایی وضعیت اولیه، تغییر کنترل‌شده، خروجی قبل/بعد و محدودیت مشاهده را از یکدیگر جدا کن. خروجی مثال، خروجی اجراشده محسوب نمی‌شود مگر timestamp و محیط آن ثبت شده باشد.\n\n## آزمایشگاه عملی\nدو روتر مجازی با لینک مستقیم بساز. baseline را ذخیره کن؛ MTU رابط را در یک سمت در شبیه‌ساز تغییر بده و state را ثبت کن. دستورهای `show ip ospf neighbor`, `show ip interface`, `show interface` و log را روی هر دو سمت مقایسه کن. MTU را به مقدار اولیه برگردان و تأیید کن که neighbor به Full می‌رسد و pingهای بزرگ/DF نیز به‌صورت کنترل‌شده کار می‌کنند. در گزارش صریحاً بنویس کدام رفتار روی image واقعی مشاهده شد.\n\n## عیب‌یابی مرحله‌ای\nSymptom: EXSTART. Scope: یک adjacency یا چند adjacency؟ Evidence: MTU دو طرف، network type، Router ID، interface errors، capture محدود از OSPF protocol 89 و logs. Hypothesisها را بر اساس evidence رتبه‌بندی کن. اگر همهٔ همسایه‌های یک پلتفرم هم‌زمان گرفتارند، تغییر اخیر/نسخه/پارامتر مشترک محتمل‌تر است؛ اگر فقط یک لینک است، تنظیم همان لینک را مقایسه کن. پس از fix، state، LSDB و packet transit را مستقل تأیید کن.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nCapture فقط در لابراتوار یا شبکهٔ مجاز انجام شود و فایل capture ممکن است اطلاعات توپولوژی داخلی داشته باشد. Router ID تکراری یا debug پرحجم می‌تواند دامنهٔ مشکل را زیاد کند. قبل از هر فرمان تغییر‌دهنده backup و مسیر console داشته باش؛ MTU را در production بدون اندازه‌گیری path MTU دستکاری نکن.\n\n## نکات پیشرفته\nEXSTART به معنی MTU mismatch قطعی نیست. تشخیص درست از هم‌زمانی علائم با تغییرات و مقایسهٔ دو سر لینک ساخته می‌شود. OSPF روی شبکه‌های broadcast، point-to-point و نوع‌های دیگر رفتار adjacency متفاوتی دارد. اعداد و outputها بین IOS, IOS-XE و FRR ممکن است فرق کند.\n\n## جمع‌بندی\nاین درس زمانی تمام است که بتوانی سازوکار را با واژه‌های خود توضیح دهی، یک آزمایش را در محیط مجاز تکرار کنی، معیار قبولی را نشان دهی و پس از رفع اشکال نتیجه را مستقل verify کنی. اگر command در release هدف وجود ندارد، معادل مستند آن را ثبت کن؛ حدس‌زدن syntax جایگزین مستندات نیست.\n\n## واژه‌نامه\nEXSTART: مرحلهٔ مذاکرهٔ تبادل DB description؛ EXCHANGE: تبادل فهرست LSAها؛ MTU: بیشینهٔ اندازهٔ لایهٔ لینک؛ Router ID: شناسهٔ ۳۲ بیتی OSPF؛ DBD: Database Description packet.\n\n## خودآزمایی\nسؤالات ساختاریافتهٔ این درس در `meta.assessment.questions` ذخیره شده‌اند. پاسخ و دلیل هر distractor فقط در `meta.assessment.answer_key` نگهداری می‌شود تا برنامه بتواند آزمون و پاسخ‌نامه را مستقل نمایش دهد.\n\n## وضعیت اعتبارسنجی\nبسته با JSON و ساختار داده‌ای تولید شده است؛ لابراتوارهای توصیف‌شده هنوز روی image/نسخهٔ واقعی اجرا نشده‌اند. وضعیت `review_required` عمداً حفظ می‌شود. قبل از انتشار نهایی، خروجی واقعی IOS/IOS-XE یا FRR به‌همراه نسخه و تاریخ اجرای Lab ثبت و بازبینی شود.",
+      "commands": "Cisco: `show ip ospf neighbor detail`; `show ip interface <interface>`; `show interfaces <interface>`; `show logging`. FRR: `show ip ospf neighbor detail`; `show interface <interface>`. Packet capture: فیلتر OSPF/IP protocol 89 در محیط آزمایشی.",
+      "examples": "معیار: در خروجی هر دو روتر مقادیر MTU و network type با طراحی سازگارند، neighbor به حالت مورد انتظار می‌رسد، LSDB همگام می‌شود و آزمایش transit هم موفق است. «neighbor Full» بدون بررسی data plane برای MTU کافی نیست.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "answers_stored_separately",
+        "source_status=RFC_and_vendor_docs"
+      ],
+      "learning_objectives": [
+        "تفسیر stateهای neighbor",
+        "ساختن فرضیه و جمع‌آوری شاهد برای EXSTART",
+        "تغییر امن با verification و rollback"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "RFC 2328 — OSPF Version 2",
+            "url": "https://www.rfc-editor.org/rfc/rfc2328.html"
+          },
+          {
+            "title": "Cisco OSPF troubleshooting documentation",
+            "url": "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe-17/products-installation-and-configuration-guides-list.html"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "EXSTART/EXCHANGE ماندن OSPF چه معنایی دارد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "حتماً routeها درست‌اند"
+                },
+                {
+                  "id": "B",
+                  "label": "فرایند همگام‌سازی پایگاه داده هنوز کامل نشده است"
+                },
+                {
+                  "id": "C",
+                  "label": "BGP session به پایان رسیده"
+                },
+                {
+                  "id": "D",
+                  "label": "DHCP lease منقضی شده"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "برای MTU mismatch بهترین روش آغاز عیب‌یابی چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "در هر دو سمت MTU را تصادفی کم کن"
+                },
+                {
+                  "id": "B",
+                  "label": "فوراً کل OSPF را حذف کن"
+                },
+                {
+                  "id": "C",
+                  "label": "MTU، network type، شناسه‌ها و log دو طرف را مقایسه کن"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط DNS را flush کن"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "چرا `mtu-ignore` نباید نخستین راه‌حل باشد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "ممکن است ناسازگاری data plane را پنهان کند"
+                },
+                {
+                  "id": "B",
+                  "label": "همیشه Router ID را عوض می‌کند"
+                },
+                {
+                  "id": "C",
+                  "label": "تمام LSAها را رمز می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط در BGP وجود دارد"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "معیار پایان مناسب برای fix MTU چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "تنها چراغ لینک روشن باشد"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط یک log پاک شود"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط neighbor در 2-Way باشد"
+                },
+                {
+                  "id": "D",
+                  "label": "neighbor/LSDB و عبور ترافیک با اندازه‌های لازم دوباره تأیید شوند"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "B",
+              "explanation": "این stateها به مراحل همگام‌سازی OSPF مربوط‌اند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: این stateها به مراحل همگام‌سازی OSPF مربوط‌اند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: این stateها به مراحل همگام‌سازی OSPF مربوط‌اند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: این stateها به مراحل همگام‌سازی OSPF مربوط‌اند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "C",
+              "explanation": "مقایسهٔ دو طرف با شواهد، تغییر تصادفی را حذف می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: مقایسهٔ دو طرف با شواهد، تغییر تصادفی را حذف می‌کند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: مقایسهٔ دو طرف با شواهد، تغییر تصادفی را حذف می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: مقایسهٔ دو طرف با شواهد، تغییر تصادفی را حذف می‌کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "A",
+              "explanation": "نرسیدن packetهای بزرگ ممکن است باقی بماند حتی اگر adjacency تغییر کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: نرسیدن packetهای بزرگ ممکن است باقی بماند حتی اگر adjacency تغییر کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: نرسیدن packetهای بزرگ ممکن است باقی بماند حتی اگر adjacency تغییر کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: نرسیدن packetهای بزرگ ممکن است باقی بماند حتی اگر adjacency تغییر کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "کنترل plane و data plane باید جداگانه بررسی شوند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: کنترل plane و data plane باید جداگانه بررسی شوند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: کنترل plane و data plane باید جداگانه بررسی شوند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: کنترل plane و data plane باید جداگانه بررسی شوند."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch14:ospf-bgp-lab-cases:l04",
+      "entity": "lesson",
+      "chapter_order": 14,
+      "subchapter_order": 7,
+      "lesson_order": 4,
+      "topic": "ospf-dr-network-type",
+      "domain": "advanced-routing",
+      "level": "L2",
+      "title_fa": "[L2] DR/BDR و نوع شبکهٔ OSPF",
+      "title_en": "[L2] OSPF DR/BDR Elections and Network Types",
+      "subchapter_title_fa": "۱۴.۷ آزمایشگاه‌های سناریومحور OSPF و BGP",
+      "tags": [
+        "OSPF",
+        "BGP",
+        "Routing",
+        "Lab",
+        "RCA",
+        "L2"
+      ],
+      "summary": "انتخابات DR/BDR، اولویت صفر، رفتار 2-Way در broadcast و تفاوت point-to-point با broadcast.",
+      "full_content": "# DR/BDR و نوع شبکهٔ OSPF\n\n## عنوان انگلیسی\nOSPF DR/BDR Elections and Network Types\n\n## خلاصه\nانتخابات DR/BDR، اولویت صفر، رفتار 2-Way در broadcast و تفاوت point-to-point با broadcast.\n\n## اهداف یادگیری\n- تشخیص نقش DR/BDR از حالت neighbor\n- پیش‌بینی election و محدودیت priority\n- انتخاب network type سازگار با توپولوژی\n\n## پیش‌نیازها\nOSPF adjacency states، broadcast Ethernet، multicast و Router ID.\n\n## مقدمهٔ مفهومی\nدر لینک چنددسترسی broadcast، OSPF برای کاهش تعداد adjacencyهای Full، DR و BDR انتخاب می‌کند. انتظار Full بین هر دو روتر عادی نیست؛ روتر DROtherها معمولاً با DR/BDR به Full می‌رسند و میان بعضی DROtherها 2-Way باقی می‌مانند. در شبکهٔ point-to-point مدل election به این شکل لازم نیست. انتخاب نوع شبکه باید با رفتار واقعی لینک سازگار باشد.\n\n## مفاهیم اصلی\nدر لینک چنددسترسی broadcast، OSPF برای کاهش تعداد adjacencyهای Full، DR و BDR انتخاب می‌کند. انتظار Full بین هر دو روتر عادی نیست؛ روتر DROtherها معمولاً با DR/BDR به Full می‌رسند و میان بعضی DROtherها 2-Way باقی می‌مانند. در شبکهٔ point-to-point مدل election به این شکل لازم نیست. انتخاب نوع شبکه باید با رفتار واقعی لینک سازگار باشد. نکتهٔ عملی مهم این است که هر ادعا به یک شاهد قابل مشاهده متصل شود. نام پروتکل یا state به‌تنهایی دلیل ریشه‌ای نیست. پیش از تغییر، baseline و محدودهٔ اثر را ثبت کن؛ بعد از تغییر نیز باید همان معیارها دوباره اندازه‌گیری شوند.\n\n## سازوکار داخلی و معماری\nاولویت OSPF و سپس Router ID در election اثر دارند، اما قواعد دقیق و اثر تغییرات پس از election باید برای پیاده‌سازی بررسی شود. priority برابر صفر، روتر را از انتخاب‌شدن به‌عنوان DR/BDR بازمی‌دارد. DR/BDR به یک interface/network segment مربوط است نه نقش دائمی سراسری روتر. دستکاری priority بعد از election ممکن است نتیجهٔ فوری مورد انتظار ندهد مگر شرایط election مجدداً فراهم شود.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nدر یک VLAN آزمایش با R1 priority 100، R2 priority 50 و R3 priority 1 قرار بده. پس از همسایگی، نقش DR/BDR را از خروجی neighbor بررسی کن. سپس priority R1 را صفر کن و مشاهده کن که صرف تغییر مقدار الزاماً DR فعلی را فوراً جابه‌جا نمی‌کند. با راهکار کنترل‌شده در لابراتوار election را دوباره برقرار کن و نتیجه را مستند کن.\n\n### فرمان‌های تشخیصی\n- `Cisco: `show ip ospf neighbor``\n- ``show ip ospf interface <interface>``\n- ``show ip ospf`. FRR: `show ip ospf neighbor``\n- ``show ip ospf interface`. تنظیم priority و network type را با مستندات نسخهٔ هدف تطبیق بده.`\n\n## مثال محیط کار\nدر broadcast segment، 2-Way بین برخی DROtherها ممکن است مورد انتظار باشد؛ روی point-to-point باید stateها را براساس نوع لینک تفسیر کرد. خروجی نقش DR/BDR را همراه با interface و Router ID ثبت کن. در گزارش نهایی وضعیت اولیه، تغییر کنترل‌شده، خروجی قبل/بعد و محدودیت مشاهده را از یکدیگر جدا کن. خروجی مثال، خروجی اجراشده محسوب نمی‌شود مگر timestamp و محیط آن ثبت شده باشد.\n\n## آزمایشگاه عملی\nچهار روتر مجازی روی یک Ethernet broadcast segment قرار بده. هر روتر Router ID یکتا داشته باشد. خروجی قبل/بعد از تغییر priority را ذخیره کن؛ تعداد adjacency Full و 2-Way را بشمار و با design مقایسه کن. در آزمایش دوم لینک point-to-point جدا بساز تا تفاوت رفتار روشن شود. پس از آزمایش، configuration را بازگردان و مطمئن شو انتخاب DR/BDR قابل پیش‌بینی است.\n\n## عیب‌یابی مرحله‌ای\nعلامت: neighborها در 2-Way. ابتدا network type و نقش هر روتر را مشخص کن؛ بین دو DROther روی broadcast، 2-Way معمولاً درست است. علامت: DR مورد انتظار انتخاب نشده. بررسی کن priority صفر نیست، Router ID یکتا است و election چه زمانی اتفاق افتاده. علامت: adjacency یک‌طرفه/ناپایدار. کابل/VLAN، packet loss، interface parameters و logs را هم بررسی کن و بدون فهم topology نوع شبکه را تغییر نده.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nانتخاب DR/BDR به‌تنهایی کنترل دسترسی نیست. OSPF authentication، محدودسازی neighbor و حفاظت لایهٔ ۲ را مطابق محیط طراحی کن. network type را برای رفع ظاهری 2-Way عوض نکن؛ mismatch ممکن است باعث قطع adjacency یا رفتار ناخواسته شود.\n\n## نکات پیشرفته\nمقیاس LSDB و تعداد adjacency، پایداری DR و رفتار همگرایی را در طراحی شبکه‌های بزرگ در نظر بگیر. روی virtual network، cloud overlay یا لینک‌هایی که broadcast واقعی ندارند، فرض Ethernet ساده ممکن است غلط باشد. اصطلاحات خروجی vendor متفاوت‌اند، اما مدل مفهومی adjacency/DR همچنان کمک می‌کند.\n\n## جمع‌بندی\nاین درس زمانی تمام است که بتوانی سازوکار را با واژه‌های خود توضیح دهی، یک آزمایش را در محیط مجاز تکرار کنی، معیار قبولی را نشان دهی و پس از رفع اشکال نتیجه را مستقل verify کنی. اگر command در release هدف وجود ندارد، معادل مستند آن را ثبت کن؛ حدس‌زدن syntax جایگزین مستندات نیست.\n\n## واژه‌نامه\nDR: Designated Router؛ BDR: Backup Designated Router؛ DROther: روتر واجد شرایط که DR/BDR نیست؛ priority: مقدار ترجیح انتخاب؛ broadcast segment: شبکهٔ چنددسترسی لایهٔ ۲.\n\n## خودآزمایی\nسؤالات ساختاریافتهٔ این درس در `meta.assessment.questions` ذخیره شده‌اند. پاسخ و دلیل هر distractor فقط در `meta.assessment.answer_key` نگهداری می‌شود تا برنامه بتواند آزمون و پاسخ‌نامه را مستقل نمایش دهد.\n\n## وضعیت اعتبارسنجی\nبسته با JSON و ساختار داده‌ای تولید شده است؛ لابراتوارهای توصیف‌شده هنوز روی image/نسخهٔ واقعی اجرا نشده‌اند. وضعیت `review_required` عمداً حفظ می‌شود. قبل از انتشار نهایی، خروجی واقعی IOS/IOS-XE یا FRR به‌همراه نسخه و تاریخ اجرای Lab ثبت و بازبینی شود.",
+      "commands": "Cisco: `show ip ospf neighbor`; `show ip ospf interface <interface>`; `show ip ospf`. FRR: `show ip ospf neighbor`; `show ip ospf interface`. تنظیم priority و network type را با مستندات نسخهٔ هدف تطبیق بده.",
+      "examples": "در broadcast segment، 2-Way بین برخی DROtherها ممکن است مورد انتظار باشد؛ روی point-to-point باید stateها را براساس نوع لینک تفسیر کرد. خروجی نقش DR/BDR را همراه با interface و Router ID ثبت کن.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "answers_stored_separately",
+        "source_status=RFC_and_vendor_docs"
+      ],
+      "learning_objectives": [
+        "تشخیص نقش DR/BDR از حالت neighbor",
+        "پیش‌بینی election و محدودیت priority",
+        "انتخاب network type سازگار با توپولوژی"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "RFC 2328 — OSPF Version 2",
+            "url": "https://www.rfc-editor.org/rfc/rfc2328.html"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "هدف اصلی انتخاب DR/BDR در OSPF روی شبکهٔ broadcast چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "حذف کامل LSDB"
+                },
+                {
+                  "id": "B",
+                  "label": "کاهش نیاز به adjacencyهای Full بین همهٔ روترها"
+                },
+                {
+                  "id": "C",
+                  "label": "تبدیل OSPF به BGP"
+                },
+                {
+                  "id": "D",
+                  "label": "رمزنگاری packetهای کاربر"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "اگر دو DROther در segment broadcast در 2-Way باشند، چه نتیجه‌ای درست‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "همیشه خرابی قطعی است"
+                },
+                {
+                  "id": "B",
+                  "label": "حتماً MTU را تغییر بده"
+                },
+                {
+                  "id": "C",
+                  "label": "ممکن است حالت طبیعی باشد؛ نقش و network type را بررسی کن"
+                },
+                {
+                  "id": "D",
+                  "label": "روتر را factory reset کن"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "معمولاً priority صفر چه اثری دارد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "مانع انتخاب آن interface به‌عنوان DR/BDR می‌شود"
+                },
+                {
+                  "id": "B",
+                  "label": "آن را به DR اجباری تبدیل می‌کند"
+                },
+                {
+                  "id": "C",
+                  "label": "همهٔ LSAها را حذف می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "BGP peer را خاموش می‌کند"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "چرا تغییر priority لزوماً DR فعلی را فوری جابه‌جا نمی‌کند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "چون priority در OSPF وجود ندارد"
+                },
+                {
+                  "id": "B",
+                  "label": "چون Router ID همیشه نادیده گرفته می‌شود"
+                },
+                {
+                  "id": "C",
+                  "label": "چون election فقط روی Area 0 است"
+                },
+                {
+                  "id": "D",
+                  "label": "رفتار انتخاب و preemption باید مطابق استاندارد/پیاده‌سازی و وضعیت موجود بررسی شود"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "B",
+              "explanation": "DR/BDR تبادل اطلاعات روی شبکهٔ چنددسترسی را ساختارمند می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: DR/BDR تبادل اطلاعات روی شبکهٔ چنددسترسی را ساختارمند می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: DR/BDR تبادل اطلاعات روی شبکهٔ چنددسترسی را ساختارمند می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: DR/BDR تبادل اطلاعات روی شبکهٔ چنددسترسی را ساختارمند می‌کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "C",
+              "explanation": "2-Way بین برخی DROtherها در broadcast طبیعی است.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: 2-Way بین برخی DROtherها در broadcast طبیعی است."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: 2-Way بین برخی DROtherها در broadcast طبیعی است."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: 2-Way بین برخی DROtherها در broadcast طبیعی است."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "A",
+              "explanation": "priority صفر صلاحیت انتخاب‌شدن را کنار می‌گذارد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: priority صفر صلاحیت انتخاب‌شدن را کنار می‌گذارد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: priority صفر صلاحیت انتخاب‌شدن را کنار می‌گذارد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: priority صفر صلاحیت انتخاب‌شدن را کنار می‌گذارد."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "نباید تغییر یک مقدار را معادل election فوری فرض کرد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: نباید تغییر یک مقدار را معادل election فوری فرض کرد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: نباید تغییر یک مقدار را معادل election فوری فرض کرد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: نباید تغییر یک مقدار را معادل election فوری فرض کرد."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch14:ospf-bgp-lab-cases:l05",
+      "entity": "lesson",
+      "chapter_order": 14,
+      "subchapter_order": 7,
+      "lesson_order": 5,
+      "topic": "bgp-idle-active",
+      "domain": "advanced-routing",
+      "level": "L1",
+      "title_fa": "[L1] عیب‌یابی نشست BGP در Idle و Active",
+      "title_en": "[L1] Troubleshooting BGP Idle and Active States",
+      "subchapter_title_fa": "۱۴.۷ آزمایشگاه‌های سناریومحور OSPF و BGP",
+      "tags": [
+        "OSPF",
+        "BGP",
+        "Routing",
+        "Lab",
+        "RCA",
+        "L1"
+      ],
+      "summary": "بررسی لایهٔ TCP/179، ASN، update-source، ebgp multihop، ACL و دلیل باقی‌ماندن peer در Idle/Active.",
+      "full_content": "# عیب‌یابی نشست BGP در Idle و Active\n\n## عنوان انگلیسی\nTroubleshooting BGP Idle and Active States\n\n## خلاصه\nبررسی لایهٔ TCP/179، ASN، update-source، ebgp multihop، ACL و دلیل باقی‌ماندن peer در Idle/Active.\n\n## اهداف یادگیری\n- تفسیر state machine نشست BGP\n- تفکیک مشکل TCP از مذاکرهٔ BGP\n- ساخت چک‌لیست دوطرفهٔ عیب‌یابی\n\n## پیش‌نیازها\nTCP/IP، routing، ASN، loopback و ACL/firewall.\n\n## مقدمهٔ مفهومی\nBGP ابتدا یک ارتباط TCP برقرار می‌کند و سپس پیام‌های OPEN/KEEPALIVE و UPDATE را مبادله می‌کند. Active الزاماً به معنای «فعال و سالم» نیست؛ اغلب state تلاش برای اتصال را نشان می‌دهد. Idle نیز می‌تواند ناشی از شروع‌نشدن نشست، سیاست، خطا یا تلاش مجدد باشد. state باید همراه last reset reason، log، source/destination IP و reachability بررسی شود.\n\n## مفاهیم اصلی\nBGP ابتدا یک ارتباط TCP برقرار می‌کند و سپس پیام‌های OPEN/KEEPALIVE و UPDATE را مبادله می‌کند. Active الزاماً به معنای «فعال و سالم» نیست؛ اغلب state تلاش برای اتصال را نشان می‌دهد. Idle نیز می‌تواند ناشی از شروع‌نشدن نشست، سیاست، خطا یا تلاش مجدد باشد. state باید همراه last reset reason، log، source/destination IP و reachability بررسی شود. نکتهٔ عملی مهم این است که هر ادعا به یک شاهد قابل مشاهده متصل شود. نام پروتکل یا state به‌تنهایی دلیل ریشه‌ای نیست. پیش از تغییر، baseline و محدودهٔ اثر را ثبت کن؛ بعد از تغییر نیز باید همان معیارها دوباره اندازه‌گیری شوند.\n\n## سازوکار داخلی و معماری\nبرای eBGP معمولاً peer address، remote-as و route به آدرس peer باید سازگار باشد. اتصال به loopback ممکن است به update-source، ebgp-multihop و TTL مناسب نیاز داشته باشد. TCP/179 و مسیر برگشت اهمیت دارد. در پیاده‌سازی‌های مختلف ترتیب نمایش state و پیام خطا فرق دارد. پس از Established، هنوز باید بررسی کرد که routeها پذیرفته/advertise و در RIB انتخاب می‌شوند؛ نشست سالم معادل مسیر صحیح نیست.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nR1 با ASN 65010 و R2 با ASN 65020 در آزمایشگاه peer می‌شوند. ابتدا ping با source مناسب و route به peer را بررسی کن؛ سپس TCP reachability/ACL را تأیید کن؛ بعد دوطرفه remote-as و neighbor address را مقایسه کن. اگر loopback استفاده می‌شود، update-source و hop count/TTL را بررسی کن. در پایان state، تعداد prefixes و مسیر برگشت را جداگانه مستند کن.\n\n### فرمان‌های تشخیصی\n- `Cisco: `show ip bgp summary``\n- ``show ip route <peer-ip>``\n- ``show tcp brief all``\n- ``show logging`. FRR: `show bgp summary``\n- ``show bgp neighbors <peer>``\n- ``show ip route <peer-ip>`. معادل‌ها و syntax در releaseها بررسی شود.`\n\n## مثال محیط کار\nمعیار قبولی: TCP و BGP به Established می‌رسند، last reset reason روشن است، routeهای مجاز مورد انتظار دریافت می‌شوند و تنها prefixهای مورد انتظار advertise می‌شوند. اگر Established است ولی prefixes صفرند، به سراغ policy/AFI-SAFI برو نه TCP. در گزارش نهایی وضعیت اولیه، تغییر کنترل‌شده، خروجی قبل/بعد و محدودیت مشاهده را از یکدیگر جدا کن. خروجی مثال، خروجی اجراشده محسوب نمی‌شود مگر timestamp و محیط آن ثبت شده باشد.\n\n## آزمایشگاه عملی\nدر FRR یا IOSv دو AS خصوصی در توپولوژی ایزوله بساز. پیش از BGP، آدرس‌دهی و routeهای underlay را کامل کن. سناریوی شکست ۱: یک ACL آزمایشی TCP/179 را مسدود کند؛ سناریوی شکست ۲: remote-as اشتباه باشد. برای هرکدام state و log را ثبت کن، فقط یک خطا را اصلاح کن و تأیید کن دلیل reset رفع شده است. سپس ACL آزمایشی را پاک کن.\n\n## عیب‌یابی مرحله‌ای\n۱) همسایهٔ درست و source/destination درست است؟ ۲) route به peer و مسیر برگشت وجود دارد؟ ۳) TCP/179 در هر دو جهت مجاز است؟ ۴) remote-as و update-source منطبق‌اند؟ ۵) loopback peering به multihop نیاز دارد؟ ۶) authentication یا TTL security mismatch وجود دارد؟ ۷) log علت reset را چه می‌گوید؟ پیش از تغییر timerها این موارد را بررسی کن.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nBGP control plane را با ACL، peerهای تعریف‌شده، import/export policy، max-prefix یا معادل platform و logging محافظت کن. هرگز BGP را با همسایهٔ ناشناس یا بدون policy به شبکهٔ واقعی وصل نکن. ASNها و prefixهای آزمایشی را فقط در محیط ایزوله استفاده کن.\n\n## نکات پیشرفته\nRFC 8212 رفتار پیش‌فرض سخت‌گیرانه‌ای را برای انتشار route در eBGP بدون policy به‌روزرسانی می‌کند؛ رفتار platform را بررسی کن و به default permissive متکی نباش. برای نشست تولیدی، BFD، graceful restart و timerها تصمیم‌های design هستند و نباید برای پوشاندن خرابی TCP استفاده شوند.\n\n## جمع‌بندی\nاین درس زمانی تمام است که بتوانی سازوکار را با واژه‌های خود توضیح دهی، یک آزمایش را در محیط مجاز تکرار کنی، معیار قبولی را نشان دهی و پس از رفع اشکال نتیجه را مستقل verify کنی. اگر command در release هدف وجود ندارد، معادل مستند آن را ثبت کن؛ حدس‌زدن syntax جایگزین مستندات نیست.\n\n## واژه‌نامه\nIdle/Active: stateهای نشست BGP؛ OPEN: پیام مذاکرهٔ پارامترها؛ UPDATE: حمل route/withdrawal؛ remote-as: ASN همسایه؛ update-source: آدرس مبدأ نشست؛ max-prefix: سقف محافظتی تعداد prefixها.\n\n## خودآزمایی\nسؤالات ساختاریافتهٔ این درس در `meta.assessment.questions` ذخیره شده‌اند. پاسخ و دلیل هر distractor فقط در `meta.assessment.answer_key` نگهداری می‌شود تا برنامه بتواند آزمون و پاسخ‌نامه را مستقل نمایش دهد.\n\n## وضعیت اعتبارسنجی\nبسته با JSON و ساختار داده‌ای تولید شده است؛ لابراتوارهای توصیف‌شده هنوز روی image/نسخهٔ واقعی اجرا نشده‌اند. وضعیت `review_required` عمداً حفظ می‌شود. قبل از انتشار نهایی، خروجی واقعی IOS/IOS-XE یا FRR به‌همراه نسخه و تاریخ اجرای Lab ثبت و بازبینی شود.",
+      "commands": "Cisco: `show ip bgp summary`; `show ip route <peer-ip>`; `show tcp brief all`; `show logging`. FRR: `show bgp summary`; `show bgp neighbors <peer>`; `show ip route <peer-ip>`. معادل‌ها و syntax در releaseها بررسی شود.",
+      "examples": "معیار قبولی: TCP و BGP به Established می‌رسند، last reset reason روشن است، routeهای مجاز مورد انتظار دریافت می‌شوند و تنها prefixهای مورد انتظار advertise می‌شوند. اگر Established است ولی prefixes صفرند، به سراغ policy/AFI-SAFI برو نه TCP.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "answers_stored_separately",
+        "source_status=RFC_and_vendor_docs"
+      ],
+      "learning_objectives": [
+        "تفسیر state machine نشست BGP",
+        "تفکیک مشکل TCP از مذاکرهٔ BGP",
+        "ساخت چک‌لیست دوطرفهٔ عیب‌یابی"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "RFC 4271 — A Border Gateway Protocol 4 (BGP-4)",
+            "url": "https://www.rfc-editor.org/info/rfc4271/"
+          },
+          {
+            "title": "RFC 8212 — Default External BGP Route Propagation Behavior without Policies",
+            "url": "https://www.rfc-editor.org/info/rfc8212/"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "BGP state برابر Active به تنهایی چه چیزی را ثابت نمی‌کند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "اینکه روتر تلاش اتصال/نشست می‌کند"
+                },
+                {
+                  "id": "B",
+                  "label": "اینکه نشست سالم و routeها تبادل شده‌اند"
+                },
+                {
+                  "id": "C",
+                  "label": "اینکه BGP از TCP استفاده می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "اینکه باید log بررسی شود"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "برای loopback peering کدام دسته پارامترها مهم می‌شوند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "DNS suffix فقط"
+                },
+                {
+                  "id": "B",
+                  "label": "VLAN name فقط"
+                },
+                {
+                  "id": "C",
+                  "label": "route underlay، update-source و TTL/multihop لازم"
+                },
+                {
+                  "id": "D",
+                  "label": "MAC address تصادفی"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "اگر BGP Established است اما prefix دریافت نمی‌شود، کدام مسیر بررسی بعدی مناسب‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "AFI/SAFI، import policy، اعلان همتا و فیلتر prefix"
+                },
+                {
+                  "id": "B",
+                  "label": "تعویض کابل قبل از خواندن خروجی"
+                },
+                {
+                  "id": "C",
+                  "label": "پاک‌کردن تمام routeها"
+                },
+                {
+                  "id": "D",
+                  "label": "بالا بردن MTU بدون شواهد"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "چرا قبل از اتصال peer باید import/export policy تعریف شود؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "برای اینکه OSPF neighbor شود"
+                },
+                {
+                  "id": "B",
+                  "label": "برای غیر فعال‌کردن TCP"
+                },
+                {
+                  "id": "C",
+                  "label": "برای حذف نیاز به route برگشت"
+                },
+                {
+                  "id": "D",
+                  "label": "برای جلوگیری از پذیرش یا انتشار ناخواستهٔ route"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "B",
+              "explanation": "Active به معنی Established یا وجود route نیست.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: Active به معنی Established یا وجود route نیست."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: Active به معنی Established یا وجود route نیست."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: Active به معنی Established یا وجود route نیست."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "C",
+              "explanation": "آدرس loopback باید reachability دوطرفه و پارامترهای نشست مناسب داشته باشد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: آدرس loopback باید reachability دوطرفه و پارامترهای نشست مناسب داشته باشد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: آدرس loopback باید reachability دوطرفه و پارامترهای نشست مناسب داشته باشد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: آدرس loopback باید reachability دوطرفه و پارامترهای نشست مناسب داشته باشد."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "A",
+              "explanation": "سالم‌بودن نشست به معنی پذیرش route نیست.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: سالم‌بودن نشست به معنی پذیرش route نیست."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: سالم‌بودن نشست به معنی پذیرش route نیست."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: سالم‌بودن نشست به معنی پذیرش route نیست."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "policy مرز امنیت و دامنهٔ انتشار route را کنترل می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: policy مرز امنیت و دامنهٔ انتشار route را کنترل می‌کند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: policy مرز امنیت و دامنهٔ انتشار route را کنترل می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: policy مرز امنیت و دامنهٔ انتشار route را کنترل می‌کند."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch14:ospf-bgp-lab-cases:l06",
+      "entity": "lesson",
+      "chapter_order": 14,
+      "subchapter_order": 7,
+      "lesson_order": 6,
+      "topic": "bgp-bestpath-policy",
+      "domain": "advanced-routing",
+      "level": "L3",
+      "title_fa": "[L3] تحلیل انتخاب مسیر BGP: Local Preference، AS_PATH و MED",
+      "title_en": "[L3] BGP Best-Path Policy: Local Preference, AS_PATH and MED",
+      "subchapter_title_fa": "۱۴.۷ آزمایشگاه‌های سناریومحور OSPF و BGP",
+      "tags": [
+        "OSPF",
+        "BGP",
+        "Routing",
+        "Lab",
+        "RCA",
+        "L3"
+      ],
+      "summary": "تحلیل سیاست BGP با جداکردن attributeها از route source و پرهیز از فرض یکسان‌بودن ترتیب best-path در همهٔ vendorها.",
+      "full_content": "# تحلیل انتخاب مسیر BGP: Local Preference، AS_PATH و MED\n\n## عنوان انگلیسی\nBGP Best-Path Policy: Local Preference, AS_PATH and MED\n\n## خلاصه\nتحلیل سیاست BGP با جداکردن attributeها از route source و پرهیز از فرض یکسان‌بودن ترتیب best-path در همهٔ vendorها.\n\n## اهداف یادگیری\n- پیش‌بینی اثر LOCAL_PREF و AS_PATH\n- تشخیص scope و محدودیت MED\n- طراحی تغییر policy با تست قبل/بعد\n\n## پیش‌نیازها\nBGP UPDATE، eBGP/iBGP، RIB/FIB، communities و prefix filtering.\n\n## مقدمهٔ مفهومی\nBGP route selection یک الگوریتم policy-based است، نه صرفاً کوتاه‌ترین مسیر. LOCAL_PREF عموماً برای ترجیح خروجی درون یک AS استفاده می‌شود و مقدار بزرگ‌تر معمولاً ترجیح دارد. AS_PATH طول و مسیر عبور از ASها را نشان می‌دهد؛ MED می‌تواند ترجیح ورود از یک AS همسایه را راهنمایی کند و مقایسه‌اش اغلب scope و قواعد پیاده‌سازی دارد. اگر یک route پیش از best-path رد شده یا next-hop آن قابل‌حل نباشد، مقایسهٔ attributeها مسئلهٔ اصلی نیست.\n\n## مفاهیم اصلی\nBGP route selection یک الگوریتم policy-based است، نه صرفاً کوتاه‌ترین مسیر. LOCAL_PREF عموماً برای ترجیح خروجی درون یک AS استفاده می‌شود و مقدار بزرگ‌تر معمولاً ترجیح دارد. AS_PATH طول و مسیر عبور از ASها را نشان می‌دهد؛ MED می‌تواند ترجیح ورود از یک AS همسایه را راهنمایی کند و مقایسه‌اش اغلب scope و قواعد پیاده‌سازی دارد. اگر یک route پیش از best-path رد شده یا next-hop آن قابل‌حل نباشد، مقایسهٔ attributeها مسئلهٔ اصلی نیست. نکتهٔ عملی مهم این است که هر ادعا به یک شاهد قابل مشاهده متصل شود. نام پروتکل یا state به‌تنهایی دلیل ریشه‌ای نیست. پیش از تغییر، baseline و محدودهٔ اثر را ثبت کن؛ بعد از تغییر نیز باید همان معیارها دوباره اندازه‌گیری شوند.\n\n## سازوکار داخلی و معماری\nابتدا route باید از peer دریافت و از policy وارد candidate set شود؛ سپس next-hop reachability و الگوریتم best-path نسخهٔ هدف اعمال می‌شود. LOCAL_PREF معمولاً قبل از AS_PATH در تصمیم‌گیری رایج بررسی می‌شود، اما tie-breakerها و configurable knobs بین vendorها فرق می‌کنند. MED معمولاً بین routeهایی که از یک AS همسایه می‌آیند مقایسه می‌شود مگر تنظیمات رفتار را تغییر داده باشند. خروجی نهایی باید مسیر انتخاب‌شده و علت انتخاب را نشان دهد.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nدو peer برای 203.0.113.0/24 مسیر می‌دهند. مسیر A با LOCAL_PREF برابر 200 و AS_PATH طولانی‌تر، مسیر B با LOCAL_PREF برابر 100 و AS_PATH کوتاه‌تر. اگر هر دو معتبر و سایر شروط برابر باشند، LOCAL_PREF بالاتر معمولاً A را برای خروجی داخل AS ترجیح می‌دهد. سپس LOCAL_PREF را برابر کن و effect AS_PATH را بررسی کن. این آزمایش باید بر اساس output واقعی و algorithm همان platform گزارش شود.\n\n### فرمان‌های تشخیصی\n- `Cisco: `show ip bgp 203.0.113.0``\n- ``show ip bgp neighbors <peer> received-routes` (با توجه به قابلیت platform)`\n- ``show ip route 203.0.113.0``\n- ``show ip cef 203.0.113.1`. FRR: `show bgp ipv4 unicast 203.0.113.0/24``\n- ``show bgp neighbors <peer> received-routes`. Syntax و قابلیت soft-reconfiguration/version بررسی شود.`\n\n## مثال محیط کار\nمثال قبل/بعد باید این فیلدها را داشته باشد: prefix، peer، LOCAL_PREF، AS_PATH، MED، next-hop، وضعیت valid/best، route نصب‌شده و FIB. اگر فیلدی در platform نمایش داده نمی‌شود، از ابزار پشتیبانی‌شدهٔ معادل استفاده کن و محدودیت را ثبت کن. در گزارش نهایی وضعیت اولیه، تغییر کنترل‌شده، خروجی قبل/بعد و محدودیت مشاهده را از یکدیگر جدا کن. خروجی مثال، خروجی اجراشده محسوب نمی‌شود مگر timestamp و محیط آن ثبت شده باشد.\n\n## آزمایشگاه عملی\nسه روتر در ASN آزمایشی و دو upstream خصوصی در GNS3/EVE-NG. prefix test فقط در توپولوژی lab اعلام شود. مسیرها را baseline ثبت کن؛ policy فقط روی یک neighbor اعمال شود؛ candidate paths، received/advertised routes، best-path reason و RIB را قبل/بعد ذخیره کن. تست‌های مجزا برای LOCAL_PREF، AS_PATH prepend و MED اجرا کن و در هر مرحله فقط یک attribute را عوض کن.\n\n## عیب‌یابی مرحله‌ای\nاگر مسیر نامطلوب انتخاب می‌شود، ابتدا ثابت کن هر دو route در جدول BGP موجودند و policy آن‌ها را رد نکرده. next-hop معتبر است؟ هر دو در address-family مورد نظر هستند؟ LOCAL_PREF مقایسه‌شده یکسان است؟ AS_PATH واقعی چیست؟ MED از کدام AS آمده و مقایسه بین چه routeهایی مجاز است؟ پس از تغییر policy، route selected و FIB، نه فقط متن config، را بررسی کن.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nRoute-map یا policy اشتباه می‌تواند ترافیک را به upstream نامناسب بفرستد، هزینه را افزایش دهد یا دسترسی را قطع کند. قبل از prepend یا تغییر local-pref، impact بر failover و مسیرهای برگشت را بررسی کن؛ backup config، console/OOB و rollback آماده باشد. هیچ policy آزمایشی را به peer تولیدی advertise نکن.\n\n## نکات پیشرفته\nMED و تصمیم‌های multipath، deterministic med، always-compare-med، weight و بعضی tie-breakerها می‌توانند vendor-specific باشند. مستند release هدف بر مشاهدهٔ کلی مقدم است. انتخاب control plane و forwarding واقعی را با next-hop resolution، CEF/FIB و test flow جمع‌بندی کن.\n\n## جمع‌بندی\nاین درس زمانی تمام است که بتوانی سازوکار را با واژه‌های خود توضیح دهی، یک آزمایش را در محیط مجاز تکرار کنی، معیار قبولی را نشان دهی و پس از رفع اشکال نتیجه را مستقل verify کنی. اگر command در release هدف وجود ندارد، معادل مستند آن را ثبت کن؛ حدس‌زدن syntax جایگزین مستندات نیست.\n\n## واژه‌نامه\nLOCAL_PREF: ترجیح خروجی درون AS؛ AS_PATH: فهرست ASهای عبورشده؛ MED: سیگنال ترجیح ورود از یک AS؛ best-path: مسیر منتخب؛ candidate path: مسیرهای واجد شرایط برای مقایسه؛ route-map: سازوکار policy.\n\n## خودآزمایی\nسؤالات ساختاریافتهٔ این درس در `meta.assessment.questions` ذخیره شده‌اند. پاسخ و دلیل هر distractor فقط در `meta.assessment.answer_key` نگهداری می‌شود تا برنامه بتواند آزمون و پاسخ‌نامه را مستقل نمایش دهد.\n\n## وضعیت اعتبارسنجی\nبسته با JSON و ساختار داده‌ای تولید شده است؛ لابراتوارهای توصیف‌شده هنوز روی image/نسخهٔ واقعی اجرا نشده‌اند. وضعیت `review_required` عمداً حفظ می‌شود. قبل از انتشار نهایی، خروجی واقعی IOS/IOS-XE یا FRR به‌همراه نسخه و تاریخ اجرای Lab ثبت و بازبینی شود.",
+      "commands": "Cisco: `show ip bgp 203.0.113.0`; `show ip bgp neighbors <peer> received-routes` (با توجه به قابلیت platform); `show ip route 203.0.113.0`; `show ip cef 203.0.113.1`. FRR: `show bgp ipv4 unicast 203.0.113.0/24`; `show bgp neighbors <peer> received-routes`. Syntax و قابلیت soft-reconfiguration/version بررسی شود.",
+      "examples": "مثال قبل/بعد باید این فیلدها را داشته باشد: prefix، peer، LOCAL_PREF، AS_PATH، MED، next-hop، وضعیت valid/best، route نصب‌شده و FIB. اگر فیلدی در platform نمایش داده نمی‌شود، از ابزار پشتیبانی‌شدهٔ معادل استفاده کن و محدودیت را ثبت کن.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "answers_stored_separately",
+        "source_status=RFC_and_vendor_docs"
+      ],
+      "learning_objectives": [
+        "پیش‌بینی اثر LOCAL_PREF و AS_PATH",
+        "تشخیص scope و محدودیت MED",
+        "طراحی تغییر policy با تست قبل/بعد"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "RFC 4271 — BGP-4",
+            "url": "https://www.rfc-editor.org/info/rfc4271/"
+          },
+          {
+            "title": "RFC 7454 — BGP Operations and Security",
+            "url": "https://www.rfc-editor.org/info/rfc7454/"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "برای ترجیح یکی از دو خروجی درون یک AS، کدام attribute عموماً گزینهٔ مستقیم‌تری است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "LOCAL_PREF"
+                },
+                {
+                  "id": "B",
+                  "label": "TTL"
+                },
+                {
+                  "id": "C",
+                  "label": "OSPF DR priority"
+                },
+                {
+                  "id": "D",
+                  "label": "TCP window"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "آیا MED را باید بدون توجه به AS همسایه در همهٔ مسیرها به‌شکل یکسان مقایسه کرد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "بله، همیشه بالاتر بهتر است"
+                },
+                {
+                  "id": "B",
+                  "label": "بله، از ACL مهم‌تر است"
+                },
+                {
+                  "id": "C",
+                  "label": "خیر؛ scope و تنظیمات comparison را باید بررسی کرد"
+                },
+                {
+                  "id": "D",
+                  "label": "MED فقط برای OSPF است"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "دو route در خروجی best-path یکی نیستند؛ اولین بررسی کدام است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط مقدار ping"
+                },
+                {
+                  "id": "B",
+                  "label": "ثابت‌کردن وجود candidateها، policy، next-hop و attributeهای واقعی"
+                },
+                {
+                  "id": "C",
+                  "label": "فوراً تمام attributeها را هم‌زمان تغییر بده"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط reboot"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "چرا باید RIB و FIB بعد از تغییر policy بررسی شوند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "چون policy نامش را عوض می‌کند"
+                },
+                {
+                  "id": "B",
+                  "label": "چون BGP همیشه packet را drop می‌کند"
+                },
+                {
+                  "id": "C",
+                  "label": "چون MED باید در DNS ذخیره شود"
+                },
+                {
+                  "id": "D",
+                  "label": "چون route منتخب لزوماً تنها شاهد لازم برای forwarding نیست"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "A",
+              "explanation": "LOCAL_PREF برای ترجیح مسیر خروجی درون AS به کار می‌رود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: LOCAL_PREF برای ترجیح مسیر خروجی درون AS به کار می‌رود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: LOCAL_PREF برای ترجیح مسیر خروجی درون AS به کار می‌رود."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: LOCAL_PREF برای ترجیح مسیر خروجی درون AS به کار می‌رود."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "C",
+              "explanation": "رفتار MED می‌تواند محدود به مقایسهٔ routeهای یک AS یا تحت تنظیمات متفاوت باشد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: رفتار MED می‌تواند محدود به مقایسهٔ routeهای یک AS یا تحت تنظیمات متفاوت باشد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: رفتار MED می‌تواند محدود به مقایسهٔ routeهای یک AS یا تحت تنظیمات متفاوت باشد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: رفتار MED می‌تواند محدود به مقایسهٔ routeهای یک AS یا تحت تنظیمات متفاوت باشد."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "B",
+              "explanation": "بدون دیدن candidate paths مقایسهٔ attributeها قابل اتکا نیست.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: بدون دیدن candidate paths مقایسهٔ attributeها قابل اتکا نیست."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: بدون دیدن candidate paths مقایسهٔ attributeها قابل اتکا نیست."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: بدون دیدن candidate paths مقایسهٔ attributeها قابل اتکا نیست."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "route انتخاب‌شده باید در مسیر forwarding و جریان واقعی نیز اعتبارسنجی شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: route انتخاب‌شده باید در مسیر forwarding و جریان واقعی نیز اعتبارسنجی شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: route انتخاب‌شده باید در مسیر forwarding و جریان واقعی نیز اعتبارسنجی شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: route انتخاب‌شده باید در مسیر forwarding و جریان واقعی نیز اعتبارسنجی شود."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch14:ospf-bgp-lab-cases:l07",
+      "entity": "lesson",
+      "chapter_order": 14,
+      "subchapter_order": 7,
+      "lesson_order": 7,
+      "topic": "bgp-route-reflector-nexthop",
+      "domain": "advanced-routing",
+      "level": "L3",
+      "title_fa": "[L3] iBGP، Route Reflector و دسترس‌پذیری Next-Hop",
+      "title_en": "[L3] iBGP Route Reflection and Next-Hop Reachability",
+      "subchapter_title_fa": "۱۴.۷ آزمایشگاه‌های سناریومحور OSPF و BGP",
+      "tags": [
+        "OSPF",
+        "BGP",
+        "Routing",
+        "Lab",
+        "RCA",
+        "L3"
+      ],
+      "summary": "مقیاس‌پذیری iBGP، وظیفهٔ route reflector و رفع علت‌های دریافت‌نشدن یا نصب‌نشدن route با next-hop نامعتبر.",
+      "full_content": "# iBGP، Route Reflector و دسترس‌پذیری Next-Hop\n\n## عنوان انگلیسی\niBGP Route Reflection and Next-Hop Reachability\n\n## خلاصه\nمقیاس‌پذیری iBGP، وظیفهٔ route reflector و رفع علت‌های دریافت‌نشدن یا نصب‌نشدن route با next-hop نامعتبر.\n\n## اهداف یادگیری\n- محاسبهٔ تعداد sessionهای full mesh\n- درک cluster/originator loop prevention\n- تشخیص route منعکس‌شده با next-hop غیرقابل‌حل\n\n## پیش‌نیازها\nAS داخلی، BGP attributeها، loopback, IGP و route recursion.\n\n## مقدمهٔ مفهومی\nدر iBGP کلاسیک full mesh، هر BGP speaker باید با تمام speakerهای دیگر peering داشته باشد تا قواعد انتشار route رعایت شود. تعداد sessionها برای n روتر برابر n(n−1)/2 است و با رشد شبکه زیاد می‌شود. Route Reflector بخشی از این پیچیدگی را کم می‌کند، اما طراحی cluster، افزونگی و انتخاب best-path مهم است. route ممکن است به کلاینت منعکس شود ولی اگر next-hop به‌شکل مناسب قابل حل نباشد، در routing table نصب نشود.\n\n## مفاهیم اصلی\nدر iBGP کلاسیک full mesh، هر BGP speaker باید با تمام speakerهای دیگر peering داشته باشد تا قواعد انتشار route رعایت شود. تعداد sessionها برای n روتر برابر n(n−1)/2 است و با رشد شبکه زیاد می‌شود. Route Reflector بخشی از این پیچیدگی را کم می‌کند، اما طراحی cluster، افزونگی و انتخاب best-path مهم است. route ممکن است به کلاینت منعکس شود ولی اگر next-hop به‌شکل مناسب قابل حل نباشد، در routing table نصب نشود. نکتهٔ عملی مهم این است که هر ادعا به یک شاهد قابل مشاهده متصل شود. نام پروتکل یا state به‌تنهایی دلیل ریشه‌ای نیست. پیش از تغییر، baseline و محدودهٔ اثر را ثبت کن؛ بعد از تغییر نیز باید همان معیارها دوباره اندازه‌گیری شوند.\n\n## سازوکار داخلی و معماری\nRR routeهای منتخب را بر اساس قواعد reflection بین clientها/peerها بازتاب می‌دهد. Originator ID و Cluster List از loopهای reflection جلوگیری می‌کنند. این attributes جایگزین policy یا underlay reachability نیستند. در بسیاری از طراحی‌ها next-hop route eBGP هنگام انتقال داخلی حفظ می‌شود؛ بنابراین IGP یا مسیر underlay باید آدرس next-hop را resolve کند یا policy مناسب تنظیم شده باشد. رفتار exact route-selection و reflection در هر vendor بررسی شود.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nRR1 و RR2 در AS 65000، با دو client (C1/C2) و یک route دریافتی از edge. route روی RR نصب می‌شود، اما روی C2 به دلیل نبود route underlay به next-hop خارجی نامعتبر است. خروجی BGP ممکن است مسیر را نشان دهد ولی route به RIB/FIB وارد نشود. ابتدا reachability next-hop و IGP را اصلاح کن؛ افزایش تعداد sessionها علت مسئله نیست.\n\n### فرمان‌های تشخیصی\n- `Cisco: `show ip bgp summary``\n- ``show ip bgp <prefix>``\n- ``show ip route <next-hop>``\n- ``show ip cef <destination>`. FRR: `show bgp summary``\n- ``show bgp ipv4 unicast <prefix>``\n- ``show ip route <next-hop>`. نقش client و cluster-id را طبق release بررسی کن.`\n\n## مثال محیط کار\nانتظار: route منعکس‌شده در جدول BGP client با attributes قابل توجیه دیده شود؛ next-hop باید در underlay قابل حل باشد؛ route باید در RIB/FIB نصب شود. اگر فقط BGP table route را نشان می‌دهد، هنوز معیار پایان برآورده نشده است. در گزارش نهایی وضعیت اولیه، تغییر کنترل‌شده، خروجی قبل/بعد و محدودیت مشاهده را از یکدیگر جدا کن. خروجی مثال، خروجی اجراشده محسوب نمی‌شود مگر timestamp و محیط آن ثبت شده باشد.\n\n## آزمایشگاه عملی\nچهار روتر FRR/IOSv با یک RR و دو client بساز؛ اگر منابع اجازه می‌دهد RR دوم برای افزونگی اضافه کن. route آزمایشی را از یک edge اعلام کن، مسیر دریافت‌شده و attributes را روی هر client مقایسه کن. سپس route underlay به next-hop را عمداً حذف کن و اثر آن را در valid/best/RIB ثبت کن؛ در پایان route را بازگردان و end-to-end را تست کن.\n\n## عیب‌یابی مرحله‌ای\n۱) RR و client role درست است؟ ۲) session Established است؟ ۳) RR route را در Loc-RIB دارد؟ ۴) policy اجازهٔ advertise می‌دهد؟ ۵) کلاینت route را دریافت کرده؟ ۶) next-hop قابل resolve است؟ ۷) route reflection loop-prevention attributes غیرمنتظره دارند؟ ۸) مسیر جایگزین/ECMP وجود دارد؟ شواهد را به ترتیب جمع کن تا مشکل session با next-hop اشتباه نشود.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nRR یک نقطهٔ مهم کنترل مسیر است؛ access control، management plane، policy و نظارت بر تغییر route را محافظت کن. RR افزونه باید با design و failure testing واقعی پیاده شود؛ redundancy ظاهری کافی نیست. route leak داخلی ممکن است کل AS را متأثر کند، پس export/import policy برای clientها همچنان لازم است.\n\n## نکات پیشرفته\nRR می‌تواند مسیرهای جایگزین را به‌دلیل انتخاب best-path خودش پنهان کند؛ topologyهای بزرگ با diverse-path requirements نیازمند بررسی قابلیت‌های خاص vendor و design هستند. cluster-id و route reflectors سلسله‌مراتبی باید با تحلیل loop و failure domain مستند شوند. RFC 4456 مبنای استاندارد reflection است.\n\n## جمع‌بندی\nاین درس زمانی تمام است که بتوانی سازوکار را با واژه‌های خود توضیح دهی، یک آزمایش را در محیط مجاز تکرار کنی، معیار قبولی را نشان دهی و پس از رفع اشکال نتیجه را مستقل verify کنی. اگر command در release هدف وجود ندارد، معادل مستند آن را ثبت کن؛ حدس‌زدن syntax جایگزین مستندات نیست.\n\n## واژه‌نامه\niBGP: BGP در یک ASN؛ RR: route reflector؛ client: peer تحت reflection؛ Originator ID/Cluster List: attributes جلوگیری از loop؛ next-hop resolution: حل مسیر رسیدن به next-hop.\n\n## خودآزمایی\nسؤالات ساختاریافتهٔ این درس در `meta.assessment.questions` ذخیره شده‌اند. پاسخ و دلیل هر distractor فقط در `meta.assessment.answer_key` نگهداری می‌شود تا برنامه بتواند آزمون و پاسخ‌نامه را مستقل نمایش دهد.\n\n## وضعیت اعتبارسنجی\nبسته با JSON و ساختار داده‌ای تولید شده است؛ لابراتوارهای توصیف‌شده هنوز روی image/نسخهٔ واقعی اجرا نشده‌اند. وضعیت `review_required` عمداً حفظ می‌شود. قبل از انتشار نهایی، خروجی واقعی IOS/IOS-XE یا FRR به‌همراه نسخه و تاریخ اجرای Lab ثبت و بازبینی شود.",
+      "commands": "Cisco: `show ip bgp summary`; `show ip bgp <prefix>`; `show ip route <next-hop>`; `show ip cef <destination>`. FRR: `show bgp summary`; `show bgp ipv4 unicast <prefix>`; `show ip route <next-hop>`. نقش client و cluster-id را طبق release بررسی کن.",
+      "examples": "انتظار: route منعکس‌شده در جدول BGP client با attributes قابل توجیه دیده شود؛ next-hop باید در underlay قابل حل باشد؛ route باید در RIB/FIB نصب شود. اگر فقط BGP table route را نشان می‌دهد، هنوز معیار پایان برآورده نشده است.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "answers_stored_separately",
+        "source_status=RFC_and_vendor_docs"
+      ],
+      "learning_objectives": [
+        "محاسبهٔ تعداد sessionهای full mesh",
+        "درک cluster/originator loop prevention",
+        "تشخیص route منعکس‌شده با next-hop غیرقابل‌حل"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "RFC 4456 — BGP Route Reflection",
+            "url": "https://www.rfc-editor.org/info/rfc4456/"
+          },
+          {
+            "title": "RFC 4271 — BGP-4",
+            "url": "https://www.rfc-editor.org/info/rfc4271/"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "تعداد sessionهای مورد نیاز در full mesh کلاسیک برای n روتر چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "n×n"
+                },
+                {
+                  "id": "B",
+                  "label": "n−1 فقط در همهٔ توپولوژی‌ها"
+                },
+                {
+                  "id": "C",
+                  "label": "n(n−1)/2"
+                },
+                {
+                  "id": "D",
+                  "label": "2n+1"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "Route Reflector چه چیزی را ساده‌تر می‌کند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "نیاز به underlay را حذف می‌کند"
+                },
+                {
+                  "id": "B",
+                  "label": "نیاز به full mesh iBGP را کاهش می‌دهد"
+                },
+                {
+                  "id": "C",
+                  "label": "تمام policyها را حذف می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "route را رمز می‌کند"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "اگر route در BGP table client دیده می‌شود اما نصب نمی‌شود، کدام مورد مهم است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "next-hop reachability و policy/validity"
+                },
+                {
+                  "id": "B",
+                  "label": "نام میزبان کلاینت فقط"
+                },
+                {
+                  "id": "C",
+                  "label": "ساعت سیستم فقط"
+                },
+                {
+                  "id": "D",
+                  "label": "DNS MX"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "Originator ID و Cluster List چه هدفی دارند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "جایگزینی Local Pref"
+                },
+                {
+                  "id": "B",
+                  "label": "کاهش MTU"
+                },
+                {
+                  "id": "C",
+                  "label": "اندازه‌گیری latency برنامه"
+                },
+                {
+                  "id": "D",
+                  "label": "کمک به جلوگیری از loop در route reflection"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "C",
+              "explanation": "هر جفت روتر یک session دارد؛ از ترکیب‌های دوتایی به‌دست می‌آید.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: هر جفت روتر یک session دارد؛ از ترکیب‌های دوتایی به‌دست می‌آید."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: هر جفت روتر یک session دارد؛ از ترکیب‌های دوتایی به‌دست می‌آید."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: هر جفت روتر یک session دارد؛ از ترکیب‌های دوتایی به‌دست می‌آید."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "B",
+              "explanation": "RR راهکاری برای مقیاس‌پذیری iBGP است.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: RR راهکاری برای مقیاس‌پذیری iBGP است."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: RR راهکاری برای مقیاس‌پذیری iBGP است."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: RR راهکاری برای مقیاس‌پذیری iBGP است."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "A",
+              "explanation": "BGP presence الزاماً به معنی next-hop قابل‌حل یا نصب در RIB نیست.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: BGP presence الزاماً به معنی next-hop قابل‌حل یا نصب در RIB نیست."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: BGP presence الزاماً به معنی next-hop قابل‌حل یا نصب در RIB نیست."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: BGP presence الزاماً به معنی next-hop قابل‌حل یا نصب در RIB نیست."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "این attributes برای جلوگیری از حلقه در reflection استفاده می‌شوند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: این attributes برای جلوگیری از حلقه در reflection استفاده می‌شوند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: این attributes برای جلوگیری از حلقه در reflection استفاده می‌شوند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: این attributes برای جلوگیری از حلقه در reflection استفاده می‌شوند."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch14:ospf-bgp-lab-cases:l08",
+      "entity": "lesson",
+      "chapter_order": 14,
+      "subchapter_order": 7,
+      "lesson_order": 8,
+      "topic": "redistribution-loop-tagging",
+      "domain": "advanced-routing",
+      "level": "L3",
+      "title_fa": "[L3] Redistribution امن OSPF و BGP با Tag و Policy",
+      "title_en": "[L3] Safe OSPF–BGP Redistribution with Tags and Route Policy",
+      "subchapter_title_fa": "۱۴.۷ آزمایشگاه‌های سناریومحور OSPF و BGP",
+      "tags": [
+        "OSPF",
+        "BGP",
+        "Routing",
+        "Lab",
+        "RCA",
+        "L3"
+      ],
+      "summary": "کنترل بازتوزیع routeها، metric/seed metric، tag و حلقه‌های بازگشتی در مرز دو پروتکل.",
+      "full_content": "# Redistribution امن OSPF و BGP با Tag و Policy\n\n## عنوان انگلیسی\nSafe OSPF–BGP Redistribution with Tags and Route Policy\n\n## خلاصه\nکنترل بازتوزیع routeها، metric/seed metric، tag و حلقه‌های بازگشتی در مرز دو پروتکل.\n\n## اهداف یادگیری\n- طراحی مرز محدود redistribution\n- تشخیص loop بازگشتی با tag و policy\n- آزمون failover و rollback\n\n## پیش‌نیازها\nOSPF external routes، BGP policy، route-map/prefix-list و administrative distance.\n\n## مقدمهٔ مفهومی\nRedistribution routeهای یک منبع را به پروتکل دیگر وارد می‌کند؛ این کار اتصال دامنه‌ها را ممکن می‌کند، اما مرز سیاستی خطرناک است. اگر route از OSPF به BGP برود و سپس از مسیری دیگر به OSPF بازگردد، ممکن است مسیر نامطلوب یا loop منطقی ایجاد شود. Tag به‌تنهایی محافظت ایجاد نمی‌کند؛ باید به policy صریحی متصل شود که routeهای واردشده را در جهت بازگشت رد کند.\n\n## مفاهیم اصلی\nRedistribution routeهای یک منبع را به پروتکل دیگر وارد می‌کند؛ این کار اتصال دامنه‌ها را ممکن می‌کند، اما مرز سیاستی خطرناک است. اگر route از OSPF به BGP برود و سپس از مسیری دیگر به OSPF بازگردد، ممکن است مسیر نامطلوب یا loop منطقی ایجاد شود. Tag به‌تنهایی محافظت ایجاد نمی‌کند؛ باید به policy صریحی متصل شود که routeهای واردشده را در جهت بازگشت رد کند. نکتهٔ عملی مهم این است که هر ادعا به یک شاهد قابل مشاهده متصل شود. نام پروتکل یا state به‌تنهایی دلیل ریشه‌ای نیست. پیش از تغییر، baseline و محدودهٔ اثر را ثبت کن؛ بعد از تغییر نیز باید همان معیارها دوباره اندازه‌گیری شوند.\n\n## سازوکار داخلی و معماری\nبرای هر جهت، prefixهای مجاز، متریک/نوع external، tag و شرط رد تعریف کن. seed metric در برخی پروتکل‌ها برای route خارجی لازم است؛ metric گم‌شده می‌تواند route را وارد نکند یا رفتار وابسته به platform داشته باشد. administrative distance در انتخاب بین منابع با metric داخل یک پروتکل متفاوت است. طراحی ساده‌تر و امن‌تر اغلب یک‌طرفه یا دارای مرزهای روشن است؛ دوطرفه کردن redistribution باید دلیل و جلوگیری از loop مستند داشته باشد.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nR1 مرز OSPF↔BGP است. فقط 10.50.0.0/16 به‌عنوان prefix آزمایشی از OSPF وارد BGP می‌شود و با tag/attribute مشخص علامت می‌خورد. در مسیر بازگشت، policy باید همان route را رد کند، نه این‌که صرفاً به آن metric بالاتری بدهد. route table، BGP table و LSDB را قبل و بعد مقایسه کن و مطمئن شو default یا connected routeهای ناخواسته وارد نشده‌اند.\n\n### فرمان‌های تشخیصی\n- `Cisco: `show route-map``\n- ``show ip prefix-list``\n- ``show ip route <prefix>``\n- ``show ip bgp <prefix>``\n- ``show ip ospf database external`. دستورات دقیق redistribution و route-map را فقط مطابق IOS/IOS-XE release هدف تنظیم کن.`\n\n## مثال محیط کار\nمعیار قبولی: تنها prefix allow-list وارد دامنهٔ مقصد می‌شود؛ route بازگشتی رد می‌شود؛ tag/policy در خروجی قابل مشاهده است؛ failover ناخواسته route leak نمی‌سازد و rollback بازگشت به baseline را ثابت می‌کند. در گزارش نهایی وضعیت اولیه، تغییر کنترل‌شده، خروجی قبل/بعد و محدودیت مشاهده را از یکدیگر جدا کن. خروجی مثال، خروجی اجراشده محسوب نمی‌شود مگر timestamp و محیط آن ثبت شده باشد.\n\n## آزمایشگاه عملی\nسه روتر در GNS3/EVE-NG: OSPF داخلی، مرز redistribution و eBGP آزمایشی. ابتدا فقط یک prefix test را مجاز کن. سناریوی اول: redistribution یک‌طرفه؛ دوم: مسیر بازگشت را کنترل‌شده بساز و verify کن که tag/policy آن را متوقف می‌کند. counters/route tables و زمان را ذخیره کن. هیچ route پیش‌فرض یا prefix واقعی در این آزمایش redistribute نشود.\n\n## عیب‌یابی مرحله‌ای\nاگر route یک‌بار در BGP و سپس به OSPF بازگشته، origin و tag/attribute را در تمام مراحل بررسی کن. ابتدا خروجی policy match counters و prefix list را ببین؛ سپس OSPF external LSA و BGP path attributes را مقایسه کن. اگر route غایب است، metric، route-map permit/deny، sequence order و source route را بررسی کن. هر تغییر باید با مسیر برگشت و عدم وجود routeهای اضافی آزموده شود.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nRoute leak می‌تواند شبکه را دچار blackhole یا عبور ترافیک از مرز نامناسب کند. سیاست کمینه‌دسترسی به prefixها (allow-list) بر redistributing everything اولویت دارد. route-mapهای بدون deny پایانی و ترتیب اشتباه sequence خطرناک‌اند. پشتیبان، console و test plan پیش از تغییر الزامی است.\n\n## نکات پیشرفته\nبرای production، مستند کن کدام routing domain مالک prefix است، چه کسی آن را تغییر می‌دهد، tag چطور حفظ می‌شود و چه اتفاقی در failover می‌افتد. بعضی attributeها در مرز پروتکل از بین می‌روند یا معادل مستقیم ندارند. طراحی باید بر اساس کنترل loop، route origin و سناریوی شکست بررسی شود، نه فقط موفق‌شدن ping.\n\n## جمع‌بندی\nاین درس زمانی تمام است که بتوانی سازوکار را با واژه‌های خود توضیح دهی، یک آزمایش را در محیط مجاز تکرار کنی، معیار قبولی را نشان دهی و پس از رفع اشکال نتیجه را مستقل verify کنی. اگر command در release هدف وجود ندارد، معادل مستند آن را ثبت کن؛ حدس‌زدن syntax جایگزین مستندات نیست.\n\n## واژه‌نامه\nRedistribution: تزریق route از یک پروتکل به دیگری؛ seed metric: متریک اولیه route خارجی؛ tag: شناسهٔ policy روی route/LSA؛ route leak: انتشار غیرمجاز route؛ external LSA: route خارجی OSPF.\n\n## خودآزمایی\nسؤالات ساختاریافتهٔ این درس در `meta.assessment.questions` ذخیره شده‌اند. پاسخ و دلیل هر distractor فقط در `meta.assessment.answer_key` نگهداری می‌شود تا برنامه بتواند آزمون و پاسخ‌نامه را مستقل نمایش دهد.\n\n## وضعیت اعتبارسنجی\nبسته با JSON و ساختار داده‌ای تولید شده است؛ لابراتوارهای توصیف‌شده هنوز روی image/نسخهٔ واقعی اجرا نشده‌اند. وضعیت `review_required` عمداً حفظ می‌شود. قبل از انتشار نهایی، خروجی واقعی IOS/IOS-XE یا FRR به‌همراه نسخه و تاریخ اجرای Lab ثبت و بازبینی شود.",
+      "commands": "Cisco: `show route-map`; `show ip prefix-list`; `show ip route <prefix>`; `show ip bgp <prefix>`; `show ip ospf database external`. دستورات دقیق redistribution و route-map را فقط مطابق IOS/IOS-XE release هدف تنظیم کن.",
+      "examples": "معیار قبولی: تنها prefix allow-list وارد دامنهٔ مقصد می‌شود؛ route بازگشتی رد می‌شود؛ tag/policy در خروجی قابل مشاهده است؛ failover ناخواسته route leak نمی‌سازد و rollback بازگشت به baseline را ثابت می‌کند.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "answers_stored_separately",
+        "source_status=RFC_and_vendor_docs"
+      ],
+      "learning_objectives": [
+        "طراحی مرز محدود redistribution",
+        "تشخیص loop بازگشتی با tag و policy",
+        "آزمون failover و rollback"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "RFC 4271 — BGP-4",
+            "url": "https://www.rfc-editor.org/info/rfc4271/"
+          },
+          {
+            "title": "RFC 7454 — BGP Operations and Security",
+            "url": "https://www.rfc-editor.org/info/rfc7454/"
+          },
+          {
+            "title": "RFC 2328 — OSPFv2",
+            "url": "https://www.rfc-editor.org/rfc/rfc2328.html"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "Tag در redistribution به‌تنهایی چه چیزی را تضمین نمی‌کند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "هیچ چیز؛ باید به policy رد/قبول صریح وصل شود"
+                },
+                {
+                  "id": "B",
+                  "label": "نام ASN"
+                },
+                {
+                  "id": "C",
+                  "label": "کارکرد DNS"
+                },
+                {
+                  "id": "D",
+                  "label": "تغییر MAC"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "چرا allow-list برای redistribution بهتر از انتشار تمام routeهاست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "چون همهٔ routeها را مخفی می‌کند"
+                },
+                {
+                  "id": "B",
+                  "label": "چون نیاز به backup را حذف می‌کند"
+                },
+                {
+                  "id": "C",
+                  "label": "چون دامنهٔ routeهای قابل انتشار را محدود می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "چون TCP را سریع‌تر می‌کند"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "Seed metric با Administrative Distance چه تفاوتی دارد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "هیچ تفاوتی ندارند"
+                },
+                {
+                  "id": "B",
+                  "label": "Seed metric مقدار route خارجی در پروتکل مقصد است؛ AD/preference منابع route را مقایسه می‌کند"
+                },
+                {
+                  "id": "C",
+                  "label": "AD فقط رمزنگاری است"
+                },
+                {
+                  "id": "D",
+                  "label": "Seed metric فقط روی switch وجود دارد"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "بعد از پیاده‌سازی redistribution چه اثباتی ضروری است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط کانفیگ از نظر syntax پذیرفته شود"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط BGP Established باشد"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط یک interface running باشد"
+                },
+                {
+                  "id": "D",
+                  "label": "prefix مجاز وارد شود، prefix ناخواسته رد شود و failover/rollback تست شود"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "A",
+              "explanation": "Tag صرفاً نشانگر است؛ بدون policy حلقه را خودکار متوقف نمی‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: Tag صرفاً نشانگر است؛ بدون policy حلقه را خودکار متوقف نمی‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: Tag صرفاً نشانگر است؛ بدون policy حلقه را خودکار متوقف نمی‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: Tag صرفاً نشانگر است؛ بدون policy حلقه را خودکار متوقف نمی‌کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "C",
+              "explanation": "کمینه‌کردن prefixهای مجاز احتمال route leak را کاهش می‌دهد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: کمینه‌کردن prefixهای مجاز احتمال route leak را کاهش می‌دهد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: کمینه‌کردن prefixهای مجاز احتمال route leak را کاهش می‌دهد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: کمینه‌کردن prefixهای مجاز احتمال route leak را کاهش می‌دهد."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "B",
+              "explanation": "دو سازوکار در مرحله‌ها و نقش‌های متفاوت عمل می‌کنند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: دو سازوکار در مرحله‌ها و نقش‌های متفاوت عمل می‌کنند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: دو سازوکار در مرحله‌ها و نقش‌های متفاوت عمل می‌کنند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: دو سازوکار در مرحله‌ها و نقش‌های متفاوت عمل می‌کنند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "انتشار route و رفتار مسیر بازگشت باید به‌صورت عملی اثبات شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: انتشار route و رفتار مسیر بازگشت باید به‌صورت عملی اثبات شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: انتشار route و رفتار مسیر بازگشت باید به‌صورت عملی اثبات شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: انتشار route و رفتار مسیر بازگشت باید به‌صورت عملی اثبات شود."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch14:ospf-bgp-lab-cases:l09",
+      "entity": "lesson",
+      "chapter_order": 14,
+      "subchapter_order": 7,
+      "lesson_order": 9,
+      "topic": "bgp-route-leak-maxprefix",
+      "domain": "advanced-routing",
+      "level": "L4",
+      "title_fa": "[L4] جلوگیری از Route Leak، Prefix Filtering و Max-Prefix",
+      "title_en": "[L4] BGP Route Leak Prevention, Prefix Filtering and Max-Prefix",
+      "subchapter_title_fa": "۱۴.۷ آزمایشگاه‌های سناریومحور OSPF و BGP",
+      "tags": [
+        "OSPF",
+        "BGP",
+        "Routing",
+        "Lab",
+        "RCA",
+        "L4"
+      ],
+      "summary": "طراحی سیاست import/export برای eBGP، حفاظت با سقف prefix و کنترل انتشار با مدل allow-list و RFC 8212.",
+      "full_content": "# جلوگیری از Route Leak، Prefix Filtering و Max-Prefix\n\n## عنوان انگلیسی\nBGP Route Leak Prevention, Prefix Filtering and Max-Prefix\n\n## خلاصه\nطراحی سیاست import/export برای eBGP، حفاظت با سقف prefix و کنترل انتشار با مدل allow-list و RFC 8212.\n\n## اهداف یادگیری\n- ساخت policy دوطرفه و صریح برای peer\n- طراحی سقف prefix بر اساس baseline و ظرفیت\n- تحلیل خطر تغییر policy و سناریوی recovery\n\n## پیش‌نیازها\neBGP peering، prefix-list، route-map، communities، route leak و monitoring.\n\n## مقدمهٔ مفهومی\nنشست BGP نباید به‌معنی اعتماد به تمام routeهای peer باشد. Import policy تعیین می‌کند کدام اعلان‌های دریافتی پذیرفته شوند؛ export policy تعیین می‌کند چه چیزی ارسال شود. RFC 8212 رفتار پیش‌فرض سخت‌گیرانه‌تری را برای eBGP بدون سیاست مشخص تعریف می‌کند، اما اپراتور همچنان باید policy صریح و درست بسازد. Max-prefix یک حفاظ انفجاری در برابر رشد غیرمنتظرهٔ route count است، نه جایگزین فیلتر prefix.\n\n## مفاهیم اصلی\nنشست BGP نباید به‌معنی اعتماد به تمام routeهای peer باشد. Import policy تعیین می‌کند کدام اعلان‌های دریافتی پذیرفته شوند؛ export policy تعیین می‌کند چه چیزی ارسال شود. RFC 8212 رفتار پیش‌فرض سخت‌گیرانه‌تری را برای eBGP بدون سیاست مشخص تعریف می‌کند، اما اپراتور همچنان باید policy صریح و درست بسازد. Max-prefix یک حفاظ انفجاری در برابر رشد غیرمنتظرهٔ route count است، نه جایگزین فیلتر prefix. نکتهٔ عملی مهم این است که هر ادعا به یک شاهد قابل مشاهده متصل شود. نام پروتکل یا state به‌تنهایی دلیل ریشه‌ای نیست. پیش از تغییر، baseline و محدودهٔ اثر را ثبت کن؛ بعد از تغییر نیز باید همان معیارها دوباره اندازه‌گیری شوند.\n\n## سازوکار داخلی و معماری\nPolicy هر همسایه باید نقش commercial/organizational آن را بازتاب دهد: customer، provider، peer یا internal. برای هر نقش، prefixهای مجاز، default handling، private AS policy، communities و سقف ظرفیت متفاوت‌اند. سقف prefix بیش‌ازحد پایین می‌تواند هنگام رشد مجاز، نشست را قطع کند؛ بیش‌ازحد بالا هم هشدار مؤثری نیست. alert threshold، shutdown behavior و بازیابی خودکار/دستی به قابلیت platform وابسته است.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nیک سازمان فقط دو prefix عمومی آزمایشی را از peer فرضی می‌پذیرد. export policy نیز تنها prefixهای متعلق به خود سازمان را مجاز می‌کند. اگر peer به‌اشتباه default یا prefix ناشناخته advertise کند، import policy باید آن را reject کند. سپس در لابراتوار تعداد routeها را از سقف کنترل‌شده عبور بده و ببین هشدار، state و recovery چگونه عمل می‌کند؛ از اعداد کوچک و ایزوله استفاده کن.\n\n### فرمان‌های تشخیصی\n- `Cisco: `show ip bgp summary``\n- ``show ip bgp neighbors <peer> received-routes``\n- ``show ip bgp neighbors <peer> advertised-routes``\n- ``show route-map``\n- ``show ip prefix-list`. FRR: `show bgp neighbors <peer>` و route-map/prefix-list مرتبط. قابلیت received-routes و جزئیات max-prefix در release هدف بررسی شود.`\n\n## مثال محیط کار\nخروجی پذیرش باید list مشخصی از prefixهای مجاز، تعداد دریافت‌شده، prefixهای rejected، دلیل رد و state نشست داشته باشد. ثبت صرفاً تعداد prefixes بدون inspect کردن contents برای اثبات policy کافی نیست. در گزارش نهایی وضعیت اولیه، تغییر کنترل‌شده، خروجی قبل/بعد و محدودیت مشاهده را از یکدیگر جدا کن. خروجی مثال، خروجی اجراشده محسوب نمی‌شود مگر timestamp و محیط آن ثبت شده باشد.\n\n## آزمایشگاه عملی\nدر FRR/IOSv سه AS خصوصی بساز و برای هر peer فهرست مجاز مستقل تعریف کن. baseline تعداد prefix و routeهای مجاز را ذخیره کن. یک prefix غیرمجاز و سپس یک burst کوچک از prefixهای تستی بده؛ بررسی کن که import/export filters و max-prefix مطابق طراحی عمل می‌کنند. آزمون در محیط ایزوله باشد؛ پس از آن اعلان‌ها و policy آزمایشی را پاک کن.\n\n## عیب‌یابی مرحله‌ای\nRoute leak مشکوک: route source، peer، AS_PATH، received/advertised routes، policy hit counters و timestamp را بررسی کن. اگر session به max-prefix افتاده، route count، تغییرات peer و threshold/teardown behavior را مشخص کن. قبل از بالا بردن سقف، مالکیت prefixها و علت افزایش را تأیید کن. برای recovery فقط روش پشتیبانی‌شدهٔ همان platform را اجرا کن.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nAllow-list، policy explicit برای import و export، max-prefix، prefix origin validation در صورت زیرساخت موجود، ثبت تغییر و پایش مداوم پایه‌های امنیت BGP هستند. هیچ تست route leak را به اینترنت یا peer واقعی ارسال نکن. RFCها چارچوب می‌دهند اما policy اشتباهِ صریح همچنان می‌تواند خطرناک باشد.\n\n## نکات پیشرفته\nRFC 8212 را همراه با RFC 7454 (عملیات و امنیت BGP) بخوان. سقف prefix را بر اساس baseline، growth budget، family، peer role و سناریوی maintenance تعریف کن. threshold و reset mechanism ممکن است vendor-specific باشد. در طراحی high availability، رفتار failover و route withdrawal ناشی از shutdown را اندازه بگیر تا خود حفاظ تبدیل به نقطهٔ قطع سرویس نشود.\n\n## جمع‌بندی\nاین درس زمانی تمام است که بتوانی سازوکار را با واژه‌های خود توضیح دهی، یک آزمایش را در محیط مجاز تکرار کنی، معیار قبولی را نشان دهی و پس از رفع اشکال نتیجه را مستقل verify کنی. اگر command در release هدف وجود ندارد، معادل مستند آن را ثبت کن؛ حدس‌زدن syntax جایگزین مستندات نیست.\n\n## واژه‌نامه\nImport policy: فیلتر routeهای دریافتی؛ Export policy: فیلتر routeهای ارسالی؛ Max-prefix: سقف route count؛ route leak: انتشار خارج از دامنهٔ مجاز؛ prefix origin validation: بررسی سازگاری ادعای origin با اطلاعات اعتبارسنجی موجود.\n\n## خودآزمایی\nسؤالات ساختاریافتهٔ این درس در `meta.assessment.questions` ذخیره شده‌اند. پاسخ و دلیل هر distractor فقط در `meta.assessment.answer_key` نگهداری می‌شود تا برنامه بتواند آزمون و پاسخ‌نامه را مستقل نمایش دهد.\n\n## وضعیت اعتبارسنجی\nبسته با JSON و ساختار داده‌ای تولید شده است؛ لابراتوارهای توصیف‌شده هنوز روی image/نسخهٔ واقعی اجرا نشده‌اند. وضعیت `review_required` عمداً حفظ می‌شود. قبل از انتشار نهایی، خروجی واقعی IOS/IOS-XE یا FRR به‌همراه نسخه و تاریخ اجرای Lab ثبت و بازبینی شود.",
+      "commands": "Cisco: `show ip bgp summary`; `show ip bgp neighbors <peer> received-routes`; `show ip bgp neighbors <peer> advertised-routes`; `show route-map`; `show ip prefix-list`. FRR: `show bgp neighbors <peer>` و route-map/prefix-list مرتبط. قابلیت received-routes و جزئیات max-prefix در release هدف بررسی شود.",
+      "examples": "خروجی پذیرش باید list مشخصی از prefixهای مجاز، تعداد دریافت‌شده، prefixهای rejected، دلیل رد و state نشست داشته باشد. ثبت صرفاً تعداد prefixes بدون inspect کردن contents برای اثبات policy کافی نیست.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "answers_stored_separately",
+        "source_status=RFC_and_vendor_docs"
+      ],
+      "learning_objectives": [
+        "ساخت policy دوطرفه و صریح برای peer",
+        "طراحی سقف prefix بر اساس baseline و ظرفیت",
+        "تحلیل خطر تغییر policy و سناریوی recovery"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "RFC 8212 — Default External BGP Route Propagation Behavior without Policies",
+            "url": "https://www.rfc-editor.org/info/rfc8212/"
+          },
+          {
+            "title": "RFC 7454 — BGP Operations and Security",
+            "url": "https://www.rfc-editor.org/info/rfc7454/"
+          },
+          {
+            "title": "RFC 4271 — BGP-4",
+            "url": "https://www.rfc-editor.org/info/rfc4271/"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "وظیفهٔ import policy چیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فیلتر routeهایی که peer به ما می‌دهد"
+                },
+                {
+                  "id": "B",
+                  "label": "تنظیم DNS clientها"
+                },
+                {
+                  "id": "C",
+                  "label": "انتخاب DR در OSPF"
+                },
+                {
+                  "id": "D",
+                  "label": "رمزکردن payload کاربران"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "Max-prefix جایگزین کدام کنترل نیست؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "هیچ کنترلی نیست"
+                },
+                {
+                  "id": "B",
+                  "label": "فیلتر prefix و policy معنایی import/export"
+                },
+                {
+                  "id": "C",
+                  "label": "مانیتورینگ route count"
+                },
+                {
+                  "id": "D",
+                  "label": "بررسی تغییرات"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "چگونه سقف max-prefix تعیین شود؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "همیشه عدد 1"
+                },
+                {
+                  "id": "B",
+                  "label": "بدون baseline، کوچک‌ترین عدد ممکن"
+                },
+                {
+                  "id": "C",
+                  "label": "بر اساس baseline، role، رشد و رفتار recovery"
+                },
+                {
+                  "id": "D",
+                  "label": "بر اساس MTU"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "RFC 8212 چه جهت‌گیری امنیتی مهمی دارد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "BGP را حذف می‌کند"
+                },
+                {
+                  "id": "B",
+                  "label": "الزام به OSPF Full می‌دهد"
+                },
+                {
+                  "id": "C",
+                  "label": "prefix filtering را بی‌فایده می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "انتشار route روی eBGP بدون policy صریح را محدود می‌کند"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "A",
+              "explanation": "Import policy routeهای دریافتی را کنترل می‌کند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: Import policy routeهای دریافتی را کنترل می‌کند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: Import policy routeهای دریافتی را کنترل می‌کند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: Import policy routeهای دریافتی را کنترل می‌کند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "B",
+              "explanation": "سقف تعداد routeها نمی‌گوید routeهای پذیرفته‌شده درست و مجازند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: سقف تعداد routeها نمی‌گوید routeهای پذیرفته‌شده درست و مجازند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: سقف تعداد routeها نمی‌گوید routeهای پذیرفته‌شده درست و مجازند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: سقف تعداد routeها نمی‌گوید routeهای پذیرفته‌شده درست و مجازند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "C",
+              "explanation": "سقف باید ظرفیت واقعی و failure behavior را در نظر گیرد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: سقف باید ظرفیت واقعی و failure behavior را در نظر گیرد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: سقف باید ظرفیت واقعی و failure behavior را در نظر گیرد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: سقف باید ظرفیت واقعی و failure behavior را در نظر گیرد."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "بدون import/export policy مشخص نباید به انتشار آزاد route متکی شد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: بدون import/export policy مشخص نباید به انتشار آزاد route متکی شد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: بدون import/export policy مشخص نباید به انتشار آزاد route متکی شد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: بدون import/export policy مشخص نباید به انتشار آزاد route متکی شد."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch14:ospf-bgp-lab-cases:l10",
+      "entity": "lesson",
+      "chapter_order": 14,
+      "subchapter_order": 7,
+      "lesson_order": 10,
+      "topic": "bgp-convergence-flap",
+      "domain": "advanced-routing",
+      "level": "L4",
+      "title_fa": "[L4] همگرایی BGP، Route Flap و طراحی Failover",
+      "title_en": "[L4] BGP Convergence, Route Flaps and Failover Engineering",
+      "subchapter_title_fa": "۱۴.۷ آزمایشگاه‌های سناریومحور OSPF و BGP",
+      "tags": [
+        "OSPF",
+        "BGP",
+        "Routing",
+        "Lab",
+        "RCA",
+        "L4"
+      ],
+      "summary": "تحلیل تایمر، withdrawal، مسیر جایگزین، route flap و آزمون failover با اندازه‌گیری قابل تکرار.",
+      "full_content": "# همگرایی BGP، Route Flap و طراحی Failover\n\n## عنوان انگلیسی\nBGP Convergence, Route Flaps and Failover Engineering\n\n## خلاصه\nتحلیل تایمر، withdrawal، مسیر جایگزین، route flap و آزمون failover با اندازه‌گیری قابل تکرار.\n\n## اهداف یادگیری\n- تفکیک detection، withdrawal، selection و forwarding convergence\n- طراحی آزمون failover قابل تکرار\n- ارزیابی trade-offهای graceful restart و dampening\n\n## پیش‌نیازها\nBGP state/attributes، control plane/data plane، SLA و failure domains.\n\n## مقدمهٔ مفهومی\nهمگرایی یک رویداد واحد نیست: خرابی باید تشخیص داده شود، همسایه/پروتکل آن را منعکس کند، route جایگزین انتخاب شود، RIB/FIB به‌روز شود و برنامه‌ها جریان جدید را تجربه کنند. اندازه‌گیری فقط از لحظهٔ interface down تا ping اول نمی‌تواند همهٔ این مراحل را توضیح دهد. Route flap می‌تواند باعث churn در control plane و ناپایداری عملکرد شود؛ damping یا graceful restart هرکدام trade-off دارند و نباید کورکورانه فعال شوند.\n\n## مفاهیم اصلی\nهمگرایی یک رویداد واحد نیست: خرابی باید تشخیص داده شود، همسایه/پروتکل آن را منعکس کند، route جایگزین انتخاب شود، RIB/FIB به‌روز شود و برنامه‌ها جریان جدید را تجربه کنند. اندازه‌گیری فقط از لحظهٔ interface down تا ping اول نمی‌تواند همهٔ این مراحل را توضیح دهد. Route flap می‌تواند باعث churn در control plane و ناپایداری عملکرد شود؛ damping یا graceful restart هرکدام trade-off دارند و نباید کورکورانه فعال شوند. نکتهٔ عملی مهم این است که هر ادعا به یک شاهد قابل مشاهده متصل شود. نام پروتکل یا state به‌تنهایی دلیل ریشه‌ای نیست. پیش از تغییر، baseline و محدودهٔ اثر را ثبت کن؛ بعد از تغییر نیز باید همان معیارها دوباره اندازه‌گیری شوند.\n\n## سازوکار داخلی و معماری\nBGP detection با TCP loss, hold timer, BFD یا signalingهای دیگر مرتبط است؛ سپس withdrawal یا invalidation منتشر می‌شود. انتخاب best-path و update propagation زمان می‌برد. FIB update و ARP/ND/next-hop adjacency نیز می‌تواند جداگانه تأخیر ایجاد کند. Graceful Restart در برخی شکست‌ها route stale را حفظ می‌کند تا restart همتا انجام شود؛ این می‌تواند قطع کوتاه را کم کند اما در صورت تشخیص‌ندادن خرابی واقعی خطر blackhole ایجاد می‌کند. تنظیمات دقیق platform و peer capability لازم است.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nدو مسیر primary و backup برای یک prefix تستی طراحی کن. timestamp شروع قطع، زمانی که neighbor از دست رفت، withdrawal دریافت‌شده، انتخاب route جایگزین، FIB update و اولین جریان موفق را جدا ثبت کن. پنج بار آزمون کنترل‌شده تکرار کن تا میانگین و بیشینه را بسنجی. مسیر backup باید next-hop معتبر و policy سازگار داشته باشد؛ صرف وجود route در BGP table معیار failover نیست.\n\n### فرمان‌های تشخیصی\n- `Cisco: `show ip bgp summary``\n- ``show ip bgp <prefix>``\n- ``show ip route <prefix>``\n- ``show ip cef <destination>``\n- ``show logging`. FRR: `show bgp summary``\n- ``show bgp ipv4 unicast <prefix>``\n- ``show ip route <prefix>`. timer/BFD/GR details با guide همان version تأیید شود.`\n\n## مثال محیط کار\nگزارش آزمون باید timestampهای detection، route selection، FIB convergence و application recovery، packet loss، backup next-hop و نتیجهٔ restore را جدا ثبت کند. حد پذیرش پروژه باید قبل از آزمایش تعیین شود؛ عدد نمونه را به‌عنوان تضمین vendor معرفی نکن. در گزارش نهایی وضعیت اولیه، تغییر کنترل‌شده، خروجی قبل/بعد و محدودیت مشاهده را از یکدیگر جدا کن. خروجی مثال، خروجی اجراشده محسوب نمی‌شود مگر timestamp و محیط آن ثبت شده باشد.\n\n## آزمایشگاه عملی\nدر lab یک لینک primary را قطع و سپس restore کن. یک script محلی یا timestamp دستی برای ثبت monotonic time استفاده کن؛ clockهای دستگاه‌ها باید هم‌تراز باشند. command/log و packet capture در نقاط ضروری ثبت شود. آزمایش جداگانه برای neighbor failure، underlay failure و blackhole شبیه‌سازی‌شده انجام بده. بعد از هر بار وضعیت baseline، route count و FIB را تأیید کن.\n\n## عیب‌یابی مرحله‌ای\nاگر قطع طولانی است، زمان هر مرحله را بشکن: detection دیر است؟ withdrawal به همتا نمی‌رسد؟ backup path rejected است؟ best-path انتخاب می‌شود اما next-hop resolve نیست؟ FIB update دیر است؟ برنامه packet loss دیگری دارد؟ برای route flap، correlation با interface errors، CPU، BGP logs و تغییرات policy لازم است. یک timer را بدون دانستن bottleneck تغییر نده.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nتغییر hold timer، BFD، dampening یا graceful-restart می‌تواند همگرایی و پایداری را جابه‌جا کند و به قطع گسترده منجر شود. در پنجرهٔ تغییر و روی peerهای کنترل‌شده تست کن؛ thresholdها را مستند کن. برچسب «سریع‌تر» بدون اندازه‌گیری loss و false positive قابل قبول نیست.\n\n## نکات پیشرفته\nGraceful restart هدفش حفظ forwarding طی restart است، نه پنهان‌کردن تمام خرابی‌ها. Route flap dampening می‌تواند نوسان را کاهش دهد اما در بعضی الگوها route سالم را هم برای مدتی suppressed نگه دارد؛ استفاده‌اش به نقش شبکه، سیاست upstream و behavior پلتفرم وابسته است. برای طراحی enterprise، معیار SLO، percentiles، graceful recovery و failure-domain را گزارش کن.\n\n## جمع‌بندی\nاین درس زمانی تمام است که بتوانی سازوکار را با واژه‌های خود توضیح دهی، یک آزمایش را در محیط مجاز تکرار کنی، معیار قبولی را نشان دهی و پس از رفع اشکال نتیجه را مستقل verify کنی. اگر command در release هدف وجود ندارد، معادل مستند آن را ثبت کن؛ حدس‌زدن syntax جایگزین مستندات نیست.\n\n## واژه‌نامه\nConvergence: پایدارشدن بعد از تغییر؛ withdrawal: پس‌گرفتن اعلان route؛ flap: نوسان مکرر route/لینک؛ BFD: تشخیص سریع خرابی؛ GR: graceful restart؛ FIB: ساختار forwarding.\n\n## خودآزمایی\nسؤالات ساختاریافتهٔ این درس در `meta.assessment.questions` ذخیره شده‌اند. پاسخ و دلیل هر distractor فقط در `meta.assessment.answer_key` نگهداری می‌شود تا برنامه بتواند آزمون و پاسخ‌نامه را مستقل نمایش دهد.\n\n## وضعیت اعتبارسنجی\nبسته با JSON و ساختار داده‌ای تولید شده است؛ لابراتوارهای توصیف‌شده هنوز روی image/نسخهٔ واقعی اجرا نشده‌اند. وضعیت `review_required` عمداً حفظ می‌شود. قبل از انتشار نهایی، خروجی واقعی IOS/IOS-XE یا FRR به‌همراه نسخه و تاریخ اجرای Lab ثبت و بازبینی شود.",
+      "commands": "Cisco: `show ip bgp summary`; `show ip bgp <prefix>`; `show ip route <prefix>`; `show ip cef <destination>`; `show logging`. FRR: `show bgp summary`; `show bgp ipv4 unicast <prefix>`; `show ip route <prefix>`. timer/BFD/GR details با guide همان version تأیید شود.",
+      "examples": "گزارش آزمون باید timestampهای detection، route selection، FIB convergence و application recovery، packet loss، backup next-hop و نتیجهٔ restore را جدا ثبت کند. حد پذیرش پروژه باید قبل از آزمایش تعیین شود؛ عدد نمونه را به‌عنوان تضمین vendor معرفی نکن.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "answers_stored_separately",
+        "source_status=RFC_and_vendor_docs"
+      ],
+      "learning_objectives": [
+        "تفکیک detection، withdrawal، selection و forwarding convergence",
+        "طراحی آزمون failover قابل تکرار",
+        "ارزیابی trade-offهای graceful restart و dampening"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "RFC 4271 — BGP-4",
+            "url": "https://www.rfc-editor.org/info/rfc4271/"
+          },
+          {
+            "title": "RFC 4724 — Graceful Restart Mechanism for BGP",
+            "url": "https://www.rfc-editor.org/info/rfc4724/"
+          },
+          {
+            "title": "RFC 7454 — BGP Operations and Security",
+            "url": "https://www.rfc-editor.org/info/rfc7454/"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "برای تحلیل درست زمان همگرایی، کدام روش مناسب‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط ساعت شروع maintenance را ثبت کن"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط یک ping بعد از قطع بگیر"
+                },
+                {
+                  "id": "C",
+                  "label": "مراحل detection، withdrawal, best-path, FIB و application را جدا timestamp کن"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط CPU را اندازه بگیر"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "Graceful Restart به‌طور کلی برای چه هدفی طراحی شده است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "حذف نیاز به routing policy"
+                },
+                {
+                  "id": "B",
+                  "label": "حفظ موقت forwarding state در سناریوهای restart واجد شرایط"
+                },
+                {
+                  "id": "C",
+                  "label": "افزایش پهنای‌باند فیزیکی"
+                },
+                {
+                  "id": "D",
+                  "label": "رمزکردن BGP UPDATE"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "چرا route flap dampening را نباید بدون تحلیل فعال کرد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "ممکن است route سالم را نیز موقتاً suppressed کند"
+                },
+                {
+                  "id": "B",
+                  "label": "همیشه تعداد routeها را صفر می‌کند"
+                },
+                {
+                  "id": "C",
+                  "label": "BGP را به OSPF تبدیل می‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "فقط در LAN وجود دارد"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "route backup در BGP دیده می‌شود ولی traffic failover نمی‌کند؛ چه بررسی لازم است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "فقط نام interface"
+                },
+                {
+                  "id": "B",
+                  "label": "فقط DNS"
+                },
+                {
+                  "id": "C",
+                  "label": "فقط تعداد CPU core"
+                },
+                {
+                  "id": "D",
+                  "label": "next-hop، RIB/FIB، policy، مسیر برگشت و جریان واقعی"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "C",
+              "explanation": "تفکیک مراحل مشخص می‌کند تأخیر واقعی در کدام قسمت است.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: تفکیک مراحل مشخص می‌کند تأخیر واقعی در کدام قسمت است."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: تفکیک مراحل مشخص می‌کند تأخیر واقعی در کدام قسمت است."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: تفکیک مراحل مشخص می‌کند تأخیر واقعی در کدام قسمت است."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "B",
+              "explanation": "GR می‌تواند اختلال restart را کاهش دهد، اما trade-off دارد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: GR می‌تواند اختلال restart را کاهش دهد، اما trade-off دارد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: GR می‌تواند اختلال restart را کاهش دهد، اما trade-off دارد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: GR می‌تواند اختلال restart را کاهش دهد، اما trade-off دارد."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "A",
+              "explanation": "مهار نوسان می‌تواند هزینهٔ تأخیر برای routeهای معتبر نیز داشته باشد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: مهار نوسان می‌تواند هزینهٔ تأخیر برای routeهای معتبر نیز داشته باشد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: مهار نوسان می‌تواند هزینهٔ تأخیر برای routeهای معتبر نیز داشته باشد."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: مهار نوسان می‌تواند هزینهٔ تأخیر برای routeهای معتبر نیز داشته باشد."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "وجود candidate backup لزوماً به forwarding قابل استفاده منجر نمی‌شود.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: وجود candidate backup لزوماً به forwarding قابل استفاده منجر نمی‌شود."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: وجود candidate backup لزوماً به forwarding قابل استفاده منجر نمی‌شود."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: وجود candidate backup لزوماً به forwarding قابل استفاده منجر نمی‌شود."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch14:ospf-bgp-lab-cases:l11",
+      "entity": "lesson",
+      "chapter_order": 14,
+      "subchapter_order": 7,
+      "lesson_order": 11,
+      "topic": "route-selection-rib-fib-rca",
+      "domain": "advanced-routing",
+      "level": "L4",
+      "title_fa": "[L4] تحلیل ریشه‌ای مسیر نامطلوب: RIB، FIB، ECMP و مسیر برگشت",
+      "title_en": "[L4] Routing Root Cause Analysis: RIB, FIB, ECMP and Return Path",
+      "subchapter_title_fa": "۱۴.۷ آزمایشگاه‌های سناریومحور OSPF و BGP",
+      "tags": [
+        "OSPF",
+        "BGP",
+        "Routing",
+        "Lab",
+        "RCA",
+        "L4"
+      ],
+      "summary": "روش تشخیصی end-to-end برای route صحیح‌نما اما traffic ناموفق، شامل longest-prefix، next-hop recursion، ECMP و asymmetry.",
+      "full_content": "# تحلیل ریشه‌ای مسیر نامطلوب: RIB، FIB، ECMP و مسیر برگشت\n\n## عنوان انگلیسی\nRouting Root Cause Analysis: RIB, FIB, ECMP and Return Path\n\n## خلاصه\nروش تشخیصی end-to-end برای route صحیح‌نما اما traffic ناموفق، شامل longest-prefix، next-hop recursion، ECMP و asymmetry.\n\n## اهداف یادگیری\n- تفکیک RIB و FIB\n- تحلیل longest-prefix و route source\n- طراحی RCA با شواهد دوطرفه و آزمون جریان\n\n## پیش‌نیازها\nIPv4/IPv6 route selection، OSPF/BGP، ACL/firewall، traceroute و packet capture.\n\n## مقدمهٔ مفهومی\nroute در control plane، route نصب‌شده و packet forwarding سه سطح متفاوت‌اند. ابتدا longest-prefix match در مقصد کاربرد دارد، سپس route source/attributeها تعیین می‌کنند کدام مسیر منتخب باشد؛ اما FIB، adjacency، ECMP hash، policy-based routing، VRF، ACL و مسیر برگشت نیز نتیجه را تغییر می‌دهند. عیب‌یابی دقیق باید یک flow مشخص با source/destination/port/VRF را دنبال کند.\n\n## مفاهیم اصلی\nroute در control plane، route نصب‌شده و packet forwarding سه سطح متفاوت‌اند. ابتدا longest-prefix match در مقصد کاربرد دارد، سپس route source/attributeها تعیین می‌کنند کدام مسیر منتخب باشد؛ اما FIB، adjacency، ECMP hash، policy-based routing، VRF، ACL و مسیر برگشت نیز نتیجه را تغییر می‌دهند. عیب‌یابی دقیق باید یک flow مشخص با source/destination/port/VRF را دنبال کند. نکتهٔ عملی مهم این است که هر ادعا به یک شاهد قابل مشاهده متصل شود. نام پروتکل یا state به‌تنهایی دلیل ریشه‌ای نیست. پیش از تغییر، baseline و محدودهٔ اثر را ثبت کن؛ بعد از تغییر نیز باید همان معیارها دوباره اندازه‌گیری شوند.\n\n## سازوکار داخلی و معماری\nRIB نتیجهٔ routing processes و سیاست‌های انتخاب را نشان می‌دهد. FIB معمولاً ساختار بهینه‌شده برای forward کردن است. Next-hop recursion باید به رابط/adjacency معتبر برسد؛ ECMP می‌تواند flowها را در چند مسیر پخش کند و traceroute تک‌جریان همیشه تمام مسیرها را نشان ندهد. Firewallهای stateful ممکن است مسیر نامتقارن را رد کنند. route مقصد در یک VRF هم به route table دیگری قابل تعمیم نیست.\n\n## مثال مرحله‌به‌مرحله و ابزارها\nClient 10.20.30.25 به server 10.40.10.8 وصل نمی‌شود، درحالی‌که `show ip route 10.40.10.8` route دارد. جریان را با source، destination، TCP port، VRF و timestamp تعریف کن. FIB/CEF، adjacency و ACL counter را در سمت خروج بررسی کن؛ سپس route برگشت server را به client بررسی کن. اگر ping موفق اما TCP ناموفق است، ICMP فقط بخشی از وضعیت را ثابت کرده و باید port/policy/MTU بررسی شود.\n\n### فرمان‌های تشخیصی\n- `Cisco: `show ip route <destination>``\n- ``show ip cef <destination> detail``\n- ``show ip arp``\n- ``show access-lists``\n- ``show platform hardware ...` فقط طبق platform. Linux: `ip route get <destination> from <source>``\n- ``ip rule``\n- ``ip neigh``\n- ``tracepath``\n- ``tcpdump` با scope محدود. دستورات دقیق hardware/FIB وابسته به نسخه‌اند.`\n\n## مثال محیط کار\nگزارش RCA باید flow پنج‌تایی یا مشخصات مبدأ/مقصد/پروتکل/پورت، VRF، route منتخب، next-hop، FIB adjacency، ACL/NAT counters، شواهد رفت و برگشت و آزمون پس از fix را داشته باشد. اگر شاهدی در دسترس نیست، به‌جای فرضیهٔ قطعی، آن را gap گزارش کن. در گزارش نهایی وضعیت اولیه، تغییر کنترل‌شده، خروجی قبل/بعد و محدودیت مشاهده را از یکدیگر جدا کن. خروجی مثال، خروجی اجراشده محسوب نمی‌شود مگر timestamp و محیط آن ثبت شده باشد.\n\n## آزمایشگاه عملی\nاز دو subnet آزمایشی و دو مسیر جایگزین استفاده کن. حالت‌های جدا: route مشخص‌تر، next-hop unreachable، ACL یک‌طرفه، ECMP و route برگشت ناموجود. برای هر حالت route table، forwarding table، packet counters و capture را ذخیره کن. هر failure را با تغییر کوچک بازتولید کن و سپس cleanup کن؛ معیار آزمایش فقط یک ping نباشد.\n\n## عیب‌یابی مرحله‌ای\nSymptom: route موجود اما flow fail. ۱) IP/port/source و VRF را دقیق ثبت کن؛ ۲) longest-prefix منتخب را تعیین کن؛ ۳) next-hop recursion/adjacency/FIB را بررسی کن؛ ۴) ACL/firewall/PBR/NAT را در مسیر رفت و برگشت بسنج؛ ۵) ECMP و تفاوت hashهای flow را بسنج؛ ۶) MTU/MSS و fragment/ICMP نیازمند را بررسی کن؛ ۷) capture دو نقطه را با timestamp تطبیق بده. هر hypothese باید با شواهد تأیید یا رد شود.\n\n## امنیت، محدودیت‌ها و اشتباهات رایج\nPacket capture ممکن است payload و IPهای داخلی حساس داشته باشد؛ محدود، کم‌زمان و با مجوز اجرا کن و داده‌ها را امن نگه‌دار. تغییرات route یا ACL در production بدون change ticket و rollback قابل قبول نیست. از `clear` یا resetهای پراثر بدون دلیل استفاده نکن.\n\n## نکات پیشرفته\nدر ECMP ممکن است hardware forwarding behavior با خروجی خلاصهٔ RIB فرق کند. platformها امکان‌های مختلف برای per-packet/per-flow load balancing، CEF adjacency، policy routing و VRF دارند. مستندات release و سخت‌افزار هدف باید در RCA ثبت شود؛ از استنتاج سراسری بر پایهٔ یک traceroute ساده پرهیز کن.\n\n## جمع‌بندی\nاین درس زمانی تمام است که بتوانی سازوکار را با واژه‌های خود توضیح دهی، یک آزمایش را در محیط مجاز تکرار کنی، معیار قبولی را نشان دهی و پس از رفع اشکال نتیجه را مستقل verify کنی. اگر command در release هدف وجود ندارد، معادل مستند آن را ثبت کن؛ حدس‌زدن syntax جایگزین مستندات نیست.\n\n## واژه‌نامه\nRIB: Routing Information Base؛ FIB: Forwarding Information Base؛ ECMP: مسیرهای هم‌هزینه؛ recursion: حل next-hop با route دیگر؛ asymmetry: رفت‌وبرگشت از مسیرهای متفاوت؛ VRF: routing context مستقل؛ PBR: Policy-Based Routing.\n\n## خودآزمایی\nسؤالات ساختاریافتهٔ این درس در `meta.assessment.questions` ذخیره شده‌اند. پاسخ و دلیل هر distractor فقط در `meta.assessment.answer_key` نگهداری می‌شود تا برنامه بتواند آزمون و پاسخ‌نامه را مستقل نمایش دهد.\n\n## وضعیت اعتبارسنجی\nبسته با JSON و ساختار داده‌ای تولید شده است؛ لابراتوارهای توصیف‌شده هنوز روی image/نسخهٔ واقعی اجرا نشده‌اند. وضعیت `review_required` عمداً حفظ می‌شود. قبل از انتشار نهایی، خروجی واقعی IOS/IOS-XE یا FRR به‌همراه نسخه و تاریخ اجرای Lab ثبت و بازبینی شود.",
+      "commands": "Cisco: `show ip route <destination>`; `show ip cef <destination> detail`; `show ip arp`; `show access-lists`; `show platform hardware ...` فقط طبق platform. Linux: `ip route get <destination> from <source>`; `ip rule`; `ip neigh`; `tracepath`; `tcpdump` با scope محدود. دستورات دقیق hardware/FIB وابسته به نسخه‌اند.",
+      "examples": "گزارش RCA باید flow پنج‌تایی یا مشخصات مبدأ/مقصد/پروتکل/پورت، VRF، route منتخب، next-hop، FIB adjacency، ACL/NAT counters، شواهد رفت و برگشت و آزمون پس از fix را داشته باشد. اگر شاهدی در دسترس نیست، به‌جای فرضیهٔ قطعی، آن را gap گزارش کن.",
+      "notes": [
+        "content_status=review_required",
+        "lab_execution=not_yet_run",
+        "answers_stored_separately",
+        "source_status=RFC_and_vendor_docs"
+      ],
+      "learning_objectives": [
+        "تفکیک RIB و FIB",
+        "تحلیل longest-prefix و route source",
+        "طراحی RCA با شواهد دوطرفه و آزمون جریان"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "official_sources": [
+          {
+            "title": "RFC 4271 — BGP-4",
+            "url": "https://www.rfc-editor.org/info/rfc4271/"
+          },
+          {
+            "title": "RFC 2328 — OSPFv2",
+            "url": "https://www.rfc-editor.org/rfc/rfc2328.html"
+          },
+          {
+            "title": "RFC 7454 — BGP Operations and Security",
+            "url": "https://www.rfc-editor.org/info/rfc7454/"
+          }
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "Q1",
+              "type": "mcq",
+              "prompt": "وجود route در RIB چه چیزی را به‌تنهایی تضمین نمی‌کند؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "نام route"
+                },
+                {
+                  "id": "B",
+                  "label": "عبور موفق packet از FIB و policy تا مقصد"
+                },
+                {
+                  "id": "C",
+                  "label": "وجود IP prefix"
+                },
+                {
+                  "id": "D",
+                  "label": "اینکه router route را تحلیل کرده"
+                }
+              ]
+            },
+            {
+              "id": "Q2",
+              "type": "mcq",
+              "prompt": "برای flow fail، چرا باید مشخصات source/destination/port/VRF دقیق باشد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "تا flow درست در RIB/FIB و policy دنبال شود"
+                },
+                {
+                  "id": "B",
+                  "label": "برای تغییر نام router"
+                },
+                {
+                  "id": "C",
+                  "label": "برای افزایش MTU خودکار"
+                },
+                {
+                  "id": "D",
+                  "label": "برای حذف ECMP"
+                }
+              ]
+            },
+            {
+              "id": "Q3",
+              "type": "mcq",
+              "prompt": "ping موفق ولی TCP ناموفق است؛ کدام نتیجه صحیح‌تر است؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "شبکه کامل سالم است"
+                },
+                {
+                  "id": "B",
+                  "label": "باید routing را بدون بررسی پاک کرد"
+                },
+                {
+                  "id": "C",
+                  "label": "ICMP به‌تنهایی سلامت TCP/port/policy را اثبات نمی‌کند"
+                },
+                {
+                  "id": "D",
+                  "label": "DNS علت قطعی است"
+                }
+              ]
+            },
+            {
+              "id": "Q4",
+              "type": "mcq",
+              "prompt": "در تشخیص ECMP چرا یک traceroute ممکن است کافی نباشد؟",
+              "options": [
+                {
+                  "id": "A",
+                  "label": "traceroute هیچ‌وقت route نمی‌بیند"
+                },
+                {
+                  "id": "B",
+                  "label": "ECMP در هیچ routerی وجود ندارد"
+                },
+                {
+                  "id": "C",
+                  "label": "همیشه تمام مسیرها را هم‌زمان نشان می‌دهد"
+                },
+                {
+                  "id": "D",
+                  "label": "hash جریان ممکن است فقط یکی از مسیرهای ممکن را انتخاب کند"
+                }
+              ]
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "Q1",
+              "correct_option_id": "B",
+              "explanation": "FIB، adjacency، ACL و مسیر برگشت می‌توانند جداگانه مشکل داشته باشند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: FIB، adjacency، ACL و مسیر برگشت می‌توانند جداگانه مشکل داشته باشند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: FIB، adjacency، ACL و مسیر برگشت می‌توانند جداگانه مشکل داشته باشند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: FIB، adjacency، ACL و مسیر برگشت می‌توانند جداگانه مشکل داشته باشند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q2",
+              "correct_option_id": "A",
+              "explanation": "مسیر و policy به جزئیات جریان و context وابسته‌اند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: مسیر و policy به جزئیات جریان و context وابسته‌اند."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: مسیر و policy به جزئیات جریان و context وابسته‌اند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: مسیر و policy به جزئیات جریان و context وابسته‌اند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q3",
+              "correct_option_id": "C",
+              "explanation": "پروتکل‌ها و پورت‌ها می‌توانند policy و رفتار متفاوتی داشته باشند.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: پروتکل‌ها و پورت‌ها می‌توانند policy و رفتار متفاوتی داشته باشند."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: پروتکل‌ها و پورت‌ها می‌توانند policy و رفتار متفاوتی داشته باشند."
+                },
+                {
+                  "option_id": "D",
+                  "why_wrong": "این گزینه نادرست است: پروتکل‌ها و پورت‌ها می‌توانند policy و رفتار متفاوتی داشته باشند."
+                }
+              ]
+            },
+            {
+              "question_id": "Q4",
+              "correct_option_id": "D",
+              "explanation": "تغییر source/port و ابزارهای پشتیبانی‌شده ممکن است برای مشاهدهٔ مسیرهای دیگر لازم باشد.",
+              "distractor_rationales": [
+                {
+                  "option_id": "A",
+                  "why_wrong": "این گزینه نادرست است: تغییر source/port و ابزارهای پشتیبانی‌شده ممکن است برای مشاهدهٔ مسیرهای دیگر لازم باشد."
+                },
+                {
+                  "option_id": "B",
+                  "why_wrong": "این گزینه نادرست است: تغییر source/port و ابزارهای پشتیبانی‌شده ممکن است برای مشاهدهٔ مسیرهای دیگر لازم باشد."
+                },
+                {
+                  "option_id": "C",
+                  "why_wrong": "این گزینه نادرست است: تغییر source/port و ابزارهای پشتیبانی‌شده ممکن است برای مشاهدهٔ مسیرهای دیگر لازم باشد."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
