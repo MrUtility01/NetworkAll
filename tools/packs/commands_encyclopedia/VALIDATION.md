@@ -9,11 +9,11 @@
 |---|---|---:|
 | Cisco IOS-XE Routing | `cisco_routing.json` + `cisco_routing_addon_01..08.json` | **۱۶۰۰** |
 | Cisco Switching | `cisco_switching.json` | ۲۰ |
-| MikroTik RouterOS v7 | `mikrotik_ops_addon.json` (43) + `mikrotik_ops_addon_02.json` (100) + `mikrotik_ops_addon_03.json` (41) | **۱۸۴** |
-| PowerShell | `powershell.json` (49) + `powershell_addon_01.json` (100) + `powershell_addon_02.json` (25) | **۱۷۴** |
+| MikroTik RouterOS v7 | `mikrotik_ops_addon.json` (43) + `mikrotik_ops_addon_02.json` (100) + `mikrotik_ops_addon_03.json` (51) | **۱۹۴** |
+| PowerShell | `powershell.json` (49) + `powershell_addon_01.json` (100) + `powershell_addon_02.json` (35) | **۱۸۴** |
 | Windows Batch | `windows_batch.json` | ۲۰ |
 | Linux | `linux.json` | ۲۰ |
-| **مجموع رکوردهای فرمان در بسته‌های مستقل بالا** | | **۲۰۱۸** |
+| **مجموع رکوردهای فرمان در بسته‌های مستقل بالا** | | **۲۰۳۸** |
 
 عدد Cisco Routing از شمار واقعی فایل‌ها به‌دست آمده است: ۱۵۱ رکورد در بسته پایه و ۷ بسته ۲۰۰ رکوردی به‌جز آخرین بسته ۴۹ رکوردی؛ جمع آن‌ها دقیقاً ۱۶۰۰ است. UIDهای Cisco از `cmd:cisco:routing:0001` تا `cmd:cisco:routing:1600` برنامه‌ریزی شده‌اند و validator یکتایی و تعارض UID را بررسی می‌کند.
 
@@ -25,15 +25,15 @@
 | سناریوهای چندپلتفرمی | ۵۰ |
 | آزمون عمومی فصل ۶۸ | ۵۰ سؤال |
 | پاسخ‌نامه مستقل آزمون عمومی | ۵۰ پاسخ |
-| آزمون تخصصی Cisco Routing / ACL / NAT (base + addon 01) | **۴۰ سؤال** |
-| پاسخ‌نامه مستقل Cisco | **۴۰ پاسخ** |
-| آزمون تخصصی MikroTik RouterOS v7 (base + addon 01) | **۴۵ سؤال** |
-| پاسخ‌نامه مستقل MikroTik | **۴۵ پاسخ** |
-| آزمون تخصصی PowerShell (base + addon 01) | **۳۶ سؤال** |
-| پاسخ‌نامه مستقل PowerShell | **۳۶ پاسخ** |
+| آزمون تخصصی Cisco Routing / ACL / NAT (base + addon 01) | **۴۵ سؤال** |
+| پاسخ‌نامه مستقل Cisco | **۴۵ پاسخ** |
+| آزمون تخصصی MikroTik RouterOS v7 (base + addon 01) | **۵۰ سؤال** |
+| پاسخ‌نامه مستقل MikroTik | **۵۰ پاسخ** |
+| آزمون تخصصی PowerShell (base + addon 01) | **۴۱ سؤال** |
+| پاسخ‌نامه مستقل PowerShell | **۴۱ پاسخ** |
 | منابع مستقل فصل ۶۸ | ۱۷ URL در فایل منابع پایه |
 
-مجموع آزمون‌های تخصصی موجود در فایل‌های جداگانه: **۱۲۱ سؤال و ۱۲۱ پاسخ** (Cisco=40، RouterOS=45، PowerShell=36)؛ به‌علاوه آزمون عمومی فصل ۶۸ با ۵۰ سؤال و ۵۰ پاسخ. پاسخ‌های درست در فایل‌های answer key نگهداری می‌شوند؛ validator شناسه‌ها، فرمان مرجع، تعداد گزینه‌ها و تطبیق پاسخ با گزینه را بررسی می‌کند.
+مجموع آزمون‌های تخصصی موجود در فایل‌های جداگانه: **۱۳۶ سؤال و ۱۳۶ پاسخ** (Cisco=45، RouterOS=50، PowerShell=41)؛ به‌علاوه آزمون عمومی فصل ۶۸ با ۵۰ سؤال و ۵۰ پاسخ. پاسخ‌های درست در فایل‌های answer key نگهداری می‌شوند؛ validator شناسه‌ها، فرمان مرجع، تعداد گزینه‌ها و تطبیق پاسخ با گزینه را بررسی می‌کند.
 
 ## فایل‌های آزمون تخصصی جدید
 
