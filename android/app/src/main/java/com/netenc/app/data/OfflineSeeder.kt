@@ -4,7 +4,6 @@ import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import org.json.JSONObject
 import org.json.JSONArray
 import java.io.BufferedInputStream
@@ -18,8 +17,10 @@ object OfflineSeeder {
     // Serialize them so no screen observes a half-imported curriculum.
     private val seedMutex = Mutex()
 
-    suspend fun ensureSeeded(context: Context): Int = seedMutex.withLock {
-        withContext(Dispatchers.IO) {
+    suspend fun ensureSeeded(context: Context): Int {
+        seedMutex.lock()
+        try {
+            return withContext(Dispatchers.IO) {
             val dao = AppDatabase.get(context).lessonDao()
             val existing = dao.countActive()
             val filled = if (existing > 0) dao.countFilled() else 0
@@ -109,6 +110,9 @@ object OfflineSeeder {
             val finalCount = dao.countActive()
             if (finalCount == 0) throw IllegalStateException("هیچ درسی از بستهٔ NetworkAll وارد پایگاه داده نشد")
             finalCount
+            }
+        } finally {
+            seedMutex.unlock()
         }
     }
 
