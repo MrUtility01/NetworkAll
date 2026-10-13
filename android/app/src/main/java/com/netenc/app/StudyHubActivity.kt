@@ -63,6 +63,10 @@ class StudyHubActivity : AppCompatActivity() {
                 "یک مسیر پیوسته از مبتدی تا حرفه‌ای؛ لازم نیست سطح را دستی انتخاب کنی. ابتدا مفهوم، سپس مثال و لاب، بعد عیب‌یابی و طراحی سازمانی.",
                 13f, Ui.MUTED))
             addView(btn("شروع مسیر یادگیری از مبتدی تا حرفه‌ای", Ui.ACCENT) { pickChapterForCards() })
+            addView(section("مطالعهٔ دیداری"))
+            addView(btn("گالری دیاگرام‌های آموزشی", Color.parseColor("#0F766E")) {
+                startActivity(Intent(this@StudyHubActivity, DiagramGalleryActivity::class.java))
+            })
             addView(section("مرور SRS"))
             addView(btn("مرور مفهوم", Color.parseColor("#1D4ED8")) {
                 startActivity(Intent(this@StudyHubActivity, FlashcardActivity::class.java).putExtra("mode", "review"))
@@ -77,7 +81,7 @@ class StudyHubActivity : AppCompatActivity() {
             addView(btn("آزمون چهارگزینه‌ای", Color.parseColor("#7C3AED")) {
                 startActivity(Intent(this@StudyHubActivity, QuizActivity::class.java))
             })
-            addView(btn("درخت درس‌ها", Ui.ACCENT) {
+            addView(btn("مطالعهٔ عمیق درس‌ها و محتوای کامل", Ui.ACCENT) {
                 startActivity(Intent(this@StudyHubActivity, TreeCatalogActivity::class.java))
             })
             addView(btn("سناریوهای Capstone", Color.parseColor("#B45309")) {
@@ -122,12 +126,23 @@ class StudyHubActivity : AppCompatActivity() {
 
     private fun refresh() {
         lifecycleScope.launch {
-            val st = withContext(Dispatchers.IO) { study.stats() }
-            statsRow.removeAllViews()
-            statsRow.addView(card("امروز", "${st["today"]}/${st["goal"]}", Color.parseColor("#1D4ED8")))
-            statsRow.addView(card("Due", "${st["due"]}", Color.parseColor("#C2410C")))
-            statsRow.addView(card("زنجیره", "${st["streak"]}", Color.parseColor("#0F766E")))
-            statsRow.addView(card("بلد", "${st["known"]}", Color.parseColor("#166534")))
+            try {
+                val st = withContext(Dispatchers.IO) { study.stats() }
+                statsRow.removeAllViews()
+                statsRow.addView(card("امروز", "${st["today"]}/${st["goal"]}", Color.parseColor("#1D4ED8")))
+                statsRow.addView(card("Due", "${st["due"]}", Color.parseColor("#C2410C")))
+                statsRow.addView(card("زنجیره", "${st["streak"]}", Color.parseColor("#0F766E")))
+                statsRow.addView(card("بلد", "${st["known"]}", Color.parseColor("#166534")))
+            } catch (e: Exception) {
+                statsRow.removeAllViews()
+                statsRow.addView(Ui.text(
+                    this@StudyHubActivity,
+                    "آمار فعلاً بارگذاری نشد؛ مسیر یادگیری و کارت‌ها همچنان در دسترس‌اند.",
+                    12f,
+                    Ui.MUTED
+                ))
+                Toast.makeText(this@StudyHubActivity, "خطا در بارگذاری آمار مطالعه", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -150,9 +165,14 @@ class StudyHubActivity : AppCompatActivity() {
 
     private fun pickChapterForCards() {
         lifecycleScope.launch {
-            val chapters = withContext(Dispatchers.IO) {
-                AppDatabase.get(this@StudyHubActivity).lessonDao().chapters()
-                    .map { it.chapterTitle }.filter { it.isNotBlank() }.distinct()
+            val chapters = try {
+                withContext(Dispatchers.IO) {
+                    AppDatabase.get(this@StudyHubActivity).lessonDao().chapters()
+                        .map { it.chapterTitle }.filter { it.isNotBlank() }.distinct()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@StudyHubActivity, "فهرست فصل‌ها بارگذاری نشد؛ ابتدا محتوای آفلاین را بررسی کنید.", Toast.LENGTH_LONG).show()
+                return@launch
             }
             if (chapters.isEmpty()) {
                 Toast.makeText(this@StudyHubActivity, "بانک خالی — اول فهرست درختی یا بازسازی محتوا", Toast.LENGTH_LONG).show()
