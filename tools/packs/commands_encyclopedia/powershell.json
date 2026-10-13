@@ -2,7 +2,7 @@
   "package_schema_version": 1,
   "project": "ENGINEER JOKAR / NetworkAll",
   "generated_on": "2026-10-13",
-  "purpose": "Chapter 68 PowerShell command pack; additive first batch",
+  "purpose": "PowerShell administration and network diagnostics pack; additive curated batch 2; review required",
   "chapter_order": 68,
   "chapter_title_fa": "دانشنامه جامع دستورات",
   "vendor_pack": "powershell",
@@ -1171,6 +1171,1746 @@
       "assessment": {
         "question_fa": "چرا فرمان «Get-Command -Name Get-NetRoute -Syntax» در عیب‌یابی مفید است؟",
         "answer_key_fa": "help؛ خروجی را با نسخه و مستندات Microsoft Learn تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0021",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Get-NetAdapter -IncludeHidden",
+      "title_fa": "[L2] فهرست آداپتورهای شبکه",
+      "title_en": "فهرست آداپتورهای شبکه",
+      "syntax": "Get-NetAdapter -IncludeHidden",
+      "when_to_use_fa": "بررسی وضعیت، نام و آداپتورهای مخفی",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-NetAdapter -IncludeHidden»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «بررسی وضعیت، نام و آداپتورهای مخفی» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "فهرست آداپتورهای شبکه",
+        "PowerShell",
+        "networking",
+        "Get-NetAdapter -IncludeHidden",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-NetAdapter -IncludeHidden» در «بررسی وضعیت، نام و آداپتورهای مخفی» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «بررسی وضعیت، نام و آداپتورهای مخفی» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0022",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Get-NetRoute -AddressFamily IPv4",
+      "title_fa": "[L2] نمایش routeهای IPv4",
+      "title_en": "نمایش routeهای IPv4",
+      "syntax": "Get-NetRoute -AddressFamily IPv4",
+      "when_to_use_fa": "تطبیق destination prefix، next hop و route metric",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-NetRoute -AddressFamily IPv4»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «تطبیق destination prefix، next hop و route metric» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "نمایش routeهای IPv4",
+        "PowerShell",
+        "networking",
+        "Get-NetRoute -AddressFamily IPv4",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-NetRoute -AddressFamily IPv4» در «تطبیق destination prefix، next hop و route metric» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «تطبیق destination prefix، next hop و route metric» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0023",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Get-NetRoute -AddressFamily IPv6",
+      "title_fa": "[L2] نمایش routeهای IPv6",
+      "title_en": "نمایش routeهای IPv6",
+      "syntax": "Get-NetRoute -AddressFamily IPv6",
+      "when_to_use_fa": "بررسی جدول مسیر IPv6",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-NetRoute -AddressFamily IPv6»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «بررسی جدول مسیر IPv6» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "نمایش routeهای IPv6",
+        "PowerShell",
+        "networking",
+        "Get-NetRoute -AddressFamily IPv6",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-NetRoute -AddressFamily IPv6» در «بررسی جدول مسیر IPv6» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «بررسی جدول مسیر IPv6» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0024",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Get-NetNeighbor -AddressFamily IPv4",
+      "title_fa": "[L2] جدول neighborهای IPv4",
+      "title_en": "جدول neighborهای IPv4",
+      "syntax": "Get-NetNeighbor -AddressFamily IPv4",
+      "when_to_use_fa": "بررسی state و MAC همسایه",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-NetNeighbor -AddressFamily IPv4»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «بررسی state و MAC همسایه» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "جدول neighborهای IPv4",
+        "PowerShell",
+        "networking",
+        "Get-NetNeighbor -AddressFamily IPv4",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-NetNeighbor -AddressFamily IPv4» در «بررسی state و MAC همسایه» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «بررسی state و MAC همسایه» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0025",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Get-NetNeighbor -AddressFamily IPv6",
+      "title_fa": "[L2] جدول neighborهای IPv6",
+      "title_en": "جدول neighborهای IPv6",
+      "syntax": "Get-NetNeighbor -AddressFamily IPv6",
+      "when_to_use_fa": "بررسی Neighbor Discovery",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-NetNeighbor -AddressFamily IPv6»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «بررسی Neighbor Discovery» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "جدول neighborهای IPv6",
+        "PowerShell",
+        "networking",
+        "Get-NetNeighbor -AddressFamily IPv6",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-NetNeighbor -AddressFamily IPv6» در «بررسی Neighbor Discovery» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «بررسی Neighbor Discovery» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0026",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Get-NetTCPConnection -State Listen",
+      "title_fa": "[L2] TCP listenerها",
+      "title_en": "TCP listenerها",
+      "syntax": "Get-NetTCPConnection -State Listen",
+      "when_to_use_fa": "شناسایی پورت‌های در حال listen و process مرتبط",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-NetTCPConnection -State Listen»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «شناسایی پورت‌های در حال listen و process مرتبط» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "TCP listenerها",
+        "PowerShell",
+        "networking",
+        "Get-NetTCPConnection -State Listen",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-NetTCPConnection -State Listen» در «شناسایی پورت‌های در حال listen و process مرتبط» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «شناسایی پورت‌های در حال listen و process مرتبط» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0027",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Get-NetTCPConnection -State Established",
+      "title_fa": "[L2] نشست‌های TCP برقرار",
+      "title_en": "نشست‌های TCP برقرار",
+      "syntax": "Get-NetTCPConnection -State Established",
+      "when_to_use_fa": "بررسی local/remote endpoint و وضعیت اتصال",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-NetTCPConnection -State Established»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «بررسی local/remote endpoint و وضعیت اتصال» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "نشست‌های TCP برقرار",
+        "PowerShell",
+        "networking",
+        "Get-NetTCPConnection -State Established",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-NetTCPConnection -State Established» در «بررسی local/remote endpoint و وضعیت اتصال» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «بررسی local/remote endpoint و وضعیت اتصال» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0028",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Get-NetUDPEndpoint",
+      "title_fa": "[L2] endpointهای UDP",
+      "title_en": "endpointهای UDP",
+      "syntax": "Get-NetUDPEndpoint",
+      "when_to_use_fa": "بررسی پورت‌های محلی UDP",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-NetUDPEndpoint»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «بررسی پورت‌های محلی UDP» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "endpointهای UDP",
+        "PowerShell",
+        "networking",
+        "Get-NetUDPEndpoint",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-NetUDPEndpoint» در «بررسی پورت‌های محلی UDP» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «بررسی پورت‌های محلی UDP» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0029",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "networking",
+      "command": "Test-NetConnection 192.0.2.10 -Port 443 -InformationLevel Detailed",
+      "title_fa": "[L2] آزمون TCP به پورت مشخص",
+      "title_en": "آزمون TCP به پورت مشخص",
+      "syntax": "Test-NetConnection 192.0.2.10 -Port 443 -InformationLevel Detailed",
+      "when_to_use_fa": "تفکیک DNS، route و اتصال TCP در آزمون مجاز",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Test-NetConnection 192.0.2.10 -Port 443 -InformationLevel Detailed»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «تفکیک DNS، route و اتصال TCP در آزمون مجاز» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "آزمون TCP به پورت مشخص",
+        "PowerShell",
+        "networking",
+        "Test-NetConnection 192.0.2.10 -Port 443 -InformationLevel Detailed",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Test-NetConnection 192.0.2.10 -Port 443 -InformationLevel Detailed» در «تفکیک DNS، route و اتصال TCP در آزمون مجاز» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «تفکیک DNS، route و اتصال TCP در آزمون مجاز» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0030",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "dns",
+      "command": "Resolve-DnsName example.com -Type A",
+      "title_fa": "[L2] پرس‌وجوی رکورد A",
+      "title_en": "پرس‌وجوی رکورد A",
+      "syntax": "Resolve-DnsName example.com -Type A",
+      "when_to_use_fa": "تأیید resolution و پاسخ IPv4",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Resolve-DnsName example.com -Type A»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «تأیید resolution و پاسخ IPv4» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "پرس‌وجوی رکورد A",
+        "PowerShell",
+        "dns",
+        "Resolve-DnsName example.com -Type A",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Resolve-DnsName example.com -Type A» در «تأیید resolution و پاسخ IPv4» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «تأیید resolution و پاسخ IPv4» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0031",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "dns",
+      "command": "Resolve-DnsName example.com -Type AAAA",
+      "title_fa": "[L2] پرس‌وجوی رکورد AAAA",
+      "title_en": "پرس‌وجوی رکورد AAAA",
+      "syntax": "Resolve-DnsName example.com -Type AAAA",
+      "when_to_use_fa": "بررسی پاسخ IPv6 و رفتار resolver",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Resolve-DnsName example.com -Type AAAA»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «بررسی پاسخ IPv6 و رفتار resolver» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "پرس‌وجوی رکورد AAAA",
+        "PowerShell",
+        "dns",
+        "Resolve-DnsName example.com -Type AAAA",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Resolve-DnsName example.com -Type AAAA» در «بررسی پاسخ IPv6 و رفتار resolver» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «بررسی پاسخ IPv6 و رفتار resolver» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0032",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "dns",
+      "command": "Clear-DnsClientCache",
+      "title_fa": "[L2] پاک‌کردن cache DNS کلاینت",
+      "title_en": "پاک‌کردن cache DNS کلاینت",
+      "syntax": "Clear-DnsClientCache",
+      "when_to_use_fa": "فقط در آزمایش کنترل‌شده برای رد فرضیه cache stale",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Clear-DnsClientCache»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «فقط در آزمایش کنترل‌شده برای رد فرضیه cache stale» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "این فرمان cache محلی DNS را پاک می‌کند و تنظیمات دائمی شبکه را تغییر نمی‌دهد؛ در آزمایش محدود اجرا و سپس resolution را دوباره بررسی کنید.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "پاک‌کردن cache DNS کلاینت",
+        "PowerShell",
+        "dns",
+        "Clear-DnsClientCache",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Clear-DnsClientCache» در «فقط در آزمایش کنترل‌شده برای رد فرضیه cache stale» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «فقط در آزمایش کنترل‌شده برای رد فرضیه cache stale» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0033",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "logs",
+      "command": "Get-WinEvent -LogName System -MaxEvents 100",
+      "title_fa": "[L2] خواندن رخدادهای System",
+      "title_en": "خواندن رخدادهای System",
+      "syntax": "Get-WinEvent -LogName System -MaxEvents 100",
+      "when_to_use_fa": "جمع‌آوری شواهد زمانی از event log",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-WinEvent -LogName System -MaxEvents 100»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «جمع‌آوری شواهد زمانی از event log» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "خواندن رخدادهای System",
+        "PowerShell",
+        "logs",
+        "Get-WinEvent -LogName System -MaxEvents 100",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-WinEvent -LogName System -MaxEvents 100» در «جمع‌آوری شواهد زمانی از event log» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «جمع‌آوری شواهد زمانی از event log» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0034",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "logs",
+      "command": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-4)}",
+      "title_fa": "[L2] فیلتر خطاهای System چهار ساعت اخیر",
+      "title_en": "فیلتر خطاهای System چهار ساعت اخیر",
+      "syntax": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-4)}",
+      "when_to_use_fa": "محدودسازی جست‌وجو به بازه و سطح خطا",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-4)}»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «محدودسازی جست‌وجو به بازه و سطح خطا» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "فیلتر خطاهای System چهار ساعت اخیر",
+        "PowerShell",
+        "logs",
+        "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-4)}",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-4)}» در «محدودسازی جست‌وجو به بازه و سطح خطا» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «محدودسازی جست‌وجو به بازه و سطح خطا» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0035",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "services",
+      "command": "Get-Service | Where-Object Status -eq 'Stopped'",
+      "title_fa": "[L2] سرویس‌های متوقف",
+      "title_en": "سرویس‌های متوقف",
+      "syntax": "Get-Service | Where-Object Status -eq 'Stopped'",
+      "when_to_use_fa": "فهرست سرویس‌های متوقف برای triage",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-Service | Where-Object Status -eq 'Stopped'»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «فهرست سرویس‌های متوقف برای triage» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "سرویس‌های متوقف",
+        "PowerShell",
+        "services",
+        "Get-Service | Where-Object Status -eq 'Stopped'",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-Service | Where-Object Status -eq 'Stopped'» در «فهرست سرویس‌های متوقف برای triage» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «فهرست سرویس‌های متوقف برای triage» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0036",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "system",
+      "command": "Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,LastBootUpTime",
+      "title_fa": "[L2] نسخه و زمان boot ویندوز",
+      "title_en": "نسخه و زمان boot ویندوز",
+      "syntax": "Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,LastBootUpTime",
+      "when_to_use_fa": "ثبت baseline سیستم",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,LastBootUpTime»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «ثبت baseline سیستم» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "نسخه و زمان boot ویندوز",
+        "PowerShell",
+        "system",
+        "Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,LastBootUpTime",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,LastBootUpTime» در «ثبت baseline سیستم» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «ثبت baseline سیستم» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0037",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "system",
+      "command": "Get-ComputerInfo | Select-Object WindowsProductName,WindowsVersion,OsBuildNumber",
+      "title_fa": "[L2] اطلاعات build ویندوز",
+      "title_en": "اطلاعات build ویندوز",
+      "syntax": "Get-ComputerInfo | Select-Object WindowsProductName,WindowsVersion,OsBuildNumber",
+      "when_to_use_fa": "تعیین نسخه و build قبل از عیب‌یابی",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-ComputerInfo | Select-Object WindowsProductName,WindowsVersion,OsBuildNumber»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «تعیین نسخه و build قبل از عیب‌یابی» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "اطلاعات build ویندوز",
+        "PowerShell",
+        "system",
+        "Get-ComputerInfo | Select-Object WindowsProductName,WindowsVersion,OsBuildNumber",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-ComputerInfo | Select-Object WindowsProductName,WindowsVersion,OsBuildNumber» در «تعیین نسخه و build قبل از عیب‌یابی» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «تعیین نسخه و build قبل از عیب‌یابی» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0038",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "security",
+      "command": "Get-AuthenticodeSignature .\\script.ps1",
+      "title_fa": "[L2] اعتبارسنجی امضای اسکریپت",
+      "title_en": "اعتبارسنجی امضای اسکریپت",
+      "syntax": "Get-AuthenticodeSignature .\\script.ps1",
+      "when_to_use_fa": "بررسی وضعیت امضای فایل پیش از اجرا",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-AuthenticodeSignature .\\script.ps1»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «بررسی وضعیت امضای فایل پیش از اجرا» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "اعتبارسنجی امضای اسکریپت",
+        "PowerShell",
+        "security",
+        "Get-AuthenticodeSignature .\\script.ps1",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-AuthenticodeSignature .\\script.ps1» در «بررسی وضعیت امضای فایل پیش از اجرا» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «بررسی وضعیت امضای فایل پیش از اجرا» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0039",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "files",
+      "command": "Get-FileHash .\\artifact.zip -Algorithm SHA256",
+      "title_fa": "[L2] محاسبه SHA-256 فایل",
+      "title_en": "محاسبه SHA-256 فایل",
+      "syntax": "Get-FileHash .\\artifact.zip -Algorithm SHA256",
+      "when_to_use_fa": "تطبیق integrity با hash مرجع معتبر",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-FileHash .\\artifact.zip -Algorithm SHA256»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «تطبیق integrity با hash مرجع معتبر» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "محاسبه SHA-256 فایل",
+        "PowerShell",
+        "files",
+        "Get-FileHash .\\artifact.zip -Algorithm SHA256",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-FileHash .\\artifact.zip -Algorithm SHA256» در «تطبیق integrity با hash مرجع معتبر» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «تطبیق integrity با hash مرجع معتبر» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0040",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "security",
+      "command": "Get-ChildItem Cert:\\LocalMachine\\My",
+      "title_fa": "[L2] فهرست گواهی‌های LocalMachine",
+      "title_en": "فهرست گواهی‌های LocalMachine",
+      "syntax": "Get-ChildItem Cert:\\LocalMachine\\My",
+      "when_to_use_fa": "ممیزی certificate store با دسترسی مجاز",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-ChildItem Cert:\\LocalMachine\\My»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «ممیزی certificate store با دسترسی مجاز» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "فهرست گواهی‌های LocalMachine",
+        "PowerShell",
+        "security",
+        "Get-ChildItem Cert:\\LocalMachine\\My",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-ChildItem Cert:\\LocalMachine\\My» در «ممیزی certificate store با دسترسی مجاز» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «ممیزی certificate store با دسترسی مجاز» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0041",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "security",
+      "command": "Get-NetFirewallProfile",
+      "title_fa": "[L2] وضعیت پروفایل‌های Firewall",
+      "title_en": "وضعیت پروفایل‌های Firewall",
+      "syntax": "Get-NetFirewallProfile",
+      "when_to_use_fa": "بررسی فعال‌بودن Domain/Private/Public profile",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-NetFirewallProfile»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «بررسی فعال‌بودن Domain/Private/Public profile» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "وضعیت پروفایل‌های Firewall",
+        "PowerShell",
+        "security",
+        "Get-NetFirewallProfile",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-NetFirewallProfile» در «بررسی فعال‌بودن Domain/Private/Public profile» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «بررسی فعال‌بودن Domain/Private/Public profile» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0042",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "security",
+      "command": "Get-NetFirewallRule -Enabled True | Select-Object DisplayName,Direction,Action,Profile",
+      "title_fa": "[L2] فهرست ruleهای فعال Firewall",
+      "title_en": "فهرست ruleهای فعال Firewall",
+      "syntax": "Get-NetFirewallRule -Enabled True | Select-Object DisplayName,Direction,Action,Profile",
+      "when_to_use_fa": "ممیزی سطحی ruleها بدون تغییر policy",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-NetFirewallRule -Enabled True | Select-Object DisplayName,Direction,Action,Profile»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «ممیزی سطحی ruleها بدون تغییر policy» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "فهرست ruleهای فعال Firewall",
+        "PowerShell",
+        "security",
+        "Get-NetFirewallRule -Enabled True | Select-Object DisplayName,Direction,Action,Profile",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-NetFirewallRule -Enabled True | Select-Object DisplayName,Direction,Action,Profile» در «ممیزی سطحی ruleها بدون تغییر policy» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «ممیزی سطحی ruleها بدون تغییر policy» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0043",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "logs",
+      "command": "Get-EventLog -LogName System -Newest 50",
+      "title_fa": "[L2] خواندن رخدادهای legacy System",
+      "title_en": "خواندن رخدادهای legacy System",
+      "syntax": "Get-EventLog -LogName System -Newest 50",
+      "when_to_use_fa": "جایگزین legacy برای محیط‌های سازگار؛ ترجیح با Get-WinEvent",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-EventLog -LogName System -Newest 50»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «جایگزین legacy برای محیط‌های سازگار؛ ترجیح با Get-WinEvent» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "خواندن رخدادهای legacy System",
+        "PowerShell",
+        "logs",
+        "Get-EventLog -LogName System -Newest 50",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-EventLog -LogName System -Newest 50» در «جایگزین legacy برای محیط‌های سازگار؛ ترجیح با Get-WinEvent» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «جایگزین legacy برای محیط‌های سازگار؛ ترجیح با Get-WinEvent» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0044",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "files",
+      "command": "Get-Content .\\app.log -Tail 100 -Wait",
+      "title_fa": "[L2] مشاهده زنده انتهای log",
+      "title_en": "مشاهده زنده انتهای log",
+      "syntax": "Get-Content .\\app.log -Tail 100 -Wait",
+      "when_to_use_fa": "پیگیری رویدادها در لاب؛ فایل را از منبع قابل اعتماد بخوانید",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-Content .\\app.log -Tail 100 -Wait»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «پیگیری رویدادها در لاب؛ فایل را از منبع قابل اعتماد بخوانید» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "مشاهده زنده انتهای log",
+        "PowerShell",
+        "files",
+        "Get-Content .\\app.log -Tail 100 -Wait",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-Content .\\app.log -Tail 100 -Wait» در «پیگیری رویدادها در لاب؛ فایل را از منبع قابل اعتماد بخوانید» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «پیگیری رویدادها در لاب؛ فایل را از منبع قابل اعتماد بخوانید» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0045",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "files",
+      "command": "Import-Csv .\\interfaces.csv | Group-Object Status",
+      "title_fa": "[L2] گروه‌بندی داده CSV",
+      "title_en": "گروه‌بندی داده CSV",
+      "syntax": "Import-Csv .\\interfaces.csv | Group-Object Status",
+      "when_to_use_fa": "تمرین pipeline و تحلیل داده جدولی",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Import-Csv .\\interfaces.csv | Group-Object Status»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «تمرین pipeline و تحلیل داده جدولی» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "گروه‌بندی داده CSV",
+        "PowerShell",
+        "files",
+        "Import-Csv .\\interfaces.csv | Group-Object Status",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Import-Csv .\\interfaces.csv | Group-Object Status» در «تمرین pipeline و تحلیل داده جدولی» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «تمرین pipeline و تحلیل داده جدولی» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0046",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "system",
+      "command": "$PSVersionTable",
+      "title_fa": "[L2] بررسی نسخه PowerShell",
+      "title_en": "بررسی نسخه PowerShell",
+      "syntax": "$PSVersionTable",
+      "when_to_use_fa": "تعیین edition و نسخه پیش از اجرای module-specific cmdlet",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «$PSVersionTable»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «تعیین edition و نسخه پیش از اجرای module-specific cmdlet» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "بررسی نسخه PowerShell",
+        "PowerShell",
+        "system",
+        "$PSVersionTable",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «$PSVersionTable» در «تعیین edition و نسخه پیش از اجرای module-specific cmdlet» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «تعیین edition و نسخه پیش از اجرای module-specific cmdlet» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0047",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "system",
+      "command": "Get-Module -ListAvailable | Sort-Object Name,Version",
+      "title_fa": "[L2] فهرست moduleهای نصب‌شده",
+      "title_en": "فهرست moduleهای نصب‌شده",
+      "syntax": "Get-Module -ListAvailable | Sort-Object Name,Version",
+      "when_to_use_fa": "بررسی dependency و نسخه module",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-Module -ListAvailable | Sort-Object Name,Version»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «بررسی dependency و نسخه module» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "فهرست moduleهای نصب‌شده",
+        "PowerShell",
+        "system",
+        "Get-Module -ListAvailable | Sort-Object Name,Version",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-Module -ListAvailable | Sort-Object Name,Version» در «بررسی dependency و نسخه module» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «بررسی dependency و نسخه module» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0048",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "system",
+      "command": "Get-Help Get-NetTCPConnection -Examples",
+      "title_fa": "[L2] نمونه‌های مستند cmdlet",
+      "title_en": "نمونه‌های مستند cmdlet",
+      "syntax": "Get-Help Get-NetTCPConnection -Examples",
+      "when_to_use_fa": "یادگیری پارامترها از help محلی",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Get-Help Get-NetTCPConnection -Examples»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «یادگیری پارامترها از help محلی» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "نمونه‌های مستند cmdlet",
+        "PowerShell",
+        "system",
+        "Get-Help Get-NetTCPConnection -Examples",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Get-Help Get-NetTCPConnection -Examples» در «یادگیری پارامترها از help محلی» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «یادگیری پارامترها از help محلی» با شاهد مستقل تطبیق دهید."
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:admin:0049",
+      "vendor": "powershell",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; module compatibility varies",
+      "version_scope": "Windows PowerShell 5.1 / PowerShell 7+؛ availability and parameters vary by OS/module",
+      "privilege": "standard user unless target cmdlet or data requires elevation",
+      "category": "powershell",
+      "subcategory": "scripting",
+      "command": "Measure-Command { Get-Process | Out-Null }",
+      "title_fa": "[L2] اندازه‌گیری زمان اجرا",
+      "title_en": "اندازه‌گیری زمان اجرا",
+      "syntax": "Measure-Command { Get-Process | Out-Null }",
+      "when_to_use_fa": "مقایسه تقریبی عملکرد یک بلوک کد",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 موجود باشد؛ $PSVersionTable و Get-Command برای بررسی سازگاری استفاده شود",
+        "دسترسی به فایل‌ها و event logها فقط با مجوز لازم"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا روی VM یا داده آزمایشی اجرا کنید.",
+        "نوع خروجی objectها و propertyهای اصلی را بررسی کنید؛ از parse کردن متن نمایشی برای automation پرهیز کنید.",
+        "نتیجه، نسخه PowerShell و زمان اجرا را ثبت و با یک منبع مستقل تطبیق دهید."
+      ],
+      "sample_output": "خروجی آموزشی برای «Measure-Command { Get-Process | Out-Null }»؛ مقدارها، propertyها و دسترس‌پذیری به نسخه ویندوز، module و مجوز وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "Object properties / status",
+          "meaning": "propertyهای واقعی را با Get-Member یا help نسخه هدف بررسی کنید."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض دسترس‌پذیری یکسان cmdletها در Windows PowerShell 5.1 و PowerShell 7+.",
+        "تبدیل object به رشته و سپس parse کردن خروجی متنی در automation بدون نیاز واقعی."
+      ],
+      "security_notes_fa": "از Invoke-Expression روی ورودی کنترل‌نشده استفاده نکنید؛ logها و transcriptها ممکن است نام کاربر، مسیرها و داده حساس داشته باشند.",
+      "lab_hint_fa": "در VM ویندوز با داده نمونه تمرین کنید. cmdletهای تغییردهنده را با least privilege و در صورت پشتیبانی با -WhatIf بررسی کنید.",
+      "verify_steps_fa": [
+        "برای «مقایسه تقریبی عملکرد یک بلوک کد» نتیجه را با Event Viewer، ipconfig/netstat یا مستندات همان cmdlet تطبیق دهید."
+      ],
+      "rollback_fa": "فرمان مشاهده‌ای است؛ تغییری در تنظیمات ایجاد نمی‌کند.",
+      "related_commands": [
+        "Get-Help",
+        "Get-Command",
+        "$Error[0]"
+      ],
+      "search_keywords": [
+        "اندازه‌گیری زمان اجرا",
+        "PowerShell",
+        "scripting",
+        "Measure-Command { Get-Process | Out-Null }",
+        "chapter 68"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/powershell/"
+      ],
+      "assessment": {
+        "question_fa": "فرمان «Measure-Command { Get-Process | Out-Null }» در «مقایسه تقریبی عملکرد یک بلوک کد» چه خروجی یا شاهدی می‌دهد؟",
+        "answer_key_fa": "نوع خروجی را روی نسخه هدف بررسی کنید و نتیجه را برای «مقایسه تقریبی عملکرد یک بلوک کد» با شاهد مستقل تطبیق دهید."
       },
       "source_status": "review_required"
     }
