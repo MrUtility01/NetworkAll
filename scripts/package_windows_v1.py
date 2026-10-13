@@ -6,6 +6,7 @@ from __future__ import annotations
 import gzip
 import hashlib
 import json
+import re
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
@@ -184,7 +185,7 @@ def main() -> None:
         packaged_svg = [
             n for n in names
             if n.startswith(f"{PACKAGE_ROOT}/server/static/diagrams/")
-            and re.search(r"/diagram_\\d{3}\\.svg$", n)
+            and re.search(r"/diagram_\d{3}\.svg$", n)
         ]
         if len(packaged_svg) != 100:
             raise SystemExit(f"Windows ZIP must contain 100 web SVG diagrams, found {len(packaged_svg)}")
