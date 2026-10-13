@@ -117,10 +117,6 @@ def main() -> None:
         fail(f"chapter 68 missing command collections: {missing_groups}")
     chapter68 = next((ch for ch in chapters if int(ch.get("order", 0)) == 68), {})
     ch68_lessons = [les for order, les in lessons if order == 68]
-    collection_prefix_by_group = {
-        str(sub.get("title_fa") or "").split("—", 1)[0].strip(): str(sub.get("title_fa") or "").split("—", 1)[0].strip()
-        for sub in chapter68.get("subchapters", [])
-    }
     unlabeled = []
     empty_groups = []
     for sub in chapter68.get("subchapters", []):
