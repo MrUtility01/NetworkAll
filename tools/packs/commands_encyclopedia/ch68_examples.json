@@ -1,0 +1,1458 @@
+{
+  "schema_version": 1,
+  "chapter_order": 68,
+  "title_fa": "مثال‌های عملی دانشنامه فرمان‌ها",
+  "count": 50,
+  "examples": [
+    {
+      "id": "ch68-ex-001",
+      "command_uid": "cmd:cisco:routing:0001",
+      "platform": "IOS-XE",
+      "vendor": "cisco",
+      "level": "L1",
+      "title_fa": "مثال عملی: نمایش جدول مسیریابی IPv4",
+      "goal_fa": "بررسی مسیر انتخابی و next-hop پیش از تغییر route",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "command": "show ip route",
+      "expected_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nO 10.20.0.0/16 [110/20] via 192.0.2.2, 00:02:10, GigabitEthernet1/0/1",
+      "interpretation_fa": "State/Status/Route: مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است.",
+      "verify_fa": [
+        "مقصد را با show ip route 10.20.1.1 بررسی کنید"
+      ],
+      "safety_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-002",
+      "command_uid": "cmd:cisco:routing:0002",
+      "platform": "IOS-XE",
+      "vendor": "cisco",
+      "level": "L1",
+      "title_fa": "مثال عملی: انتخاب مسیر برای مقصد مشخص",
+      "goal_fa": "مشخص‌کردن longest-prefix match برای یک مقصد",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "command": "show ip route 192.0.2.80",
+      "expected_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nRouting entry for 192.0.2.0/24, Known via static",
+      "interpretation_fa": "State/Status/Route: مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است.",
+      "verify_fa": [
+        "با traceroute و جدول همسایه‌ها مسیر را تطبیق دهید"
+      ],
+      "safety_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-003",
+      "command_uid": "cmd:cisco:routing:0003",
+      "platform": "IOS-XE",
+      "vendor": "cisco",
+      "level": "L1",
+      "title_fa": "مثال عملی: خلاصه وضعیت رابط‌ها",
+      "goal_fa": "بررسی سریع up/down و آدرس IP رابط‌ها",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "command": "show ip interface brief",
+      "expected_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nGigabitEthernet1/0/1 192.0.2.1 YES manual up up",
+      "interpretation_fa": "State/Status/Route: مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است.",
+      "verify_fa": [
+        "سپس show interfaces <interface> را اجرا کنید"
+      ],
+      "safety_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-004",
+      "command_uid": "cmd:cisco:routing:0004",
+      "platform": "IOS-XE",
+      "vendor": "cisco",
+      "level": "L1",
+      "title_fa": "مثال عملی: بررسی خطاهای لایه فیزیکی",
+      "goal_fa": "تشخیص CRC، input errors و drops",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "command": "show interfaces counters errors",
+      "expected_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nPort  CRC  Frame  Overrun  ...",
+      "interpretation_fa": "State/Status/Route: مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است.",
+      "verify_fa": [
+        "شمارنده‌ها را با بازه زمانی و سمت مقابل مقایسه کنید"
+      ],
+      "safety_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-005",
+      "command_uid": "cmd:cisco:routing:0005",
+      "platform": "IOS-XE",
+      "vendor": "cisco",
+      "level": "L1",
+      "title_fa": "مثال عملی: مشاهده جدول ARP",
+      "goal_fa": "تطبیق IP با MAC در همان broadcast domain",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "command": "show arp",
+      "expected_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nInternet 192.0.2.10  0 aabb.cc00.0100 ARPA Vlan10",
+      "interpretation_fa": "State/Status/Route: مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است.",
+      "verify_fa": [
+        "با MAC table و ARP دستگاه مقصد مقایسه کنید"
+      ],
+      "safety_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-006",
+      "command_uid": "cmd:cisco:routing:0006",
+      "platform": "IOS-XE",
+      "vendor": "cisco",
+      "level": "L1",
+      "title_fa": "مثال عملی: بررسی همسایه‌های OSPF",
+      "goal_fa": "عیب‌یابی adjacency و state همسایه",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "command": "show ip ospf neighbor",
+      "expected_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nNeighbor ID Pri State Dead Time Address Interface",
+      "interpretation_fa": "State/Status/Route: مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است.",
+      "verify_fa": [
+        "Network type، area، timers و authentication را بررسی کنید"
+      ],
+      "safety_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-007",
+      "command_uid": "cmd:cisco:routing:0007",
+      "platform": "IOS-XE",
+      "vendor": "cisco",
+      "level": "L1",
+      "title_fa": "مثال عملی: خلاصه رابط‌های OSPF",
+      "goal_fa": "تأیید area و فعال‌بودن OSPF روی رابط",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "command": "show ip ospf interface brief",
+      "expected_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nInterface PID Area IP Address/Mask Cost State",
+      "interpretation_fa": "State/Status/Route: مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است.",
+      "verify_fa": [
+        "با طراحی area و passive-interface تطبیق دهید"
+      ],
+      "safety_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-008",
+      "command_uid": "cmd:cisco:routing:0008",
+      "platform": "IOS-XE",
+      "vendor": "cisco",
+      "level": "L1",
+      "title_fa": "مثال عملی: نمایش پارامترهای پروتکل مسیریابی",
+      "goal_fa": "بررسی منابع route، timers و network statements",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "command": "show ip protocols",
+      "expected_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nRouting Protocol is 'ospf ...'",
+      "interpretation_fa": "State/Status/Route: مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است.",
+      "verify_fa": [
+        "با running-config و route table تطبیق دهید"
+      ],
+      "safety_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-009",
+      "command_uid": "cmd:cisco:routing:0009",
+      "platform": "IOS-XE",
+      "vendor": "cisco",
+      "level": "L1",
+      "title_fa": "مثال عملی: خلاصه وضعیت BGP peers",
+      "goal_fa": "بررسی Established بودن همسایگی BGP",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "command": "show ip bgp summary",
+      "expected_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nNeighbor V AS MsgRcvd MsgSent Up/Down State/PfxRcd",
+      "interpretation_fa": "State/Status/Route: مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است.",
+      "verify_fa": [
+        "اگر state عدد نیست، TCP/179، ASN و policy را بررسی کنید"
+      ],
+      "safety_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-010",
+      "command_uid": "cmd:cisco:routing:0010",
+      "platform": "IOS-XE",
+      "vendor": "cisco",
+      "level": "L1",
+      "title_fa": "مثال عملی: مشاهده مسیرهای BGP",
+      "goal_fa": "تحلیل مسیرهای دریافتی و بهترین مسیر",
+      "prerequisites_fa": [
+        "دسترسی مجاز به تجهیز Cisco آزمایشگاهی یا شبکه تحت مدیریت",
+        "ثبت hostname، نسخه IOS-XE و وضعیت قبل از تغییر"
+      ],
+      "steps_fa": [
+        "فرمان را در حالت دسترسی مشخص اجرا کنید.",
+        "خروجی را همراه زمان، hostname و هدف بررسی ثبت کنید.",
+        "نتیجه را با توپولوژی و پیکربندی مورد انتظار تطبیق دهید."
+      ],
+      "command": "show ip bgp",
+      "expected_output": "نمونه آموزشی؛ قالب و مقادیر دقیق با مدل و نسخه IOS-XE فرق می‌کند:\nNetwork Next Hop Metric LocPrf Weight Path",
+      "interpretation_fa": "State/Status/Route: مقدار واقعی را در خروجی تجهیز خود بررسی کنید؛ متن این فایل نمونه آموزشی است.",
+      "verify_fa": [
+        "با route-map، prefix-list و best-path criteria مقایسه کنید"
+      ],
+      "safety_fa": "خروجی ممکن است IP، نام میزبان، مسیرها و توپولوژی داخلی را افشا کند؛ پیش از اشتراک‌گذاری پاک‌سازی شود.",
+      "source_urls": [
+        "https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-xe/products-command-reference-list.html"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-011",
+      "command_uid": "cmd:mikrotik:ops:0001",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "vendor": "mikrotik",
+      "level": "L1",
+      "title_fa": "مثال عملی: نمایش مسیرهای IPv4",
+      "goal_fa": "routing",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "command": "/ip route print detail",
+      "expected_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nDAc dst-address=192.0.2.0/24 gateway=ether1 distance=1",
+      "interpretation_fa": "status/counters: خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید.",
+      "verify_fa": [
+        "از /routing/route/print detail نیز متناسب با نسخه استفاده کنید"
+      ],
+      "safety_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-012",
+      "command_uid": "cmd:mikrotik:ops:0002",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "vendor": "mikrotik",
+      "level": "L1",
+      "title_fa": "مثال عملی: نمایش IPهای رابط‌ها",
+      "goal_fa": "interface",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "command": "/ip address print detail",
+      "expected_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\naddress=192.0.2.1/24 interface=bridge",
+      "interpretation_fa": "status/counters: خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید.",
+      "verify_fa": [
+        "با route و ARP تطبیق دهید"
+      ],
+      "safety_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-013",
+      "command_uid": "cmd:mikrotik:ops:0003",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "vendor": "mikrotik",
+      "level": "L1",
+      "title_fa": "مثال عملی: بررسی رابط‌ها",
+      "goal_fa": "interface",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "command": "/interface print detail",
+      "expected_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nname=ether1 type=ether running=yes",
+      "interpretation_fa": "status/counters: خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید.",
+      "verify_fa": [
+        "با link LED و طرف مقابل مقایسه کنید"
+      ],
+      "safety_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-014",
+      "command_uid": "cmd:mikrotik:ops:0004",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "vendor": "mikrotik",
+      "level": "L1",
+      "title_fa": "مثال عملی: بررسی اعضای bridge",
+      "goal_fa": "bridge",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "command": "/interface bridge port print detail",
+      "expected_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\ninterface=ether2 bridge=bridge1",
+      "interpretation_fa": "status/counters: خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید.",
+      "verify_fa": [
+        "VLAN filtering و PVID را نیز بررسی کنید"
+      ],
+      "safety_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-015",
+      "command_uid": "cmd:mikrotik:ops:0005",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "vendor": "mikrotik",
+      "level": "L1",
+      "title_fa": "مثال عملی: بررسی جدول VLAN bridge",
+      "goal_fa": "vlan",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "command": "/interface bridge vlan print detail",
+      "expected_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nbridge=bridge1 vlan-ids=10 tagged=bridge1,ether1",
+      "interpretation_fa": "status/counters: خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید.",
+      "verify_fa": [
+        "VLAN filtering باید با طراحی و پورت‌ها تطبیق داشته باشد"
+      ],
+      "safety_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-016",
+      "command_uid": "cmd:mikrotik:ops:0006",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "vendor": "mikrotik",
+      "level": "L1",
+      "title_fa": "مثال عملی: بررسی DHCP lease",
+      "goal_fa": "dhcp",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "command": "/ip dhcp-server lease print detail",
+      "expected_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\naddress=192.0.2.50 mac-address=AA:BB:CC:DD:EE:FF status=bound",
+      "interpretation_fa": "status/counters: خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید.",
+      "verify_fa": [
+        "با pool، network و DHCP server بررسی کنید"
+      ],
+      "safety_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-017",
+      "command_uid": "cmd:mikrotik:ops:0007",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "vendor": "mikrotik",
+      "level": "L2",
+      "title_fa": "مثال عملی: بررسی DHCP server",
+      "goal_fa": "dhcp",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "command": "/ip dhcp-server print detail",
+      "expected_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nname=dhcp1 interface=bridge1 address-pool=pool1",
+      "interpretation_fa": "status/counters: خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید.",
+      "verify_fa": [
+        "مطمئن شوید DHCP ناخواسته روی VLAN دیگر فعال نیست"
+      ],
+      "safety_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-018",
+      "command_uid": "cmd:mikrotik:ops:0008",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "vendor": "mikrotik",
+      "level": "L2",
+      "title_fa": "مثال عملی: بررسی تنظیمات DNS",
+      "goal_fa": "dns",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "command": "/ip dns print",
+      "expected_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nservers=192.0.2.53 allow-remote-requests=no",
+      "interpretation_fa": "status/counters: خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید.",
+      "verify_fa": [
+        "اگر resolver برای کلاینت‌هاست، firewall و محدوده دسترسی را بررسی کنید"
+      ],
+      "safety_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-019",
+      "command_uid": "cmd:mikrotik:ops:0009",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "vendor": "mikrotik",
+      "level": "L2",
+      "title_fa": "مثال عملی: آمار ruleهای firewall",
+      "goal_fa": "firewall",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "command": "/ip firewall filter print stats",
+      "expected_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nchain=forward action=accept packets=120 bytes=9600",
+      "interpretation_fa": "status/counters: خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید.",
+      "verify_fa": [
+        "قواعد بالا به پایین ارزیابی می‌شوند؛ counter تنها یک سرنخ است"
+      ],
+      "safety_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-020",
+      "command_uid": "cmd:mikrotik:ops:0010",
+      "platform": "RouterOS v7 (verify syntax on v6)",
+      "vendor": "mikrotik",
+      "level": "L2",
+      "title_fa": "مثال عملی: آمار ruleهای NAT",
+      "goal_fa": "nat",
+      "prerequisites_fa": [
+        "دسترسی مجاز به RouterOS و ثبت نسخه دقیق /system resource print",
+        "برای تغییرات احتمالی، backup و دسترسی out-of-band آماده باشد"
+      ],
+      "steps_fa": [
+        "فرمان را در terminal با دسترسی حداقلی اجرا کنید.",
+        "خروجی را همراه نسخه RouterOS و نام دستگاه ثبت کنید.",
+        "نتیجه را با توپولوژی و تنظیمات مورد انتظار مقایسه کنید."
+      ],
+      "command": "/ip firewall nat print stats",
+      "expected_output": "نمونه آموزشی؛ جزئیات دقیق به نسخه، مدل و پیکربندی بستگی دارد:\nchain=srcnat action=masquerade packets=200",
+      "interpretation_fa": "status/counters: خروجی نمونه صرفاً آموزشی است؛ مقدار واقعی را از دستگاه هدف بگیرید.",
+      "verify_fa": [
+        "با route، interface list و conntrack تطبیق دهید"
+      ],
+      "safety_fa": "پیکربندی RouterOS ممکن است شامل IPها، نام کاربری و secretهای حساس باشد؛ خروجی را پیش از انتشار پاک‌سازی کنید.",
+      "source_urls": [
+        "https://help.mikrotik.com/docs/"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-021",
+      "command_uid": "cmd:powershell:admin:0001",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "vendor": "powershell",
+      "level": "L1",
+      "title_fa": "مثال عملی: نمایش پیکربندی IP رابط‌ها",
+      "goal_fa": "network",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "command": "Get-NetIPConfiguration",
+      "expected_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nگزارش IP، gateway و رابط فعال",
+      "interpretation_fa": "Object properties: PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید.",
+      "verify_fa": [
+        "InterfaceAlias : Ethernet; IPv4Address : 192.0.2.10"
+      ],
+      "safety_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "source_urls": [
+        "Read-only"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-022",
+      "command_uid": "cmd:powershell:admin:0002",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "vendor": "powershell",
+      "level": "L1",
+      "title_fa": "مثال عملی: بررسی جدول مسیر IPv4",
+      "goal_fa": "network",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "command": "Get-NetRoute -AddressFamily IPv4 | Sort-Object RouteMetric",
+      "expected_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nمرتب‌کردن مسیرها برای تحلیل انتخاب مسیر",
+      "interpretation_fa": "Object properties: PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید.",
+      "verify_fa": [
+        "DestinationPrefix NextHop RouteMetric InterfaceAlias"
+      ],
+      "safety_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "source_urls": [
+        "Read-only"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-023",
+      "command_uid": "cmd:powershell:admin:0003",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "vendor": "powershell",
+      "level": "L1",
+      "title_fa": "مثال عملی: آزمون TCP و پورت مقصد",
+      "goal_fa": "network",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "command": "Test-NetConnection -ComputerName 192.0.2.80 -Port 443 -InformationLevel Detailed",
+      "expected_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nتفکیک مشکل DNS/route از دسترس‌پذیری پورت TCP",
+      "interpretation_fa": "Object properties: PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید.",
+      "verify_fa": [
+        "TcpTestSucceeded : True"
+      ],
+      "safety_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "source_urls": [
+        "Read-only"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-024",
+      "command_uid": "cmd:powershell:admin:0004",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "vendor": "powershell",
+      "level": "L1",
+      "title_fa": "مثال عملی: پرس‌وجوی DNS",
+      "goal_fa": "dns",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "command": "Resolve-DnsName example.com",
+      "expected_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nبررسی پاسخ A/AAAA/CNAME از resolver ویندوز",
+      "interpretation_fa": "Object properties: PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید.",
+      "verify_fa": [
+        "Name Type TTL Section IPAddress"
+      ],
+      "safety_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "source_urls": [
+        "Read-only"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-025",
+      "command_uid": "cmd:powershell:admin:0005",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "vendor": "powershell",
+      "level": "L1",
+      "title_fa": "مثال عملی: نمایش DNS هر رابط",
+      "goal_fa": "dns",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "command": "Get-DnsClientServerAddress",
+      "expected_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nتشخیص DNS ناخواسته یا اختلاف رابط‌ها",
+      "interpretation_fa": "Object properties: PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید.",
+      "verify_fa": [
+        "InterfaceAlias ServerAddresses"
+      ],
+      "safety_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "source_urls": [
+        "Read-only"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-026",
+      "command_uid": "cmd:powershell:admin:0006",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "vendor": "powershell",
+      "level": "L1",
+      "title_fa": "مثال عملی: فیلتر سرویس‌های در حال اجرا",
+      "goal_fa": "services",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "command": "Get-Service | Where-Object Status -eq 'Running'",
+      "expected_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nگزارش سرویس‌های فعال برای inventory",
+      "interpretation_fa": "Object properties: PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید.",
+      "verify_fa": [
+        "Status Name DisplayName"
+      ],
+      "safety_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "source_urls": [
+        "Read-only"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-027",
+      "command_uid": "cmd:powershell:admin:0007",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "vendor": "powershell",
+      "level": "L2",
+      "title_fa": "مثال عملی: نمایش فرایندهای پرمصرف CPU",
+      "goal_fa": "process",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10",
+      "expected_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nتشخیص اولیه مصرف CPU در زمان نمونه‌برداری",
+      "interpretation_fa": "Object properties: PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید.",
+      "verify_fa": [
+        "Handles NPM PM CPU Id ProcessName"
+      ],
+      "safety_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "source_urls": [
+        "Read-only"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-028",
+      "command_uid": "cmd:powershell:admin:0008",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "vendor": "powershell",
+      "level": "L2",
+      "title_fa": "مثال عملی: خواندن رخدادهای دو ساعت اخیر",
+      "goal_fa": "logs",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "command": "Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddHours(-2)} -MaxEvents 100",
+      "expected_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nRCA خطاهای سرویس، درایور و شبکه",
+      "interpretation_fa": "Object properties: PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید.",
+      "verify_fa": [
+        "TimeCreated Id LevelDisplayName ProviderName Message"
+      ],
+      "safety_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "source_urls": [
+        "Read-only"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-029",
+      "command_uid": "cmd:powershell:admin:0009",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "vendor": "powershell",
+      "level": "L2",
+      "title_fa": "مثال عملی: پیداکردن فایل‌های بزرگ",
+      "goal_fa": "files",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "command": "Get-ChildItem -LiteralPath 'C:\\Logs' -File | Sort-Object Length -Descending | Select-Object -First 10",
+      "expected_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nیافتن logهای حجیم بدون حذف خودکار",
+      "interpretation_fa": "Object properties: PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید.",
+      "verify_fa": [
+        "Name Length LastWriteTime"
+      ],
+      "safety_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "source_urls": [
+        "Read-only"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-030",
+      "command_uid": "cmd:powershell:admin:0010",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+; verify module compatibility",
+      "vendor": "powershell",
+      "level": "L2",
+      "title_fa": "مثال عملی: محاسبه SHA-256 فایل",
+      "goal_fa": "files",
+      "prerequisites_fa": [
+        "Windows PowerShell یا PowerShell 7 نصب باشد",
+        "در صورت استفاده از moduleهای تخصصی، وجود و نسخه module را بررسی کنید"
+      ],
+      "steps_fa": [
+        "فرمان را ابتدا در محیط غیرتولیدی اجرا کنید.",
+        "خروجی objectها و propertyهای اصلی را بررسی کنید.",
+        "در اسکریپت، خطاها و exit status را صریح مدیریت کنید."
+      ],
+      "command": "Get-FileHash -Algorithm SHA256 -LiteralPath '.\\artifact.zip'",
+      "expected_output": "نمونه آموزشی؛ propertyها و مقادیر با سیستم و نسخه فرق می‌کنند:\nتأیید یکپارچگی فایل دریافت‌شده",
+      "interpretation_fa": "Object properties: PowerShell عموماً object برمی‌گرداند؛ پیش از parse کردن متن، propertyها را بررسی کنید.",
+      "verify_fa": [
+        "Algorithm Hash Path"
+      ],
+      "safety_fa": "اسکریپت‌ها را با least privilege اجرا کنید؛ transcript و خروجی ممکن است اطلاعات حساس داشته باشند.",
+      "source_urls": [
+        "Read-only"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-031",
+      "command_uid": "cmd:batch:admin:0001",
+      "platform": "Windows CMD / Batch",
+      "vendor": "microsoft",
+      "level": "L1",
+      "title_fa": "مثال عملی: شروع اسکریپت با scope محلی",
+      "goal_fa": "basics",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "command": "@echo off & setlocal",
+      "expected_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nجلوگیری از نشت تغییر متغیرهای محیط به caller",
+      "interpretation_fa": "ERRORLEVEL: کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود.",
+      "verify_fa": [
+        "اسکریپت بدون echo فرمان‌ها اجرا می‌شود"
+      ],
+      "safety_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "source_urls": [
+        "بدون تغییر سیستمی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-032",
+      "command_uid": "cmd:batch:admin:0002",
+      "platform": "Windows CMD / Batch",
+      "vendor": "microsoft",
+      "level": "L1",
+      "title_fa": "مثال عملی: اعتبارسنجی آرگومان فایل",
+      "goal_fa": "errors",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "command": "if not exist \"%~1\" (echo ERROR: missing file 1>&2 & exit /b 2)",
+      "expected_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nتوقف امن وقتی مسیر ورودی موجود نیست",
+      "interpretation_fa": "ERRORLEVEL: کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود.",
+      "verify_fa": [
+        "ERROR: missing file"
+      ],
+      "safety_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "source_urls": [
+        "فقط روی فایل ورودی آزمایشگاهی اجرا کنید"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-033",
+      "command_uid": "cmd:batch:admin:0003",
+      "platform": "Windows CMD / Batch",
+      "vendor": "microsoft",
+      "level": "L1",
+      "title_fa": "مثال عملی: تعریف مسیر log کنار اسکریپت",
+      "goal_fa": "logging",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "command": "set \"LOG=%~dp0run.log\"",
+      "expected_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nثابت نگه‌داشتن محل log مستقل از working directory",
+      "interpretation_fa": "ERRORLEVEL: کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود.",
+      "verify_fa": [
+        "LOG=C:\\Scripts\\run.log"
+      ],
+      "safety_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "source_urls": [
+        "فقط متغیر محیطی محلی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-034",
+      "command_uid": "cmd:batch:admin:0004",
+      "platform": "Windows CMD / Batch",
+      "vendor": "microsoft",
+      "level": "L1",
+      "title_fa": "مثال عملی: ثبت timestamp شروع",
+      "goal_fa": "logging",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "command": "echo [%date% %time%] START>>\"%LOG%\"",
+      "expected_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nثبت خط شروع برای عیب‌یابی job زمان‌بندی‌شده",
+      "interpretation_fa": "ERRORLEVEL: کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود.",
+      "verify_fa": [
+        "[date time] START"
+      ],
+      "safety_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "source_urls": [
+        "فقط فایل log نوشته می‌شود"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-035",
+      "command_uid": "cmd:batch:admin:0005",
+      "platform": "Windows CMD / Batch",
+      "vendor": "microsoft",
+      "level": "L1",
+      "title_fa": "مثال عملی: بازگرداندن شکست مرحله قبلی",
+      "goal_fa": "errors",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "command": "if errorlevel 1 exit /b 1",
+      "expected_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nمتوقف‌کردن caller با کد شکست پس از فرمان ناموفق",
+      "interpretation_fa": "ERRORLEVEL: کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود.",
+      "verify_fa": [
+        "ERRORLEVEL=1"
+      ],
+      "safety_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "source_urls": [
+        "هیچ تغییر مستقیمی ندارد"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-036",
+      "command_uid": "cmd:batch:admin:0006",
+      "platform": "Windows CMD / Batch",
+      "vendor": "microsoft",
+      "level": "L1",
+      "title_fa": "مثال عملی: فراخوانی subroutine در همان فایل",
+      "goal_fa": "scripting",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "command": "call :Log \"message\"",
+      "expected_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nاستفاده مجدد از منطق logging",
+      "interpretation_fa": "ERRORLEVEL: کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود.",
+      "verify_fa": [
+        "[timestamp] message"
+      ],
+      "safety_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "source_urls": [
+        "هیچ تغییر مستقیمی ندارد"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-037",
+      "command_uid": "cmd:batch:admin:0007",
+      "platform": "Windows CMD / Batch",
+      "vendor": "microsoft",
+      "level": "L1",
+      "title_fa": "مثال عملی: فهرست فایل‌های log با wildcard",
+      "goal_fa": "files",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "command": "for %%F in (\"%~dp0*.log\") do echo %%~nxF",
+      "expected_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\ninventory گرفتن از logها بدون حذف فایل",
+      "interpretation_fa": "ERRORLEVEL: کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود.",
+      "verify_fa": [
+        "app.log; worker.log"
+      ],
+      "safety_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-038",
+      "command_uid": "cmd:batch:admin:0008",
+      "platform": "Windows CMD / Batch",
+      "vendor": "microsoft",
+      "level": "L2",
+      "title_fa": "مثال عملی: خواندن خط‌به‌خط فایل متنی",
+      "goal_fa": "files",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "command": "for /f \"usebackq delims=\" %%L in (\"input.txt\") do echo(%%L",
+      "expected_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nپردازش فایل متنی ساده با حفظ فاصله‌ها تا حد syntax",
+      "interpretation_fa": "ERRORLEVEL: کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود.",
+      "verify_fa": [
+        "هر خط ورودی چاپ می‌شود"
+      ],
+      "safety_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-039",
+      "command_uid": "cmd:batch:admin:0009",
+      "platform": "Windows CMD / Batch",
+      "vendor": "microsoft",
+      "level": "L2",
+      "title_fa": "مثال عملی: افزایش شمارنده عددی",
+      "goal_fa": "scripting",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "command": "set /a COUNT+=1",
+      "expected_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nشمارش تکرار در loop",
+      "interpretation_fa": "ERRORLEVEL: کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود.",
+      "verify_fa": [
+        "COUNT=1"
+      ],
+      "safety_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "source_urls": [
+        "فقط متغیر محلی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-040",
+      "command_uid": "cmd:batch:admin:0010",
+      "platform": "Windows CMD / Batch",
+      "vendor": "microsoft",
+      "level": "L2",
+      "title_fa": "مثال عملی: بررسی تعریف متغیر",
+      "goal_fa": "basics",
+      "prerequisites_fa": [
+        "در فایل .bat/.cmd اجرا شود؛ تفاوت %VAR% و %%F با prompt تعاملی رعایت شود",
+        "برای عملیات فایل، ابتدا مسیر ورودی/خروجی را اعتبارسنجی کنید"
+      ],
+      "steps_fa": [
+        "در VM ویندوز یا پوشه آزمایشگاهی اجرا کنید.",
+        "کد خروج، stdout و stderr را جدا بررسی کنید.",
+        "برای job خودکار log و حالت failure تعریف کنید."
+      ],
+      "command": "if defined CONFIG (echo CONFIG is set) else (echo CONFIG missing)",
+      "expected_output": "نمونه آموزشی؛ خروجی و قالب تاریخ/مسیر با locale و سیستم فرق می‌کند:\nجداکردن تنظیم موجود از مقدار خالی",
+      "interpretation_fa": "ERRORLEVEL: کد خروج آخرین فرمان؛ معنای آن برای هر فرمان باید از مستندات همان فرمان بررسی شود.",
+      "verify_fa": [
+        "CONFIG is set یا CONFIG missing"
+      ],
+      "safety_fa": "ورودی را مستقیم به CALL یا رشته فرمان تزریق نکنید؛ quoting در CMD پیچیده است و کاراکترهای ویژه ممکن است parsing را عوض کنند.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-041",
+      "command_uid": "cmd:linux:admin:0001",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "vendor": "linux",
+      "level": "L1",
+      "title_fa": "مثال عملی: خلاصه آدرس رابط‌ها",
+      "goal_fa": "network",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "command": "ip -br address",
+      "expected_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nنمایش سریع رابط و آدرس‌ها",
+      "interpretation_fa": "stdout/stderr/exit status: خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید.",
+      "verify_fa": [
+        "eth0 UP 192.0.2.10/24"
+      ],
+      "safety_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-042",
+      "command_uid": "cmd:linux:admin:0002",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "vendor": "linux",
+      "level": "L1",
+      "title_fa": "مثال عملی: انتخاب مسیر برای مقصد",
+      "goal_fa": "network",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "command": "ip route get 192.0.2.80",
+      "expected_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nبررسی interface، source IP و gateway انتخابی kernel",
+      "interpretation_fa": "stdout/stderr/exit status: خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید.",
+      "verify_fa": [
+        "192.0.2.80 via 192.0.2.1 dev eth0 src 192.0.2.10"
+      ],
+      "safety_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-043",
+      "command_uid": "cmd:linux:admin:0003",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "vendor": "linux",
+      "level": "L1",
+      "title_fa": "مثال عملی: فهرست socketهای listening",
+      "goal_fa": "network",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "command": "ss -lntup",
+      "expected_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nتشخیص پورت‌ها و processهای listener",
+      "interpretation_fa": "stdout/stderr/exit status: خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید.",
+      "verify_fa": [
+        "tcp LISTEN 0 128 0.0.0.0:22 ..."
+      ],
+      "safety_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-044",
+      "command_uid": "cmd:linux:admin:0004",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "vendor": "linux",
+      "level": "L1",
+      "title_fa": "مثال عملی: نمایش neighbor cache",
+      "goal_fa": "network",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "command": "ip neigh show",
+      "expected_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nعیب‌یابی ARP/NDP در همان لینک",
+      "interpretation_fa": "stdout/stderr/exit status: خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید.",
+      "verify_fa": [
+        "192.0.2.1 dev eth0 lladdr aa:bb:cc:dd:ee:ff REACHABLE"
+      ],
+      "safety_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-045",
+      "command_uid": "cmd:linux:admin:0005",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "vendor": "linux",
+      "level": "L1",
+      "title_fa": "مثال عملی: وضعیت DNS در systemd-resolved",
+      "goal_fa": "dns",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "command": "resolvectl status",
+      "expected_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nبررسی DNS per-link و search domains",
+      "interpretation_fa": "stdout/stderr/exit status: خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید.",
+      "verify_fa": [
+        "Link ... DNS Servers ..."
+      ],
+      "safety_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-046",
+      "command_uid": "cmd:linux:admin:0006",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "vendor": "linux",
+      "level": "L1",
+      "title_fa": "مثال عملی: حل نام از NSS",
+      "goal_fa": "dns",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "command": "getent ahosts example.com",
+      "expected_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nآزمون name resolution مشابه برنامه‌های NSS",
+      "interpretation_fa": "stdout/stderr/exit status: خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید.",
+      "verify_fa": [
+        "آدرس‌های IPv4/IPv6"
+      ],
+      "safety_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-047",
+      "command_uid": "cmd:linux:admin:0007",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "vendor": "linux",
+      "level": "L1",
+      "title_fa": "مثال عملی: فهرست unitهای failed",
+      "goal_fa": "services",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "command": "systemctl --failed",
+      "expected_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nشروع عیب‌یابی سرویس‌های systemd",
+      "interpretation_fa": "stdout/stderr/exit status: خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید.",
+      "verify_fa": [
+        "UNIT LOAD ACTIVE SUB DESCRIPTION"
+      ],
+      "safety_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-048",
+      "command_uid": "cmd:linux:admin:0008",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "vendor": "linux",
+      "level": "L2",
+      "title_fa": "مثال عملی: مشاهده لاگ سرویس",
+      "goal_fa": "logs",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "command": "journalctl -u ssh.service --since '2 hours ago' --no-pager",
+      "expected_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nRCA رخدادهای سرویس در بازه زمانی",
+      "interpretation_fa": "stdout/stderr/exit status: خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید.",
+      "verify_fa": [
+        "timestamp hostname sshd[pid]: ..."
+      ],
+      "safety_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-049",
+      "command_uid": "cmd:linux:admin:0009",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "vendor": "linux",
+      "level": "L2",
+      "title_fa": "مثال عملی: ظرفیت filesystemها",
+      "goal_fa": "storage",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "command": "df -hT",
+      "expected_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nبررسی فضای آزاد و نوع filesystem",
+      "interpretation_fa": "stdout/stderr/exit status: خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید.",
+      "verify_fa": [
+        "Filesystem Type Size Used Avail Use% Mounted on"
+      ],
+      "safety_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    },
+    {
+      "id": "ch68-ex-050",
+      "command_uid": "cmd:linux:admin:0010",
+      "platform": "Linux (GNU/Linux; distro-specific tools noted)",
+      "vendor": "linux",
+      "level": "L2",
+      "title_fa": "مثال عملی: برآورد فضای پوشه‌های سطح اول",
+      "goal_fa": "storage",
+      "prerequisites_fa": [
+        "در shell محلی یا VM لینوکس اجرا شود",
+        "نام ابزار و گزینه‌ها را با man/help همان توزیع تأیید کنید"
+      ],
+      "steps_fa": [
+        "فرمان را بدون تغییر سیستم اجرا کنید.",
+        "stdout، stderr و exit status را ثبت کنید.",
+        "خروجی را با نسخه توزیع، مدیر سرویس و محیط شبکه تفسیر کنید."
+      ],
+      "command": "du -xhd1 /var/log",
+      "expected_output": "نمونه آموزشی؛ مقادیر و ستون‌ها با توزیع و پیکربندی تفاوت دارند:\nیافتن دایرکتوری‌های حجیم روی یک filesystem",
+      "interpretation_fa": "stdout/stderr/exit status: خروجی متن به‌تنهایی کافی نیست؛ exit status و پیام خطا را هم ثبت کنید.",
+      "verify_fa": [
+        "size /var/log/..."
+      ],
+      "safety_fa": "اصل least privilege را رعایت کنید؛ قبل از اشتراک log/config، IPها، hostnameها، usernames و tokenها را پاک‌سازی کنید.",
+      "source_urls": [
+        "فقط‌خواندنی"
+      ],
+      "source_status": "review_required"
+    }
+  ]
+}
