@@ -9,11 +9,11 @@
 |---|---|---:|
 | Cisco IOS-XE Routing | `cisco_routing.json` + `cisco_routing_addon_01..08.json` | **۱۶۰۰** |
 | Cisco Switching | `cisco_switching.json` | ۲۰ |
-| MikroTik RouterOS v7 | `mikrotik_ops_addon.json` + `mikrotik_ops_addon_02.json` | ۱۴۳ |
-| PowerShell | `powershell.json` + `powershell_addon_01.json` | ۱۴۹ |
+| MikroTik RouterOS v7 | `mikrotik_ops_addon.json` (43) + `mikrotik_ops_addon_02.json` (100) + `mikrotik_ops_addon_03.json` (41) + `mikrotik_ops_addon_03.json` | **۱۸۴** |
+| PowerShell | `powershell.json` (49) + `powershell_addon_01.json` (100) + `powershell_addon_02.json` (25) + `powershell_addon_02.json` | **۱۷۴** |
 | Windows Batch | `windows_batch.json` | ۲۰ |
 | Linux | `linux.json` | ۲۰ |
-| **مجموع رکوردهای فرمان در بسته‌های مستقل بالا** | | **۱۹۵۲** |
+| **مجموع رکوردهای فرمان در بسته‌های مستقل بالا** | | **۲۰۱۸** |
 
 عدد Cisco Routing از شمار واقعی فایل‌ها به‌دست آمده است: ۱۵۱ رکورد در بسته پایه و ۷ بسته ۲۰۰ رکوردی به‌جز آخرین بسته ۴۹ رکوردی؛ جمع آن‌ها دقیقاً ۱۶۰۰ است. UIDهای Cisco از `cmd:cisco:routing:0001` تا `cmd:cisco:routing:1600` برنامه‌ریزی شده‌اند و validator یکتایی و تعارض UID را بررسی می‌کند.
 
@@ -33,7 +33,7 @@
 | پاسخ‌نامه مستقل PowerShell | ۲۱ پاسخ |
 | منابع مستقل فصل ۶۸ | ۱۷ URL در فایل منابع پایه |
 
-مجموع آزمون‌های موجود در فایل‌های جداگانه: **۱۱۶ سؤال و ۱۱۶ پاسخ**. پاسخ‌های درست در فایل‌های answer key نگهداری می‌شوند؛ validator شناسه‌ها، فرمان مرجع، تعداد گزینه‌ها و تطبیق پاسخ با گزینه را بررسی می‌کند.
+مجموع آزمون‌های تخصصی موجود در فایل‌های جداگانه: **۱۲۱ سؤال و ۱۲۱ پاسخ** (Cisco=40، RouterOS=45، PowerShell=36)؛ به‌علاوه آزمون عمومی فصل ۶۸ با ۵۰ سؤال و ۵۰ پاسخ. پاسخ‌های درست در فایل‌های answer key نگهداری می‌شوند؛ validator شناسه‌ها، فرمان مرجع، تعداد گزینه‌ها و تطبیق پاسخ با گزینه را بررسی می‌کند.
 
 ## فایل‌های آزمون تخصصی جدید
 
@@ -59,3 +59,12 @@ python3 scripts/export_android_index.py
 python3 scripts/merge_content_packs_into_android.py
 python3 scripts/validate_android_curriculum.py
 ```
+
+
+## Batch افزایشی جدید — 2026-10-13
+
+- RouterOS v7: فایل `mikrotik_ops_addon_03.json` با **۴۱ رکورد واقعی** افزوده شد؛ جمع مستقل RouterOS اکنون **۱۸۴** رکورد است.
+- PowerShell: فایل `powershell_addon_02.json` با **۲۵ رکورد واقعی** افزوده شد؛ جمع مستقل PowerShell اکنون **۱۷۴** رکورد است.
+- آزمون‌های تخصصی هر پلتفرم در فایل‌های addon جدا و answer key مستقل نگهداری می‌شوند: Cisco ۱۵ سؤال جدید (جمع ۴۰)، RouterOS ۱۵ (جمع ۴۵)، PowerShell ۱۵ (جمع ۳۶).
+- جمع بسته‌های فرمان در جدول بالا **۲۰۱۸ رکورد** است؛ شمارش بر اساس آرایه‌های `commands` فایل‌های مستقل انجام شده است.
+- validator به‌روزرسانی شده تا فایل‌های جدید، UIDها، ارجاع آزمون به فرمان و تطبیق پاسخ‌نامه را در CI بررسی کند. نتیجه اجرای CI پس از این commitها باید جداگانه تأیید شود.
