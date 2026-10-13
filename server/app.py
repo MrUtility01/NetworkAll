@@ -145,6 +145,11 @@ if _MODULE_STATUS["workspace"]:
 def index():
     return render_template("index.html")
 
+@app.get("/diagrams")
+def diagrams_gallery():
+    # SVGs are generated into server/static/diagrams by the shared content build.
+    return render_template("diagrams.html")
+
 
 @app.get("/api/health")
 def health():
