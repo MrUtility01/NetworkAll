@@ -88,6 +88,7 @@ PR کاندید: https://github.com/MrUtility01/NetworkAll/pull/5
 ### Commitهای مستقل فصل ۹
 
 - بسته ۲۱ درس: `78143cb8d15ba4e307729bd46c26fbb60dc53925`
+- یکتا کردن عنوان درس‌ها برای جلوگیری از برخورد هنگام merge: `4732ee6cfa5f246a739116361ee0d818c32693d8`
 - ۵۰ مثال: `42fd3d6b936a1c382a7f8bcdae9883c60457e9db`
 - ۵۰ سناریو: `e544e81d67944a5b4fb63f8efa9277bd24fa3265`
 - ۵۵ سؤال: `a406263c755354b309e2b716a693b59014b9a99f`
