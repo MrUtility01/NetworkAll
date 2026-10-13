@@ -20,15 +20,22 @@ python app.py
 
 ## APIهای اصلی
 
+- `GET /api/stats`
 - `GET /api/chapters`
 - `GET /api/chapters/<id>/levels`
 - `GET /api/levels/<id>/lessons`
 - `GET /api/lessons/<id>`
-- `GET /api/scenarios`
+- `GET /api/scenarios` / `GET /api/scenarios/<id>`
+- `GET /api/search?q=...`
+- `GET /diagrams` — گالری دیاگرام‌های SVG
 - `GET /api/sync/hello`
 - `GET /api/sync/manifest`
 - `POST /api/sync/pull`
 - `POST /api/sync/push`
+
+## رابط وب و احراز هویت
+
+رابط مرورگر با رمز محلی ویندوز باز می‌شود؛ پس از ورود، Session برای APIهای آموزشی مرورگر پذیرفته می‌شود. کلاینت‌های غیرمرورگری مثل Android همچنان باید توکن Sync را بفرستند. Endpointهای destructive برای بازسازی دیتابیس در UI عمومی قرار ندارند.
 
 ## Seed و محتوا
 
