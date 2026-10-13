@@ -217,20 +217,34 @@ class WebDB:
                         insert_rich_lesson(cur, lv_id, oi, lfa, len_, now)
                     else:
                         meta = record.get("meta") if isinstance(record.get("meta"), dict) else {}
+                        meta_json = json.dumps(meta, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
                         objectives = record.get("learning_objectives") or []
                         if not isinstance(objectives, list):
                             objectives = [str(objectives)]
+                        objectives_text = "\n".join(str(x) for x in objectives)
                         search_keywords = record.get("search_keywords") or []
+                        search_query = str(record.get("search_query") or " ".join(str(x) for x in search_keywords))
+                        source_status = str(record.get("source_status") or "review_required")
+                        level_tag = str(record.get("level") or "L0")
+                        uid = str(record.get("uid") or f"lesson:ch{int(order):02d}:s{li:03d}:l{oi:04d}")
                         content_fields = {
+                            "uid": uid,
+                            "entity": "lesson",
                             "title_fa": lfa,
                             "title_en": len_,
+                            "tags": level_tag,
                             "summary": str(record.get("summary") or ""),
                             "full_content": str(record.get("full_content") or ""),
                             "commands": str(record.get("commands") or ""),
                             "examples": str(record.get("examples") or ""),
                             "notes": str(record.get("notes") or ""),
-                            "meta": meta,
+                            "meta_json": meta_json,
+                            "search_query": search_query,
+                            "learning_objectives": objectives_text,
+                            "source_status": source_status,
+                            "deleted": False,
                         }
+                        # Same canonical payload as shared.sync_engine.content_hash and Android.
                         digest = hashlib.sha256(
                             json.dumps(content_fields, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
                         ).hexdigest()
@@ -245,12 +259,12 @@ class WebDB:
                                 lv_id, oi, lfa, len_, str(record.get("level") or "L0"),
                                 content_fields["summary"], content_fields["full_content"],
                                 content_fields["commands"], content_fields["examples"], content_fields["notes"],
-                                json.dumps(meta, ensure_ascii=False),
-                                " ".join(str(x) for x in search_keywords),
-                                "\n".join(str(x) for x in objectives),
-                                str(record.get("source_status") or "review_required"),
+                                meta_json,
+                                search_query,
+                                objectives_text,
+                                source_status,
                                 str(record.get("last_updated") or payload.get("generated_at") or now),
-                                str(record.get("uid") or f"lesson:ch{int(order):02d}:s{li:03d}:l{oi:04d}"),
+                                uid,
                                 digest, "windows-seed-v1", 0,
                             ),
                         )
