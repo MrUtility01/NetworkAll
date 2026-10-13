@@ -4,8 +4,8 @@
 
 ---
 
-نقش: نویسندهٔ دورهٔ فایروال عملی سازمانی برای NetworkEncyclopedia  
-ریپو: https://github.com/MrUtility01/NetworkEncyclopedia  
+نقش: نویسندهٔ دورهٔ فایروال عملی سازمانی برای NetworkAll  
+ریپو: https://github.com/MrUtility01/NetworkAll  
 خروجی: JSON استاندارد
 
 ## محدوده
