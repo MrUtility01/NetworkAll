@@ -34,7 +34,7 @@ async function loadChapters() {
   state.chapters = list;
   chaptersEl.innerHTML = "";
   if (!list.length) {
-    chaptersEl.innerHTML = `<div class="loading">فصلی نیست — بازسازی ساختار را بزنید</div>`;
+    chaptersEl.innerHTML = `<div class="loading">درخت فصل‌ها خالی است؛ نصب تازه و Seed محتوا را بررسی کنید.</div>`;
     return;
   }
   list.forEach((ch) => {
@@ -327,20 +327,7 @@ $("#q").addEventListener("keydown", (e) => {
   if (e.key === "Enter") doSearch();
 });
 $("#btnScenarios").addEventListener("click", showScenarios);
-$("#btnReseed").addEventListener("click", async () => {
-  if (!confirm("ساختار از نو ساخته می‌شود (عناوین). ادامه؟")) return;
-  viewer.innerHTML = `<div class="loading">بازسازی… ممکن است یک دقیقه طول بکشد</div>`;
-  try {
-    const info = await api("/api/reseed", { method: "POST" });
-    state.levelsCache = {};
-    state.lessonsCache = {};
-    await loadChapters();
-    await loadStats();
-    viewer.innerHTML = `<pre>${escapeHtml(JSON.stringify(info, null, 2))}</pre>`;
-  } catch (e) {
-    viewer.innerHTML = `<div class="loading">خطا: ${escapeHtml(e.message)}</div>`;
-  }
-});
+
 
 (async function init() {
   await loadChapters();
