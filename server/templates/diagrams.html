@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NetworkAll — گالری دیاگرام‌ها</title>
+  <style>
+    :root{color-scheme:light}
+    body{margin:0;background:#f5f7fb;color:#172033;font:15px Tahoma,Arial,sans-serif}
+    header{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid #dce3ee;padding:16px 5vw;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+    header strong{font-size:21px;color:#1d4ed8}
+    header a{color:#1d4ed8;text-decoration:none}
+    input{font:inherit;padding:10px 12px;border:1px solid #cbd5e1;border-radius:9px;min-width:220px}
+    main{max-width:1500px;margin:0 auto;padding:22px 5vw}
+    .notice{color:#64748b;margin:0 0 18px;line-height:1.9}
+    #grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+    article{background:#fff;border:1px solid #e2e8f0;border-radius:13px;overflow:hidden;box-shadow:0 2px 5px #0f172a0b}
+    article img{display:block;width:100%;height:auto;background:#f8fafc}
+    article h2{font-size:15px;line-height:1.7;margin:0;padding:12px 14px 5px}
+    article p{font-size:12px;color:#64748b;margin:0;padding:0 14px 14px}
+    #status{color:#64748b;margin:12px 0}
+  </style>
+</head>
+<body>
+<header>
+  <strong>NetworkAll</strong>
+  <span>گالری دیاگرام‌های فنی</span>
+  <input id="filter" type="search" placeholder="جستجو بر اساس موضوع یا عنوان" aria-label="جستجو در دیاگرام‌ها">
+  <a href="/">بازگشت به دانشنامه</a>
+</header>
+<main>
+  <p class="notice">مجموعهٔ آفلاین ۱۰۰ دیاگرام SVG؛ برخی نمودارها از قالب‌های موضوعی ساخته شده‌اند و برای آموزش تکمیلی، با مستند هر فناوری تطبیق داده شوند.</p>
+  <p id="status" role="status">در حال بارگذاری فهرست دیاگرام‌ها…</p>
+  <section id="grid" aria-label="دیاگرام‌های آموزشی"></section>
+</main>
+<script>
+(() => {
+  const grid = document.getElementById("grid");
+  const filter = document.getElementById("filter");
+  const status = document.getElementById("status");
+  let entries = [];
+  const render = () => {
+    const q = filter.value.trim().toLocaleLowerCase();
+    grid.replaceChildren();
+    const shown = entries.filter(item =>
+      String(item.title_fa || "").toLocaleLowerCase().includes(q) ||
+      String(item.collection || "").toLocaleLowerCase().includes(q)
+    );
+    for (const item of shown) {
+      if (!/^diagram_\d{3}\.svg$/.test(String(item.asset || ""))) continue;
+      const card = document.createElement("article");
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.alt = String(item.title_fa || "دیاگرام NetworkAll");
+      img.src = "/static/diagrams/" + item.asset;
+      const title = document.createElement("h2");
+      title.textContent = String(item.title_fa || "");
+      const caption = document.createElement("p");
+      caption.textContent = String(item.collection || "NetworkAll") + " · " + String(item.id || "");
+      card.append(img, title, caption);
+      grid.appendChild(card);
+    }
+    status.textContent = shown.length + " مورد از " + entries.length + " دیاگرام";
+  };
+  fetch("/static/diagrams/index.json", {cache: "no-store"})
+    .then(response => {
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      return response.json();
+    })
+    .then(data => {
+      entries = Array.isArray(data.diagrams) ? data.diagrams : [];
+      render();
+    })
+    .catch(error => {
+      status.textContent = "فهرست دیاگرام بارگذاری نشد: " + error.message;
+    });
+  filter.addEventListener("input", render);
+})();
+</script>
+</body>
+</html>
