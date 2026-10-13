@@ -61,7 +61,7 @@ jobs:
               chapter = prompt.parent.name
               json.loads((prompt.parent / "PACK_TEMPLATE.json").read_text(encoding="utf-8"))
               text = prompt.read_text(encoding="utf-8")
-              assert "50" in text and "answer_key" in text, f"Incomplete enrichment prompt: {chapter}"
+              assert ("50" in text or "۵۰" in text) and "answer_key" in text, f"Incomplete enrichment prompt: {chapter}"
           index = (root / "INDEX.md").read_text(encoding="utf-8")
           assert all(f"ch{i:02d}/PROMPT.md" in index for i in range(1, 69)), "Chapter index is incomplete"
           print(f"Chapter prompts validated: {len(prompts)} folders, {len(templates)} JSON templates")
