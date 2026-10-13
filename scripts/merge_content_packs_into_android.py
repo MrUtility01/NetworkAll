@@ -509,6 +509,7 @@ def append_unmatched_to_existing_chapter(data, lessons, order: int) -> int:
             "title_fa": title,
             "title_en": src.get("title_en") or "",
             "level": src.get("level") or "L0",
+            "lesson_order": int(src.get("lesson_order") or 0),
             "summary": src.get("summary") or "",
             "full_content": src.get("full_content") or "",
             "commands": as_text(src.get("commands")),
