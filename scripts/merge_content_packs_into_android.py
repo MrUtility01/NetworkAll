@@ -316,6 +316,7 @@ def main():
     print("packs", len(packs))
     sec, wireless = [], []
     routing_extra, vpn_extra, cmd_extra = [], [], []
+    shared_deep_extra = []
     for p in packs:
         try:
             d = load_json(p)
@@ -338,6 +339,8 @@ def main():
             continue
         n = merge_by_title(data, lessons)
         print("   title-merge", n)
+        if "ch60_68_" in name:
+            shared_deep_extra.extend(lessons)
         if "ospf" in name or "bgp" in name or "redistribution" in name or "routing_deep" in name:
             routing_extra.extend(lessons)
         if "vpn" in name or "ipsec" in name:
@@ -390,6 +393,63 @@ def main():
     if extra:
         data["chapters"].append(build_ch65(extra))
         print("ch65", sum(len(s["lessons"]) for s in data["chapters"][-1]["subchapters"]))
+
+    # Re-apply shared chapter 60-68 content after special chapter rebuilds (notably chapter 65).
+    if shared_deep_extra:
+        merge_by_title(data, shared_deep_extra)
+        by_order = {int(ch.get("order") or 0): ch for ch in data["chapters"]}
+        used_uids = {
+            str(les.get("uid") or "")
+            for ch in data["chapters"]
+            for sub in ch.get("subchapters", [])
+            for les in sub.get("lessons", [])
+        }
+        appended = 0
+        for order in range(60, 69):
+            chapter = by_order.get(order)
+            if chapter is None:
+                continue
+            existing_titles = {
+                str(les.get("title_fa") or "").strip()
+                for sub in chapter.get("subchapters", [])
+                for les in sub.get("lessons", [])
+            }
+            new_items = [
+                src for src in shared_deep_extra
+                if int(src.get("chapter_order") or 0) == order
+                and str(src.get("title_fa") or "").strip()
+                and str(src.get("title_fa") or "").strip() not in existing_titles
+            ]
+            if not new_items:
+                continue
+            sub = next((s for s in chapter.get("subchapters", [])
+                        if s.get("title_fa") == "غنی‌سازی و اعتبارسنجی تکمیلی"), None)
+            if sub is None:
+                sub = {"title_fa": "غنی‌سازی و اعتبارسنجی تکمیلی", "lessons": []}
+                chapter.setdefault("subchapters", []).append(sub)
+            for src in new_items:
+                uid = str(src.get("uid") or "")
+                if not uid or uid in used_uids:
+                    uid = f"lesson:ch{order:02d}:deep-extra:{appended + 1:05d}"
+                used_uids.add(uid)
+                notes = as_text(src.get("notes"))
+                assessment = (src.get("meta") or {}).get("assessment")
+                if assessment and "EJ_ASSESSMENT" not in notes:
+                    notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n-->\n"
+                sub["lessons"].append({
+                    "uid": uid,
+                    "title_fa": src.get("title_fa") or "",
+                    "title_en": src.get("title_en") or "",
+                    "level": src.get("level") or "L0",
+                    "summary": src.get("summary") or "",
+                    "full_content": src.get("full_content") or "",
+                    "commands": as_text(src.get("commands")),
+                    "examples": as_text(src.get("examples")),
+                    "notes": notes,
+                })
+                existing_titles.add(str(src.get("title_fa") or "").strip())
+                appended += 1
+        print("shared chapters 60-68 appended", appended)
 
     data["chapters"].sort(key=lambda c: int(c.get("order") or 0))
     n = sum(len(s.get("lessons", [])) for c in data["chapters"] for s in c.get("subchapters", []))
