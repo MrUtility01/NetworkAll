@@ -125,7 +125,8 @@ class WebDB:
             ("powershell", ("powershell", "power shell")),
             ("batch", ("batch",)),
             ("cmd", ("windows cmd", "command prompt", "cmd")),
-            ("linux", ("linux", "bash")),
+            ("linux", ("linux",)),
+            ("bash", ("bash",)),
             ("asterisk", ("asterisk", "issabel")),
         )
         for family, terms in groups:
