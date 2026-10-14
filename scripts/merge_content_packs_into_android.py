@@ -337,6 +337,22 @@ def main():
         if "vpn" in name or "ipsec" in name:
             vpn_extra.extend(lessons)
 
+    # Re-key pack lessons in the combined result. Different vendor packs often
+    # restart command/lesson numbering at 1; carrying source UIDs through caused
+    # duplicate lesson UIDs in curriculum_index.json.gz and made offline seeding fail.
+    routing_extra = [
+        {**src, "uid": f"lesson:ch66:bp-extra:{i:05d}", "chapter_order": 66, "lesson_order": i}
+        for i, src in enumerate(routing_extra, 1)
+    ]
+    vpn_extra = [
+        {**src, "uid": f"lesson:ch67:bp-extra:{i:05d}", "chapter_order": 67, "lesson_order": i}
+        for i, src in enumerate(vpn_extra, 1)
+    ]
+    cmd_extra = [
+        {**src, "uid": f"lesson:ch68:cmd-extra:{i:05d}", "chapter_order": 68, "lesson_order": i}
+        for i, src in enumerate(cmd_extra, 1)
+    ]
+
     if routing_extra:
         n = append_unmatched_as_extra(
             data, routing_extra, 66,
