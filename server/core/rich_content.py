@@ -29,10 +29,8 @@ def _shared_ch60_68_overlay(title_fa: str) -> Dict[str, Any] | None:
             from pathlib import Path
             import json
             root = Path(__file__).resolve().parents[2]
-            paths = [
-                root / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json",
-                root / "tools" / "packs" / "ch60_68" / "chapter_60_68_validation_pack.json",
-            ]
+            pack_dir = root / "tools" / "packs" / "ch60_68"
+            paths = sorted(pack_dir.glob("*pack*.json"))
             for path in paths:
                 if not path.is_file():
                     continue
@@ -53,9 +51,12 @@ def _shared_ch60_68_overlay(title_fa: str) -> Dict[str, Any] | None:
                         "examples": item.get("examples") or "",
                         "notes": notes,
                     }
-                    current = _CH60_68_OVERLAY_CACHE.get(title)
-                    if not current or len(candidate["full_content"]) > len(current.get("full_content") or ""):
-                        _CH60_68_OVERLAY_CACHE[title] = candidate
+                    current = dict(_CH60_68_OVERLAY_CACHE.get(title) or {})
+                    for field, value in candidate.items():
+                        if value:
+                            current[field] = value
+                    if current:
+                        _CH60_68_OVERLAY_CACHE[title] = current
         except (OSError, ValueError, TypeError):
             pass
     return _CH60_68_OVERLAY_CACHE.get(title_fa)
