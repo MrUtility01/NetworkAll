@@ -179,6 +179,50 @@ class WebDB:
         self.set_meta("seeded_at", now)
         return {"ok": True, "chapters": n_ch, "levels": n_lv, "lessons": n_les, "scenarios": len(CAPSTONE_SCENARIOS)}
 
+
+    def ensure_scenario_pack(self):
+        """بارگذاری بستهٔ سناریوهای مشترک؛ idempotent و قابل تکرار در startup."""
+        pack_path = BASE.parent / "tools" / "packs" / "scenarios" / "scenarios_150.json"
+        if not pack_path.is_file():
+            return {"ok": False, "reason": "scenario pack missing"}
+        try:
+            pack = json.loads(pack_path.read_text(encoding="utf-8"))
+            items = pack.get("scenarios") or []
+            if len(items) < 150:
+                return {"ok": False, "reason": f"expected >=150 scenarios; found {len(items)}"}
+        except Exception as exc:
+            return {"ok": False, "reason": f"invalid scenario pack: {exc}"}
+        marker = "shared-150-v1"
+        current = self.conn.execute("SELECT COUNT(*) c FROM scenarios").fetchone()["c"]
+        if self.get_meta("scenario_pack_version") == marker and current >= 150:
+            return {"ok": True, "skipped": True, "pack_scenarios": len(items), "total_scenarios": current}
+        now = datetime.now().isoformat(timespec="seconds")
+        for item in items:
+            self.conn.execute(
+                """INSERT OR REPLACE INTO scenarios(
+                    code,title_fa,title_en,category,level,difficulty,users,sites,vendors,
+                    business_context,requirements,constraints_text,initial_state,incident,symptoms,
+                    objectives,tasks,hints,expected_result,solution,verification,skills_required,
+                    estimated_hours,last_updated
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                (
+                    item.get("code",""), item.get("title_fa",""), item.get("title_en",""),
+                    item.get("category","Troubleshooting"), item.get("level","L3"),
+                    item.get("difficulty","متوسط"), int(item.get("users") or 0),
+                    int(item.get("sites") or 1), item.get("vendors",""),
+                    item.get("business_context",""), item.get("requirements",""),
+                    item.get("constraints_text",""), item.get("initial_state",""),
+                    item.get("incident",""), item.get("symptoms",""), item.get("objectives",""),
+                    item.get("tasks",""), item.get("hints",""), item.get("expected_result",""),
+                    item.get("solution",""), item.get("verification",""),
+                    item.get("skills_required",""), int(item.get("estimated_hours") or 1), now,
+                ),
+            )
+        self.conn.commit()
+        self.set_meta("scenario_pack_version", marker)
+        return {"ok": True, "pack_scenarios": len(items),
+                "total_scenarios": self.conn.execute("SELECT COUNT(*) c FROM scenarios").fetchone()["c"]}
+
     def list_chapters(self):
         rows = self.conn.execute(
             "SELECT id, order_index, title_fa, title_en FROM chapters ORDER BY order_index, id"
@@ -218,7 +262,7 @@ class WebDB:
 
     def list_scenarios(self):
         rows = self.conn.execute(
-            "SELECT id, code, title_fa, category, level, difficulty, users, sites, estimated_hours FROM scenarios ORDER BY code"
+            "SELECT id, code, title_fa, category, level, difficulty, users, sites, estimated_hours, last_updated FROM scenarios ORDER BY code"
         ).fetchall()
         return [dict(r) for r in rows]
 

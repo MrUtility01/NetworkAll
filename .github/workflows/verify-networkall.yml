@@ -1,0 +1,46 @@
+name: NetworkAll static validation
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: ["fix/jalali-packet-learning-150"]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Python syntax
+        run: python -m compileall -q server scripts
+      - name: JavaScript syntax
+        run: |
+          node --check server/static/app.js
+          node --check server/static/packet-lab.js
+          node --check server/static/sync_ui.js
+      - name: Validate shared scenarios
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("tools/packs/scenarios/scenarios_150.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+          rows = data.get("scenarios", [])
+          assert len(rows) >= 150, f"expected >=150 scenarios, got {len(rows)}"
+          codes = [x.get("code") for x in rows]
+          assert all(codes), "missing scenario code"
+          assert len(codes) == len(set(codes)), "duplicate scenario codes"
+          required = ["title_fa", "incident", "symptoms", "tasks", "solution", "verification"]
+          for index, row in enumerate(rows):
+              absent = [k for k in required if not str(row.get(k, "")).strip()]
+              assert not absent, f"scenario {index} missing {absent}"
+          android = Path("android/app/src/main/assets/scenarios_150.json")
+          assert android.exists() and android.read_bytes() == p.read_bytes(), "Android and Windows packs differ"
+          print(f"OK: {len(rows)} unique shared scenarios")
+          PY

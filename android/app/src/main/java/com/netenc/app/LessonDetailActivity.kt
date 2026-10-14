@@ -110,7 +110,7 @@ class LessonDetailActivity : AppCompatActivity() {
             } ?: return@launch
             lesson = e
             title.text = e.titleFa
-            meta.text = listOfNotNull(e.chapterTitle, e.subTitle, e.tags).filter { it.isNotBlank() }.joinToString(" · ")
+            meta.text = (listOfNotNull(e.chapterTitle, e.subTitle, e.tags).filter { it.isNotBlank() } + listOf("به‌روزرسانی: ${JalaliDate.formatIso(e.lastUpdated)}")).joinToString(" · ")
             renderTab()
         }
     }

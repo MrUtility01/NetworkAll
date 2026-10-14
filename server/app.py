@@ -9,7 +9,7 @@ import socket
 from datetime import datetime, timezone
 from pathlib import Path
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_file
 
 from core.db import WebDB
 
@@ -89,6 +89,7 @@ def db() -> WebDB:
             print("seed curriculum...")
             print(_db.seed_full(force=True))
         _db.ensure_sync_columns()
+        _db.ensure_scenario_pack()
     return _db
 
 
@@ -130,6 +131,11 @@ def index():
 @app.get("/api/health")
 def health():
     st = {}
+    lan = ""
+    try:
+        lan = socket.gethostbyname(socket.gethostname())
+    except Exception:
+        lan = ""
     try:
         st = db().stats()
     except Exception as e:
@@ -137,6 +143,7 @@ def health():
     return jsonify({
         "ok": True,
         "device": DEVICE_ID,
+        "lan_ip": lan,
         "schema_version": SCHEMA_VERSION,
         "sync_protocol": "v1-aligned",
         "token_required": bool(SYNC_TOKEN),
@@ -151,19 +158,79 @@ def health():
     })
 
 
+@app.get("/api/stats")
+def public_stats():
+    return jsonify(db().stats())
+
+
 @app.get("/api/chapters")
 def chapters():
-    denied = require_token()
-    if denied:
-        return denied
     return jsonify(db().list_chapters())
+
+
+@app.get("/api/chapters/<int:chapter_id>/levels")
+def chapter_levels(chapter_id: int):
+    return jsonify({"levels": db().list_levels(chapter_id)})
+
+
+@app.get("/api/levels/<int:level_id>/lessons")
+def level_lessons(level_id: int):
+    return jsonify({"lessons": db().list_lessons(level_id)})
+
+
+@app.get("/api/lessons/<int:lesson_id>")
+def lesson_detail(lesson_id: int):
+    row = db().get_lesson(lesson_id)
+    if row is None:
+        return jsonify({"error": "lesson not found", "id": lesson_id}), 404
+    return jsonify(row)
+
+
+@app.get("/api/scenarios")
+def scenarios():
+    return jsonify(db().list_scenarios())
+
+
+@app.get("/api/scenarios/<int:scenario_id>")
+def scenario_detail(scenario_id: int):
+    row = db().get_scenario(scenario_id)
+    if row is None:
+        return jsonify({"error": "scenario not found", "id": scenario_id}), 404
+    return jsonify(row)
+
+
+@app.get("/api/search")
+def public_search():
+    return jsonify(db().search(request.args.get("q", "")))
+
+
+@app.post("/api/reseed")
+def reseed():
+    if request.remote_addr not in ("127.0.0.1", "::1") and not check_token():
+        return jsonify({"ok": False, "error": "unauthorized"}), 401
+    result = db().seed_full(force=True)
+    result["scenario_pack"] = db().ensure_scenario_pack()
+    return jsonify(result)
+
+
+@app.get("/resources/network-book.docx")
+def network_book():
+    path = BASE.parent / "جزوه_جامع_شبکه_300_صفحه.docx"
+    if not path.is_file():
+        return jsonify({"error": "network book not found"}), 404
+    return send_file(path, as_attachment=True, download_name="جزوه_جامع_شبکه_300_صفحه.docx")
+
+
+@app.get("/resources/packet-journey-reference.png")
+def packet_journey_reference():
+    path = BASE.parent / "مسیر کامل یک پکت شبکه تا سرور.png"
+    if not path.is_file():
+        return jsonify({"error": "packet reference image not found"}), 404
+    return send_file(path, mimetype="image/png")
 
 
 @app.get("/api/lessons")
 def lessons():
-    denied = require_token()
-    if denied:
-        return denied
     level_id = request.args.get("level_id") or request.args.get("chapter_id")
     try:
         lid = int(level_id) if level_id else None
@@ -176,9 +243,6 @@ def lessons():
 
 @app.get("/api/lesson/<uid>")
 def lesson(uid: str):
-    denied = require_token()
-    if denied:
-        return denied
     rows = db().sync_pull([uid])
     if rows:
         return jsonify(rows[0])

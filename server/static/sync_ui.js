@@ -1,11 +1,16 @@
-/* LAN IP + Sync status bar */
+/* LAN IP + Sync status bar — educational health endpoint is public, sync APIs stay protected. */
+function syncJalali(value = new Date()) {
+  const d = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(d.getTime()) ? "—" : new Intl.DateTimeFormat("fa-IR-u-ca-persian", {year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).format(d);
+}
 async function loadLanAndSync() {
   const lanEl = document.getElementById("lanIp");
   const hintEl = document.getElementById("androidHint");
   const statusEl = document.getElementById("syncStatus");
   if (!lanEl) return;
   try {
-    const r = await fetch("/api/sync/hello");
+    const r = await fetch("/api/health");
+    if (!r.ok) throw new Error("HTTP " + r.status);
     const hello = await r.json();
     const ip = hello.lan_ip || "127.0.0.1";
     lanEl.textContent = ip;
@@ -13,7 +18,7 @@ async function loadLanAndSync() {
     if (statusEl) {
       const s = hello.stats || {};
       statusEl.textContent =
-        "دستگاه: " + (hello.device_id || "—") +
+        "دستگاه: " + (hello.device || "—") +
         " · فصل " + (s.chapters || 0) +
         " · درس " + (s.lessons || 0) +
         " · schema " + (hello.schema_version || 1);
@@ -40,12 +45,13 @@ document.getElementById("btnSyncStatus")?.addEventListener("click", async () => 
   const statusEl = document.getElementById("syncStatus");
   if (statusEl) statusEl.textContent = "در حال بررسی…";
   try {
-    const r = await fetch("/api/sync/manifest");
-    const m = await r.json();
-    const n = (m.items || []).length;
+    const r = await fetch("/api/health");
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const h = await r.json();
+    const s = h.stats || {};
     statusEl.textContent =
-      "manifest: " + n + " رکورد · schema " + (m.schema_version || 1) +
-      " · " + (m.generated_at || "");
+      "API سالم · " + (s.chapters || 0) + " فصل · " + (s.lessons || 0) + " درس · " +
+      (s.scenarios || 0) + " سناریو · تاریخ شمسی " + syncJalali();
   } catch (e) {
     if (statusEl) statusEl.textContent = "خطا: " + (e.message || e);
   }
