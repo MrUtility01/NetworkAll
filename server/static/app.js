@@ -94,7 +94,7 @@ async function onChapterClick(btn) {
     let levels = state.levelsCache[id];
     if (!levels) {
       const data = await api(`/api/chapters/${id}/levels`);
-      levels = data.levels;
+      levels = Array.isArray(data) ? data : (Array.isArray(data && data.levels) ? data.levels : []);
       state.levelsCache[id] = levels;
     }
     if (!levels.length) {
@@ -138,7 +138,7 @@ async function onLevelClick(btn) {
     let lessons = state.lessonsCache[id];
     if (!lessons) {
       const data = await api(`/api/levels/${id}/lessons`);
-      lessons = data.lessons;
+      lessons = Array.isArray(data) ? data : (Array.isArray(data && data.lessons) ? data.lessons : []);
       state.lessonsCache[id] = lessons;
     }
     if (!lessons.length) {
@@ -210,7 +210,7 @@ function renderLesson(les) {
         <span class="chip">${escapeHtml(les.title_en || "")}</span>
         <span class="chip">وضعیت منبع: ${escapeHtml(les.source_status || "unverified")}</span>
       </div>
-      <div class="tabs">
+      <div class="study-actions"><button id="btnMarkStudied" type="button" class="ghost">✓ یاد گرفتم</button><button id="btnMarkReview" type="button" class="ghost">برای مرور علامت بزن</button><span id="studyMarkStatus" class="muted"></span></div><div class="tabs">
         ${tabs.map((t, i) => `<button type="button" class="tab ${i === 0 ? "active" : ""}" data-tab="${t.id}">${t.label}</button>`).join("")}
       </div>
       ${tabs
@@ -225,6 +225,9 @@ function renderLesson(les) {
         .join("")}
     </div>`;
 
+  const markStudy = async (action) => { try { await api("/api/study/mark", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({uid:les.uid, action})}); const el=document.getElementById("studyMarkStatus"); if(el) el.textContent=action==="studied" ? "در مسیر یادگیری ثبت شد" : "برای مرور دوباره ثبت شد"; } catch(err) { const el=document.getElementById("studyMarkStatus"); if(el) el.textContent="ثبت پیشرفت انجام نشد: "+err.message; } };
+  document.getElementById("btnMarkStudied").addEventListener("click", function(){markStudy("studied");});
+  document.getElementById("btnMarkReview").addEventListener("click", function(){markStudy("again");});
   viewer.querySelectorAll(".tab").forEach((tab) => {
     tab.addEventListener("click", () => {
       viewer.querySelectorAll(".tab").forEach((x) => x.classList.remove("active"));
@@ -463,6 +466,62 @@ function section(title, body) {
   return `<h2>${escapeHtml(title)}</h2><pre>${escapeHtml(body)}</pre>`;
 }
 
+
+function formatJalaliDateTime(value) {
+  try {
+    const d = value ? new Date(value) : new Date();
+    if (Number.isNaN(d.getTime())) return String(value || "");
+    return new Intl.DateTimeFormat("fa-IR-u-ca-persian", {year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d);
+  } catch (_) { return String(value || ""); }
+}
+function payloadArray(value, key) {
+  if (Array.isArray(value)) return value;
+  return value && Array.isArray(value[key]) ? value[key] : [];
+}
+async function showLearningHub() {
+  breadcrumb.textContent = "مرکز یادگیری و پیگیری پیشرفت";
+  const chapters = payloadArray(state.chapters, "chapters");
+  const [studyStats, bankStats] = await Promise.all([api("/api/study/stats").catch(() => ({})),api("/api/stats").catch(() => ({}))]);
+  const goal = Math.max(1, Math.min(100, Number(localStorage.getItem("networkall_daily_goal") || 15)));
+  viewer.innerHTML = '<div class="page-head"><div><div class="eyebrow">LEARNING CENTER</div><h1>مرکز یادگیری؛ از مفهوم تا عیب‌یابی</h1><p class="muted">تاریخ امروز: ' + escapeHtml(formatJalaliDateTime(new Date().toISOString()).split("،")[0]) + ' · ابتدا مفهوم را بخوان، سپس با مثال و آزمون آن را تثبیت کن.</p></div></div>' +
+    '<div class="meta-row"><span class="chip">فصل‌ها: ' + (bankStats.chapters || chapters.length || 68) + '</span><span class="chip">درس‌ها: ' + (bankStats.lessons || 0) + '</span><span class="chip">مطالعه امروز: ' + (studyStats.today || 0) + '/' + (studyStats.goal || goal) + '</span><span class="chip">نیازمند مرور: ' + (studyStats.due || 0) + '</span><span class="chip">زنجیره مطالعه: ' + (studyStats.streak || 0) + ' روز</span></div>' +
+    '<div class="card"><div class="page-head"><div><h2>هدف روزانه</h2><p class="muted">هدف در همین مرورگر ذخیره می‌شود؛ پیشرفت هر درس جداگانه ثبت می‌شود.</p></div><div><input id="learningDailyGoal" type="number" min="1" max="100" value="' + goal + '" style="width:90px"><button id="btnSaveLearningGoal" type="button">ذخیره هدف</button></div></div></div>' +
+    '<div class="card"><h2>انتخاب فصل و زیرشاخه</h2><p class="muted">برای جلوگیری از بارگیری هزاران درس یک‌باره، ابتدا فصل، سپس زیرشاخه و در نهایت درس را انتخاب کن.</p><div id="learningChapterList" class="learning-chapters">' +
+    chapters.map(function(ch){return '<button type="button" class="ghost learning-chapter" data-chapter-id="'+ch.id+'"><strong>'+escapeHtml(ch.title_fa)+'</strong><small>فصل '+ch.order_index+'</small></button>';}).join("") +
+    '</div><div id="learningPathDetails"></div></div>' +
+    '<div class="meta-row"><button type="button" id="learningQuiz" class="ghost">شروع آزمون</button><button type="button" id="learningIncidents" class="ghost">سناریوهای عیب‌یابی</button><button type="button" id="learningPacketLab" class="ghost" onclick="window.location.href=\'/diagrams#packet-lab\'">آزمایشگاه تحلیل پکت</button><button type="button" id="learningDiagrams" class="ghost" onclick="window.location.href=\'/diagrams\'">دیاگرام‌ها</button></div>';
+  document.getElementById("btnSaveLearningGoal").addEventListener("click",function(){const n=Math.max(1,Math.min(100,Number(document.getElementById("learningDailyGoal").value)||15));localStorage.setItem("networkall_daily_goal",String(n));document.getElementById("btnSaveLearningGoal").textContent="هدف ذخیره شد ✓";});
+  viewer.querySelectorAll(".learning-chapter").forEach(function(btn){btn.addEventListener("click",function(){openLearningChapter(btn.dataset.chapterId,btn.querySelector("strong").textContent);});});
+  document.getElementById("learningQuiz").addEventListener("click",showQuiz);
+  document.getElementById("learningIncidents").addEventListener("click",showScenarios);
+}
+async function openLearningChapter(chapterId,title) {
+  const panel=document.getElementById("learningPathDetails");if(!panel)return;panel.innerHTML='<div class="loading">بارگذاری زیرشاخه‌های '+escapeHtml(title)+'…</div>';
+  try {
+    const payload=await api("/api/chapters/"+encodeURIComponent(chapterId)+"/levels"),levels=payloadArray(payload,"levels");
+    if(!levels.length){panel.innerHTML='<div class="loading">برای این فصل زیرشاخه‌ای ثبت نشده است.</div>';return;}
+    panel.innerHTML='<h3>زیرشاخه‌های '+escapeHtml(title)+'</h3><div class="learning-levels">'+levels.map(function(lv){return '<button type="button" class="ghost" data-learning-level="'+lv.id+'">'+escapeHtml(lv.title_fa)+'</button>';}).join("")+'</div><div id="learningLessonList"></div>';
+    panel.querySelectorAll("[data-learning-level]").forEach(function(btn){btn.addEventListener("click",function(){openLearningLevel(btn.dataset.learningLevel,btn.textContent);});});
+  } catch(err){panel.innerHTML='<div class="loading">خطا در دریافت زیرشاخه: '+escapeHtml(err.message)+'</div>';}
+}
+async function openLearningLevel(levelId,title) {
+  const list=document.getElementById("learningLessonList");if(!list)return;list.innerHTML='<div class="loading">بارگذاری درس‌ها…</div>';
+  try {
+    const payload=await api("/api/levels/"+encodeURIComponent(levelId)+"/lessons"),lessons=payloadArray(payload,"lessons");
+    if(!lessons.length){list.innerHTML='<div class="loading">در این زیرشاخه درس ثبت نشده است.</div>';return;}
+    list.innerHTML='<h3>درس‌های '+escapeHtml(title)+'</h3><div class="learning-lessons">'+lessons.map(function(les){return '<button type="button" class="ghost" data-learning-lesson="'+les.id+'">'+escapeHtml(les.title_fa)+' <small>'+escapeHtml(les.tags||"")+'</small></button>';}).join("")+'</div>';
+    list.querySelectorAll("[data-learning-lesson]").forEach(function(btn){btn.addEventListener("click",function(){openLearningLesson(btn.dataset.learningLesson);});});
+  } catch(err){list.innerHTML='<div class="loading">خطا در دریافت درس‌ها: '+escapeHtml(err.message)+'</div>';}
+}
+async function openLearningLesson(lessonId) {
+  viewer.innerHTML='<div class="loading">بازکردن درس…</div>';
+  try {
+    const les=await api("/api/lessons/"+encodeURIComponent(lessonId));
+    try{const depth=await api("/api/lessons/"+encodeURIComponent(lessonId)+"/specialized-depth");if(depth&&depth.available)les.specialized_depth=depth;}catch(_){}
+    breadcrumb.textContent=les.title_fa||"درس";renderLesson(les);
+  } catch(err){viewer.innerHTML='<div class="loading">خطا در بازکردن درس: '+escapeHtml(err.message)+'</div>';}
+}
+
 async function showQuiz() {
   breadcrumb.textContent = "مرکز آزمون عیب‌یابی";
   const bank = [
@@ -551,6 +610,8 @@ $("#q").addEventListener("keydown", (e) => {
   if (e.key === "Enter") doSearch();
 });
 $("#btnScenarios").addEventListener("click", showScenarios);
+const btnLearning = document.getElementById("btnLearning");
+if (btnLearning) btnLearning.addEventListener("click", showLearningHub);
 
 
 const btnQuiz = document.getElementById("btnQuiz");
@@ -563,4 +624,5 @@ if (btnQuiz) btnQuiz.addEventListener("click", showQuiz);
   const view = params.get("view");
   if (view === "incidents") await showScenarios();
   else if (view === "quiz") await showQuiz();
+  else if (view === "learning") await showLearningHub();
 })();

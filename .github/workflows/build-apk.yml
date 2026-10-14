@@ -116,6 +116,8 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/validate_android_curriculum.py
+          python3 -m py_compile scripts/validate_incident_runbooks.py
+          python3 scripts/validate_incident_runbooks.py
 
       - name: Generate shared diagram library for Android and Windows web
         run: |

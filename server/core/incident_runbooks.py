@@ -8,6 +8,8 @@ and use the documented rollback in production.
 from __future__ import annotations
 
 from copy import deepcopy
+import json
+from pathlib import Path
 
 INCIDENT_RUNBOOKS = [
     {
@@ -439,15 +441,31 @@ INCIDENT_RUNBOOKS = [
 ]
 
 
+def _all_runbooks() -> list[dict]:
+    items = list(INCIDENT_RUNBOOKS)
+    shared_path = Path(__file__).resolve().parents[2] / "shared" / "incident_runbooks.json"
+    try:
+        data = json.loads(shared_path.read_text(encoding="utf-8"))
+        extras = data.get("incidents", []) if isinstance(data, dict) else []
+        known = {str(item.get("id")) for item in items}
+        items.extend(item for item in extras if isinstance(item, dict) and str(item.get("id")) not in known)
+    except (OSError, ValueError, TypeError) as exc:
+        print("shared incident pack unavailable; built-in runbooks remain available:", exc)
+    return items
+
+
 def list_incidents() -> list[dict]:
-    """Small catalog only; large step-by-step procedure is fetched by ID."""
-    fields = ("id", "code", "title_fa", "title_en", "domain", "severity", "duration",
+    """Return compact metadata for the shared multi-platform incident library."""
+    fields = ("id", "code", "title_fa", "title_en", "domain", "platform", "severity", "duration",
               "impact", "symptoms", "environment")
-    return [{key: deepcopy(item.get(key)) for key in fields} for item in INCIDENT_RUNBOOKS]
+    return [{key: deepcopy(item.get(key)) for key in fields} for item in _all_runbooks()]
 
 
 def get_incident(incident_id: str) -> dict | None:
-    for item in INCIDENT_RUNBOOKS:
-        if item["id"] == incident_id:
-            return deepcopy(item)
+    for item in _all_runbooks():
+        if item.get("id") == incident_id:
+            result = deepcopy(item)
+            if not isinstance(result.get("diagnostic_steps"), list) and isinstance(result.get("steps"), list):
+                result["diagnostic_steps"] = deepcopy(result["steps"])
+            return result
     return None
