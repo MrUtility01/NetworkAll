@@ -1,0 +1,2189 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll / ENGINEER JOKAR",
+  "generated_on": "2026-10-14",
+  "purpose": "بسته تکمیلی فصل 63: Runbook و CMDB؛ درس‌های L0-L4، تمرین، RCA، ابزار و آزمون. نیازمند بازبینی تخصصی.",
+  "scope": [
+    {
+      "chapter_order": 63,
+      "title": "فصل 63: Runbook و CMDB",
+      "topics": [
+        "Runbook",
+        "CMDB و CI",
+        "RACI",
+        "Change Record",
+        "Knowledge Base",
+        "Diagram و Source of Truth",
+        "Versioning و Secrets",
+        "Document QA"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch63:supp:0001",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 1,
+      "level": "L0",
+      "title_fa": "[L0] Runbook — آشنایی",
+      "title_en": "[L0] Runbook",
+      "topic": "Runbook",
+      "summary": "Runbook: مفهوم را ساده توضیح بده. فصل 63.",
+      "full_content": "# Runbook\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nهدف، پیش‌شرط، دسترسی، گام، خروجی مورد انتظار و rollback را بنویس.\n\n## روش بررسی\nدستورها را روی نسخه/محیط مشخص validate و خروجی نمونه اضافه کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nگام مبهم را به تست مشخص تبدیل کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای Runbook"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1a",
+              "type": "multiple_choice",
+              "question": "برای Runbook کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q1b",
+              "type": "short_answer",
+              "question": "برای Runbook دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q1b",
+              "answer": "پاسخ موضوعی برای Runbook با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0002",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 2,
+      "level": "L1",
+      "title_fa": "[L1] Runbook — مقدماتی",
+      "title_en": "[L1] Runbook",
+      "topic": "Runbook",
+      "summary": "Runbook: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 63.",
+      "full_content": "# Runbook\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nهدف، پیش‌شرط، دسترسی، گام، خروجی مورد انتظار و rollback را بنویس.\n\n## روش بررسی\nدستورها را روی نسخه/محیط مشخص validate و خروجی نمونه اضافه کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nگام مبهم را به تست مشخص تبدیل کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای Runbook"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q2a",
+              "type": "multiple_choice",
+              "question": "برای Runbook کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q2b",
+              "type": "short_answer",
+              "question": "برای Runbook دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q2a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q2b",
+              "answer": "پاسخ موضوعی برای Runbook با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0003",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 3,
+      "level": "L2",
+      "title_fa": "[L2] Runbook — عملی",
+      "title_en": "[L2] Runbook",
+      "topic": "Runbook",
+      "summary": "Runbook: سناریوی lab را اجرا و شواهد ثبت کن. فصل 63.",
+      "full_content": "# Runbook\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nهدف، پیش‌شرط، دسترسی، گام، خروجی مورد انتظار و rollback را بنویس.\n\n## روش بررسی\nدستورها را روی نسخه/محیط مشخص validate و خروجی نمونه اضافه کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nگام مبهم را به تست مشخص تبدیل کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای Runbook"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q3a",
+              "type": "multiple_choice",
+              "question": "برای Runbook کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q3b",
+              "type": "short_answer",
+              "question": "برای Runbook دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q3a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q3b",
+              "answer": "پاسخ موضوعی برای Runbook با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0004",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 4,
+      "level": "L3",
+      "title_fa": "[L3] Runbook — پیشرفته",
+      "title_en": "[L3] Runbook",
+      "topic": "Runbook",
+      "summary": "Runbook: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 63.",
+      "full_content": "# Runbook\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nهدف، پیش‌شرط، دسترسی، گام، خروجی مورد انتظار و rollback را بنویس.\n\n## روش بررسی\nدستورها را روی نسخه/محیط مشخص validate و خروجی نمونه اضافه کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nگام مبهم را به تست مشخص تبدیل کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای Runbook"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q4a",
+              "type": "multiple_choice",
+              "question": "برای Runbook کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q4b",
+              "type": "short_answer",
+              "question": "برای Runbook دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q4a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q4b",
+              "answer": "پاسخ موضوعی برای Runbook با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0005",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 5,
+      "level": "L4",
+      "title_fa": "[L4] Runbook — تخصصی",
+      "title_en": "[L4] Runbook",
+      "topic": "Runbook",
+      "summary": "Runbook: runbook، rollback و معیار پذیرش تعریف کن. فصل 63.",
+      "full_content": "# Runbook\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nهدف، پیش‌شرط، دسترسی، گام، خروجی مورد انتظار و rollback را بنویس.\n\n## روش بررسی\nدستورها را روی نسخه/محیط مشخص validate و خروجی نمونه اضافه کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nگام مبهم را به تست مشخص تبدیل کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای Runbook"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q5a",
+              "type": "multiple_choice",
+              "question": "برای Runbook کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q5b",
+              "type": "short_answer",
+              "question": "برای Runbook دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q5a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q5b",
+              "answer": "پاسخ موضوعی برای Runbook با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0006",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 6,
+      "level": "L0",
+      "title_fa": "[L0] CMDB و CI — آشنایی",
+      "title_en": "[L0] CMDB و CI",
+      "topic": "CMDB و CI",
+      "summary": "CMDB و CI: مفهوم را ساده توضیح بده. فصل 63.",
+      "full_content": "# CMDB و CI\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nCI شناسه، مالک، محیط، lifecycle، منبع حقیقت و رابطه وابستگی دارد.\n\n## روش بررسی\nسرویس را به VM، شبکه، DNS، گواهی و backup نگاشت کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nداده stale را علامت بزن و با مالک تطبیق بده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای CMDB و CI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q6a",
+              "type": "multiple_choice",
+              "question": "برای CMDB و CI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q6b",
+              "type": "short_answer",
+              "question": "برای CMDB و CI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q6a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q6b",
+              "answer": "پاسخ موضوعی برای CMDB و CI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0007",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 7,
+      "level": "L1",
+      "title_fa": "[L1] CMDB و CI — مقدماتی",
+      "title_en": "[L1] CMDB و CI",
+      "topic": "CMDB و CI",
+      "summary": "CMDB و CI: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 63.",
+      "full_content": "# CMDB و CI\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nCI شناسه، مالک، محیط، lifecycle، منبع حقیقت و رابطه وابستگی دارد.\n\n## روش بررسی\nسرویس را به VM، شبکه، DNS، گواهی و backup نگاشت کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nداده stale را علامت بزن و با مالک تطبیق بده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای CMDB و CI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q7a",
+              "type": "multiple_choice",
+              "question": "برای CMDB و CI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q7b",
+              "type": "short_answer",
+              "question": "برای CMDB و CI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q7a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q7b",
+              "answer": "پاسخ موضوعی برای CMDB و CI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0008",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 8,
+      "level": "L2",
+      "title_fa": "[L2] CMDB و CI — عملی",
+      "title_en": "[L2] CMDB و CI",
+      "topic": "CMDB و CI",
+      "summary": "CMDB و CI: سناریوی lab را اجرا و شواهد ثبت کن. فصل 63.",
+      "full_content": "# CMDB و CI\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nCI شناسه، مالک، محیط، lifecycle، منبع حقیقت و رابطه وابستگی دارد.\n\n## روش بررسی\nسرویس را به VM، شبکه، DNS، گواهی و backup نگاشت کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nداده stale را علامت بزن و با مالک تطبیق بده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای CMDB و CI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q8a",
+              "type": "multiple_choice",
+              "question": "برای CMDB و CI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q8b",
+              "type": "short_answer",
+              "question": "برای CMDB و CI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q8a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q8b",
+              "answer": "پاسخ موضوعی برای CMDB و CI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0009",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 9,
+      "level": "L3",
+      "title_fa": "[L3] CMDB و CI — پیشرفته",
+      "title_en": "[L3] CMDB و CI",
+      "topic": "CMDB و CI",
+      "summary": "CMDB و CI: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 63.",
+      "full_content": "# CMDB و CI\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nCI شناسه، مالک، محیط، lifecycle، منبع حقیقت و رابطه وابستگی دارد.\n\n## روش بررسی\nسرویس را به VM، شبکه، DNS، گواهی و backup نگاشت کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nداده stale را علامت بزن و با مالک تطبیق بده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای CMDB و CI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q9a",
+              "type": "multiple_choice",
+              "question": "برای CMDB و CI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q9b",
+              "type": "short_answer",
+              "question": "برای CMDB و CI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q9a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q9b",
+              "answer": "پاسخ موضوعی برای CMDB و CI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0010",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 10,
+      "level": "L4",
+      "title_fa": "[L4] CMDB و CI — تخصصی",
+      "title_en": "[L4] CMDB و CI",
+      "topic": "CMDB و CI",
+      "summary": "CMDB و CI: runbook، rollback و معیار پذیرش تعریف کن. فصل 63.",
+      "full_content": "# CMDB و CI\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nCI شناسه، مالک، محیط، lifecycle، منبع حقیقت و رابطه وابستگی دارد.\n\n## روش بررسی\nسرویس را به VM، شبکه، DNS، گواهی و backup نگاشت کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nداده stale را علامت بزن و با مالک تطبیق بده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای CMDB و CI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q10a",
+              "type": "multiple_choice",
+              "question": "برای CMDB و CI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q10b",
+              "type": "short_answer",
+              "question": "برای CMDB و CI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q10a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q10b",
+              "answer": "پاسخ موضوعی برای CMDB و CI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0011",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 11,
+      "level": "L0",
+      "title_fa": "[L0] RACI — آشنایی",
+      "title_en": "[L0] RACI",
+      "topic": "RACI",
+      "summary": "RACI: مفهوم را ساده توضیح بده. فصل 63.",
+      "full_content": "# RACI\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nRACI مسئول اجرا، پاسخ‌گو، مشاور و مطلع را برای فعالیت تعیین می‌کند.\n\n## روش بررسی\nبرای هر سرویس یک accountable نهایی و جانشین مشخص کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nچند accountable مبهم باعث تأخیر می‌شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای RACI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q11a",
+              "type": "multiple_choice",
+              "question": "برای RACI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q11b",
+              "type": "short_answer",
+              "question": "برای RACI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q11a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q11b",
+              "answer": "پاسخ موضوعی برای RACI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0012",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 12,
+      "level": "L1",
+      "title_fa": "[L1] RACI — مقدماتی",
+      "title_en": "[L1] RACI",
+      "topic": "RACI",
+      "summary": "RACI: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 63.",
+      "full_content": "# RACI\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nRACI مسئول اجرا، پاسخ‌گو، مشاور و مطلع را برای فعالیت تعیین می‌کند.\n\n## روش بررسی\nبرای هر سرویس یک accountable نهایی و جانشین مشخص کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nچند accountable مبهم باعث تأخیر می‌شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای RACI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q12a",
+              "type": "multiple_choice",
+              "question": "برای RACI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q12b",
+              "type": "short_answer",
+              "question": "برای RACI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q12a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q12b",
+              "answer": "پاسخ موضوعی برای RACI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0013",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 13,
+      "level": "L2",
+      "title_fa": "[L2] RACI — عملی",
+      "title_en": "[L2] RACI",
+      "topic": "RACI",
+      "summary": "RACI: سناریوی lab را اجرا و شواهد ثبت کن. فصل 63.",
+      "full_content": "# RACI\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nRACI مسئول اجرا، پاسخ‌گو، مشاور و مطلع را برای فعالیت تعیین می‌کند.\n\n## روش بررسی\nبرای هر سرویس یک accountable نهایی و جانشین مشخص کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nچند accountable مبهم باعث تأخیر می‌شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای RACI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q13a",
+              "type": "multiple_choice",
+              "question": "برای RACI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q13b",
+              "type": "short_answer",
+              "question": "برای RACI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q13a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q13b",
+              "answer": "پاسخ موضوعی برای RACI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0014",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 14,
+      "level": "L3",
+      "title_fa": "[L3] RACI — پیشرفته",
+      "title_en": "[L3] RACI",
+      "topic": "RACI",
+      "summary": "RACI: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 63.",
+      "full_content": "# RACI\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nRACI مسئول اجرا، پاسخ‌گو، مشاور و مطلع را برای فعالیت تعیین می‌کند.\n\n## روش بررسی\nبرای هر سرویس یک accountable نهایی و جانشین مشخص کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nچند accountable مبهم باعث تأخیر می‌شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای RACI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q14a",
+              "type": "multiple_choice",
+              "question": "برای RACI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q14b",
+              "type": "short_answer",
+              "question": "برای RACI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q14a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q14b",
+              "answer": "پاسخ موضوعی برای RACI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0015",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 15,
+      "level": "L4",
+      "title_fa": "[L4] RACI — تخصصی",
+      "title_en": "[L4] RACI",
+      "topic": "RACI",
+      "summary": "RACI: runbook، rollback و معیار پذیرش تعریف کن. فصل 63.",
+      "full_content": "# RACI\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nRACI مسئول اجرا، پاسخ‌گو، مشاور و مطلع را برای فعالیت تعیین می‌کند.\n\n## روش بررسی\nبرای هر سرویس یک accountable نهایی و جانشین مشخص کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nچند accountable مبهم باعث تأخیر می‌شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای RACI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q15a",
+              "type": "multiple_choice",
+              "question": "برای RACI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q15b",
+              "type": "short_answer",
+              "question": "برای RACI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q15a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q15b",
+              "answer": "پاسخ موضوعی برای RACI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0016",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 16,
+      "level": "L0",
+      "title_fa": "[L0] Change Record — آشنایی",
+      "title_en": "[L0] Change Record",
+      "topic": "Change Record",
+      "summary": "Change Record: مفهوم را ساده توضیح بده. فصل 63.",
+      "full_content": "# Change Record\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nbaseline، risk، plan، test، approval و backout را ثبت کن.\n\n## روش بررسی\nوابستگی و conflict زمانی با تغییرهای دیگر را بررسی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nتغییر بدون record شکاف audit ایجاد می‌کند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای Change Record"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q16a",
+              "type": "multiple_choice",
+              "question": "برای Change Record کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q16b",
+              "type": "short_answer",
+              "question": "برای Change Record دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q16a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q16b",
+              "answer": "پاسخ موضوعی برای Change Record با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0017",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 17,
+      "level": "L1",
+      "title_fa": "[L1] Change Record — مقدماتی",
+      "title_en": "[L1] Change Record",
+      "topic": "Change Record",
+      "summary": "Change Record: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 63.",
+      "full_content": "# Change Record\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nbaseline، risk، plan، test، approval و backout را ثبت کن.\n\n## روش بررسی\nوابستگی و conflict زمانی با تغییرهای دیگر را بررسی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nتغییر بدون record شکاف audit ایجاد می‌کند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای Change Record"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q17a",
+              "type": "multiple_choice",
+              "question": "برای Change Record کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q17b",
+              "type": "short_answer",
+              "question": "برای Change Record دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q17a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q17b",
+              "answer": "پاسخ موضوعی برای Change Record با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0018",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 18,
+      "level": "L2",
+      "title_fa": "[L2] Change Record — عملی",
+      "title_en": "[L2] Change Record",
+      "topic": "Change Record",
+      "summary": "Change Record: سناریوی lab را اجرا و شواهد ثبت کن. فصل 63.",
+      "full_content": "# Change Record\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nbaseline، risk، plan، test، approval و backout را ثبت کن.\n\n## روش بررسی\nوابستگی و conflict زمانی با تغییرهای دیگر را بررسی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nتغییر بدون record شکاف audit ایجاد می‌کند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای Change Record"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q18a",
+              "type": "multiple_choice",
+              "question": "برای Change Record کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q18b",
+              "type": "short_answer",
+              "question": "برای Change Record دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q18a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q18b",
+              "answer": "پاسخ موضوعی برای Change Record با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0019",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 19,
+      "level": "L3",
+      "title_fa": "[L3] Change Record — پیشرفته",
+      "title_en": "[L3] Change Record",
+      "topic": "Change Record",
+      "summary": "Change Record: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 63.",
+      "full_content": "# Change Record\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nbaseline، risk، plan، test، approval و backout را ثبت کن.\n\n## روش بررسی\nوابستگی و conflict زمانی با تغییرهای دیگر را بررسی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nتغییر بدون record شکاف audit ایجاد می‌کند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای Change Record"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q19a",
+              "type": "multiple_choice",
+              "question": "برای Change Record کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q19b",
+              "type": "short_answer",
+              "question": "برای Change Record دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q19a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q19b",
+              "answer": "پاسخ موضوعی برای Change Record با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0020",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 20,
+      "level": "L4",
+      "title_fa": "[L4] Change Record — تخصصی",
+      "title_en": "[L4] Change Record",
+      "topic": "Change Record",
+      "summary": "Change Record: runbook، rollback و معیار پذیرش تعریف کن. فصل 63.",
+      "full_content": "# Change Record\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nbaseline، risk، plan، test، approval و backout را ثبت کن.\n\n## روش بررسی\nوابستگی و conflict زمانی با تغییرهای دیگر را بررسی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nتغییر بدون record شکاف audit ایجاد می‌کند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای Change Record"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q20a",
+              "type": "multiple_choice",
+              "question": "برای Change Record کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q20b",
+              "type": "short_answer",
+              "question": "برای Change Record دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q20a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q20b",
+              "answer": "پاسخ موضوعی برای Change Record با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0021",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 21,
+      "level": "L0",
+      "title_fa": "[L0] Knowledge Base — آشنایی",
+      "title_en": "[L0] Knowledge Base",
+      "topic": "Knowledge Base",
+      "summary": "Knowledge Base: مفهوم را ساده توضیح بده. فصل 63.",
+      "full_content": "# Knowledge Base\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nمقاله باید علائم، محیط، تشخیص، راه‌حل، اعتبار و مالک داشته باشد.\n\n## روش بررسی\nراه‌حل را با نسخه فعلی و least privilege آزمایش کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nراه‌حل منسوخ را archive یا بازنویسی کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای Knowledge Base"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q21a",
+              "type": "multiple_choice",
+              "question": "برای Knowledge Base کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q21b",
+              "type": "short_answer",
+              "question": "برای Knowledge Base دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q21a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q21b",
+              "answer": "پاسخ موضوعی برای Knowledge Base با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0022",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 22,
+      "level": "L1",
+      "title_fa": "[L1] Knowledge Base — مقدماتی",
+      "title_en": "[L1] Knowledge Base",
+      "topic": "Knowledge Base",
+      "summary": "Knowledge Base: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 63.",
+      "full_content": "# Knowledge Base\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nمقاله باید علائم، محیط، تشخیص، راه‌حل، اعتبار و مالک داشته باشد.\n\n## روش بررسی\nراه‌حل را با نسخه فعلی و least privilege آزمایش کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nراه‌حل منسوخ را archive یا بازنویسی کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای Knowledge Base"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q22a",
+              "type": "multiple_choice",
+              "question": "برای Knowledge Base کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q22b",
+              "type": "short_answer",
+              "question": "برای Knowledge Base دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q22a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q22b",
+              "answer": "پاسخ موضوعی برای Knowledge Base با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0023",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 23,
+      "level": "L2",
+      "title_fa": "[L2] Knowledge Base — عملی",
+      "title_en": "[L2] Knowledge Base",
+      "topic": "Knowledge Base",
+      "summary": "Knowledge Base: سناریوی lab را اجرا و شواهد ثبت کن. فصل 63.",
+      "full_content": "# Knowledge Base\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nمقاله باید علائم، محیط، تشخیص، راه‌حل، اعتبار و مالک داشته باشد.\n\n## روش بررسی\nراه‌حل را با نسخه فعلی و least privilege آزمایش کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nراه‌حل منسوخ را archive یا بازنویسی کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای Knowledge Base"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q23a",
+              "type": "multiple_choice",
+              "question": "برای Knowledge Base کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q23b",
+              "type": "short_answer",
+              "question": "برای Knowledge Base دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q23a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q23b",
+              "answer": "پاسخ موضوعی برای Knowledge Base با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0024",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 24,
+      "level": "L3",
+      "title_fa": "[L3] Knowledge Base — پیشرفته",
+      "title_en": "[L3] Knowledge Base",
+      "topic": "Knowledge Base",
+      "summary": "Knowledge Base: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 63.",
+      "full_content": "# Knowledge Base\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nمقاله باید علائم، محیط، تشخیص، راه‌حل، اعتبار و مالک داشته باشد.\n\n## روش بررسی\nراه‌حل را با نسخه فعلی و least privilege آزمایش کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nراه‌حل منسوخ را archive یا بازنویسی کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای Knowledge Base"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q24a",
+              "type": "multiple_choice",
+              "question": "برای Knowledge Base کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q24b",
+              "type": "short_answer",
+              "question": "برای Knowledge Base دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q24a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q24b",
+              "answer": "پاسخ موضوعی برای Knowledge Base با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0025",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 25,
+      "level": "L4",
+      "title_fa": "[L4] Knowledge Base — تخصصی",
+      "title_en": "[L4] Knowledge Base",
+      "topic": "Knowledge Base",
+      "summary": "Knowledge Base: runbook، rollback و معیار پذیرش تعریف کن. فصل 63.",
+      "full_content": "# Knowledge Base\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nمقاله باید علائم، محیط، تشخیص، راه‌حل، اعتبار و مالک داشته باشد.\n\n## روش بررسی\nراه‌حل را با نسخه فعلی و least privilege آزمایش کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nراه‌حل منسوخ را archive یا بازنویسی کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای Knowledge Base"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q25a",
+              "type": "multiple_choice",
+              "question": "برای Knowledge Base کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q25b",
+              "type": "short_answer",
+              "question": "برای Knowledge Base دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q25a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q25b",
+              "answer": "پاسخ موضوعی برای Knowledge Base با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0026",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 26,
+      "level": "L0",
+      "title_fa": "[L0] Diagram و Source of Truth — آشنایی",
+      "title_en": "[L0] Diagram و Source of Truth",
+      "topic": "Diagram و Source of Truth",
+      "summary": "Diagram و Source of Truth: مفهوم را ساده توضیح بده. فصل 63.",
+      "full_content": "# Diagram و Source of Truth\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nlegend، مرز اعتماد، VLAN/subnet، لینک، مالک و تاریخ را درج کن.\n\n## روش بررسی\nدیاگرام را با config و discovery تطبیق بده.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nفایل منبع و نسخه را کنار تصویر نگه دار. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای Diagram و Source of Truth"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q26a",
+              "type": "multiple_choice",
+              "question": "برای Diagram و Source of Truth کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q26b",
+              "type": "short_answer",
+              "question": "برای Diagram و Source of Truth دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q26a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q26b",
+              "answer": "پاسخ موضوعی برای Diagram و Source of Truth با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0027",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 27,
+      "level": "L1",
+      "title_fa": "[L1] Diagram و Source of Truth — مقدماتی",
+      "title_en": "[L1] Diagram و Source of Truth",
+      "topic": "Diagram و Source of Truth",
+      "summary": "Diagram و Source of Truth: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 63.",
+      "full_content": "# Diagram و Source of Truth\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nlegend، مرز اعتماد، VLAN/subnet، لینک، مالک و تاریخ را درج کن.\n\n## روش بررسی\nدیاگرام را با config و discovery تطبیق بده.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nفایل منبع و نسخه را کنار تصویر نگه دار. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای Diagram و Source of Truth"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q27a",
+              "type": "multiple_choice",
+              "question": "برای Diagram و Source of Truth کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q27b",
+              "type": "short_answer",
+              "question": "برای Diagram و Source of Truth دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q27a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q27b",
+              "answer": "پاسخ موضوعی برای Diagram و Source of Truth با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0028",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 28,
+      "level": "L2",
+      "title_fa": "[L2] Diagram و Source of Truth — عملی",
+      "title_en": "[L2] Diagram و Source of Truth",
+      "topic": "Diagram و Source of Truth",
+      "summary": "Diagram و Source of Truth: سناریوی lab را اجرا و شواهد ثبت کن. فصل 63.",
+      "full_content": "# Diagram و Source of Truth\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nlegend، مرز اعتماد، VLAN/subnet، لینک، مالک و تاریخ را درج کن.\n\n## روش بررسی\nدیاگرام را با config و discovery تطبیق بده.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nفایل منبع و نسخه را کنار تصویر نگه دار. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای Diagram و Source of Truth"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q28a",
+              "type": "multiple_choice",
+              "question": "برای Diagram و Source of Truth کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q28b",
+              "type": "short_answer",
+              "question": "برای Diagram و Source of Truth دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q28a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q28b",
+              "answer": "پاسخ موضوعی برای Diagram و Source of Truth با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0029",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 29,
+      "level": "L3",
+      "title_fa": "[L3] Diagram و Source of Truth — پیشرفته",
+      "title_en": "[L3] Diagram و Source of Truth",
+      "topic": "Diagram و Source of Truth",
+      "summary": "Diagram و Source of Truth: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 63.",
+      "full_content": "# Diagram و Source of Truth\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nlegend، مرز اعتماد، VLAN/subnet، لینک، مالک و تاریخ را درج کن.\n\n## روش بررسی\nدیاگرام را با config و discovery تطبیق بده.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nفایل منبع و نسخه را کنار تصویر نگه دار. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای Diagram و Source of Truth"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q29a",
+              "type": "multiple_choice",
+              "question": "برای Diagram و Source of Truth کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q29b",
+              "type": "short_answer",
+              "question": "برای Diagram و Source of Truth دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q29a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q29b",
+              "answer": "پاسخ موضوعی برای Diagram و Source of Truth با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0030",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 30,
+      "level": "L4",
+      "title_fa": "[L4] Diagram و Source of Truth — تخصصی",
+      "title_en": "[L4] Diagram و Source of Truth",
+      "topic": "Diagram و Source of Truth",
+      "summary": "Diagram و Source of Truth: runbook، rollback و معیار پذیرش تعریف کن. فصل 63.",
+      "full_content": "# Diagram و Source of Truth\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nlegend، مرز اعتماد، VLAN/subnet، لینک، مالک و تاریخ را درج کن.\n\n## روش بررسی\nدیاگرام را با config و discovery تطبیق بده.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nفایل منبع و نسخه را کنار تصویر نگه دار. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای Diagram و Source of Truth"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q30a",
+              "type": "multiple_choice",
+              "question": "برای Diagram و Source of Truth کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q30b",
+              "type": "short_answer",
+              "question": "برای Diagram و Source of Truth دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q30a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q30b",
+              "answer": "پاسخ موضوعی برای Diagram و Source of Truth با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0031",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 31,
+      "level": "L0",
+      "title_fa": "[L0] Versioning و Secrets — آشنایی",
+      "title_en": "[L0] Versioning و Secrets",
+      "topic": "Versioning و Secrets",
+      "summary": "Versioning و Secrets: مفهوم را ساده توضیح بده. فصل 63.",
+      "full_content": "# Versioning و Secrets\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nمستندات را با review و release note زیر کنترل نسخه نگه دار.\n\n## روش بررسی\ndiff را برای تغییر IP، دسترسی و مسیر حیاتی بررسی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nsecret و private key نباید وارد Git شوند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای Versioning و Secrets"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q31a",
+              "type": "multiple_choice",
+              "question": "برای Versioning و Secrets کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q31b",
+              "type": "short_answer",
+              "question": "برای Versioning و Secrets دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q31a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q31b",
+              "answer": "پاسخ موضوعی برای Versioning و Secrets با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0032",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 32,
+      "level": "L1",
+      "title_fa": "[L1] Versioning و Secrets — مقدماتی",
+      "title_en": "[L1] Versioning و Secrets",
+      "topic": "Versioning و Secrets",
+      "summary": "Versioning و Secrets: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 63.",
+      "full_content": "# Versioning و Secrets\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nمستندات را با review و release note زیر کنترل نسخه نگه دار.\n\n## روش بررسی\ndiff را برای تغییر IP، دسترسی و مسیر حیاتی بررسی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nsecret و private key نباید وارد Git شوند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای Versioning و Secrets"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q32a",
+              "type": "multiple_choice",
+              "question": "برای Versioning و Secrets کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q32b",
+              "type": "short_answer",
+              "question": "برای Versioning و Secrets دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q32a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q32b",
+              "answer": "پاسخ موضوعی برای Versioning و Secrets با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0033",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 33,
+      "level": "L2",
+      "title_fa": "[L2] Versioning و Secrets — عملی",
+      "title_en": "[L2] Versioning و Secrets",
+      "topic": "Versioning و Secrets",
+      "summary": "Versioning و Secrets: سناریوی lab را اجرا و شواهد ثبت کن. فصل 63.",
+      "full_content": "# Versioning و Secrets\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nمستندات را با review و release note زیر کنترل نسخه نگه دار.\n\n## روش بررسی\ndiff را برای تغییر IP، دسترسی و مسیر حیاتی بررسی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nsecret و private key نباید وارد Git شوند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای Versioning و Secrets"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q33a",
+              "type": "multiple_choice",
+              "question": "برای Versioning و Secrets کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q33b",
+              "type": "short_answer",
+              "question": "برای Versioning و Secrets دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q33a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q33b",
+              "answer": "پاسخ موضوعی برای Versioning و Secrets با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0034",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 34,
+      "level": "L3",
+      "title_fa": "[L3] Versioning و Secrets — پیشرفته",
+      "title_en": "[L3] Versioning و Secrets",
+      "topic": "Versioning و Secrets",
+      "summary": "Versioning و Secrets: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 63.",
+      "full_content": "# Versioning و Secrets\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nمستندات را با review و release note زیر کنترل نسخه نگه دار.\n\n## روش بررسی\ndiff را برای تغییر IP، دسترسی و مسیر حیاتی بررسی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nsecret و private key نباید وارد Git شوند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای Versioning و Secrets"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q34a",
+              "type": "multiple_choice",
+              "question": "برای Versioning و Secrets کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q34b",
+              "type": "short_answer",
+              "question": "برای Versioning و Secrets دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q34a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q34b",
+              "answer": "پاسخ موضوعی برای Versioning و Secrets با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0035",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 35,
+      "level": "L4",
+      "title_fa": "[L4] Versioning و Secrets — تخصصی",
+      "title_en": "[L4] Versioning و Secrets",
+      "topic": "Versioning و Secrets",
+      "summary": "Versioning و Secrets: runbook، rollback و معیار پذیرش تعریف کن. فصل 63.",
+      "full_content": "# Versioning و Secrets\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nمستندات را با review و release note زیر کنترل نسخه نگه دار.\n\n## روش بررسی\ndiff را برای تغییر IP، دسترسی و مسیر حیاتی بررسی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nsecret و private key نباید وارد Git شوند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای Versioning و Secrets"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q35a",
+              "type": "multiple_choice",
+              "question": "برای Versioning و Secrets کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q35b",
+              "type": "short_answer",
+              "question": "برای Versioning و Secrets دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q35a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q35b",
+              "answer": "پاسخ موضوعی برای Versioning و Secrets با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0036",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 36,
+      "level": "L0",
+      "title_fa": "[L0] Document QA — آشنایی",
+      "title_en": "[L0] Document QA",
+      "topic": "Document QA",
+      "summary": "Document QA: مفهوم را ساده توضیح بده. فصل 63.",
+      "full_content": "# Document QA\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nبرای هر سند دوره بازبینی و trigger تغییر تعیین کن.\n\n## روش بررسی\nلینک خراب، CI بدون مالک و دستور قدیمی را شناسایی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nکامل‌بودن، صحت، تازگی و قابلیت اجرا را بسنج. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای Document QA"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q36a",
+              "type": "multiple_choice",
+              "question": "برای Document QA کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q36b",
+              "type": "short_answer",
+              "question": "برای Document QA دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q36a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q36b",
+              "answer": "پاسخ موضوعی برای Document QA با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0037",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 37,
+      "level": "L1",
+      "title_fa": "[L1] Document QA — مقدماتی",
+      "title_en": "[L1] Document QA",
+      "topic": "Document QA",
+      "summary": "Document QA: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 63.",
+      "full_content": "# Document QA\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nبرای هر سند دوره بازبینی و trigger تغییر تعیین کن.\n\n## روش بررسی\nلینک خراب، CI بدون مالک و دستور قدیمی را شناسایی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nکامل‌بودن، صحت، تازگی و قابلیت اجرا را بسنج. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای Document QA"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q37a",
+              "type": "multiple_choice",
+              "question": "برای Document QA کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q37b",
+              "type": "short_answer",
+              "question": "برای Document QA دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q37a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q37b",
+              "answer": "پاسخ موضوعی برای Document QA با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0038",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 38,
+      "level": "L2",
+      "title_fa": "[L2] Document QA — عملی",
+      "title_en": "[L2] Document QA",
+      "topic": "Document QA",
+      "summary": "Document QA: سناریوی lab را اجرا و شواهد ثبت کن. فصل 63.",
+      "full_content": "# Document QA\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nبرای هر سند دوره بازبینی و trigger تغییر تعیین کن.\n\n## روش بررسی\nلینک خراب، CI بدون مالک و دستور قدیمی را شناسایی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nکامل‌بودن، صحت، تازگی و قابلیت اجرا را بسنج. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای Document QA"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q38a",
+              "type": "multiple_choice",
+              "question": "برای Document QA کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q38b",
+              "type": "short_answer",
+              "question": "برای Document QA دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q38a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q38b",
+              "answer": "پاسخ موضوعی برای Document QA با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0039",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 39,
+      "level": "L3",
+      "title_fa": "[L3] Document QA — پیشرفته",
+      "title_en": "[L3] Document QA",
+      "topic": "Document QA",
+      "summary": "Document QA: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 63.",
+      "full_content": "# Document QA\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nبرای هر سند دوره بازبینی و trigger تغییر تعیین کن.\n\n## روش بررسی\nلینک خراب، CI بدون مالک و دستور قدیمی را شناسایی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nکامل‌بودن، صحت، تازگی و قابلیت اجرا را بسنج. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای Document QA"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q39a",
+              "type": "multiple_choice",
+              "question": "برای Document QA کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q39b",
+              "type": "short_answer",
+              "question": "برای Document QA دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q39a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q39b",
+              "answer": "پاسخ موضوعی برای Document QA با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:supp:0040",
+      "chapter_order": 63,
+      "subchapter_order": 90,
+      "lesson_order": 40,
+      "level": "L4",
+      "title_fa": "[L4] Document QA — تخصصی",
+      "title_en": "[L4] Document QA",
+      "topic": "Document QA",
+      "summary": "Document QA: runbook، rollback و معیار پذیرش تعریف کن. فصل 63.",
+      "full_content": "# Document QA\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nبرای هر سند دوره بازبینی و trigger تغییر تعیین کن.\n\n## روش بررسی\nلینک خراب، CI بدون مالک و دستور قدیمی را شناسایی کن.\n\n## مثال عملی\nRunbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.\n\n## ابزارها\nMarkdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nکامل‌بودن، صحت، تازگی و قابلیت اجرا را بسنج. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "Markdown، Mermaid، Git diff، CMDB query، SHA-256 و schema validation؛ بدون secrets.",
+      "examples": "Runbook بعد از تغییر VLAN قدیمی است: change record، CMDB، دیاگرام، owner و نسخه سند را تطبیق بده.",
+      "notes": "بسته تکمیلی فصل 63؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای Document QA"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q40a",
+              "type": "multiple_choice",
+              "question": "برای Document QA کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q40b",
+              "type": "short_answer",
+              "question": "برای Document QA دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q40a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q40b",
+              "answer": "پاسخ موضوعی برای Document QA با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    }
+  ]
+}
