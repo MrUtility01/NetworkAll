@@ -24,6 +24,26 @@ dialog{border:1px solid #cad5e5;border-radius:18px;padding:0;width:min(1180px,96
 .guide-step p{font-size:12px;line-height:1.9;color:#475569;margin:7px 0}.cmd{direction:ltr;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;background:#101d32;color:#e2eeff;padding:10px 12px;border-radius:9px;font:12px/1.8 Consolas,monospace;margin:8px 0}.step-label{font-size:11px;font-weight:700;color:#34445b;margin-top:8px}.expected{background:#f0fdf4;border-right:3px solid #16a34a;padding:8px 10px;border-radius:6px;color:#14532d}.branch{background:#fff7ed;border-right:3px solid #f59e0b;padding:8px 10px;border-radius:6px;color:#7c2d12}
 .modal-foot{border-top:1px solid var(--line);padding:12px 17px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;color:var(--muted);font-size:11px}.notice{border:1px solid #f1d49a;background:#fffbeb;color:#854d0e;padding:10px 12px;border-radius:10px;line-height:1.9;font-size:12px;margin-top:11px}
 @media(max-width:860px){.hero{grid-template-columns:1fr}.modal-body{grid-template-columns:1fr}.diagram-stage{min-height:220px}.diagram-card img{height:190px}}@media(max-width:480px){header .brand{width:100%}header input{flex:1;min-width:0;width:100%}.modal-body{padding:10px}.modal-actions .btn{padding:7px}.diagram-stage{padding:4px}}
+
+.packet-lab{margin:26px 0 8px;background:#fff;border:1px solid var(--line);border-radius:17px;padding:clamp(14px,2vw,22px);box-shadow:0 4px 18px #1720330a}
+.packet-lab h2{font-size:21px;margin:6px 0;line-height:1.8}.packet-lab .muted{font-size:12px;line-height:1.9;color:var(--muted)}
+.packet-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0}
+.packet-tools select{min-width:min(100%,320px);padding:10px;border:1px solid #bdcadd;background:#fff;color:#172033;border-radius:9px}
+.packet-layout{display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);gap:12px}
+.packet-summary,.packet-fields{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fbfdff;min-width:0}
+.packet-fields-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.packet-field{background:#fff;border:1px solid #e3eaf4;border-radius:9px;padding:10px;min-width:0}
+.packet-field label{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
+.packet-field code{display:block;direction:ltr;text-align:left;font:12px/1.8 Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;color:#14233a}
+.packet-box{padding:11px;border-radius:9px;margin-top:9px;font-size:12px;line-height:1.9}
+.packet-change{background:#eef5ff;border-right:4px solid #2563eb;color:#1e3a8a}
+.packet-pass{background:#f0fdf4;border-right:4px solid #16a34a;color:#14532d}
+.packet-drop{background:#fff7ed;border-right:4px solid #d97706;color:#7c2d12}
+.packet-filter{direction:ltr;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.8 Consolas,monospace;background:#0f172a;color:#e2e8f0;padding:11px;border-radius:9px;margin-top:8px}
+.packet-track{height:7px;background:#e8eef6;border-radius:9px;overflow:hidden;margin:10px 0}
+.packet-track span{height:100%;display:block;background:#2563eb;width:0;transition:width .16s}
+@media(max-width:760px){.packet-layout{grid-template-columns:1fr}.packet-fields-grid{grid-template-columns:1fr}}
+
 </style></head>
 <body>
 <header>
@@ -35,6 +55,43 @@ dialog{border:1px solid #cad5e5;border-radius:18px;padding:0;width:min(1180px,96
 <section class="hero"><div class="hero-copy"><div class="eyebrow">LEARN BY OBSERVING THE PACKET</div><h1>ببین بسته دقیقاً کجا گیر می‌کند</h1><p>روی هر دیاگرام کلیک کن تا تصویر بزرگ، توضیح مسیر، فرمان‌های Verify، خروجی مورد انتظار و شاخهٔ تصمیم بعدی را ببینی. هدف حفظ‌کردن فرمان نیست؛ باید از شاهد به علت برسیم و بعد تغییر کنترل‌شده انجام بدهیم.</p></div>
 <aside class="hero-tip"><h2>الگوی ثابت عیب‌یابی</h2><ol><li>علائم و دامنهٔ خرابی را ثبت کن.</li><li>از نزدیک‌ترین نقطه به کاربر شروع کن.</li><li>هر بار یک فرضیه را با شاهد تست کن.</li><li>قبل از تغییر، وضعیت و راه برگشت را ذخیره کن.</li><li>پس از اصلاح، control-plane و data-plane را Verify کن.</li></ol></aside></section>
 <div class="toolbar" id="categories" aria-label="فیلتر حوزهٔ دیاگرام"></div><p id="status" role="status">در حال بارگذاری فهرست دیاگرام‌ها…</p><section id="grid" aria-label="دیاگرام‌های آموزشی"></section>
+
+<section id="packet-lab" class="packet-lab">
+  <div class="eyebrow">PACKET WALKTHROUGH / L2 → L3 → L4</div>
+  <h2>آزمایشگاه تحلیل پکت؛ از دیدن فریم تا پیدا کردن محل Drop</h2>
+  <p class="muted">هر مرحله نقطهٔ مشاهده، Ethernet MAC، VLAN، IP/TTL، TCP flags/ports، تغییر دقیق در hop و فیلتر capture را نشان می‌دهد. این یک بازسازی آموزشی است و به کارت شبکهٔ واقعی شما وصل نیست؛ فیلترهای آماده را روی PCAP مجاز در Wireshark اجرا کن.</p>
+  <div class="packet-tools">
+    <label for="packetScenario">جریان آزمایشی</label>
+    <select id="packetScenario">
+      <option value="nat">۱. TCP اینترنت + Source NAT</option>
+      <option value="vlan">۲. VLAN30 حذف‌شده از Trunk</option>
+      <option value="firewall">۳. Drop شدن TCP SYN در Firewall</option>
+      <option value="mtu">۴. MTU / PMTUD Black Hole</option>
+    </select>
+    <button type="button" class="btn" id="packetPrev">◀ مرحله قبل</button>
+    <button type="button" class="btn primary" id="packetNext">مرحله بعد ▶</button>
+    <button type="button" class="btn" id="packetReset">از ابتدا</button>
+  </div>
+  <div class="packet-track"><span id="packetProgress"></span></div>
+  <div class="packet-layout">
+    <article class="packet-summary">
+      <div id="packetCount" class="eyebrow"></div>
+      <h3 id="packetTitle"></h3>
+      <p id="packetWhere" class="muted"></p>
+      <div id="packetChange" class="packet-box packet-change"></div>
+      <div id="packetExpected" class="packet-box packet-pass"></div>
+      <div id="packetAbsent" class="packet-box packet-drop"></div>
+      <div class="step-title">فیلتر Wireshark برای مشاهدهٔ همین نقطه</div>
+      <div id="packetFilter" class="packet-filter"></div>
+      <button type="button" class="btn" id="packetCopy" style="margin-top:8px">کپی فیلتر</button>
+    </article>
+    <section class="packet-fields">
+      <h3>فیلدهای پکت در این نقطه</h3>
+      <div class="packet-fields-grid" id="packetFields"></div>
+      <p class="muted">در مسیر Routing، MACها برای هر لینک بعدی بازسازی می‌شوند و TTL کاهش می‌یابد. در NAT، tuple مربوط به IP/port ترجمه می‌شود و checksumها به‌روزرسانی می‌شوند. در Switching لایه۲، IP و TTL عوض نمی‌شوند.</p>
+    </section>
+  </div>
+</section>
 </main>
 <dialog id="diagramDialog" aria-labelledby="dialogTitle">
 <div class="modal-head"><h2 id="dialogTitle">دیاگرام</h2><div class="modal-actions"><button class="btn" id="zoomOut" type="button" aria-label="کوچک‌نمایی">−</button><button class="btn" id="zoomReset" type="button">اندازهٔ مناسب</button><button class="btn" id="zoomIn" type="button" aria-label="بزرگ‌نمایی">+</button><a class="btn" id="openRaw" target="_blank" rel="noopener">SVG جداگانه</a><button class="btn primary" id="closeDialog" type="button">بستن</button></div></div>
@@ -105,6 +162,67 @@ function closeDialog(){if(typeof dialog.close==="function")dialog.close();else d
 document.getElementById("closeDialog").addEventListener("click",closeDialog);dialog.addEventListener("click",function(event){if(event.target===dialog)closeDialog();});document.addEventListener("keydown",function(event){if(event.key==="Escape"&&dialog.open)closeDialog();});
 document.getElementById("zoomIn").addEventListener("click",function(){zoom=Math.min(240,zoom+20);largeDiagram.style.width=zoom+"%";});document.getElementById("zoomOut").addEventListener("click",function(){zoom=Math.max(40,zoom-20);largeDiagram.style.width=zoom+"%";});document.getElementById("zoomReset").addEventListener("click",function(){zoom=100;largeDiagram.style.width=zoom+"%";});
 const loadIndex=function(url){return fetch(url,{cache:"no-store"}).then(function(response){if(!response.ok)throw new Error("HTTP "+response.status);return response.json();});};renderCategories();loadIndex("/static/diagrams/combined_index.json").catch(function(){return loadIndex("/static/diagrams/index.json");}).then(function(data){entries=Array.isArray(data.diagrams)?data.diagrams:[];render();}).catch(function(error){status.textContent="فهرست دیاگرام بارگذاری نشد: "+error.message+" — اجرای generate_android_diagrams.py و وجود combined_index.json را بررسی کن.";});filter.addEventListener("input",render);
+})();
+</script>
+
+<script>
+(function(){
+var byId=function(id){return document.getElementById(id);};
+var pack={
+nat:[
+{title:"مرحله ۱/۶ — ARP Request برای Gateway",where:"نقطه مشاهده: کارت شبکه کلاینت؛ اتصال TCP هنوز شروع نشده است.",mac:"Client-MAC → FF:FF:FF:FF:FF:FF",vlan:"VLAN10؛ Access frame روی سیم بدون 802.1Q tag",ip:"ARP: who has 192.168.10.1? tell 192.168.10.25؛ IPv4 header ندارد",tcp:"TCP وجود ندارد؛ ARP است",change:"مقصد 203.0.113.80 خارج از subnet است؛ کلاینت پیش از SYN باید MAC دروازه را پیدا کند. ARP request به‌صورت broadcast در VLAN10 ارسال می‌شود.",expected:"در capture روی VLAN10، ARP request و سپس ARP reply از Gateway دیده می‌شود.",absent:"اگر reply نیست، Access VLAN، SVI/gateway، duplicate IP یا مشکل لایه۲ را بررسی کن؛ هنوز DNS یا TCP علت این مرحله نیست.",filter:"arp"},
+{title:"مرحله ۲/۶ — TCP SYN پیش از NAT",where:"نقطه مشاهده: SPAN پورت کلاینت یا ورودی LAN روتر؛ قبل از ترجمه.",mac:"Client-MAC → Gateway-LAN-MAC",vlan:"VLAN10؛ Access untagged",ip:"192.168.10.25 → 203.0.113.80 · TTL=64",tcp:"51514 → 443 · SYN=1 ACK=0 · Seq=1000",change:"IP مقصد سرور عمومی است اما Ethernet destination، MAC دروازه است. سوئیچ L2 پکت را forward می‌کند و IP/TTL را تغییر نمی‌دهد.",expected:"SYN با source 192.168.10.25:51514 روی ingress روتر ثبت می‌شود.",absent:"اگر این SYN دیده نشد، NIC، access VLAN، ACL یا مسیر پیش از روتر را بررسی کن.",filter:"ip.src==192.168.10.25 && ip.dst==203.0.113.80 && tcp.flags.syn==1"},
+{title:"مرحله ۳/۶ — خروجی WAN پس از Source NAT",where:"نقطه مشاهده: capture خروجی WAN روتر؛ tuple را با LAN مقایسه کن.",mac:"Gateway-WAN-MAC → ISP-next-hop-MAC",vlan:"802.1Q فقط اگر طراحی لینک WAN لازم کند",ip:"198.51.100.10 → 203.0.113.80 · TTL=63",tcp:"62001 → 443 · SYN=1؛ source port از 51514 به 62001",change:"روتر TTL را یک واحد کم می‌کند، MACهای لایه۲ را متناسب با WAN می‌سازد و source IP/port را NAT می‌کند؛ checksumهای IP/TCP هم متناسب با ترجمه اصلاح می‌شوند.",expected:"LAN capture مبدأ خصوصی 192.168.10.25:51514 و WAN capture مبدأ عمومی 198.51.100.10:62001 را نشان می‌دهد.",absent:"اگر SYN در LAN هست اما WAN نیست، route lookup، firewall policy، NAT counter و conntrack همان tuple را بررسی کن.",filter:"ip.src==198.51.100.10 && ip.dst==203.0.113.80 && tcp.flags.syn==1"},
+{title:"مرحله ۴/۶ — SYN-ACK وارد WAN می‌شود",where:"نقطه مشاهده: WAN ingress؛ هنوز نسخه de-NAT شده در LAN را جدا پیدا کن.",mac:"ISP-MAC → Gateway-WAN-MAC",vlan:"VLAN/encapsulation طبق لینک WAN",ip:"203.0.113.80 → 198.51.100.10 · TTL وابسته به تعداد روترهای مسیر",tcp:"443 → 62001 · SYN=1 ACK=1 · Ack=1001",change:"سرور پاسخ را به آدرس عمومی/پورت ترجمه‌شده می‌فرستد. روتر باید connection-tracking entry متناظر را پیدا کند تا پاسخ به کلاینت برسد.",expected:"SYN-ACK روی WAN دیده می‌شود؛ source/destination با flow NAT شده تطبیق دارد.",absent:"اگر SYN از WAN خارج شده اما SYN-ACK برنمی‌گردد، upstream، remote service و return route را بررسی کن.",filter:"tcp.flags.syn==1 && tcp.flags.ack==1 && tcp.port==443"},
+{title:"مرحله ۵/۶ — Reverse NAT به LAN",where:"نقطه مشاهده: خروجی LAN روتر؛ compare با packet ورودی WAN.",mac:"Gateway-LAN-MAC → Client-MAC",vlan:"VLAN10؛ access untagged در پورت کلاینت",ip:"203.0.113.80 → 192.168.10.25",tcp:"443 → 51514 · SYN=1 ACK=1؛ مقصد پورت private بازمی‌گردد",change:"Conntrack مقصد عمومی 198.51.100.10:62001 را به 192.168.10.25:51514 برمی‌گرداند و Ethernet destination را MAC کلاینت قرار می‌دهد.",expected:"SYN-ACK در WAN به آدرس عمومی و در LAN به IP/port خصوصی کلاینت دیده می‌شود.",absent:"اگر WAN جواب دارد اما LAN ندارد، conntrack، firewall policy برگشت، ARP و route داخلی را بررسی کن.",filter:"ip.dst==192.168.10.25 && tcp.flags.syn==1 && tcp.flags.ack==1"},
+{title:"مرحله ۶/۶ — ACK سوم و آغاز TLS",where:"Capture دو طرف روتر؛ TCP handshake کامل می‌شود.",mac:"در هر hop MAC برای همان لینک محلی است",vlan:"VLAN10 در LAN؛ tag فقط در trunk موردنیاز",ip:"LAN: 192.168.10.25 → 203.0.113.80 · WAN: 198.51.100.10 → 203.0.113.80",tcp:"ACK=1 · SYN=0؛ سپس TLS ClientHello",change:"ACK سوم TCP را Established می‌کند. این به تنهایی اثبات سلامت HTTPS نیست؛ TLS certificate/SNI و پاسخ HTTP مرحله‌های جدا هستند.",expected:"SYN → SYN-ACK → ACK کامل است و بعد TLS ClientHello/ServerHello دیده می‌شود.",absent:"اگر TCP کامل است ولی HTTPS خراب است، SNI، certificate، MTU و backend را جدا بررسی کن؛ NAT را بی‌دلیل تغییر نده.",filter:"tcp.stream eq 0 || tls.handshake"}
+],
+vlan:[
+{title:"مرحله ۱/۵ — Frame وارد Access می‌شود",where:"SPAN روی پورت کاربر Gi1/0/17.",mac:"Client-MAC → Gateway-MAC",vlan:"روی کابل Access بدون tag؛ switch port عضو VLAN30 است",ip:"10.30.30.47 → 10.30.30.1 · TTL=64",tcp:"ICMP Echo Request؛ ping پکت TCP ندارد",change:"Switch از عضویت پورت می‌فهمد فریم untagged متعلق به VLAN30 است. برای رسیدن به Gateway روی سوئیچ دیگر باید از trunk عبور کند.",expected:"Capture روی access ingress، ARP/ICMP کلاینت را می‌بیند.",absent:"اگر packet اینجا نیست، کابل، NIC، VLAN access و host firewall را بررسی کن.",filter:"arp || icmp"},
+{title:"مرحله ۲/۵ — Allowed VLAN check",where:"سوئیچ لایه۲، قبل از خروجی trunk Gi1/0/48.",mac:"Destination MAC با جدول MAC بررسی می‌شود",vlan:"Allowed list فقط VLAN10 و VLAN20 دارد؛ VLAN30 جا افتاده",ip:"IP/TTL در switching لایه۲ تغییر نمی‌کنند",tcp:"TCP header توسط L2 switch دستکاری نمی‌شود",change:"Switch فریم VLAN30 را قبل از خروجی drop می‌کند؛ در نتیجه فریم با tag=30 روی trunk egress فرستاده نمی‌شود.",expected:"show interfaces trunk نشان می‌دهد VLAN30 در فهرست allowed VLAN نیست.",absent:"اگر VLAN30 مجاز است، STP forwarding، VLAN active، native VLAN و EtherChannel را بررسی کن.",filter:"vlan.id==30 && (arp || icmp)"},
+{title:"مرحله ۳/۵ — نقطه Drop را ثابت کن",where:"Capture هم‌زمان Access ingress و Trunk egress با timestamp مشترک.",mac:"Access ingress: frame حاضر؛ trunk egress: frame غایب",vlan:"روی trunk باید 802.1Q tag با VLAN ID=30 دیده شود، اما نیست",ip:"Echo Request در ingress دیده می‌شود؛ روی egress غایب است",tcp:"در ping، TCP header وجود ندارد",change:"اختلاف دو capture و شاهد configuration محل توقف را بین ingress و egress محدود می‌کند. یک capture ناقص به‌تنهایی مدرک کافی نیست.",expected:"Packet در ingress هست و egress نیست؛ allowed list شاهد دوم است.",absent:"اگر هر دو capture خالی‌اند، SPAN source/destination، filter و clock دو دستگاه را کنترل کن.",filter:"vlan.id==30 && (arp || icmp)"},
+{title:"مرحله ۴/۵ — اصلاح VLAN جاافتاده",where:"SW-CORE؛ بعد از backup و مجوز Change.",mac:"MACهای endpoint تغییر نمی‌کنند",vlan:"VLAN30 به allow-list موجود اضافه می‌شود؛ VLAN10/20 حفظ می‌شوند",ip:"IP و TTL در L2 switch ثابت است",tcp:"Transport header تغییر نمی‌کند",change:"در IOS-XE از دستور switchport trunk allowed vlan add 30 استفاده کن تا allow-list قبلی overwrite نشود؛ syntax را با vendor/version مطابقت بده.",expected:"VLAN30 در allowed/active و STP forwarding دیده می‌شود.",absent:"اگر فریم عبور کرد اما Gateway جواب نداد، SVI، ARP، ACL یا return path را دنبال کن.",filter:"vlan.id==30 && icmp"},
+{title:"مرحله ۵/۵ — Verify انتهابه‌انتها",where:"Client، trunk دو طرف، Gateway و سرویس واقعی.",mac:"MAC در VLAN30 به‌درستی یاد گرفته شده",vlan:"VLAN30 روی هر دو سمت trunk forwarding است",ip:"ARP gateway و ICMP Echo Reply موفق است",tcp:"برای برنامه، TCP port-test جدا اجرا کن",change:"قبولی یعنی dataplane واقعی کار کند و VLANهای قبلی نیز سالم بمانند؛ صرف اجرای دستور کافی نیست.",expected:"Ping Gateway، capture برگشت و تست سرویس کاربر موفق‌اند.",absent:"اگر یک جهت مشکل دارد، MAC/ARP و capture پاسخ سمت مقابل را بررسی کن.",filter:"vlan.id==30 && (arp || icmp)"}
+],
+firewall:[
+{title:"مرحله ۱/۴ — SYN به Firewall می‌رسد",where:"Client 10.20.30.45:51000 → Server 10.50.1.20:443؛ capture ورودی.",mac:"Client-MAC → Firewall-LAN-MAC",vlan:"VLAN کاربر طبق طراحی",ip:"10.20.30.45 → 10.50.1.20 · TTL=64",tcp:"51000 → 443 · SYN=1 ACK=0",change:"Tuple و timestamp را ثبت کن. نبود پاسخ هنوز اثبات نمی‌کند server خاموش است.",expected:"SYN روی ingress interface فایروال دیده می‌شود.",absent:"اگر SYN اینجا نیست، مسیر قبل firewall، VLAN و ACL upstream را بررسی کن.",filter:"ip.src==10.20.30.45 && ip.dst==10.50.1.20 && tcp.flags.syn==1"},
+{title:"مرحله ۲/۴ — Route lookup",where:"فایروال پیش از policy selection.",mac:"Egress MAC هنوز نهایی نیست؛ next-hop باید resolve شود",vlan:"Interface/zone خروجی باید سمت Server باشد",ip:"Tuple همان 10.20.30.45:51000 → 10.50.1.20:443",tcp:"TCP handshake هنوز کامل نیست",change:"Routing تصمیم می‌گیرد packet از کدام interface برود. Route اشتباه را با Policy Deny اشتباه نگیر.",expected:"Route lookup، egress و next-hop مورد انتظار را نشان می‌دهد.",absent:"اگر egress/VRF/SD-WAN نادرست است همان را بررسی کن؛ policy any-any نساز.",filter:"ip.addr==10.50.1.20 && tcp.flags.syn==1"},
+{title:"مرحله ۳/۴ — Policy Drop",where:"Ingress capture پکت دارد اما egress سمت server ندارد.",mac:"فریم خروجی ساخته یا ارسال نشده",vlan:"Drop پیش از egress اتفاق افتاده",ip:"10.20.30.45 → 10.50.1.20 در ingress حاضر",tcp:"SYN هست؛ SYN-ACK وجود ندارد",change:"No-match یا Deny policy جریان را drop می‌کند؛ این دلیل کافی برای اعلام down بودن سرور نیست.",expected:"Deny log/policy counter برای همان tuple افزایش و SYN در egress غایب است.",absent:"اگر log نیست، local-in/forward plane، capture filter، session و offload counters را بررسی کن.",filter:"tcp.flags.syn==1 && tcp.dstport==443"},
+{title:"مرحله ۴/۴ — اصلاح و Verify",where:"Policy محدود؛ سپس capture دو جهت و تست سرویس.",mac:"MAC next-hop پس از اجازه، برای egress ساخته می‌شود",vlan:"VLAN مقصد طبق مسیر مورد انتظار",ip:"IP ثابت می‌ماند مگر NAT جداگانه اعمال شود",tcp:"SYN → SYN-ACK → ACK؛ سپس TLS",change:"تنها source subnet، destination host و service مجاز را Allow کن. یک flow تازه بساز و egress/return را دوباره capture کن.",expected:"Handshake و تست HTTPS موفق؛ policy counter با rule مورد انتظار تطبیق دارد.",absent:"اگر SYN خارج شده اما پاسخ نیست، return route، server listener یا upstream را بررسی کن.",filter:"tcp.stream eq 0 || tcp.flags.reset==1"}
+],
+mtu:[
+{title:"مرحله ۱/۴ — پینگ کوچک موفق",where:"Client → VPN tunnel → 10.80.1.20.",mac:"MAC لایه۲ در هر hop محلی است",vlan:"VLAN از نظر tagging سالم",ip:"ICMP packet کوچک؛ DF ممکن است فعال باشد",tcp:"TCP handshake ممکن است موفق شود",change:"پینگ کوچک، MTU کل مسیر را ثابت نمی‌کند. DF probe را به‌تدریج بزرگ‌تر کن.",expected:"پینگ کوچک موفق است و تست DF با payload بزرگ‌تر ممکن است fail شود.",absent:"اگر SYN کوچک هم نمی‌رسد، ابتدا route و policy را بررسی کن.",filter:"icmp || tcp.analysis.retransmission"},
+{title:"مرحله ۲/۴ — پکت از MTU تونل بزرگ‌تر است",where:"Tunnel egress؛ MTU موثر 1400 و packet طول 1500.",mac:"Encapsulation، outer packet را بزرگ‌تر می‌کند",vlan:"VLAN tag به تنهایی علت نیست؛ overhead تونل مهم است",ip:"IPv4 total length=1500 · DF=1 · tunnel MTU=1400",tcp:"TCP segment بزرگ‌تر از PMTU",change:"به‌علت DF، روتر نمی‌تواند fragment کند؛ باید packet را drop و ICMP Fragmentation Needed برگرداند.",expected:"ICMP type 3 code 4 یا drop counter روی tunnel قابل مشاهده است.",absent:"اگر ICMP نمی‌رسد، capture دو سوی تونل و ACL را بررسی کن.",filter:"icmp.type==3 && icmp.code==4"},
+{title:"مرحله ۳/۴ — ICMP feedback مسدود شده",where:"Capture نزدیک source و tunnel edge.",mac:"MACهای ICMP در هر hop محلی‌اند",vlan:"Tagging ممکن است سالم باشد؛ مسیر overlay/underlay جدا بررسی شود",ip:"DF packet تکرار می‌شود؛ ICMP feedback به source نمی‌رسد",tcp:"TCP data retransmission؛ SYN قبلاً ممکن است موفق باشد",change:"Source از PMTU خبر ندارد و segment بزرگ را بازمی‌فرستد؛ HTTPS ظاهراً پس از آغاز hang می‌کند.",expected:"Retransmission بالاست اما Fragmentation Needed در سمت source دیده نمی‌شود.",absent:"ICMP type/code و ACL counters را دقیق بررسی کن؛ همه ICMP را کورکورانه باز نکن.",filter:"tcp.analysis.retransmission || (icmp.type==3 && icmp.code==4)"},
+{title:"مرحله ۴/۴ — اصلاح و انتقال بزرگ",where:"فقط مسیر/tunnel اندازه‌گیری‌شده؛ هر دو جهت.",mac:"Ethernet frame در هر hop بازسازی می‌شود",vlan:"MTU overlay/underlay با header overhead محاسبه شده",ip:"PMTU اندازه‌گیری‌شده؛ MSS فقط در صورت نیاز",tcp:"Retransmission غیرعادی باید کاهش یابد",change:"راه اصولی عبور ICMP لازم و MTU سازگار است؛ MSS clamp جایگزین فقط با علت مستند و Change کنترل‌شده.",expected:"HTTPS/download بزرگ کامل و retransmission به baseline نزدیک می‌شود.",absent:"اگر یک جهت fail است، MTU و ICMP مسیر برگشت را جدا capture کن.",filter:"tcp.analysis.retransmission || icmp.type==3"}
+]
+};
+var chosen="nat", pos=0;
+function esc(x){return String(x==null?"":x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
+function render(){
+var rows=pack[chosen], item=rows[pos];
+byId("packetCount").textContent="مرحله "+(pos+1)+" از "+rows.length;
+byId("packetTitle").textContent=item.title;byId("packetWhere").textContent=item.where;
+byId("packetChange").textContent="چه اتفاقی افتاد: "+item.change;
+byId("packetExpected").textContent="شاهد مورد انتظار: "+item.expected;
+byId("packetAbsent").textContent="اگر شاهد نیست: "+item.absent;
+byId("packetFilter").textContent=item.filter;
+var fields=[["Ethernet / MAC",item.mac],["VLAN / 802.1Q",item.vlan],["IP / ARP / TTL",item.ip],["TCP / flags / ports",item.tcp]];
+byId("packetFields").innerHTML=fields.map(function(x){return '<div class="packet-field"><label>'+esc(x[0])+'</label><code>'+esc(x[1])+'</code></div>';}).join("");
+byId("packetProgress").style.width=Math.round((pos+1)/rows.length*100)+"%";
+byId("packetPrev").disabled=pos===0;byId("packetNext").disabled=pos===rows.length-1;
+}
+byId("packetScenario").addEventListener("change",function(){chosen=this.value;pos=0;render();});
+byId("packetPrev").addEventListener("click",function(){pos=Math.max(0,pos-1);render();});
+byId("packetNext").addEventListener("click",function(){pos=Math.min(pack[chosen].length-1,pos+1);render();});
+byId("packetReset").addEventListener("click",function(){pos=0;render();});
+byId("packetCopy").addEventListener("click",function(){
+var field=byId("packetFilter");
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(field.textContent).then(function(){byId("packetCopy").textContent="کپی شد ✓";}).catch(function(){window.prompt("فیلتر را کپی کن",field.textContent);});}
+else window.prompt("فیلتر را کپی کن",field.textContent);
+});
+if(location.hash==="#packet-lab")byId("packet-lab").scrollIntoView();
+render();
 })();
 </script>
 </body></html>
