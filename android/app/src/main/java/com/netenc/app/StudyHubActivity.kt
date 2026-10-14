@@ -62,7 +62,16 @@ class StudyHubActivity : AppCompatActivity() {
             addView(Ui.text(this@StudyHubActivity,
                 "یک مسیر پیوسته از مبتدی تا حرفه‌ای؛ لازم نیست سطح را دستی انتخاب کنی. ابتدا مفهوم، سپس مثال و لاب، بعد عیب‌یابی و طراحی سازمانی.",
                 13f, Ui.MUTED))
-            addView(btn("شروع مسیر یادگیری از مبتدی تا حرفه‌ای", Ui.ACCENT) { pickChapterForCards() })
+            addView(btn("شروع مسیر یادگیری از مبتدی تا حرفه‌ای", Ui.ACCENT) {
+                startActivity(Intent(this@StudyHubActivity, TreeCatalogActivity::class.java))
+            })
+            addView(btn("مرور کارت‌ها و فلش‌کارت‌ها", Color.parseColor("#475569")) { pickChapterForCards() })
+            addView(btn("سناریوهای واقعی؛ شواهد تا Verify و Rollback", Color.parseColor("#0F766E")) {
+                startActivity(Intent(this@StudyHubActivity, IncidentRunbookActivity::class.java))
+            })
+            addView(btn("آزمایشگاه تحلیل پکت؛ Ethernet تا TCP/NAT", Color.parseColor("#7C3AED")) {
+                startActivity(Intent(this@StudyHubActivity, PacketLabActivity::class.java))
+            })
             addView(section("مطالعهٔ دیداری"))
             addView(btn("گالری دیاگرام‌های آموزشی", Color.parseColor("#0F766E")) {
                 startActivity(Intent(this@StudyHubActivity, DiagramGalleryActivity::class.java))
@@ -84,7 +93,7 @@ class StudyHubActivity : AppCompatActivity() {
             addView(btn("مطالعهٔ عمیق درس‌ها و محتوای کامل", Ui.ACCENT) {
                 startActivity(Intent(this@StudyHubActivity, TreeCatalogActivity::class.java))
             })
-            addView(btn("سناریوهای Capstone", Color.parseColor("#B45309")) {
+            addView(btn("تمرین‌های پروژه‌ای Capstone", Color.parseColor("#B45309")) {
                 startActivity(Intent(this@StudyHubActivity, ScenarioListActivity::class.java))
             })
             addView(section("یادآوری"))
