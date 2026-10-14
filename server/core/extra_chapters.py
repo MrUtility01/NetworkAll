@@ -59,7 +59,7 @@ def _ensure_deep_packs() -> None:
                 },
                 "lessons": split_items
             }
-            base_pack.write_text(json.dumps(aggregate, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+            base_pack.write_text(json.dumps(aggregate, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     except (OSError, ValueError, TypeError, RuntimeError) as exc:
         # Preserve the existing curriculum if a read-only deployment cannot generate packs.
         print("ch60_68 pack generation skipped:", exc)
