@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 """Validate shared chapter 60-68 content packs and Windows/Android curriculum overlay."""
 from __future__ import annotations
-import json, sys, tempfile
+import json, sys, tempfile, runpy
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
+GENERATOR = ROOT / "tools" / "generate_ch60_68_packs.py"
+if GENERATOR.is_file():
+    runpy.run_path(str(GENERATOR), run_name="__main__")
 PACKS = [
     ROOT / "tools/packs/ch60_68/ch60_68_ch60_pack.json",
     ROOT / "tools/packs/ch60_68/ch60_68_ch61_63_pack.json",
@@ -38,6 +41,7 @@ def main():
             all_lessons.append(item)
     assert all(chapter_counts.values()), f"chapter missing pack lessons: {chapter_counts}"
     assert all(n % 5 == 0 for n in chapter_counts.values()), f"expected five-level topic groups: {chapter_counts}"
+    assert sum(chapter_counts.values()) >= 800, f"expected at least 800 lessons: {sum(chapter_counts.values())}"
     sys.path.insert(0, str(ROOT / "server"))
     from core.full_curriculum import get_full_curriculum
     from core.extra_chapters import ensure_chapters_1_to_68
@@ -70,5 +74,5 @@ def main():
     print("chapter lesson counts:", chapter_counts)
     print("total lessons:", len(all_lessons))
     return 0
-if __name__ == "__main__":
+if __name__=="__main__":
     raise SystemExit(main())
