@@ -100,29 +100,32 @@ def ensure_chapters_1_to_68(curriculum: list) -> list:
             levels,
         )
 
-    # Shared deep curriculum overlay for chapters 60–68. This same index is used
-    # by Windows/Flask and the Android offline export; existing lessons/UIDs stay intact.
-    overlay_path = ROOT / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json"
-    try:
-        overlay = json.loads(overlay_path.read_text(encoding="utf-8"))
-        for chapter in overlay.get("chapters", []):
-            order = int(chapter.get("chapter_order") or 0)
-            if order not in by:
-                continue
-            record = by[order]
-            subs = list(record[3])
-            existing = {title for sub in subs for title, _ in sub[1]}
-            pack_lessons = [
-                (item.get("title_fa", ""), item.get("title_en", ""))
-                for item in overlay.get("lessons", [])
-                if int(item.get("chapter_order") or 0) == order
-                and item.get("title_fa") not in existing
-            ]
-            if pack_lessons:
-                subs.append(("غنی‌سازی و اعتبارسنجی", pack_lessons))
-                by[order] = (record[0], record[1], record[2], subs)
-    except (OSError, ValueError, TypeError):
-        # Keep the base curriculum available if an optional overlay is malformed.
-        pass
+    # Shared curriculum overlays for chapters 60-68; used by Windows and Android.
+    overlay_paths = [
+        ROOT / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json",
+        ROOT / "tools" / "packs" / "ch60_68" / "chapter_60_68_validation_pack.json",
+    ]
+    for overlay_path in overlay_paths:
+        try:
+            overlay = json.loads(overlay_path.read_text(encoding="utf-8"))
+            for chapter in (overlay.get("chapters") or overlay.get("scope") or []):
+                order = int(chapter.get("chapter_order") or 0)
+                if order not in by:
+                    continue
+                record = by[order]
+                subs = list(record[3])
+                existing = {title for sub in subs for title, _ in sub[1]}
+                additions = []
+                for item in overlay.get("lessons", []):
+                    if int(item.get("chapter_order") or 0) == order:
+                        title = item.get("title_fa") or ""
+                        if title and title not in existing:
+                            additions.append((title, item.get("title_en") or title))
+                            existing.add(title)
+                if additions:
+                    subs.append(("غنی‌سازی و اعتبارسنجی", additions))
+                    by[order] = (record[0], record[1], record[2], subs)
+        except (OSError, ValueError, TypeError):
+            continue
 
     return [by[k] for k in sorted(by)]
