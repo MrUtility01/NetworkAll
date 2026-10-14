@@ -111,6 +111,110 @@ button{background:#1d4ed8;color:#fff;border-color:#1d4ed8;font-weight:bold;curso
 </form></body></html>
 """
 
+
+_DIGIT_TO_ASCII = str.maketrans("۰۱۲۳۴۵۶۷۸۹٠١٢٣٤٥٦٧٨٩", "01234567890123456789")
+_ASCII_TO_PERSIAN = str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹")
+
+def _normalize_date_digits(value):
+    return str(value or "").translate(_DIGIT_TO_ASCII).strip()
+
+def _jalali_to_gregorian(year, month, day):
+    jy = year + 1595
+    days = -355668 + 365 * jy + (jy // 33) * 8 + ((jy % 33 + 3) // 4) + day
+    days += (month - 1) * 31 if month < 7 else (month - 7) * 30 + 186
+    gy = 400 * (days // 146097)
+    days %= 146097
+    if days > 36524:
+        gy += 100 * ((days - 1) // 36524)
+        days = (days - 1) % 36524
+        if days >= 365:
+            days += 1
+    gy += 4 * (days // 1461)
+    days %= 1461
+    if days > 365:
+        gy += (days - 1) // 365
+        days = (days - 1) % 365
+    gd = days + 1
+    leap = gy % 4 == 0 and (gy % 100 != 0 or gy % 400 == 0)
+    month_lengths = [31, 29 if leap else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    gm = 1
+    while gm <= 12 and gd > month_lengths[gm - 1]:
+        gd -= month_lengths[gm - 1]
+        gm += 1
+    return datetime(gy, gm, gd).date()
+
+def _jalali_days_in_month(year, month):
+    if month < 1 or month > 12:
+        return 0
+    if month <= 6:
+        return 31
+    if month <= 11:
+        return 30
+    return 30 if (_jalali_to_gregorian(year + 1, 1, 1) - _jalali_to_gregorian(year, 1, 1)).days == 366 else 29
+
+def _gregorian_to_jalali(date_value):
+    offsets = (0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334)
+    gy, gm, gd = date_value.year, date_value.month, date_value.day
+    if gy > 1600:
+        jy, gy = 979, gy - 1600
+    else:
+        jy, gy = 0, gy - 621
+    gy2 = gy + 1 if gm > 2 else gy
+    days = 365 * gy + (gy2 + 3) // 4 - (gy2 + 99) // 100 + (gy2 + 399) // 400 - 80 + gd + offsets[gm - 1]
+    jy += 33 * (days // 12053)
+    days %= 12053
+    jy += 4 * (days // 1461)
+    days %= 1461
+    if days > 365:
+        jy += (days - 1) // 365
+        days = (days - 1) % 365
+    if days < 186:
+        jm, jd = 1 + days // 31, 1 + days % 31
+    else:
+        jm, jd = 7 + (days - 186) // 30, 1 + (days - 186) % 30
+    return jy, jm, jd
+
+def jalali_date(value):
+    if not value:
+        return ""
+    try:
+        day = datetime.strptime(str(value)[:10], "%Y-%m-%d").date()
+        y, m, d = _gregorian_to_jalali(day)
+        return f"{y:04d}/{m:02d}/{d:02d}".translate(_ASCII_TO_PERSIAN)
+    except Exception:
+        return str(value)
+
+def jalali_datetime(value):
+    if not value:
+        return ""
+    try:
+        dt = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        if dt.tzinfo is not None:
+            dt = dt.astimezone()
+        return (jalali_date(dt.date().isoformat()) + " " + dt.strftime("%H:%M")).strip()
+    except Exception:
+        return str(value)
+
+def parse_jalali_due_date(value):
+    normalized = _normalize_date_digits(value).replace("-", "/")
+    if not normalized:
+        return ""
+    parts = normalized.split("/")
+    if len(parts) != 3:
+        raise ValueError("تاریخ را به‌شکل ۱۴۰۵/۰۷/۲۲ وارد کنید.")
+    try:
+        year, month, day = map(int, parts)
+        if year >= 1700:  # accept old Gregorian values from existing installs
+            parsed = datetime(year, month, day).date()
+        else:
+            if not 1 <= month <= 12 or not 1 <= day <= _jalali_days_in_month(year, month):
+                raise ValueError
+            parsed = _jalali_to_gregorian(year, month, day)
+        return parsed.isoformat()
+    except Exception:
+        raise ValueError("تاریخ شمسی معتبر نیست؛ نمونهٔ درست: ۱۴۰۵/۰۷/۲۲.")
+
+
 PAGE = """
 <!doctype html><html lang=fa dir=rtl><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
@@ -132,13 +236,13 @@ details{margin-top:12px;border-top:1px solid #e5ebf3;padding-top:10px}summary{cu
 </style></head><body><main class=wrap>
 <nav class=top><span class=brand>NetworkAll / فضای کاری</span><a href="/">دانشنامه</a><a href="/diagrams">دیاگرام و عیب‌یابی</a><a href="/?view=incidents">سناریوهای واقعی</a><a href="/?view=quiz">مرکز آزمون</a><a href="/workspace?tab=tasks">کارها</a><a href="/workspace?tab=knowledge">مدیریت دانش</a><a href="/workspace?tab=notes">یادداشت‌ها</a><a href="/workspace?tab=vault">Vault</a><a href="/api/workspace/export">خروجی پشتیبان</a><a href="/workspace/logout">خروج</a></nav>
 <div class=notice>کارها، دانش و یادداشت‌ها در دیتابیس محلی این نصب نگهداری می‌شوند. پیش از انتقال پوشه یا دستگاه، از پشتیبان استفاده کن. رمزهای Vault به‌صورت رمزگذاری‌شده ذخیره می‌شوند؛ فایل کلید Vault را جداگانه و امن پشتیبان بگیر.</div>
-<h1>{{ title }}</h1><p class=muted>جستجو، دسته‌بندی و ثبت پیگیری‌ها؛ همهٔ تاریخ‌ها بر اساس مقدار واردشدهٔ دستگاه‌اند.</p>
+<h1>{{ title }}</h1><p class=muted>جستجو، دسته‌بندی و ثبت پیگیری‌ها؛ همهٔ تاریخ‌های قابل مشاهده و ورود سررسید با تقویم شمسی هستند.</p>
 <form method=get action="/workspace" class=search-row><input type=hidden name=tab value="{{ tab }}"><input name=q value="{{ q }}" placeholder="جستجو در عنوان، متن، دسته یا برچسب"><button type=submit>جستجو</button><a href="/workspace?tab={{ tab }}">پاک‌کردن</a></form>
 <section class=card><h2>{% if tab=='tasks' %}ثبت کار جدید{% elif tab in ('notes','knowledge') %}ثبت یادداشت / دانش جدید{% else %}ثبت مورد Vault{% endif %}</h2>
 <form method=post class=form-grid>
 <div><label>عنوان</label><input name=title placeholder="عنوان کوتاه و قابل جستجو" required></div>
 {% if tab=='tasks' %}
-<div><label>سررسید</label><input name=due_date type=date></div>
+<div><label>سررسید</label><input name=due_date type=text inputmode=numeric autocomplete=off placeholder="۱۴۰۵/۰۷/۲۲"></div>
 <div><label>اولویت</label><select name=priority><option value=normal>عادی</option><option value=high>بالا</option><option value=urgent>فوری</option><option value=low>پایین</option></select></div>
 <div><label>دسته</label><input name=category placeholder="شبکه، سرور، مشتری…" value="عمومی"></div>
 {% elif tab in ('notes','knowledge') %}
@@ -156,12 +260,12 @@ details{margin-top:12px;border-top:1px solid #e5ebf3;padding-top:10px}summary{cu
 <div class=tags>
 {% if tab=='tasks' %}
 <span class="tag priority-{{ it.priority or 'normal' }}">اولویت: {% if it.priority=='urgent' %}فوری{% elif it.priority=='high' %}بالا{% elif it.priority=='low' %}پایین{% else %}عادی{% endif %}</span>
-<span class=tag>سررسید: {{ it.due_date or 'ندارد' }}</span><span class=tag>{{ it.category or 'عمومی' }}</span>
+<span class=tag>سررسید شمسی: {{ jalali_date(it.due_date) or 'ندارد' }}</span><span class=tag>{{ it.category or 'عمومی' }}</span>
 {% elif tab in ('notes','knowledge') %}
 <span class=tag>{{ it.category or 'عمومی' }}</span>{% if it.tags %}<span class=tag>{{ it.tags }}</span>{% endif %}
 {% elif tab=='vault' and it.username %}<span class=tag>نام کاربری: {{ it.username }}</span>
 {% endif %}
-<span class=tag>به‌روزرسانی: {{ (it.last_updated or '')[:16] }}</span>
+<span class=tag>به‌روزرسانی: {{ jalali_datetime(it.last_updated) }}</span>
 </div>
 {% if it.body %}<div class=item-body>{{ it.body }}</div>{% endif %}
 <div class=actions>
@@ -177,7 +281,7 @@ details{margin-top:12px;border-top:1px solid #e5ebf3;padding-top:10px}summary{cu
 <input type=hidden name=edit_uid value="{{ it.uid }}">
 <div><label>عنوان</label><input name=title value="{{ it.title }}" required></div>
 {% if tab=='tasks' %}
-<div><label>سررسید</label><input name=due_date type=date value="{{ it.due_date or '' }}"></div>
+<div><label>سررسید</label><input name=due_date type=text inputmode=numeric autocomplete=off placeholder="۱۴۰۵/۰۷/۲۲" value="{{ jalali_date(it.due_date) }}"></div>
 <div><label>اولویت</label><select name=priority><option value=normal {% if it.priority=='normal' %}selected{% endif %}>عادی</option><option value=high {% if it.priority=='high' %}selected{% endif %}>بالا</option><option value=urgent {% if it.priority=='urgent' %}selected{% endif %}>فوری</option><option value=low {% if it.priority=='low' %}selected{% endif %}>پایین</option></select></div>
 <div><label>دسته</label><input name=category value="{{ it.category or 'عمومی' }}"></div>
 {% else %}
@@ -304,7 +408,7 @@ def workspace_page():
                 due_date = (request.form.get("due_date") or "").strip()
                 if due_date:
                     try:
-                        datetime.strptime(due_date, "%Y-%m-%d")
+                        due_date = parse_jalali_due_date(due_date)
                     except ValueError:
                         due_date = ""
                 if title and tab == "tasks":
@@ -362,7 +466,7 @@ def workspace_page():
                 items.append({"uid": row["uid"], "title": row["title"], "username": row["username"],
                               "body": secret_show, "last_updated": row["last_updated"]})
             c.commit()
-        return render_template_string(PAGE, items=items, title=title, tab=tab, q=q)
+        return render_template_string(PAGE, items=items, title=title, tab=tab, q=q, jalali_date=jalali_date, jalali_datetime=jalali_datetime)
     finally:
         c.close()
 

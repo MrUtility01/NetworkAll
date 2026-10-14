@@ -114,6 +114,113 @@ class WebDB:
     def is_seeded(self):
         return self.chapter_count() >= 64
 
+
+    @staticmethod
+    def _curriculum_family(label):
+        value = str(label or "").casefold()
+        groups = (
+            ("mikrotik", ("mikrotik", "routeros")),
+            ("fortigate", ("fortigate", "forti")),
+            ("cisco", ("cisco", "ios/ios", "ios-xe", "ios xe")),
+            ("powershell", ("powershell", "power shell")),
+            ("batch", ("batch",)),
+            ("cmd", ("windows cmd", "command prompt", "cmd")),
+            ("linux", ("linux", "bash")),
+            ("asterisk", ("asterisk", "issabel")),
+        )
+        for family, terms in groups:
+            if any(term in value for term in terms):
+                return family
+        return ""
+
+    def _merge_missing_curriculum_from_asset(self):
+        """Add new curriculum rows by stable UID; never delete or overwrite existing lesson content."""
+        asset = BASE.parent / "android" / "app" / "src" / "main" / "assets" / "curriculum_index.json.gz"
+        try:
+            with gzip.open(asset, "rt", encoding="utf-8") as stream:
+                payload = json.load(stream)
+            chapters = payload.get("chapters", [])
+            if not isinstance(chapters, list):
+                return 0
+            self.ensure_sync_columns()
+            now = datetime.now().astimezone().isoformat(timespec="seconds")
+            inserted = 0
+            cur = self.conn.cursor()
+            for chapter in sorted(chapters, key=lambda x: int(x.get("order") or 0)):
+                order = int(chapter.get("order") or 0)
+                title_fa = str(chapter.get("title_fa") or f"فصل {order}")
+                title_en = str(chapter.get("title_en") or "")
+                row = cur.execute("SELECT id FROM chapters WHERE order_index=? ORDER BY id LIMIT 1", (order,)).fetchone()
+                if row:
+                    chapter_id = row["id"]
+                    cur.execute("UPDATE chapters SET title_fa=?, title_en=? WHERE id=?", (title_fa, title_en, chapter_id))
+                else:
+                    cur.execute("INSERT INTO chapters(order_index,title_fa,title_en) VALUES(?,?,?)", (order,title_fa,title_en))
+                    chapter_id = cur.lastrowid
+                levels_db = cur.execute("SELECT id,order_index,title_fa FROM levels WHERE chapter_id=? ORDER BY order_index,id", (chapter_id,)).fetchall()
+                claimed_level_ids = set()
+                for sub in chapter.get("subchapters", []):
+                    if not isinstance(sub, dict):
+                        continue
+                    sub_title = str(sub.get("title_fa") or "زیرشاخهٔ بدون عنوان").strip()
+                    sub_en = str(sub.get("title_en") or "")
+                    target = next((r for r in levels_db if r["id"] not in claimed_level_ids and str(r["title_fa"]).strip() == sub_title), None)
+                    sub_family = self._curriculum_family(sub_title)
+                    if target is None and sub_family:
+                        target = next((r for r in levels_db if r["id"] not in claimed_level_ids and self._curriculum_family(r["title_fa"]) == sub_family), None)
+                    if target is not None:
+                        level_id = target["id"]
+                        claimed_level_ids.add(level_id)
+                        cur.execute("UPDATE levels SET title_fa=?, title_en=? WHERE id=?", (sub_title, sub_en, level_id))
+                    else:
+                        next_order = cur.execute("SELECT COALESCE(MAX(order_index),0)+1 AS n FROM levels WHERE chapter_id=?", (chapter_id,)).fetchone()["n"]
+                        cur.execute("INSERT INTO levels(chapter_id,order_index,title_fa,title_en) VALUES(?,?,?,?)", (chapter_id,next_order,sub_title,sub_en))
+                        level_id = cur.lastrowid
+                        claimed_level_ids.add(level_id)
+                    for item in sub.get("lessons", []):
+                        if not isinstance(item, dict):
+                            continue
+                        uid = str(item.get("uid") or "").strip()
+                        if uid and cur.execute("SELECT 1 FROM lessons WHERE uid=? LIMIT 1", (uid,)).fetchone():
+                            continue
+                        lfa = str(item.get("title_fa") or "").strip()
+                        len_ = str(item.get("title_en") or lfa).strip()
+                        if not lfa:
+                            continue
+                        oi = cur.execute("SELECT COALESCE(MAX(order_index),0)+1 AS n FROM lessons WHERE level_id=?", (level_id,)).fetchone()["n"]
+                        tag = str(item.get("level") or (lfa[1:3] if lfa.startswith("[L") else "L0"))
+                        summary = str(item.get("summary") or "")
+                        full_content = str(item.get("full_content") or summary)
+                        commands, examples, notes = (str(item.get(k) or "") for k in ("commands","examples","notes"))
+                        meta = item.get("meta") if isinstance(item.get("meta"), dict) else {}
+                        meta_json = json.dumps(meta, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+                        objectives = item.get("learning_objectives") or []
+                        if not isinstance(objectives, list):
+                            objectives = [str(objectives)]
+                        objectives_text = "\n".join(str(x) for x in objectives)
+                        search_keywords = item.get("search_keywords") or []
+                        search_query = str(item.get("search_query") or " ".join(str(x) for x in search_keywords))
+                        source_status = str(item.get("source_status") or "review_required")
+                        record_uid = uid or f"lesson:ch{order:02d}:incremental:{level_id}:{oi:05d}"
+                        content_fields = {"uid":record_uid,"entity":"lesson","title_fa":lfa,"title_en":len_,"tags":tag,
+                            "summary":summary,"full_content":full_content,"commands":commands,"examples":examples,"notes":notes,
+                            "meta_json":meta_json,"search_query":search_query,"learning_objectives":objectives_text,
+                            "source_status":source_status,"deleted":False}
+                        digest = hashlib.sha256(json.dumps(content_fields,ensure_ascii=False,sort_keys=True,separators=(",",":")).encode("utf-8")).hexdigest()
+                        cur.execute("""INSERT INTO lessons(
+                            level_id,order_index,title_fa,title_en,tags,summary,full_content,commands,examples,notes,
+                            meta_json,search_query,learning_objectives,source_status,last_updated,uid,content_hash,device_id,deleted
+                            ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                            (level_id,oi,lfa,len_,tag,summary,full_content,commands,examples,notes,meta_json,search_query,
+                             objectives_text,source_status,str(item.get("last_updated") or payload.get("generated_at") or now),
+                             record_uid,digest,"windows-curriculum-merge",0))
+                        inserted += 1
+            self.conn.commit()
+            return inserted
+        except (OSError, ValueError, TypeError, KeyError, sqlite3.Error) as exc:
+            print("incremental curriculum merge skipped:", exc)
+            return 0
+
     def seed_full(self, force=False):
         """Seed from the validated shared curriculum asset when available.
 
@@ -122,7 +229,8 @@ class WebDB:
         title-generated fallback remains for source checkouts without an asset.
         """
         if self.is_seeded() and not force:
-            return {"ok": True, "skipped": True, "chapters": self.chapter_count()}
+            inserted = self._merge_missing_curriculum_from_asset()
+            return {"ok": True, "skipped": True, "chapters": self.chapter_count(), "new_lessons": inserted}
 
         from core.phase_a import CAPSTONE_SCENARIOS
         from core.seed_helpers import insert_rich_lesson
