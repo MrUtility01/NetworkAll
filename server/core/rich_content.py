@@ -17,28 +17,36 @@ def clean_topic(title: str) -> str:
 def _fmt_cmds(pairs):
     return "\n".join(f"```\n{cmd}\n```\n→ {desc}\n" for cmd, desc in pairs)
 
+_CH60_68_OVERLAY_CACHE: Dict[str, Dict[str, Any]] | None = None
+
+
 def _shared_ch60_68_overlay(title_fa: str) -> Dict[str, Any] | None:
-    """Return a reviewed-pack lesson payload shared by Windows and Android export."""
-    try:
-        from pathlib import Path
-        import json
-        root = Path(__file__).resolve().parents[2]
-        path = root / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json"
-        if not path.is_file():
-            return None
-        data = json.loads(path.read_text(encoding="utf-8"))
-        for lesson in data.get("lessons", []):
-            if lesson.get("title_fa") == title_fa:
-                return {
-                    "summary": lesson.get("summary") or "",
-                    "full_content": lesson.get("full_content") or "",
-                    "commands": lesson.get("commands") or "",
-                    "examples": lesson.get("examples") or "",
-                    "notes": lesson.get("notes") or "",
+    """Return a cached reviewed-pack lesson payload shared by Windows and Android export."""
+    global _CH60_68_OVERLAY_CACHE
+    if _CH60_68_OVERLAY_CACHE is None:
+        _CH60_68_OVERLAY_CACHE = {}
+        try:
+            from pathlib import Path
+            import json
+            root = Path(__file__).resolve().parents[2]
+            path = root / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json"
+            if path.is_file():
+                data = json.loads(path.read_text(encoding="utf-8"))
+                _CH60_68_OVERLAY_CACHE = {
+                    item.get("title_fa"): {
+                        "summary": item.get("summary") or "",
+                        "full_content": item.get("full_content") or "",
+                        "commands": item.get("commands") or "",
+                        "examples": item.get("examples") or "",
+                        "notes": item.get("notes") or "",
+                    }
+                    for item in data.get("lessons", [])
+                    if item.get("title_fa")
                 }
-    except (OSError, ValueError, TypeError):
-        return None
-    return None
+        except (OSError, ValueError, TypeError):
+            _CH60_68_OVERLAY_CACHE = {}
+    return _CH60_68_OVERLAY_CACHE.get(title_fa)
+
 
 
 def build_rich_lesson(title_fa: str, title_en: str = "", level: str | None = None) -> Dict[str, Any]:
