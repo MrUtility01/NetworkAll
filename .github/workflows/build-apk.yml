@@ -244,6 +244,20 @@ jobs:
               if curriculum_path.endswith(".gz"):
                   curriculum_bytes = gzip.decompress(curriculum_bytes)
               curriculum = json.loads(curriculum_bytes.decode("utf-8"))
+              runbook_asset = "assets/incident_runbooks.json"
+              if runbook_asset not in names:
+                  raise SystemExit(f"APK is missing shared incident library {runbook_asset}")
+              runbook_pack = json.loads(z.read(runbook_asset))
+              incident_rows = runbook_pack.get("incidents", [])
+              if not isinstance(incident_rows, list) or len(incident_rows) < 150:
+                  raise SystemExit(f"APK incident library requires >=150 scenarios; got {len(incident_rows) if isinstance(incident_rows, list) else 'invalid'}")
+              incident_ids = [str(row.get("id") or "") for row in incident_rows]
+              if any(not item_id for item_id in incident_ids) or len(incident_ids) != len(set(incident_ids)):
+                  raise SystemExit("APK incident library contains blank or duplicate IDs")
+              for row in incident_rows:
+                  steps = row.get("steps") or row.get("diagnostic_steps") or []
+                  if len(steps) < 5 or not row.get("root_cause") or not row.get("verification") or not row.get("rollback"):
+                      raise SystemExit(f"APK runbook is incomplete: {row.get('id')}")
               diagrams = json.loads(z.read(diagram_index_path))
               svg_count = sum(1 for n in names if n.startswith("assets/diagrams/diagram_") and n.endswith(".svg"))
               chapter1_svg_count = sum(1 for n in names if n.startswith("assets/diagrams/ch01/") and n.endswith(".svg"))
@@ -278,8 +292,8 @@ jobs:
               assert not missing_diagrams, f"APK is missing indexed diagram files: {missing_diagrams[:10]}"
               chapter68 = next((ch for ch in curriculum["chapters"] if int(ch.get("order", -1)) == 68), None)
               assert chapter68 and chapter68.get("subchapters"), "Chapter 68 has no collections"
-              print("APK asset audit details:", {"apk": str(apk), "apk_bytes": apk.stat().st_size, "lessons": actual_lessons, "svg_count": svg_count, "asset_entries": sum(n.startswith("assets/") for n in names)})
-          print(f"APK AUDIT OK: {apk} bytes={apk.stat().st_size} chapters=68 lessons={curriculum['lesson_count']} diagrams={svg_count}")
+              print("APK asset audit details:", {"apk": str(apk), "apk_bytes": apk.stat().st_size, "lessons": actual_lessons, "svg_count": svg_count, "incident_runbooks": len(incident_rows), "asset_entries": sum(n.startswith("assets/") for n in names)})
+          print(f"APK AUDIT OK: {apk} bytes={apk.stat().st_size} chapters=68 lessons={curriculum['lesson_count']} diagrams={svg_count} incident_runbooks={len(incident_rows)}")
           PY
 
       - name: Upload APK for diagnosis if audit fails
