@@ -119,7 +119,7 @@ def ensure_chapters_1_to_68(curriculum: list) -> list:
                 and item.get("title_fa") not in existing
             ]
             if pack_lessons:
-                subs.append((f"{order}.۹ غنی‌سازی و اعتبارسنجی", pack_lessons))
+                subs.append(("غنی‌سازی و اعتبارسنجی", pack_lessons))
                 by[order] = (record[0], record[1], record[2], subs)
     except (OSError, ValueError, TypeError):
         # Keep the base curriculum available if an optional overlay is malformed.
