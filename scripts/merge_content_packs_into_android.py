@@ -534,6 +534,16 @@ def append_unmatched_to_existing_chapter(data, lessons, order: int) -> int:
     added = sum(len(rows) for rows in groups.values())
     return added
 
+FINAL_CHAPTER_TITLES = {
+    62: "فصل ۶۲: عملیات پشتیبانی IT، مانیتورینگ و مرکز عملیات شبکه (NOC)",
+    63: "فصل ۶۳: مستندسازی فنی، Runbook و مدیریت پیکربندی (CMDB)",
+    64: "فصل ۶۴: کنترل نسخه و همکاری تیمی با Git و GitHub",
+    65: "فصل ۶۵: امنیت سایبری دفاعی، تست نفوذ مجاز و امنیت شبکه بی‌سیم",
+    66: "فصل ۶۶: مسیریابی پیشرفته؛ OSPF، BGP و بازتوزیع مسیرها",
+    67: "فصل ۶۷: VPN سازمانی؛ IPsec، SSL VPN و عیب‌یابی تونل",
+    68: "فصل ۶۸: دانشنامه کاربردی فرمان‌های شبکه و سیستم‌عامل؛ Cisco، MikroTik، FortiGate، Linux و Windows",
+}
+
 def main():
     if not GZ.is_file():
         print("ERROR missing", GZ)
@@ -613,6 +623,32 @@ def main():
         print("ch65", sum(len(s["lessons"]) for s in data["chapters"][-1]["subchapters"]))
 
     data["chapters"].sort(key=lambda c: int(c.get("order") or 0))
+    for chapter in data["chapters"]:
+        chapter_order = int(chapter.get("order") or 0)
+        if chapter_order in FINAL_CHAPTER_TITLES:
+            chapter["title_fa"] = FINAL_CHAPTER_TITLES[chapter_order]
+        if chapter_order == 68:
+            for sub in chapter.get("subchapters", []):
+                label = str(sub.get("title_fa") or "")
+                low = label.lower()
+                if "mikrotik" in low or "routeros" in low:
+                    sub["title_fa"] = "MikroTik RouterOS؛ رابط‌ها، Route، Firewall و NAT"
+                elif "forti" in low:
+                    sub["title_fa"] = "FortiGate؛ CLI، Policy، مسیریابی، NAT و VPN"
+                elif "cisco" in low or "ios/ios" in low or "ios-xe" in low:
+                    sub["title_fa"] = "Cisco IOS/IOS-XE؛ Switching، Routing و بررسی وضعیت"
+                elif "power" in low:
+                    sub["title_fa"] = "PowerShell؛ مدیریت Windows و عیب‌یابی شبکه"
+                elif "batch" in low:
+                    sub["title_fa"] = "Windows Batch؛ خودکارسازی و فرمان‌های CMD"
+                elif "cmd" in low:
+                    sub["title_fa"] = "Windows CMD؛ بررسی اتصال و ابزارهای شبکه"
+                elif "linux" in low or "bash" in low:
+                    sub["title_fa"] = "Linux/Bash؛ شبکه، سرویس، لاگ و فایل‌سیستم"
+                elif "issabel" in low or "asterisk" in low:
+                    sub["title_fa"] = "Issabel/Asterisk؛ فرمان‌های VoIP و عیب‌یابی"
+                elif label and "دستورات" not in label:
+                    sub["title_fa"] = label + "؛ دستورات، مثال و عیب‌یابی"
     n = sum(len(s.get("lessons", [])) for c in data["chapters"] for s in c.get("subchapters", []))
     data["lesson_count"] = n
     data["version"] = int(data.get("version") or 7) + 1

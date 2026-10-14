@@ -45,6 +45,24 @@ if errorlevel 1 (
 )
 
 echo.
+echo Refreshing the shared 68-chapter curriculum and command packs...
+pushd "%~dp0.."
+"%VPY%" scripts\export_android_index.py
+if errorlevel 1 goto curriculum_error
+"%VPY%" scripts\merge_content_packs_into_android.py
+if errorlevel 1 goto curriculum_error
+"%VPY%" scripts\import_networkencyclopedia_reference.py
+if errorlevel 1 goto curriculum_error
+popd
+cd /d "%~dp0..\server"
+goto curriculum_done
+:curriculum_error
+popd
+echo [ERROR] Shared course content could not be refreshed. Review Python output above.
+pause
+exit /b 1
+:curriculum_done
+echo.
 echo Web UI: http://127.0.0.1:%NETENC_PORT%
 echo Android: set API host to http://COMPUTER-LAN-IP:%NETENC_PORT%
 echo First start creates the sync token file under server\data.
