@@ -3,8 +3,41 @@
 from __future__ import annotations
 from pathlib import Path
 import json
+import runpy
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def _ensure_deep_packs() -> None:
+    """Create the canonical shared 60-68 packs if files are absent or placeholders."""
+    pack_dir = ROOT / "tools" / "packs" / "ch60_68"
+    names = (
+        "ch60_68_ch60_pack.json",
+        "ch60_68_ch61_63_pack.json",
+        "ch60_68_ch64_68_pack.json",
+    )
+    try:
+        valid = True
+        total = 0
+        for name in names:
+            path = pack_dir / name
+            if not path.is_file() or path.stat().st_size < 1000:
+                valid = False
+                break
+            data = json.loads(path.read_text(encoding="utf-8"))
+            lessons = data.get("lessons") or []
+            if not lessons:
+                valid = False
+                break
+            total += len(lessons)
+        if valid and total >= 800:
+            return
+        generator = ROOT / "tools" / "generate_ch60_68_packs.py"
+        if generator.is_file():
+            runpy.run_path(str(generator), run_name="__main__")
+    except (OSError, ValueError, TypeError, RuntimeError) as exc:
+        # Preserve the existing curriculum if a read-only deployment cannot generate packs.
+        print("ch60_68 pack generation skipped:", exc)
 
 
 def _minimal(title_fa: str, title_en: str):
@@ -59,6 +92,8 @@ def _lessons_from_pack_json(path: Path, limit: int = 200):
 
 
 def ensure_chapters_1_to_68(curriculum: list) -> list:
+    # The generator is shared by Android export and Windows/Flask seeding.
+    _ensure_deep_packs()
     by = {int(c[0]): c for c in curriculum}
     if 64 not in by:
         by[64] = (64, "فصل ۶۴: Git و GitHub", "Ch64 Git GitHub", _git_levels())
@@ -100,8 +135,7 @@ def ensure_chapters_1_to_68(curriculum: list) -> list:
             levels,
         )
 
-    # Load every shared chapter 60-68 content pack, including future add-on packs.
-    # The same glob is used by validation and the Windows SQLite importer.
+    # Load every shared chapter 60-68 content pack, including generated add-ons.
     overlay_paths = sorted((ROOT / "tools" / "packs" / "ch60_68").glob("*pack*.json"))
     for overlay_path in overlay_paths:
         try:
