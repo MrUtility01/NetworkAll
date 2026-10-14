@@ -89,6 +89,7 @@ def db() -> WebDB:
             print("seed curriculum...")
             print(_db.seed_full(force=True))
         _db.ensure_sync_columns()
+        _db.ensure_ch60_68_deep_lessons()
         _db.ensure_scenario_pack()
     return _db
 

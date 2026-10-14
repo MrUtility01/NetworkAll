@@ -46,5 +46,20 @@ def main():
     sample=lessons[len(lessons)//2]
     got=build_rich_lesson(sample["title_fa"],sample["title_en"],sample["level"])
     assert got.get("full_content")==sample["full_content"], "shared content overlay mismatch"
-    print(f"VALID chapters=9 lessons={len(lessons)} scenarios={len(scenarios)} questions={len(questions)} answer_keys={len(answers)}")
+    # Windows/Flask migration smoke test: inserts missing lessons without destructive reseed.
+    import tempfile
+    from core.db import WebDB
+    with tempfile.TemporaryDirectory() as tmp:
+        testdb=WebDB(Path(tmp)/"validation.db")
+        for order in range(60,69):
+            testdb.conn.execute("INSERT INTO chapters(order_index,title_fa,title_en) VALUES(?,?,?)",(order,f"Test {order}",f"Test {order}"))
+        testdb.conn.commit()
+        first=testdb.ensure_ch60_68_deep_lessons()
+        second=testdb.ensure_ch60_68_deep_lessons()
+        count=testdb.conn.execute("SELECT COUNT(*) c FROM lessons").fetchone()["c"]
+        assert first.get("ok") and first.get("inserted")==len(lessons), f"Windows migration first pass: {first}"
+        assert second.get("ok") and second.get("inserted")==0, f"Windows migration not idempotent: {second}"
+        assert count==len(lessons), f"Windows DB lesson count mismatch: {count}"
+        testdb.conn.close()
+    print(f"VALID chapters=9 lessons={len(lessons)} scenarios={len(scenarios)} questions={len(questions)} answer_keys={len(answers)}; Windows DB migration idempotent")
 if __name__=="__main__": main()

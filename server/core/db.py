@@ -180,6 +180,91 @@ class WebDB:
         return {"ok": True, "chapters": n_ch, "levels": n_lv, "lessons": n_les, "scenarios": len(CAPSTONE_SCENARIOS)}
 
 
+    def ensure_ch60_68_deep_lessons(self):
+        """Idempotently add the shared deep lesson pack to an existing Windows DB without deleting user data."""
+        pack_path = BASE.parent / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json"
+        if not pack_path.is_file():
+            return {"ok": False, "reason": "chapter 60-68 pack missing"}
+        try:
+            pack = json.loads(pack_path.read_text(encoding="utf-8"))
+            items = pack.get("lessons") or []
+            if len(items) < 250:
+                return {"ok": False, "reason": f"expected >=250 lessons; found {len(items)}"}
+        except Exception as exc:
+            return {"ok": False, "reason": f"invalid chapter pack: {exc}"}
+        now = datetime.now().isoformat(timespec="seconds")
+        inserted = updated = skipped = 0
+        for order in range(60, 69):
+            chapter = self.conn.execute(
+                "SELECT id FROM chapters WHERE order_index=? ORDER BY id LIMIT 1", (order,)
+            ).fetchone()
+            if not chapter:
+                continue
+            chapter_id = chapter["id"]
+            level = self.conn.execute(
+                "SELECT id FROM levels WHERE chapter_id=? AND title_fa=? ORDER BY id LIMIT 1",
+                (chapter_id, "غنی‌سازی و اعتبارسنجی"),
+            ).fetchone()
+            rows = [x for x in items if int(x.get("chapter_order") or 0) == order]
+            if not rows:
+                continue
+            if not level:
+                max_level = self.conn.execute(
+                    "SELECT COALESCE(MAX(order_index),0) n FROM levels WHERE chapter_id=?",
+                    (chapter_id,),
+                ).fetchone()["n"]
+                self.conn.execute(
+                    "INSERT INTO levels(chapter_id,order_index,title_fa,title_en) VALUES(?,?,?,?)",
+                    (chapter_id, int(max_level)+1, "غنی‌سازی و اعتبارسنجی", "Deep enrichment and validation"),
+                )
+                level_id = self.conn.execute("SELECT last_insert_rowid() id").fetchone()["id"]
+            else:
+                level_id = level["id"]
+            for item in rows:
+                title = (item.get("title_fa") or "").strip()
+                if not title:
+                    continue
+                existing = self.conn.execute(
+                    "SELECT id,full_content FROM lessons WHERE level_id=? AND title_fa=? LIMIT 1",
+                    (level_id, title),
+                ).fetchone()
+                meta = json.dumps(item.get("meta") or {}, ensure_ascii=False)
+                values = (
+                    item.get("title_en") or "", "chapter-" + str(order),
+                    item.get("summary") or "", item.get("full_content") or "",
+                    item.get("commands") or "", item.get("examples") or "",
+                    item.get("notes") or "", meta, " ".join([
+                        title, str(item.get("topic") or ""), str(item.get("commands") or ""),
+                        str(item.get("summary") or "")
+                    ]),
+                    "\n".join(item.get("learning_objectives") or []), "review_required", now,
+                )
+                if existing:
+                    if len(str(existing["full_content"] or "")) < len(str(item.get("full_content") or "")):
+                        self.conn.execute(
+                            """UPDATE lessons SET title_en=?,tags=?,summary=?,full_content=?,commands=?,examples=?,
+                               notes=?,meta_json=?,search_query=?,learning_objectives=?,source_status=?,last_updated=?
+                               WHERE id=?""",
+                            (*values, existing["id"]),
+                        )
+                        updated += 1
+                    else:
+                        skipped += 1
+                    continue
+                next_order = self.conn.execute(
+                    "SELECT COALESCE(MAX(order_index),0)+1 n FROM lessons WHERE level_id=?", (level_id,)
+                ).fetchone()["n"]
+                self.conn.execute(
+                    """INSERT INTO lessons(level_id,order_index,title_fa,title_en,tags,summary,full_content,
+                       commands,examples,notes,meta_json,search_query,learning_objectives,source_status,last_updated)
+                       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                    (level_id, next_order, title, *values),
+                )
+                inserted += 1
+        self.conn.commit()
+        self.set_meta("chapter_60_68_pack_version", "ch60-68-deep-v1")
+        return {"ok": True, "inserted": inserted, "updated": updated, "skipped": skipped}
+
     def ensure_scenario_pack(self):
         """بارگذاری بستهٔ سناریوهای مشترک؛ idempotent و قابل تکرار در startup."""
         pack_path = BASE.parent / "tools" / "packs" / "scenarios" / "scenarios_150.json"
