@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Validate shared chapter 60-68 content packs and Windows/Android curriculum overlay."""
 from __future__ import annotations
-import json, sys
+import json, sys, tempfile
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PACKS = [
@@ -47,6 +47,25 @@ def main():
     titles_by_ch={int(ch[0]):{title for _, lessons in ch[3] for title, _ in lessons} for ch in curriculum}
     missing=[(x["chapter_order"],x["title_fa"]) for x in all_lessons if x["title_fa"] not in titles_by_ch.get(int(x["chapter_order"]),set())]
     assert not missing, f"shared curriculum overlay missing {len(missing)} titles; sample={missing[:5]}"
+    # Windows/Flask SQLite smoke test: seed a disposable DB, then apply the same packs.
+    from core.db import WebDB
+    with tempfile.TemporaryDirectory() as temp_dir:
+        test_db = WebDB(Path(temp_dir) / "smoke.db")
+        seeded = test_db.seed_full(force=True)
+        applied = test_db.ensure_ch60_68_deep_lessons()
+        assert seeded.get("ok"), f"Windows seed failed: {seeded}"
+        assert applied.get("ok"), f"Windows pack import failed: {applied}"
+        processed = int(applied.get("inserted", 0)) + int(applied.get("updated", 0)) + int(applied.get("skipped", 0))
+        assert processed >= 800, f"Windows pack import processed too few records: {applied}"
+        deep_count = test_db.conn.execute(
+            """SELECT COUNT(*) n FROM lessons l
+               JOIN levels lv ON lv.id=l.level_id
+               JOIN chapters c ON c.id=lv.chapter_id
+               WHERE c.order_index BETWEEN 60 AND 68
+                 AND length(COALESCE(l.full_content,'')) >= 800"""
+        ).fetchone()["n"]
+        assert deep_count >= 800, f"Windows DB has too few deep lessons: {deep_count}"
+        test_db.conn.close()
     print("PASS: JSON schema, UID uniqueness, deep content, 5-level groups, separated answer_key and shared curriculum overlay.")
     print("chapter lesson counts:", chapter_counts)
     print("total lessons:", len(all_lessons))
