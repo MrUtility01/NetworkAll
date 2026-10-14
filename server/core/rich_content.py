@@ -27,6 +27,20 @@ def build_rich_lesson(title_fa: str, title_en: str = "", level: str | None = Non
     except Exception:
         pass
     try:
+        from core.chapter18_25_teacher import build_chapter18_25_lesson
+        if any(k in (title_fa or "") for k in (
+            "SDN", "SD-WAN", "SASE", "MikroTik", "RouterOS", "Winbox", "CHR",
+            "وایرلس", "بی‌سیم", "Wireless", "Wi-Fi", "WiFi", "SSID", "WPA", "802.11",
+            "PtP", "PtMP", "Point-to-Point", "AirMax",
+            "FortiGate", "FortiOS", "Fortinet", "UTM",
+            "pfSense", "OPNsense", "Sophos", "Netgate", "CARP"
+        )):
+            c = build_chapter18_25_lesson(title_fa, title_en)
+            if c:
+                return _ensure_dense(title_fa, title_en, level, c)
+    except Exception:
+        pass
+    try:
         from core.chapter17_teacher import build_chapter17_lesson
         if any(k in (title_fa or "") for k in ("VXLAN", "VNI", "VTEP", "Overlay", "EVPN", "Control Plane", "Route Type", "Leaf", "Spine", "Underlay", "Anycast", "RT-2", "RT-3", "RT-5")):
             c = build_chapter17_lesson(title_fa, title_en)
