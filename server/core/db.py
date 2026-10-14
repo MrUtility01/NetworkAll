@@ -182,16 +182,26 @@ class WebDB:
 
     def ensure_ch60_68_deep_lessons(self):
         """Idempotently add the shared deep lesson pack to an existing Windows DB without deleting user data."""
-        pack_path = BASE.parent / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json"
-        if not pack_path.is_file():
+        pack_paths = [
+            BASE.parent / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json",
+            BASE.parent / "tools" / "packs" / "ch60_68" / "chapter_60_68_validation_pack.json",
+        ]
+        if not pack_paths[0].is_file():
             return {"ok": False, "reason": "chapter 60-68 pack missing"}
-        try:
-            pack = json.loads(pack_path.read_text(encoding="utf-8"))
-            items = pack.get("lessons") or []
-            if len(items) < 250:
-                return {"ok": False, "reason": f"expected >=250 lessons; found {len(items)}"}
-        except Exception as exc:
-            return {"ok": False, "reason": f"invalid chapter pack: {exc}"}
+        items = []
+        for pack_path in pack_paths:
+            if not pack_path.is_file():
+                continue
+            try:
+                pack = json.loads(pack_path.read_text(encoding="utf-8"))
+                pack_items = pack.get("lessons") or []
+                if pack_path == pack_paths[0] and len(pack_items) < 250:
+                    return {"ok": False, "reason": f"expected >=250 lessons; found {len(pack_items)}"}
+                items.extend(pack_items)
+            except Exception as exc:
+                return {"ok": False, "reason": f"invalid chapter pack {pack_path.name}: {exc}"}
+        if not items:
+            return {"ok": False, "reason": "no chapter 60-68 lessons found"}
         now = datetime.now().isoformat(timespec="seconds")
         inserted = updated = skipped = 0
         for order in range(60, 69):
