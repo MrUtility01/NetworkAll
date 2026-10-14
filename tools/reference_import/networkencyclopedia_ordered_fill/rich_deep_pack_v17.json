@@ -12,7 +12,11 @@
       "commands": "show otv\nshow otv adjacency\nshow otv vlan\nshow otv route\nshow otv site\nshow mac address-table\nshow ip route",
       "examples": "Lab مفهومی:\n1) دو سایت با transport IP\n2) فقط VLANهای لازم را extend کن\n3) MAC را دو طرف ببین\n4) transport را قطع کن → L2 قطع می‌شود نه لزوماً L3 داخلی",
       "notes": "هر VLAN را به‌خاطر عادت extend نکن.\n",
-      "learning_objectives": ["نقش OTV", "Edge Device", "محدود کردن blast radius"]
+      "learning_objectives": [
+        "نقش OTV",
+        "Edge Device",
+        "محدود کردن blast radius"
+      ]
     },
     {
       "title_fa": "[L3] LISP — جداسازی Identity و Location",
@@ -23,7 +27,11 @@
       "commands": "show lisp\nshow ip lisp\nshow ip lisp map-cache\nshow ip lisp database\nshow lisp site\nshow ip route",
       "examples": "Lab مفهومی:\n1) دو site با RLOC\n2) EID داخلی\n3) map-cache بعد از ترافیک\n4) RLOC را قطع کن و علامت را ببین",
       "notes": "LISP را با NAT یا VPN ساده اشتباه نگیر؛ مدل متفاوت است.\n",
-      "learning_objectives": ["EID vs RLOC", "ITR/ETR", "map-cache"]
+      "learning_objectives": [
+        "EID vs RLOC",
+        "ITR/ETR",
+        "map-cache"
+      ]
     },
     {
       "title_fa": "[L3] FlexVPN و GETVPN — مدل‌های پیشرفته IPsec",
@@ -34,7 +42,11 @@
       "commands": "show crypto ikev2 sa\nshow crypto session\nshow crypto gdoi\nshow crypto gdoi ks members\nshow crypto ipsec sa\nshow ip interface brief | include Virtual",
       "examples": "Lab مسیر:\n1) ابتدا site-to-site ساده\n2) همان سیاست را در مدل IKEv2/Flex مفهومی بازطراحی کن\n3) برای any-to-any روی backbone خصوصی مدل group را روی کاغذ بکش",
       "notes": "GETVPN جایگزین طراحی اینترنت ناامن نمی‌شود.\n",
-      "learning_objectives": ["FlexVPN ایده", "GETVPN group key", "انتخاب مدل"]
+      "learning_objectives": [
+        "FlexVPN ایده",
+        "GETVPN group key",
+        "انتخاب مدل"
+      ]
     },
     {
       "title_fa": "[L2] IPFIX و تله‌متری جریانی — فراتر از NetFlow کلاسیک",
@@ -45,7 +57,11 @@
       "commands": "show ip flow export\nshow flow exporter\nshow flow monitor\nshow sampled flow\nshow telemetry\nshow running-config | include flow|telemetry",
       "examples": "Lab:\n1) export به collector\n2) ترافیک تولید کن\n3) template/flow را ببین\n4) sampling را تغییر بده و CPU را مقایسه کن",
       "notes": "هرچه فیلد بیشتر، هزینه بیشتر — فقط آنچه لازم است.\n",
-      "learning_objectives": ["IPFIX", "sampling", "telemetry push"]
+      "learning_objectives": [
+        "IPFIX",
+        "sampling",
+        "telemetry push"
+      ]
     },
     {
       "title_fa": "[L2] gNMI/gRPC Telemetry — جمع‌آوری مدرن کانفیگ و وضعیت",
@@ -56,7 +72,11 @@
       "commands": "# ابزار نمونه اکوسیستم:\ngnmi_get --help\ngnmi_subscribe --help\n# روی دستگاه (بسته به OS):\nshow grpc status\nshow yang\nshow running-config | include grpc|gnmi",
       "examples": "Lab:\n1) یک path شمارنده اینترفیس\n2) Get\n3) Subscribe و تولید ترافیک\n4) رویداد را در collector ببین",
       "notes": "بدون مدل درست، Subscribe فقط نویز می‌دهد.\n",
-      "learning_objectives": ["Get/Set/Subscribe", "YANG path", "مزیت بر show متنی"]
+      "learning_objectives": [
+        "Get/Set/Subscribe",
+        "YANG path",
+        "مزیت بر show متنی"
+      ]
     },
     {
       "title_fa": "[L2] RBAC عملیاتی روی تجهیزات و پنل‌ها",
@@ -67,7 +87,11 @@
       "commands": "show privilege\nshow aaa\nshow running-config | include privilege|username|tacacs\nshow users\ntest aaa group tacacs+ operator OpPass local",
       "examples": "Lab:\n1) سه کاربر با نقش متفاوت\n2) Operator نتواند interface را no shutdown خارج از پنجره کند (سیاست)\n3) لاگ deny را پیدا کن",
       "notes": "RBAC بدون لاگ accounting نصف کار است.\n",
-      "learning_objectives": ["نقش‌ها", "command authorization", "حساب جدا اتوماسیون"]
+      "learning_objectives": [
+        "نقش‌ها",
+        "command authorization",
+        "حساب جدا اتوماسیون"
+      ]
     },
     {
       "title_fa": "[L2] Jump Host و دسترسی مدیریتی امن",
@@ -75,10 +99,14 @@
       "chapter_order": 65,
       "summary": "ورود غیرمستقیم به تجهیزات از یک میزبان کنترل‌شده.",
       "full_content": "# Jump Host — عمیق\n\n## ایده\nادمین مستقیماً از لپ‌تاپ به همه روترها SSH نزند. اول به jump host (bastion) در VLAN مدیریت، بعد به هدف.\n\n## مزیت\n- نقطه لاگ متمرکز\n- سخت‌سازی یک‌جا\n- کاهش سطح حمله\n- همراهی با MFA روی bastion\n\n## الگو\n```\nLaptop --VPN/MFA--> Jump --SSH--> Network devices\n```\n\n## سخت‌سازی\n- فقط SSH\n- allowlist کاربران\n- session recording در صورت امکان\n- بدون internet browsing از روی jump\n\n## RCA\nدسترسی fail: ACL Mgmt، کلید SSH، زمان MFA، route به jump.\n",
-      "commands": "ssh jump.example.local\nssh admin@10.255.255.1\nshow users\nshow access-lists\nshow logging | include SSH\|LOGIN",
+      "commands": "ssh jump.example.local\nssh admin@10.255.255.1\nshow users\nshow access-lists\nshow logging | include SSH\\|LOGIN",
       "examples": "Lab:\n1) ACL طوری که فقط jump به VTY دستگاه‌ها برسد\n2) از لپ‌تاپ مستقیم fail\n3) از jump OK\n4) لاگ را روی jump و دستگاه مقایسه کن",
       "notes": "Jump را تبدیل به workstation عمومی نکن.\n",
-      "learning_objectives": ["bastion", "ACL Mgmt", "لاگ متمرکز"]
+      "learning_objectives": [
+        "bastion",
+        "ACL Mgmt",
+        "لاگ متمرکز"
+      ]
     },
     {
       "title_fa": "[L2] مدیریت Secrets — رمز، کلید، vault",
@@ -89,7 +117,11 @@
       "commands": "ansible-vault encrypt group_vars/all.yml\nansible-vault view group_vars/all.yml\nprintenv | grep -i token\n# هرگز:\n# echo password > secrets.txt",
       "examples": "Lab:\n1) یک playbook با رمز plaintext\n2) به vault منتقل کن\n3) از CI با secret injection اجرا کن\n4) اسکن repo برای الگوی password=",
       "notes": "اگر secret لو رفت، rotate کن نه فقط «پاک کردن از چت».\n",
-      "learning_objectives": ["vault", "چرخش", "عدم commit رمز"]
+      "learning_objectives": [
+        "vault",
+        "چرخش",
+        "عدم commit رمز"
+      ]
     },
     {
       "title_fa": "[L2] Out-of-Band Management — وقتی شبکه اصلی مرده",
@@ -100,7 +132,11 @@
       "commands": "show ip interface brief\nshow vrf\nshow console\nshow line\nshow running-config | include vrf|mgmt",
       "examples": "Lab/tabletop:\n1) فرض کن routing production شکسته\n2) از OOB به کنسول/مدیریت وصل شو\n3) کانفیگ را اصلاح کن\n4) برگرد و in-band را Verify کن",
       "notes": "OOB بدون تمرین، در شب حادثه پیدا نمی‌شود.\n",
-      "learning_objectives": ["استقلال مسیر مدیریت", "console server", "تست دوره‌ای"]
+      "learning_objectives": [
+        "استقلال مسیر مدیریت",
+        "console server",
+        "تست دوره‌ای"
+      ]
     },
     {
       "title_fa": "[L2] Documentation به‌عنوان کد — دیاگرام و منبع حقیقت",
@@ -111,7 +147,11 @@
       "commands": "git status\ngit log --oneline -5\ngit diff\n# تولید از دستگاه:\nshow running-config\nshow inventory\nshow version",
       "examples": "تمرین:\n1) یک سایت را در Markdown توصیف کن\n2) جدول VLAN/IP\n3) commit\n4) change ساختگی و به‌روزرسانی سند در همان PR",
       "notes": "سند بدون تاریخ و مالک به‌سرعت می‌میرد.\n",
-      "learning_objectives": ["منبع حقیقت", "نسخه در Git", "حداقل سند سایت"]
+      "learning_objectives": [
+        "منبع حقیقت",
+        "نسخه در Git",
+        "حداقل سند سایت"
+      ]
     }
   ]
 }

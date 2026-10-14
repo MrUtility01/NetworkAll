@@ -12,7 +12,8 @@ NetworkAll/
   shared/        ← قرارداد/توابع کمکی Sync
   scripts/       ← export، merge، validate، diagram و package
   tools/
-    packs/       ← بسته‌های محتوای JSON
+    packs/       ← بسته‌های محتوای JSON فعال
+    reference_import/networkencyclopedia_ordered_fill/ ← درس‌های مرجع در انتظار واردسازی کنترل‌شده
     chapter_prompts/
     commands_encyclopedia/
     scenarios_200/
@@ -22,7 +23,7 @@ NetworkAll/
 
 ## منبع فهرست آموزشی
 
-در Workflow خروجی `scripts/export_android_index.py` فهرست ۱–۶۸ را از هسته می‌سازد؛ سپس `scripts/merge_content_packs_into_android.py` بسته‌های شناخته‌شده را ادغام می‌کند؛ `scripts/validate_android_curriculum.py` فهرست نهایی را اعتبارسنجی می‌کند.
+در Workflow خروجی `scripts/export_android_index.py` فهرست ۱–۶۸ را از هسته می‌سازد؛ سپس `scripts/merge_content_packs_into_android.py` بسته‌های فعال را ادغام می‌کند و `scripts/import_networkencyclopedia_reference.py` درس‌های یکتای مرجع را با UID پایدار وارد می‌کند؛ در پایان `scripts/validate_android_curriculum.py` فهرست نهایی را اعتبارسنجی می‌کند.
 
 Asset نهایی:
 `android/app/src/main/assets/curriculum_index.json.gz`

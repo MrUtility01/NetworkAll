@@ -12,7 +12,11 @@
       "commands": "show ip route\nshow ip bgp summary\nshow ip nat translations\nshow interfaces\nping\ntraceroute",
       "examples": "Lab: دو خروجی؛ baseline؛ قطع ISP-A؛ اندازه‌گیری بازیابی؛ برگشت.\n",
       "notes": "Failover بدون تست = فرضیه.\n",
-      "learning_objectives": ["مدل دو ISP", "NAT و session", "تست قطع"]
+      "learning_objectives": [
+        "مدل دو ISP",
+        "NAT و session",
+        "تست قطع"
+      ]
     },
     {
       "title_fa": "[L4] معماری Zero Trust عملی در شبکه موجود",
@@ -23,31 +27,41 @@
       "commands": "show vlan brief\nshow access-lists\nshow authentication sessions\nshow firewall policy\nshow logging",
       "examples": "برای شبکه خودت فاز ۰ و ۱ را روی کاغذ بنویس.\n",
       "notes": "big-bang Zero Trust شکست می‌خورد.\n",
-      "learning_objectives": ["فازبندی", "دارایی اول", "معیار موفقیت"]
+      "learning_objectives": [
+        "فازبندی",
+        "دارایی اول",
+        "معیار موفقیت"
+      ]
     },
     {
       "title_fa": "[L3] عیب‌یابی پیشرفته NAT و Proxy همزمان",
       "title_en": "Advanced NAT and Proxy Combined Troubleshooting",
       "chapter_order": 12,
       "summary": "وقتی هم NAT لبه هست هم proxy کاربر؛ جدا کردن لایه‌ها.",
-      "full_content": "# NAT + Proxy — RCA\n\n## ترتیب ذهنی\nکلاینت → (proxy؟) → NAT لبه → اینترنت.\n\nاگر proxy در مسیر است، IP منبع دیده‌شده سمت سرور = proxy است نه کلاینت.\n\n## علائم\n| علامت | احتمال |\n|--------|---------|
-| فقط مرورگر fail | proxy/PAC |\n| همه پروتکل‌ها fail | NAT/مسیر |\n| بعضی سایت‌ها | DNS یا SNI filter |\n",
+      "full_content": "# NAT + Proxy — RCA\n\n## ترتیب ذهنی\nکلاینت → (proxy؟) → NAT لبه → اینترنت.\n\nاگر proxy در مسیر است، IP منبع دیده‌شده سمت سرور = proxy است نه کلاینت.\n\n## علائم\n| علامت | احتمال |\n|--------|---------|\n| فقط مرورگر fail | proxy/PAC |\n| همه پروتکل‌ها fail | NAT/مسیر |\n| بعضی سایت‌ها | DNS یا SNI filter |\n",
       "commands": "show ip nat translations\ncurl -v https://example.com\nGet-Proxy\nnscurl\nipconfig /all",
       "examples": "Lab: با/بدون proxy؛ translations را مقایسه کن.\n",
       "notes": "لاگ فایروال را با IP کلاینت اشتباه نگیر وقتی proxy هست.\n",
-      "learning_objectives": ["ترتیب لایه", "اثر proxy روی IP", "جداسازی"]
+      "learning_objectives": [
+        "ترتیب لایه",
+        "اثر proxy روی IP",
+        "جداسازی"
+      ]
     },
     {
       "title_fa": "[L3] طراحی VLAN برای OT/IoT جدا از IT",
       "title_en": "VLAN Design OT IoT Separated from IT",
       "chapter_order": 11,
       "summary": "سگمنت دوربین، حسگر و اتوماسیون صنعتی با حداقل دسترسی.",
-      "full_content": "# OT/IoT Segmentation\n\n## اصل\nدستگاه‌های IoT نباید به VLAN کاربران یا DC آزادانه وصل باشند.\n\n## الگو\n| سگمنت | دسترسی |\n|--------|---------|
-| IoT | فقط اینترنت محدود یا فقط جمع‌کننده |\n| OT | فقط سرورهای OT |\n| IT | جدا |\n\n## فایروال بین IT و OT\ndeny پیش‌فرض؛ اجازه صریح.\n",
+      "full_content": "# OT/IoT Segmentation\n\n## اصل\nدستگاه‌های IoT نباید به VLAN کاربران یا DC آزادانه وصل باشند.\n\n## الگو\n| سگمنت | دسترسی |\n|--------|---------|\n| IoT | فقط اینترنت محدود یا فقط جمع‌کننده |\n| OT | فقط سرورهای OT |\n| IT | جدا |\n\n## فایروال بین IT و OT\ndeny پیش‌فرض؛ اجازه صریح.\n",
       "commands": "show vlan brief\nshow access-lists\nshow mac address-table\nshow interfaces trunk",
       "examples": "Lab: دوربین فقط به NVR؛ از PC کاربر مستقیم fail.\n",
       "notes": "IoT روی Wi-Fi مهمان بدون ایزوله = خطر.\n",
-      "learning_objectives": ["جدا OT/IT", "حداقل دسترسی", "deny پیش‌فرض"]
+      "learning_objectives": [
+        "جدا OT/IT",
+        "حداقل دسترسی",
+        "deny پیش‌فرض"
+      ]
     },
     {
       "title_fa": "[L3] مانیتورینگ مصنوعی (Synthetic Monitoring) شبکه",
@@ -58,7 +72,11 @@
       "commands": "ping\ncurl -w \"%{time_total}\\n\" -o /dev/null -s https://app.local\ndig\nTest-NetConnection -Port 443\nshow ip sla statistics",
       "examples": "سه probe: DNS داخلی، VPN portal، اپ اصلی — هر ۱ دقیقه.\n",
       "notes": "Probe از خود سرور اپ گمراه‌کننده است؛ از کلاینت‌مانند بسنج.\n",
-      "learning_objectives": ["probe", "آستانه", "نقطه اندازه‌گیری"]
+      "learning_objectives": [
+        "probe",
+        "آستانه",
+        "نقطه اندازه‌گیری"
+      ]
     },
     {
       "title_fa": "[L2] مستندسازی ماتریس فایروال",
@@ -69,7 +87,11 @@
       "commands": "show firewall policy\nshow access-lists\nexport",
       "examples": "۱۰ rule اول را در جدول Markdown بنویس.\n",
       "notes": "ماتریس قدیمی‌تر از کانفیگ = خطرناک.\n",
-      "learning_objectives": ["قالب ماتریس", "مالکیت rule", "همگام با change"]
+      "learning_objectives": [
+        "قالب ماتریس",
+        "مالکیت rule",
+        "همگام با change"
+      ]
     },
     {
       "title_fa": "[L3] همگام‌سازی زمان و امنیت — وابستگی‌های پنهان",
@@ -80,7 +102,10 @@
       "commands": "show clock\nshow ntp status\nshow ntp associations\nw32tm /query /status",
       "examples": "Lab: ساعت را جلو ببر؛ اثر روی cert را ببین؛ NTP را درست کن.\n",
       "notes": "اول NTP بعد تحلیل لاگ حادثه.\n",
-      "learning_objectives": ["وابستگی امنیت به زمان", "مانیتور NTP"]
+      "learning_objectives": [
+        "وابستگی امنیت به زمان",
+        "مانیتور NTP"
+      ]
     },
     {
       "title_fa": "[L2] آماده‌سازی تحویل پروژه شبکه به تیم عملیات",
@@ -91,7 +116,11 @@
       "commands": "show version\nshow running-config\nshow inventory\nshow logging",
       "examples": "برای یک سایت فرضی چک‌لیست تحویل یک‌صفحه‌ای بنویس.\n",
       "notes": "آموزش ۳۰دقیقه‌ای حضوری بهتر از PDF صد صفحه‌ای است.\n",
-      "learning_objectives": ["چک‌لیست تحویل", "restore تست‌شده", "runbook"]
+      "learning_objectives": [
+        "چک‌لیست تحویل",
+        "restore تست‌شده",
+        "runbook"
+      ]
     }
   ]
 }

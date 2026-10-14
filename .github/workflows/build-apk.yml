@@ -85,6 +85,8 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/merge_content_packs_into_android.py
+          python3 -m py_compile scripts/import_networkencyclopedia_reference.py
+          python3 scripts/import_networkencyclopedia_reference.py
 
       - name: Validate Chapter 68 command packs
         run: |
@@ -161,6 +163,7 @@ jobs:
             server/app.py server/core/db.py server/workspace_routes.py \
             scripts/export_android_index.py \
             scripts/merge_content_packs_into_android.py \
+            scripts/import_networkencyclopedia_reference.py \
             scripts/validate_android_curriculum.py \
             scripts/validate_chapter_pack.py \
             scripts/generate_android_diagrams.py \

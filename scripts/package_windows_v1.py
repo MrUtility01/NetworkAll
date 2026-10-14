@@ -35,6 +35,7 @@ REQUIRED = [
     "server/static/diagrams/index.json",
     "scripts/export_android_index.py",
     "scripts/merge_content_packs_into_android.py",
+    "scripts/import_networkencyclopedia_reference.py",
     "docs/V1_RELEASE_AUDIT_FA.md",
     "README.md",
     "INSTALL_FA.md",

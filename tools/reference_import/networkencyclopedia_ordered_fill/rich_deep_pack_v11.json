@@ -12,19 +12,28 @@
       "commands": "show spanning-tree\nshow spanning-tree vlan 10\nshow spanning-tree root\nshow spanning-tree blockedports\nshow spanning-tree interface Fa0/1\nshow spanning-tree summary\nshow interfaces status err-disabled\nshow running-config | include spanning-tree\nspanning-tree vlan 10 root primary",
       "examples": "Lab عمیق:\n1) دو سوئیچ با دو لینک موازی → یک لینک blocking\n2) root primary روی سوئیچ هسته\n3) PortFast روی access\n4) سوئیچ کوچک غیرمجاز به access → err-disable\n5) لینک root را قطع کن و زمان همگرایی را ببین\n6) Rollback",
       "notes": "PortFast روی uplink یا بین سوئیچ‌ها خطرناک است.\n",
-      "learning_objectives": ["Root و Port نقش‌ها", "RSTP", "BPDU Guard", "RCA blocking"]
+      "learning_objectives": [
+        "Root و Port نقش‌ها",
+        "RSTP",
+        "BPDU Guard",
+        "RCA blocking"
+      ]
     },
     {
       "title_fa": "[L2] HSRP و VRRP — دروازه افزونه کامل",
       "title_en": "HSRP VRRP Complete Gateway Redundancy",
       "chapter_order": 14,
       "summary": "VIP، Active/Standby، preempt، track و تفاوت HSRP با VRRP.",
-      "full_content": "# دروازه افزونه — کامل\n\n## مشکل\nاگر فقط یک روتر gateway باشد، با خاموش شدنش کل subnet قطع می‌شود.\n\n## ایده\nکلاینت به یک **VIP** پیش‌فرض می‌فرستد. دو (یا چند) روتر روی آن VIP توافق می‌کنند.\n\n## HSRP نمونه\n```\ninterface Vlan10\n ip address 10.10.10.2 255.255.255.0\n standby 1 ip 10.10.10.1\n standby 1 priority 110\n standby 1 preempt\n standby 1 track GigabitEthernet0/0 20\n```\nروتر دوم priority کمتر (مثلاً 100) و همان VIP.\n\n## VRRP نمونه\n```\ninterface Vlan10\n ip address 10.10.10.2 255.255.255.0\n vrrp 1 ip 10.10.10.1\n vrrp 1 priority 120\n vrrp 1 preempt\n```\n\n## Track\nاگر uplink WAN بمیرد، priority کم می‌شود تا دیگری Active شود.\n\n## RCA\n| علامت | علت محتمل |\n|--------|-------------|
-| VIP پینگ نمی‌شود | هر دو down یا ACL |\n| split-brain | مشکل L2 بین روترها |\n| failover کند | timer / preempt |\n\n## نکته طراحی\nکلاینت GW = VIP نه IP فیزیکی. اسناد را با VIP بنویس.\n",
+      "full_content": "# دروازه افزونه — کامل\n\n## مشکل\nاگر فقط یک روتر gateway باشد، با خاموش شدنش کل subnet قطع می‌شود.\n\n## ایده\nکلاینت به یک **VIP** پیش‌فرض می‌فرستد. دو (یا چند) روتر روی آن VIP توافق می‌کنند.\n\n## HSRP نمونه\n```\ninterface Vlan10\n ip address 10.10.10.2 255.255.255.0\n standby 1 ip 10.10.10.1\n standby 1 priority 110\n standby 1 preempt\n standby 1 track GigabitEthernet0/0 20\n```\nروتر دوم priority کمتر (مثلاً 100) و همان VIP.\n\n## VRRP نمونه\n```\ninterface Vlan10\n ip address 10.10.10.2 255.255.255.0\n vrrp 1 ip 10.10.10.1\n vrrp 1 priority 120\n vrrp 1 preempt\n```\n\n## Track\nاگر uplink WAN بمیرد، priority کم می‌شود تا دیگری Active شود.\n\n## RCA\n| علامت | علت محتمل |\n|--------|-------------|\n| VIP پینگ نمی‌شود | هر دو down یا ACL |\n| split-brain | مشکل L2 بین روترها |\n| failover کند | timer / preempt |\n\n## نکته طراحی\nکلاینت GW = VIP نه IP فیزیکی. اسناد را با VIP بنویس.\n",
       "commands": "show standby\nshow standby brief\nshow standby vlan 10\nshow vrrp\nshow vrrp brief\nshow running-config | include standby\nshow running-config | include vrrp\nping 10.10.10.1\nshow track",
       "examples": "Lab:\n1) دو روتر HSRP\n2) از کلاینت ping VIP\n3) Active را خاموش کن\n4) VIP باید روی Standby بماند\n5) track را تست کن (shut uplink)\n6) همین سناریو با VRRP اگر تجهیزات پشتیبانی می‌کنند",
       "notes": "group/VRID و VIP دو طرف باید یکی باشد.\n",
-      "learning_objectives": ["VIP", "preempt", "track", "failover واقعی"]
+      "learning_objectives": [
+        "VIP",
+        "preempt",
+        "track",
+        "failover واقعی"
+      ]
     },
     {
       "title_fa": "[L3] Redistribution عمیق و جلوگیری از حلقه",
@@ -35,7 +44,12 @@
       "commands": "show ip protocols\nshow ip route\nshow ip route ospf\nshow ip route static\nshow ip route bgp\nshow route-map\nshow ip prefix-list\nshow running-config | section router ospf\nshow running-config | section route-map",
       "examples": "Lab:\n1) یک static به OSPF با tag\n2) در جدول به‌صورت external ببین\n3) بدون route-map باز redistribute کن و تفاوت را حس کن\n4) با tag محدود کن\n5) مسیر برگشتی را با policy ببند",
       "notes": "redistribution دوطرفه بدون طراحی = بمب ساعتی.\n",
-      "learning_objectives": ["route-map", "tag", "متریک", "ضدحلقه"]
+      "learning_objectives": [
+        "route-map",
+        "tag",
+        "متریک",
+        "ضدحلقه"
+      ]
     },
     {
       "title_fa": "[L3] FortiGate عمیق — Policy، NAT، Session و Flow Debug",
@@ -46,7 +60,12 @@
       "commands": "get system status\nget router info routing-table all\nshow firewall policy\nshow firewall vip\ndiagnose firewall session list\ndiagnose firewall session clear\ndiagnose debug flow filter clear\ndiagnose debug flow filter addr 10.10.10.50\ndiagnose debug flow trace start 50\ndiagnose debug enable\ndiagnose debug disable\nexecute ping 8.8.8.8",
       "examples": "Lab:\n1) policy LAN→WAN را ببند → اینترنت قطع\n2) session را ببین\n3) برگردان\n4) VIP فقط 443\n5) flow debug برای یک کلاینت\n6) از روی خروجی بگو کجا drop شد",
       "notes": "ترتیب policy از خاص به عام؛ hit count را بخوان.\n",
-      "learning_objectives": ["policy vs route", "session", "flow debug", "VIP"]
+      "learning_objectives": [
+        "policy vs route",
+        "session",
+        "flow debug",
+        "VIP"
+      ]
     },
     {
       "title_fa": "[L2] QoS عمیق لبه WAN — Classify تا Queue",
@@ -57,7 +76,11 @@
       "commands": "show policy-map\nshow policy-map interface\nshow mls qos\nshow interfaces Gi0/0\nshow running-config | section policy-map\nshow running-config | section class-map",
       "examples": "Lab مفهومی:\n1) لینک را با ترافیک bulk اشباع کن\n2) بدون QoS کیفیت voice را حس کن\n3) priority محدود برای voice\n4) شمارنده‌ها را مقایسه کن",
       "notes": "QoS روی لینک خالی معجزه نمی‌کند؛ روی congestion معنی دارد.\n",
-      "learning_objectives": ["classify/mark/queue", "LLQ با سقف", "خواندن policy-map"]
+      "learning_objectives": [
+        "classify/mark/queue",
+        "LLQ با سقف",
+        "خواندن policy-map"
+      ]
     },
     {
       "title_fa": "[L2] AAA و 802.1X — هویت و دسترسی کامل",
@@ -68,7 +91,11 @@
       "commands": "show aaa servers\nshow radius server-group all\nshow authentication sessions\nshow dot1x all\nshow running-config | include aaa\nshow running-config | include radius\nshow running-config | include dot1x\ndebug radius\nundebug all",
       "examples": "Lab AAA:\n1) RADIUS OK → لاگین مرکزی\n2) RADIUS را قطع کن → local کار کند\nLab 802.1X:\n1) پورت access\n2) بدون اعتبار fail\n3) با اعتبار authorize",
       "notes": "fail-open در access حساس را آگاهانه انتخاب کن.\n",
-      "learning_objectives": ["RADIUS+local", "802.1X نقش‌ها", "جلوگیری از قفل ادمین"]
+      "learning_objectives": [
+        "RADIUS+local",
+        "802.1X نقش‌ها",
+        "جلوگیری از قفل ادمین"
+      ]
     },
     {
       "title_fa": "[L2] Linux شبکه عمیق — ip، ss، tcpdump، nftables",
@@ -79,7 +106,11 @@
       "commands": "ip -br a\nip -br l\nip route\nip neigh\nip rule list\nss -lntu\nss -ant\ntcpdump -ni any icmp\ntcpdump -ni any port 22\nping -c 4 8.8.8.8\ntraceroute -n 8.8.8.8\nnft list ruleset\nsudo iptables -L -n -v",
       "examples": "Lab:\n1) سرویس روی 443\n2) ss -lntu\n3) tcpdump هنگام curl\n4) با nft/iptables پورت را ببند و علامت را ببین\n5) rule را برگردان",
       "notes": "ss و tcpdump را قبل از بازنویسی کل فایروال مسلط شو.\n",
-      "learning_objectives": ["ip/ss", "tcpdump", "جدا filter از route"]
+      "learning_objectives": [
+        "ip/ss",
+        "tcpdump",
+        "جدا filter از route"
+      ]
     },
     {
       "title_fa": "[L2] ویندوز شبکه عمیق — از کلاینت تا سرور",
@@ -90,7 +121,11 @@
       "commands": "ipconfig /all\nroute print\nGet-NetIPConfiguration\nGet-NetRoute\nGet-NetAdapter\nGet-DnsClientServerAddress\nResolve-DnsName corp.local\nTest-NetConnection 10.10.10.10 -Port 445\nTest-NetConnection 10.10.10.10 -Port 443\nGet-NetTCPConnection -State Listen\nGet-NetFirewallProfile\nnetsh advfirewall show allprofiles",
       "examples": "Lab:\n1) DNS را غلط کن → نام fail\n2) IP مستقیم OK\n3) فایروال 445 را ببند → share fail\n4) باز کن و Verify\n5) اسکریپت حلقه روی دو سرور",
       "notes": "مشکل host را از مشکل شبکه با شواهد جدا کن.\n",
-      "learning_objectives": ["PowerShell شبکه", "DNS AD", "فایروال میزبان"]
+      "learning_objectives": [
+        "PowerShell شبکه",
+        "DNS AD",
+        "فایروال میزبان"
+      ]
     },
     {
       "title_fa": "[L3] VRF و جداسازی مسیریابی — عمیق",
@@ -101,7 +136,11 @@
       "commands": "show ip vrf\nshow ip vrf interfaces\nshow ip route vrf CUST-A\nshow ip route vrf CUST-B\nshow ip cef vrf CUST-A\nping vrf CUST-A 10.10.10.50\nping vrf CUST-B 10.10.10.50\nshow running-config | section vrf",
       "examples": "Lab:\n1) دو VRF با IP هم‌پوشان\n2) ping داخل هر VRF OK\n3) بین VRF بدون leak fail\n4) static leak کنترل‌شده (اختیاری پیشرفته)",
       "notes": "بدون VRF، هم‌پوشانی آدرس = فاجعه.\n",
-      "learning_objectives": ["جدول جدا", "ping vrf", "کاربرد multi-tenant"]
+      "learning_objectives": [
+        "جدول جدا",
+        "ping vrf",
+        "کاربرد multi-tenant"
+      ]
     },
     {
       "title_fa": "[L2] Backup، Change و Rollback حرفه‌ای",
@@ -112,7 +151,11 @@
       "commands": "copy running-config startup-config\ncopy running-config flash:pre-change.cfg\ndir flash:\nmore flash:pre-change.cfg\nshow running-config\nshow startup-config\nshow archive\nconfigure replace flash:pre-change.cfg force\ncopy tftp://10.10.10.20/r1-pre.cfg running-config",
       "examples": "Lab:\n1) backup بگیر\n2) یک ACL اشتباه اعمال کن\n3) سرویس بشکند\n4) با replace/restore برگرد\n5) Verify",
       "notes": "restore را ماهانه یک‌بار در Lab تمرین کن.\n",
-      "learning_objectives": ["backup", "معیار Verify", "rollback واقعی"]
+      "learning_objectives": [
+        "backup",
+        "معیار Verify",
+        "rollback واقعی"
+      ]
     }
   ]
 }
