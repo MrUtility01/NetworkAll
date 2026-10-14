@@ -99,4 +99,30 @@ def ensure_chapters_1_to_68(curriculum: list) -> list:
             "Ch68 Commands Encyclopedia",
             levels,
         )
+
+    # Shared deep curriculum overlay for chapters 60–68. This same index is used
+    # by Windows/Flask and the Android offline export; existing lessons/UIDs stay intact.
+    overlay_path = ROOT / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json"
+    try:
+        overlay = json.loads(overlay_path.read_text(encoding="utf-8"))
+        for chapter in overlay.get("chapters", []):
+            order = int(chapter.get("chapter_order") or 0)
+            if order not in by:
+                continue
+            record = by[order]
+            subs = list(record[3])
+            existing = {title for sub in subs for title, _ in sub[1]}
+            pack_lessons = [
+                (item.get("title_fa", ""), item.get("title_en", ""))
+                for item in overlay.get("lessons", [])
+                if int(item.get("chapter_order") or 0) == order
+                and item.get("title_fa") not in existing
+            ]
+            if pack_lessons:
+                subs.append((f"{order}.۹ غنی‌سازی و اعتبارسنجی", pack_lessons))
+                by[order] = (record[0], record[1], record[2], subs)
+    except (OSError, ValueError, TypeError):
+        # Keep the base curriculum available if an optional overlay is malformed.
+        pass
+
     return [by[k] for k in sorted(by)]

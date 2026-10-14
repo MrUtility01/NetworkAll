@@ -17,7 +17,34 @@ def clean_topic(title: str) -> str:
 def _fmt_cmds(pairs):
     return "\n".join(f"```\n{cmd}\n```\n→ {desc}\n" for cmd, desc in pairs)
 
+def _shared_ch60_68_overlay(title_fa: str) -> Dict[str, Any] | None:
+    """Return a reviewed-pack lesson payload shared by Windows and Android export."""
+    try:
+        from pathlib import Path
+        import json
+        root = Path(__file__).resolve().parents[2]
+        path = root / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json"
+        if not path.is_file():
+            return None
+        data = json.loads(path.read_text(encoding="utf-8"))
+        for lesson in data.get("lessons", []):
+            if lesson.get("title_fa") == title_fa:
+                return {
+                    "summary": lesson.get("summary") or "",
+                    "full_content": lesson.get("full_content") or "",
+                    "commands": lesson.get("commands") or "",
+                    "examples": lesson.get("examples") or "",
+                    "notes": lesson.get("notes") or "",
+                }
+    except (OSError, ValueError, TypeError):
+        return None
+    return None
+
+
 def build_rich_lesson(title_fa: str, title_en: str = "", level: str | None = None) -> Dict[str, Any]:
+    shared_overlay = _shared_ch60_68_overlay(title_fa)
+    if shared_overlay:
+        return shared_overlay
     try:
         from core.chapter64_git_hook import is_git_title, build_git_lesson
         if is_git_title(title_fa or ""):
