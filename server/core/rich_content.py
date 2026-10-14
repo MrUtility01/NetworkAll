@@ -52,9 +52,16 @@ def _shared_ch60_68_overlay(title_fa: str) -> Dict[str, Any] | None:
                         "notes": notes,
                     }
                     current = dict(_CH60_68_OVERLAY_CACHE.get(title) or {})
-                    for field, value in candidate.items():
-                        if value:
-                            current[field] = value
+                    # Keep the richest full-content variant instead of letting a later,
+                    # shorter legacy pack overwrite a newer deep lesson.
+                    candidate_len = len(str(candidate.get("full_content") or ""))
+                    current_len = len(str(current.get("full_content") or ""))
+                    if not current or candidate_len > current_len:
+                        current = {k: v for k, v in candidate.items() if v}
+                    else:
+                        for field, value in candidate.items():
+                            if value and not current.get(field):
+                                current[field] = value
                     if current:
                         _CH60_68_OVERLAY_CACHE[title] = current
         except (OSError, ValueError, TypeError):
