@@ -309,6 +309,29 @@ async function loadIncidentDetail(id) {
   }
 }
 
+function incidentFlowHtml(sc) {
+  const symptom = Array.isArray(sc.symptoms) ? sc.symptoms.slice(0, 2).join(" · ") : String(sc.symptoms || "");
+  const steps = Array.isArray(sc.diagnostic_steps) ? sc.diagnostic_steps : [];
+  const evidence = steps.length ? steps[0].title + " — " + (steps[0].purpose || "") : "ثبت شاهد از لاگ، Counter یا Capture";
+  const nodes = [
+    ["۱", "علائم", symptom || sc.impact || "علامت را از کاربر ثبت کن"],
+    ["۲", "تعیین دامنه", sc.domain || "سرویس، VLAN یا subnet تحت‌تأثیر را پیدا کن"],
+    ["۳", "شواهد", evidence],
+    ["۴", "علت ریشه‌ای", sc.root_cause || "فرضیه را با شاهد تأیید کن"],
+    ["۵", "اصلاح کنترل‌شده", sc.fix_summary || "کمترین تغییر قابل بازگشت"],
+    ["۶", "Verify / Rollback", sc.verification || "معیار قبولی را دوباره تست کن"]
+  ];
+  return '<section class="card incident-flow"><div class="eyebrow">INCIDENT FLOW / RCA</div>' +
+    '<h2>نقشهٔ جریان این حادثه</h2><p class="muted">از چپ به راست/در ترتیب شماره‌ها حرکت کن. اگر شاهد با انتظار نمی‌خواند، به فرضیهٔ بعدی برگرد؛ مستقیم سراغ تغییر پیکربندی نرو.</p>' +
+    '<div class="incident-flow-grid">' + nodes.map(function (node, index) {
+      const detail = String(node[2] || "").trim();
+      const shortDetail = detail.length > 132 ? detail.slice(0, 129) + "…" : detail;
+      return '<article class="incident-flow-node"><span class="flow-number">' + node[0] + '</span>' +
+        '<h3>' + escapeHtml(node[1]) + '</h3><p>' + escapeHtml(shortDetail) + '</p></article>' +
+        (index < nodes.length - 1 ? '<span class="incident-flow-arrow" aria-hidden="true">←</span>' : "");
+    }).join("") + '</div></section>';
+}
+
 function renderIncidentDetail(sc) {
   const symptoms = Array.isArray(sc.symptoms) ? sc.symptoms.map(function (x) { return "• " + x; }).join("\n") : sc.symptoms;
   const environment = sc.environment || "";
@@ -333,7 +356,7 @@ function renderIncidentDetail(sc) {
     '</span><span class="chip">' + escapeHtml(sc.duration) + '</span><span class="chip">' + escapeHtml(sc.title_en || "") +
     '</span></div></div><button id="btnBackIncidents" type="button" class="ghost">← فهرست سناریوها</button></div>' +
     '<div class="notice">این یک محیط تمرینی با IP/hostname نمونه است. فرمان‌های مشاهده را ابتدا اجرا کن؛ فرمان تغییردهنده را فقط بعد از تأیید توپولوژی، ذخیرهٔ baseline، مجوز Change و آماده‌بودن Rollback اجرا کن.</div>' +
-    details +
+    details + incidentFlowHtml(sc) +
     '<div class="card"><div class="page-head"><div><h2>مراحل تشخیص و رفع</h2><p class="muted">هر گام را بعد از ثبت شاهد تیک بزن. اگر خروجی با انتظار فرق دارد، شاخهٔ «اگر نتیجه فرق داشت» را دنبال کن؛ مراحل را تصادفی رد نکن.</p></div>' +
     '<button id="btnResetRunbook" type="button" class="ghost">پاک‌کردن تیک‌ها</button></div>' +
     '<div class="runbook-progress"><span id="runbookProgressBar"></span></div><div id="runbookProgressLabel" class="muted">۰ از ' + steps.length + ' گام تأیید شده</div></div>' +
