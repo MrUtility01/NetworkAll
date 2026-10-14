@@ -208,8 +208,8 @@ class WebDB:
                 items.extend(pack_items)
             except Exception as exc:
                 return {"ok": False, "reason": f"invalid chapter pack {pack_path.name}: {exc}"}
-        if not items:
-            return {"ok": False, "reason": "no chapter 60-68 lessons found"}
+        if len(items) < 800:
+            return {"ok": False, "reason": f"expected >=800 chapter 60-68 lessons; found {len(items)}"}
         now = datetime.now().isoformat(timespec="seconds")
         inserted = updated = skipped = 0
         for order in range(60, 69):
@@ -243,8 +243,11 @@ class WebDB:
                 if not title:
                     continue
                 existing = self.conn.execute(
-                    "SELECT id,full_content FROM lessons WHERE level_id=? AND title_fa=? LIMIT 1",
-                    (level_id, title),
+                    """SELECT l.id,l.full_content FROM lessons l
+                       JOIN levels lv ON lv.id=l.level_id
+                       WHERE lv.chapter_id=? AND l.title_fa=?
+                       ORDER BY length(COALESCE(l.full_content,'')) DESC, l.id LIMIT 1""",
+                    (chapter_id, title),
                 ).fetchone()
                 meta_obj = item.get("meta") or {}
                 meta = json.dumps(meta_obj, ensure_ascii=False)
@@ -285,7 +288,7 @@ class WebDB:
                 )
                 inserted += 1
         self.conn.commit()
-        self.set_meta("chapter_60_68_pack_version", "ch60-68-deep-v1")
+        self.set_meta("chapter_60_68_pack_version", "ch60-68-deep-v2")
         return {"ok": True, "inserted": inserted, "updated": updated, "skipped": skipped}
 
     def ensure_scenario_pack(self):
