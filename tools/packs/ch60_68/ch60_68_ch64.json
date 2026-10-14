@@ -1,0 +1,1989 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll / ENGINEER JOKAR",
+  "generated_on": "2026-10-14",
+  "purpose": "بسته تکمیلی فصل 64؛ درس‌های L0-L4 و ارزیابی؛ review_required.",
+  "scope": [
+    {
+      "chapter_order": 64,
+      "title": "فصل 64: Git و کنترل نسخه",
+      "topics": [
+        "Working Tree",
+        "Branch و Commit",
+        "Merge Conflict",
+        "Rebase",
+        "Remote و PR",
+        "Ignore Rules",
+        "Tag و Release",
+        "CI و Review"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch64:supp:0001",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 1,
+      "level": "L0",
+      "title_fa": "[L0] Working Tree — آشنایی",
+      "title_en": "[L0] Working Tree",
+      "topic": "Working Tree",
+      "summary": "Working Tree: مفهوم را ساده توضیح بده.",
+      "full_content": "# Working Tree\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nworking tree فایل‌های محلی و index تغییرات آماده commit است.\n\n## روش بررسی\ngit status، git diff و git diff --staged را قبل از commit بررسی کن.\n\n## تمرین\nدو اصطلاح را تعریف کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nstage کردن کل پوشه می‌تواند فایل نامرتبط وارد کند. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1a",
+              "type": "multiple_choice",
+              "question": "برای Working Tree کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q1b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Working Tree بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q1b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Working Tree باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0002",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 2,
+      "level": "L1",
+      "title_fa": "[L1] Working Tree — مقدماتی",
+      "title_en": "[L1] Working Tree",
+      "topic": "Working Tree",
+      "summary": "Working Tree: اجزا و خروجی را مشخص کن.",
+      "full_content": "# Working Tree\n\n## هدف\nاجزا و خروجی را مشخص کن.\n\n## مفهوم\nworking tree فایل‌های محلی و index تغییرات آماده commit است.\n\n## روش بررسی\ngit status، git diff و git diff --staged را قبل از commit بررسی کن.\n\n## تمرین\nیک فرمان مشاهده‌گر و خروجی مورد انتظار بنویس.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nstage کردن کل پوشه می‌تواند فایل نامرتبط وارد کند. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q2a",
+              "type": "multiple_choice",
+              "question": "برای Working Tree کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q2b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Working Tree بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q2a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q2b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Working Tree باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0003",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 3,
+      "level": "L2",
+      "title_fa": "[L2] Working Tree — عملی",
+      "title_en": "[L2] Working Tree",
+      "topic": "Working Tree",
+      "summary": "Working Tree: در مخزن آزمایشی تمرین کن.",
+      "full_content": "# Working Tree\n\n## هدف\nدر مخزن آزمایشی تمرین کن.\n\n## مفهوم\nworking tree فایل‌های محلی و index تغییرات آماده commit است.\n\n## روش بررسی\ngit status، git diff و git diff --staged را قبل از commit بررسی کن.\n\n## تمرین\nدر branch آزمایشی تغییر ایجاد و diff را بررسی کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nstage کردن کل پوشه می‌تواند فایل نامرتبط وارد کند. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q3a",
+              "type": "multiple_choice",
+              "question": "برای Working Tree کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q3b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Working Tree بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q3a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q3b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Working Tree باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0004",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 4,
+      "level": "L3",
+      "title_fa": "[L3] Working Tree — پیشرفته",
+      "title_en": "[L3] Working Tree",
+      "topic": "Working Tree",
+      "summary": "Working Tree: دو روش را با شواهد مقایسه کن.",
+      "full_content": "# Working Tree\n\n## هدف\nدو روش را با شواهد مقایسه کن.\n\n## مفهوم\nworking tree فایل‌های محلی و index تغییرات آماده commit است.\n\n## روش بررسی\ngit status، git diff و git diff --staged را قبل از commit بررسی کن.\n\n## تمرین\nدو روش و ریسک هرکدام را مقایسه کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nstage کردن کل پوشه می‌تواند فایل نامرتبط وارد کند. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q4a",
+              "type": "multiple_choice",
+              "question": "برای Working Tree کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q4b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Working Tree بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q4a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q4b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Working Tree باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0005",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 5,
+      "level": "L4",
+      "title_fa": "[L4] Working Tree — تخصصی",
+      "title_en": "[L4] Working Tree",
+      "topic": "Working Tree",
+      "summary": "Working Tree: runbook و معیار پذیرش بساز.",
+      "full_content": "# Working Tree\n\n## هدف\nrunbook و معیار پذیرش بساز.\n\n## مفهوم\nworking tree فایل‌های محلی و index تغییرات آماده commit است.\n\n## روش بررسی\ngit status، git diff و git diff --staged را قبل از commit بررسی کن.\n\n## تمرین\nمراحل اجرا، بررسی و بازگشت را مستند کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nstage کردن کل پوشه می‌تواند فایل نامرتبط وارد کند. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q5a",
+              "type": "multiple_choice",
+              "question": "برای Working Tree کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q5b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Working Tree بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q5a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q5b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Working Tree باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0006",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 6,
+      "level": "L0",
+      "title_fa": "[L0] Branch و Commit — آشنایی",
+      "title_en": "[L0] Branch و Commit",
+      "topic": "Branch و Commit",
+      "summary": "Branch و Commit: مفهوم را ساده توضیح بده.",
+      "full_content": "# Branch و Commit\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\ncommit کوچک و قابل توضیح و branch جدا از main نگه دار.\n\n## روش بررسی\nbranch جدید بساز و پیام commit روشن استفاده کن.\n\n## تمرین\nدو اصطلاح را تعریف کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\ndiff را پیش از ثبت مرور کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q6a",
+              "type": "multiple_choice",
+              "question": "برای Branch و Commit کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q6b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Branch و Commit بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q6a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q6b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Branch و Commit باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0007",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 7,
+      "level": "L1",
+      "title_fa": "[L1] Branch و Commit — مقدماتی",
+      "title_en": "[L1] Branch و Commit",
+      "topic": "Branch و Commit",
+      "summary": "Branch و Commit: اجزا و خروجی را مشخص کن.",
+      "full_content": "# Branch و Commit\n\n## هدف\nاجزا و خروجی را مشخص کن.\n\n## مفهوم\ncommit کوچک و قابل توضیح و branch جدا از main نگه دار.\n\n## روش بررسی\nbranch جدید بساز و پیام commit روشن استفاده کن.\n\n## تمرین\nیک فرمان مشاهده‌گر و خروجی مورد انتظار بنویس.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\ndiff را پیش از ثبت مرور کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q7a",
+              "type": "multiple_choice",
+              "question": "برای Branch و Commit کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q7b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Branch و Commit بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q7a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q7b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Branch و Commit باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0008",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 8,
+      "level": "L2",
+      "title_fa": "[L2] Branch و Commit — عملی",
+      "title_en": "[L2] Branch و Commit",
+      "topic": "Branch و Commit",
+      "summary": "Branch و Commit: در مخزن آزمایشی تمرین کن.",
+      "full_content": "# Branch و Commit\n\n## هدف\nدر مخزن آزمایشی تمرین کن.\n\n## مفهوم\ncommit کوچک و قابل توضیح و branch جدا از main نگه دار.\n\n## روش بررسی\nbranch جدید بساز و پیام commit روشن استفاده کن.\n\n## تمرین\nدر branch آزمایشی تغییر ایجاد و diff را بررسی کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\ndiff را پیش از ثبت مرور کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q8a",
+              "type": "multiple_choice",
+              "question": "برای Branch و Commit کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q8b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Branch و Commit بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q8a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q8b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Branch و Commit باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0009",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 9,
+      "level": "L3",
+      "title_fa": "[L3] Branch و Commit — پیشرفته",
+      "title_en": "[L3] Branch و Commit",
+      "topic": "Branch و Commit",
+      "summary": "Branch و Commit: دو روش را با شواهد مقایسه کن.",
+      "full_content": "# Branch و Commit\n\n## هدف\nدو روش را با شواهد مقایسه کن.\n\n## مفهوم\ncommit کوچک و قابل توضیح و branch جدا از main نگه دار.\n\n## روش بررسی\nbranch جدید بساز و پیام commit روشن استفاده کن.\n\n## تمرین\nدو روش و ریسک هرکدام را مقایسه کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\ndiff را پیش از ثبت مرور کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q9a",
+              "type": "multiple_choice",
+              "question": "برای Branch و Commit کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q9b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Branch و Commit بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q9a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q9b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Branch و Commit باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0010",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 10,
+      "level": "L4",
+      "title_fa": "[L4] Branch و Commit — تخصصی",
+      "title_en": "[L4] Branch و Commit",
+      "topic": "Branch و Commit",
+      "summary": "Branch و Commit: runbook و معیار پذیرش بساز.",
+      "full_content": "# Branch و Commit\n\n## هدف\nrunbook و معیار پذیرش بساز.\n\n## مفهوم\ncommit کوچک و قابل توضیح و branch جدا از main نگه دار.\n\n## روش بررسی\nbranch جدید بساز و پیام commit روشن استفاده کن.\n\n## تمرین\nمراحل اجرا، بررسی و بازگشت را مستند کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\ndiff را پیش از ثبت مرور کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q10a",
+              "type": "multiple_choice",
+              "question": "برای Branch و Commit کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q10b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Branch و Commit بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q10a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q10b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Branch و Commit باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0011",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 11,
+      "level": "L0",
+      "title_fa": "[L0] Merge Conflict — آشنایی",
+      "title_en": "[L0] Merge Conflict",
+      "topic": "Merge Conflict",
+      "summary": "Merge Conflict: مفهوم را ساده توضیح بده.",
+      "full_content": "# Merge Conflict\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nاختلاف را با فهم معنای هر دو تغییر حل کن.\n\n## روش بررسی\ndiff --check و تست بعد از resolve اجرا کن.\n\n## تمرین\nدو اصطلاح را تعریف کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nتغییر طرف مقابل را بدون بررسی حذف نکن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q11a",
+              "type": "multiple_choice",
+              "question": "برای Merge Conflict کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q11b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Merge Conflict بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q11a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q11b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Merge Conflict باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0012",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 12,
+      "level": "L1",
+      "title_fa": "[L1] Merge Conflict — مقدماتی",
+      "title_en": "[L1] Merge Conflict",
+      "topic": "Merge Conflict",
+      "summary": "Merge Conflict: اجزا و خروجی را مشخص کن.",
+      "full_content": "# Merge Conflict\n\n## هدف\nاجزا و خروجی را مشخص کن.\n\n## مفهوم\nاختلاف را با فهم معنای هر دو تغییر حل کن.\n\n## روش بررسی\ndiff --check و تست بعد از resolve اجرا کن.\n\n## تمرین\nیک فرمان مشاهده‌گر و خروجی مورد انتظار بنویس.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nتغییر طرف مقابل را بدون بررسی حذف نکن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q12a",
+              "type": "multiple_choice",
+              "question": "برای Merge Conflict کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q12b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Merge Conflict بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q12a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q12b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Merge Conflict باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0013",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 13,
+      "level": "L2",
+      "title_fa": "[L2] Merge Conflict — عملی",
+      "title_en": "[L2] Merge Conflict",
+      "topic": "Merge Conflict",
+      "summary": "Merge Conflict: در مخزن آزمایشی تمرین کن.",
+      "full_content": "# Merge Conflict\n\n## هدف\nدر مخزن آزمایشی تمرین کن.\n\n## مفهوم\nاختلاف را با فهم معنای هر دو تغییر حل کن.\n\n## روش بررسی\ndiff --check و تست بعد از resolve اجرا کن.\n\n## تمرین\nدر branch آزمایشی تغییر ایجاد و diff را بررسی کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nتغییر طرف مقابل را بدون بررسی حذف نکن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q13a",
+              "type": "multiple_choice",
+              "question": "برای Merge Conflict کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q13b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Merge Conflict بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q13a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q13b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Merge Conflict باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0014",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 14,
+      "level": "L3",
+      "title_fa": "[L3] Merge Conflict — پیشرفته",
+      "title_en": "[L3] Merge Conflict",
+      "topic": "Merge Conflict",
+      "summary": "Merge Conflict: دو روش را با شواهد مقایسه کن.",
+      "full_content": "# Merge Conflict\n\n## هدف\nدو روش را با شواهد مقایسه کن.\n\n## مفهوم\nاختلاف را با فهم معنای هر دو تغییر حل کن.\n\n## روش بررسی\ndiff --check و تست بعد از resolve اجرا کن.\n\n## تمرین\nدو روش و ریسک هرکدام را مقایسه کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nتغییر طرف مقابل را بدون بررسی حذف نکن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q14a",
+              "type": "multiple_choice",
+              "question": "برای Merge Conflict کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q14b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Merge Conflict بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q14a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q14b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Merge Conflict باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0015",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 15,
+      "level": "L4",
+      "title_fa": "[L4] Merge Conflict — تخصصی",
+      "title_en": "[L4] Merge Conflict",
+      "topic": "Merge Conflict",
+      "summary": "Merge Conflict: runbook و معیار پذیرش بساز.",
+      "full_content": "# Merge Conflict\n\n## هدف\nrunbook و معیار پذیرش بساز.\n\n## مفهوم\nاختلاف را با فهم معنای هر دو تغییر حل کن.\n\n## روش بررسی\ndiff --check و تست بعد از resolve اجرا کن.\n\n## تمرین\nمراحل اجرا، بررسی و بازگشت را مستند کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nتغییر طرف مقابل را بدون بررسی حذف نکن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q15a",
+              "type": "multiple_choice",
+              "question": "برای Merge Conflict کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q15b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Merge Conflict بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q15a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q15b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Merge Conflict باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0016",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 16,
+      "level": "L0",
+      "title_fa": "[L0] Rebase — آشنایی",
+      "title_en": "[L0] Rebase",
+      "topic": "Rebase",
+      "summary": "Rebase: مفهوم را ساده توضیح بده.",
+      "full_content": "# Rebase\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nrebase commitها را بازپخش و شناسه commit را تغییر می‌دهد.\n\n## روش بررسی\nروی branch شخصی، پایه را به‌روز و تست کن.\n\n## تمرین\nدو اصطلاح را تعریف کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nhistory مشترک را بدون هماهنگی بازنویسی نکن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q16a",
+              "type": "multiple_choice",
+              "question": "برای Rebase کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q16b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Rebase بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q16a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q16b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Rebase باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0017",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 17,
+      "level": "L1",
+      "title_fa": "[L1] Rebase — مقدماتی",
+      "title_en": "[L1] Rebase",
+      "topic": "Rebase",
+      "summary": "Rebase: اجزا و خروجی را مشخص کن.",
+      "full_content": "# Rebase\n\n## هدف\nاجزا و خروجی را مشخص کن.\n\n## مفهوم\nrebase commitها را بازپخش و شناسه commit را تغییر می‌دهد.\n\n## روش بررسی\nروی branch شخصی، پایه را به‌روز و تست کن.\n\n## تمرین\nیک فرمان مشاهده‌گر و خروجی مورد انتظار بنویس.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nhistory مشترک را بدون هماهنگی بازنویسی نکن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q17a",
+              "type": "multiple_choice",
+              "question": "برای Rebase کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q17b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Rebase بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q17a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q17b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Rebase باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0018",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 18,
+      "level": "L2",
+      "title_fa": "[L2] Rebase — عملی",
+      "title_en": "[L2] Rebase",
+      "topic": "Rebase",
+      "summary": "Rebase: در مخزن آزمایشی تمرین کن.",
+      "full_content": "# Rebase\n\n## هدف\nدر مخزن آزمایشی تمرین کن.\n\n## مفهوم\nrebase commitها را بازپخش و شناسه commit را تغییر می‌دهد.\n\n## روش بررسی\nروی branch شخصی، پایه را به‌روز و تست کن.\n\n## تمرین\nدر branch آزمایشی تغییر ایجاد و diff را بررسی کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nhistory مشترک را بدون هماهنگی بازنویسی نکن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q18a",
+              "type": "multiple_choice",
+              "question": "برای Rebase کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q18b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Rebase بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q18a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q18b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Rebase باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0019",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 19,
+      "level": "L3",
+      "title_fa": "[L3] Rebase — پیشرفته",
+      "title_en": "[L3] Rebase",
+      "topic": "Rebase",
+      "summary": "Rebase: دو روش را با شواهد مقایسه کن.",
+      "full_content": "# Rebase\n\n## هدف\nدو روش را با شواهد مقایسه کن.\n\n## مفهوم\nrebase commitها را بازپخش و شناسه commit را تغییر می‌دهد.\n\n## روش بررسی\nروی branch شخصی، پایه را به‌روز و تست کن.\n\n## تمرین\nدو روش و ریسک هرکدام را مقایسه کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nhistory مشترک را بدون هماهنگی بازنویسی نکن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q19a",
+              "type": "multiple_choice",
+              "question": "برای Rebase کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q19b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Rebase بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q19a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q19b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Rebase باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0020",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 20,
+      "level": "L4",
+      "title_fa": "[L4] Rebase — تخصصی",
+      "title_en": "[L4] Rebase",
+      "topic": "Rebase",
+      "summary": "Rebase: runbook و معیار پذیرش بساز.",
+      "full_content": "# Rebase\n\n## هدف\nrunbook و معیار پذیرش بساز.\n\n## مفهوم\nrebase commitها را بازپخش و شناسه commit را تغییر می‌دهد.\n\n## روش بررسی\nروی branch شخصی، پایه را به‌روز و تست کن.\n\n## تمرین\nمراحل اجرا، بررسی و بازگشت را مستند کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nhistory مشترک را بدون هماهنگی بازنویسی نکن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q20a",
+              "type": "multiple_choice",
+              "question": "برای Rebase کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q20b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Rebase بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q20a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q20b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Rebase باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0021",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 21,
+      "level": "L0",
+      "title_fa": "[L0] Remote و PR — آشنایی",
+      "title_en": "[L0] Remote و PR",
+      "topic": "Remote و PR",
+      "summary": "Remote و PR: مفهوم را ساده توضیح بده.",
+      "full_content": "# Remote و PR\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nfetch وضعیت remote را می‌آورد؛ PR تغییرات را برای review ارائه می‌کند.\n\n## روش بررسی\nupstream، base و diff را قبل از push بررسی کن.\n\n## تمرین\nدو اصطلاح را تعریف کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nمجوزهای repository را حداقلی نگه دار. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q21a",
+              "type": "multiple_choice",
+              "question": "برای Remote و PR کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q21b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Remote و PR بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q21a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q21b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Remote و PR باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0022",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 22,
+      "level": "L1",
+      "title_fa": "[L1] Remote و PR — مقدماتی",
+      "title_en": "[L1] Remote و PR",
+      "topic": "Remote و PR",
+      "summary": "Remote و PR: اجزا و خروجی را مشخص کن.",
+      "full_content": "# Remote و PR\n\n## هدف\nاجزا و خروجی را مشخص کن.\n\n## مفهوم\nfetch وضعیت remote را می‌آورد؛ PR تغییرات را برای review ارائه می‌کند.\n\n## روش بررسی\nupstream، base و diff را قبل از push بررسی کن.\n\n## تمرین\nیک فرمان مشاهده‌گر و خروجی مورد انتظار بنویس.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nمجوزهای repository را حداقلی نگه دار. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q22a",
+              "type": "multiple_choice",
+              "question": "برای Remote و PR کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q22b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Remote و PR بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q22a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q22b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Remote و PR باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0023",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 23,
+      "level": "L2",
+      "title_fa": "[L2] Remote و PR — عملی",
+      "title_en": "[L2] Remote و PR",
+      "topic": "Remote و PR",
+      "summary": "Remote و PR: در مخزن آزمایشی تمرین کن.",
+      "full_content": "# Remote و PR\n\n## هدف\nدر مخزن آزمایشی تمرین کن.\n\n## مفهوم\nfetch وضعیت remote را می‌آورد؛ PR تغییرات را برای review ارائه می‌کند.\n\n## روش بررسی\nupstream، base و diff را قبل از push بررسی کن.\n\n## تمرین\nدر branch آزمایشی تغییر ایجاد و diff را بررسی کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nمجوزهای repository را حداقلی نگه دار. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q23a",
+              "type": "multiple_choice",
+              "question": "برای Remote و PR کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q23b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Remote و PR بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q23a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q23b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Remote و PR باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0024",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 24,
+      "level": "L3",
+      "title_fa": "[L3] Remote و PR — پیشرفته",
+      "title_en": "[L3] Remote و PR",
+      "topic": "Remote و PR",
+      "summary": "Remote و PR: دو روش را با شواهد مقایسه کن.",
+      "full_content": "# Remote و PR\n\n## هدف\nدو روش را با شواهد مقایسه کن.\n\n## مفهوم\nfetch وضعیت remote را می‌آورد؛ PR تغییرات را برای review ارائه می‌کند.\n\n## روش بررسی\nupstream، base و diff را قبل از push بررسی کن.\n\n## تمرین\nدو روش و ریسک هرکدام را مقایسه کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nمجوزهای repository را حداقلی نگه دار. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q24a",
+              "type": "multiple_choice",
+              "question": "برای Remote و PR کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q24b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Remote و PR بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q24a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q24b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Remote و PR باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0025",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 25,
+      "level": "L4",
+      "title_fa": "[L4] Remote و PR — تخصصی",
+      "title_en": "[L4] Remote و PR",
+      "topic": "Remote و PR",
+      "summary": "Remote و PR: runbook و معیار پذیرش بساز.",
+      "full_content": "# Remote و PR\n\n## هدف\nrunbook و معیار پذیرش بساز.\n\n## مفهوم\nfetch وضعیت remote را می‌آورد؛ PR تغییرات را برای review ارائه می‌کند.\n\n## روش بررسی\nupstream، base و diff را قبل از push بررسی کن.\n\n## تمرین\nمراحل اجرا، بررسی و بازگشت را مستند کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nمجوزهای repository را حداقلی نگه دار. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q25a",
+              "type": "multiple_choice",
+              "question": "برای Remote و PR کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q25b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Remote و PR بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q25a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q25b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Remote و PR باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0026",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 26,
+      "level": "L0",
+      "title_fa": "[L0] Ignore Rules — آشنایی",
+      "title_en": "[L0] Ignore Rules",
+      "topic": "Ignore Rules",
+      "summary": "Ignore Rules: مفهوم را ساده توضیح بده.",
+      "full_content": "# Ignore Rules\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nignore از افزودن آینده جلوگیری می‌کند، نه از حذف فایل قبلی از history.\n\n## روش بررسی\ngit check-ignore و git ls-files را بررسی کن.\n\n## تمرین\nدو اصطلاح را تعریف کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nفایل‌های پیکربندی محلی را قبل از stage بازبینی کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q26a",
+              "type": "multiple_choice",
+              "question": "برای Ignore Rules کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q26b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Ignore Rules بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q26a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q26b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Ignore Rules باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0027",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 27,
+      "level": "L1",
+      "title_fa": "[L1] Ignore Rules — مقدماتی",
+      "title_en": "[L1] Ignore Rules",
+      "topic": "Ignore Rules",
+      "summary": "Ignore Rules: اجزا و خروجی را مشخص کن.",
+      "full_content": "# Ignore Rules\n\n## هدف\nاجزا و خروجی را مشخص کن.\n\n## مفهوم\nignore از افزودن آینده جلوگیری می‌کند، نه از حذف فایل قبلی از history.\n\n## روش بررسی\ngit check-ignore و git ls-files را بررسی کن.\n\n## تمرین\nیک فرمان مشاهده‌گر و خروجی مورد انتظار بنویس.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nفایل‌های پیکربندی محلی را قبل از stage بازبینی کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q27a",
+              "type": "multiple_choice",
+              "question": "برای Ignore Rules کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q27b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Ignore Rules بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q27a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q27b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Ignore Rules باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0028",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 28,
+      "level": "L2",
+      "title_fa": "[L2] Ignore Rules — عملی",
+      "title_en": "[L2] Ignore Rules",
+      "topic": "Ignore Rules",
+      "summary": "Ignore Rules: در مخزن آزمایشی تمرین کن.",
+      "full_content": "# Ignore Rules\n\n## هدف\nدر مخزن آزمایشی تمرین کن.\n\n## مفهوم\nignore از افزودن آینده جلوگیری می‌کند، نه از حذف فایل قبلی از history.\n\n## روش بررسی\ngit check-ignore و git ls-files را بررسی کن.\n\n## تمرین\nدر branch آزمایشی تغییر ایجاد و diff را بررسی کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nفایل‌های پیکربندی محلی را قبل از stage بازبینی کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q28a",
+              "type": "multiple_choice",
+              "question": "برای Ignore Rules کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q28b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Ignore Rules بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q28a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q28b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Ignore Rules باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0029",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 29,
+      "level": "L3",
+      "title_fa": "[L3] Ignore Rules — پیشرفته",
+      "title_en": "[L3] Ignore Rules",
+      "topic": "Ignore Rules",
+      "summary": "Ignore Rules: دو روش را با شواهد مقایسه کن.",
+      "full_content": "# Ignore Rules\n\n## هدف\nدو روش را با شواهد مقایسه کن.\n\n## مفهوم\nignore از افزودن آینده جلوگیری می‌کند، نه از حذف فایل قبلی از history.\n\n## روش بررسی\ngit check-ignore و git ls-files را بررسی کن.\n\n## تمرین\nدو روش و ریسک هرکدام را مقایسه کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nفایل‌های پیکربندی محلی را قبل از stage بازبینی کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q29a",
+              "type": "multiple_choice",
+              "question": "برای Ignore Rules کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q29b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Ignore Rules بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q29a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q29b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Ignore Rules باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0030",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 30,
+      "level": "L4",
+      "title_fa": "[L4] Ignore Rules — تخصصی",
+      "title_en": "[L4] Ignore Rules",
+      "topic": "Ignore Rules",
+      "summary": "Ignore Rules: runbook و معیار پذیرش بساز.",
+      "full_content": "# Ignore Rules\n\n## هدف\nrunbook و معیار پذیرش بساز.\n\n## مفهوم\nignore از افزودن آینده جلوگیری می‌کند، نه از حذف فایل قبلی از history.\n\n## روش بررسی\ngit check-ignore و git ls-files را بررسی کن.\n\n## تمرین\nمراحل اجرا، بررسی و بازگشت را مستند کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nفایل‌های پیکربندی محلی را قبل از stage بازبینی کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q30a",
+              "type": "multiple_choice",
+              "question": "برای Ignore Rules کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q30b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Ignore Rules بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q30a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q30b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Ignore Rules باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0031",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 31,
+      "level": "L0",
+      "title_fa": "[L0] Tag و Release — آشنایی",
+      "title_en": "[L0] Tag و Release",
+      "topic": "Tag و Release",
+      "summary": "Tag و Release: مفهوم را ساده توضیح بده.",
+      "full_content": "# Tag و Release\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\ntag نسخه را به commit مشخص وصل می‌کند؛ release باید changelog داشته باشد.\n\n## روش بررسی\ncommit، artifact و دستور بازگشت را پیوند بده.\n\n## تمرین\nدو اصطلاح را تعریف کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\ntag و artifact را پس از انتشار verify کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q31a",
+              "type": "multiple_choice",
+              "question": "برای Tag و Release کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q31b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Tag و Release بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q31a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q31b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Tag و Release باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0032",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 32,
+      "level": "L1",
+      "title_fa": "[L1] Tag و Release — مقدماتی",
+      "title_en": "[L1] Tag و Release",
+      "topic": "Tag و Release",
+      "summary": "Tag و Release: اجزا و خروجی را مشخص کن.",
+      "full_content": "# Tag و Release\n\n## هدف\nاجزا و خروجی را مشخص کن.\n\n## مفهوم\ntag نسخه را به commit مشخص وصل می‌کند؛ release باید changelog داشته باشد.\n\n## روش بررسی\ncommit، artifact و دستور بازگشت را پیوند بده.\n\n## تمرین\nیک فرمان مشاهده‌گر و خروجی مورد انتظار بنویس.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\ntag و artifact را پس از انتشار verify کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q32a",
+              "type": "multiple_choice",
+              "question": "برای Tag و Release کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q32b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Tag و Release بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q32a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q32b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Tag و Release باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0033",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 33,
+      "level": "L2",
+      "title_fa": "[L2] Tag و Release — عملی",
+      "title_en": "[L2] Tag و Release",
+      "topic": "Tag و Release",
+      "summary": "Tag و Release: در مخزن آزمایشی تمرین کن.",
+      "full_content": "# Tag و Release\n\n## هدف\nدر مخزن آزمایشی تمرین کن.\n\n## مفهوم\ntag نسخه را به commit مشخص وصل می‌کند؛ release باید changelog داشته باشد.\n\n## روش بررسی\ncommit، artifact و دستور بازگشت را پیوند بده.\n\n## تمرین\nدر branch آزمایشی تغییر ایجاد و diff را بررسی کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\ntag و artifact را پس از انتشار verify کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q33a",
+              "type": "multiple_choice",
+              "question": "برای Tag و Release کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q33b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Tag و Release بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q33a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q33b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Tag و Release باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0034",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 34,
+      "level": "L3",
+      "title_fa": "[L3] Tag و Release — پیشرفته",
+      "title_en": "[L3] Tag و Release",
+      "topic": "Tag و Release",
+      "summary": "Tag و Release: دو روش را با شواهد مقایسه کن.",
+      "full_content": "# Tag و Release\n\n## هدف\nدو روش را با شواهد مقایسه کن.\n\n## مفهوم\ntag نسخه را به commit مشخص وصل می‌کند؛ release باید changelog داشته باشد.\n\n## روش بررسی\ncommit، artifact و دستور بازگشت را پیوند بده.\n\n## تمرین\nدو روش و ریسک هرکدام را مقایسه کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\ntag و artifact را پس از انتشار verify کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q34a",
+              "type": "multiple_choice",
+              "question": "برای Tag و Release کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q34b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Tag و Release بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q34a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q34b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Tag و Release باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0035",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 35,
+      "level": "L4",
+      "title_fa": "[L4] Tag و Release — تخصصی",
+      "title_en": "[L4] Tag و Release",
+      "topic": "Tag و Release",
+      "summary": "Tag و Release: runbook و معیار پذیرش بساز.",
+      "full_content": "# Tag و Release\n\n## هدف\nrunbook و معیار پذیرش بساز.\n\n## مفهوم\ntag نسخه را به commit مشخص وصل می‌کند؛ release باید changelog داشته باشد.\n\n## روش بررسی\ncommit، artifact و دستور بازگشت را پیوند بده.\n\n## تمرین\nمراحل اجرا، بررسی و بازگشت را مستند کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\ntag و artifact را پس از انتشار verify کن. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q35a",
+              "type": "multiple_choice",
+              "question": "برای Tag و Release کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q35b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای Tag و Release بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q35a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q35b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای Tag و Release باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0036",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 36,
+      "level": "L0",
+      "title_fa": "[L0] CI و Review — آشنایی",
+      "title_en": "[L0] CI و Review",
+      "topic": "CI و Review",
+      "summary": "CI و Review: مفهوم را ساده توضیح بده.",
+      "full_content": "# CI و Review\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nCI lint، schema، test و build تکرارپذیر اجرا می‌کند.\n\n## روش بررسی\nمطمئن شو workflow روی همان commit اجرا شده باشد.\n\n## تمرین\nدو اصطلاح را تعریف کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nbuild موفق جای تست عملکردی را نمی‌گیرد. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q36a",
+              "type": "multiple_choice",
+              "question": "برای CI و Review کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q36b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای CI و Review بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q36a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q36b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای CI و Review باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0037",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 37,
+      "level": "L1",
+      "title_fa": "[L1] CI و Review — مقدماتی",
+      "title_en": "[L1] CI و Review",
+      "topic": "CI و Review",
+      "summary": "CI و Review: اجزا و خروجی را مشخص کن.",
+      "full_content": "# CI و Review\n\n## هدف\nاجزا و خروجی را مشخص کن.\n\n## مفهوم\nCI lint، schema، test و build تکرارپذیر اجرا می‌کند.\n\n## روش بررسی\nمطمئن شو workflow روی همان commit اجرا شده باشد.\n\n## تمرین\nیک فرمان مشاهده‌گر و خروجی مورد انتظار بنویس.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nbuild موفق جای تست عملکردی را نمی‌گیرد. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q37a",
+              "type": "multiple_choice",
+              "question": "برای CI و Review کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q37b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای CI و Review بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q37a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q37b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای CI و Review باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0038",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 38,
+      "level": "L2",
+      "title_fa": "[L2] CI و Review — عملی",
+      "title_en": "[L2] CI و Review",
+      "topic": "CI و Review",
+      "summary": "CI و Review: در مخزن آزمایشی تمرین کن.",
+      "full_content": "# CI و Review\n\n## هدف\nدر مخزن آزمایشی تمرین کن.\n\n## مفهوم\nCI lint، schema، test و build تکرارپذیر اجرا می‌کند.\n\n## روش بررسی\nمطمئن شو workflow روی همان commit اجرا شده باشد.\n\n## تمرین\nدر branch آزمایشی تغییر ایجاد و diff را بررسی کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nbuild موفق جای تست عملکردی را نمی‌گیرد. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q38a",
+              "type": "multiple_choice",
+              "question": "برای CI و Review کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q38b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای CI و Review بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q38a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q38b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای CI و Review باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0039",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 39,
+      "level": "L3",
+      "title_fa": "[L3] CI و Review — پیشرفته",
+      "title_en": "[L3] CI و Review",
+      "topic": "CI و Review",
+      "summary": "CI و Review: دو روش را با شواهد مقایسه کن.",
+      "full_content": "# CI و Review\n\n## هدف\nدو روش را با شواهد مقایسه کن.\n\n## مفهوم\nCI lint، schema، test و build تکرارپذیر اجرا می‌کند.\n\n## روش بررسی\nمطمئن شو workflow روی همان commit اجرا شده باشد.\n\n## تمرین\nدو روش و ریسک هرکدام را مقایسه کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nbuild موفق جای تست عملکردی را نمی‌گیرد. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q39a",
+              "type": "multiple_choice",
+              "question": "برای CI و Review کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q39b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای CI و Review بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q39a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q39b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای CI و Review باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch64:supp:0040",
+      "chapter_order": 64,
+      "subchapter_order": 90,
+      "lesson_order": 40,
+      "level": "L4",
+      "title_fa": "[L4] CI و Review — تخصصی",
+      "title_en": "[L4] CI و Review",
+      "topic": "CI و Review",
+      "summary": "CI و Review: runbook و معیار پذیرش بساز.",
+      "full_content": "# CI و Review\n\n## هدف\nrunbook و معیار پذیرش بساز.\n\n## مفهوم\nCI lint، schema، test و build تکرارپذیر اجرا می‌کند.\n\n## روش بررسی\nمطمئن شو workflow روی همان commit اجرا شده باشد.\n\n## تمرین\nمراحل اجرا، بررسی و بازگشت را مستند کن.\n\n## روند کار\n۱) وضعیت فعلی را ثبت کن. ۲) تغییر کوچک انجام بده. ۳) diff را بازبینی کن. ۴) تست مرتبط را اجرا کن. ۵) نتیجه و محدودیت را ثبت کن.\n\n## ابزارها\ngit status؛ git diff؛ git log --oneline --graph؛ git diff --check.\n\n## معیار تکمیل\nbuild موفق جای تست عملکردی را نمی‌گیرد. تغییرات باید قابل بازبینی و بازگشت باشند.",
+      "commands": "git status; git diff; git diff --staged; git log --oneline --graph; git diff --check",
+      "examples": "در repository آزمایشی یک تغییر کوچک ایجاد کن، diff را مرور کن، commit بساز و نتیجه را بررسی کن.",
+      "notes": "بسته تکمیلی فصل ۶۴؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q40a",
+              "type": "multiple_choice",
+              "question": "برای CI و Review کدام روش بهتر است؟",
+              "options": [
+                "ثبت تغییر بدون بررسی",
+                "بازبینی diff و تست مرتبط",
+                "نادیده گرفتن conflict",
+                "ثبت همه فایل‌ها بدون انتخاب"
+              ]
+            },
+            {
+              "id": "q40b",
+              "type": "short_answer",
+              "question": "یک بررسی و یک معیار پذیرش برای CI و Review بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q40a",
+              "answer": "بازبینی diff و تست مرتبط",
+              "explanation": "تغییر قابل بررسی می‌شود."
+            },
+            {
+              "id": "q40b",
+              "answer": "پاسخ باید شامل بررسی مشخص و معیار پذیرش برای CI و Review باشد.",
+              "explanation": "معیار روشن قابلیت بازبینی را افزایش می‌دهد."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
