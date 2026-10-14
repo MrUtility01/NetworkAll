@@ -77,6 +77,12 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnScenarios).setOnClickListener {
             startActivity(Intent(this, ScenarioListActivity::class.java))
         }
+        findViewById<Button>(R.id.btnIncidents).setOnClickListener {
+            startActivity(Intent(this, IncidentRunbookActivity::class.java))
+        }
+        findViewById<Button>(R.id.btnPacketLab).setOnClickListener {
+            startActivity(Intent(this, PacketLabActivity::class.java))
+        }
         findViewById<Button>(R.id.btnStats).setOnClickListener { showStats() }
         findViewById<Button>(R.id.btnApi).setOnClickListener {
             startActivity(Intent(this, ApiExplorerActivity::class.java))
