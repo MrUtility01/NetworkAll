@@ -111,7 +111,17 @@ def ensure_chapters_1_to_68(curriculum: list) -> list:
     for overlay_path in overlay_paths:
         try:
             overlay = json.loads(overlay_path.read_text(encoding="utf-8"))
-            for chapter in (overlay.get("chapters") or overlay.get("scope") or []):
+            chapter_records = overlay.get("chapters") or overlay.get("scope") or []
+            if not chapter_records:
+                chapter_records = [
+                    {"chapter_order": order}
+                    for order in sorted({
+                        int(item.get("chapter_order") or 0)
+                        for item in overlay.get("lessons", [])
+                        if int(item.get("chapter_order") or 0) in by
+                    })
+                ]
+            for chapter in chapter_records:
                 order = int(chapter.get("chapter_order") or 0)
                 if order not in by:
                     continue
