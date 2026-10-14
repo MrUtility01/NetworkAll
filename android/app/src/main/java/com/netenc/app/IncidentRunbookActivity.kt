@@ -47,7 +47,7 @@ class IncidentRunbookActivity : AppCompatActivity() {
         root.addView(label("پیش از اجرا، نسخه، نام interface و آدرس‌ها را با محیط خودت تطبیق بده. تغییر Production نیازمند مجوز، baseline و روش بازگشت است.", 12, Color.rgb(124, 45, 18)).apply {
             setPadding(dp(10), dp(8), dp(10), dp(8)); setBackgroundColor(Color.rgb(255, 247, 237))
         })
-        search = EditText(this).apply { hint = "جستجو: VLAN، OSPF، DHCP، NAT، DNS، MTU…"; singleLine = true; textSize = 14f }
+        search = EditText(this).apply { hint = "جستجو: VLAN، OSPF، DHCP، NAT، DNS، MTU…"; setSingleLine(true); textSize = 14f }
         root.addView(search, LinearLayout.LayoutParams(-1, dp(50)).apply { topMargin = dp(8) })
         list = ListView(this).apply { dividerHeight = dp(1); isNestedScrollingEnabled = false; setBackgroundColor(Color.WHITE) }
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, mutableListOf<String>())
