@@ -100,6 +100,20 @@ def main() -> None:
             if not full.get("title_fa"):
                 raise SystemExit("web lesson detail route returned an untitled item")
 
+            chapter68 = next((x for x in chapters if int(x["order_index"]) == 68), None)
+            if not chapter68:
+                raise SystemExit("chapter 68 missing from browser tree")
+            command_groups = get_json(f"/api/chapters/{chapter68['id']}/levels")
+            if not command_groups:
+                raise SystemExit("chapter 68 has no visible command collections")
+            labels = [str(x.get("title_fa") or "").lower() for x in command_groups]
+            for collection in ("linux", "bash", "powershell", "windows cmd", "windows batch", "fortigate"):
+                if not any(collection in label for label in labels):
+                    raise SystemExit(f"chapter 68 tree is missing the {collection} collection: {labels}")
+            first_commands = get_json(f"/api/levels/{command_groups[0]['id']}/lessons")
+            if not first_commands:
+                raise SystemExit("chapter 68 command collection is not expandable to lesson rows")
+
             # Temporary fixture gives this test a stable specialty input without
             # depending on the current wording of a real curriculum lesson.
             fixture = test_db.conn.execute(
