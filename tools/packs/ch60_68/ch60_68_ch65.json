@@ -1,0 +1,1989 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll / ENGINEER JOKAR",
+  "generated_on": "2026-10-14",
+  "purpose": "بسته تکمیلی فصل 65؛ محتوای دفاعی و وایرلس، آموزش L0-L4 و آزمون؛ review_required.",
+  "scope": [
+    {
+      "chapter_order": 65,
+      "title": "فصل 65: امنیت دفاعی و وایرلس",
+      "topics": [
+        "Threat Modeling",
+        "Hardening و Least Privilege",
+        "Logging و Detection",
+        "Incident Response",
+        "RF و Channel",
+        "WPA3 و 802.1X",
+        "Wireless Troubleshooting",
+        "Vulnerability Management"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch65:supp:0001",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 1,
+      "level": "L0",
+      "title_fa": "[L0] Threat Modeling — آشنایی",
+      "title_en": "[L0] Threat Modeling",
+      "topic": "Threat Modeling",
+      "summary": "Threat Modeling: مفهوم را ساده توضیح بده.",
+      "full_content": "# Threat Modeling\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nدارایی، مرز اعتماد، تهدید، مسیر ریسک و کنترل کاهنده را مشخص کن.\n\n## روش بررسی\nروش STRIDE یا چارچوب سازمانی را روی سرویس آزمایشی اعمال کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nفرض‌ها و سطح اطمینان را ثبت کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1a",
+              "type": "multiple_choice",
+              "question": "برای Threat Modeling کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q1b",
+              "type": "short_answer",
+              "question": "برای Threat Modeling دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q1b",
+              "answer": "پاسخ باید برای Threat Modeling دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0002",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 2,
+      "level": "L1",
+      "title_fa": "[L1] Threat Modeling — مقدماتی",
+      "title_en": "[L1] Threat Modeling",
+      "topic": "Threat Modeling",
+      "summary": "Threat Modeling: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Threat Modeling\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nدارایی، مرز اعتماد، تهدید، مسیر ریسک و کنترل کاهنده را مشخص کن.\n\n## روش بررسی\nروش STRIDE یا چارچوب سازمانی را روی سرویس آزمایشی اعمال کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nفرض‌ها و سطح اطمینان را ثبت کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q2a",
+              "type": "multiple_choice",
+              "question": "برای Threat Modeling کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q2b",
+              "type": "short_answer",
+              "question": "برای Threat Modeling دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q2a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q2b",
+              "answer": "پاسخ باید برای Threat Modeling دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0003",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 3,
+      "level": "L2",
+      "title_fa": "[L2] Threat Modeling — عملی",
+      "title_en": "[L2] Threat Modeling",
+      "topic": "Threat Modeling",
+      "summary": "Threat Modeling: در lab مجاز تست کنترل‌شده انجام بده.",
+      "full_content": "# Threat Modeling\n\n## هدف\nدر lab مجاز تست کنترل‌شده انجام بده.\n\n## مفهوم\nدارایی، مرز اعتماد، تهدید، مسیر ریسک و کنترل کاهنده را مشخص کن.\n\n## روش بررسی\nروش STRIDE یا چارچوب سازمانی را روی سرویس آزمایشی اعمال کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nفرض‌ها و سطح اطمینان را ثبت کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q3a",
+              "type": "multiple_choice",
+              "question": "برای Threat Modeling کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q3b",
+              "type": "short_answer",
+              "question": "برای Threat Modeling دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q3a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q3b",
+              "answer": "پاسخ باید برای Threat Modeling دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0004",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 4,
+      "level": "L3",
+      "title_fa": "[L3] Threat Modeling — پیشرفته",
+      "title_en": "[L3] Threat Modeling",
+      "topic": "Threat Modeling",
+      "summary": "Threat Modeling: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Threat Modeling\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nدارایی، مرز اعتماد، تهدید، مسیر ریسک و کنترل کاهنده را مشخص کن.\n\n## روش بررسی\nروش STRIDE یا چارچوب سازمانی را روی سرویس آزمایشی اعمال کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nفرض‌ها و سطح اطمینان را ثبت کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q4a",
+              "type": "multiple_choice",
+              "question": "برای Threat Modeling کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q4b",
+              "type": "short_answer",
+              "question": "برای Threat Modeling دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q4a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q4b",
+              "answer": "پاسخ باید برای Threat Modeling دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0005",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 5,
+      "level": "L4",
+      "title_fa": "[L4] Threat Modeling — تخصصی",
+      "title_en": "[L4] Threat Modeling",
+      "topic": "Threat Modeling",
+      "summary": "Threat Modeling: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Threat Modeling\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nدارایی، مرز اعتماد، تهدید، مسیر ریسک و کنترل کاهنده را مشخص کن.\n\n## روش بررسی\nروش STRIDE یا چارچوب سازمانی را روی سرویس آزمایشی اعمال کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nفرض‌ها و سطح اطمینان را ثبت کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q5a",
+              "type": "multiple_choice",
+              "question": "برای Threat Modeling کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q5b",
+              "type": "short_answer",
+              "question": "برای Threat Modeling دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q5a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q5b",
+              "answer": "پاسخ باید برای Threat Modeling دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0006",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 6,
+      "level": "L0",
+      "title_fa": "[L0] Hardening و Least Privilege — آشنایی",
+      "title_en": "[L0] Hardening و Least Privilege",
+      "topic": "Hardening و Least Privilege",
+      "summary": "Hardening و Least Privilege: مفهوم را ساده توضیح بده.",
+      "full_content": "# Hardening و Least Privilege\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nسطح حمله را با patch، MFA و حذف سرویس غیرضروری کاهش بده.\n\n## روش بررسی\nوضعیت قبل و بعد را با baseline و policy compliance مقایسه کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nهر تغییر باید مسیر بازیابی داشته باشد. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q6a",
+              "type": "multiple_choice",
+              "question": "برای Hardening و Least Privilege کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q6b",
+              "type": "short_answer",
+              "question": "برای Hardening و Least Privilege دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q6a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q6b",
+              "answer": "پاسخ باید برای Hardening و Least Privilege دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0007",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 7,
+      "level": "L1",
+      "title_fa": "[L1] Hardening و Least Privilege — مقدماتی",
+      "title_en": "[L1] Hardening و Least Privilege",
+      "topic": "Hardening و Least Privilege",
+      "summary": "Hardening و Least Privilege: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Hardening و Least Privilege\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nسطح حمله را با patch، MFA و حذف سرویس غیرضروری کاهش بده.\n\n## روش بررسی\nوضعیت قبل و بعد را با baseline و policy compliance مقایسه کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nهر تغییر باید مسیر بازیابی داشته باشد. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q7a",
+              "type": "multiple_choice",
+              "question": "برای Hardening و Least Privilege کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q7b",
+              "type": "short_answer",
+              "question": "برای Hardening و Least Privilege دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q7a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q7b",
+              "answer": "پاسخ باید برای Hardening و Least Privilege دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0008",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 8,
+      "level": "L2",
+      "title_fa": "[L2] Hardening و Least Privilege — عملی",
+      "title_en": "[L2] Hardening و Least Privilege",
+      "topic": "Hardening و Least Privilege",
+      "summary": "Hardening و Least Privilege: در lab مجاز تست کنترل‌شده انجام بده.",
+      "full_content": "# Hardening و Least Privilege\n\n## هدف\nدر lab مجاز تست کنترل‌شده انجام بده.\n\n## مفهوم\nسطح حمله را با patch، MFA و حذف سرویس غیرضروری کاهش بده.\n\n## روش بررسی\nوضعیت قبل و بعد را با baseline و policy compliance مقایسه کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nهر تغییر باید مسیر بازیابی داشته باشد. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q8a",
+              "type": "multiple_choice",
+              "question": "برای Hardening و Least Privilege کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q8b",
+              "type": "short_answer",
+              "question": "برای Hardening و Least Privilege دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q8a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q8b",
+              "answer": "پاسخ باید برای Hardening و Least Privilege دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0009",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 9,
+      "level": "L3",
+      "title_fa": "[L3] Hardening و Least Privilege — پیشرفته",
+      "title_en": "[L3] Hardening و Least Privilege",
+      "topic": "Hardening و Least Privilege",
+      "summary": "Hardening و Least Privilege: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Hardening و Least Privilege\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nسطح حمله را با patch، MFA و حذف سرویس غیرضروری کاهش بده.\n\n## روش بررسی\nوضعیت قبل و بعد را با baseline و policy compliance مقایسه کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nهر تغییر باید مسیر بازیابی داشته باشد. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q9a",
+              "type": "multiple_choice",
+              "question": "برای Hardening و Least Privilege کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q9b",
+              "type": "short_answer",
+              "question": "برای Hardening و Least Privilege دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q9a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q9b",
+              "answer": "پاسخ باید برای Hardening و Least Privilege دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0010",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 10,
+      "level": "L4",
+      "title_fa": "[L4] Hardening و Least Privilege — تخصصی",
+      "title_en": "[L4] Hardening و Least Privilege",
+      "topic": "Hardening و Least Privilege",
+      "summary": "Hardening و Least Privilege: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Hardening و Least Privilege\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nسطح حمله را با patch، MFA و حذف سرویس غیرضروری کاهش بده.\n\n## روش بررسی\nوضعیت قبل و بعد را با baseline و policy compliance مقایسه کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nهر تغییر باید مسیر بازیابی داشته باشد. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q10a",
+              "type": "multiple_choice",
+              "question": "برای Hardening و Least Privilege کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q10b",
+              "type": "short_answer",
+              "question": "برای Hardening و Least Privilege دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q10a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q10b",
+              "answer": "پاسخ باید برای Hardening و Least Privilege دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0011",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 11,
+      "level": "L0",
+      "title_fa": "[L0] Logging و Detection — آشنایی",
+      "title_en": "[L0] Logging و Detection",
+      "topic": "Logging و Detection",
+      "summary": "Logging و Detection: مفهوم را ساده توضیح بده.",
+      "full_content": "# Logging و Detection\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nلاگ باید زمان هماهنگ، منبع، هویت، عمل و نتیجه داشته باشد.\n\n## روش بررسی\nرویدادهای ورود، firewall، DNS و endpoint را correlate کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nدسترسی به لاگ و اطلاعات حساس را محدود کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q11a",
+              "type": "multiple_choice",
+              "question": "برای Logging و Detection کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q11b",
+              "type": "short_answer",
+              "question": "برای Logging و Detection دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q11a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q11b",
+              "answer": "پاسخ باید برای Logging و Detection دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0012",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 12,
+      "level": "L1",
+      "title_fa": "[L1] Logging و Detection — مقدماتی",
+      "title_en": "[L1] Logging و Detection",
+      "topic": "Logging و Detection",
+      "summary": "Logging و Detection: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Logging و Detection\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nلاگ باید زمان هماهنگ، منبع، هویت، عمل و نتیجه داشته باشد.\n\n## روش بررسی\nرویدادهای ورود، firewall، DNS و endpoint را correlate کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nدسترسی به لاگ و اطلاعات حساس را محدود کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q12a",
+              "type": "multiple_choice",
+              "question": "برای Logging و Detection کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q12b",
+              "type": "short_answer",
+              "question": "برای Logging و Detection دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q12a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q12b",
+              "answer": "پاسخ باید برای Logging و Detection دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0013",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 13,
+      "level": "L2",
+      "title_fa": "[L2] Logging و Detection — عملی",
+      "title_en": "[L2] Logging و Detection",
+      "topic": "Logging و Detection",
+      "summary": "Logging و Detection: در lab مجاز تست کنترل‌شده انجام بده.",
+      "full_content": "# Logging و Detection\n\n## هدف\nدر lab مجاز تست کنترل‌شده انجام بده.\n\n## مفهوم\nلاگ باید زمان هماهنگ، منبع، هویت، عمل و نتیجه داشته باشد.\n\n## روش بررسی\nرویدادهای ورود، firewall، DNS و endpoint را correlate کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nدسترسی به لاگ و اطلاعات حساس را محدود کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q13a",
+              "type": "multiple_choice",
+              "question": "برای Logging و Detection کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q13b",
+              "type": "short_answer",
+              "question": "برای Logging و Detection دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q13a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q13b",
+              "answer": "پاسخ باید برای Logging و Detection دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0014",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 14,
+      "level": "L3",
+      "title_fa": "[L3] Logging و Detection — پیشرفته",
+      "title_en": "[L3] Logging و Detection",
+      "topic": "Logging و Detection",
+      "summary": "Logging و Detection: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Logging و Detection\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nلاگ باید زمان هماهنگ، منبع، هویت، عمل و نتیجه داشته باشد.\n\n## روش بررسی\nرویدادهای ورود، firewall، DNS و endpoint را correlate کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nدسترسی به لاگ و اطلاعات حساس را محدود کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q14a",
+              "type": "multiple_choice",
+              "question": "برای Logging و Detection کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q14b",
+              "type": "short_answer",
+              "question": "برای Logging و Detection دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q14a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q14b",
+              "answer": "پاسخ باید برای Logging و Detection دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0015",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 15,
+      "level": "L4",
+      "title_fa": "[L4] Logging و Detection — تخصصی",
+      "title_en": "[L4] Logging و Detection",
+      "topic": "Logging و Detection",
+      "summary": "Logging و Detection: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Logging و Detection\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nلاگ باید زمان هماهنگ، منبع، هویت، عمل و نتیجه داشته باشد.\n\n## روش بررسی\nرویدادهای ورود، firewall، DNS و endpoint را correlate کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nدسترسی به لاگ و اطلاعات حساس را محدود کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q15a",
+              "type": "multiple_choice",
+              "question": "برای Logging و Detection کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q15b",
+              "type": "short_answer",
+              "question": "برای Logging و Detection دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q15a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q15b",
+              "answer": "پاسخ باید برای Logging و Detection دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0016",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 16,
+      "level": "L0",
+      "title_fa": "[L0] Incident Response — آشنایی",
+      "title_en": "[L0] Incident Response",
+      "topic": "Incident Response",
+      "summary": "Incident Response: مفهوم را ساده توضیح بده.",
+      "full_content": "# Incident Response\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nآمادگی، تشخیص، مهار، ریشه‌کنی، بازیابی و درس‌آموخته را تفکیک کن.\n\n## روش بررسی\nتصمیم isolate کردن endpoint را با مالک سرویس هماهنگ کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nشواهد را قبل از پاک‌سازی حفظ کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q16a",
+              "type": "multiple_choice",
+              "question": "برای Incident Response کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q16b",
+              "type": "short_answer",
+              "question": "برای Incident Response دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q16a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q16b",
+              "answer": "پاسخ باید برای Incident Response دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0017",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 17,
+      "level": "L1",
+      "title_fa": "[L1] Incident Response — مقدماتی",
+      "title_en": "[L1] Incident Response",
+      "topic": "Incident Response",
+      "summary": "Incident Response: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Incident Response\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nآمادگی، تشخیص، مهار، ریشه‌کنی، بازیابی و درس‌آموخته را تفکیک کن.\n\n## روش بررسی\nتصمیم isolate کردن endpoint را با مالک سرویس هماهنگ کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nشواهد را قبل از پاک‌سازی حفظ کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q17a",
+              "type": "multiple_choice",
+              "question": "برای Incident Response کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q17b",
+              "type": "short_answer",
+              "question": "برای Incident Response دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q17a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q17b",
+              "answer": "پاسخ باید برای Incident Response دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0018",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 18,
+      "level": "L2",
+      "title_fa": "[L2] Incident Response — عملی",
+      "title_en": "[L2] Incident Response",
+      "topic": "Incident Response",
+      "summary": "Incident Response: در lab مجاز تست کنترل‌شده انجام بده.",
+      "full_content": "# Incident Response\n\n## هدف\nدر lab مجاز تست کنترل‌شده انجام بده.\n\n## مفهوم\nآمادگی، تشخیص، مهار، ریشه‌کنی، بازیابی و درس‌آموخته را تفکیک کن.\n\n## روش بررسی\nتصمیم isolate کردن endpoint را با مالک سرویس هماهنگ کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nشواهد را قبل از پاک‌سازی حفظ کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q18a",
+              "type": "multiple_choice",
+              "question": "برای Incident Response کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q18b",
+              "type": "short_answer",
+              "question": "برای Incident Response دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q18a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q18b",
+              "answer": "پاسخ باید برای Incident Response دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0019",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 19,
+      "level": "L3",
+      "title_fa": "[L3] Incident Response — پیشرفته",
+      "title_en": "[L3] Incident Response",
+      "topic": "Incident Response",
+      "summary": "Incident Response: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Incident Response\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nآمادگی، تشخیص، مهار، ریشه‌کنی، بازیابی و درس‌آموخته را تفکیک کن.\n\n## روش بررسی\nتصمیم isolate کردن endpoint را با مالک سرویس هماهنگ کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nشواهد را قبل از پاک‌سازی حفظ کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q19a",
+              "type": "multiple_choice",
+              "question": "برای Incident Response کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q19b",
+              "type": "short_answer",
+              "question": "برای Incident Response دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q19a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q19b",
+              "answer": "پاسخ باید برای Incident Response دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0020",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 20,
+      "level": "L4",
+      "title_fa": "[L4] Incident Response — تخصصی",
+      "title_en": "[L4] Incident Response",
+      "topic": "Incident Response",
+      "summary": "Incident Response: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Incident Response\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nآمادگی، تشخیص، مهار، ریشه‌کنی، بازیابی و درس‌آموخته را تفکیک کن.\n\n## روش بررسی\nتصمیم isolate کردن endpoint را با مالک سرویس هماهنگ کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nشواهد را قبل از پاک‌سازی حفظ کن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q20a",
+              "type": "multiple_choice",
+              "question": "برای Incident Response کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q20b",
+              "type": "short_answer",
+              "question": "برای Incident Response دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q20a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q20b",
+              "answer": "پاسخ باید برای Incident Response دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0021",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 21,
+      "level": "L0",
+      "title_fa": "[L0] RF و Channel — آشنایی",
+      "title_en": "[L0] RF و Channel",
+      "topic": "RF و Channel",
+      "summary": "RF و Channel: مفهوم را ساده توضیح بده.",
+      "full_content": "# RF و Channel\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nRSSI، SNR، channel utilization، interference و roaming را با هم بسنج.\n\n## روش بررسی\nsurvey را در ساعت بار و با کلاینت‌های نماینده انجام بده.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nافزایش توان همیشه ظرفیت و roaming را بهتر نمی‌کند. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q21a",
+              "type": "multiple_choice",
+              "question": "برای RF و Channel کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q21b",
+              "type": "short_answer",
+              "question": "برای RF و Channel دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q21a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q21b",
+              "answer": "پاسخ باید برای RF و Channel دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0022",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 22,
+      "level": "L1",
+      "title_fa": "[L1] RF و Channel — مقدماتی",
+      "title_en": "[L1] RF و Channel",
+      "topic": "RF و Channel",
+      "summary": "RF و Channel: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# RF و Channel\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nRSSI، SNR، channel utilization، interference و roaming را با هم بسنج.\n\n## روش بررسی\nsurvey را در ساعت بار و با کلاینت‌های نماینده انجام بده.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nافزایش توان همیشه ظرفیت و roaming را بهتر نمی‌کند. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q22a",
+              "type": "multiple_choice",
+              "question": "برای RF و Channel کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q22b",
+              "type": "short_answer",
+              "question": "برای RF و Channel دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q22a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q22b",
+              "answer": "پاسخ باید برای RF و Channel دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0023",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 23,
+      "level": "L2",
+      "title_fa": "[L2] RF و Channel — عملی",
+      "title_en": "[L2] RF و Channel",
+      "topic": "RF و Channel",
+      "summary": "RF و Channel: در lab مجاز تست کنترل‌شده انجام بده.",
+      "full_content": "# RF و Channel\n\n## هدف\nدر lab مجاز تست کنترل‌شده انجام بده.\n\n## مفهوم\nRSSI، SNR، channel utilization، interference و roaming را با هم بسنج.\n\n## روش بررسی\nsurvey را در ساعت بار و با کلاینت‌های نماینده انجام بده.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nافزایش توان همیشه ظرفیت و roaming را بهتر نمی‌کند. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q23a",
+              "type": "multiple_choice",
+              "question": "برای RF و Channel کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q23b",
+              "type": "short_answer",
+              "question": "برای RF و Channel دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q23a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q23b",
+              "answer": "پاسخ باید برای RF و Channel دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0024",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 24,
+      "level": "L3",
+      "title_fa": "[L3] RF و Channel — پیشرفته",
+      "title_en": "[L3] RF و Channel",
+      "topic": "RF و Channel",
+      "summary": "RF و Channel: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# RF و Channel\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nRSSI، SNR، channel utilization، interference و roaming را با هم بسنج.\n\n## روش بررسی\nsurvey را در ساعت بار و با کلاینت‌های نماینده انجام بده.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nافزایش توان همیشه ظرفیت و roaming را بهتر نمی‌کند. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q24a",
+              "type": "multiple_choice",
+              "question": "برای RF و Channel کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q24b",
+              "type": "short_answer",
+              "question": "برای RF و Channel دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q24a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q24b",
+              "answer": "پاسخ باید برای RF و Channel دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0025",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 25,
+      "level": "L4",
+      "title_fa": "[L4] RF و Channel — تخصصی",
+      "title_en": "[L4] RF و Channel",
+      "topic": "RF و Channel",
+      "summary": "RF و Channel: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# RF و Channel\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nRSSI، SNR، channel utilization، interference و roaming را با هم بسنج.\n\n## روش بررسی\nsurvey را در ساعت بار و با کلاینت‌های نماینده انجام بده.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nافزایش توان همیشه ظرفیت و roaming را بهتر نمی‌کند. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q25a",
+              "type": "multiple_choice",
+              "question": "برای RF و Channel کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q25b",
+              "type": "short_answer",
+              "question": "برای RF و Channel دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q25a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q25b",
+              "answer": "پاسخ باید برای RF و Channel دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0026",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 26,
+      "level": "L0",
+      "title_fa": "[L0] WPA3 و 802.1X — آشنایی",
+      "title_en": "[L0] WPA3 و 802.1X",
+      "topic": "WPA3 و 802.1X",
+      "summary": "WPA3 و 802.1X: مفهوم را ساده توضیح بده.",
+      "full_content": "# WPA3 و 802.1X\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nEAP، certificate، RADIUS و چرخه عمر هویت را بررسی کن.\n\n## روش بررسی\nبا کلاینت آزمایشی و certificate معتبر/نامعتبر تست کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nاعتبارسنجی certificate را خاموش نکن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q26a",
+              "type": "multiple_choice",
+              "question": "برای WPA3 و 802.1X کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q26b",
+              "type": "short_answer",
+              "question": "برای WPA3 و 802.1X دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q26a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q26b",
+              "answer": "پاسخ باید برای WPA3 و 802.1X دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0027",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 27,
+      "level": "L1",
+      "title_fa": "[L1] WPA3 و 802.1X — مقدماتی",
+      "title_en": "[L1] WPA3 و 802.1X",
+      "topic": "WPA3 و 802.1X",
+      "summary": "WPA3 و 802.1X: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# WPA3 و 802.1X\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nEAP، certificate، RADIUS و چرخه عمر هویت را بررسی کن.\n\n## روش بررسی\nبا کلاینت آزمایشی و certificate معتبر/نامعتبر تست کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nاعتبارسنجی certificate را خاموش نکن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q27a",
+              "type": "multiple_choice",
+              "question": "برای WPA3 و 802.1X کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q27b",
+              "type": "short_answer",
+              "question": "برای WPA3 و 802.1X دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q27a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q27b",
+              "answer": "پاسخ باید برای WPA3 و 802.1X دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0028",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 28,
+      "level": "L2",
+      "title_fa": "[L2] WPA3 و 802.1X — عملی",
+      "title_en": "[L2] WPA3 و 802.1X",
+      "topic": "WPA3 و 802.1X",
+      "summary": "WPA3 و 802.1X: در lab مجاز تست کنترل‌شده انجام بده.",
+      "full_content": "# WPA3 و 802.1X\n\n## هدف\nدر lab مجاز تست کنترل‌شده انجام بده.\n\n## مفهوم\nEAP، certificate، RADIUS و چرخه عمر هویت را بررسی کن.\n\n## روش بررسی\nبا کلاینت آزمایشی و certificate معتبر/نامعتبر تست کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nاعتبارسنجی certificate را خاموش نکن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q28a",
+              "type": "multiple_choice",
+              "question": "برای WPA3 و 802.1X کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q28b",
+              "type": "short_answer",
+              "question": "برای WPA3 و 802.1X دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q28a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q28b",
+              "answer": "پاسخ باید برای WPA3 و 802.1X دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0029",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 29,
+      "level": "L3",
+      "title_fa": "[L3] WPA3 و 802.1X — پیشرفته",
+      "title_en": "[L3] WPA3 و 802.1X",
+      "topic": "WPA3 و 802.1X",
+      "summary": "WPA3 و 802.1X: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# WPA3 و 802.1X\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nEAP، certificate، RADIUS و چرخه عمر هویت را بررسی کن.\n\n## روش بررسی\nبا کلاینت آزمایشی و certificate معتبر/نامعتبر تست کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nاعتبارسنجی certificate را خاموش نکن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q29a",
+              "type": "multiple_choice",
+              "question": "برای WPA3 و 802.1X کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q29b",
+              "type": "short_answer",
+              "question": "برای WPA3 و 802.1X دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q29a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q29b",
+              "answer": "پاسخ باید برای WPA3 و 802.1X دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0030",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 30,
+      "level": "L4",
+      "title_fa": "[L4] WPA3 و 802.1X — تخصصی",
+      "title_en": "[L4] WPA3 و 802.1X",
+      "topic": "WPA3 و 802.1X",
+      "summary": "WPA3 و 802.1X: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# WPA3 و 802.1X\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nEAP، certificate، RADIUS و چرخه عمر هویت را بررسی کن.\n\n## روش بررسی\nبا کلاینت آزمایشی و certificate معتبر/نامعتبر تست کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nاعتبارسنجی certificate را خاموش نکن. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q30a",
+              "type": "multiple_choice",
+              "question": "برای WPA3 و 802.1X کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q30b",
+              "type": "short_answer",
+              "question": "برای WPA3 و 802.1X دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q30a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q30b",
+              "answer": "پاسخ باید برای WPA3 و 802.1X دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0031",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 31,
+      "level": "L0",
+      "title_fa": "[L0] Wireless Troubleshooting — آشنایی",
+      "title_en": "[L0] Wireless Troubleshooting",
+      "topic": "Wireless Troubleshooting",
+      "summary": "Wireless Troubleshooting: مفهوم را ساده توضیح بده.",
+      "full_content": "# Wireless Troubleshooting\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nassociation، authentication، DHCP، DNS و مسیر برنامه را جدا بررسی کن.\n\n## روش بررسی\nکلاینت سالم و معیوب را روی همان SSID مقایسه کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nیک دستگاه معیوب به‌تنهایی مشکل پوشش را ثابت نمی‌کند. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q31a",
+              "type": "multiple_choice",
+              "question": "برای Wireless Troubleshooting کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q31b",
+              "type": "short_answer",
+              "question": "برای Wireless Troubleshooting دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q31a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q31b",
+              "answer": "پاسخ باید برای Wireless Troubleshooting دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0032",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 32,
+      "level": "L1",
+      "title_fa": "[L1] Wireless Troubleshooting — مقدماتی",
+      "title_en": "[L1] Wireless Troubleshooting",
+      "topic": "Wireless Troubleshooting",
+      "summary": "Wireless Troubleshooting: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Wireless Troubleshooting\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nassociation، authentication، DHCP، DNS و مسیر برنامه را جدا بررسی کن.\n\n## روش بررسی\nکلاینت سالم و معیوب را روی همان SSID مقایسه کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nیک دستگاه معیوب به‌تنهایی مشکل پوشش را ثابت نمی‌کند. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q32a",
+              "type": "multiple_choice",
+              "question": "برای Wireless Troubleshooting کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q32b",
+              "type": "short_answer",
+              "question": "برای Wireless Troubleshooting دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q32a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q32b",
+              "answer": "پاسخ باید برای Wireless Troubleshooting دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0033",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 33,
+      "level": "L2",
+      "title_fa": "[L2] Wireless Troubleshooting — عملی",
+      "title_en": "[L2] Wireless Troubleshooting",
+      "topic": "Wireless Troubleshooting",
+      "summary": "Wireless Troubleshooting: در lab مجاز تست کنترل‌شده انجام بده.",
+      "full_content": "# Wireless Troubleshooting\n\n## هدف\nدر lab مجاز تست کنترل‌شده انجام بده.\n\n## مفهوم\nassociation، authentication، DHCP، DNS و مسیر برنامه را جدا بررسی کن.\n\n## روش بررسی\nکلاینت سالم و معیوب را روی همان SSID مقایسه کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nیک دستگاه معیوب به‌تنهایی مشکل پوشش را ثابت نمی‌کند. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q33a",
+              "type": "multiple_choice",
+              "question": "برای Wireless Troubleshooting کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q33b",
+              "type": "short_answer",
+              "question": "برای Wireless Troubleshooting دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q33a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q33b",
+              "answer": "پاسخ باید برای Wireless Troubleshooting دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0034",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 34,
+      "level": "L3",
+      "title_fa": "[L3] Wireless Troubleshooting — پیشرفته",
+      "title_en": "[L3] Wireless Troubleshooting",
+      "topic": "Wireless Troubleshooting",
+      "summary": "Wireless Troubleshooting: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Wireless Troubleshooting\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nassociation، authentication، DHCP، DNS و مسیر برنامه را جدا بررسی کن.\n\n## روش بررسی\nکلاینت سالم و معیوب را روی همان SSID مقایسه کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nیک دستگاه معیوب به‌تنهایی مشکل پوشش را ثابت نمی‌کند. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q34a",
+              "type": "multiple_choice",
+              "question": "برای Wireless Troubleshooting کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q34b",
+              "type": "short_answer",
+              "question": "برای Wireless Troubleshooting دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q34a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q34b",
+              "answer": "پاسخ باید برای Wireless Troubleshooting دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0035",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 35,
+      "level": "L4",
+      "title_fa": "[L4] Wireless Troubleshooting — تخصصی",
+      "title_en": "[L4] Wireless Troubleshooting",
+      "topic": "Wireless Troubleshooting",
+      "summary": "Wireless Troubleshooting: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Wireless Troubleshooting\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nassociation، authentication، DHCP، DNS و مسیر برنامه را جدا بررسی کن.\n\n## روش بررسی\nکلاینت سالم و معیوب را روی همان SSID مقایسه کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nیک دستگاه معیوب به‌تنهایی مشکل پوشش را ثابت نمی‌کند. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q35a",
+              "type": "multiple_choice",
+              "question": "برای Wireless Troubleshooting کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q35b",
+              "type": "short_answer",
+              "question": "برای Wireless Troubleshooting دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q35a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q35b",
+              "answer": "پاسخ باید برای Wireless Troubleshooting دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0036",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 36,
+      "level": "L0",
+      "title_fa": "[L0] Vulnerability Management — آشنایی",
+      "title_en": "[L0] Vulnerability Management",
+      "topic": "Vulnerability Management",
+      "summary": "Vulnerability Management: مفهوم را ساده توضیح بده.",
+      "full_content": "# Vulnerability Management\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nشناسه یافته، exposure، قابلیت بهره‌برداری و اثر کسب‌وکار را اولویت‌بندی کن.\n\n## روش بررسی\nفقط در محدوده مجاز بررسی کن و یافته را با نسخه تأیید کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nشدت فنی خام جایگزین ریسک زمینه‌ای نیست. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q36a",
+              "type": "multiple_choice",
+              "question": "برای Vulnerability Management کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q36b",
+              "type": "short_answer",
+              "question": "برای Vulnerability Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q36a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q36b",
+              "answer": "پاسخ باید برای Vulnerability Management دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0037",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 37,
+      "level": "L1",
+      "title_fa": "[L1] Vulnerability Management — مقدماتی",
+      "title_en": "[L1] Vulnerability Management",
+      "topic": "Vulnerability Management",
+      "summary": "Vulnerability Management: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Vulnerability Management\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nشناسه یافته، exposure، قابلیت بهره‌برداری و اثر کسب‌وکار را اولویت‌بندی کن.\n\n## روش بررسی\nفقط در محدوده مجاز بررسی کن و یافته را با نسخه تأیید کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nشدت فنی خام جایگزین ریسک زمینه‌ای نیست. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q37a",
+              "type": "multiple_choice",
+              "question": "برای Vulnerability Management کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q37b",
+              "type": "short_answer",
+              "question": "برای Vulnerability Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q37a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q37b",
+              "answer": "پاسخ باید برای Vulnerability Management دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0038",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 38,
+      "level": "L2",
+      "title_fa": "[L2] Vulnerability Management — عملی",
+      "title_en": "[L2] Vulnerability Management",
+      "topic": "Vulnerability Management",
+      "summary": "Vulnerability Management: در lab مجاز تست کنترل‌شده انجام بده.",
+      "full_content": "# Vulnerability Management\n\n## هدف\nدر lab مجاز تست کنترل‌شده انجام بده.\n\n## مفهوم\nشناسه یافته، exposure، قابلیت بهره‌برداری و اثر کسب‌وکار را اولویت‌بندی کن.\n\n## روش بررسی\nفقط در محدوده مجاز بررسی کن و یافته را با نسخه تأیید کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nشدت فنی خام جایگزین ریسک زمینه‌ای نیست. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q38a",
+              "type": "multiple_choice",
+              "question": "برای Vulnerability Management کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q38b",
+              "type": "short_answer",
+              "question": "برای Vulnerability Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q38a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q38b",
+              "answer": "پاسخ باید برای Vulnerability Management دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0039",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 39,
+      "level": "L3",
+      "title_fa": "[L3] Vulnerability Management — پیشرفته",
+      "title_en": "[L3] Vulnerability Management",
+      "topic": "Vulnerability Management",
+      "summary": "Vulnerability Management: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Vulnerability Management\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nشناسه یافته، exposure، قابلیت بهره‌برداری و اثر کسب‌وکار را اولویت‌بندی کن.\n\n## روش بررسی\nفقط در محدوده مجاز بررسی کن و یافته را با نسخه تأیید کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nشدت فنی خام جایگزین ریسک زمینه‌ای نیست. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q39a",
+              "type": "multiple_choice",
+              "question": "برای Vulnerability Management کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q39b",
+              "type": "short_answer",
+              "question": "برای Vulnerability Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q39a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q39b",
+              "answer": "پاسخ باید برای Vulnerability Management دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0040",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 40,
+      "level": "L4",
+      "title_fa": "[L4] Vulnerability Management — تخصصی",
+      "title_en": "[L4] Vulnerability Management",
+      "topic": "Vulnerability Management",
+      "summary": "Vulnerability Management: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Vulnerability Management\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nشناسه یافته، exposure، قابلیت بهره‌برداری و اثر کسب‌وکار را اولویت‌بندی کن.\n\n## روش بررسی\nفقط در محدوده مجاز بررسی کن و یافته را با نسخه تأیید کن.\n\n## سناریوی تمرینی\nسناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.\n\n## ابزارها\nWindows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.\n\n## روند RCA\n۱) دامنه و زمان رخداد را ثبت کن. ۲) baseline و شواهد را حفظ کن. ۳) فرضیه قابل آزمون بساز. ۴) فقط تغییر مجاز و حداقلی انجام بده. ۵) با تست تکرارپذیر Verify کن.\n\n## ایمنی و معیار تکمیل\nشدت فنی خام جایگزین ریسک زمینه‌ای نیست. داده حساس را ماسک کن؛ شواهد، نتیجه و اقدام پیشگیرانه را مستند کن.",
+      "commands": "Windows Event Viewer، Defender logs، SIEM query، Get-NetAdapter و netsh wlan show interfaces؛ بررسی فقط در محیط و محدوده مجاز.",
+      "examples": "سناریو: کاربران Wi-Fi متصل می‌شوند اما ورود ناموفق است. association، EAP/certificate، RADIUS، DHCP و DNS را مرحله‌ای جدا کن و نتیجه را ثبت کن.",
+      "notes": "بسته تکمیلی فصل ۶۵؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q40a",
+              "type": "multiple_choice",
+              "question": "برای Vulnerability Management کدام روش مناسب‌تر است؟",
+              "options": [
+                "آزمایش خارج از محدوده",
+                "ثبت baseline و شواهد و آزمون مجاز",
+                "غیرفعال‌کردن همه کنترل‌ها",
+                "نادیده گرفتن لاگ"
+              ]
+            },
+            {
+              "id": "q40b",
+              "type": "short_answer",
+              "question": "برای Vulnerability Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q40a",
+              "answer": "ثبت baseline و شواهد و آزمون مجاز",
+              "explanation": "ارزیابی کنترل‌شده و قابل بازبینی است."
+            },
+            {
+              "id": "q40b",
+              "answer": "پاسخ باید برای Vulnerability Management دو شاهد مستقل و معیار تکرارپذیر داشته باشد.",
+              "explanation": "معیارها باید قابل سنجش باشند."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
