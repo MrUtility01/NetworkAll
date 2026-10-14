@@ -119,8 +119,8 @@ def main() -> None:
                 raise SystemExit("specialty endpoint returned an incomplete teaching template")
 
             incidents = get_json("/api/incidents")
-            if len(incidents) < 6:
-                raise SystemExit(f"expected at least 6 operational incident runbooks, got {len(incidents)}")
+            if len(incidents) < 150:
+                raise SystemExit(f"expected at least 150 operational runbooks, got {len(incidents)}")
             for item in incidents:
                 detail = get_json(f"/api/incidents/{item['id']}")
                 steps = detail.get("diagnostic_steps") or []
@@ -145,9 +145,20 @@ def main() -> None:
             if gallery.status_code != 200:
                 raise SystemExit(f"/diagrams returned HTTP {gallery.status_code}")
             gallery_html = gallery.get_data(as_text=True)
-            for required_ui in ('id="diagramDialog"', 'card.addEventListener("click"', 'guideFor(item)', 'zoomIn'):
+            for required_ui in ('id="diagramDialog"', 'card.addEventListener("click"', 'guideFor(item)', 'zoomIn',
+                                'id="packet-lab"', 'id="packetScenario"', 'id="packetNext"', 'tcp.stream eq 0'):
                 if required_ui not in gallery_html:
                     raise SystemExit(f"/diagrams is missing interactive/diagnostic UI feature: {required_ui}")
+            home = client.get("/")
+            if home.status_code != 200:
+                raise SystemExit(f"home page returned HTTP {home.status_code}")
+            home_html = home.get_data(as_text=True)
+            if 'id="btnLearning"' not in home_html:
+                raise SystemExit("Windows web UI is missing the Learning Center navigation")
+            app_js = (ROOT / "server" / "static" / "app.js").read_text(encoding="utf-8")
+            if "function showLearningHub()" not in app_js or "Array.isArray(data) ? data" not in app_js:
+                raise SystemExit("Learning Hub/API array compatibility regression")
+
             diagram_index = client.get("/static/diagrams/index.json")
             if diagram_index.status_code != 200:
                 raise SystemExit(f"web diagram index returned HTTP {diagram_index.status_code}")
