@@ -281,6 +281,8 @@ def normalize_pack(path: Path, data: dict):
                 collection, group_order = "MikroTik RouterOS", 107
             elif "cisco" in stem:
                 collection, group_order = "Cisco IOS/IOS-XE", 106
+            elif "forti" in stem:
+                collection, group_order = "FortiGate", 108
             elif "powershell" in stem:
                 collection, group_order = "PowerShell", 103
             elif "linux" in stem:
