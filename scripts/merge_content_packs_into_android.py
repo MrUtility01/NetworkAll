@@ -632,23 +632,25 @@ def main():
                 label = str(sub.get("title_fa") or "")
                 low = label.lower()
                 if "mikrotik" in low or "routeros" in low:
-                    sub["title_fa"] = "MikroTik RouterOS؛ رابط‌ها، Route، Firewall و NAT"
+                    sub["title_fa"] = "MikroTik RouterOS — رابط‌ها، Route، Firewall و NAT"
                 elif "forti" in low:
-                    sub["title_fa"] = "FortiGate؛ CLI، Policy، مسیریابی، NAT و VPN"
+                    sub["title_fa"] = "FortiGate — CLI، Policy، مسیریابی، NAT و VPN"
                 elif "cisco" in low or "ios/ios" in low or "ios-xe" in low:
-                    sub["title_fa"] = "Cisco IOS/IOS-XE؛ Switching، Routing و بررسی وضعیت"
+                    sub["title_fa"] = "Cisco IOS/IOS-XE — Switching، Routing و بررسی وضعیت"
                 elif "power" in low:
-                    sub["title_fa"] = "PowerShell؛ مدیریت Windows و عیب‌یابی شبکه"
+                    sub["title_fa"] = "PowerShell — مدیریت Windows و عیب‌یابی شبکه"
                 elif "batch" in low:
-                    sub["title_fa"] = "Windows Batch؛ خودکارسازی و فرمان‌های CMD"
+                    sub["title_fa"] = "Windows Batch — خودکارسازی و فرمان‌های CMD"
                 elif "cmd" in low:
-                    sub["title_fa"] = "Windows CMD؛ بررسی اتصال و ابزارهای شبکه"
-                elif "linux" in low or "bash" in low:
-                    sub["title_fa"] = "Linux/Bash؛ شبکه، سرویس، لاگ و فایل‌سیستم"
+                    sub["title_fa"] = "Windows CMD — بررسی اتصال و ابزارهای شبکه"
+                elif "linux" in low:
+                    sub["title_fa"] = "Linux — شبکه، سرویس، لاگ و فایل‌سیستم"
+                elif "bash" in low:
+                    sub["title_fa"] = "Bash — shell، pipeline و اتوماسیون Linux"
                 elif "issabel" in low or "asterisk" in low:
-                    sub["title_fa"] = "Issabel/Asterisk؛ فرمان‌های VoIP و عیب‌یابی"
+                    sub["title_fa"] = "Issabel/Asterisk — فرمان‌های VoIP و عیب‌یابی"
                 elif label and "دستورات" not in label:
-                    sub["title_fa"] = label + "؛ دستورات، مثال و عیب‌یابی"
+                    sub["title_fa"] = label + " — دستورات، مثال و عیب‌یابی"
     n = sum(len(s.get("lessons", [])) for c in data["chapters"] for s in c.get("subchapters", []))
     data["lesson_count"] = n
     data["version"] = int(data.get("version") or 7) + 1
