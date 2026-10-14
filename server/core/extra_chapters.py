@@ -30,11 +30,36 @@ def _ensure_deep_packs() -> None:
                 valid = False
                 break
             total += len(lessons)
-        if valid and total >= 800:
-            return
-        generator = ROOT / "tools" / "generate_ch60_68_packs.py"
-        if generator.is_file():
-            runpy.run_path(str(generator), run_name="__main__")
+        base_pack = pack_dir / "chapter_60_68_deep_pack.json"
+        if not (valid and total >= 800):
+            generator = ROOT / "tools" / "generate_ch60_68_packs.py"
+            if generator.is_file():
+                runpy.run_path(str(generator), run_name="__main__")
+        # Keep one aggregate pack for the existing Windows DB importer, plus split
+        # packs for chapter-scoped validation and Android merge.
+        if not base_pack.is_file() or base_pack.stat().st_size < 1000:
+            split_items = []
+            split_scope = []
+            for name in names:
+                path = pack_dir / name
+                data = json.loads(path.read_text(encoding="utf-8"))
+                split_items.extend(data.get("lessons") or [])
+                split_scope.extend(data.get("scope") or [])
+            aggregate = {
+                "package_schema_version": "1.0",
+                "project": "ENGINEER JOKAR / NetworkAll",
+                "generated_on": "2026-10-15",
+                "purpose": "Aggregate shared deep enrichment pack for Windows SQLite import.",
+                "scope": split_scope,
+                "compatibility": {
+                    "preserve_existing_records": True,
+                    "preserve_existing_uids": True,
+                    "questions_and_answers_separate": True,
+                    "android_windows_shared_source": True
+                },
+                "lessons": split_items
+            }
+            base_pack.write_text(json.dumps(aggregate, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
     except (OSError, ValueError, TypeError, RuntimeError) as exc:
         # Preserve the existing curriculum if a read-only deployment cannot generate packs.
         print("ch60_68 pack generation skipped:", exc)
