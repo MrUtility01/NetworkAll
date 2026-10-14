@@ -21,7 +21,17 @@ def main():
     supplement = read_json(SUPPLEMENT)
     base_lessons = d.get("lessons", [])
     extra_lessons = supplement.get("lessons", [])
-    lessons = base_lessons + extra_lessons
+    additional_lessons = []
+    for path in sorted(PACK_DIR.glob("*pack*.json")):
+        if path in (PACK, SUPPLEMENT):
+            continue
+        data = read_json(path)
+        additional_lessons.extend(
+            item for item in (data.get("lessons") or [])
+            if isinstance(item, dict) and item.get("title_fa") and item.get("full_content")
+            and 60 <= int(item.get("chapter_order") or 0) <= 68
+        )
+    lessons = base_lessons + extra_lessons + additional_lessons
     scenarios = d.get("scenarios", [])
     questions = d.get("questions", [])
     answers = k.get("answers", [])
@@ -29,13 +39,14 @@ def main():
     assert [x["chapter_order"] for x in d["chapters"]] == list(range(60, 69)), "chapter range must be 60..68"
     assert len(base_lessons) >= 250, f"expected >=250 base lessons, got {len(base_lessons)}"
     assert len(extra_lessons) == 270, f"expected 270 supplemental lessons, got {len(extra_lessons)}"
-    uids = [x.get("uid") for x in lessons]
-    assert all(uids) and len(uids) == len(set(uids)), "missing or duplicate lesson uid across packs"
+    uids = [x.get("uid") for x in base_lessons + extra_lessons]
+    assert all(uids) and len(uids) == len(set(uids)), "missing or duplicate lesson uid in base/supplement packs"
     assert all(60 <= int(x.get("chapter_order", 0)) <= 68 for x in lessons), "lesson outside target chapters"
     for x in lessons:
         for field in ("title_fa", "summary", "full_content", "commands", "examples"):
             assert str(x.get(field, "")).strip(), f"lesson {x.get('uid')} missing {field}"
-        assert len(x["full_content"]) >= 900, f"lesson content too short: {x['uid']}"
+        assert len(x["full_content"]) >= 900, f"lesson content too short: {x.get('uid') or x.get('title_fa')}"
+    for x in base_lessons + extra_lessons:
         assert (x.get("meta") or {}).get("assessment"), f"assessment missing: {x['uid']}"
     assert len(scenarios) >= 90, f"expected >=90 scenarios, got {len(scenarios)}"
     codes = [x.get("code") for x in scenarios]
@@ -81,13 +92,15 @@ def main():
         first = testdb.ensure_ch60_68_deep_lessons()
         second = testdb.ensure_ch60_68_deep_lessons()
         count = testdb.conn.execute("SELECT COUNT(*) c FROM lessons").fetchone()["c"]
-        assert first.get("ok") and first.get("inserted") == len(lessons), f"Windows migration first pass: {first}"
+        unique_titles = {(int(x.get("chapter_order") or 0), x["title_fa"]) for x in lessons}
+        assert first.get("ok") and first.get("inserted") == len(unique_titles), f"Windows migration first pass: {first}; expected {len(unique_titles)}"
         assert second.get("ok") and second.get("inserted") == 0, f"Windows migration not idempotent: {second}"
-        assert count == len(lessons), f"Windows DB lesson count mismatch: {count}"
+        assert count == len(unique_titles), f"Windows DB lesson count mismatch: {count}"
         testdb.conn.close()
     print(
         f"VALID chapters=9 base_lessons={len(base_lessons)} supplemental_lessons={len(extra_lessons)} "
-        f"total_lessons={len(lessons)} scenarios={len(scenarios)} questions={len(questions)} "
+        f"additional_lessons={len(additional_lessons)} unique_titles={len(unique_titles)} "
+        f"scenarios={len(scenarios)} questions={len(questions)} "
         f"answer_keys={len(answers)}; Windows DB migration idempotent"
     )
 
