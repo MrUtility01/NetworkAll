@@ -188,13 +188,13 @@ class WebDB:
         try:
             pack = json.loads(pack_path.read_text(encoding="utf-8"))
             items = pack.get("scenarios") or []
-            if len(items) < 150:
-                return {"ok": False, "reason": f"expected >=150 scenarios; found {len(items)}"}
+            if len(items) < 240:
+                return {"ok": False, "reason": f"expected >=240 scenarios; found {len(items)}"}
         except Exception as exc:
             return {"ok": False, "reason": f"invalid scenario pack: {exc}"}
-        marker = "shared-150-v1"
+        marker = "shared-240-ch60-68-v2"
         current = self.conn.execute("SELECT COUNT(*) c FROM scenarios").fetchone()["c"]
-        if self.get_meta("scenario_pack_version") == marker and current >= 150:
+        if self.get_meta("scenario_pack_version") == marker and current >= 240:
             return {"ok": True, "skipped": True, "pack_scenarios": len(items), "total_scenarios": current}
         now = datetime.now().isoformat(timespec="seconds")
         for item in items:
