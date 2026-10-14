@@ -10,6 +10,7 @@ from __future__ import annotations
 from copy import deepcopy
 import json
 from pathlib import Path
+from functools import lru_cache
 
 INCIDENT_RUNBOOKS = [
     {
@@ -441,16 +442,23 @@ INCIDENT_RUNBOOKS = [
 ]
 
 
-def _all_runbooks() -> list[dict]:
-    items = list(INCIDENT_RUNBOOKS)
+@lru_cache(maxsize=1)
+def _shared_runbooks() -> tuple[dict, ...]:
+    """Parse the shared pack once per process; it is a multi-megabyte JSON file."""
     shared_path = Path(__file__).resolve().parents[2] / "shared" / "incident_runbooks.json"
     try:
         data = json.loads(shared_path.read_text(encoding="utf-8"))
         extras = data.get("incidents", []) if isinstance(data, dict) else []
-        known = {str(item.get("id")) for item in items}
-        items.extend(item for item in extras if isinstance(item, dict) and str(item.get("id")) not in known)
+        return tuple(item for item in extras if isinstance(item, dict))
     except (OSError, ValueError, TypeError) as exc:
         print("shared incident pack unavailable; built-in runbooks remain available:", exc)
+        return ()
+
+
+def _all_runbooks() -> list[dict]:
+    items = list(INCIDENT_RUNBOOKS)
+    known = {str(item.get("id")) for item in items}
+    items.extend(item for item in _shared_runbooks() if str(item.get("id")) not in known)
     return items
 
 
