@@ -16,6 +16,10 @@ android {
         versionName = "1.0.0"
     }
 
+    sourceSets {
+        getByName("main") { assets.srcDir(rootProject.projectDir.parentFile.resolve("shared")) }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -50,8 +54,40 @@ val generateNetworkAllDiagrams by tasks.registering(Exec::class) {
     outputs.dir(repositoryRoot.resolve("server/static/diagrams"))
 }
 
+val repositoryRoot = rootProject.projectDir.parentFile
+val pythonCommand = if (System.getProperty("os.name").startsWith("Windows", ignoreCase = true)) "python" else "python3"
+
+val exportSharedCurriculum by tasks.registering(Exec::class) {
+    workingDir(repositoryRoot)
+    commandLine(pythonCommand, "scripts/export_android_index.py")
+    outputs.file(repositoryRoot.resolve("android/app/src/main/assets/curriculum_index.json.gz"))
+    outputs.upToDateWhen { false }
+}
+val mergeSharedPacks by tasks.registering(Exec::class) {
+    dependsOn(exportSharedCurriculum)
+    workingDir(repositoryRoot)
+    commandLine(pythonCommand, "scripts/merge_content_packs_into_android.py")
+    outputs.upToDateWhen { false }
+}
+val importReferenceLessons by tasks.registering(Exec::class) {
+    dependsOn(mergeSharedPacks)
+    workingDir(repositoryRoot)
+    commandLine(pythonCommand, "scripts/import_networkencyclopedia_reference.py")
+    outputs.upToDateWhen { false }
+}
+val validateSharedRunbooks by tasks.registering(Exec::class) {
+    dependsOn(importReferenceLessons)
+    workingDir(repositoryRoot)
+    commandLine(pythonCommand, "scripts/validate_incident_runbooks.py")
+}
+val validateJalaliDates by tasks.registering(Exec::class) {
+    dependsOn(importReferenceLessons)
+    workingDir(repositoryRoot)
+    commandLine(pythonCommand, "scripts/validate_jalali_dates.py")
+}
+
 tasks.named("preBuild").configure {
-    dependsOn(generateNetworkAllDiagrams)
+    dependsOn(generateNetworkAllDiagrams, validateSharedRunbooks, validateJalaliDates)
 }
 
 dependencies {
