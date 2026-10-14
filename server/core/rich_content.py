@@ -45,7 +45,7 @@ def _shared_ch60_68_overlay(title_fa: str) -> Dict[str, Any] | None:
                     notes = item.get("notes") or ""
                     if assessment and "EJ_ASSESSMENT" not in notes:
                         marker = chr(60) + chr(33) + chr(45) + chr(45)
-                        notes += "\n\n" + marker + " EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n" + marker + chr(62) + "\n"
+                        notes += "\n\n" + marker + " EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n" + chr(45) + chr(45) + chr(62) + "\n"
                     candidate = {
                         "summary": item.get("summary") or "",
                         "full_content": item.get("full_content") or "",
