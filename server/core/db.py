@@ -182,9 +182,10 @@ class WebDB:
 
     def ensure_ch60_68_deep_lessons(self):
         """Idempotently add the shared deep lesson pack to an existing Windows DB without deleting user data."""
-        pack_paths = [
-            BASE.parent / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json",
-            BASE.parent / "tools" / "packs" / "ch60_68" / "chapter_60_68_validation_pack.json",
+        pack_dir = BASE.parent / "tools" / "packs" / "ch60_68"
+        base_pack = pack_dir / "chapter_60_68_deep_pack.json"
+        pack_paths = [base_pack] + [
+            path for path in sorted(pack_dir.glob("*pack*.json")) if path != base_pack
         ]
         if not pack_paths[0].is_file():
             return {"ok": False, "reason": "chapter 60-68 pack missing"}
@@ -194,9 +195,16 @@ class WebDB:
                 continue
             try:
                 pack = json.loads(pack_path.read_text(encoding="utf-8"))
-                pack_items = pack.get("lessons") or []
-                if pack_path == pack_paths[0] and len(pack_items) < 250:
-                    return {"ok": False, "reason": f"expected >=250 lessons; found {len(pack_items)}"}
+                raw_items = pack.get("lessons") or []
+                if pack_path == base_pack and len(raw_items) < 250:
+                    return {"ok": False, "reason": f"expected >=250 lessons; found {len(raw_items)}"}
+                pack_items = [
+                    item for item in raw_items
+                    if isinstance(item, dict)
+                    and item.get("title_fa")
+                    and item.get("full_content")
+                    and 60 <= int(item.get("chapter_order") or 0) <= 68
+                ]
                 items.extend(pack_items)
             except Exception as exc:
                 return {"ok": False, "reason": f"invalid chapter pack {pack_path.name}: {exc}"}
