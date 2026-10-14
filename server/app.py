@@ -485,6 +485,27 @@ def api_infographics():
     return jsonify({"items": items, "count": len(items)})
 
 
+@app.get("/api/incidents")
+def incidents_list():
+    denied = require_token()
+    if denied:
+        return denied
+    from core.incident_runbooks import list_incidents
+    return jsonify(list_incidents())
+
+
+@app.get("/api/incidents/<incident_id>")
+def incident_detail(incident_id: str):
+    denied = require_token()
+    if denied:
+        return denied
+    from core.incident_runbooks import get_incident
+    result = get_incident(incident_id)
+    if result is None:
+        return jsonify({"error": "not found"}), 404
+    return jsonify(result)
+
+
 @app.get("/api/scenarios")
 def scenarios_list():
     denied = require_token()

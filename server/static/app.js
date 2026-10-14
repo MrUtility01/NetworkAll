@@ -265,58 +265,235 @@ function formatMeta(les) {
 }
 
 async function showScenarios() {
-  viewer.innerHTML = `<div class="loading">بارگذاری سناریوها…</div>`;
-  breadcrumb.textContent = "سناریوهای Capstone";
-  const list = await api("/api/scenarios");
-  viewer.innerHTML = `
-    <h1 style="margin-top:0">۱۰ سناریوی سازمانی</h1>
-    <div class="scenario-list">
-      ${list
-        .map(
-          (s) => `
-        <div class="scenario-card" data-sid="${s.id}">
-          <h3>${escapeHtml(s.code)} — ${escapeHtml(s.title_fa)}</h3>
-          <div class="meta-row">
-            <span class="chip">${escapeHtml(s.level)}</span>
-            <span class="chip">${escapeHtml(s.difficulty)}</span>
-            <span class="chip">${s.users || 0} کاربر</span>
-            <span class="chip">${s.sites || 0} سایت</span>
-            <span class="chip">${s.estimated_hours || 0} ساعت</span>
-          </div>
-        </div>`
-        )
-        .join("")}
-    </div>`;
-  viewer.querySelectorAll(".scenario-card").forEach((card) => {
-    card.addEventListener("click", async () => {
-      const sc = await api(`/api/scenarios/${card.dataset.sid}`);
-      breadcrumb.textContent = sc.title_fa;
-      viewer.innerHTML = `
-        <div class="scenario-detail">
-          <h1>${escapeHtml(sc.code)} — ${escapeHtml(sc.title_fa)}</h1>
-          <div class="meta-row">
-            <span class="chip">${escapeHtml(sc.vendors || "")}</span>
-            <span class="chip">${escapeHtml(sc.category || "")}</span>
-          </div>
-          ${section("بافت کسب‌وکار", sc.business_context)}
-          ${section("نیازمندی‌ها", sc.requirements)}
-          ${section("محدودیت‌ها", sc.constraints_text)}
-          ${section("وضعیت اولیه", sc.initial_state)}
-          ${section("حادثه / علائم", [sc.incident, sc.symptoms].filter(Boolean).join("\n"))}
-          ${section("اهداف", sc.objectives)}
-          ${section("وظایف", sc.tasks)}
-          ${section("راهنمایی", sc.hints)}
-          ${section("نتیجه مورد انتظار", sc.expected_result)}
-          ${section("راستی‌آزمایی", sc.verification)}
-          ${section("مهارت‌های لازم", sc.skills_required)}
-        </div>`;
+  breadcrumb.textContent = "سناریوهای Incident و عیب‌یابی واقعی";
+  viewer.innerHTML = '<div class="loading">بارگذاری Runbookهای عیب‌یابی…</div>';
+  try {
+    const rows = await api("/api/incidents");
+    viewer.innerHTML =
+      '<div class="page-head"><div><div class="eyebrow">INCIDENT RESPONSE / RUNBOOK</div><h1>سناریوی واقعی؛ از علائم تا علت ریشه‌ای</h1>' +
+      '<p class="muted">هر سناریو شامل محیط، اثر کسب‌وکار، شواهد، فرمان‌های Verify، شاخهٔ تصمیم، Fix، Rollback و معیار پذیرش است.</p></div>' +
+      '<button type="button" id="btnShowCapstones" class="ghost">سناریوهای طراحی (Capstone)</button></div>' +
+      '<div class="incident-list">' + rows.map(function (s) {
+        const symptoms = Array.isArray(s.symptoms) ? s.symptoms.slice(0, 2).join(" · ") : "";
+        return '<article class="incident-card" role="button" tabindex="0" data-id="' + escapeHtml(s.id) + '">' +
+          '<div class="eyebrow">' + escapeHtml(s.code) + ' · ' + escapeHtml(s.domain) + '</div>' +
+          '<h3>' + escapeHtml(s.title_fa) + '</h3><div class="meta-row">' +
+          '<span class="chip">' + escapeHtml(s.severity) + '</span><span class="chip">' + escapeHtml(s.duration) + '</span></div>' +
+          '<p>' + escapeHtml(s.impact) + '</p><p><strong>علائم:</strong> ' + escapeHtml(symptoms) + '</p>' +
+          '<div class="open-hint">بازکردن Runbook مرحله‌به‌مرحله ←</div></article>';
+      }).join("") + '</div>';
+    document.getElementById("btnShowCapstones").addEventListener("click", showCapstones);
+    viewer.querySelectorAll(".incident-card").forEach(function (card) {
+      card.addEventListener("click", function () { loadIncidentDetail(card.dataset.id); });
+      card.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); loadIncidentDetail(card.dataset.id); }
+      });
+    });
+  } catch (err) {
+    viewer.innerHTML = '<div class="card"><h2>Runbookها بارگذاری نشدند</h2><p>' + escapeHtml(err.message) + '</p><button id="btnRetryIncidents" type="button">تلاش دوباره</button></div>';
+    document.getElementById("btnRetryIncidents").addEventListener("click", showScenarios);
+  }
+}
+
+async function loadIncidentDetail(id) {
+  viewer.innerHTML = '<div class="loading">بارگذاری شواهد و مراحل حادثه…</div>';
+  try {
+    const sc = await api("/api/incidents/" + encodeURIComponent(id));
+    breadcrumb.textContent = sc.code + " — " + sc.title_fa;
+    renderIncidentDetail(sc);
+  } catch (err) {
+    viewer.innerHTML = '<div class="card">خطا در بارگذاری سناریو: ' + escapeHtml(err.message) +
+      '<p><button type="button" id="btnRetryIncidentDetail">تلاش دوباره</button> <button type="button" id="btnBackIncidents" class="ghost">بازگشت</button></p></div>';
+    document.getElementById("btnRetryIncidentDetail").addEventListener("click", function () { loadIncidentDetail(id); });
+    document.getElementById("btnBackIncidents").addEventListener("click", showScenarios);
+  }
+}
+
+function renderIncidentDetail(sc) {
+  const symptoms = Array.isArray(sc.symptoms) ? sc.symptoms.map(function (x) { return "• " + x; }).join("\n") : sc.symptoms;
+  const environment = sc.environment || "";
+  const steps = Array.isArray(sc.diagnostic_steps) ? sc.diagnostic_steps : [];
+  const details = [
+    section("محیط و توپولوژی نمونه", environment),
+    section("زمان‌بندی حادثه", sc.timeline),
+    section("وضعیت اولیه", sc.initial_state),
+    section("اثر روی کاربران / کسب‌وکار", sc.impact),
+    section("علائم ثبت‌شده", symptoms),
+  ].join("");
+  const end = [
+    section("علت ریشه‌ای و شواهد تأییدکننده", sc.root_cause),
+    section("اصلاح پیشنهادی", sc.fix_summary),
+    section("معیار پذیرش / Verify", sc.verification),
+    section("Rollback امن", sc.rollback),
+    section("پیشگیری از تکرار", sc.prevention),
+  ].join("");
+  viewer.innerHTML =
+    '<div class="page-head"><div><div class="eyebrow">' + escapeHtml(sc.code) + ' · ' + escapeHtml(sc.domain) +
+    '</div><h1>' + escapeHtml(sc.title_fa) + '</h1><div class="meta-row"><span class="chip">' + escapeHtml(sc.severity) +
+    '</span><span class="chip">' + escapeHtml(sc.duration) + '</span><span class="chip">' + escapeHtml(sc.title_en || "") +
+    '</span></div></div><button id="btnBackIncidents" type="button" class="ghost">← فهرست سناریوها</button></div>' +
+    '<div class="notice">این یک محیط تمرینی با IP/hostname نمونه است. فرمان‌های مشاهده را ابتدا اجرا کن؛ فرمان تغییردهنده را فقط بعد از تأیید توپولوژی، ذخیرهٔ baseline، مجوز Change و آماده‌بودن Rollback اجرا کن.</div>' +
+    details +
+    '<div class="card"><div class="page-head"><div><h2>مراحل تشخیص و رفع</h2><p class="muted">هر گام را بعد از ثبت شاهد تیک بزن. اگر خروجی با انتظار فرق دارد، شاخهٔ «اگر نتیجه فرق داشت» را دنبال کن؛ مراحل را تصادفی رد نکن.</p></div>' +
+    '<button id="btnResetRunbook" type="button" class="ghost">پاک‌کردن تیک‌ها</button></div>' +
+    '<div class="runbook-progress"><span id="runbookProgressBar"></span></div><div id="runbookProgressLabel" class="muted">۰ از ' + steps.length + ' گام تأیید شده</div></div>' +
+    steps.map(function (step, index) {
+      const commands = String(step.commands || "");
+      return '<article class="runbook-step"><label class="step-check-label"><input type="checkbox" class="step-check" data-step="' + index +
+        '"> انجام شد؛ شاهد را ثبت کرده‌ام</label><h3>' + escapeHtml(step.title) + '</h3><p>' + escapeHtml(step.purpose || "") +
+        '</p><div class="step-label">فرمان / ابزار</div><pre>' + escapeHtml(commands) + '</pre><button type="button" class="ghost copy-command" data-copy="' +
+        escapeHtml(commands) + '">کپی فرمان‌ها</button><div class="step-label">خروجی مورد انتظار</div><div class="expected">' +
+        escapeHtml(step.expected || "") + '</div><div class="step-label">اگر خروجی با انتظار فرق داشت</div><div class="branch"><strong>بر اساس شاهد:</strong> ' +
+        escapeHtml(step.if_match || "") + '<br><br><strong>اگر شاهد تأیید نشد:</strong> ' + escapeHtml(step.if_not_match || "") +
+        '</div></article>';
+    }).join("") +
+    '<h2>بستن حادثه</h2>' + end +
+    '<div class="actions"><button id="btnBackIncidentsBottom" type="button" class="ghost">بازگشت به فهرست</button>' +
+    '<button id="btnCopyIncidentSummary" type="button">کپی خلاصهٔ Runbook</button></div>';
+  document.getElementById("btnBackIncidents").addEventListener("click", showScenarios);
+  document.getElementById("btnBackIncidentsBottom").addEventListener("click", showScenarios);
+  function updateRunbookProgress() {
+    const boxes = Array.from(viewer.querySelectorAll(".step-check"));
+    const done = boxes.filter(function (box) { return box.checked; }).length;
+    const bar = document.getElementById("runbookProgressBar");
+    const label = document.getElementById("runbookProgressLabel");
+    if (bar) bar.style.width = (boxes.length ? Math.round(done * 100 / boxes.length) : 0) + "%";
+    if (label) label.textContent = done + " از " + boxes.length + " گام تأیید شده";
+  }
+  viewer.querySelectorAll(".step-check").forEach(function (box) { box.addEventListener("change", updateRunbookProgress); });
+  document.getElementById("btnResetRunbook").addEventListener("click", function () {
+    viewer.querySelectorAll(".step-check").forEach(function (box) { box.checked = false; });
+    updateRunbookProgress();
+  });
+  viewer.querySelectorAll(".copy-command").forEach(function (button) {
+    button.addEventListener("click", async function () {
+      const ok = await copyText(button.getAttribute("data-copy") || "");
+      button.textContent = ok ? "کپی شد ✓" : "کپی نشد؛ متن را دستی انتخاب کن";
     });
   });
+  document.getElementById("btnCopyIncidentSummary").addEventListener("click", async function () {
+    const summary = [sc.code, sc.title_fa, sc.environment, sc.timeline, sc.root_cause, sc.fix_summary,
+      sc.verification, "Rollback: " + sc.rollback].join("\n\n");
+    const ok = await copyText(summary);
+    this.textContent = ok ? "خلاصه کپی شد ✓" : "کپی نشد";
+  });
+  updateRunbookProgress();
+}
+
+async function copyText(value) {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(value);
+      return true;
+    }
+  } catch (e) {}
+  try {
+    const box = document.createElement("textarea");
+    box.value = value;
+    box.style.position = "fixed";
+    box.style.opacity = "0";
+    document.body.appendChild(box);
+    box.select();
+    const ok = document.execCommand("copy");
+    box.remove();
+    return ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+async function showCapstones() {
+  viewer.innerHTML = '<div class="loading">بارگذاری Capstoneهای طراحی…</div>';
+  breadcrumb.textContent = "Capstoneهای طراحی سازمان";
+  try {
+    const list = await api("/api/scenarios");
+    viewer.innerHTML = '<div class="page-head"><div><h1>Capstoneهای معماری و طراحی</h1><p class="muted">این بخش پروژه‌های طراحی کلان را نگه می‌دارد؛ برای incident عملیاتی و گام‌های RCA، سناریوهای واقعی را انتخاب کن.</p></div>' +
+      '<button type="button" id="btnBackIncidentList" class="ghost">سناریوهای واقعی</button></div><div class="scenario-list">' +
+      list.map(function (s) {
+        return '<div class="scenario-card" data-sid="' + s.id + '"><h3>' + escapeHtml(s.code) + ' — ' + escapeHtml(s.title_fa) +
+          '</h3><div class="meta-row"><span class="chip">' + escapeHtml(s.level) + '</span><span class="chip">' +
+          escapeHtml(s.difficulty) + '</span><span class="chip">' + (s.users || 0) + ' کاربر</span><span class="chip">' +
+          (s.sites || 0) + ' سایت</span></div></div>';
+      }).join("") + '</div>';
+    document.getElementById("btnBackIncidentList").addEventListener("click", showScenarios);
+    viewer.querySelectorAll(".scenario-card").forEach(function (card) {
+      card.addEventListener("click", async function () {
+        const sc = await api("/api/scenarios/" + card.dataset.sid);
+        breadcrumb.textContent = sc.title_fa;
+        viewer.innerHTML = '<div class="scenario-detail"><h1>' + escapeHtml(sc.code) + ' — ' + escapeHtml(sc.title_fa) +
+          '</h1>' + section("بافت کسب‌وکار", sc.business_context) + section("نیازمندی‌ها", sc.requirements) +
+          section("محدودیت‌ها", sc.constraints_text) + section("وضعیت اولیه", sc.initial_state) +
+          section("حادثه / علائم", [sc.incident, sc.symptoms].filter(Boolean).join("\n")) +
+          section("اهداف", sc.objectives) + section("وظایف", sc.tasks) + section("راهنمایی", sc.hints) +
+          section("نتیجهٔ مورد انتظار", sc.expected_result) + section("راستی‌آزمایی", sc.verification) +
+          section("مهارت‌های لازم", sc.skills_required) + '<button id="btnBackIncidentList" type="button" class="ghost">بازگشت</button></div>';
+        document.getElementById("btnBackIncidentList").addEventListener("click", showCapstones);
+      });
+    });
+  } catch (err) {
+    viewer.innerHTML = '<div class="card">خطا در بارگذاری Capstoneها: ' + escapeHtml(err.message) + '</div>';
+  }
 }
 
 function section(title, body) {
   if (!body || !String(body).trim()) return "";
   return `<h2>${escapeHtml(title)}</h2><pre>${escapeHtml(body)}</pre>`;
+}
+
+async function showQuiz() {
+  breadcrumb.textContent = "مرکز آزمون عیب‌یابی";
+  const bank = [
+    {topic:"DNS و AD",q:"کلاینت به IP عمومی ping دارد، اما پیدا کردن Domain Controller و GPO شکست می‌خورد. اولین شاهد کدام است؟",choices:["خاموش و روشن‌کردن سوئیچ Core","DNS واقعی روی NIC و رکوردهای SRV با DNS داخلی","افزودن NAT روی روتر","افزایش MTU همهٔ VLANها"],answer:1,why:"مسیر IP ممکن است سالم باشد، ولی DC Locator به رکوردهای SRV داخلی نیاز دارد. DNS client و query مستقیم SRV فرضیه را می‌سنجد."},
+    {topic:"Switching",q:"VLAN 30 وجود دارد و پورت Access درست است. فقط کاربران پشت یک uplink Gateway ندارند. کدام گام بیشترین ارزش تشخیصی را دارد؟",choices:["تعویض Gateway کلاینت‌ها","ریستارت همهٔ سوئیچ‌ها","مقایسهٔ allowed/forwarding VLAN در دو سر trunk","تغییر DNS به عمومی"],answer:2,why:"باید عبور VLAN از trunk و وضعیت STP را در هر دو سمت ببینی؛ تغییر Gateway علت عبور نکردن Tag را رفع نمی‌کند."},
+    {topic:"MikroTik NAT",q:"از خود MikroTik ping اینترنت موفق است، ولی کلاینت LAN به IP عمومی دسترسی ندارد و masquerade counter صفر است. چه چیزی را اول بررسی می‌کنی؟",choices:["عضویت WAN interface جدید در interface-list و شرط NAT","DNS cache کلاینت فقط","تنظیمات OSPF همهٔ روترها","گواهی TLS وب‌سایت"],answer:0,why:"ترافیک تولیدشده توسط روتر و ترافیک forwardشده از LAN مسیر یکسانی ندارند. Counter صفر همراه interface-list mismatch می‌تواند NAT match را توضیح دهد."},
+    {topic:"OSPF",q:"OSPF روی EXSTART مانده، IP ping روی لینک موفق است و MTU دو سمت 1500 و 1400 است. قدم درست چیست؟",choices:["ip ospf mtu-ignore را روی همهٔ روترها بزن","بدون backup رابط را reload کن","MTU واقعی مسیر و log/پارامترهای adjacency را تأیید و سپس هماهنگ اصلاح کن","Route استاتیک پیش‌فرض را حذف کن"],answer:2,why:"اختلاف MTU می‌تواند در تبادل Database Description مشکل ایجاد کند؛ ابتدا شواهد را با سایر علل EXSTART تطبیق بده. mtu-ignore وصلهٔ عمومی نیست."},
+    {topic:"VPN",q:"Tunnel در وضعیت UP است ولی ترافیک subnet مرکز قطع است و route lookup به default WAN اشاره می‌کند. نتیجه چیست؟",choices:["UP بودن یعنی route درست است","احتمال route اشتباه؛ مسیر دقیق مقصد را با Change کنترل‌شده به VPN برگردان","DNS عمومی را روی همهٔ سرورها تنظیم کن","فاز IKE را هر دقیقه restart کن"],answer:1,why:"IKE وضعیت control-plane را نشان می‌دهد؛ route اشتباه می‌تواند جریان data-plane را از اینترنت خارج کند. SA counters، policy و return route نیز Verify شوند."},
+    {topic:"DHCP",q:"کلاینت‌های قدیمی سالم و کلاینت‌های تازه دارای 169.254.x.x هستند. کدام شاهد Scope exhausted را از DHCP relay failure جدا می‌کند؟",choices:["فقط تعداد دستگاه‌های متصل به AP","Scope utilization/leaseها و مشاهدهٔ DORA روی VLAN","پینگ به یک وب‌سایت","تغییر WPA2 به WPA3"],answer:1,why:"Scope statistics و lease list ظرفیت را نشان می‌دهند؛ Capture تعیین می‌کند Discover به سرور می‌رسد و Offer/ACK برمی‌گردد یا نه."},
+    {topic:"Packet flow",q:"Route در RIB وجود دارد، اما اتصال TCP برقرار نمی‌شود. چه کاری پیش از تغییر routing انجام می‌دهی؟",choices:["RIB/FIB/CEF، ACL/session و مسیر برگشت را بررسی می‌کنی","تمام Routeها را پاک می‌کنی","Subnet را کوچک‌تر می‌کنی","Gateway همهٔ کلاینت‌ها را عوض می‌کنی"],answer:0,why:"وجود route در RIB لزوماً عبور dataplane را ثابت نمی‌کند؛ forwarding adjacency، ACL، session و return path باید با شاهد بررسی شوند."},
+    {topic:"MTU / HTTPS",q:"پینگ‌های کوچک و DNS موفق‌اند ولی HTTPS نیمه‌باز می‌ماند. کدام مسیر آزمایش مناسب‌تر است؟",choices:["فرض کن ISP قطع است","همهٔ DNSها را به 8.8.8.8 تغییر بده","MTU/DF/PMTUD، TCP retransmission و ICMP policy را اندازه بگیر","VLAN ID را تغییر بده"],answer:2,why:"الگوی size-dependent failure ممکن است به MTU/PMTUD مربوط باشد؛ با DF probe و packet capture تأیید کن، نه با تغییر تصادفی همهٔ تنظیمات."},
+    {topic:"Troubleshooting",q:"قبل از اعمال Change روی firewall یا trunk چه چیزی باید آماده باشد؟",choices:["فقط یک ping موفق","Baseline/backup، دامنهٔ دقیق Change، معیار Verify و Rollback","پاک‌کردن counterها و logها","تغییر هم‌زمان چهار پارامتر"],answer:1,why:"بدون baseline نمی‌توان اثر Change را تشخیص داد و بدون Rollback ریسک قطعی بیشتر می‌شود. تغییر را کوچک و قابل‌اندازه‌گیری نگه دار."},
+    {topic:"Firewall",q:"Packet روی ingress دیده می‌شود اما روی egress نه. بهترین کار بعدی چیست؟",choices:["تعویض کابل قبل از هر مشاهده","بررسی route lookup، policy match، NAT و session counters روی همان tuple","تعویض کلید Wi-Fi","Flush DNS در همهٔ کلاینت‌ها"],answer:1,why:"جریان باید با source/destination/protocol/port مشخص بررسی شود؛ route، deny logs، policy order و NAT counters می‌توانند محل drop را مشخص کنند."},
+    {topic:"Wireless",q:"کلاینت به SSID وصل شده اما IP ندارد. کدام مسیر منطقی است؟",choices:["ابتدا اینترنت عمومی را blame کن","فقط تست TLS بگیر","Association/Auth → VLAN mapping → DHCP DORA → Gateway → DNS","روتر را Factory Reset کن"],answer:2,why:"Association فقط لایهٔ بی‌سیم را ثابت می‌کند. IP نداشتن باید از VLAN و DORA شروع شود؛ در غیر این صورت لایه‌ها را اشتباه قاطی می‌کنی."},
+    {topic:"Evidence",q:"کدام گزارهٔ Incident Response دقیق‌تر است؟",choices:["یک ping موفق همهٔ سرویس‌ها را سالم ثابت می‌کند","اگر status سبز بود عیب‌یابی پایان یافته","شواهد چند نقطه‌ای، فرضیهٔ واحد، Change کنترل‌شده و تست End-to-End لازم است","همیشه قبل از جمع‌آوری logها Ruleها را تغییر بده"],answer:2,why:"Ping، tunnel UP یا adjacency FULL فقط یک بخش از مسیر را می‌سنجد؛ نتیجه باید با counter/log/capture و تست برنامه تطبیق داشته باشد."}
+  ];
+  const shuffled = bank.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 8);
+  viewer.innerHTML = '<div class="page-head"><div><div class="eyebrow">PRACTICAL TROUBLESHOOTING EXAM</div><h1>مرکز آزمون شبکه و عیب‌یابی</h1><p class="muted">۸ سؤال تصادفی از بانک عملیاتی؛ پس از تصحیح، پاسخ درست و منطق انتخاب را ببین. نتیجه در مرورگر همین دستگاه ثبت می‌شود.</p></div>' +
+    '<button id="btnNewQuiz" type="button" class="ghost">آزمون تازه</button></div>' +
+    '<div class="meta-row"><span class="chip">DNS/AD</span><span class="chip">Switching</span><span class="chip">MikroTik</span><span class="chip">OSPF/VPN</span><span class="chip">DHCP/MTU/Firewall</span></div>' +
+    '<form id="quizForm">' + shuffled.map(function (q, i) {
+      return '<article class="quiz-question" data-question="' + i + '"><div class="eyebrow">سؤال ' + (i + 1) + ' · ' + escapeHtml(q.topic) +
+        '</div><h3>' + escapeHtml(q.q) + '</h3>' + q.choices.map(function (choice, j) {
+          return '<label class="quiz-choice"><input type="radio" name="quiz-' + i + '" value="' + j + '"><span>' + escapeHtml(choice) + '</span></label>';
+        }).join("") + '<div class="quiz-feedback-slot"></div></article>';
+    }).join("") + '<button type="submit">تصحیح آزمون و نمایش منطق پاسخ</button></form><div id="quizResult"></div>';
+  document.getElementById("btnNewQuiz").addEventListener("click", showQuiz);
+  document.getElementById("quizForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+    let score = 0;
+    shuffled.forEach(function (q, i) {
+      const chosen = viewer.querySelector('input[name="quiz-' + i + '"]:checked');
+      const slot = viewer.querySelector('[data-question="' + i + '"] .quiz-feedback-slot');
+      const ok = chosen && Number(chosen.value) === q.answer;
+      if (ok) score++;
+      slot.innerHTML = '<div class="quiz-feedback ' + (ok ? "ok" : "bad") + '"><strong>' +
+        (ok ? "درست ✓" : "نیاز به بازبینی") + ' — پاسخ صحیح: ' + escapeHtml(q.choices[q.answer]) +
+        '</strong><br>' + escapeHtml(q.why) + '</div>';
+    });
+    const percent = Math.round(score * 100 / shuffled.length);
+    const result = document.getElementById("quizResult");
+    result.innerHTML = '<div class="score-strip"><strong>نتیجه: ' + score + ' از ' + shuffled.length +
+      ' (' + percent + '%)</strong><p>' + (percent >= 80 ? "خوب است؛ روی توجیه فنی پاسخ‌ها تمرکز کن." :
+      percent >= 60 ? "مفاهیم پایه قابل قبول‌اند؛ سناریوهای مربوط به پاسخ‌های غلط را باز کن." :
+      "بهتر است Runbookها را اجرا و شواهد را بررسی کنی، سپس آزمون تازه بدهی.") + '</p></div>';
+    try {
+      const key = "networkall_exam_history_v1";
+      const history = JSON.parse(localStorage.getItem(key) || "[]");
+      history.unshift({ date: new Date().toISOString(), score: score, total: shuffled.length, percent: percent });
+      localStorage.setItem(key, JSON.stringify(history.slice(0, 20)));
+      result.innerHTML += '<p class="muted">آخرین نمره در این مرورگر ثبت شد؛ تاریخچهٔ ذخیره‌شده: ' + Math.min(20, history.length) + ' آزمون.</p>';
+    } catch (e) {}
+    result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
 }
 
 async function doSearch() {
@@ -353,7 +530,14 @@ $("#q").addEventListener("keydown", (e) => {
 $("#btnScenarios").addEventListener("click", showScenarios);
 
 
+const btnQuiz = document.getElementById("btnQuiz");
+if (btnQuiz) btnQuiz.addEventListener("click", showQuiz);
+
 (async function init() {
   await loadChapters();
   await loadStats();
+  const params = new URLSearchParams(window.location.search);
+  const view = params.get("view");
+  if (view === "incidents") await showScenarios();
+  else if (view === "quiz") await showQuiz();
 })();

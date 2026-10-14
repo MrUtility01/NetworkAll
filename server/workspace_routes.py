@@ -12,7 +12,7 @@ import sqlite3
 import os
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
-from flask import Blueprint, request, jsonify, render_template_string, make_response, redirect
+from flask import Blueprint, request, jsonify, render_template_string, make_response, redirect, session
 
 bp = Blueprint("workspace", __name__)
 
@@ -29,6 +29,9 @@ def set_auth_checker(check_fn, extract_fn, sync_token: str):
 
 
 def _authorized() -> bool:
+    # Reuse the authenticated local web session instead of prompting twice.
+    if session.get("networkall_unlocked") is True:
+        return True
     if _check_token is None:
         return False
     return bool(_check_token())
@@ -91,80 +94,145 @@ def _unseal(blob: str) -> str:
 LOGIN_PAGE = """
 <!doctype html><html lang=fa dir=rtl><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<title>ورود فضای کاری</title>
+<title>ورود به فضای کاری NetworkAll</title>
 <style>
-body{font-family:Tahoma,sans-serif;background:#0f172a;color:#e2e8f0;display:flex;min-height:100vh;align-items:center;justify-content:center}
-form{background:#1e293b;padding:24px;border-radius:12px;width:min(360px,92vw)}
-input,button{width:100%;padding:10px;margin:8px 0;box-sizing:border-box;font-size:15px;border-radius:8px;border:0}
-button{background:#0ea5e9;color:#fff;font-weight:bold}
-.err{color:#fca5a5;font-size:13px}
+*{box-sizing:border-box}body{font-family:Tahoma,sans-serif;background:#f3f6fb;color:#172033;display:grid;place-items:center;min-height:100vh;margin:0;padding:18px}
+form{background:#fff;border:1px solid #d7e0ec;box-shadow:0 15px 45px #17203312;padding:26px;border-radius:16px;width:min(420px,100%)}
+h2{margin:0 0 10px;color:#1645a7}p{line-height:1.9;color:#5b687d;font-size:13px}input,button{width:100%;padding:12px;margin:8px 0;box-sizing:border-box;font-size:15px;border-radius:9px;border:1px solid #cbd6e5}
+button{background:#1d4ed8;color:#fff;border-color:#1d4ed8;font-weight:bold;cursor:pointer}.err{color:#b91c1c;font-size:13px}a{color:#1d4ed8}
 </style></head><body>
 <form method=post action="/workspace/login">
-<h2>فضای کاری — نیاز به توکن</h2>
-<p style="color:#94a3b8;font-size:13px">همان NETENC_TOKEN سرور / توکن Sync اندروید</p>
-<input type=password name=token placeholder="توکن" required autofocus>
+<h2>فضای کاری NetworkAll</h2>
+<p>برای ورود از همان توکن نصب NetworkAll استفاده کن. توکن را در لینک، گزارش یا یادداشت اشتراکی قرار نده.</p>
+<input type=password name=token placeholder="توکن نصب" required autofocus>
 {% if error %}<p class=err>{{ error }}</p>{% endif %}
-<button type=submit>ورود</button>
-<p style="font-size:12px;color:#64748b"><a href="/" style="color:#38bdf8">بازگشت</a></p>
-</form>
-</body></html>
+<button type=submit>ورود امن</button>
+<p><a href="/">بازگشت به دانشنامه</a></p>
+</form></body></html>
 """
 
 PAGE = """
 <!doctype html><html lang=fa dir=rtl><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<title>فضای کاری</title>
+<title>فضای کاری NetworkAll</title>
 <style>
-body{font-family:Tahoma,sans-serif;background:#f7f8fa;margin:0;padding:16px;color:#0f172a}
-.card{background:#fff;border-radius:12px;padding:12px;margin:8px 0;box-shadow:0 1px 3px #0001}
-input,textarea,button{width:100%;margin:4px 0;padding:10px;box-sizing:border-box;font-size:15px}
-button{background:#0ea5e9;color:#fff;border:0;border-radius:8px}
-nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
-.badge{font-size:12px;color:#64748b}
-</style></head><body>
-<nav>
-<a href="/">خانه</a>
-<a href="/workspace?tab=tasks">کارها</a>
-<a href="/workspace?tab=notes">یادداشت</a>
-<a href="/workspace?tab=vault">رمزها</a>
-<a href="/workspace/logout">خروج</a>
-</nav>
-<p class="badge">دسترسی با توکن · vault به صورت sealed ذخیره می‌شود</p>
-<h2>{{ title }}</h2>
-<form method=post>
-<input name=title placeholder="عنوان" required>
-<textarea name=body rows=4 placeholder="{{ 'رمز (ذخیره sealed)' if tab=='vault' else 'متن' }}"></textarea>
-{% if tab=='vault' %}<input name=username placeholder="نام کاربری">{% endif %}
-<button type=submit>ذخیره</button>
-</form>
+:root{color-scheme:light}*{box-sizing:border-box}body{font-family:Tahoma,sans-serif;background:#f5f7fb;margin:0;padding:18px;color:#172033}
+.wrap{max-width:1120px;margin:0 auto}.top{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:18px}.top a{color:#1d4ed8;text-decoration:none;background:#fff;border:1px solid #d7e0ec;padding:9px 12px;border-radius:9px;font-size:12px}.brand{font-size:22px;font-weight:700;color:#1645a7;margin-left:auto}
+h1{font-size:24px;margin:12px 0 6px}h2{font-size:15px}.muted,.badge{font-size:12px;color:#5b687d;line-height:1.9}.card{background:#fff;border:1px solid #d7e0ec;border-radius:13px;padding:15px;margin:11px 0;box-shadow:0 2px 7px #17203306}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px}label{display:block;font-size:12px;color:#43536a;margin:5px 0}
+input,textarea,select,button{font:inherit}input,textarea,select{width:100%;margin:4px 0;padding:10px;border:1px solid #cbd6e5;border-radius:9px;background:#fff;color:#172033}
+textarea{resize:vertical;line-height:1.8}button{padding:9px 12px;border-radius:9px;border:1px solid #1d4ed8;background:#1d4ed8;color:#fff;cursor:pointer;font-size:12px}button.secondary{background:#fff;color:#26354a;border-color:#cbd6e5}button.danger{background:#fff7f7;color:#b91c1c;border-color:#fecaca}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.actions form{display:inline-flex}.actions button{margin:0}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px}.form-grid .wide{grid-column:1/-1}
+.item-title{font-size:15px;font-weight:700;margin-bottom:6px}.item-body{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.9;color:#33445a;font-size:13px;margin:9px 0}.tags{display:flex;gap:6px;flex-wrap:wrap}.tag{font-size:11px;background:#edf3fb;border:1px solid #d7e0ec;border-radius:999px;padding:3px 8px;color:#3c4d64}
+.search-row{display:flex;gap:8px;align-items:center}.search-row input{flex:1}.task-done{border-right:4px solid #16a34a}.task-open{border-right:4px solid #3b82f6}.priority-urgent{color:#b91c1c}.priority-high{color:#9a3412}.priority-normal{color:#1d4ed8}.priority-low{color:#64748b}
+details{margin-top:12px;border-top:1px solid #e5ebf3;padding-top:10px}summary{cursor:pointer;color:#1d4ed8;font-size:12px;font-weight:bold}a{color:#1d4ed8}
+.notice{font-size:12px;line-height:1.9;color:#56657a;background:#eef5ff;border:1px solid #cfe0fb;padding:12px;border-radius:10px}
+@media(max-width:600px){body{padding:12px}.brand{width:100%}.search-row{align-items:stretch;flex-direction:column}}
+</style></head><body><main class=wrap>
+<nav class=top><span class=brand>NetworkAll / فضای کاری</span><a href="/">دانشنامه</a><a href="/diagrams">دیاگرام و عیب‌یابی</a><a href="/?view=incidents">سناریوهای واقعی</a><a href="/?view=quiz">مرکز آزمون</a><a href="/workspace?tab=tasks">کارها</a><a href="/workspace?tab=knowledge">مدیریت دانش</a><a href="/workspace?tab=notes">یادداشت‌ها</a><a href="/workspace?tab=vault">Vault</a><a href="/api/workspace/export">خروجی پشتیبان</a><a href="/workspace/logout">خروج</a></nav>
+<div class=notice>کارها، دانش و یادداشت‌ها در دیتابیس محلی این نصب نگهداری می‌شوند. پیش از انتقال پوشه یا دستگاه، از پشتیبان استفاده کن. رمزهای Vault به‌صورت رمزگذاری‌شده ذخیره می‌شوند؛ فایل کلید Vault را جداگانه و امن پشتیبان بگیر.</div>
+<h1>{{ title }}</h1><p class=muted>جستجو، دسته‌بندی و ثبت پیگیری‌ها؛ همهٔ تاریخ‌ها بر اساس مقدار واردشدهٔ دستگاه‌اند.</p>
+<form method=get action="/workspace" class=search-row><input type=hidden name=tab value="{{ tab }}"><input name=q value="{{ q }}" placeholder="جستجو در عنوان، متن، دسته یا برچسب"><button type=submit>جستجو</button><a href="/workspace?tab={{ tab }}">پاک‌کردن</a></form>
+<section class=card><h2>{% if tab=='tasks' %}ثبت کار جدید{% elif tab in ('notes','knowledge') %}ثبت یادداشت / دانش جدید{% else %}ثبت مورد Vault{% endif %}</h2>
+<form method=post class=form-grid>
+<div><label>عنوان</label><input name=title placeholder="عنوان کوتاه و قابل جستجو" required></div>
+{% if tab=='tasks' %}
+<div><label>سررسید</label><input name=due_date type=date></div>
+<div><label>اولویت</label><select name=priority><option value=normal>عادی</option><option value=high>بالا</option><option value=urgent>فوری</option><option value=low>پایین</option></select></div>
+<div><label>دسته</label><input name=category placeholder="شبکه، سرور، مشتری…" value="عمومی"></div>
+{% elif tab in ('notes','knowledge') %}
+<div><label>دسته</label><input name=category placeholder="Cisco، MikroTik، Windows…" value="عمومی"></div>
+<div><label>برچسب‌ها</label><input name=tags placeholder="VLAN, DNS, OSPF"></div>
+{% elif tab=='vault' %}
+<div><label>نام کاربری (اختیاری)</label><input name=username autocomplete=off></div>
+{% endif %}
+<div class=wide><label>{% if tab=='vault' %}رمز / Secret — فقط در Vault رمزگذاری‌شده ذخیره می‌شود{% elif tab=='tasks' %}شرح، گام بعدی یا معیار پایان{% else %}متن، فرمان، شواهد، لینک یا نتیجهٔ آزمایش{% endif %}</label><textarea name=body rows=4 placeholder="جزئیات را دقیق ثبت کن…"></textarea></div>
+<div class=wide><button type=submit>ذخیره</button></div>
+</form></section>
 {% for it in items %}
-<div class=card>
-<b>{{ it.title }}</b>
-<pre style="white-space:pre-wrap;margin:8px 0">{{ it.body }}</pre>
-<form method=post><input type=hidden name=delete value="{{ it.uid }}">
-<button type=submit style="background:#ef4444">حذف</button></form>
+<article class="card {% if tab=='tasks' and it.done %}task-done{% elif tab=='tasks' %}task-open{% endif %}">
+<div class=item-title>{{ it.title }} {% if tab=='tasks' and it.done %}<span class=tag>انجام‌شده</span>{% endif %}{% if tab in ('notes','knowledge') and it.favorite %}<span class=tag>★ مهم</span>{% endif %}</div>
+<div class=tags>
+{% if tab=='tasks' %}
+<span class="tag priority-{{ it.priority or 'normal' }}">اولویت: {% if it.priority=='urgent' %}فوری{% elif it.priority=='high' %}بالا{% elif it.priority=='low' %}پایین{% else %}عادی{% endif %}</span>
+<span class=tag>سررسید: {{ it.due_date or 'ندارد' }}</span><span class=tag>{{ it.category or 'عمومی' }}</span>
+{% elif tab in ('notes','knowledge') %}
+<span class=tag>{{ it.category or 'عمومی' }}</span>{% if it.tags %}<span class=tag>{{ it.tags }}</span>{% endif %}
+{% elif tab=='vault' and it.username %}<span class=tag>نام کاربری: {{ it.username }}</span>
+{% endif %}
+<span class=tag>به‌روزرسانی: {{ (it.last_updated or '')[:16] }}</span>
 </div>
-{% else %}<p>موردی نیست.</p>{% endfor %}
-</body></html>
+{% if it.body %}<div class=item-body>{{ it.body }}</div>{% endif %}
+<div class=actions>
+{% if tab=='tasks' %}
+<form method=post><input type=hidden name=action value=toggle><input type=hidden name=uid value="{{ it.uid }}"><button type=submit class=secondary>{% if it.done %}بازکردن دوباره{% else %}علامت انجام‌شده{% endif %}</button></form>
+{% elif tab in ('notes','knowledge') %}
+<form method=post><input type=hidden name=action value=toggle_favorite><input type=hidden name=uid value="{{ it.uid }}"><button type=submit class=secondary>{% if it.favorite %}برداشتن از مهم‌ها{% else %}★ افزودن به مهم‌ها{% endif %}</button></form>
+{% endif %}
+<form method=post onsubmit="return confirm('این مورد حذف شود؟')"><input type=hidden name=delete value="{{ it.uid }}"><button type=submit class=danger>حذف</button></form>
+{% if tab!='vault' %}
+<details><summary>ویرایش عنوان و جزئیات</summary>
+<form method=post class=form-grid>
+<input type=hidden name=edit_uid value="{{ it.uid }}">
+<div><label>عنوان</label><input name=title value="{{ it.title }}" required></div>
+{% if tab=='tasks' %}
+<div><label>سررسید</label><input name=due_date type=date value="{{ it.due_date or '' }}"></div>
+<div><label>اولویت</label><select name=priority><option value=normal {% if it.priority=='normal' %}selected{% endif %}>عادی</option><option value=high {% if it.priority=='high' %}selected{% endif %}>بالا</option><option value=urgent {% if it.priority=='urgent' %}selected{% endif %}>فوری</option><option value=low {% if it.priority=='low' %}selected{% endif %}>پایین</option></select></div>
+<div><label>دسته</label><input name=category value="{{ it.category or 'عمومی' }}"></div>
+{% else %}
+<div><label>دسته</label><input name=category value="{{ it.category or 'عمومی' }}"></div><div><label>برچسب‌ها</label><input name=tags value="{{ it.tags or '' }}"></div>
+{% endif %}
+<div class=wide><label>متن</label><textarea name=body rows=4>{{ it.body }}</textarea></div>
+<div class=wide><button type=submit>ذخیرهٔ ویرایش</button></div>
+</form></details>
+{% endif %}
+</div></article>
+{% else %}<section class=card>هنوز موردی در این بخش ثبت نشده یا نتیجه‌ای با این جستجو پیدا نشد.</section>{% endfor %}
+</main></body></html>
 """
-
 
 def _db_path():
     root = Path(__file__).resolve().parent
-    for p in (root / "data" / "encyclopedia.db", root / "encyclopedia.db"):
-        if p.is_file():
-            return p
-    p = root / "data" / "encyclopedia.db"
-    p.parent.mkdir(parents=True, exist_ok=True)
-    return p
+    for path in (root / "data" / "encyclopedia.db", root / "encyclopedia.db"):
+        if path.is_file():
+            return path
+    path = root / "data" / "encyclopedia.db"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path
 
 
 def _conn():
     c = sqlite3.connect(str(_db_path()))
     c.row_factory = sqlite3.Row
-    c.execute("CREATE TABLE IF NOT EXISTS ws_tasks(uid TEXT PRIMARY KEY, title TEXT, body TEXT, done INT, last_updated TEXT)")
-    c.execute("CREATE TABLE IF NOT EXISTS ws_notes(uid TEXT PRIMARY KEY, title TEXT, body TEXT, last_updated TEXT)")
+    c.execute("""CREATE TABLE IF NOT EXISTS ws_tasks(
+        uid TEXT PRIMARY KEY, title TEXT, body TEXT, done INT DEFAULT 0,
+        last_updated TEXT, priority TEXT NOT NULL DEFAULT 'normal',
+        due_date TEXT NOT NULL DEFAULT '', category TEXT NOT NULL DEFAULT 'عمومی'
+    )""")
+    c.execute("""CREATE TABLE IF NOT EXISTS ws_notes(
+        uid TEXT PRIMARY KEY, title TEXT, body TEXT, last_updated TEXT,
+        category TEXT NOT NULL DEFAULT 'عمومی', tags TEXT NOT NULL DEFAULT '',
+        favorite INTEGER NOT NULL DEFAULT 0
+    )""")
     c.execute("CREATE TABLE IF NOT EXISTS ws_vault(uid TEXT PRIMARY KEY, title TEXT, username TEXT, secret TEXT, last_updated TEXT)")
+    migrations = {
+        "ws_tasks": {
+            "priority": "TEXT NOT NULL DEFAULT 'normal'",
+            "due_date": "TEXT NOT NULL DEFAULT ''",
+            "category": "TEXT NOT NULL DEFAULT 'عمومی'",
+        },
+        "ws_notes": {
+            "category": "TEXT NOT NULL DEFAULT 'عمومی'",
+            "tags": "TEXT NOT NULL DEFAULT ''",
+            "favorite": "INTEGER NOT NULL DEFAULT 0",
+        },
+    }
+    for table, columns in migrations.items():
+        present = {row["name"] for row in c.execute(f"PRAGMA table_info({table})").fetchall()}
+        for name, definition in columns.items():
+            if name not in present:
+                c.execute(f"ALTER TABLE {table} ADD COLUMN {name} {definition}")
     c.commit()
     return c
 
@@ -203,48 +271,101 @@ def workspace_page():
     if not _authorized() and not _cookie_ok():
         return redirect("/workspace/login")
     tab = request.args.get("tab") or "tasks"
-    if tab not in ("tasks", "notes", "vault"):
+    if tab not in ("tasks", "notes", "knowledge", "vault"):
         tab = "tasks"
+    note_tab = tab in ("notes", "knowledge")
     c = _conn()
-    if request.method == "POST":
-        if request.form.get("delete"):
-            uid = request.form["delete"]
-            table = {"notes": "ws_notes", "vault": "ws_vault"}.get(tab, "ws_tasks")
-            c.execute(f"DELETE FROM {table} WHERE uid=?", (uid,))
-            c.commit()
-        else:
-            title = (request.form.get("title") or "").strip()
-            body = request.form.get("body") or ""
-            username = request.form.get("username") or ""
-            if title:
-                uid = str(uuid.uuid4())
-                now = datetime.now(timezone.utc).isoformat()
-                if tab == "notes":
-                    c.execute("INSERT INTO ws_notes VALUES(?,?,?,?)", (uid, title, body, now))
-                elif tab == "vault":
-                    c.execute("INSERT INTO ws_vault VALUES(?,?,?,?,?)", (uid, title, username, _seal(body), now))
-                else:
-                    c.execute("INSERT INTO ws_tasks VALUES(?,?,?,?,?)", (uid, title, body, 0, now))
+    try:
+        if request.method == "POST":
+            now = datetime.now(timezone.utc).isoformat()
+            delete_uid = (request.form.get("delete") or "").strip()
+            action = (request.form.get("action") or "").strip()
+            uid = (request.form.get("uid") or "").strip()
+            edit_uid = (request.form.get("edit_uid") or "").strip()
+            if delete_uid:
+                table = "ws_notes" if note_tab else ("ws_vault" if tab == "vault" else "ws_tasks")
+                c.execute(f"DELETE FROM {table} WHERE uid=?", (delete_uid,))
                 c.commit()
-    if tab == "notes":
-        items = c.execute("SELECT uid,title,body FROM ws_notes ORDER BY last_updated DESC").fetchall()
-        title = "یادداشت‌ها"
-    elif tab == "vault":
-        rows = c.execute("SELECT uid,title,username,secret FROM ws_vault ORDER BY title").fetchall()
-        items = []
-        for r in rows:
-            stored = r["secret"] or ""
-            secret_show = _unseal(stored) if (_authorized() or _cookie_ok()) else "••••"
-            if stored.startswith("enc1:") and not secret_show.startswith("••••"):
-                # Transparently migrate legacy vault data after successful decrypt.
-                c.execute("UPDATE ws_vault SET secret=? WHERE uid=?", (_seal(secret_show), r["uid"]))
-            items.append({"uid": r["uid"], "title": r["title"], "body": f"{r['username']}\n{secret_show}"})
-        c.commit()
-        title = "مدیریت رمز ورود (sealed)"
-    else:
-        items = c.execute("SELECT uid,title,body FROM ws_tasks ORDER BY last_updated DESC").fetchall()
-        title = "مدیریت کارها"
-    return render_template_string(PAGE, items=items, title=title, tab=tab)
+            elif action == "toggle" and tab == "tasks" and uid:
+                c.execute("UPDATE ws_tasks SET done=CASE WHEN done=1 THEN 0 ELSE 1 END,last_updated=? WHERE uid=?", (now, uid))
+                c.commit()
+            elif action == "toggle_favorite" and note_tab and uid:
+                c.execute("UPDATE ws_notes SET favorite=CASE WHEN favorite=1 THEN 0 ELSE 1 END,last_updated=? WHERE uid=?", (now, uid))
+                c.commit()
+            else:
+                title = (request.form.get("title") or "").strip()[:240]
+                body = (request.form.get("body") or "")[:100000]
+                username = (request.form.get("username") or "").strip()[:240]
+                category = (request.form.get("category") or "عمومی").strip()[:100] or "عمومی"
+                tags = (request.form.get("tags") or "").strip()[:500]
+                priority = (request.form.get("priority") or "normal").strip().lower()
+                if priority not in ("low", "normal", "high", "urgent"):
+                    priority = "normal"
+                due_date = (request.form.get("due_date") or "").strip()
+                if due_date:
+                    try:
+                        datetime.strptime(due_date, "%Y-%m-%d")
+                    except ValueError:
+                        due_date = ""
+                if title and tab == "tasks":
+                    if edit_uid:
+                        c.execute("UPDATE ws_tasks SET title=?,body=?,priority=?,due_date=?,category=?,last_updated=? WHERE uid=?",
+                                  (title, body, priority, due_date, category, now, edit_uid))
+                    else:
+                        c.execute("INSERT INTO ws_tasks(uid,title,body,done,last_updated,priority,due_date,category) VALUES(?,?,?,?,?,?,?,?)",
+                                  (str(uuid.uuid4()), title, body, 0, now, priority, due_date, category))
+                    c.commit()
+                elif title and note_tab:
+                    if edit_uid:
+                        c.execute("UPDATE ws_notes SET title=?,body=?,category=?,tags=?,last_updated=? WHERE uid=?",
+                                  (title, body, category, tags, now, edit_uid))
+                    else:
+                        c.execute("INSERT INTO ws_notes(uid,title,body,last_updated,category,tags,favorite) VALUES(?,?,?,?,?,?,0)",
+                                  (str(uuid.uuid4()), title, body, now, category, tags))
+                    c.commit()
+                elif title and tab == "vault":
+                    c.execute("INSERT INTO ws_vault(uid,title,username,secret,last_updated) VALUES(?,?,?,?,?)",
+                              (str(uuid.uuid4()), title, username, _seal(body), now))
+                    c.commit()
+        q = (request.args.get("q") or "").strip()[:200]
+        like = f"%{q}%"
+        if tab == "tasks":
+            title = "مدیریت کارها و پیگیری عملیات"
+            items = c.execute(
+                """SELECT uid,title,body,done,last_updated,priority,due_date,category FROM ws_tasks
+                   WHERE ?='' OR title LIKE ? OR body LIKE ? OR category LIKE ?
+                   ORDER BY done ASC, CASE priority WHEN 'urgent' THEN 0 WHEN 'high' THEN 1 WHEN 'normal' THEN 2 ELSE 3 END,
+                   CASE WHEN due_date='' THEN '9999-12-31' ELSE due_date END, last_updated DESC""",
+                (q, like, like, like),
+            ).fetchall()
+        elif note_tab:
+            title = "مدیریت دانش فنی" if tab == "knowledge" else "یادداشت‌ها و شواهد"
+            items = c.execute(
+                """SELECT uid,title,body,last_updated,category,tags,favorite FROM ws_notes
+                   WHERE ?='' OR title LIKE ? OR body LIKE ? OR tags LIKE ? OR category LIKE ?
+                   ORDER BY favorite DESC,last_updated DESC""",
+                (q, like, like, like, like),
+            ).fetchall()
+        else:
+            title = "Vault — اطلاعات حساس رمزگذاری‌شده"
+            rows = c.execute(
+                """SELECT uid,title,username,secret,last_updated FROM ws_vault
+                   WHERE ?='' OR title LIKE ? OR username LIKE ? ORDER BY title""",
+                (q, like, like),
+            ).fetchall()
+            items = []
+            for row in rows:
+                stored = row["secret"] or ""
+                secret_show = _unseal(stored) if (_authorized() or _cookie_ok()) else "••••"
+                if stored.startswith("enc1:") and not secret_show.startswith("••••"):
+                    c.execute("UPDATE ws_vault SET secret=? WHERE uid=?", (_seal(secret_show), row["uid"]))
+                items.append({"uid": row["uid"], "title": row["title"], "username": row["username"],
+                              "body": secret_show, "last_updated": row["last_updated"]})
+            c.commit()
+        return render_template_string(PAGE, items=items, title=title, tab=tab, q=q)
+    finally:
+        c.close()
+
 
 
 @bp.route("/api/workspace/export")

@@ -118,6 +118,20 @@ def main() -> None:
             if not depth.get("extra_full") or not depth.get("extra_commands") or not depth.get("extra_lab"):
                 raise SystemExit("specialty endpoint returned an incomplete teaching template")
 
+            incidents = get_json("/api/incidents")
+            if len(incidents) < 6:
+                raise SystemExit(f"expected at least 6 operational incident runbooks, got {len(incidents)}")
+            for item in incidents:
+                detail = get_json(f"/api/incidents/{item['id']}")
+                steps = detail.get("diagnostic_steps") or []
+                if len(steps) < 4:
+                    raise SystemExit(f"incident {item.get('id')} has too few diagnostic steps")
+                required = ("environment", "timeline", "initial_state", "root_cause", "fix_summary", "verification", "rollback", "prevention")
+                if any(not str(detail.get(key) or "").strip() for key in required):
+                    raise SystemExit(f"incident {item.get('id')} misses a required runbook section")
+                if any(not (step.get("commands") and step.get("expected") and step.get("if_not_match")) for step in steps):
+                    raise SystemExit(f"incident {item.get('id')} contains a step without commands/expected/branch logic")
+
             scenarios = get_json("/api/scenarios")
             if scenarios:
                 detail = get_json(f"/api/scenarios/{scenarios[0]['id']}")
@@ -130,6 +144,10 @@ def main() -> None:
             gallery = client.get("/diagrams")
             if gallery.status_code != 200:
                 raise SystemExit(f"/diagrams returned HTTP {gallery.status_code}")
+            gallery_html = gallery.get_data(as_text=True)
+            for required_ui in ('id="diagramDialog"', 'card.addEventListener("click"', 'guideFor(item)', 'zoomIn'):
+                if required_ui not in gallery_html:
+                    raise SystemExit(f"/diagrams is missing interactive/diagnostic UI feature: {required_ui}")
             diagram_index = client.get("/static/diagrams/index.json")
             if diagram_index.status_code != 200:
                 raise SystemExit(f"web diagram index returned HTTP {diagram_index.status_code}")
@@ -170,6 +188,7 @@ def main() -> None:
                 "chapter_1_levels": len(levels),
                 "first_level_lessons": len(lessons),
                 "scenarios": len(scenarios),
+                "incident_runbooks": len(incidents),
                 "search_results": len(search),
                 "web_diagrams": index["count"],
                 "infographics_compat_api": infographics["count"],

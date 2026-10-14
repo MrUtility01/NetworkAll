@@ -1,82 +1,110 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NetworkAll — گالری دیاگرام‌ها</title>
-  <style>
-    :root{color-scheme:light}
-    body{margin:0;background:#f5f7fb;color:#172033;font:15px Tahoma,Arial,sans-serif}
-    header{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid #dce3ee;padding:16px 5vw;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-    header strong{font-size:21px;color:#1d4ed8}
-    header a{color:#1d4ed8;text-decoration:none}
-    input{font:inherit;padding:10px 12px;border:1px solid #cbd5e1;border-radius:9px;min-width:220px}
-    main{max-width:1500px;margin:0 auto;padding:22px 5vw}
-    .notice{color:#64748b;margin:0 0 18px;line-height:1.9}
-    #grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-    article{background:#fff;border:1px solid #e2e8f0;border-radius:13px;overflow:hidden;box-shadow:0 2px 5px #0f172a0b}
-    article img{display:block;width:100%;height:auto;background:#f8fafc}
-    article h2{font-size:15px;line-height:1.7;margin:0;padding:12px 14px 5px}
-    article p{font-size:12px;color:#64748b;margin:0;padding:0 14px 14px}
-    #status{color:#64748b;margin:12px 0}
-  </style>
-</head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7f9fc">
+<title>NetworkAll — دیاگرام و عیب‌یابی شبکه</title>
+<style>
+:root{color-scheme:light;--bg:#f6f8fc;--panel:#fff;--text:#172033;--muted:#56657a;--line:#d9e2ee;--accent:#1d4ed8;--soft:#eaf2ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px Tahoma,Arial,sans-serif}button,input{font:inherit}
+header{position:sticky;top:0;z-index:3;background:#fffffff5;border-bottom:1px solid var(--line);padding:13px clamp(14px,3vw,42px);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;gap:3px;margin-left:auto}.brand strong{font-size:20px;color:var(--accent)}.brand span{font-size:11px;color:var(--muted)}
+header a{color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:white;font-size:12px}header input{width:min(330px,100%);padding:10px 12px;border:1px solid #bdcadd;background:#fff;color:var(--text);border-radius:10px;min-width:190px}
+main{max-width:1560px;margin:0 auto;padding:24px clamp(14px,3vw,42px) 60px}.hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(250px,.65fr);gap:18px;margin-bottom:20px}
+.hero-copy,.hero-tip{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:22px}.eyebrow{font-size:11px;font-weight:700;color:var(--accent)}
+h1{font-size:clamp(22px,2.2vw,31px);line-height:1.6;margin:7px 0 10px}.hero p{line-height:2;color:var(--muted);margin:0}.hero-tip{background:#eef5ff}.hero-tip h2{font-size:15px;margin:0 0 9px}.hero-tip ol{padding-right:20px;margin:0;line-height:2.05;font-size:13px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 14px}.filter-chip{border:1px solid var(--line);background:#fff;color:#304157;padding:8px 12px;border-radius:999px;cursor:pointer;font-size:12px}.filter-chip[aria-pressed=true]{background:#dceafe;color:#123f9c;border-color:#8cb2f5;font-weight:700}
+#status{color:var(--muted);font-size:12px;margin:10px 0 16px;line-height:1.7}#grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.diagram-card{display:block;text-align:right;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:15px;overflow:hidden;padding:0;box-shadow:0 2px 7px #1e293b0a;transition:transform .14s,border-color .14s}.diagram-card:hover,.diagram-card:focus-visible{transform:translateY(-2px);border-color:#85a9e6;outline:2px solid #d5e5ff}
+.diagram-card img{display:block;width:100%;height:225px;object-fit:contain;background:#fff;border-bottom:1px solid #edf1f6;padding:8px}.card-content{padding:13px 15px 15px}.card-content h2{font-size:15px;line-height:1.8;margin:0 0 7px}.card-content p{font-size:12px;color:var(--muted);line-height:1.8;margin:0 0 10px}.card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.chip{border-radius:999px;border:1px solid #d3dfef;background:#f2f6fc;color:#42526a;font-size:11px;padding:4px 8px}.open-hint{color:var(--accent);font-size:12px;font-weight:700}.empty{grid-column:1/-1;background:#fff;border:1px dashed var(--line);border-radius:13px;padding:24px;color:var(--muted);text-align:center}
+dialog{border:1px solid #cad5e5;border-radius:18px;padding:0;width:min(1180px,96vw);max-width:none;max-height:92vh;background:#fff;color:var(--text);box-shadow:0 28px 90px #0f172a45}dialog::backdrop{background:#0f172a99;backdrop-filter:blur(3px)}
+.modal-head{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:10px;padding:13px 17px;background:#fff;border-bottom:1px solid var(--line)}.modal-head h2{font-size:16px;line-height:1.7;margin:0;flex:1}.modal-actions{display:flex;gap:6px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;color:#243348;padding:8px 10px;border-radius:9px;cursor:pointer;text-decoration:none;font-size:12px}.btn.primary{background:var(--accent);border-color:var(--accent);color:white}
+.modal-body{padding:17px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:17px}.diagram-stage{background:#f8fafc;border:1px solid var(--line);border-radius:13px;overflow:auto;min-height:300px;padding:12px;display:flex;align-items:flex-start;justify-content:center}#largeDiagram{max-width:none;width:100%;height:auto}
+.caption{font-size:12px;color:var(--muted);line-height:1.9;margin-top:9px}.guide-panel{min-width:0}.guide-panel h3{margin:0 0 8px;font-size:16px}.guide-intro{background:#f2f6fd;padding:12px;border-radius:10px;font-size:13px;line-height:1.9;color:#334155;margin-bottom:12px}
+.guide-step{border:1px solid var(--line);border-radius:11px;padding:12px;margin:9px 0;background:#fff}.step-title{display:flex;gap:8px;align-items:flex-start;font-size:13px;font-weight:700;line-height:1.8}.number{display:inline-grid;place-items:center;flex:0 0 26px;width:26px;height:26px;background:var(--soft);color:#17439e;border-radius:8px}
+.guide-step p{font-size:12px;line-height:1.9;color:#475569;margin:7px 0}.cmd{direction:ltr;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;background:#101d32;color:#e2eeff;padding:10px 12px;border-radius:9px;font:12px/1.8 Consolas,monospace;margin:8px 0}.step-label{font-size:11px;font-weight:700;color:#34445b;margin-top:8px}.expected{background:#f0fdf4;border-right:3px solid #16a34a;padding:8px 10px;border-radius:6px;color:#14532d}.branch{background:#fff7ed;border-right:3px solid #f59e0b;padding:8px 10px;border-radius:6px;color:#7c2d12}
+.modal-foot{border-top:1px solid var(--line);padding:12px 17px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;color:var(--muted);font-size:11px}.notice{border:1px solid #f1d49a;background:#fffbeb;color:#854d0e;padding:10px 12px;border-radius:10px;line-height:1.9;font-size:12px;margin-top:11px}
+@media(max-width:860px){.hero{grid-template-columns:1fr}.modal-body{grid-template-columns:1fr}.diagram-stage{min-height:220px}.diagram-card img{height:190px}}@media(max-width:480px){header .brand{width:100%}header input{flex:1;min-width:0;width:100%}.modal-body{padding:10px}.modal-actions .btn{padding:7px}.diagram-stage{padding:4px}}
+</style></head>
 <body>
 <header>
-  <strong>NetworkAll</strong>
-  <span>گالری دیاگرام‌های فنی</span>
-  <input id="filter" type="search" placeholder="جستجو بر اساس موضوع یا عنوان" aria-label="جستجو در دیاگرام‌ها">
-  <a href="/">بازگشت به دانشنامه</a>
+<div class="brand"><strong>NetworkAll</strong><span>دیاگرام‌های قابل بازکردن + راهنمای عیب‌یابی</span></div>
+<input id="filter" type="search" placeholder="جستجو: VLAN، DNS، OSPF، VPN، TCP…" aria-label="جستجو در دیاگرام‌ها">
+<a href="/?view=incidents">سناریوهای واقعی</a><a href="/?view=quiz">مرکز آزمون</a><a href="/workspace?tab=tasks">مدیریت کارها</a><a href="/workspace?tab=knowledge">مدیریت دانش</a><a href="/">خانه</a>
 </header>
 <main>
-  <p class="notice">مجموعهٔ مشترک دیاگرام‌های SVG: کتابخانهٔ مرجع شبکه و نمودارهای اختصاصی فصل‌های تکمیل‌شده؛ محتوای آموزشی با مستند رسمی فناوری تطبیق داده شود.</p>
-  <p id="status" role="status">در حال بارگذاری فهرست دیاگرام‌ها…</p>
-  <section id="grid" aria-label="دیاگرام‌های آموزشی"></section>
+<section class="hero"><div class="hero-copy"><div class="eyebrow">LEARN BY OBSERVING THE PACKET</div><h1>ببین بسته دقیقاً کجا گیر می‌کند</h1><p>روی هر دیاگرام کلیک کن تا تصویر بزرگ، توضیح مسیر، فرمان‌های Verify، خروجی مورد انتظار و شاخهٔ تصمیم بعدی را ببینی. هدف حفظ‌کردن فرمان نیست؛ باید از شاهد به علت برسیم و بعد تغییر کنترل‌شده انجام بدهیم.</p></div>
+<aside class="hero-tip"><h2>الگوی ثابت عیب‌یابی</h2><ol><li>علائم و دامنهٔ خرابی را ثبت کن.</li><li>از نزدیک‌ترین نقطه به کاربر شروع کن.</li><li>هر بار یک فرضیه را با شاهد تست کن.</li><li>قبل از تغییر، وضعیت و راه برگشت را ذخیره کن.</li><li>پس از اصلاح، control-plane و data-plane را Verify کن.</li></ol></aside></section>
+<div class="toolbar" id="categories" aria-label="فیلتر حوزهٔ دیاگرام"></div><p id="status" role="status">در حال بارگذاری فهرست دیاگرام‌ها…</p><section id="grid" aria-label="دیاگرام‌های آموزشی"></section>
 </main>
+<dialog id="diagramDialog" aria-labelledby="dialogTitle">
+<div class="modal-head"><h2 id="dialogTitle">دیاگرام</h2><div class="modal-actions"><button class="btn" id="zoomOut" type="button" aria-label="کوچک‌نمایی">−</button><button class="btn" id="zoomReset" type="button">اندازهٔ مناسب</button><button class="btn" id="zoomIn" type="button" aria-label="بزرگ‌نمایی">+</button><a class="btn" id="openRaw" target="_blank" rel="noopener">SVG جداگانه</a><button class="btn primary" id="closeDialog" type="button">بستن</button></div></div>
+<div class="modal-body"><section><div class="diagram-stage"><img id="largeDiagram" alt=""></div><div id="diagramCaption" class="caption"></div><div class="notice">فرمان‌های زیر ابتدا برای مشاهده و جمع‌آوری شواهد هستند. در محیط عملیاتی، قبل از هر تغییر مجوز، Backup و Rollback مشخص داشته باش.</div></section><section class="guide-panel"><h3>نقشهٔ عیب‌یابی متصل به این موضوع</h3><div id="guideIntro" class="guide-intro"></div><div id="guideSteps"></div><a href="/?view=incidents" class="btn primary">رفتن به سناریوی واقعی مرحله‌به‌مرحله</a></section></div>
+<div class="modal-foot"><span id="modalMeta"></span><span>نمونه‌خروجی‌ها راهنمای تشخیص‌اند؛ خروجی واقعی دستگاه مرجع است.</span></div>
+</dialog>
 <script>
-(() => {
-  const grid = document.getElementById("grid");
-  const filter = document.getElementById("filter");
-  const status = document.getElementById("status");
-  let entries = [];
-  const render = () => {
-    const q = filter.value.trim().toLocaleLowerCase();
-    grid.replaceChildren();
-    const shown = entries.filter(item =>
-      String(item.title_fa || "").toLocaleLowerCase().includes(q) ||
-      String(item.collection || "").toLocaleLowerCase().includes(q)
-    );
-    for (const item of shown) {
-      if (!/^(?:ch\d{2}\/)?[A-Za-z0-9_-]+\.svg$/.test(String(item.asset || ""))) continue;
-      const card = document.createElement("article");
-      const img = document.createElement("img");
-      img.loading = "lazy";
-      img.alt = String(item.title_fa || "دیاگرام NetworkAll");
-      img.src = "/static/diagrams/" + item.asset;
-      const title = document.createElement("h2");
-      title.textContent = String(item.title_fa || "");
-      const caption = document.createElement("p");
-      caption.textContent = String(item.collection || "NetworkAll") + " · " + String(item.id || "");
-      card.append(img, title, caption);
-      grid.appendChild(card);
-    }
-    status.textContent = shown.length + " مورد از " + entries.length + " دیاگرام";
-  };
-  const loadIndex = (url) => fetch(url, {cache: "no-store"}).then(response => {
-    if (!response.ok) throw new Error("HTTP " + response.status);
-    return response.json();
-  });
-  loadIndex("/static/diagrams/combined_index.json")
-    .catch(() => loadIndex("/static/diagrams/index.json"))
-    .then(data => {
-      entries = Array.isArray(data.diagrams) ? data.diagrams : [];
-      render();
-    })
-    .catch(error => {
-      status.textContent = "فهرست دیاگرام بارگذاری نشد: " + error.message;
-    });
-  filter.addEventListener("input", render);
+(function(){
+const grid=document.getElementById("grid"),filter=document.getElementById("filter"),status=document.getElementById("status"),categories=document.getElementById("categories"),dialog=document.getElementById("diagramDialog");
+const titleEl=document.getElementById("dialogTitle"),largeDiagram=document.getElementById("largeDiagram"),guideIntro=document.getElementById("guideIntro"),guideSteps=document.getElementById("guideSteps"),rawLink=document.getElementById("openRaw");
+let entries=[],activeCategory="all",zoom=100;
+const categoryDefs=[{id:"all",label:"همهٔ دیاگرام‌ها"},{id:"packet",label:"مسیر پکت / TCP-IP"},{id:"switching",label:"Switching / VLAN"},{id:"routing",label:"Routing / OSPF / BGP"},{id:"dns",label:"DNS / DHCP"},{id:"security",label:"Firewall / VPN"},{id:"wireless",label:"Wi-Fi"}];
+const esc=function(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");};
+const textOf=function(item){return [item.title_fa,item.collection,item.alt_fa,item.id,item.asset].join(" ").toLocaleLowerCase();};
+function categoryOf(item){const s=textOf(item);if(/wifi|wireless|وای.?فای|بی.?سیم|roam|ssid/.test(s))return "wireless";if(/dns|dhcp|resolver|dora|domain|نام دامنه|آدرس.?دهی/.test(s))return "dns";if(/vpn|ipsec|firewall|forti|acl|nat|فایروال|تونل/.test(s))return "security";if(/ospf|bgp|route|routing|مسیریابی|gateway|mpls|rip|eigrp/.test(s))return "routing";if(/vlan|trunk|switch|stp|etherchannel|سوئیچ|لایه.?۲/.test(s))return "switching";if(/tcp|udp|icmp|arp|packet|پکت|encapsulation|handshake|mtu|osi|شبکه/.test(s))return "packet";return "all";}
+function guideFor(item){
+const s=textOf(item);
+if(/dns|domain|resolver|نام دامنه/.test(s))return {intro:"اول مشخص کن مشکل resolution است یا ارتباط IP. DNS فقط وقتی مقصر است که درخواست نام شکست بخورد و مسیر IP و DNS server قابل‌دسترسی باشند.",steps:[
+["۱. مسیر IP","از همان کلاینت Gateway و یک IP معلوم را تست کن.","ipconfig /all\nping <default-gateway>\nping <known-public-IP>","IP و Gateway صحیح و IP مقصد پاسخ می‌دهد.","اگر IP هم قطع است، DNS را متهم نکن؛ اتصال، Route و Firewall را بررسی کن."],
+["۲. پرس‌وجوی DNS","Resolver مؤثر و پاسخ را مقایسه کن.","Resolve-DnsName example.com\nResolve-DnsName example.com -Server <dns-server>","پاسخ A/AAAA و Server پاسخ‌دهنده معلوم است.","اگر فقط DNS مشخص جواب می‌دهد، Resolver کلاینت/VPN/DHCP را مقایسه کن؛ اگر هر دو شکست خوردند، reachability و سرویس DNS را بررسی کن."],
+["۳. رکورد داخلی / SRV","برای AD، نام عمومی کافی نیست.","Resolve-DnsName _ldap._tcp.dc._msdcs.<domain> -Type SRV -Server <internal-dns>","SRV مربوط به Domain Controller برمی‌گردد.","اگر فقط SRV داخلی شکست می‌خورد، zone/replication/Netlogon و DNS داخلی را بررسی کن."],
+["۴. Verify","منبع DNS را اصلاح کن و سرویس واقعی را تست کن.","ipconfig /flushdns\nnslookup <name>\nTest-NetConnection <host> -Port <port>","نام به IP موردانتظار resolve و اتصال پورت برنامه برقرار است.","اگر DNS صحیح است ولی پورت شکست می‌خورد، سراغ Firewall/Route/Application برو."]]};
+if(/dhcp|dora|address|آدرس.?دهی/.test(s))return {intro:"اتصال Wi-Fi یا Link Up به معنای IP معتبر نیست. مشخص کن DORA (Discover, Offer, Request, ACK) در کدام مرحله قطع می‌شود.",steps:[
+["۱. کلاینت","IP، Mask، Gateway و DNS را بخوان.","ipconfig /all\nipconfig /release\nipconfig /renew","Lease معتبر از subnet درست دریافت می‌شود.","169.254.x.x یا renew failure یعنی DHCP/مسیرش را بررسی کن؛ هنوز NAT را عوض نکن."],
+["۲. Scope","ظرفیت و leaseها را از سرور بخوان.","Get-DhcpServerv4ScopeStatistics -ComputerName <DHCP>\nGet-DhcpServerv4Lease -ComputerName <DHCP> -ScopeId <subnet>","Scope فعال و IP آزاد وجود دارد.","اگر Scope پر است ظرفیت را با IPAM افزایش بده؛ اگر آزاد است، relay/VLAN/server را بررسی کن."],
+["۳. DORA","Capture مشخص کن کدام پیام گم می‌شود.","Wireshark filter: bootp\nRouterOS: /tool sniffer quick interface=<vlan-if> port=67,68","Discover به Scope می‌رسد و Offer/ACK برمی‌گردد.","Discover بدون Offer: scope/server/policy؛ Discover نمی‌رسد: VLAN/relay/ACL؛ ACK نادرست: options/overlap."],
+["۴. بعد از Lease","Gateway و DNS را تست کن.","ping <gateway>\nResolve-DnsName <internal-name>","IP، Gateway و DNS درست‌اند.","Lease موفق ولی اینترنت ناموفق یعنی routing/policy/NAT یک مرحلهٔ جداست."]]};
+if(/vlan|trunk|switch|stp|etherchannel|802.?1q|سوئیچ/.test(s))return {intro:"پینگ ناموفق به‌تنهایی اثبات خرابی VLAN نیست. پورت کاربر، VLAN database، Tag روی trunk، STP و SVI را به همین ترتیب بررسی کن.",steps:[
+["۱. لینک و پورت","وضعیت فیزیکی و error counter را ببین.","show interfaces status\nshow interfaces <interface>","پورت up/up و بدون افزایش error/drop غیرعادی است.","اگر Down است، کابل/optic/speed/duplex را بررسی کن؛ هنوز به L3 نرو."],
+["۲. VLAN و Access","عضویت کلاینت را روی سوئیچ همان کلاینت تأیید کن.","show vlan brief\nshow interfaces <interface> switchport","Access VLAN با subnet طراحی سازگار است.","اگر VLAN وجود ندارد یا پورت عضو غلط است، علت در Access/VLAN database است."],
+["۳. Trunk و STP","دو سر لینک را مقایسه کن.","show interfaces trunk\nshow spanning-tree vlan <id>\nshow etherchannel summary","VLAN مجاز و active و در STP forwarding است؛ Port-channel سالم است.","VLAN در allowed list نیست: allow-list؛ مجاز اما non-forwarding: STP/EtherChannel/loop."],
+["۴. SVI و مسیر","Gateway و ARP را بررسی کن.","show ip interface brief\nshow ip arp <client-ip>\nshow ip route <destination>","SVI up/up و ARP/MAC در محل درست است.","اگر L2 درست است اما Gateway جواب نمی‌دهد، SVI/ACL/VRF و return path را بررسی کن."],
+["۵. Verify","از کلاینت تست کن و VLANهای سالم را هم کنترل کن.","ping <gateway>\nshow mac address-table vlan <id>\nshow interfaces trunk","Gateway و برنامهٔ واقعی پاسخ می‌دهند.","اگر اثر جانبی است، baseline همان Change را برگردان."]]};
+if(/ospf|bgp|route|routing|mpls|gateway|مسیریابی|مسیر/.test(s))return {intro:"همسایهٔ Routing سالم لزوماً عبور بسته را ثابت نمی‌کند. Adjacency، RIB، FIB/CEF، ACL و مسیر برگشت را جداگانه ثابت کن.",steps:[
+["۱. Interface و Neighbor","پایه و وضعیت adjacency را ببین.","show ip interface brief\nshow ip ospf neighbor\nshow ip bgp summary","Interface سالم؛ OSPF در FULL یا BGP در Established طبق طراحی است.","Adjacency پایین: Area/ASN/auth/timer/MTU/ACL را با log بررسی کن."],
+["۲. Route منتخب","مسیر دقیق مقصد را بخوان.","show ip route <destination>\nshow ip protocols\nshow ip bgp <prefix>","Best route و next-hop مطابق طراحی است.","Route غایب: advertisement/filter; route اشتباه: policy/distance/longest-prefix match."],
+["۳. Forwarding","FIB/CEF، ACL و interface counter را ببین.","show ip cef <destination> detail\nshow ip access-lists\nshow interfaces counters errors","FIB به next-hop درست اشاره می‌کند و ACL علت drop را نشان نمی‌دهد.","RIB درست ولی forwarding خراب: adjacency/ARP/CEF/ACL را با شواهد دنبال کن."],
+["۴. MTU و Return path","Trace و probe کنترل‌شده بگیر.","traceroute <destination>\nping <destination> size <size> df-bit","مسیر رفت/برگشت و MTU با طراحی سازگار است.","SYN خارج بدون پاسخ: return path/policy/service؛ HTTPS نیمه‌باز: MTU/PMTUD را بررسی کن."],
+["۵. End-to-End","از منبع کاربر تا پورت برنامه تست کن.","Test-NetConnection <host> -Port <port>\nshow ip route <destination>","Route و پورت برنامه پاسخ می‌دهند.","Adjacency را با سلامت برنامه یکی نگیر؛ محل drop را در دو سمت capture کن."]]};
+if(/vpn|ipsec|tunnel|تونل/.test(s))return {intro:"IKE Phase 1 UP فقط control-plane را نشان می‌دهد. Phase 2/SA، route، selectors، policy، NAT و return path را با جریان واقعی بررسی کن.",steps:[
+["۱. تست با IP مشخص","یک client/server و timestamp ثابت انتخاب کن.","ping <remote-host> source <local-host>\ntraceroute <remote-host>","تست از مبدأ مشخص تکرارپذیر است.","اگر فقط یک پورت خراب است، سرویس و Firewall می‌تواند علت باشد؛ scope را تعمیم نده."],
+["۲. SA و Counter","Phase1/Phase2 و شمارنده‌ها را بخوان.","get vpn ipsec tunnel summary\ndiagnose vpn tunnel list name <tunnel>","SAهای موردنیاز هستند و هنگام تست counter تغییر می‌کند.","IKE UP ولی counter ثابت/یکطرفه: selector/route/policy/NAT/return path."],
+["۳. Route و Policy","lookup مقصد، Rule و NAT را بررسی کن.","get router info routing-table details <remote-subnet>\nshow firewall policy\nshow firewall central-snat-map","Route به tunnel و policy مورد انتظار match می‌شود.","Route به WAN: static route/SD-WAN؛ policy miss: rule order/address/service؛ source NAT: selector/NAT exemption."],
+["۴. Capture","محل ناپدیدشدن packet را بیاب.","diagnose sniffer packet any 'host <local-ip> and host <remote-ip>' 4 20","Packet از LAN وارد و از تونل خارج می‌شود؛ پاسخ برمی‌گردد.","قبل tunnel دیده می‌شود ولی بعد نه: route/policy/selector؛ پاسخ نیست: remote ACL/return route/service."],
+["۵. بعد از Fix","پورت برنامه و شمارندهٔ دو جهت را دوباره تست کن.","Test-NetConnection <remote-host> -Port <port>\ndiagnose vpn tunnel list name <tunnel>","اتصال واقعی برقرار و counters در دو جهت افزایش می‌یابد.","Debug را پس از جمع‌آوری شواهد خاموش کن و نتیجه را ثبت کن."]]};
+if(/wifi|wireless|ssid|roam|وای.?فای|بی.?سیم/.test(s))return {intro:"وصل بودن به SSID فقط Association را اثبات می‌کند. مسیر را RF/Auth → VLAN → DHCP → Gateway → DNS → TCP/App دنبال کن.",steps:[
+["۱. RF و Association","SSID، BSSID، RSSI، retry و Authentication را ببین.","netsh wlan show interfaces\nnetsh wlan show wlanreport","کلاینت به AP درست وصل است و retry غیرعادی ندارد.","Association/auth fail: RF، WPA/EAP، RADIUS و roaming."],
+["۲. DHCP/VLAN","IP و Scope را ثبت کن.","ipconfig /all\nipconfig /renew","IP از subnet موردانتظار SSID است.","169.254 یا renew failure: Scope/VLAN/relay/DORA؛ subnet غلط: SSID mapping/trunk."],
+["۳. Gateway و DNS","IP و نام را جدا تست کن.","ping <gateway>\nTest-NetConnection <dns> -Port 53\nResolve-DnsName example.com","Gateway و DNS قابل‌دسترسی هستند.","Gateway fail: VLAN/client isolation/ACL؛ IP OK ولی name fail: DNS/Private DNS/VPN."],
+["۴. برنامه/roaming","پورت برنامه و قطع هنگام جابه‌جایی را تست کن.","Test-NetConnection <app-host> -Port <port>\nnetsh wlan show interfaces","برنامه پاسخ می‌دهد و roaming بدون قطع ناموجه است.","فقط برنامه fail: policy/app؛ فقط هنگام حرکت: RF/channel/power/roaming policy."]]};
+if(/nat|firewall|forti|acl|فایروال/.test(s))return {intro:"ترتیب مشاهده: packet ingress → route lookup → policy match → NAT → session → egress → response. وجود Session یا Rule به‌تنهایی اثبات سلامت جریان نیست.",steps:[
+["۱. Tuple را ثابت کن","Source/Destination IP، Protocol، Port و زمان را بنویس.","Test-NetConnection <destination> -Port <port>\ntraceroute <destination>","تست دقیق و تکرارپذیر است.","اگر tuple یا source اشتباه است، اول دامنه را درست کن."],
+["۲. Route lookup","تصمیم routing را قبل از حدس زدن policy ببین.","get router info routing-table details <destination>","Egress/next-hop طبق طراحی است.","Route اشتباه را از policy اشتباه جدا کن."],
+["۳. Policy و Session","Rule hit، deny log و session state را بخوان.","show firewall policy\ndiagnose sys session list","Rule درست match و session برای tuple ساخته می‌شود.","No match/deny: interface/address/service/order/log را بررسی کن."],
+["۴. NAT و Capture","ترجمه و برگشت را ثابت کن.","diagnose sniffer packet any 'host <source-ip>' 4 20","Egress و NAT address درست‌اند؛ response برمی‌گردد.","Egress بدون پاسخ: upstream/return route؛ NAT miss: شرط/ترتیب Rule؛ ingress ندارد: upstream."],
+["۵. Verify","تغییر حداقلی و تست دوباره.","show firewall policy\nTest-NetConnection <destination> -Port <port>","اتصال واقعی برقرار است و counter drop غیرمنتظره بالا نمی‌رود.","پیش از تغییر baseline بگیر و در اثر جانبی rollback کن."]]};
+return {intro:"مسیر پکت را از لایهٔ کاربر تا برنامه جلو برو. هر مرحله باید یک شاهد قابل مشاهده داشته باشد؛ ping تنها کافی نیست.",steps:[
+["۱. Transport/Application","یک مقصد و پورت مشخص تعریف کن.","Test-NetConnection <server> -Port <port>\ncurl -v https://<host>/","TCP handshake یا پاسخ HTTP معتبر است.","SYN/RST/timeout و listener سرویس را جدا بررسی کن."],
+["۲. DNS","نام را مستقل resolve کن.","Resolve-DnsName <host>\nnslookup <host>","IP مورد انتظار برگردد.","DNS fail: resolver/zone/cache؛ IP درست: ادامه بده."],
+["۳. Gateway/Route/ARP","شبکه محلی و next-hop را بررسی کن.","ipconfig /all\narp -a\ntracert <destination>","Gateway صحیح و مسیر قابل مشاهده است.","عدم ARP: VLAN/Access؛ route اشتباه: routing/VRF؛ trace ممکن است صرفاً ICMP-filtered باشد."],
+["۴. Firewall/NAT/MTU","Rule، session، ترجمه و DF probe را بررسی کن.","show ip route <destination>\nshow access-lists\nping <destination> size 1472 df-bit","Policy/NAT match می‌شوند و MTU مناسب است.","SYN بدون پاسخ: return path/policy/service؛ اتصال کوچک OK و HTTPS نیمه‌باز: PMTUD/MTU."],
+["۵. Capture و علت","دو سوی مرز مشکل capture بگیر و یک فرضیه را تست کن.","Wireshark: tcp.flags.syn == 1\nWireshark: tcp.analysis.retransmission","محل اولین تفاوت packet مورد انتظار و مشاهده‌شده پیدا می‌شود.","بدون trace/counter/log فقط فرضیه داری؛ Change و Rollback را ثبت کن."]]};
+}
+function renderCategories(){categories.replaceChildren();categoryDefs.forEach(function(item){const btn=document.createElement("button");btn.type="button";btn.className="filter-chip";btn.textContent=item.label;btn.setAttribute("aria-pressed",String(item.id===activeCategory));btn.addEventListener("click",function(){activeCategory=item.id;renderCategories();render();});categories.appendChild(btn);});}
+function render(){const q=filter.value.trim().toLocaleLowerCase();grid.replaceChildren();const shown=entries.filter(function(item){const hit=!q||textOf(item).includes(q),cat=categoryOf(item);return hit&&(activeCategory==="all"||cat===activeCategory||(activeCategory==="packet"&&cat==="all"));});if(!shown.length){const empty=document.createElement("div");empty.className="empty";empty.textContent="موردی پیدا نشد؛ فیلتر را پاک کن یا نام انگلیسی پروتکل را جستجو کن.";grid.appendChild(empty);}shown.forEach(function(item){const asset=String(item.asset||"");if(!/^(?:ch\d{2}\/)?[A-Za-z0-9_-]+\.svg$/.test(asset))return;const card=document.createElement("button");card.type="button";card.className="diagram-card";const img=document.createElement("img");img.loading="lazy";img.alt=String(item.title_fa||"NetworkAll");img.src="/static/diagrams/"+asset;img.onerror=function(){img.alt="فایل تصویر در سرور پیدا نشد";};const content=document.createElement("div");content.className="card-content";const title=document.createElement("h2");title.textContent=String(item.title_fa||"دیاگرام بدون عنوان");const desc=document.createElement("p");desc.textContent=String(item.alt_fa||"برای بازکردن تصویر بزرگ و راهنمای عیب‌یابی کلیک کن.");const footer=document.createElement("div");footer.className="card-footer";const chip=document.createElement("span");chip.className="chip";chip.textContent=String(item.collection||"دیاگرام فنی");const open=document.createElement("span");open.className="open-hint";open.textContent="بازکردن + راهنمای عیب‌یابی ←";footer.append(chip,open);content.append(title,desc,footer);card.append(img,content);card.addEventListener("click",function(){openDiagram(item);});grid.appendChild(card);});status.textContent=String(shown.length)+" دیاگرام نمایش داده می‌شود از "+String(entries.length)+" مورد؛ روی کارت کلیک کن تا تصویر و Runbook باز شود.";}
+function openDiagram(item){const asset=String(item.asset||"");if(!/^(?:ch\d{2}\/)?[A-Za-z0-9_-]+\.svg$/.test(asset))return;const url="/static/diagrams/"+asset;titleEl.textContent=String(item.title_fa||"دیاگرام");largeDiagram.alt=String(item.alt_fa||item.title_fa||"دیاگرام شبکه");largeDiagram.src=url;zoom=100;largeDiagram.style.width=zoom+"%";rawLink.href=url;document.getElementById("diagramCaption").textContent=String(item.alt_fa||"شرح بیشتر برای این نمودار ثبت نشده است.")+" · فایل: "+asset;document.getElementById("modalMeta").textContent=String(item.collection||"NetworkAll")+" · شناسه: "+String(item.id||"—")+" · منبع: "+String(item.source_status||"نیازمند بازبینی");const guide=guideFor(item);guideIntro.textContent=guide.intro;guideSteps.replaceChildren();guide.steps.forEach(function(step,index){const el=document.createElement("article");el.className="guide-step";const title=document.createElement("div");title.className="step-title";const number=document.createElement("span");number.className="number";number.textContent=String(index+1);const titleText=document.createElement("span");titleText.textContent=step[0];title.append(number,titleText);const purpose=document.createElement("p");purpose.textContent=step[1];const cmdLabel=document.createElement("div");cmdLabel.className="step-label";cmdLabel.textContent="فرمان / ابزار مشاهده";const cmd=document.createElement("pre");cmd.className="cmd";cmd.textContent=step[2];const expectedLabel=document.createElement("div");expectedLabel.className="step-label";expectedLabel.textContent="شاهد مورد انتظار";const expected=document.createElement("div");expected.className="expected";expected.textContent=step[3];const branchLabel=document.createElement("div");branchLabel.className="step-label";branchLabel.textContent="اگر نتیجه فرق داشت";const branch=document.createElement("div");branch.className="branch";branch.textContent=step[4];el.append(title,purpose,cmdLabel,cmd,expectedLabel,expected,branchLabel,branch);guideSteps.appendChild(el);});if(typeof dialog.showModal==="function")dialog.showModal();else dialog.setAttribute("open","");}
+function closeDialog(){if(typeof dialog.close==="function")dialog.close();else dialog.removeAttribute("open");}
+document.getElementById("closeDialog").addEventListener("click",closeDialog);dialog.addEventListener("click",function(event){if(event.target===dialog)closeDialog();});document.addEventListener("keydown",function(event){if(event.key==="Escape"&&dialog.open)closeDialog();});
+document.getElementById("zoomIn").addEventListener("click",function(){zoom=Math.min(240,zoom+20);largeDiagram.style.width=zoom+"%";});document.getElementById("zoomOut").addEventListener("click",function(){zoom=Math.max(40,zoom-20);largeDiagram.style.width=zoom+"%";});document.getElementById("zoomReset").addEventListener("click",function(){zoom=100;largeDiagram.style.width=zoom+"%";});
+const loadIndex=function(url){return fetch(url,{cache:"no-store"}).then(function(response){if(!response.ok)throw new Error("HTTP "+response.status);return response.json();});};renderCategories();loadIndex("/static/diagrams/combined_index.json").catch(function(){return loadIndex("/static/diagrams/index.json");}).then(function(data){entries=Array.isArray(data.diagrams)?data.diagrams:[];render();}).catch(function(error){status.textContent="فهرست دیاگرام بارگذاری نشد: "+error.message+" — اجرای generate_android_diagrams.py و وجود combined_index.json را بررسی کن.";});filter.addEventListener("input",render);
 })();
 </script>
-</body>
-</html>
+</body></html>
