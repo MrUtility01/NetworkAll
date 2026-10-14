@@ -100,17 +100,9 @@ def ensure_chapters_1_to_68(curriculum: list) -> list:
             levels,
         )
 
-    # Shared curriculum overlays for chapters 60-68; used by Windows and Android.
-    overlay_paths = [
-        ROOT / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json",
-        ROOT / "tools" / "packs" / "ch60_68" / "chapter_60_68_validation_pack.json",
-        ROOT / "tools" / "packs" / "ch60_68" / "ch60_68_ch60_pack.json",
-        ROOT / "tools" / "packs" / "ch60_68" / "ch60_68_ch61_63_pack.json",
-        ROOT / "tools" / "packs" / "ch60_68" / "ch60_68_ch64_68_pack.json",
-        ROOT / "tools" / "packs" / "ch60_68" / "ch60_68_enrichment_pack.json",
-    ]
-    # Include additive per-chapter overlays so Windows and Android use the same lessons.
-    overlay_paths += sorted((ROOT / "tools" / "packs" / "ch60_68").glob("ch60_68_supplement_ch*_pack.json"))
+    # Load every shared chapter 60-68 content pack, including future add-on packs.
+    # The same glob is used by validation and the Windows SQLite importer.
+    overlay_paths = sorted((ROOT / "tools" / "packs" / "ch60_68").glob("*pack*.json"))
     for overlay_path in overlay_paths:
         try:
             overlay = json.loads(overlay_path.read_text(encoding="utf-8"))
