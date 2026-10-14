@@ -38,7 +38,7 @@ def _shared_ch60_68_overlay(title_fa: str) -> Dict[str, Any] | None:
                         "full_content": item.get("full_content") or "",
                         "commands": item.get("commands") or "",
                         "examples": item.get("examples") or "",
-                        "notes": item.get("notes") or "",
+                        "notes": (item.get("notes") or "") + (("\n\n<!-- EJ_ASSESSMENT\n" + json.dumps((item.get("meta") or {}).get("assessment"), ensure_ascii=False) + "\n-->\n") if (item.get("meta") or {}).get("assessment") else ""),
                     }
                     for item in data.get("lessons", [])
                     if item.get("title_fa")

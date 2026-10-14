@@ -204,6 +204,12 @@ def apply_fields(les, src):
     for k in ("summary", "full_content", "commands", "examples", "notes"):
         if src.get(k):
             les[k] = as_text(src.get(k)) if k != "full_content" else (src.get(k) or "")
+    assessment = (src.get("meta") or {}).get("assessment")
+    notes = as_text(src.get("notes"))
+    if assessment and "EJ_ASSESSMENT" not in notes:
+        notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n-->\n"
+    if notes:
+        les["notes"] = notes
 
 
 def merge_by_title(data, lessons):

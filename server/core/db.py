@@ -228,12 +228,17 @@ class WebDB:
                     "SELECT id,full_content FROM lessons WHERE level_id=? AND title_fa=? LIMIT 1",
                     (level_id, title),
                 ).fetchone()
-                meta = json.dumps(item.get("meta") or {}, ensure_ascii=False)
+                meta_obj = item.get("meta") or {}
+                meta = json.dumps(meta_obj, ensure_ascii=False)
+                notes = item.get("notes") or ""
+                assessment = meta_obj.get("assessment")
+                if assessment and "EJ_ASSESSMENT" not in notes:
+                    notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n-->\n"
                 values = (
                     item.get("title_en") or "", "chapter-" + str(order),
                     item.get("summary") or "", item.get("full_content") or "",
                     item.get("commands") or "", item.get("examples") or "",
-                    item.get("notes") or "", meta, " ".join([
+                    notes, meta, " ".join([
                         title, str(item.get("topic") or ""), str(item.get("commands") or ""),
                         str(item.get("summary") or "")
                     ]),

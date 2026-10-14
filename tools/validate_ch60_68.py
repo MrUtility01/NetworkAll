@@ -46,6 +46,7 @@ def main():
     sample=lessons[len(lessons)//2]
     got=build_rich_lesson(sample["title_fa"],sample["title_en"],sample["level"])
     assert got.get("full_content")==sample["full_content"], "shared content overlay mismatch"
+    assert "EJ_ASSESSMENT" in (got.get("notes") or ""), "shared quiz assessment not exposed to clients"
     # Windows/Flask migration smoke test: inserts missing lessons without destructive reseed.
     import tempfile
     from core.db import WebDB
