@@ -21,7 +21,7 @@ _CH60_68_OVERLAY_CACHE: Dict[str, Dict[str, Any]] | None = None
 
 
 def _shared_ch60_68_overlay(title_fa: str) -> Dict[str, Any] | None:
-    """Return a cached reviewed-pack lesson payload shared by Windows and Android export."""
+    """Return shared reviewed-pack lesson content for Windows and Android export."""
     global _CH60_68_OVERLAY_CACHE
     if _CH60_68_OVERLAY_CACHE is None:
         _CH60_68_OVERLAY_CACHE = {}
@@ -29,22 +29,35 @@ def _shared_ch60_68_overlay(title_fa: str) -> Dict[str, Any] | None:
             from pathlib import Path
             import json
             root = Path(__file__).resolve().parents[2]
-            path = root / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json"
-            if path.is_file():
+            paths = [
+                root / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json",
+                root / "tools" / "packs" / "ch60_68" / "chapter_60_68_validation_pack.json",
+            ]
+            for path in paths:
+                if not path.is_file():
+                    continue
                 data = json.loads(path.read_text(encoding="utf-8"))
-                _CH60_68_OVERLAY_CACHE = {
-                    item.get("title_fa"): {
+                for item in data.get("lessons", []):
+                    title = item.get("title_fa")
+                    if not title:
+                        continue
+                    assessment = (item.get("meta") or {}).get("assessment")
+                    notes = item.get("notes") or ""
+                    if assessment and "EJ_ASSESSMENT" not in notes:
+                        marker = chr(60) + chr(33) + chr(45) + chr(45)
+                        notes += "\n\n" + marker + " EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n" + marker + chr(62) + "\n"
+                    candidate = {
                         "summary": item.get("summary") or "",
                         "full_content": item.get("full_content") or "",
                         "commands": item.get("commands") or "",
                         "examples": item.get("examples") or "",
-                        "notes": (item.get("notes") or "") + (("\n\n<!-- EJ_ASSESSMENT\n" + json.dumps((item.get("meta") or {}).get("assessment"), ensure_ascii=False) + "\n-->\n") if (item.get("meta") or {}).get("assessment") else ""),
+                        "notes": notes,
                     }
-                    for item in data.get("lessons", [])
-                    if item.get("title_fa")
-                }
+                    current = _CH60_68_OVERLAY_CACHE.get(title)
+                    if not current or len(candidate["full_content"]) > len(current.get("full_content") or ""):
+                        _CH60_68_OVERLAY_CACHE[title] = candidate
         except (OSError, ValueError, TypeError):
-            _CH60_68_OVERLAY_CACHE = {}
+            pass
     return _CH60_68_OVERLAY_CACHE.get(title_fa)
 
 
