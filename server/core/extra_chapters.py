@@ -104,6 +104,9 @@ def ensure_chapters_1_to_68(curriculum: list) -> list:
     overlay_paths = [
         ROOT / "tools" / "packs" / "ch60_68" / "chapter_60_68_deep_pack.json",
         ROOT / "tools" / "packs" / "ch60_68" / "chapter_60_68_validation_pack.json",
+        ROOT / "tools" / "packs" / "ch60_68" / "ch60_68_ch60_pack.json",
+        ROOT / "tools" / "packs" / "ch60_68" / "ch60_68_ch61_63_pack.json",
+        ROOT / "tools" / "packs" / "ch60_68" / "ch60_68_ch64_68_pack.json",
     ]
     for overlay_path in overlay_paths:
         try:
