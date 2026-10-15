@@ -265,6 +265,58 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
     return sum(len(s["lessons"]) for s in out_subs)
 
 
+def append_modular_chapter(data, lessons, order, title_fa, title_en):
+    """Append modular lessons without replacing any existing chapter content."""
+    if not lessons:
+        return 0
+    chapter = next((c for c in data["chapters"] if int(c.get("order") or 0) == order), None)
+    if chapter is None:
+        return append_unmatched_as_extra(data, lessons, order, title_fa, title_en)
+
+    existing_uids = {
+        lesson.get("uid")
+        for ch in data["chapters"]
+        for sub in ch.get("subchapters", [])
+        for lesson in sub.get("lessons", [])
+        if lesson.get("uid")
+    }
+    grouped = defaultdict(list)
+    for lesson in lessons:
+        grouped[int(lesson.get("subchapter_order") or 1)].append(lesson)
+
+    added = 0
+    for sub_order in sorted(grouped):
+        out = []
+        for src in sorted(grouped[sub_order], key=lambda x: int(x.get("lesson_order") or 0)):
+            uid = src.get("uid") or f"lesson:ch{order:02d}:mod:{sub_order:03d}:{len(out)+1:05d}"
+            if uid in existing_uids:
+                continue
+            existing_uids.add(uid)
+            notes = as_text(src.get("notes"))
+            meta = src.get("meta") or {}
+            assessment = meta.get("assessment") if isinstance(meta, dict) else None
+            if assessment and "EJ_ASSESSMENT" not in notes:
+                notes += "\\n\\n<!-- EJ_ASSESSMENT\\n" + json.dumps(assessment, ensure_ascii=False) + "\\n-->\\n"
+            out.append({
+                "uid": uid,
+                "title_fa": src.get("title_fa") or "",
+                "title_en": src.get("title_en") or "",
+                "level": src.get("level") or "L0",
+                "summary": as_text(src.get("summary")),
+                "full_content": as_text(src.get("full_content")),
+                "commands": as_text(src.get("commands")),
+                "examples": as_text(src.get("examples")),
+                "notes": notes,
+            })
+        if out:
+            chapter.setdefault("subchapters", []).append({
+                "title_fa": f"محتوای افزوده — زیرفصل {sub_order}",
+                "lessons": out,
+            })
+            added += len(out)
+    return added
+
+
 def build_ch65(lessons):
     subs = defaultdict(list)
     for les in lessons:
@@ -355,7 +407,7 @@ def main():
             vpn_extra.extend(lessons)
 
     for order, chapter in sorted(modular_chapters.items()):
-        n = append_unmatched_as_extra(data, chapter["lessons"], order, chapter["title_fa"], chapter["title_en"])
+        n = append_modular_chapter(data, chapter["lessons"], order, chapter["title_fa"], chapter["title_en"])
         print("modular chapter", order, n)
 
     if routing_extra:
