@@ -33,3 +33,11 @@ Produce first production batch for Chapter 40 under the new structure.
 ### Not done / not claimed
 - No claim that all 68 chapters have been individually measured, scientifically reviewed, de-duplicated or validated on both Android and Windows.
 - Exact canonical chapter titles, per-chapter size split, record counts, duplicate counts and scientific gap report remain required deliverables.
+
+
+## 2026-10-15 — 68-chapter target selection form
+
+- Added `CHAPTER_TARGET_SELECTION.md` with all 68 canonical chapter titles currently represented in the curriculum sources and prefilled target defaults, so the user can specify per-chapter exceptions in one pass.
+- Linked the selection form from `00_START_HERE.md`, `04_NEXT_ACTIONS.md`, and `CHAPTER_RICHNESS_AUDIT.md`.
+- Corrected the Chapter 68 policy entry to the requested 5 MiB content target, 5 MiB separate media ceiling, and no explanation requirement.
+- Status remains **selection pending; full audit and Android/Windows validation not complete**. No chapter completion is claimed.
