@@ -41,3 +41,18 @@ Produce first production batch for Chapter 40 under the new structure.
 - Linked the selection form from `00_START_HERE.md`, `04_NEXT_ACTIONS.md`, and `CHAPTER_RICHNESS_AUDIT.md`.
 - Corrected the Chapter 68 policy entry to the requested 5 MiB content target, 5 MiB separate media ceiling, and no explanation requirement.
 - Status remains **selection pending; full audit and Android/Windows validation not complete**. No chapter completion is claimed.
+
+
+## [2026-10-15] — Finalized richness targets and 68-row audit register
+
+### Registered
+- Chapters 1–67: level **خبره**; target text/structured content **5 MiB**; separate media cap **8 MiB**; 100 independent examples, 150 independent scenarios, 100 exam questions; explanations required.
+- Chapter 68 exception: level **خبره**; target text/structured content **5 MiB**; separate media cap **5 MiB**; 100 examples, 150 scenarios, 100 questions; explanations not required.
+- Rebuilt `CHAPTER_RICHNESS_AUDIT.md` with a 68-row evidence ledger and current title/source references.
+- Rebuilt `CHAPTER_TARGET_SELECTION.md` with per-chapter target rows and no further global selection needed.
+- Updated project hard constraints and next actions so agent instructions match the canonical targets.
+
+### Audit state — explicitly not complete
+- Every chapter is still marked **ممیزی‌نشده**.
+- Actual per-chapter content/media measurements, record counts, duplicate analysis, scientific gap review, answer-key verification, schema checks, and Android/Windows parity tests have not been recorded in the 68-row ledger.
+- No chapter completion is claimed by this policy/documentation change.
