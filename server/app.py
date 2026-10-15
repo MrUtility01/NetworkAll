@@ -90,6 +90,7 @@ def db() -> WebDB:
             print(_db.seed_full(force=True))
         _db.ensure_sync_columns()
         _db.ensure_ch60_68_deep_lessons()
+        _db.ensure_ch55_deep_lessons()
         _db.ensure_scenario_pack()
     return _db
 
@@ -210,6 +211,7 @@ def reseed():
     if request.remote_addr not in ("127.0.0.1", "::1") and not check_token():
         return jsonify({"ok": False, "error": "unauthorized"}), 401
     result = db().seed_full(force=True)
+    result["chapter_55_pack"] = db().ensure_ch55_deep_lessons()
     result["scenario_pack"] = db().ensure_scenario_pack()
     return jsonify(result)
 
