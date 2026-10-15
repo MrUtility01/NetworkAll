@@ -5,12 +5,14 @@ from __future__ import annotations
 import importlib
 import importlib.util
 import sys
+from functools import lru_cache
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CHAPTERS_DIR = ROOT / "tools" / "chapters"
 
 
+@lru_cache(maxsize=68)
 def _authoring_package(chapter_order: int) -> str:
     if not 1 <= int(chapter_order) <= 68:
         raise ValueError(f"Invalid chapter number: {chapter_order}")
@@ -38,6 +40,7 @@ def _authoring_package(chapter_order: int) -> str:
     return package_name
 
 
+@lru_cache(maxsize=128)
 def load_chapter_authoring(chapter_order: int, module_name: str):
     """Import a named helper module from the selected chapter's authoring directory."""
     if not module_name or "/" in module_name or "\\" in module_name or module_name.endswith(".py"):
