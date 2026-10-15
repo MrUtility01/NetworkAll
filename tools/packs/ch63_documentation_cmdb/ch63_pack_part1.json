@@ -1,0 +1,262 @@
+{
+  "package_schema_version": "1.0",
+  "project": "ENGINEER JOKAR / NetworkAll",
+  "generated_on": "2026-10-15",
+  "purpose": "فصل ۶۳ — بخش 1 درس‌های غنی Runbook و مستند عملیاتی (review_required). ادغام افزایشی.",
+  "scope": [
+    {
+      "chapter_order": 63,
+      "chapter_title": "فصل ۶۳: مستندسازی Runbook و CMDB",
+      "chapter_title_en": "Ch63 Documentation CMDB",
+      "subchapter_order": 1,
+      "subchapter_title": "۶۳.۱ انواع مستند عملیاتی",
+      "subchapter_title_en": "Operational Documentation Types",
+      "topics": [
+        {"topic_order": 1, "title_fa": "Runbook چیست و ساختار آن", "title_en": "Runbook Structure"},
+        {"topic_order": 2, "title_fa": "MOP Method of Procedure", "title_en": "MOP"},
+        {"topic_order": 3, "title_fa": "SOP Standard Operating Procedure", "title_en": "SOP"},
+        {"topic_order": 4, "title_fa": "EOP Emergency Operating Procedure", "title_en": "EOP"},
+        {"topic_order": 5, "title_fa": "Preconditions و Backup قبل از تغییر", "title_en": "Preconditions"},
+        {"topic_order": 6, "title_fa": "Validation Evidence و Rollback", "title_en": "Validation Rollback"},
+        {"topic_order": 7, "title_fa": "Escalation در مستند", "title_en": "Doc Escalation"}
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch63:lv001:l0001",
+      "entity": "lesson",
+      "chapter_order": 63,
+      "subchapter_order": 1,
+      "lesson_order": 1,
+      "topic": "Runbook چیست و ساختار آن",
+      "domain": "مستندسازی Runbook و CMDB",
+      "level": "L0",
+      "title_fa": "[L0] Runbook چیست و ساختار آن — آشنایی",
+      "title_en": "[L0] Runbook Structure — Intro",
+      "tags": ["L0", "runbook", "documentation", "ops", "ch63"],
+      "summary": "Runbook یک راهنمای گام‌به‌گام عملیاتی است که به تیم اجازه می‌دهد بدون حدس زدن، یک کار تکراری یا اضطراری را درست و یکسان انجام دهد.",
+      "full_content": "# [L0] Runbook چیست و ساختار آن — آشنایی\n\n## ۱. معرفی و نقشه راه\nRunbook (دفترچه اجرایی) سندی است که به اپراتور یا مهندس می‌گوید «دقیقاً چه کار کند، با چه ترتیب، با چه فرمان، و اگر خطا رخ داد چه کند».\n\nهدف این درس: فهمیدن چرا بدون Runbook عملیات شبکه و IT پرریسک و وابسته به افراد خاص می‌شود.\n\n## ۲. آموزش از صفر\nتصور کنید نیمه‌شب لینک WAN قطع شده. اگر فقط یک نفر بداند چه کار کند، سازمان وابسته به او است. Runbook این دانش را از ذهن افراد به سند قابل اجرا منتقل می‌کند.\n\nاجزای حداقلی یک Runbook:\n1. **عنوان و شناسه** (مثلاً RUNBOOK-WAN-DOWN-001)\n2. **هدف** — این سند چه مشکلی را حل می‌کند\n3. **پیش‌شرط‌ها** (Preconditions)\n4. **مراحل اجرا** (شماره‌دار و واضح)\n5. **فرمان‌ها و خروجی مورد انتظار**\n6. **روش تأیید (Verify)**\n7. **Rollback** — اگر اشتباه شد چگونه برگردیم\n8. **Escalation** — چه کسی را و چه زمانی صدا بزنیم\n9. **مالک و تاریخ بازبینی**\n\n## ۳. تشبیه سازمانی\nمثل دستور پخت غذا در رستوران: اگر فقط سرآشپز بداند، در غیاب او همه چیز متوقف می‌شود. Runbook همان دستور پخت استاندارد است که هر شیفت می‌تواند اجرا کند.\n\n## ۴. معماری ذهنی\n```\nIncident / Request → پیدا کردن Runbook مناسب → اجرای گام‌به‌گام → Verify → بستن تیکت یا Escalation\n```\n\n## ۵. مثال ساده\n**عنوان:** RUNBOOK-CHECK-LINK-STATUS\n**هدف:** بررسی وضعیت لینک uplink و ثبت نتیجه.\n**مراحل:**\n1. وارد دستگاه Core شوید.\n2. فرمان `show interface GigabitEthernet0/1` را اجرا کنید.\n3. اگر خط Status = up/up بود → لینک سالم است.\n4. اگر down بود → به Runbook WAN-DOWN بروید.\n\n## ۶. دستورات مرتبط (فقط مشاهده)\n```\n# Cisco\nshow interface status\nshow ip interface brief\n\n# MikroTik\n/interface print\n/interface monitor-traffic ether1\n\n# Linux\nip link show\nnmcli device status\n```\n\n## ۷. لابراتوار ایمن (پایه)\n1. یک سوییچ یا روتر شبیه‌سازی‌شده آماده کنید.\n2. یک Runbook یک‌صفحه‌ای برای «بررسی وضعیت اینترفیس» بنویسید.\n3. آن را به همکارتان بدهید و بخواهید بدون سؤال اضافی اجرا کند.\n4. ببینید آیا نتیجه یکسان است یا نه.\n\n## ۸. عیب‌یابی رایج\n| مشکل | علت محتمل | راه‌حل |
+|-------|------------|--------|
+| Runbook اجرا نمی‌شود | پیش‌شرط رعایت نشده | چک‌لیست Preconditions |
+| نتیجه متفاوت | فرمان نسخه/پلتفرم اشتباه | مشخص کردن پلتفرم و نسخه |
+| کسی Runbook را پیدا نمی‌کند | نام‌گذاری ضعیف | استاندارد نام‌گذاری |
+\n## ۹. امنیت و محدودیت\n- Runbook نباید پسورد یا کلید خصوصی داشته باشد.\n- دسترسی به Runbookهای حساس را محدود کنید.\n- همیشه در محیط Lab تست کنید قبل از Production.\n\n## ۱۰. خلاصه + واژه‌نامه\n- **Runbook**: راهنمای اجرایی گام‌به‌گام.\n- **SOP**: رویه استاندارد عملیاتی (عمومی‌تر).\n- **MOP**: روش اجرای یک تغییر خاص.\n- **EOP**: رویه اضطراری.\n\nقانون طلایی: اگر فقط یک نفر می‌تواند کاری را انجام دهد، آن کار هنوز مستند نشده است.\n",
+      "commands": "Cisco: show interface status ; show ip interface brief\nMikroTik: /interface print\nLinux: ip link show",
+      "examples": "RUNBOOK-CHECK-LINK-STATUS: بررسی وضعیت uplink با show interface و تصمیم‌گیری بر اساس up/up یا down.",
+      "notes": "منبع: ITIL Knowledge Management, عملیاتی شبکه سازمانی. source_status=review_required",
+      "search_query": "Runbook structure what is runbook L0 ch63",
+      "learning_objectives": [
+        "تعریف Runbook و تفاوت آن با دانش ذهنی",
+        "نام بردن حداقل ۹ جزء اصلی یک Runbook",
+        "تشخیص نیاز به Runbook در عملیات روزانه"
+      ],
+      "meta": {
+        "level": "L0",
+        "chapter_title": "فصل ۶۳: مستندسازی Runbook و CMDB",
+        "subchapter_title": "۶۳.۱ انواع مستند عملیاتی",
+        "assessment": {
+          "questions": [
+            {
+              "id": "q-ch63-001",
+              "type": "multiple_choice",
+              "text": "کدام مورد جزء ضروری یک Runbook عملیاتی نیست؟",
+              "options": [
+                "الف) مراحل شماره‌دار اجرا",
+                "ب) روش Rollback",
+                "ج) رمز عبور دستگاه‌ها",
+                "د) روش Verify"
+              ]
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:lv001:l0002",
+      "entity": "lesson",
+      "chapter_order": 63,
+      "subchapter_order": 1,
+      "lesson_order": 2,
+      "topic": "Runbook چیست و ساختار آن",
+      "domain": "مستندسازی Runbook و CMDB",
+      "level": "L1",
+      "title_fa": "[L1] Runbook چیست و ساختار آن — مقدماتی",
+      "title_en": "[L1] Runbook Structure — Junior",
+      "tags": ["L1", "runbook", "documentation", "ops", "ch63"],
+      "summary": "در سطح Junior یاد می‌گیرید چگونه یک Runbook ساده را با قالب استاندارد بنویسید و اجزای اجباری را پر کنید.",
+      "full_content": "# [L1] Runbook چیست و ساختار آن — مقدماتی\n\n## ۱. معرفی و نقشه راه\nحالا که مفهوم را فهمیدید، باید بتوانید یک Runbook ساده و قابل اجرا بنویسید.\n\n## ۲. قالب استاندارد پیشنهادی\n```\n# RUNBOOK-ID: RUNBOOK-XXXX-YYY\n## عنوان\n## نسخه / تاریخ / مالک\n## هدف (یک جمله)\n## دامنه و پلتفرم (Cisco IOS-XE / MikroTik / Linux / Windows)\n## پیش‌شرط‌ها (Preconditions)\n## ابزار و دسترسی مورد نیاز\n## مراحل اجرا (شماره‌دار)\n## خروجی مورد انتظار هر مرحله\n## Verify نهایی\n## Rollback\n## Escalation (نام نقش + زمان)\n## پیوست‌ها (لینک به دیاگرام یا اسکریپت)\n```\n\n## ۳. تشبیه سازمانی\nیک تکنسین جدید در شیفت شب باید بتواند بدون تماس با مهندس ارشد، لینک را چک کند و تصمیم اولیه بگیرد. Runbook خوب این امکان را می‌دهد.\n\n## ۴. مثال کامل ساده\n**RUNBOOK-ID:** RUNBOOK-LINK-CHECK-001  \n**هدف:** بررسی وضعیت فیزیکی و منطقی uplink Core به Firewall.  \n**پیش‌شرط:** دسترسی read-only به Core و Firewall.  \n**مراحل:**\n1. وارد Core شوید (`ssh core-sw-01`).\n2. `show interface Gi1/0/48` را اجرا کنید.\n3. خط `line protocol is up` را بررسی کنید.\n4. اگر down بود → `show logging | include Gi1/0/48` را اجرا و زمان را ثبت کنید.\n5. نتیجه را در تیکت بنویسید.\n**Verify:** خروجی show interface ذخیره شده باشد.\n**Rollback:** نیاز نیست (فقط مشاهده).\n**Escalation:** اگر down بود و بیش از ۵ دقیقه طول کشید → NOC L2.\n\n## ۵. خطاهای رایج نویسندگان تازه‌کار\n- نوشتن «بررسی کنید که همه چیز درست باشد» بدون معیار مشخص.\n- مخلوط کردن فرمان Cisco و MikroTik در یک Runbook.\n- فراموش کردن خروجی مورد انتظار.\n- گذاشتن رمز در متن Runbook.\n\n## ۶. لابراتوار\n1. قالب بالا را کپی کنید.\n2. برای «بررسی وضعیت DHCP Lease روی Windows Server» یک Runbook بنویسید.\n3. به همکار بدهید اجرا کند و بازخورد بگیرید.\n\n## ۷. خلاصه\nRunbook خوب = واضح + قابل تکرار + مستقل از فرد + دارای Verify و Escalation.\n",
+      "commands": "ssh core-sw-01\nshow interface Gi1/0/48\nshow logging | include Gi1/0/48",
+      "examples": "RUNBOOK-LINK-CHECK-001 برای بررسی uplink Core به Firewall با مراحل مشخص و Escalation.",
+      "notes": "source_status=review_required",
+      "search_query": "how to write runbook template L1 ch63",
+      "learning_objectives": [
+        "استفاده از قالب استاندارد Runbook",
+        "نوشتن مراحل شماره‌دار با خروجی مورد انتظار",
+        "اجتناب از خطاهای رایج نویسندگی"
+      ],
+      "meta": {
+        "level": "L1",
+        "chapter_title": "فصل ۶۳: مستندسازی Runbook و CMDB",
+        "subchapter_title": "۶۳.۱ انواع مستند عملیاتی",
+        "assessment": {
+          "questions": [
+            {
+              "id": "q-ch63-002",
+              "type": "multiple_choice",
+              "text": "کدام مورد در قالب استاندارد Runbook باید حتماً مشخص شود؟",
+              "options": [
+                "الف) نام نویسنده فقط",
+                "ب) پلتفرم و نسخه دستگاه",
+                "ج) رنگ پس‌زمینه سند",
+                "د) تعداد صفحات"
+              ]
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:lv001:l0003",
+      "entity": "lesson",
+      "chapter_order": 63,
+      "subchapter_order": 1,
+      "lesson_order": 3,
+      "topic": "Runbook چیست و ساختار آن",
+      "domain": "مستندسازی Runbook و CMDB",
+      "level": "L2",
+      "title_fa": "[L2] Runbook چیست و ساختار آن — ادمین",
+      "title_en": "[L2] Runbook Structure — Admin",
+      "tags": ["L2", "runbook", "documentation", "ops", "ch63"],
+      "summary": "در سطح ادمین یاد می‌گیرید Runbook را به فرآیند Change و Incident وصل کنید و کیفیت آن را بسنجید.",
+      "full_content": "# [L2] Runbook چیست و ساختار آن — ادمین\n\n## ۱. معرفی\nRunbook فقط یک سند نیست؛ بخشی از سیستم عملیاتی است. باید به Incident، Change و Knowledge Base متصل باشد.\n\n## ۲. ارتباط با ITIL\n- **Incident Management**: Runbook اولین ابزار برای بازیابی سریع سرویس است.\n- **Change Management**: MOP و Runbook تغییر، شواهد اجرای موفق را فراهم می‌کنند.\n- **Knowledge Management**: Runbook باید پس از هر Incident مهم به‌روز شود (Post-Incident Review).\n\n## ۳. معیارهای کیفیت Runbook (Checklist ادمین)\n- [ ] شناسه یکتا و نسخه‌بندی دارد\n- [ ] پلتفرم و نسخه مشخص است\n- [ ] Preconditions کامل است\n- [ ] هر مرحله خروجی مورد انتظار دارد\n- [ ] Verify نهایی تعریف شده\n- [ ] Rollback واضح و تست‌شده است\n- [ ] Escalation با نقش و زمان مشخص است\n- [ ] در ۱۲ ماه گذشته بازبینی شده\n- [ ] حداقل یک‌بار در Lab اجرا شده\n\n## ۴. مثال سازمانی\nسازمان ۳۰۰ نفره. هر بار که لینک ISP قطع می‌شود، تکنسین‌ها روش‌های متفاوتی امتحان می‌کنند و زمان MTTR بالا می‌رود. با Runbook استاندارد WAN-DOWN:\n1. زمان تشخیص کاهش می‌یابد.\n2. تصمیم Escalation یکسان می‌شود.\n3. پس از بازیابی، درس‌آموخته به Runbook اضافه می‌شود.\n\n## ۵. نگهداری و Versioning\n- Runbook را در Git یا سیستم مستندات نسخه‌دار نگه دارید.\n- هر تغییر باید Change کوچک یا Review داشته باشد.\n- تاریخ آخرین تست موفق را ثبت کنید.\n\n## ۶. لابراتوار متوسط\n1. یک Runbook موجود را با چک‌لیست کیفیت بالا ارزیابی کنید.\n2. نقاط ضعف را پیدا و اصلاح کنید.\n3. نسخه جدید را در محیط Lab اجرا و نتیجه را ثبت کنید.\n\n## ۷. خلاصه\nادمین خوب Runbook را زنده نگه می‌دارد: می‌نویسد، تست می‌کند، به فرآیندها وصل می‌کند و بعد از هر حادثه به‌روز می‌کند.\n",
+      "commands": "",
+      "examples": "اتصال Runbook-WAN-DOWN به فرآیند Incident و کاهش MTTR در سازمان ۳۰۰ نفره.",
+      "notes": "منبع: ITIL 4. source_status=review_required",
+      "search_query": "runbook quality checklist ITIL L2 ch63",
+      "learning_objectives": [
+        "اتصال Runbook به Incident و Change",
+        "استفاده از چک‌لیست کیفیت",
+        "نسخه‌بندی و نگهداری Runbook"
+      ],
+      "meta": {
+        "level": "L2",
+        "chapter_title": "فصل ۶۳: مستندسازی Runbook و CMDB",
+        "subchapter_title": "۶۳.۱ انواع مستند عملیاتی",
+        "assessment": {
+          "questions": [
+            {
+              "id": "q-ch63-003",
+              "type": "multiple_choice",
+              "text": "کدام مورد نشان‌دهنده کیفیت پایین یک Runbook است؟",
+              "options": [
+                "الف) داشتن Rollback تست‌شده",
+                "ب) مشخص نبودن پلتفرم و نسخه",
+                "ج) وجود شناسه یکتا",
+                "د) تاریخ بازبینی اخیر"
+              ]
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:lv001:l0004",
+      "entity": "lesson",
+      "chapter_order": 63,
+      "subchapter_order": 1,
+      "lesson_order": 4,
+      "topic": "Runbook چیست و ساختار آن",
+      "domain": "مستندسازی Runbook و CMDB",
+      "level": "L3",
+      "title_fa": "[L3] Runbook چیست و ساختار آن — مهندس",
+      "title_en": "[L3] Runbook Structure — Senior",
+      "tags": ["L3", "runbook", "documentation", "ops", "ch63"],
+      "summary": "در سطح مهندس، Runbook را به عنوان بخشی از سیستم قابل اتوماسیون و اندازه‌گیری طراحی می‌کنید و RCA را به بهبود مستند متصل می‌کنید.",
+      "full_content": "# [L3] Runbook چیست و ساختار آن — مهندس\n\n## ۱. معرفی\nمهندس Runbook را فقط نمی‌نویسد؛ آن را طراحی می‌کند تا قابل اندازه‌گیری، قابل اتوماسیون و قابل بهبود باشد.\n\n## ۲. طراحی پیشرفته\n- **Idempotent steps**: تا حد ممکن مراحل طوری باشند که دوبار اجرا شدن ضرر نزند.\n- **Decision points**: نقاط تصمیم با شرط واضح (اگر X آنگاه Y).\n- **Evidence capture**: هر مرحله لاگ یا اسکرین‌شات یا خروجی فرمان تولید کند.\n- **Time-box**: حداکثر زمان مجاز برای هر مرحله قبل از Escalation.\n\n## ۳. اتصال به Metrics\n- MTTR قبل و بعد از معرفی Runbook\n- تعداد دفعات استفاده از هر Runbook\n- نرخ موفقیت اجرای کامل بدون Escalation\n- تعداد به‌روزرسانی پس از Post-Incident Review\n\n## ۴. مثال پیشرفته\nRunbook بازیابی Firewall HA Failover:\n1. تشخیص Active/Standby\n2. بررسی Session sync\n3. تصمیم: Failover دستی یا صبر\n4. اجرای Failover با فرمان مشخص\n5. Verify ترافیک و Session\n6. اگر شکست → Rollback به حالت قبل + Escalation فوری\n\nهر مرحله timestamp و خروجی ذخیره می‌شود تا بعداً در RCA استفاده شود.\n\n## ۵. اشتباهات حرفه‌ای\n- Runbook خیلی طولانی و غیرعملی\n- وابستگی به ابزار GUI بدون جایگزین CLI\n- عدم تست Rollback\n- فراموش کردن تأثیر روی سرویس‌های وابسته (از CMDB)\n\n## ۶. لابراتوار پیشرفته\n1. یک Runbook پیچیده (مثلاً Core Switch reload در Maintenance Window) طراحی کنید.\n2. نقاط تصمیم و Time-box اضافه کنید.\n3. در Lab با عمداً ایجاد خطا، مسیر Rollback را تست کنید.\n\n## ۷. خلاصه\nمهندس Runbook را به یک فرآیند کنترل‌شده و قابل اندازه‌گیری تبدیل می‌کند، نه فقط یک فایل متنی.\n",
+      "commands": "",
+      "examples": "Runbook Firewall HA Failover با Decision points، Evidence capture و Time-box.",
+      "notes": "source_status=review_required",
+      "search_query": "advanced runbook design metrics MTTR L3 ch63",
+      "learning_objectives": [
+        "طراحی Runbook با Decision points و Time-box",
+        "اتصال Runbook به متریک‌های عملیاتی",
+        "تست سیستماتیک Rollback"
+      ],
+      "meta": {
+        "level": "L3",
+        "chapter_title": "فصل ۶۳: مستندسازی Runbook و CMDB",
+        "subchapter_title": "۶۳.۱ انواع مستند عملیاتی",
+        "assessment": {
+          "questions": [
+            {
+              "id": "q-ch63-004",
+              "type": "multiple_choice",
+              "text": "هدف اصلی اضافه کردن Time-box به مراحل Runbook چیست؟",
+              "options": [
+                "الف) زیباتر شدن سند",
+                "ب) جلوگیری از اتلاف زمان و Escalation به‌موقع",
+                "ج) افزایش تعداد صفحات",
+                "د) حذف نیاز به Verify"
+              ]
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch63:lv001:l0005",
+      "entity": "lesson",
+      "chapter_order": 63,
+      "subchapter_order": 1,
+      "lesson_order": 5,
+      "topic": "Runbook چیست و ساختار آن",
+      "domain": "مستندسازی Runbook و CMDB",
+      "level": "L4",
+      "title_fa": "[L4] Runbook چیست و ساختار آن — خبره",
+      "title_en": "[L4] Runbook Structure — Architect",
+      "tags": ["L4", "runbook", "documentation", "ops", "ch63", "automation"],
+      "summary": "در سطح خبره، Runbook as Code، اتوماسیون، یکپارچگی با CMDB و معماری دانش سازمانی را طراحی می‌کنید.",
+      "full_content": "# [L4] Runbook چیست و ساختار آن — خبره\n\n## ۱. معرفی\nمعمار عملیاتی Runbook را بخشی از سیستم دانش و اتوماسیون می‌بیند: «Runbook as Code».\n\n## ۲. Runbook as Code\n- نگهداری در Git\n- Review از طریق Pull Request\n- تست خودکار در Pipeline (اجرای dry-run در Lab)\n- تولید خودکار بخشی از مراحل از Inventory/CMDB\n\n## ۳. معماری پیشنهادی\n```\nCMDB / NetBox  →  منبع حقیقت دارایی و وابستگی\nGit (Runbooks) →  نسخه‌بندی و Review\nAutomation (Ansible/Script) →  اجرای بخشی از مراحل\nITSM (ServiceNow/Jira) →  تیکت و Evidence\nObservability →  تریگر و Verify\n```\n\n## ۴. تصمیم‌های معماری\n- کدام Runbookها باید کاملاً دستی بمانند (تصمیم انسانی حیاتی)؟\n- کدام‌ها می‌توانند نیمه‌خودکار شوند؟\n- چگونه از CMDB برای پیش‌شرط‌ها و Impact Analysis استفاده کنیم؟\n- سیاست نگهداری و انقضای Runbookهای قدیمی چیست؟\n\n## ۵. مثال سطح سازمانی\nبرای سازمان چندسایته:\n- Runbookهای محلی (per site) و Runbookهای سراسری\n- استفاده از CMDB برای تشخیص سرویس‌های تحت تأثیر قبل از اجرای تغییر\n- داشبورد نرخ موفقیت و MTTR per Runbook\n\n## ۶. ریسک‌ها و کنترل‌ها\n- اتوماسیون بدون تأیید انسانی در تغییرات پرریسک\n- Runbook قدیمی که با واقعیت شبکه هم‌خوان نیست (Drift مستندات)\n- نشت اطلاعات حساس در مخزن Git عمومی\n\n## ۷. خلاصه\nخبره Runbook را از یک سند به یک قابلیت سازمانی تبدیل می‌کند: نسخه‌دار، قابل اندازه‌گیری، متصل به CMDB و در صورت امکان قابل اتوماسیون کنترل‌شده.\n",
+      "commands": "",
+      "examples": "معماری Runbook as Code با Git + CMDB + Automation + ITSM.",
+      "notes": "منبع: GitOps principles, ITIL, NetBox. source_status=review_required",
+      "search_query": "runbook as code architecture CMDB automation L4 ch63",
+      "learning_objectives": [
+        "طراحی معماری Runbook as Code",
+        "یکپارچه‌سازی Runbook با CMDB و Observability",
+        "تعیین سیاست اتوماسیون و کنترل ریسک"
+      ],
+      "meta": {
+        "level": "L4",
+        "chapter_title": "فصل ۶۳: مستندسازی Runbook و CMDB",
+        "subchapter_title": "۶۳.۱ انواع مستند عملیاتی",
+        "assessment": {
+          "questions": [
+            {
+              "id": "q-ch63-005",
+              "type": "multiple_choice",
+              "text": "در معماری Runbook as Code، نقش اصلی CMDB چیست؟",
+              "options": [
+                "الف) فقط ذخیره پسورد",
+                "ب) منبع حقیقت دارایی و وابستگی برای Impact Analysis",
+                "ج) جایگزین Git",
+                "د) حذف نیاز به Verify"
+              ]
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    }
+  ]
+}
