@@ -1,0 +1,1318 @@
+{
+  "package_schema_version": 1,
+  "project": "ENGINEER JOKAR / NetworkEncyclopedia",
+  "generated_on": "2026-10-11",
+  "purpose": "commands encyclopedia - fortigate",
+  "vendor_pack": "fortigate",
+  "chapter_order": 68,
+  "vendor": "fortinet",
+  "platform": "FortiOS 7.x",
+  "scope": [
+    {
+      "chapter_order": 69,
+      "subchapter_order": 1,
+      "title": "FortiGate CLI Command Encyclopedia",
+      "topics": [
+        "System status and interface management",
+        "Interface configuration",
+        "Firewall policy (security policy)",
+        "Firewall address and service objects",
+        "Routing and policy routes",
+        "NAT and virtual IP",
+        "VPN (IPsec and SSL VPN)",
+        "Diagnostics and packet flow debugging",
+        "System administration and security",
+        "SD-WAN and link monitoring"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "lessons": [
+    {
+      "uid": "cmd:fortigate:system:status",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 1,
+      "level": "L0",
+      "title_fa": "مشاهده وضعیت سیستم FortiGate",
+      "title_en": "Get System Status",
+      "topic": "system status",
+      "summary": "دستور get system status برای مشاهده نسخه FortiOS، مدل دستگاه، شماره سریال، وضعیت HA و uptime استفاده می‌شود. این دستور اولین گام در عیب‌یابی و مستندسازی هر FortiGate است.",
+      "full_content": "# مشاهده وضعیت سیستم FortiGate\n\n## 1. معرفی و نقشه راه\nقبل از هر تغییر یا عیب‌یابی، باید بدانید با چه دستگاهی کار می‌کنید. get system status تمام اطلاعات ضروری پایه را نمایش می‌دهد. پیش‌نیاز: دسترسی CLI (Console یا SSH). در پایان درس می‌توانید نسخه، مدل و وضعیت HA را تشخیص دهید.\n\n## 2. آموزش از صفر\nFortiGate یک فایروال سازمانی است که با FortiOS کار می‌کند. دستور get system status بدون نیاز به ورود به حالت config، اطلاعات فوری را نشان می‌دهد.\n\n## 3. تشبیه سازمانی واقعی\nمدیر شبکه قبل از عیب‌یابی قطعی اینترنت، ابتدا get system status می‌زند تا مطمئن شود FortiGate در وضعیت HA primary است و نسخه FortiOS اشتباهی نصب نشده است.\n\n## 4. معماری و جزئیات فنی\nخروجی شامل: Version (FortiOS), Serial-Number, Hostname, Operation Mode (NAT/Transparent), HA mode, uptime, log disk status. در FortiOS 7.x این دستور همچنان کلاسیک است.\n\n## 5. مثال‌های حل‌شده\n### مثال ۱ (ساده)\nget system status → نمایش Version: FortiOS 7.4.3\n### مثال ۲ (متوسط)\nget system status | grep HA → فقط خطوط مربوط به HA\n### مثال ۳ (سازمانی)\nمقایسه نسخه دو FortiGate در HA: اگر version متفاوت باشد، HA ممکن است ناپایدار شود.\n\n## 6. دستورات و ابزارها\n- دستور: get system status\n- کی استفاده می‌شود: شروع عیب‌یابی، مستندسازی، بررسی قبل از upgrade\n- نمونه خروجی: Version: FortiOS 7.4.3, Serial: FGT61E..., HA: primary\n- نکته: در FortiOS 7.x می‌توان از get system status | grep استفاده کرد.\n\n## 7. لابراتوار عملی\nGNS3 یا EVE-NG با FortiGate VM. یک FortiGate VM راه‌اندازی کنید و get system status بزنید. Verify: نسخه و مدل نمایش داده شود.\n\n## 8. عیب‌یابی حرفه‌ای\nSymptom: HA ناپایدار. Scope: سیستم. Evidence: get system status نشان می‌دهد version متفاوت. Hypothesis: firmware mismatch. Fix: همسان‌سازی نسخه. Verify: HA sync. Prevent: کنترل نسخه قبل از deploy.\n\n## 9. نکات تخصصی و امنیت\nهمیشه نسخه FortiOS را به‌روز نگه دارید. در محیط production، before upgrade، get system status و backup configuration الزامی است.\n\n## 10. خلاصه\n- get system status اطلاعات پایه\n- Version و Serial حیاتی\n- HA mode را نشان می‌دهد\n- قبل از تغییرات اجرا شود\n- grep برای فیلتر\n\n## 11. واژه‌نامه\nFortiOS: سیستم‌عامل FortiGate\nHA: High Availability\nUptime: زمان روشن بودن\n\n## 12. مهارت‌های کسب‌شده\n- خواندن خروجی get system status\n- تشخیص نسخه و مدل\n- بررسی HA",
+      "commands": "get system status\nget system status | grep HA",
+      "examples": "مثال‌های داخل full_content",
+      "notes": "در FortiOS 7.x همچنان get system status معتبر است.",
+      "learning_objectives": [
+        "اجرای get system status",
+        "تفسیر نسخه و مدل",
+        "تشخیص وضعیت HA"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "FortiGate",
+          "system status",
+          "FortiOS"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام دستور نسخه FortiOS را نشان می‌دهد؟",
+              "options": [
+                "get system version",
+                "get system status",
+                "show version",
+                "get firmware"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "دو FortiGate در HA ناپایدار هستند. چه چیزی را با get system status بررسی می‌کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 1,
+              "explain_fa": "get system status نسخه را نمایش می‌دهد."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "بررسی Version در دو دستگاه، HA mode، Serial Number."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:system:interface-get",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 2,
+      "level": "L1",
+      "title_fa": "نمایش وضعیت اینترفیس‌ها",
+      "title_en": "Get System Interface",
+      "topic": "system interface",
+      "summary": "دستور get system interface وضعیت تمام اینترفیس‌ها شامل IP، status، allowaccess و speed را نشان می‌دهد. برای عیب‌یابی لایه ۱ و ۲ ضروری است[citation:3].",
+      "full_content": "# نمایش وضعیت اینترفیس‌ها\n\n## 1. معرفی و نقشه راه\nFortiGate اینترفیس‌های فیزیکی (port1, port2, ...) و منطقی (VLAN, zone, tunnel) دارد. get system interface خلاصه وضعیت را می‌دهد. پیش‌نیاز: دسترسی CLI.\n\n## 2. آموزش از صفر\nخروجی شامل name, status (enable/disable), mode (static/dhcp), ip, speed, allowaccess (https, ssh, ping) است[citation:3].\n\n## 3. تشبیه سازمانی واقعی\nشعبه مرکزی قطع شده. اپراتور get system interface port1 می‌زند و می‌بیند status: disable است. مشکل از تنظیمات ادمین است، نه ISP.\n\n## 4. معماری و جزئیات فنی\nستون‌های کلیدی: name, status, mode, ip, speed, type (physical/vlan/tunnel), mtu, allowaccess. در FortiOS 7.x همین ساختار حفظ شده[citation:3].\n\n## 5. مثال‌های حل‌شده\n### مثال ۱ (ساده)\nget system interface → لیست تمام پورت‌ها\n### مثال ۲ (متوسط)\nget system interface port1 → فقط port1 با جزئیات\n### مثال ۳ (سازمانی)\nget system interface | grep -A2 port5 → بررسی پورت down\n\n## 6. دستورات و ابزارها\n- دستور: get system interface [port-name]\n- پارامتر: نام اینترفیس اختیاری\n- نمونه خروجی: name: port1, status: enable, ip: 192.168.1.1/24, speed: auto\n- نکته: برای SFP از get system interface transceiver استفاده کنید[citation:10].\n\n## 7. لابراتوار عملی\nFortiGate VM با port1. get system interface بزنید. port1 را disable کنید: config system interface → edit port1 → set status down → next → end. سپس get system interface port1 و مشاهده status: down. Verify: status تغییر کند.\n\n## 8. عیب‌یابی حرفه‌ای\nSymptom: port3 no link. Evidence: get system interface port3 نشان می‌دهد status down. Hypothesis: کابل یا admin disable. Fix: بررسی کابل، config system interface port3 set status up. Verify: status up.\n\n## 9. نکات تخصصی و امنیت\nallowaccess را محدود کنید (فقط https, ssh). ping را در WAN غیرفعال کنید. mtu را برای PPPoE تنظیم کنید.\n\n## 10. خلاصه\n- get system interface لیست می‌دهد\n- با نام، جزئیات یک پورت\n- status و ip حیاتی\n- allowaccess را بررسی کنید\n- transceiver برای SFP\n\n## 11. واژه‌نامه\nallowaccess: سرویس‌های مجاز روی اینترفیس\nTransceiver: ماژول نوری\n\n## 12. مهارت‌های کسب‌شده\n- مشاهده وضعیت اینترفیس\n- تشخیص down بودن\n- بررسی IP و allowaccess",
+      "commands": "get system interface\nget system interface port1\nget system interface transceiver",
+      "examples": "در full_content",
+      "notes": "در FortiOS 7.x ساختار get system interface تغییر نکرده است[citation:3].",
+      "learning_objectives": [
+        "اجرای get system interface",
+        "خواندن status و IP",
+        "استفاده از transceiver"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "interface",
+          "FortiGate",
+          "get"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام دستور جزئیات یک اینترفیس خاص را نشان می‌دهد؟",
+              "options": [
+                "get system interface port1",
+                "show interface port1",
+                "get interface port1",
+                "display interface port1"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "پورت SFP وضعیت ندارد. چه دستوری برای بررسی ماژول نوری می‌زنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "get system interface port1 جزئیات port1 را می‌دهد."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "get system interface transceiver"
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:system:interface-config",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 3,
+      "level": "L1",
+      "title_fa": "تنظیم اینترفیس (config system interface)",
+      "title_en": "Configure System Interface",
+      "topic": "system interface",
+      "summary": "config system interface برای تغییر IP، status، allowaccess، mtu و سایر پارامترهای اینترفیس استفاده می‌شود. سینتکس FortiOS با edit/next/end کار می‌کند[citation:13].",
+      "full_content": "# تنظیم اینترفیس\n\n## 1. معرفی و نقشه راه\nبرای تغییرات پیکربندی، FortiOS از config استفاده می‌کند. اینترفیس‌ها با edit و set تغییر می‌کنند. پیش‌نیاز: دانش سینتکس config.\n\n## 2. آموزش از صفر\nconfig system interface → edit port1 → set ip 192.168.1.1 255.255.255.0 → set allowaccess https ssh → next → end. دستور next ذخیره و go to next entry، end ذخیره و exit[citation:13].\n\n## 3. تشبیه سازمانی واقعی\nمدیر شبکه IP management روتر را تغییر می‌دهد: config system interface → edit port1 → set ip 10.0.0.1 255.255.255.0.\n\n## 4. معماری و جزئیات فنی\nپارامترها: ip, allowaccess, status, mtu, speed, description, alias. در FortiOS 7.x edit 0 برای ایجاد entry جدید بدون overwrite[citation:13].\n\n## 5. مثال‌های حل‌شده\n### مثال ۱ (ساده)\nconfig system interface → edit port1 → set status down → next → end\n### مثال ۲ (متوسط)\nconfig system interface → edit port2 → set ip 10.0.0.2 255.255.255.0 → set allowaccess ping https → next → end\n### مثال ۳ (سازمانی)\nتنظیم description برای مستندسازی: set description \"Uplink-to-ISP\"\n\n## 6. دستورات و ابزارها\n- config system interface\n- edit <name>\n- set <field> <value>\n- next\n- end\n- نمونه: (port1) # set status up\n- نکته: abort برای خروج بدون ذخیره[citation:13].\n\n## 7. لابراتوار عملی\nFortiGate VM. IP port1 را تغییر دهید. Verify: get system interface port1 نشان دهد.\n\n## 8. عیب‌یابی حرفه‌ای\nSymptom: cannot access GUI. Evidence: IP اشتباه. Fix: config system interface edit port1 set ip correct. Verify: ping.\n\n## 9. نکات تخصصی و امنیت\nallowaccess را محدود کنید. description را پر کنید. قبل از تغییر IP management، مطمئن شوید دسترسی console دارید.\n\n## 10. خلاصه\n- config system interface\n- edit برای انتخاب\n- set برای تغییر\n- next/end برای ذخیره\n- abort برای خروج بدون ذخیره\n\n## 11. واژه‌نامه\nConfig: پیکربندی\nEdit: ویرایش\nSet: تنظیم\n\n## 12. مهارت‌های کسب‌شده\n- تغییر IP اینترفیس\n- تنظیم allowaccess\n- استفاده از next/end",
+      "commands": "config system interface\nedit port1\nset ip 192.168.1.1 255.255.255.0\nset allowaccess https ssh\nnext\nend",
+      "examples": "در full_content",
+      "notes": "سینتکس config در FortiOS 7.x ثابت است[citation:13].",
+      "learning_objectives": [
+        "ورود به config system interface",
+        "تغییر IP",
+        "ذخیره با next/end"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "config",
+          "interface",
+          "FortiOS"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "برای ذخیره تغییرات و خروج از config کدام دستور است؟",
+              "options": [
+                "next",
+                "end",
+                "save",
+                "exit"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "می‌خواهید IP port1 را تغییر دهید. مراحل را بنویسید.",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 1,
+              "explain_fa": "end تغییرات را ذخیره و از config خارج می‌شود."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "config system interface → edit port1 → set ip ... → next → end"
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:firewall:policy-config",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 4,
+      "level": "L2",
+      "title_fa": "تنظیم Firewall Policy",
+      "title_en": "Configure Firewall Policy",
+      "topic": "firewall policy",
+      "summary": "config firewall policy قلب امنیت FortiGate است. هر policy شامل srcintf, dstintf, srcaddr, dstaddr, service, action و security profiles است. سیاست‌ها از بالا به پایین ارزیابی می‌شوند[citation:15].",
+      "full_content": "# تنظیم Firewall Policy\n\n## 1. معرفی و نقشه راه\nFirewall Policy (Security Policy) تعیین می‌کند چه ترافیکی مجاز یا مسدود شود. FortiGate سیاست‌ها را به ترتیب ارزیابی می‌کند و اولین تطابق اعمال می‌شود. در پایان implicit deny وجود دارد[citation:15].\n\n## 2. آموزش از صفر\nهر policy شامل: name, srcintf, dstintf, srcaddr, dstaddr, service, schedule, action (accept/deny), NAT, security profiles. edit 0 برای policy جدید بدون overwrite[citation:13].\n\n## 3. تشبیه سازمانی واقعی\nشرکت ب اجازه دسترسی LAN به اینترنت HTTP/HTTPS را می‌دهد اما FTP را مسدود می‌کند. Policy 1: LAN→WAN, service HTTP HTTPS, action accept. Policy 2: LAN→WAN, service FTP, action deny.\n\n## 4. معماری و جزئیات فنی\nPolicy order مهم است. move برای جابجایی استفاده می‌شود: move 27 to 30[citation:13]. NAT در policy با set nat enable فعال می‌شود.\n\n## 5. مثال‌های حل‌شده\n### مثال ۱ (ساده)\nconfig firewall policy → edit 0 → set srcintf port2 → set dstintf port1 → set srcaddr all → set dstaddr all → set service ALL → set action accept → next → end\n### مثال ۲ (متوسط)\nPolicy با NAT: set nat enable\n### مثال ۳ (سازمانی)\nPolicy با security profile: set utm-status enable → set av-profile default → set ips-sensor default\n\n## 6. دستورات و ابزارها\n- config firewall policy\n- edit <id>\n- set srcintf/dstintf/srcaddr/dstaddr/service/action\n- set nat enable\n- next, end\n- move <id> to <id>\n- نمونه: edit 0 → new entry added\n\n## 7. لابراتوار عملی\nFortiGate VM. Policy برای HTTP بسازید. Verify: از کلاینت مرور کنید، log را ببینید.\n\n## 8. عیب‌یابی حرفه‌ای\nSymptom: traffic blocked. Evidence: diagnose debug flow. Hypothesis: policy match نشده. Fix: بررسی order, srcaddr, service. Verify: debug flow دوباره.\n\n## 9. نکات تخصصی و امنیت\nسیاست‌های خاص قبل از عام. logging را فعال کنید. security profiles را فقط برای ترافیک مجاز اعمال کنید[citation:15].\n\n## 10. خلاصه\n- config firewall policy\n- edit 0 برای جدید\n- srcintf/dstintf الزامی\n- action accept/deny\n- move برای ترتیب\n- implicit deny\n\n## 11. واژه‌نامه\nPolicy: سیاست\nImplicit Deny: رد پیش‌فرض\nSecurity Profile: پروفایل امنیتی\n\n## 12. مهارت‌های کسب‌شده\n- ساخت policy\n- تنظیم NAT\n- جابجایی با move",
+      "commands": "config firewall policy\nedit 0\nset srcintf port2\nset dstintf port1\nset srcaddr all\nset dstaddr all\nset service ALL\nset action accept\nnext\nend\nmove 27 to 30",
+      "examples": "در full_content",
+      "notes": "FortiOS 7.x از edit 0 برای entry جدید پشتیبانی می‌کند[citation:13].",
+      "learning_objectives": [
+        "ساخت policy",
+        "تنظیم NAT",
+        "جابجایی policy"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "firewall policy",
+          "FortiGate",
+          "security"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "برای ایجاد policy جدید بدون overwrite کدام روش توصیه می‌شود؟",
+              "options": [
+                "edit 1",
+                "edit 0",
+                "add new",
+                "create"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "ترافیک LAN به اینترنت مسدود است. چه چیزی در policy بررسی می‌کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 1,
+              "explain_fa": "edit 0 entry جدید با شماره بعدی می‌سازد."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "بررسی srcintf, dstintf, srcaddr, dstaddr, service, action, order و NAT."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:firewall:address-config",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 5,
+      "level": "L1",
+      "title_fa": "تنظیم Address Object",
+      "title_en": "Configure Firewall Address",
+      "topic": "firewall address",
+      "summary": "config firewall address برای تعریف subnet، host، FQDN و geography استفاده می‌شود. این objectها در policy به کار می‌روند[citation:8].",
+      "full_content": "# تنظیم Address Object\n\n## 1. معرفی\nAddress object نام‌گذاری‌شده برای IP/subnet است تا policyها خوانا شوند.\n\n## 2. آموزش\nconfig firewall address → edit \"LAN_10.0.0.0/24\" → set subnet 10.0.0.0 255.255.255.0 → next → end[citation:4].\n\n## 3. تشبیه\nدفترچه آدرس سازمانی.\n\n## 4. معماری\nsubnet, type (ipmask, fqdn, geography, wildcard), fqdn, start-ip/end-ip.\n\n## 5. مثال‌ها\n### مثال ۱\nconfig firewall address → edit \"Web_Server\" → set subnet 10.0.0.5 255.255.255.255\n### مثال ۲\nFQDN: set type fqdn → set fqdn www.example.com\n### مثال ۳\nAddress Group: config firewall addrgrp → edit \"Web_Servers\" → set member \"Web_Server1\" \"Web_Server2\"\n\n## 6. دستورات\n- config firewall address\n- edit <name>\n- set subnet <ip> <mask>\n- set type fqdn\n- set fqdn <name>\n\n## 7. لابراتوار\nAddress برای LAN و سرور بسازید. Verify: get firewall address.\n\n## 8. عیب‌یابی\nSymptom: policy match نمی‌کند. Evidence: address اشتباه. Fix: تصحیح subnet.\n\n## 9. امنیت\nنام‌گذاری معنادار. حذف objectهای بلااستفاده.\n\n## 10. خلاصه\n- config firewall address\n- subnet برای IP/mask\n- type fqdn برای نام دامنه\n- addrgrp برای گروه\n\n## 11. واژه‌نامه\nAddress: آدرس\nFQDN: Fully Qualified Domain Name\n\n## 12. مهارت\n- ساخت address\n- ساخت group",
+      "commands": "config firewall address\nedit \"LAN_10.0.0.0/24\"\nset subnet 10.0.0.0 255.255.255.0\nnext\nend\nconfig firewall addrgrp\nedit \"Web_Servers\"\nset member \"Web_Server1\" \"Web_Server2\"\nnext\nend",
+      "examples": "در full_content",
+      "notes": "در FortiOS 7.x address objects پایه هستند[citation:8].",
+      "learning_objectives": [
+        "ساخت address",
+        "ساخت address group",
+        "استفاده در policy"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "address",
+          "firewall",
+          "object"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "برای تعریف یک subnet کدام دستور استفاده می‌شود؟",
+              "options": [
+                "set ip",
+                "set subnet",
+                "set network",
+                "set range"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "چند سرور وب دارید. چگونه آن‌ها را در policy یکجا استفاده کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 1,
+              "explain_fa": "set subnet برای IP/mask است."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "ساخت address برای هر سرور و سپس addrgrp."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:firewall:service-custom",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 6,
+      "level": "L1",
+      "title_fa": "تنظیم Custom Service",
+      "title_en": "Configure Firewall Service Custom",
+      "topic": "firewall service",
+      "summary": "config firewall service custom برای تعریف سرویس‌های TCP/UDP/ICMP با پورت‌های خاص استفاده می‌شود. سرویس‌های predefined با get firewall service custom دیده می‌شوند[citation:1].",
+      "full_content": "# تنظیم Custom Service\n\n## 1. معرفی\nسرویس‌ها پورت و پروتکل را تعریف می‌کنند. predefined services مانند HTTP, HTTPS, DNS وجود دارند[citation:1].\n\n## 2. آموزش\nconfig firewall service custom → edit \"TCP_8080\" → set protocol TCP/UDP/SCTP → set tcp-portrange 8080 → next → end\n\n## 3. تشبیه\nلیست خدمات مجاز.\n\n## 4. معماری\nprotocol, tcp-portrange, udp-portrange, icmp-type, category.\n\n## 5. مثال‌ها\n### مثال ۱\nconfig firewall service custom → edit \"HTTPS_8443\" → set tcp-portrange 8443\n### مثال ۲\nUDP: set udp-portrange 500-501\n### مثال ۳\nService Group: config firewall service group → edit \"Web_Services\" → set member HTTP HTTPS\n\n## 6. دستورات\n- config firewall service custom\n- edit <name>\n- set protocol TCP/UDP/SCTP\n- set tcp-portrange <port>\n- get firewall service custom\n\n## 7. لابراتوار\nسرویس 8080 بسازید و در policy استفاده کنید.\n\n## 8. عیب‌یابی\nSymptom: service match نمی‌کند. Evidence: portrange. Fix: تصحیح.\n\n## 9. امنیت\nفقط پورت‌های لازم.\n\n## 10. خلاصه\n- custom service برای پورت خاص\n- tcp-portrange\n- service group\n\n## 11. واژه‌نامه\nService: سرویس\nPort Range: محدوده پورت\n\n## 12. مهارت\n- ساخت سرویس\n- استفاده در policy",
+      "commands": "config firewall service custom\nedit \"HTTPS_8443\"\nset protocol TCP/UDP/SCTP\nset tcp-portrange 8443\nnext\nend\nconfig firewall service group\nedit \"Web_Services\"\nset member HTTP HTTPS\nnext\nend\nget firewall service custom",
+      "examples": "در full_content",
+      "notes": "پورت رنج‌ها در FortiOS 7.x پشتیبانی می‌شوند[citation:1].",
+      "learning_objectives": [
+        "ساخت custom service",
+        "ساخت service group",
+        "مشاهده predefined"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "service",
+          "port",
+          "firewall"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام پارامتر برای محدوده پورت TCP است؟",
+              "options": [
+                "tcp-portrange",
+                "tcp-port",
+                "port-range",
+                "protocol-port"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "سرویس SSH روی پورت 2222 بسازید.",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "tcp-portrange محدوده پورت TCP را تعیین می‌کند."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "config firewall service custom edit SSH_2222 set tcp-portrange 2222"
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:router:static",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 7,
+      "level": "L1",
+      "title_fa": "تنظیم Static Route",
+      "title_en": "Configure Static Route",
+      "topic": "router static",
+      "summary": "config router static برای تعریف مسیرهای استاتیک به شبکه‌های مقصد استفاده می‌شود. gateway, device, dst و distance پارامترهای کلیدی هستند.",
+      "full_content": "# تنظیم Static Route\n\n## 1. معرفی\nمسیریابی در FortiGate با static route و policy route انجام می‌شود.\n\n## 2. آموزش\nconfig router static → edit 0 → set dst 10.10.0.0 255.255.0.0 → set gateway 192.168.1.2 → set device port2 → next → end\n\n## 3. تشبیه\nتابلو راهنما.\n\n## 4. معماری\ndst, gateway, device, distance, priority.\n\n## 5. مثال‌ها\n### مثال ۱\nDefault route: set dst 0.0.0.0 0.0.0.0 → set gateway 200.1.1.2\n### مثال ۲\nset distance 10\n### مثال ۳\nshow router static\n\n## 6. دستورات\n- config router static\n- set dst <ip> <mask>\n- set gateway <ip>\n- set device <intf>\n- set distance <num>\n- get router info routing-table all\n\n## 7. لابراتوار\nRoute به 10.10.0.0/16 اضافه کنید.\n\n## 8. عیب‌یابی\nSymptom: route active نیست. Evidence: get router info routing-table. Fix: gateway/device.\n\n## 9. امنیت\nroute اشتباه = blackhole.\n\n## 10. خلاصه\n- config router static\n- dst و gateway\n- distance\n\n## 11. واژه‌نامه\nStatic: استاتیک\nGateway: دروازه\n\n## 12. مهارت\n- افزودن route\n- مشاهده routing table",
+      "commands": "config router static\nedit 0\nset dst 10.10.0.0 255.255.0.0\nset gateway 192.168.1.2\nset device port2\nnext\nend\nget router info routing-table all",
+      "examples": "در full_content",
+      "notes": "در FortiOS 7.x ساختار config router static ثابت است.",
+      "learning_objectives": [
+        "افزودن static route",
+        "مشاهده routing table",
+        "تنظیم distance"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "route",
+          "static",
+          "gateway"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "برای default route کدام dst است؟",
+              "options": [
+                "0.0.0.0 0.0.0.0",
+                "255.255.255.255",
+                "192.168.0.0 255.255.0.0",
+                "any"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "route فعال نیست. چه بررسی می‌کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "default route با 0.0.0.0 0.0.0.0 تعریف می‌شود."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "بررسی gateway, device, distance با get router info routing-table all."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:router:policy",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 8,
+      "level": "L2",
+      "title_fa": "تنظیم Policy Route",
+      "title_en": "Configure Policy Route",
+      "topic": "router policy",
+      "summary": "Policy route برای مسیریابی مبتنی بر سیاست (source, destination, protocol) استفاده می‌شود و بر static route اولویت دارد[citation:1].",
+      "full_content": "# تنظیم Policy Route\n\n## 1. معرفی\nPolicy route اجازه می‌دهد ترافیک خاص از مسیر خاص برود.\n\n## 2. آموزش\nconfig router policy → edit 0 → set input-device port2 → set src 192.168.1.0 255.255.255.0 → set dst 10.0.0.0 255.0.0.0 → set gateway 192.168.1.254 → next → end\n\n## 3. تشبیه\nخط ویژه اتوبوس.\n\n## 4. معماری\ninput-device, src, dst, protocol, gateway, output-device.\n\n## 5. مثال‌ها\n### مثال ۱\npolicy route برای HTTP: set protocol 6 → set dst-port 80\n### مثال ۲\nget firewall proute\n### مثال ۳\nshow router policy\n\n## 6. دستورات\n- config router policy\n- set input-device\n- set src / dst\n- set gateway\n- get firewall proute\n\n## 7. لابراتوار\nترافیک HTTP را از gateway دیگر بفرستید.\n\n## 8. عیب‌یابی\nSymptom: policy route اعمال نمی‌شود. Evidence: get firewall proute. Fix: بررسی order و match.\n\n## 9. امنیت\nپیچیدگی را کم کنید.\n\n## 10. خلاصه\n- config router policy\n- input-device\n- src/dst\n- gateway\n\n## 11. واژه‌نامه\nPolicy Route: مسیر سیاستی\n\n## 12. مهارت\n- ساخت policy route\n- مشاهده با get firewall proute",
+      "commands": "config router policy\nedit 0\nset input-device port2\nset src 192.168.1.0 255.255.255.0\nset dst 10.0.0.0 255.0.0.0\nset gateway 192.168.1.254\nnext\nend\nget firewall proute",
+      "examples": "در full_content",
+      "notes": "Policy route در FortiOS 7.x با get firewall proute دیده می‌شود[citation:1].",
+      "learning_objectives": [
+        "ساخت policy route",
+        "مشاهده با get firewall proute",
+        "تست مسیر"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "policy route",
+          "router",
+          "gateway"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام دستور policy routeها را نشان می‌دهد؟",
+              "options": [
+                "get firewall proute",
+                "show router policy",
+                "get router policy",
+                "show policy route"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "policy route اعمال نمی‌شود. چه بررسی می‌کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "get firewall proute لیست policy routeها را می‌دهد[citation:1]."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "بررسی match شرایط (src, dst, protocol) و order."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:firewall:vip",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 9,
+      "level": "L2",
+      "title_fa": "تنظیم Virtual IP (DNAT)",
+      "title_en": "Configure Virtual IP",
+      "topic": "firewall vip",
+      "summary": "config firewall vip برای Destination NAT (port forwarding) استفاده می‌شود. extip, mappedip و portforward پارامترهای کلیدی هستند.",
+      "full_content": "# تنظیم Virtual IP\n\n## 1. معرفی\nVIP برای انتشار سرویس داخلی به بیرون.\n\n## 2. آموزش\nconfig firewall vip → edit \"Web_VIP\" → set extip 200.1.1.1 → set mappedip 10.0.0.5 → set portforward enable → set extport 80 → set mappedport 8080 → next → end\n\n## 3. تشبیه\nپستخانه.\n\n## 4. معماری\nextip, mappedip, portforward, extport, mappedport, protocol.\n\n## 5. مثال‌ها\n### مثال ۱\nVIP برای RDP: set extport 3389 → set mappedport 3389\n### مثال ۲\nVIP Group: config firewall vipgrp → edit \"Web_Group\" → set member \"Web_VIP1\" \"Web_VIP2\"\n### مثال ۳\nget firewall vip\n\n## 6. دستورات\n- config firewall vip\n- edit <name>\n- set extip <public-ip>\n- set mappedip <internal-ip>\n- set portforward enable\n- set extport <port>\n- set mappedport <port>\n\n## 7. لابراتوار\nVIP برای وب‌سرور بسازید و در policy استفاده کنید.\n\n## 8. عیب‌یابی\nSymptom: VIP کار نمی‌کند. Evidence: get firewall vip. Fix: بررسی extip, mappedip, policy.\n\n## 9. امنیت\nفقط پورت‌های لازم. محدودسازی srcaddr.\n\n## 10. خلاصه\n- config firewall vip\n- extip و mappedip\n- portforward\n- استفاده در policy\n\n## 11. واژه‌نامه\nVIP: Virtual IP\nDNAT: Destination NAT\n\n## 12. مهارت\n- ساخت VIP\n- تنظیم port forwarding",
+      "commands": "config firewall vip\nedit \"Web_VIP\"\nset extip 200.1.1.1\nset mappedip 10.0.0.5\nset portforward enable\nset extport 80\nset mappedport 8080\nnext\nend\nget firewall vip",
+      "examples": "در full_content",
+      "notes": "VIP در FortiOS 7.x همچنان برای DNAT استفاده می‌شود.",
+      "learning_objectives": [
+        "ساخت VIP",
+        "تنظیم port forwarding",
+        "استفاده در policy"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "VIP",
+          "DNAT",
+          "port forwarding"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "برای فعال‌سازی port forwarding در VIP کدام پارامتر است؟",
+              "options": [
+                "set portforward enable",
+                "set port enable",
+                "set forward yes",
+                "set nat enable"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "VIP برای وب‌سرور داخلی روی پورت 8080 بسازید.",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "set portforward enable port forwarding را فعال می‌کند."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "set extip public, set mappedip internal, set extport 80, set mappedport 8080."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:firewall:ippool",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 10,
+      "level": "L1",
+      "title_fa": "تنظیم IP Pool",
+      "title_en": "Configure Firewall IP Pool",
+      "topic": "firewall ippool",
+      "summary": "config firewall ippool برای تعریف pool آدرس‌های NAT استفاده می‌شود. در policy با set ippool enable و set poolname به کار می‌رود.",
+      "full_content": "# تنظیم IP Pool\n\n## 1. معرفی\nIP Pool برای SNAT استفاده می‌شود وقتی می‌خواهیم آدرس مبدأ به pool خاصی ترجمه شود.\n\n## 2. آموزش\nconfig firewall ippool → edit \"NAT_Pool\" → set startip 200.1.1.10 → set endip 200.1.1.20 → next → end\n\n## 3. تشبیه\nاستخر شنا.\n\n## 4. معماری\nstartip, endip, type (overload, one-to-one, fixed-port-range), block-size.\n\n## 5. مثال‌ها\n### مثال ۱\nPool با یک IP: set startip 200.1.1.10 → set endip 200.1.1.10\n### مثال ۲\nاستفاده در policy: set ippool enable → set poolname \"NAT_Pool\"\n### مثال ۳\nget firewall ippool\n\n## 6. دستورات\n- config firewall ippool\n- set startip / endip\n- set type\n- get firewall ippool\n\n## 7. لابراتوار\nPool بسازید و در policy استفاده کنید.\n\n## 8. عیب‌یابی\nSymptom: SNAT به pool نمی‌رود. Evidence: get firewall ippool. Fix: بررسی poolname.\n\n## 9. امنیت\npool را محدود کنید.\n\n## 10. خلاصه\n- config firewall ippool\n- startip/endip\n- استفاده در policy\n\n## 11. واژه‌نامه\nIP Pool: استخر IP\n\n## 12. مهارت\n- ساخت pool\n- استفاده در policy",
+      "commands": "config firewall ippool\nedit \"NAT_Pool\"\nset startip 200.1.1.10\nset endip 200.1.1.20\nnext\nend\nget firewall ippool",
+      "examples": "در full_content",
+      "notes": "در FortiOS 7.x ippool پشتیبانی می‌شود.",
+      "learning_objectives": [
+        "ساخت IP Pool",
+        "استفاده در policy",
+        "مشاهده pool"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "IP Pool",
+          "NAT",
+          "SNAT"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام پارامتر در policy IP Pool را فعال می‌کند؟",
+              "options": [
+                "set ippool enable",
+                "set pool yes",
+                "set nat pool",
+                "set source-pool"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "SNAT به pool خاص نمی‌رود. چه بررسی می‌کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "set ippool enable فعال می‌کند."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "بررسی poolname در policy و تطابق با pool."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:vpn:ipsec-phase1",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 11,
+      "level": "L2",
+      "title_fa": "تنظیم IPsec Phase 1",
+      "title_en": "Configure IPsec Phase 1",
+      "topic": "vpn ipsec",
+      "summary": "config vpn ipsec phase1-interface برای تنظیم IKE SA استفاده می‌شود. ike-version, proposal, psksecret و eap پارامترهای حیاتی هستند[citation:4][citation:11].",
+      "full_content": "# تنظیم IPsec Phase 1\n\n## 1. معرفی\nPhase 1 تونل امن اولیه را می‌سازد. IKEv2 توصیه می‌شود.\n\n## 2. آموزش\nconfig vpn ipsec phase1-interface → edit \"VPN_Dialup\" → set interface wan1 → set ike-version 2 → set proposal aes256-sha256 → set psksecret xxx → set eap enable → next → end[citation:4]\n\n## 3. تشبیه\nقرارداد امنیتی اولیه.\n\n## 4. معماری\ninterface, ike-version, proposal, dhgrp, psksecret, eap, ipv4-start-ip/end-ip.\n\n## 5. مثال‌ها\n### مثال ۱\nIKEv2 + PSK: set ike-version 2 → set psksecret \"YourKey\"\n### مثال ۲\nEAP: set eap enable → set authusrgrp \"VPN_Group\"\n### مثال ۳\nClient IP assignment: set ipv4-start-ip 10.10.100.1 → set ipv4-end-ip 10.10.100.100\n\n## 6. دستورات\n- config vpn ipsec phase1-interface\n- set interface\n- set ike-version\n- set proposal\n- set psksecret\n- set eap enable\n- set authusrgrp\n\n## 7. لابراتوار\nIPsec Dialup با IKEv2 + PSK + EAP بسازید.\n\n## 8. عیب‌یابی\nSymptom: Phase1 down. Evidence: diagnose vpn ike gateway list. Fix: proposal/PSK.\n\n## 9. امنیت\nAES256-SHA256. PSK قوی. EAP برای user auth.\n\n## 10. خلاصه\n- phase1-interface\n- ike-version 2\n- psksecret\n- eap enable\n\n## 11. واژه‌نامه\nPhase 1: فاز اول\nIKE: Internet Key Exchange\nPSK: Pre-Shared Key\n\n## 12. مهارت\n- ساخت phase1\n- تنظیم IKEv2\n- فعال‌سازی EAP",
+      "commands": "config vpn ipsec phase1-interface\nedit \"VPN_Dialup\"\nset interface wan1\nset ike-version 2\nset proposal aes256-sha256\nset psksecret \"YourSecretKey\"\nset eap enable\nset authusrgrp \"VPN_Group\"\nnext\nend",
+      "examples": "در full_content",
+      "notes": "در FortiOS 7.x IKEv2 توصیه می‌شود[citation:4].",
+      "learning_objectives": [
+        "ساخت phase1-interface",
+        "تنظیم IKEv2",
+        "فعال‌سازی EAP"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "IPsec",
+          "VPN",
+          "IKEv2",
+          "phase1"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام پارامتر user authentication را فعال می‌کند؟",
+              "options": [
+                "set eap enable",
+                "set auth enable",
+                "set user auth",
+                "set psk enable"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "Phase1 down است. چه بررسی می‌کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "set eap enable احراز هویت کاربر را فعال می‌کند[citation:4]."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "بررسی proposal, psksecret, interface, ike-version با diagnose vpn ike gateway list."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:vpn:ipsec-phase2",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 12,
+      "level": "L2",
+      "title_fa": "تنظیم IPsec Phase 2",
+      "title_en": "Configure IPsec Phase 2",
+      "topic": "vpn ipsec",
+      "summary": "config vpn ipsec phase2-interface برای تنظیم Child SA استفاده می‌شود. phase1name, proposal و src-addr/dst-addr پارامترهای اصلی هستند[citation:4].",
+      "full_content": "# تنظیم IPsec Phase 2\n\n## 1. معرفی\nPhase 2 تونل داده را می‌سازد.\n\n## 2. آموزش\nconfig vpn ipsec phase2-interface → edit \"VPN_Dialup\" → set phase1name \"VPN_Dialup\" → set proposal aes256-sha256 → set src-addr-type name → set src-name \"LAN\" → set dst-addr-type name → set dst-name \"VPN\" → next → end[citation:4]\n\n## 3. تشبیه\nقرارداد نهایی.\n\n## 4. معماری\nphase1name, proposal, src-addr-type, src-name, dst-addr-type, dst-name, keepalive.\n\n## 5. مثال‌ها\n### مثال ۱\nBasic: set phase1name \"VPN_Dialup\" → set proposal aes256-sha256\n### مثال ۲\nKeepalive: set keepalive enable\n### مثال ۳\nSelectors: set src-name \"LAN_10.10.1.0/24\" → set dst-name \"VPN_10.10.100.0/24\"\n\n## 6. دستورات\n- config vpn ipsec phase2-interface\n- set phase1name\n- set proposal\n- set src-name / dst-name\n- set keepalive enable\n\n## 7. لابراتوار\nPhase2 بسازید و تونل را تست کنید.\n\n## 8. عیب‌یابی\nSymptom: tunnel up اما traffic ندارد. Evidence: diagnose vpn tunnel list. Fix: selectors (src/dst).\n\n## 9. امنیت\nproposal همسان با طرف مقابل.\n\n## 10. خلاصه\n- phase2-interface\n- phase1name\n- proposal\n- selectors\n\n## 11. واژه‌نامه\nPhase 2: فاز دوم\nChild SA: Security Association داده\n\n## 12. مهارت\n- ساخت phase2\n- تنظیم selectors\n- تست تونل",
+      "commands": "config vpn ipsec phase2-interface\nedit \"VPN_Dialup\"\nset phase1name \"VPN_Dialup\"\nset proposal aes256-sha256\nset src-addr-type name\nset src-name \"LAN_10.10.1.0/24\"\nset dst-addr-type name\nset dst-name \"VPN_10.10.100.0/24\"\nset keepalive enable\nnext\nend",
+      "examples": "در full_content",
+      "notes": "در FortiOS 7.x phase2-interface برای Child SA است[citation:4].",
+      "learning_objectives": [
+        "ساخت phase2",
+        "تنظیم proposal",
+        "تنظیم selectors"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "IPsec",
+          "phase2",
+          "Child SA"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام پارامتر phase1 را به phase2 متصل می‌کند؟",
+              "options": [
+                "set phase1name",
+                "set parent",
+                "set ike",
+                "set tunnel"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "تونل up است اما ترافیک عبور نمی‌کند. چه بررسی می‌کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "set phase1name ارتباط را تعیین می‌کند."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "بررسی selectors (src-name/dst-name) و policy بین تونل و LAN."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:vpn:ssl-settings",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 13,
+      "level": "L2",
+      "title_fa": "تنظیم SSL VPN",
+      "title_en": "Configure SSL VPN",
+      "topic": "vpn ssl",
+      "summary": "config vpn ssl settings برای تنظیم SSL VPN استفاده می‌شود. source-interface, port, tunnel-ip-pools و servercert پارامترهای کلیدی هستند[citation:5][citation:12].",
+      "full_content": "# تنظیم SSL VPN\n\n## 1. معرفی\nSSL VPN برای دسترسی امن از راه دور با مرورگر یا FortiClient.\n\n## 2. آموزش\nconfig vpn ssl settings → set servercert \"cert-name\" → set tunnel-ip-pools \"SSLVPN_TUNNEL_ADDR1\" → set port 1443 → set source-interface \"wan1\" → end[citation:5]\n\n## 3. تشبیه\nدرب پشتی امن.\n\n## 4. معماری\nsource-interface, port, servercert, tunnel-ip-pools, dns-server1/2, default-portal.\n\n## 5. مثال‌ها\n### مثال ۱\nBasic: set source-interface \"wan1\" → set port 1443\n### مثال ۲\nDNS: set dns-server1 8.8.8.8\n### مثال ۳\nZone: config system zone → edit \"zone_sslvpn\" → set interface \"port4\" \"ssl.root\"[citation:5]\n\n## 6. دستورات\n- config vpn ssl settings\n- set servercert\n- set tunnel-ip-pools\n- set port\n- set source-interface\n- set dns-server1\n\n## 7. لابراتوار\nSSL VPN روی پورت 1443 تنظیم کنید و با FortiClient تست کنید.\n\n## 8. عیب‌یابی\nSymptom: SSL VPN connect نمی‌شود. Evidence: source-interface. Fix: set source-interface correct.\n\n## 9. امنیت\nservercert معتبر. port non-standard. MFA.\n\n## 10. خلاصه\n- config vpn ssl settings\n- source-interface\n- port\n- servercert\n- tunnel-ip-pools\n\n## 11. واژه‌نامه\nSSL VPN: VPN مبتنی بر SSL\n\n## 12. مهارت\n- تنظیم SSL VPN\n- استفاده در zone\n- تست اتصال",
+      "commands": "config vpn ssl settings\nset servercert \"Fortinet_Factory\"\nset tunnel-ip-pools \"SSLVPN_TUNNEL_ADDR1\"\nset port 1443\nset source-interface \"wan1\"\nset dns-server1 8.8.8.8\nset dns-server2 8.8.4.4\nend",
+      "examples": "در full_content",
+      "notes": "SSL VPN در FortiOS 7.x با zones کار می‌کند[citation:5].",
+      "learning_objectives": [
+        "تنظیم SSL VPN",
+        "استفاده در zone",
+        "تست اتصال"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "SSL VPN",
+          "FortiGate",
+          "remote access"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام پارامتر interface شنونده را تعیین می‌کند؟",
+              "options": [
+                "set source-interface",
+                "set listen",
+                "set interface",
+                "set port"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "SSL VPN connect نمی‌شود. چه بررسی می‌کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "set source-interface interface شنونده را تعیین می‌کند[citation:5]."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "بررسی source-interface, port, servercert, firewall policy."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:diagnose:debug-flow",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 14,
+      "level": "L3",
+      "title_fa": "دیباگ جریان بسته (Debug Flow)",
+      "title_en": "Diagnose Debug Flow",
+      "topic": "diagnose debug",
+      "summary": "diagnose debug flow برای ردیابی مسیر بسته در FortiGate استفاده می‌شود. filter, show, trace start و disable مراحل اصلی هستند[citation:9][citation:15].",
+      "full_content": "# دیباگ جریان بسته\n\n## 1. معرفی\nDebug flow نشان می‌دهد بسته از کدام interface وارد، کدام policy match و کجا drop می‌شود. در محیط production با احتیاط و برای مدت کوتاه.\n\n## 2. آموزش\ndiagnose debug reset → diagnose debug flow filter addr 192.168.1.10 → diagnose debug flow show console enable → diagnose debug enable → diagnose debug flow trace start 20 → diagnose debug disable[citation:9][citation:15]\n\n## 3. تشبیه\nردیاب بسته.\n\n## 4. معماری\nfilter: addr, daddr, dport, sport, protocol, vd. trace start <N> برای N بسته.\n\n## 5. مثال‌ها\n### مثال ۱\nFilter by addr: diagnose debug flow filter addr 192.168.1.10\n### مثال ۲\nFilter by port: diagnose debug flow filter dport 80\n### مثال ۳\nClear filter: diagnose debug flow filter clear\n\n## 6. دستورات\n- diagnose debug reset\n- diagnose debug flow filter <option>\n- diagnose debug flow show console enable\n- diagnose debug enable\n- diagnose debug flow trace start <N>\n- diagnose debug flow trace stop\n- diagnose debug disable\n- خروجی: id=20085 trace_id=209 msg=\"Allowed by Policy-3\"[citation:9]\n\n## 7. لابراتوار\nیک کلاینت را filter کنید و ترافیک HTTP تولید کنید. خروجی را تحلیل کنید.\n\n## 8. عیب‌یابی\nSymptom: traffic drop. Evidence: debug flow نشان می‌دهد Policy-0 implicit deny. Fix: policy اضافه کنید. Verify: debug flow دوباره.\n\n## 9. امنیت\nخروجی debug شامل اطلاعات حساس است. سریع disable کنید.\n\n## 10. خلاصه\n- diagnose debug flow\n- filter برای محدودسازی\n- show console enable\n- trace start\n- disable پس از تست\n\n## 11. واژه‌نامه\nDebug: اشکال‌زدایی\nFlow: جریان\n\n## 12. مهارت\n- استفاده از debug flow\n- تحلیل خروجی\n- تشخیص drop",
+      "commands": "diagnose debug reset\ndiagnose debug flow filter addr 192.168.1.10\ndiagnose debug flow filter dport 80\ndiagnose debug flow show console enable\ndiagnose debug enable\ndiagnose debug flow trace start 20\ndiagnose debug flow trace stop\ndiagnose debug disable",
+      "examples": "در full_content",
+      "notes": "در FortiOS 7.x debug flow همچنان اصلی‌ترین ابزار عیب‌یابی است[citation:9].",
+      "learning_objectives": [
+        "اجرای debug flow",
+        "فیلتر کردن",
+        "تحلیل خروجی"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "debug flow",
+          "diagnose",
+          "troubleshooting"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "برای شروع debug flow با 100 بسته کدام دستور است؟",
+              "options": [
+                "diagnose debug flow trace start 100",
+                "diagnose debug flow start 100",
+                "debug flow 100",
+                "diagnose debug start 100"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "ترافیک drop می‌شود. چگونه با debug flow عیب‌یابی کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "trace start <N> شروع می‌کند[citation:9]."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "filter addr/dport، enable، trace start، بررسی Policy-0 یا drop reason."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:diagnose:sniffer",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 15,
+      "level": "L3",
+      "title_fa": "Sniffer در FortiGate",
+      "title_en": "Diagnose Sniffer",
+      "topic": "diagnose sniffer",
+      "summary": "diagnose sniffer packet برای ضبط بسته‌ها در FortiGate استفاده می‌شود. فقط در محیط lab یا با مجوز. پارامترهای interface, filter و verbose مهم هستند.",
+      "full_content": "# Sniffer در FortiGate\n\n## 1. معرفی\nSniffer ضبط بسته در CLI.\n\n## 2. آموزش\ndiagnose sniffer packet any 'host 192.168.1.10 and port 80' 4 10\n\n## 3. تشبیه\nضبط مکالمات.\n\n## 4. معماری\ninterface, filter (BPF syntax), verbose (1-6), count.\n\n## 5. مثال‌ها\n### مثال ۱\nInterface any: diagnose sniffer packet any 'icmp' 4\n### مثال ۲\nInterface port1: diagnose sniffer packet port1 'tcp port 443' 4 5\n### مثال ۳\nVerbose 6 برای hex: diagnose sniffer packet any 'host 10.0.0.1' 6\n\n## 6. دستورات\n- diagnose sniffer packet <intf> <filter> <verbose> <count>\n- Ctrl+C برای توقف\n- verbose 1: header\n- verbose 4: header + data\n- verbose 6: hex\n\n## 7. لابراتوار\nICMP را ضبط کنید و در Wireshark تحلیل کنید.\n\n## 8. عیب‌یابی\nSymptom: بسته گم می‌شود. Evidence: sniffer. Fix: بررسی interface.\n\n## 9. امنیت\nفقط در lab یا با اجازه کتبی.\n\n## 10. خلاصه\n- diagnose sniffer packet\n- interface\n- BPF filter\n- verbose\n- count\n\n## 11. واژه‌نامه\nSniffer: شنود\nBPF: Berkeley Packet Filter\n\n## 12. مهارت\n- ضبط بسته\n- فیلتر BPF\n- تحلیل",
+      "commands": "diagnose sniffer packet any 'icmp' 4\ndiagnose sniffer packet port1 'tcp port 443' 4 5\ndiagnose sniffer packet any 'host 10.0.0.1' 6",
+      "examples": "در full_content",
+      "notes": "در FortiOS 7.x sniffer همچنان موجود است.",
+      "learning_objectives": [
+        "اجرای sniffer",
+        "فیلتر BPF",
+        "تحلیل بسته"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "sniffer",
+          "packet capture",
+          "diagnose"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام دستور بسته‌ها را ضبط می‌کند؟",
+              "options": [
+                "diagnose sniffer packet",
+                "diagnose capture",
+                "diagnose packet",
+                "diagnose tcpdump"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "ترافیک HTTP روی port1 را ضبط کنید.",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "diagnose sniffer packet بسته‌ها را ضبط می‌کند."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "diagnose sniffer packet port1 'tcp port 80' 4"
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:vpn:ike-gateway-list",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 16,
+      "level": "L2",
+      "title_fa": "مشاهده وضعیت IKE Gateway",
+      "title_en": "Diagnose VPN IKE Gateway List",
+      "topic": "diagnose vpn",
+      "summary": "diagnose vpn ike gateway list برای مشاهده وضعیت Phase 1 استفاده می‌شود. status, proposal, key و lifetime را نشان می‌دهد[citation:6][citation:18].",
+      "full_content": "# مشاهده وضعیت IKE Gateway\n\n## 1. معرفی\nبرای عیب‌یابی VPN، ابتدا Phase1.\n\n## 2. آموزش\ndiagnose vpn ike gateway list[citation:6]\n\n## 3. تشبیه\nوضعیت قرارداد.\n\n## 4. معماری\nname, interface, addr, status, proposal, key, lifetime.\n\n## 5. مثال‌ها\n### مثال ۱\nBasic: diagnose vpn ike gateway list\n### مثال ۲\nFilter by name: diagnose vpn ike gateway list | grep to-openswan\n### مثال ۳\nClear: diagnose vpn ike gateway clear\n\n## 6. دستورات\n- diagnose vpn ike gateway list\n- خروجی: name: to-openswan, status: established, proposal: aes128-sha1[citation:18]\n\n## 7. لابراتوار\nVPN بسازید و وضعیت را ببینید.\n\n## 8. عیب‌یابی\nSymptom: Phase1 down. Evidence: gateway list نشان می‌دهد not established. Fix: proposal/PSK.\n\n## 9. امنیت\nproposal قوی.\n\n## 10. خلاصه\n- diagnose vpn ike gateway list\n- status\n- proposal\n- clear برای ریست\n\n## 11. واژه‌نامه\nIKE Gateway: دروازه IKE\n\n## 12. مهارت\n- مشاهده وضعیت\n- تشخیص down",
+      "commands": "diagnose vpn ike gateway list\ndiagnose vpn ike gateway clear",
+      "examples": "در full_content",
+      "notes": "در FortiOS 7.x diagnose vpn ike gateway list معتبر است[citation:6].",
+      "learning_objectives": [
+        "مشاهده وضعیت IKE",
+        "تشخیص down",
+        "clear کردن"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "IKE",
+          "VPN",
+          "diagnose"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام دستور وضعیت Phase1 را نشان می‌دهد؟",
+              "options": [
+                "diagnose vpn ike gateway list",
+                "diagnose vpn phase1 list",
+                "diagnose ipsec list",
+                "get vpn status"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "Phase1 down است. چه بررسی می‌کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "diagnose vpn ike gateway list وضعیت Phase1 را می‌دهد[citation:6]."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "بررسی proposal, PSK, interface, reachability."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:vpn:tunnel-list",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 17,
+      "level": "L2",
+      "title_fa": "مشاهده وضعیت IPsec Tunnel",
+      "title_en": "Diagnose VPN Tunnel List",
+      "topic": "diagnose vpn",
+      "summary": "diagnose vpn tunnel list وضعیت Phase 2 (Child SA) را نشان می‌دهد. src/dst selectors, SPIs و counters را نمایش می‌دهد[citation:6][citation:18].",
+      "full_content": "# مشاهده وضعیت IPsec Tunnel\n\n## 1. معرفی\nPhase2 وضعیت تونل داده.\n\n## 2. آموزش\ndiagnose vpn tunnel list[citation:6]\n\n## 3. تشبیه\nوضعیت خط لوله.\n\n## 4. معماری\nname, proxyid, src, dst, SPI, enc/dec counters.\n\n## 5. مثال‌ها\n### مثال ۱\nBasic: diagnose vpn tunnel list\n### مثال ۲\nFilter: diagnose vpn tunnel list | grep proxyid\n### مثال ۳\nClear: diagnose vpn tunnel clear\n\n## 6. دستورات\n- diagnose vpn tunnel list\n- خروجی: name=to-openswan, proxyid=to-openswan, src: 192.168.0.0/24, dst: 192.168.1.0/24[citation:18]\n\n## 7. لابراتوار\nتونل بسازید و وضعیت را ببینید.\n\n## 8. عیب‌یابی\nSymptom: tunnel up اما traffic ندارد. Evidence: proxyid اشتباه. Fix: selectors.\n\n## 9. امنیت\nSPIها حساس نیستند.\n\n## 10. خلاصه\n- diagnose vpn tunnel list\n- proxyid\n- src/dst\n- counters\n\n## 11. واژه‌نامه\nTunnel: تونل\nProxyID: شناسه پروکسی\n\n## 12. مهارت\n- مشاهده tunnel\n- تشخیص selector mismatch",
+      "commands": "diagnose vpn tunnel list\ndiagnose vpn tunnel clear",
+      "examples": "در full_content",
+      "notes": "diagnose vpn tunnel list برای Phase2 است[citation:6].",
+      "learning_objectives": [
+        "مشاهده tunnel",
+        "تشخیص مشکل selectors",
+        "clear کردن"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "tunnel",
+          "IPsec",
+          "diagnose"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام دستور وضعیت Phase2 را نشان می‌دهد؟",
+              "options": [
+                "diagnose vpn tunnel list",
+                "diagnose vpn phase2 list",
+                "diagnose ipsec tunnel",
+                "get tunnel status"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "تونل up است اما ترافیک عبور نمی‌کند. چه بررسی می‌کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "diagnose vpn tunnel list وضعیت Phase2 را می‌دهد[citation:6]."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "بررسی proxyid selectors (src/dst) و policy بین تونل و LAN."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:system:zone",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 18,
+      "level": "L1",
+      "title_fa": "تنظیم Zone",
+      "title_en": "Configure System Zone",
+      "topic": "system zone",
+      "summary": "config system zone برای گروه‌بندی اینترفیس‌ها و ساده‌سازی policy استفاده می‌شود. zone می‌تواند شامل پورت‌های فیزیکی و SSL VPN باشد[citation:5][citation:12].",
+      "full_content": "# تنظیم Zone\n\n## 1. معرفی\nZone گروهی از interfaceهاست که در policy یکجا استفاده می‌شوند.\n\n## 2. آموزش\nconfig system zone → edit \"zone_lan\" → set interface \"port2\" \"port3\" \"port4\" → next → end[citation:5]\n\n## 3. تشبیه\nگروه‌بندی درهای ورودی.\n\n## 4. معماری\nname, interface (multi-option), intrazone (allow/deny).\n\n## 5. مثال‌ها\n### مثال ۱\nBasic: set interface \"port2\" \"port3\"\n### مثال ۲\nSSL VPN zone: set interface \"port4\" \"ssl.root\"[citation:5]\n### مثال ۳\nIntrazone: set intrazone allow\n\n## 6. دستورات\n- config system zone\n- edit <name>\n- set interface <intf1> <intf2> ...\n- set intrazone allow/deny\n\n## 7. لابراتوار\nZone بسازید و در policy استفاده کنید.\n\n## 8. عیب‌یابی\nSymptom: policy match نمی‌کند. Evidence: zone members. Fix: اضافه کردن interface.\n\n## 9. امنیت\nintrazone را محدود کنید.\n\n## 10. خلاصه\n- config system zone\n- set interface\n- intrazone\n- استفاده در policy\n\n## 11. واژه‌نامه\nZone: ناحیه\nIntrazone: داخل ناحیه\n\n## 12. مهارت\n- ساخت zone\n- استفاده در policy",
+      "commands": "config system zone\nedit \"zone_lan\"\nset interface \"port2\" \"port3\" \"port4\"\nset intrazone allow\nnext\nend",
+      "examples": "در full_content",
+      "notes": "در FortiOS 7.x zone با SSL VPN هم کار می‌کند[citation:5].",
+      "learning_objectives": [
+        "ساخت zone",
+        "تنظیم intrazone",
+        "استفاده در policy"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "zone",
+          "interface",
+          "policy"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام پارامتر اعضای zone را تعیین می‌کند؟",
+              "options": [
+                "set interface",
+                "set member",
+                "set ports",
+                "set zone"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "SSL VPN و port4 را در یک zone قرار دهید.",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "set interface اعضای zone را تعیین می‌کند."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "config system zone edit name set interface \"port4\" \"ssl.root\"[citation:5]"
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:execute:ping",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 19,
+      "level": "L0",
+      "title_fa": "تست اتصال با Ping",
+      "title_en": "Execute Ping",
+      "topic": "execute ping",
+      "summary": "execute ping از خود FortiGate برای تست reachability استفاده می‌شود. source option برای انتخاب interface خروجی کاربرد دارد[citation:15].",
+      "full_content": "# تست اتصال با Ping\n\n## 1. معرفی\nping از FortiGate به مقصد.\n\n## 2. آموزش\nexecute ping 8.8.8.8\n\n## 3. تشبیه\nتست تماس تلفنی.\n\n## 4. معماری\nhost, source, count, size.\n\n## 5. مثال‌ها\n### مثال ۱\nexecute ping 192.168.1.1\n### مثال ۲\nSource: execute ping-options source port2 → execute ping 10.0.0.1\n### مثال ۳\nCount: execute ping-options repeat 5 → execute ping 8.8.8.8\n\n## 6. دستورات\n- execute ping <host>\n- execute ping-options source <intf>\n- execute ping-options repeat <N>\n\n## 7. لابراتوار\nping به gateway و اینترنت.\n\n## 8. عیب‌یابی\nSymptom: no ping. Evidence: route, policy. Fix: بررسی route و policy.\n\n## 9. امنیت\nping از FortiGate به بیرون را محدود کنید.\n\n## 10. خلاصه\n- execute ping\n- ping-options source\n- repeat\n\n## 11. واژه‌نامه\nPing: ابزار تست\n\n## 12. مهارت\n- ping\n- تعیین source",
+      "commands": "execute ping 8.8.8.8\nexecute ping-options source port2\nexecute ping-options repeat 5\nexecute ping 10.0.0.1",
+      "examples": "در full_content",
+      "notes": "execute ping در FortiOS 7.x معتبر است.",
+      "learning_objectives": [
+        "اجرای ping",
+        "تعیین source",
+        "تفسیر نتیجه"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "ping",
+          "execute",
+          "troubleshooting"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "برای تعیین source ping کدام دستور است؟",
+              "options": [
+                "execute ping-options source",
+                "execute ping source",
+                "ping -I",
+                "set ping source"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "ping از FortiGate به اینترنت کار نمی‌کند. چه بررسی می‌کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "execute ping-options source interface را تعیین می‌کند."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "بررسی route، policy (input/forward)، NAT، source interface."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    },
+    {
+      "uid": "cmd:fortigate:execute:traceroute",
+      "chapter_order": 68,
+      "subchapter_order": 1,
+      "lesson_order": 20,
+      "level": "L0",
+      "title_fa": "ردیابی مسیر با Traceroute",
+      "title_en": "Execute Traceroute",
+      "topic": "execute traceroute",
+      "summary": "execute traceroute مسیر بسته تا مقصد را نشان می‌دهد. برای تشخیص نقطه قطع در مسیر استفاده می‌شود[citation:15].",
+      "full_content": "# ردیابی مسیر\n\n## 1. معرفی\ntraceroute hops را نشان می‌دهد.\n\n## 2. آموزش\nexecute traceroute 8.8.8.8\n\n## 3. تشبیه\nمسیریابی گام‌به‌گام.\n\n## 4. معماری\nhost, source, max-hops.\n\n## 5. مثال‌ها\n### مثال ۱\nexecute traceroute 8.8.8.8\n### مثال ۲\nSource: execute traceroute-options source port2 → execute traceroute 10.0.0.1\n### مثال ۳\nmax-hops: execute traceroute-options max-hops 10\n\n## 6. دستورات\n- execute traceroute <host>\n- execute traceroute-options source <intf>\n- execute traceroute-options max-hops <N>\n\n## 7. لابراتوار\ntraceroute به اینترنت.\n\n## 8. عیب‌یابی\nSymptom: hop نامعلوم. Evidence: traceroute. Fix: بررسی route در hop.\n\n## 9. امنیت\nICMP ممکن است بلاک شود.\n\n## 10. خلاصه\n- execute traceroute\n- source\n- max-hops\n\n## 11. واژه‌نامه\nTraceroute: ردیاب مسیر\nHop: پرش\n\n## 12. مهارت\n- traceroute\n- تعیین source",
+      "commands": "execute traceroute 8.8.8.8\nexecute traceroute-options source port2\nexecute traceroute-options max-hops 10\nexecute traceroute 10.0.0.1",
+      "examples": "در full_content",
+      "notes": "execute traceroute در FortiOS 7.x معتبر است.",
+      "learning_objectives": [
+        "اجرای traceroute",
+        "تعیین source",
+        "تفسیر hops"
+      ],
+      "source_status": "review_required",
+      "meta": {
+        "vendors": [
+          "Fortinet"
+        ],
+        "keywords_fa": [
+          "traceroute",
+          "execute",
+          "troubleshooting"
+        ],
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1",
+              "type": "mcq",
+              "prompt": "کدام دستور مسیر را نشان می‌دهد؟",
+              "options": [
+                "execute traceroute",
+                "execute path",
+                "execute route",
+                "execute hop"
+              ]
+            },
+            {
+              "id": "q2",
+              "type": "scenario",
+              "prompt": "traceroute در hop 3 متوقف می‌شود. چه بررسی می‌کنید؟",
+              "options": []
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1",
+              "correct_index": 0,
+              "explain_fa": "execute traceroute مسیر را نشان می‌دهد."
+            },
+            {
+              "id": "q2",
+              "explain_fa": "بررسی route در آن hop، firewall، ICMP filtering."
+            }
+          ]
+        }
+      },
+      "source_chapter_order": null
+    }
+  ],
+  "source_chapter_order": null
+}
