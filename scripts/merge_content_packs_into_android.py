@@ -270,6 +270,41 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
     return sum(len(s["lessons"]) for s in out_subs)
 
 
+def append_to_existing_chapter(data, lessons, order, subchapter_title="غنی‌سازی و اعتبارسنجی"):
+    """Append unmatched pack lessons without deleting the chapter's existing curriculum."""
+    chapter = next((c for c in data.get("chapters", []) if int(c.get("order") or 0) == order), None)
+    if chapter is None or not lessons:
+        return 0
+    used_uids = {str(les.get("uid") or "") for ch in data["chapters"] for sub in ch.get("subchapters", []) for les in sub.get("lessons", [])}
+    existing_titles = {str(les.get("title_fa") or "").strip() for sub in chapter.get("subchapters", []) for les in sub.get("lessons", [])}
+    sub = next((x for x in chapter.setdefault("subchapters", []) if x.get("title_fa") == subchapter_title), None)
+    if sub is None:
+        sub = {"title_fa": subchapter_title, "lessons": []}
+        chapter["subchapters"].append(sub)
+    appended = 0
+    for src in sorted(lessons, key=lambda x: (x.get("subchapter_order") or 1, x.get("lesson_order") or 0)):
+        title = str(src.get("title_fa") or "").strip()
+        if not title or title in existing_titles:
+            continue
+        uid = str(src.get("uid") or "")
+        if not uid or uid in used_uids:
+            uid = f"lesson:ch{order:02d}:deep-extra:{appended + 1:05d}"
+        used_uids.add(uid)
+        notes = as_text(src.get("notes"))
+        assessment = (src.get("meta") or {}).get("assessment")
+        if assessment and "EJ_ASSESSMENT" not in notes:
+            notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n-->\n"
+        sub["lessons"].append({
+            "uid": uid, "title_fa": title, "title_en": src.get("title_en") or title,
+            "level": src.get("level") or "L0", "summary": src.get("summary") or "",
+            "full_content": src.get("full_content") or "", "commands": as_text(src.get("commands")),
+            "examples": as_text(src.get("examples")), "notes": notes,
+        })
+        existing_titles.add(title)
+        appended += 1
+    return appended
+
+
 def build_ch65(lessons):
     subs = defaultdict(list)
     for les in lessons:
@@ -317,6 +352,7 @@ def main():
     sec, wireless = [], []
     routing_extra, vpn_extra, cmd_extra = [], [], []
     shared_deep_extra = []
+    ch55_extra = []
     for p in packs:
         try:
             d = load_json(p)
@@ -341,6 +377,8 @@ def main():
         print("   title-merge", n)
         if "ch60_68_" in name:
             shared_deep_extra.extend(lessons)
+        if "ch55" in name and any(int(x.get("chapter_order") or 0) == 55 for x in lessons):
+            ch55_extra.extend(x for x in lessons if int(x.get("chapter_order") or 0) == 55)
         if "ospf" in name or "bgp" in name or "redistribution" in name or "routing_deep" in name:
             routing_extra.extend(lessons)
         if "vpn" in name or "ipsec" in name:
@@ -361,6 +399,10 @@ def main():
         {**src, "uid": f"lesson:ch68:cmd-extra:{i:05d}", "chapter_order": 68, "lesson_order": i}
         for i, src in enumerate(cmd_extra, 1)
     ]
+
+    if ch55_extra:
+        n = append_to_existing_chapter(data, ch55_extra, 55)
+        print("ch55 CCTV/Access/BMS/IoT appended", n)
 
     if routing_extra:
         n = append_unmatched_as_extra(
