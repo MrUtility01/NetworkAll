@@ -43,7 +43,10 @@ jobs:
               assert len(matches) == 1, f"chapter {n} must have exactly one main folder"
               d = matches[0]
               pack = json.loads((d / "chapter.json").read_text(encoding="utf-8"))
+              base_pack = json.loads((d / "base_curriculum.json").read_text(encoding="utf-8"))
               assert pack.get("chapter_order") == n
+              assert base_pack.get("chapter_order") == n and base_pack.get("kind") == "baseline_curriculum"
+              assert isinstance(base_pack.get("levels"), list)
               assert isinstance(pack.get("lessons"), list)
               uids = [x.get("uid") for x in pack["lessons"]]
               assert len(uids) == len(set(uids)), f"duplicate UIDs in chapter {n}"

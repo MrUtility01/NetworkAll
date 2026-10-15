@@ -206,7 +206,7 @@ def consolidate(rows):
 def move_loose_jsons_into_archive(d):
     for p in sorted(d.rglob("*.json")):
         if "source_archive" in p.parts or "_shared_sources" in p.parts: continue
-        if p.name in ("chapter.json","manifest.json"): continue
+        if p.name in ("chapter.json","base_curriculum.json","manifest.json"): continue
         obj=read_json(p)
         if isinstance(obj,dict) and any(k in obj for k in ("lessons","commands","curriculum","scope","questions","scenarios","answer_key")):
             move(p,d/"source_archive"/p.relative_to(d))
@@ -230,9 +230,18 @@ def collect_lessons(d,n,normalizer):
             if not isinstance(item,dict): continue
             row=copy.deepcopy(item); row["chapter_order"]=n
             row.setdefault("subchapter_order",1); row.setdefault("lesson_order",idx)
-            if not row.get("uid"):
+            original_uid = str(row.get("uid") or "")
+            if not original_uid:
                 slug=re.sub(r"[^a-zA-Z0-9_-]+","-",p.stem).strip("-") or "source"
-                row["uid"]=f"lesson:ch{n:02d}:pack:{slug}:{idx:05d}"
+                original_uid=f"lesson:ch{n:02d}:pack:{slug}:{idx:05d}"
+            new_uid=re.sub(r"^lesson:ch[0-9]{2,3}:", f"lesson:ch{n:02d}:", original_uid)
+            if not new_uid.startswith(f"lesson:ch{n:02d}:"):
+                new_uid=f"lesson:ch{n:02d}:pack:{_slug(p.stem)}:{idx:05d}"
+            if new_uid != original_uid:
+                meta=row.get("meta") if isinstance(row.get("meta"),dict) else {}
+                meta.setdefault("source_uid",original_uid)
+                row["meta"]=meta
+            row["uid"]=new_uid
             row["title_fa"]=str(row.get("title_fa") or row.get("title_en") or f"درس {idx}")
             for f in ("summary","full_content","commands","examples","notes"): row[f]=as_text(row.get(f))
             meta=row.get("meta") if isinstance(row.get("meta"),dict) else {}
@@ -245,7 +254,8 @@ def write_indexes(folders):
     for n,d in folders.items():
         # Preserve old pack manifests before making one canonical manifest per chapter.
         oldmanifest=d/"manifest.json"
-        if oldmanifest.exists(): move(oldmanifest,d/"source_archive"/"legacy_manifest.json")
+        if oldmanifest.exists() and not (d/"source_archive"/"legacy_manifest.json").exists():
+            move(oldmanifest,d/"source_archive"/"legacy_manifest.json")
         move_loose_jsons_into_archive(d)
     for n,d in folders.items():
         rows=collect_lessons(d,n,normalizer); seen=set()
@@ -257,7 +267,7 @@ def write_indexes(folders):
         pack={"schema_version":1,"chapter_order":n,"chapter_title_fa":title,
               "chapter_title_en":f"Chapter {n:02d} — {SLUGS[n].replace('_',' ').title()}",
               "merge_strategy":"by_title","preserve_existing_records":True,
-              "source_of_truth_note":"Add-on content consolidated from the chapter-local source archive. Base curriculum remains in server/core/full_curriculum.py and server/core/extra_chapters.py.",
+              "source_of_truth_note":"Base lesson definitions live in base_curriculum.json; chapter.json contains normalized add-on content; original sources remain in source_archive/.",
               "lessons":rows}
         write_json(d/"chapter.json",pack)
         if not (d/"README_FA.md").exists():
@@ -266,12 +276,24 @@ def write_indexes(folders):
               f"مسیر اصلی: {d.relative_to(ROOT).as_posix()}/\n\n"
               "chapter.json بسته استاندارد افزایشی برای اندروید و ویندوز است. فایل‌های اولیه، آزمون‌ها، پاسخ‌نامه‌ها و نسخه‌های قبلی در source_archive نگهداری شده‌اند. محتوای پایه هنوز از منبع runtime پروژه ساخته می‌شود؛ این پوشه محل محتوای اختصاصی و افزودهٔ همین فصل است.\n",
               encoding="utf-8")
+        readme = d/"README_FA.md"
+        readme_text = readme.read_text(encoding="utf-8") if readme.exists() else ""
+        marker = "## فایل‌های اصلی فصل"
+        if marker not in readme_text:
+            readme_text += (
+                "\n\n## فایل‌های اصلی فصل\n\n"
+                "- base_curriculum.json: تعریف درس‌های پایهٔ همین فصل.\n"
+                "- chapter.json: بستهٔ استاندارد محتوای افزوده و نرمال‌شده.\n"
+                "- manifest.json: فهرست فایل‌ها و شمار رکوردها.\n"
+                "- source_archive/: منابع اولیه، آزمون‌ها و پاسخ‌نامه؛ در build اسکن نمی‌شود.\n"
+            )
+            readme.write_text(readme_text, encoding="utf-8")
         listing=sorted(str(p.relative_to(d)).replace("\\","/") for p in d.rglob("*") if p.is_file() and p.name!="manifest.json")
         sourcejson=sum(1 for p in (d/"source_archive").rglob("*.json")) if (d/"source_archive").exists() else 0
         media=sum(1 for p in d.rglob("*") if p.is_file() and p.suffix.lower() in (".png",".jpg",".jpeg",".webp",".svg",".mmd") and "source_archive" not in p.parts)
         manifest={"schema_version":1,"chapter_order":n,"slug":SLUGS[n],"title_fa":title,
-          "folder":d.relative_to(ROOT).as_posix(),"canonical_content":"chapter.json",
-          "source_files":listing,"counts":{"lessons":len(rows),"source_json_files":sourcejson,"media_files":media},
+          "folder":d.relative_to(ROOT).as_posix(),"canonical_content":["base_curriculum.json","chapter.json"],
+          "source_files":listing,"counts":{"addon_lessons":len(rows),"baseline_lessons":(read_json(d/"base_curriculum.json") or {}).get("counts",{}).get("lessons",0),"source_json_files":sourcejson,"media_files":media},
           "status":"review_required" if rows or listing else "base_from_runtime_source","last_updated":"2026-10-15"}
         write_json(d/"manifest.json",manifest)
         result.append((n,title,len(rows),len(listing),d.relative_to(ROOT).as_posix()))
