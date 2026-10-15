@@ -23,15 +23,19 @@ These are targets, not permission to pad files. Content size is an accounting ta
 
 | Setting | Chapter 68 requirement |
 |---|---|
-| Actual title/topic | Cisco Routing — comprehensive command encyclopedia (verify the canonical title in source data) |
+| Actual title/topic | دانشنامه جامع دستورات (verify the exact canonical title in source data during the audit) |
 | Expertise level | **خبره** |
 | Target text/structured-content size | **5 MiB** |
-| Media allowance | **Maximum 5 MiB**, counted separately |
+| Media allowance | **Maximum 7 MiB**, measured and reported separately from text/structured content |
 | Independent practical examples | **100** |
 | Independent troubleshooting scenarios | **150** |
 | Exam questions | **100** |
-| Explanations | **None required by this exception**; retain commands, examples, scenarios and answer key as specified |
+| Answer key | Separate file/data structure; never leak answers into question prompts |
+| Explanations | **کامل** — provide full, technically grounded explanations, not command names or terse summaries alone |
+| Notes | **ندارد** |
 | Status | **Policy recorded; audit and validation pending** |
+
+This exception overrides the global defaults only for Chapter 68. The 5 MiB content target and 7 MiB media ceiling are separate measurements and must not be combined. Neither size target is evidence of scientific quality, uniqueness, completeness, or successful Android/Windows integration.
 
 ### Required audit for every chapter, before enrichment is marked complete
 
