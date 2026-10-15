@@ -11,6 +11,12 @@
 5. Validate schema and stable unique IDs; verify Android and Windows both ingest/display the intended content.
 6. Publish findings and gaps in `CHAPTER_RICHNESS_AUDIT.md` before doing broad enrichment. Mark completion only after evidence-backed validation.
 
+## Per-chapter target selection
+
+- User-facing 68-row selection form: `docs/ai_continuity/CHAPTER_TARGET_SELECTION.md`.
+- Ask the user to confirm or change each chapter's level, text/structured size target, separate media ceiling, independent examples, independent scenarios, exam questions, and explanation requirement before starting broad enrichment.
+- Do not infer a chapter-specific target from content size. Do not claim audit/enrichment completion until measurements, duplicate checks, coverage review, schema checks, and Android/Windows integration evidence are recorded.
+
 ## Canonical targets
 
 - Chapters 1–67 default: **فوق‌حرفه‌ای**, 2 MiB text/structured content per chapter, media cap 5 MiB separately, 100 independent examples, 150 independent scenarios, 100 exam questions.
