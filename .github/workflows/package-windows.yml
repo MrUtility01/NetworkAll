@@ -1,0 +1,59 @@
+name: Package Windows portable build
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: ["fix/jalali-packet-learning-150"]
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Windows server dependencies
+        shell: bash
+        run: python -m pip install -r server/requirements.txt
+      - name: Validate Python and chapter 55 shared content
+        shell: bash
+        run: |
+          python -m compileall -q server scripts tools
+          python tools/validate_ch55_pack.py
+      - name: Create portable Windows ZIP
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+          root = Path(".").resolve()
+          out = root / "dist" / "NetworkAll-Windows-Portable.zip"
+          out.parent.mkdir(parents=True, exist_ok=True)
+          excluded_dirs = {".git", ".venv", "venv", "__pycache__", ".pytest_cache", ".gradle"}
+          excluded_parts = {"build", "dist"}
+          with ZipFile(out, "w", ZIP_DEFLATED, compresslevel=8) as zf:
+              for path in root.rglob("*"):
+                  if not path.is_file() or path == out:
+                      continue
+                  rel = path.relative_to(root)
+                  if any(part in excluded_dirs or part in excluded_parts for part in rel.parts):
+                      continue
+                  if path.suffix in {".pyc", ".pyo"}:
+                      continue
+                  if rel.as_posix() == "server/data/encyclopedia.db":
+                      continue
+                  zf.write(path, Path("NetworkAll") / rel)
+          print(f"Windows portable package: {out} ({out.stat().st_size} bytes)")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NetworkAll-Windows-Portable
+          path: dist/NetworkAll-Windows-Portable.zip
+          if-no-files-found: error
+          retention-days: 30
