@@ -4,23 +4,23 @@
 
 | فصل | عنوان | درس افزوده | تعداد فایل | پوشه |
 |---:|---|---:|---:|---|
-| 01 | مبانی IT و معماری کامپیوتر | 0 | 4 | tools/chapters/ch01_it_architecture/ |
-| 02 | اسمبل، عیب‌یابی و سرورهای سازمانی | 0 | 4 | tools/chapters/ch02_hardware_servers/ |
-| 03 | BIOS UEFI و بوت | 0 | 4 | tools/chapters/ch03_bios_uefi_boot/ |
-| 04 | سیستم‌عامل پایه | 0 | 4 | tools/chapters/ch04_operating_systems/ |
-| 05 | فایل‌سیستم و Storage پایه | 0 | 4 | tools/chapters/ch05_filesystem_storage/ |
-| 06 | مبانی شبکه | 0 | 4 | tools/chapters/ch06_network_fundamentals/ |
-| 07 | اترنت و سوییچینگ پایه | 85 | 5 | tools/chapters/ch07_ethernet_switching/ |
-| 08 | IPv4 IPv6 ساب‌نتینگ | 0 | 4 | tools/chapters/ch08_ipv4_ipv6_subnetting/ |
-| 09 | ARP ICMP TCP UDP | 0 | 4 | tools/chapters/ch09_arp_icmp_tcp_udp/ |
-| 10 | DNS | 0 | 4 | tools/chapters/ch10_dns/ |
-| 11 | DHCP و IPAM | 0 | 4 | tools/chapters/ch11_dhcp_ipam/ |
-| 12 | کابل‌کشی فیبر رک | 0 | 4 | tools/chapters/ch12_cabling_fiber_rack/ |
-| 13 | سوییچینگ سیسکو | 145 | 6 | tools/chapters/ch13_cisco_switching/ |
-| 14 | مسیریابی پیشرفته | 140 | 5 | tools/chapters/ch14_advanced_routing/ |
-| 15 | MPLS VRF L3VPN | 0 | 4 | tools/chapters/ch15_mpls_vrf_l3vpn/ |
-| 16 | Multicast | 0 | 4 | tools/chapters/ch16_multicast/ |
-| 17 | EVPN VXLAN | 0 | 4 | tools/chapters/ch17_evpn_vxlan/ |
+| 01 | مبانی IT و معماری کامپیوتر | 0 | 8 | tools/chapters/ch01_it_architecture/ |
+| 02 | اسمبل، عیب‌یابی و سرورهای سازمانی | 0 | 6 | tools/chapters/ch02_hardware_servers/ |
+| 03 | BIOS UEFI و بوت | 0 | 6 | tools/chapters/ch03_bios_uefi_boot/ |
+| 04 | سیستم‌عامل پایه | 0 | 6 | tools/chapters/ch04_operating_systems/ |
+| 05 | فایل‌سیستم و Storage پایه | 0 | 6 | tools/chapters/ch05_filesystem_storage/ |
+| 06 | مبانی شبکه | 0 | 6 | tools/chapters/ch06_network_fundamentals/ |
+| 07 | اترنت و سوییچینگ پایه | 85 | 7 | tools/chapters/ch07_ethernet_switching/ |
+| 08 | IPv4 IPv6 ساب‌نتینگ | 0 | 6 | tools/chapters/ch08_ipv4_ipv6_subnetting/ |
+| 09 | ARP ICMP TCP UDP | 0 | 6 | tools/chapters/ch09_arp_icmp_tcp_udp/ |
+| 10 | DNS | 0 | 6 | tools/chapters/ch10_dns/ |
+| 11 | DHCP و IPAM | 0 | 6 | tools/chapters/ch11_dhcp_ipam/ |
+| 12 | کابل‌کشی فیبر رک | 0 | 6 | tools/chapters/ch12_cabling_fiber_rack/ |
+| 13 | سوییچینگ سیسکو | 145 | 8 | tools/chapters/ch13_cisco_switching/ |
+| 14 | مسیریابی پیشرفته | 140 | 7 | tools/chapters/ch14_advanced_routing/ |
+| 15 | MPLS VRF L3VPN | 0 | 6 | tools/chapters/ch15_mpls_vrf_l3vpn/ |
+| 16 | Multicast | 0 | 6 | tools/chapters/ch16_multicast/ |
+| 17 | EVPN VXLAN | 0 | 6 | tools/chapters/ch17_evpn_vxlan/ |
 | 18 | SDN SD-WAN SASE | 0 | 4 | tools/chapters/ch18_sdn_sdwan_sase/ |
 | 19 | MikroTik مبانی | 0 | 4 | tools/chapters/ch19_mikrotik_basics/ |
 | 20 | MikroTik Routing Firewall NAT | 100 | 5 | tools/chapters/ch20_mikrotik_routing_firewall_nat/ |
@@ -67,7 +67,7 @@
 | 61 | معماری سازمانی Enterprise Architecture | 0 | 4 | tools/chapters/ch61_enterprise_architecture/ |
 | 62 | عملیات IT و NOC | 0 | 4 | tools/chapters/ch62_it_operations_noc/ |
 | 63 | مستندسازی Runbook و CMDB | 0 | 6 | tools/chapters/ch63_documentation_runbooks_cmdb/ |
-| 64 | Git و GitHub | 0 | 7 | tools/chapters/ch64_git_github/ |
+| 64 | Git و GitHub | 0 | 9 | tools/chapters/ch64_git_github/ |
 | 65 | امنیت سایبری و هک اخلاقی (دفاعی) + بی‌سیم | 135 | 12 | tools/chapters/ch65_cybersecurity_ethical_hacking_wireless/ |
 | 66 | مسیریابی عمیق OSPF/BGP/Redistribution | 9 | 6 | tools/chapters/ch66_ospf_bgp_redistribution/ |
 | 67 | VPN سازمانی IPsec/SSL و عیب‌یابی | 15 | 7 | tools/chapters/ch67_enterprise_vpn_ipsec_ssl/ |
