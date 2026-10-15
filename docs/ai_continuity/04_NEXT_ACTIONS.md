@@ -2,31 +2,28 @@
 
 **Last updated:** 2026-10-15
 
-## Priority 1 (Immediate)
+## Priority 1
 
-1. Continuity system is now in the repository under `docs/ai_continuity/`.
-2. Link it from `docs/STRUCTURE.md` and README (next small task).
-3. Complete Chapter 40 with 15–25 dense lessons (L2–L4), each with diagrams + relevant packet journeys + scripts.
-4. Adopt per-chapter folder layout under `tools/packs/`.
+1. ~~Install continuity system~~ Done.
+2. ~~Create professional scalable architecture~~ Done.
+3. ~~Create ch40 folder + manifest~~ Done.
+4. **Generate first production lesson batch for Chapter 40** (12–18 dense lessons).
+5. Update manifest + progress after the batch.
 
 ## Priority 2
 
-5. Start Chapter 51 (Automation & AI) — critical.
-6. Start Chapter 60 (Troubleshooting / Organizational Labs) — critical.
-7. Produce first 20+ Virtualization scenarios (CAT18).
+6. Chapter 51 (Automation & AI).
+7. Chapter 60 (Troubleshooting Labs).
+8. First 20 Virtualization scenarios.
 
 ## Priority 3
 
-8. Packet Journeys for networking + virtualization chapters.
-9. Python automation scripts (Netmiko, NAPALM, Scrapli, PowerCLI, Ansible).
-10. Knowledge cards / tips / checklists per chapter.
+9. Packet journeys, diagrams, scripts, knowledge cards for Chapter 40.
+10. Expand same pattern to remaining chapters.
 
-## Agent workflow
+## Agent instruction
 
 ```
-1. Read docs/ai_continuity/ completely.
-2. Check 03_PROGRESS.md.
-3. Pick one Priority 1 item.
-4. After batch: update 03_PROGRESS.md + 05_CHANGELOG_AI.md.
-5. Mark completed items and add new ones in this file.
+Read docs/ai_continuity/ + docs/CONTENT_ARCHITECTURE.md
+Then produce tools/packs/ch40_vmware_hyperv/lessons/batch_01.json
 ```

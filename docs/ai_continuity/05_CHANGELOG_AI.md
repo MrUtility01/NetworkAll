@@ -1,23 +1,18 @@
 # 05 — CHANGELOG AI
 
-Add a new entry at the top after every significant agent action.
-
 ---
 
-## [2026-10-15] — Grok
+## [2026-10-15] — Grok (architecture upgrade)
 
 ### Done
-- Designed and committed full multi-agent Continuity System under `docs/ai_continuity/`.
-- Professional schemas for lessons, scenarios, packet journeys, diagrams, scripts, knowledge cards.
-- Recommended per-chapter folder structure under `tools/packs/`.
-- Diagnosed why volume appears to drop when adding chapters (thin content dilution).
-- Documented Windows/Android parity gaps.
+- Created `docs/CONTENT_ARCHITECTURE.md` — professional scalable design.
+- Created `tools/packs/_templates/` and canonical `tools/packs/ch40_vmware_hyperv/`.
+- Enforced per-chapter folders with subfolders for lessons / scenarios / packet_journeys / diagrams / scripts / notes.
+- Quality-first policy: size may grow; hang is forbidden; thin content is rejected.
+- Updated all continuity files to match new architecture.
 
 ### Current state
-Continuity system is live in the repository.
-Chapter 40 has only 3 sample lessons (insufficient coverage).
+Architecture is production-ready. Chapter 40 has zero production lessons yet (only old samples).
 
-### Recommendation for next agent
-1. Create `tools/packs/ch40_vmware_hyperv/` with proper subfolders.
-2. Generate 15–25 dense lessons for Chapter 40.
-3. Update progress files after the batch.
+### Next
+Generate `lessons/batch_01.json` for Chapter 40 (12–18 dense lessons).
