@@ -15,8 +15,8 @@
    - `03_PROGRESS.md`
    - `04_NEXT_ACTIONS.md`
    - `05_CHANGELOG_AI.md` (latest entries)\n   - `CHAPTER_RICHNESS_AUDIT.md` (canonical targets and audit status)
-   - `CHAPTER_TARGET_SELECTION.md` (the 68-row user selection form; retain the user’s per-chapter choices)
-3. Check `03_PROGRESS.md` before any content work.\n4. Before chapter work, apply the per-chapter targets and validation gates in `CHAPTER_RICHNESS_AUDIT.md`; do not infer completion from file size or build success.
+   - `CHAPTER_TARGET_SELECTION.md` (the finalized 68-row target register; do not ask for global defaults again, only record explicit per-chapter exceptions)
+3. Check `03_PROGRESS.md` before any content work.\n4. Before chapter work, apply the finalized targets in `CHAPTER_TARGET_SELECTION.md` and validation gates in `CHAPTER_RICHNESS_AUDIT.md`; all 68 chapters currently remain audit-pending. Do not infer completion from file size or build success.
 4. After every batch, update `03_PROGRESS.md` + `05_CHANGELOG_AI.md`.
 5. Never violate rules in `01_PROJECT_RULES.md`.
 
