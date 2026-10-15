@@ -26,16 +26,16 @@ These are targets, not permission to pad files. Content size is an accounting ta
 | Actual title/topic | دانشنامه جامع دستورات (verify the exact canonical title in source data during the audit) |
 | Expertise level | **خبره** |
 | Target text/structured-content size | **5 MiB** |
-| Media allowance | **Maximum 7 MiB**, measured and reported separately from text/structured content |
+| Media allowance | **Maximum 5 MiB**, measured and reported separately from text/structured content |
 | Independent practical examples | **100** |
 | Independent troubleshooting scenarios | **150** |
 | Exam questions | **100** |
 | Answer key | Separate file/data structure; never leak answers into question prompts |
-| Explanations | **کامل** — provide full, technically grounded explanations, not command names or terse summaries alone |
+| Explanations | **ندارد** — explanations are not a required quota for this exception |
 | Notes | **ندارد** |
 | Status | **Policy recorded; audit and validation pending** |
 
-This exception overrides the global defaults only for Chapter 68. The 5 MiB content target and 7 MiB media ceiling are separate measurements and must not be combined. Neither size target is evidence of scientific quality, uniqueness, completeness, or successful Android/Windows integration.
+This exception overrides the global defaults only for Chapter 68. The 5 MiB content target and 5 MiB media ceiling are separate measurements and must not be combined. Neither size target is evidence of scientific quality, uniqueness, completeness, or successful Android/Windows integration.
 
 ### Required audit for every chapter, before enrichment is marked complete
 
@@ -163,3 +163,10 @@ These currently have almost no dedicated rich packs under the new architecture.
    ```
 3. Large packs (5–10 MB) are strong evidence of deep content for their topics, but may not map 1:1 to every subchapter.
 4. Chapter 40 old dense (~485 KB) is valuable but should be migrated/expanded into the new `tools/packs/ch40_vmware_hyperv/` structure.
+
+
+## Per-chapter target selection form
+
+The user requested a one-time, chapter-by-chapter choice of expertise level, text/structured-content target, media ceiling, independent examples, independent scenarios, exam questions, and whether explanations are required. The complete 68-row prefilled selection table is maintained at [CHAPTER_TARGET_SELECTION.md](CHAPTER_TARGET_SELECTION.md).
+
+**Selection status: awaiting user choices.** The global defaults remain in force for Chapters 1–67 until the user specifies exceptions. Chapter 68 retains its explicit exception: خبره; 5 MiB text/structured target; 5 MiB media ceiling; 100 examples; 150 scenarios; 100 exam questions; explanations not required. This is a policy entry only, not an audit or completion claim.
