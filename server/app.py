@@ -70,13 +70,14 @@ except Exception as _e:
     register_study_routes = None
     _MODULE_STATUS["study_error"] = str(_e)
 
-DEFAULT_DEV_TOKEN = "09136555866"
-SYNC_TOKEN = os.environ.get("NETENC_TOKEN", DEFAULT_DEV_TOKEN)
+SYNC_TOKEN = (os.environ.get("NETENC_TOKEN") or "").strip()
+if not SYNC_TOKEN:
+    import secrets
+    SYNC_TOKEN = secrets.token_urlsafe(32)
+    print("WARNING: NETENC_TOKEN was not configured; a random token was generated for this process.")
+    print("Temporary NETENC_TOKEN=" + SYNC_TOKEN)
 DEVICE_ID = os.environ.get("NETENC_DEVICE", socket.gethostname() or "windows-host")
 BIND_HOST = os.environ.get("NETENC_HOST", "0.0.0.0")
-
-if SYNC_TOKEN == DEFAULT_DEV_TOKEN:
-    print("WARNING: using default NETENC_TOKEN — set env NETENC_TOKEN for LAN use")
 
 _db = None
 

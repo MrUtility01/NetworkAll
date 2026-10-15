@@ -1,13 +1,28 @@
 @echo off
 chcp 65001 >nul
+setlocal EnableExtensions
 title NetworkEncyclopedia — Engineer Jokar
-cd /d "%~dp0..\server"
 
-REM رمز پیش‌فرض همگام‌سازی LAN (قابل تغییر)
-if not defined NETENC_TOKEN set NETENC_TOKEN=09136555866
-if not defined NETENC_DEVICE set NETENC_DEVICE=%COMPUTERNAME%
-if not defined PORT set PORT=5050
-if not defined HOST set HOST=0.0.0.0
+REM Use a random per-installation token instead of a shared default secret.
+set "TOKEN_FILE=%~dp0.netenc_token"
+if not defined NETENC_TOKEN (
+  if exist "%TOKEN_FILE%" set /p "NETENC_TOKEN=" < "%TOKEN_FILE%"
+)
+if not defined NETENC_TOKEN (
+  for /f %%T in ('powershell -NoProfile -Command "[guid]::NewGuid().ToString() + [guid]::NewGuid().ToString()"') do set "NETENC_TOKEN=%%T"
+  if defined NETENC_TOKEN > "%TOKEN_FILE%" echo %NETENC_TOKEN%
+)
+if not defined NETENC_TOKEN (
+  echo [ERROR] Could not create a sync token.
+  echo Set NETENC_TOKEN manually and run this file again.
+  pause
+  exit /b 1
+)
+
+cd /d "%~dp0..\server"
+if not defined NETENC_DEVICE set "NETENC_DEVICE=%COMPUTERNAME%"
+if not defined PORT set "PORT=5050"
+if not defined NETENC_HOST set "NETENC_HOST=0.0.0.0"
 
 echo ============================================
 echo  NetworkEncyclopedia Server
@@ -15,23 +30,23 @@ echo  Token : %NETENC_TOKEN%
 echo  Port  : %PORT%
 echo ============================================
 echo.
-
+echo Save this token in the Android app's sync settings.
+echo Token file: %TOKEN_FILE%
+echo.
 where python >nul 2>&1
 if errorlevel 1 (
-  echo [ERROR] Python پیدا نشد. از python.org نصب کنید.
+  echo [ERROR] Python was not found. Install Python 3.11+ from python.org.
   pause
   exit /b 1
 )
-
 python -m pip install -q -r requirements.txt
 if errorlevel 1 (
-  echo [WARN] نصب وابستگی‌ها با هشدار — ادامه...
+  echo [WARN] Dependency installation reported a problem.
 )
-
 echo.
-echo در حال seed و اجرای سرور...
-echo مرورگر: http://127.0.0.1:%PORT%
-echo اندروید: همان Wi-Fi + Token بالا
+echo Starting server and importing chapter folders...
+echo Browser: http://127.0.0.1:%PORT%
+echo Android: same Wi-Fi + token shown above
 echo.
 python app.py
 pause
