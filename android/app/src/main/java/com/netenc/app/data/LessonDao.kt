@@ -42,6 +42,12 @@ interface LessonDao {
     @Query("SELECT * FROM lessons WHERE deleted = 0 AND chapterOrder = :co ORDER BY lessonOrder, titleFa")
     suspend fun byChapter(co: Int): List<LessonEntity>
 
+    // Load only lightweight rows for the chapter browser; fetch full text on tap.
+    @Query("""SELECT uid, titleFa, chapterOrder, chapterTitle, subTitle, lessonOrder
+              FROM lessons WHERE deleted = 0 AND chapterOrder = :co
+              ORDER BY lessonOrder, titleFa""")
+    suspend fun lessonRowsByChapter(co: Int): List<LessonListRow>
+
     @Query("SELECT value FROM sync_meta WHERE key = :key LIMIT 1")
     suspend fun getMeta(key: String): String?
 
@@ -52,4 +58,13 @@ interface LessonDao {
 data class ChapterRow(
     val chapterOrder: Int,
     val chapterTitle: String
+)
+
+data class LessonListRow(
+    val uid: String,
+    val titleFa: String,
+    val chapterOrder: Int,
+    val chapterTitle: String,
+    val subTitle: String,
+    val lessonOrder: Int
 )
