@@ -63,3 +63,16 @@ tools/packs/chXX_slug/
 - Content that violates schema.
 - Real-world attack code.
 - Committing tokens or private DBs.
+
+
+## 7. Mandatory 68-chapter richness policy (added 2026-10-15)
+
+Before producing or describing chapter content, read `docs/ai_continuity/CHAPTER_RICHNESS_AUDIT.md`. Its canonical policy applies to **all 68 chapters**.
+
+- Default for Chapters 1–67: expertise **فوق‌حرفه‌ای**, text/structured-content target **2 MiB/chapter**, media cap **5 MiB/chapter**, **100 independent examples**, **150 independent troubleshooting scenarios**, and **100 exam questions**.
+- Chapter 68 is the explicit exception: expertise **خبره**, text/structured-content target **5 MiB**, media cap **5 MiB separately**, 100 independent examples, 150 independent scenarios, 100 exam questions, and no explanations required by the exception.
+- Never conflate file size with scientific depth. Do not pad counts with duplicate, generic, or templated records.
+- Keep answer keys separate from question prompts.
+- Before marking any chapter complete, report exact canonical title, source/asset/runtime sizes (text and media separately), counts, duplicate checks, scientific coverage gaps, schema validation and Android/Windows parity evidence.
+- An existing pack, a successful JSON parse, or a successful build alone is **not** proof of content completion.
+- Do not claim that all 68 chapters were audited until a 68-row evidence report exists and both Android and Windows integration checks have passed.
