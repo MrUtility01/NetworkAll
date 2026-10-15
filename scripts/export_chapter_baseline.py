@@ -49,7 +49,7 @@ def main():
             "chapter_order": order,
             "chapter_title_fa": str(record[1]),
             "chapter_title_en": str(record[2]),
-            "source": "Exported from the currently running curriculum implementation; original code is retained during migration.",
+            "source": "Canonical baseline definitions for this chapter; the application loads this file through server/core/full_curriculum.py.",
             "levels": levels,
             "counts": {"levels": len(levels), "lessons": sum(len(x["lessons"]) for x in levels)}
         }
