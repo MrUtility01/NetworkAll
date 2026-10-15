@@ -43,7 +43,7 @@ jobs:
           set -euo pipefail
           python3 scripts/install_android_icon.py
           python3 scripts/export_android_index.py
-          python3 scripts/assemble_chapter_packs.py
+          python3 scripts/assemble_chapter_packs.py --strict
           python3 scripts/merge_content_packs_into_android.py
 
       - name: Validate full curriculum without trimming
@@ -58,12 +58,21 @@ jobs:
           lessons = [x for c in chapters for s in c.get("subchapters", []) for x in s.get("lessons", [])]
           orders = [int(c["order"]) for c in chapters]
           uids = [x.get("uid") for x in lessons]
-          assert len(orders) == len(set(orders)), "duplicate chapter order"
           expected_orders = set(range(1, 69))
           missing_orders = sorted(expected_orders - set(orders))
           extra_orders = sorted(set(orders) - expected_orders)
           assert len(orders) == 68 and set(orders) == expected_orders, (
               f"all 68 chapter orders must remain; missing={missing_orders}; extra={extra_orders}"
+          )
+          base_total = sum(
+              int((json.loads((Path("tools/chapters") / str(n) / "manifest.json").read_text(encoding="utf-8")).get("counts") or {}).get("baseline_lessons", 0))
+              for n in range(1, 69)
+          )
+          assert len(lessons) > base_total, (
+              f"chapter add-ons were not merged: total={len(lessons)}, base={base_total}"
+          )
+          assert "lesson:ch68:pack:mikrotik:00001" in set(uids), (
+              "Chapter 68 command add-on was not merged into Android curriculum"
           )
           assert len(uids) == len(set(uids)), "duplicate lesson uid"
           assert int(d.get("lesson_count", -1)) == len(lessons), "lesson_count mismatch"

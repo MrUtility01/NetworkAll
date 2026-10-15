@@ -128,6 +128,7 @@ jobs:
           set -euo pipefail
           python scripts/install_android_icon.py
           python scripts/export_android_index.py
+          python scripts/assemble_chapter_packs.py --strict
           python scripts/merge_content_packs_into_android.py
 
       - name: Validate complete Android curriculum
@@ -142,8 +143,19 @@ jobs:
           lessons = [x for c in chapters for s in c.get("subchapters", []) for x in s.get("lessons", [])]
           orders = [int(c["order"]) for c in chapters]
           uids = [x.get("uid") for x in lessons]
-          assert len(orders) == len(set(orders)), "duplicate chapter order"
-          assert 1 in orders and 68 in orders
+          assert len(orders) == 68 and set(orders) == set(range(1, 69)), (
+              f"expected every chapter 1..68, got {sorted(set(orders))}"
+          )
+          base_total = sum(
+              int((json.loads((Path("tools/chapters") / str(n) / "manifest.json").read_text(encoding="utf-8")).get("counts") or {}).get("baseline_lessons", 0))
+              for n in range(1, 69)
+          )
+          assert len(lessons) > base_total, (
+              f"chapter add-ons were not merged: total={len(lessons)}, base={base_total}"
+          )
+          assert "lesson:ch68:pack:mikrotik:00001" in set(uids), (
+              "Chapter 68 command add-on was not merged into Android curriculum"
+          )
           assert len(uids) == len(set(uids)), "duplicate lesson UID"
           assert int(d.get("lesson_count", -1)) == len(lessons)
           assert all(x.get("full_content") is not None for x in lessons)
