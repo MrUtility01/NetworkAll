@@ -1,0 +1,120 @@
+name: Build Android APK and Windows package
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  android-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Android SDK components
+        run: |
+          set -e
+          mkdir -p "$ANDROID_HOME/licenses"
+          printf '%s\n' \
+            "24333f8a63b6825ea9c5514f83c2829b004d1fee" \
+            "d56f51874764545162ea396f5d536e251650e41b" > "$ANDROID_HOME/licenses/android-sdk-license"
+          yes | sdkmanager --licenses >/tmp/sdk-lic.txt 2>&1 || true
+          sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
+
+      - name: Generate full curriculum and merge chapter packs
+        run: |
+          set -euo pipefail
+          python3 scripts/install_android_icon.py
+          python3 scripts/export_android_index.py
+          python3 scripts/merge_content_packs_into_android.py
+
+      - name: Validate full curriculum without trimming
+        run: |
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          p = Path("android/app/src/main/assets/curriculum_index.json.gz")
+          with gzip.open(p, "rt", encoding="utf-8") as f:
+              d = json.load(f)
+          chapters = d.get("chapters", [])
+          lessons = [x for c in chapters for s in c.get("subchapters", []) for x in s.get("lessons", [])]
+          orders = [int(c["order"]) for c in chapters]
+          uids = [x.get("uid") for x in lessons]
+          assert len(orders) == len(set(orders)), "duplicate chapter order"
+          assert 1 in orders and 68 in orders, "baseline chapters 1 and 68 must remain"
+          assert len(uids) == len(set(uids)), "duplicate lesson uid"
+          assert int(d.get("lesson_count", -1)) == len(lessons), "lesson_count mismatch"
+          assert all(x.get("full_content") is not None for x in lessons), "missing full_content field"
+          print(f"VALID: chapters={len(chapters)} lessons={len(lessons)} gzip_bytes={p.stat().st_size}")
+          PY
+
+      - name: Prepare Gradle wrapper
+        working-directory: android
+        run: |
+          set -e
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          curl -fsSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.2-bin.zip
+          sudo unzip -qo /tmp/gradle.zip -d /opt
+          /opt/gradle-8.2/bin/gradle wrapper --gradle-version 8.2
+          chmod +x gradlew
+          test -f gradle/wrapper/gradle-wrapper.jar
+
+      - name: Assemble APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NetworkAll-Android-APK
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Package complete Windows host and all content sources
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          git archive --format=tar HEAD | tar -xf - -C .
+          # Git archive already contains the tracked full source and every tracked JSON pack.
+          zip -qr dist/NetworkAll-Windows-Source-Full.zip \
+            README.md INSTALL_FA.md windows server shared tools scripts .github
+          test -s dist/NetworkAll-Windows-Source-Full.zip
+          unzip -l dist/NetworkAll-Windows-Source-Full.zip | grep -q 'tools/chapters/README_FA.md'
+          unzip -l dist/NetworkAll-Windows-Source-Full.zip | grep -q 'server/core/modular_chapters.py'
+          ls -lh dist/NetworkAll-Windows-Source-Full.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NetworkAll-Windows-Full-Package
+          path: dist/NetworkAll-Windows-Source-Full.zip
+          if-no-files-found: error
+          retention-days: 30
