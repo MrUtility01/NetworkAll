@@ -161,7 +161,8 @@ def ensure_chapters_1_to_68(curriculum: list) -> list:
         )
 
     # Load every shared chapter 60-68 content pack, including generated add-ons.
-    overlay_paths = sorted((ROOT / "tools" / "packs" / "ch60_68").glob("*pack*.json"))
+    overlay_paths = sorted((ROOT / "tools" / "packs" / "ch56_59").glob("*pack*.json"))
+    overlay_paths += sorted((ROOT / "tools" / "packs" / "ch60_68").glob("*pack*.json"))
     overlay_paths += sorted((ROOT / "tools" / "packs" / "ch55").glob("*pack*.json"))
     for overlay_path in overlay_paths:
         try:

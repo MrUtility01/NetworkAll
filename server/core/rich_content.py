@@ -29,8 +29,8 @@ def _shared_ch60_68_overlay(title_fa: str) -> Dict[str, Any] | None:
             from pathlib import Path
             import json
             root = Path(__file__).resolve().parents[2]
-            pack_dir = root / "tools" / "packs" / "ch60_68"
-            paths = sorted(pack_dir.glob("*pack*.json"))
+            pack_dirs = [root / "tools" / "packs" / "ch56_59", root / "tools" / "packs" / "ch60_68"]
+            paths = [path for pack_dir in pack_dirs for path in sorted(pack_dir.glob("*pack*.json"))]
             for path in paths:
                 if not path.is_file():
                     continue
