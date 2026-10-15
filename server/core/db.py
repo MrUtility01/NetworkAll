@@ -336,14 +336,14 @@ class WebDB:
             notes = item.get("notes") or ""
             assessment = meta_obj.get("assessment")
             if assessment and "EJ_ASSESSMENT" not in notes:
-                notes += "\\n\\n<!-- EJ_ASSESSMENT\\n" + json.dumps(assessment, ensure_ascii=False) + "\\n-->\\n"
+                notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n-->\n"
             values = (
                 item.get("title_en") or "", "chapter-55", item.get("summary") or "",
                 item.get("full_content") or "", item.get("commands") or "", item.get("examples") or "",
                 notes, json.dumps(meta_obj, ensure_ascii=False),
                 " ".join([title, str(item.get("topic") or ""), str(item.get("commands") or ""),
                           str(item.get("summary") or "")]),
-                "\\n".join(item.get("learning_objectives") or []), "review_required", now,
+                "\n".join(item.get("learning_objectives") or []), "review_required", now,
             )
             existing = self.conn.execute(
                 """SELECT l.id,l.full_content FROM lessons l JOIN levels lv ON lv.id=l.level_id
