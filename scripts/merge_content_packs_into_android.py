@@ -382,12 +382,14 @@ def main():
                 "title_en": d.get("chapter_title_en") or d.get("title_en") or ("Chapter " + str(order)),
                 "lessons": [],
             })
+            pack_id = str(p.relative_to(ROOT / "tools" / "chapters").with_suffix(""))
+            pack_id = re.sub(r"[^a-zA-Z0-9_-]+", "-", pack_id.replace("\\", "/").replace("/", "-")).strip("-") or "pack"
             for idx, lesson in enumerate(lessons, 1):
                 lesson = dict(lesson)
                 lesson.setdefault("chapter_order", order)
                 lesson.setdefault("subchapter_order", 1)
                 lesson.setdefault("lesson_order", idx)
-                lesson.setdefault("uid", "lesson:ch%02d:mod:%05d" % (order, len(entry["lessons"]) + 1))
+                lesson.setdefault("uid", f"lesson:ch{order:02d}:mod:{pack_id}:{idx:05d}")
                 entry["lessons"].append(lesson)
             continue
         if "security_ethical" in name:
