@@ -43,6 +43,7 @@ jobs:
           set -euo pipefail
           python3 scripts/install_android_icon.py
           python3 scripts/export_android_index.py
+          python3 scripts/assemble_chapter_packs.py
           python3 scripts/merge_content_packs_into_android.py
 
       - name: Validate full curriculum without trimming
@@ -100,16 +101,29 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Prepare numeric chapter source layout and compile chapter packs
+        run: |
+          set -euo pipefail
+          python scripts/export_chapter_baseline.py
+          python scripts/assemble_chapter_packs.py
+          python scripts/reorganize_chapters.py
+          python scripts/organize_chapter_layout.py
+          python scripts/assemble_chapter_packs.py --strict
+
+      - name: Verify Python sources
+        run: python -m compileall -q server scripts tools/chapters
+
       - name: Package complete Windows host and all content sources
         run: |
           set -euo pipefail
           mkdir -p dist
-          git archive --format=tar HEAD | tar -xf - -C .
-          # Git archive already contains the tracked full source and every tracked JSON pack.
           zip -qr dist/NetworkAll-Windows-Source-Full.zip \
-            README.md README_FA.txt INSTALL_FA.md windows server shared tools scripts docs .github chapter_*.json
+            README.md README_FA.txt INSTALL_FA.md windows server shared tools scripts docs .github \
+            -x 'tools/chapters/*/build/chapter.json' '*/__pycache__/*' '*.pyc'
           test -s dist/NetworkAll-Windows-Source-Full.zip
-          unzip -l dist/NetworkAll-Windows-Source-Full.zip | grep -q 'tools/chapters/README_FA.md'
+          unzip -t dist/NetworkAll-Windows-Source-Full.zip
+          unzip -l dist/NetworkAll-Windows-Source-Full.zip | grep -q 'tools/chapters/INDEX_FA.md'
+          unzip -l dist/NetworkAll-Windows-Source-Full.zip | grep -q 'tools/chapters/68/commands/commands.json'
           unzip -l dist/NetworkAll-Windows-Source-Full.zip | grep -q 'server/core/modular_chapters.py'
           ls -lh dist/NetworkAll-Windows-Source-Full.zip
 

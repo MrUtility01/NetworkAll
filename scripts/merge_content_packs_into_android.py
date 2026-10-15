@@ -24,7 +24,13 @@ def load_json(p: Path):
 
 def find_pack_files():
     """Use only canonical per-chapter packs; archived/original JSON files are not imported twice."""
-    files = list(ROOT.glob("tools/chapters/ch[0-9][0-9]_*/chapter.json"))
+    # Prefer the compiled numeric layout; retain a fallback while the migration runs.
+    files = list(ROOT.glob("tools/chapters/[0-9]/build/chapter.json"))
+    files += list(ROOT.glob("tools/chapters/[0-9][0-9]/build/chapter.json"))
+    files += list(ROOT.glob("tools/chapters/[0-9]/chapter.json"))
+    files += list(ROOT.glob("tools/chapters/[0-9][0-9]/chapter.json"))
+    if not files:
+        files = list(ROOT.glob("tools/chapters/ch[0-9][0-9]_*/chapter.json"))
     uniq = []
     seen = set()
     for f in sorted(files):

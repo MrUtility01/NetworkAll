@@ -28,35 +28,56 @@ jobs:
       - name: Export baseline curriculum into chapter-local files
         run: python scripts/export_chapter_baseline.py
 
+      - name: Assemble existing numeric content before rebuilding indexes
+        run: python scripts/assemble_chapter_packs.py
+
       - name: Reorganize source files chapter-by-chapter
         run: python scripts/reorganize_chapters.py
 
-      - name: Validate the canonical folder layout
+      - name: Split chapter content into type-specific files
+        run: python scripts/organize_chapter_layout.py
+
+      - name: Compile all 68 compatibility packs
+        run: python scripts/assemble_chapter_packs.py --strict
+
+      - name: Validate numeric content layout
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           root = Path(".")
           base = root / "tools" / "chapters"
-          folders = sorted(base.glob("ch[0-9][0-9]_*"))
-          assert len(folders) == 68, f"expected 68 chapter folders, got {len(folders)}"
-          totals = 0
-          for n in range(1, 69):
-              matches = list(base.glob(f"ch{n:02d}_*"))
-              assert len(matches) == 1, f"chapter {n} must have exactly one main folder"
-              d = matches[0]
-              pack = json.loads((d / "chapter.json").read_text(encoding="utf-8"))
-              base_pack = json.loads((d / "base_curriculum.json").read_text(encoding="utf-8"))
-              assert pack.get("chapter_order") == n
-              assert base_pack.get("chapter_order") == n and base_pack.get("kind") == "baseline_curriculum"
-              assert isinstance(base_pack.get("levels"), list)
+          folders = [p for p in base.iterdir() if p.is_dir() and p.name.isdigit()]
+          assert len(folders) == 68 and {int(p.name) for p in folders} == set(range(1,69)), (
+              f"expected numeric folders 1..68, got {[p.name for p in folders]}"
+          )
+          extras = [p.name for p in base.iterdir() if p.is_dir() and not p.name.isdigit()]
+          assert not extras, f"extra folders under tools/chapters: {extras}"
+          total = 0
+          for n in range(1,69):
+              d = base / str(n)
+              manifest = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
+              base_pack = json.loads((d / "lessons" / "base_curriculum.json").read_text(encoding="utf-8"))
+              lesson_doc = json.loads((d / "lessons" / "lessons.json").read_text(encoding="utf-8"))
+              pack = json.loads((d / "build" / "chapter.json").read_text(encoding="utf-8"))
+              assert pack.get("chapter_order") == n and base_pack.get("chapter_order") == n
+              assert isinstance(base_pack.get("levels"), list) and isinstance(lesson_doc.get("items"), list)
               assert isinstance(pack.get("lessons"), list)
-              uids = [x.get("uid") for x in pack["lessons"]]
-              assert len(uids) == len(set(uids)), f"duplicate UIDs in chapter {n}"
-              totals += len(uids)
-          assert (base / "INDEX_FA.md").is_file()
-          assert not list(root.glob("chapter_*.json")), "chapter JSON left scattered in repository root"
-          print(f"LAYOUT VALID: folders=68 canonical_addon_lessons={totals}")
+              for sub, filename in [
+                  ("questions","questions.json"),("answers","answer_key.json"),
+                  ("examples","examples.json"),("commands","commands.json"),("labs","labs.json")
+              ]:
+                  bank = json.loads((d / sub / filename).read_text(encoding="utf-8"))
+                  assert isinstance(bank.get("items"), list), f"invalid {d / sub / filename}"
+              uids = [row.get("uid") for row in pack["lessons"]]
+              assert len(uids) == len(set(uids)), f"duplicate UID in chapter {n}"
+              assert (d / "android" / "manifest.json").is_file()
+              assert (d / "windows" / "manifest.json").is_file()
+              assert not (d / "chapter.json").exists() and not (d / "base_curriculum.json").exists()
+              total += len(uids)
+          assert (base / "INDEX_FA.md").is_file() and (base / "README_FA.md").is_file()
+          assert not list(root.glob("chapter_*.json")), "chapter JSON left in repository root"
+          print(f"NUMERIC LAYOUT VALID: folders=68 compatibility_lessons={total}")
           PY
 
       - name: Commit the reorganization
@@ -160,8 +181,10 @@ jobs:
         with:
           ref: ${{ needs.organize.outputs.commit_sha }}
 
-      - name: Verify Python sources
-        run: python -m compileall -q server scripts tools/chapters
+      - name: Verify Python sources and compile chapter packs
+        run: |
+          python -m compileall -q server scripts tools/chapters
+          python scripts/assemble_chapter_packs.py --strict
 
       - name: Smoke-test Windows SQLite seed and chapter imports
         run: |
@@ -192,11 +215,12 @@ jobs:
           set -euo pipefail
           mkdir -p dist
           zip -qr dist/NetworkAll-Windows-Source-Organized.zip \
-            README.md README_FA.txt INSTALL_FA.md windows server shared tools scripts docs .github
+            README.md README_FA.txt INSTALL_FA.md windows server shared tools scripts docs .github \
+            -x 'tools/chapters/*/build/chapter.json' '*/__pycache__/*' '*.pyc'
           test -s dist/NetworkAll-Windows-Source-Organized.zip
           unzip -t dist/NetworkAll-Windows-Source-Organized.zip
           unzip -l dist/NetworkAll-Windows-Source-Organized.zip | grep -q 'tools/chapters/INDEX_FA.md'
-          unzip -l dist/NetworkAll-Windows-Source-Organized.zip | grep -q 'tools/chapters/ch68_commands_encyclopedia/chapter.json'
+          unzip -l dist/NetworkAll-Windows-Source-Organized.zip | grep -q 'tools/chapters/68/commands/commands.json'
           ls -lh dist/NetworkAll-Windows-Source-Organized.zip
 
       - uses: actions/upload-artifact@v4

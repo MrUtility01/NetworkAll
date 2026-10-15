@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CHAPTERS = ROOT / "tools" / "chapters"
-SHARED = CHAPTERS / "_shared_sources"
+SHARED = ROOT / "tools" / "authoring" / "shared_chapter_sources"
 AUTHORING = ROOT / "tools" / "authoring"
 SLUGS = {
 1:"it_architecture",2:"hardware_servers",3:"bios_uefi_boot",4:"operating_systems",5:"filesystem_storage",
@@ -28,7 +28,7 @@ TITLES_OVERRIDE = {40:"VMware Hyper-V",51:"اتوماسیون و AI در IT",60:
 63:"مستندسازی Runbook و CMDB",64:"Git و GitHub",65:"امنیت سایبری و هک اخلاقی (دفاعی) + بی‌سیم",
 66:"مسیریابی عمیق OSPF/BGP/Redistribution",67:"VPN سازمانی IPsec/SSL و عیب‌یابی",68:"دانشنامه جامع دستورات"}
 
-def folder(n): return CHAPTERS / f"ch{n:02d}_{SLUGS[n]}"
+def folder(n): return CHAPTERS / str(int(n))
 def digest(p):
     h=hashlib.sha256()
     with p.open("rb") as f:
@@ -72,6 +72,26 @@ def titles():
 def ensure_folders():
     CHAPTERS.mkdir(parents=True,exist_ok=True)
     return {n:folder(n) for n in range(1,69)}
+
+
+def migrate_legacy_chapter_folders(folders):
+    """Migrate legacy chNN_slug folders to 1..68, merging instead of dropping conflicts."""
+    for old in sorted(CHAPTERS.glob("ch[0-9][0-9]_*")):
+        match = re.match(r"^ch(\d{2})_", old.name)
+        if not match:
+            continue
+        order = int(match.group(1))
+        if order in folders:
+            move_contents(old, folders[order])
+            try: old.rmdir()
+            except OSError: pass
+    old_shared = CHAPTERS / "_shared_sources"
+    if old_shared.exists():
+        move_contents(old_shared, SHARED)
+        try: old_shared.rmdir()
+        except OSError: pass
+    for path in folders.values():
+        path.mkdir(parents=True, exist_ok=True)
 def normalizer_module():
     p=ROOT/"scripts/merge_content_packs_into_android.py"
     spec=importlib.util.spec_from_file_location("networkall_merger",p)
@@ -204,12 +224,13 @@ def consolidate(rows):
         old["meta"]=meta
     return out
 def move_loose_jsons_into_archive(d):
-    for p in sorted(d.rglob("*.json")):
-        if "source_archive" in p.parts or "_shared_sources" in p.parts: continue
+    # Only root-level legacy JSON belongs in this archive pass. Type-specific JSON under
+    # lessons/questions/answers/examples/commands/labs must stay in those folders.
+    for p in sorted(d.glob("*.json")):
         if p.name in ("chapter.json","base_curriculum.json","manifest.json"): continue
         obj=read_json(p)
         if isinstance(obj,dict) and any(k in obj for k in ("lessons","commands","curriculum","scope","questions","scenarios","answer_key")):
-            move(p,d/"source_archive"/p.relative_to(d))
+            move(p,d/"source_archive"/p.name)
 def collect_lessons(d,n,normalizer):
     rows=[]; archive=d/"source_archive"
     if not archive.exists(): return rows
@@ -250,9 +271,19 @@ def collect_lessons(d,n,normalizer):
             row["source_status"]=row.get("source_status") or "review_required"
             rows.append(row)
     return consolidate(rows)
+def baseline_file(d):
+    candidates = [d/"lessons"/"base_curriculum.json", d/"base_curriculum.json"]
+    return next((p for p in candidates if p.is_file()), candidates[0])
+
+
 def write_indexes(folders):
     titlemap=titles(); normalizer=normalizer_module(); result=[]
     for n,d in folders.items():
+        # Keep the previous pack until the type-separated files have been assembled.
+        oldpack = d/"chapter.json"
+        compiled = d/"build"/"chapter.json"
+        if oldpack.exists() and not compiled.exists():
+            move(oldpack, compiled)
         # Preserve old pack manifests before making one canonical manifest per chapter.
         oldmanifest=d/"manifest.json"
         if oldmanifest.exists() and not (d/"source_archive"/"legacy_manifest.json").exists():
@@ -268,7 +299,7 @@ def write_indexes(folders):
         pack={"schema_version":1,"chapter_order":n,"chapter_title_fa":title,
               "chapter_title_en":f"Chapter {n:02d} — {SLUGS[n].replace('_',' ').title()}",
               "merge_strategy":"by_title","preserve_existing_records":True,
-              "source_of_truth_note":"Base lesson definitions live in base_curriculum.json; chapter.json contains normalized add-on content; original sources remain in source_archive/.",
+              "source_of_truth_note":"Base definitions live in lessons/base_curriculum.json. Source-of-truth fields are separated into lessons, questions, answers, examples, commands and labs; chapter.json is a generated compatibility pack.",
               "lessons":rows}
         write_json(d/"chapter.json",pack)
         if not (d/"README_FA.md").exists():
@@ -293,8 +324,8 @@ def write_indexes(folders):
         sourcejson=sum(1 for p in (d/"source_archive").rglob("*.json")) if (d/"source_archive").exists() else 0
         media=sum(1 for p in d.rglob("*") if p.is_file() and p.suffix.lower() in (".png",".jpg",".jpeg",".webp",".svg",".mmd") and "source_archive" not in p.parts)
         manifest={"schema_version":1,"chapter_order":n,"slug":SLUGS[n],"title_fa":title,
-          "folder":d.relative_to(ROOT).as_posix(),"canonical_content":["base_curriculum.json","chapter.json"],
-          "source_files":listing,"counts":{"addon_lessons":len(rows),"baseline_lessons":(read_json(d/"base_curriculum.json") or {}).get("counts",{}).get("lessons",0),"source_json_files":sourcejson,"media_files":media},
+          "folder":d.relative_to(ROOT).as_posix(),"canonical_content":["lessons/base_curriculum.json","lessons/lessons.json","questions/questions.json","answers/answer_key.json","examples/examples.json","commands/commands.json","labs/labs.json","build/chapter.json (generated)"],
+          "source_files":listing,"counts":{"addon_lessons":len(rows),"baseline_lessons":(read_json(baseline_file(d)) or {}).get("counts",{}).get("lessons",0),"source_json_files":sourcejson,"media_files":media},
           "status":"review_required" if rows or listing else "base_from_runtime_source","last_updated":"2026-10-15"}
         write_json(d/"manifest.json",manifest)
         result.append((n,title,len(rows),len(listing),d.relative_to(ROOT).as_posix()))
@@ -305,6 +336,7 @@ def write_indexes(folders):
 
 def main():
     folders=ensure_folders()
+    migrate_legacy_chapter_folders(folders)
     # Move existing chapter-scoped packs into their single canonical chapter directory.
     mappings=[
       ("tools/packs/ch40_vmware_hyperv",40,""),
@@ -425,8 +457,8 @@ def main():
         try: packroot.rmdir()
         except OSError: pass
 
-    dirs=sorted(CHAPTERS.glob("ch[0-9][0-9]_*"))
-    assert len(dirs)==68, f"Expected 68 chapter folders, got {len(dirs)}"
+    dirs=sorted(p for p in CHAPTERS.iterdir() if p.is_dir() and p.name.isdigit())
+    assert len(dirs)==68 and {int(p.name) for p in dirs}==set(range(1,69)), f"Expected exactly numeric chapter folders 1..68, got {[p.name for p in dirs]}"
     count=0
     for n,d in folders.items():
         obj=read_json(d/"chapter.json")

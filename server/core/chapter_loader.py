@@ -16,12 +16,16 @@ CHAPTERS_DIR = ROOT / "tools" / "chapters"
 def _authoring_package(chapter_order: int) -> str:
     if not 1 <= int(chapter_order) <= 68:
         raise ValueError(f"Invalid chapter number: {chapter_order}")
-    matches = list(CHAPTERS_DIR.glob(f"ch{int(chapter_order):02d}_*/authoring"))
-    if len(matches) != 1:
+    numeric = CHAPTERS_DIR / str(int(chapter_order)) / "authoring"
+    legacy = list(CHAPTERS_DIR.glob(f"ch{int(chapter_order):02d}_*/authoring"))
+    if numeric.is_dir():
+        folder = numeric
+    elif len(legacy) == 1:
+        folder = legacy[0]
+    else:
         raise ImportError(
-            f"Expected one authoring folder for chapter {chapter_order}; found {len(matches)}"
+            f"Expected one authoring folder for chapter {chapter_order}; numeric={numeric.exists()}, legacy={len(legacy)}"
         )
-    folder = matches[0]
     initializer = folder / "__init__.py"
     if not initializer.is_file():
         raise ImportError(f"Chapter authoring package initializer is missing: {initializer}")

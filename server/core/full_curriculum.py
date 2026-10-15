@@ -50,7 +50,21 @@ def get_full_curriculum():
 
     result = []
     seen = set()
-    for path in sorted(CHAPTERS_DIR.glob("ch[0-9][0-9]_*/base_curriculum.json")):
+    for order in range(1, 69):
+        numeric = CHAPTERS_DIR / str(order)
+        legacy_dirs = sorted(CHAPTERS_DIR.glob(f"ch{order:02d}_*"))
+        candidates = [
+            numeric / "lessons" / "base_curriculum.json",
+            numeric / "base_curriculum.json",
+        ]
+        for legacy_dir in legacy_dirs:
+            candidates.extend([
+                legacy_dir / "lessons" / "base_curriculum.json",
+                legacy_dir / "base_curriculum.json",
+            ])
+        path = next((candidate for candidate in candidates if candidate.is_file()), None)
+        if path is None:
+            continue
         payload = json.loads(path.read_text(encoding="utf-8"))
         order = int(payload.get("chapter_order") or 0)
         if not 1 <= order <= 68:

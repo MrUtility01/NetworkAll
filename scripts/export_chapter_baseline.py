@@ -35,9 +35,15 @@ def main():
     total = 0
     for record in chapters:
         order = int(record[0])
-        candidates = list((ROOT / "tools" / "chapters").glob(f"ch{order:02d}_*"))
-        if len(candidates) != 1:
-            raise RuntimeError(f"Expected exactly one folder for chapter {order}; found {len(candidates)}")
+        chapter_root = ROOT / "tools" / "chapters"
+        numeric = chapter_root / str(order)
+        legacy = list(chapter_root.glob(f"ch{order:02d}_*"))
+        if numeric.is_dir():
+            chapter_dir = numeric
+        elif len(legacy) == 1:
+            chapter_dir = legacy[0]
+        else:
+            raise RuntimeError(f"Expected exactly one folder for chapter {order}; numeric={numeric.exists()} legacy={len(legacy)}")
         levels = []
         for raw_level in record[3] or []:
             lesson_rows = [render_lesson(x) for x in (raw_level[1] or [])]
@@ -53,7 +59,7 @@ def main():
             "levels": levels,
             "counts": {"levels": len(levels), "lessons": sum(len(x["lessons"]) for x in levels)}
         }
-        out_path = candidates[0] / "base_curriculum.json"
+        out_path = chapter_dir / "lessons" / "base_curriculum.json"
         out_path.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
         numbers.add(order)
     if numbers != set(range(1, 69)):

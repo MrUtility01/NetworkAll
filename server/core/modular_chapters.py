@@ -47,7 +47,15 @@ def discover_chapter_packs():
     """Yield validated (path, payload) pairs. Invalid files are reported and skipped."""
     if not CHAPTERS_DIR.exists():
         return
-    for path in sorted(CHAPTERS_DIR.glob("ch[0-9][0-9]_*/chapter.json")):
+    candidates = []
+    for order in range(1, 69):
+        numeric = CHAPTERS_DIR / str(order)
+        options = [numeric / "build" / "chapter.json", numeric / "chapter.json"]
+        options.extend(directory / "chapter.json" for directory in sorted(CHAPTERS_DIR.glob(f"ch{order:02d}_*")))
+        path = next((candidate for candidate in options if candidate.is_file()), None)
+        if path is not None:
+            candidates.append(path)
+    for path in candidates:
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
             order = int(payload["chapter_order"])

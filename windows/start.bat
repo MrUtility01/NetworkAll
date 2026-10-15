@@ -48,5 +48,11 @@ echo Starting server and importing chapter folders...
 echo Browser: http://127.0.0.1:%PORT%
 echo Android: same Wi-Fi + token shown above
 echo.
+python ..\scripts\assemble_chapter_packs.py --strict
+if errorlevel 1 (
+  echo [ERROR] Chapter assembly failed; stopping startup.
+  pause
+  exit /b 1
+)
 python app.py
 pause
