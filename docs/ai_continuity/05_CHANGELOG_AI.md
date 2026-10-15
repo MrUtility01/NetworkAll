@@ -18,3 +18,18 @@
 
 ### Next recommended action
 Produce first production batch for Chapter 40 under the new structure.
+
+
+---
+
+## [2026-10-15] — ChatGPT (canonical richness policy registration)
+
+### Done
+- Added explicit default targets for all 68 chapters to `CHAPTER_RICHNESS_AUDIT.md`.
+- Registered the Chapter 68 exception: expertise `خبره`, 5 MiB text/structured target, 5 MiB media cap separately, 100 examples, 150 scenarios, 100 questions, explanations not required.
+- Updated agent startup instructions, project hard constraints, progress state and next actions.
+- Explicitly marked the repository-wide audit as pending so policy registration cannot be mistaken for completed verification.
+
+### Not done / not claimed
+- No claim that all 68 chapters have been individually measured, scientifically reviewed, de-duplicated or validated on both Android and Windows.
+- Exact canonical chapter titles, per-chapter size split, record counts, duplicate counts and scientific gap report remain required deliverables.
