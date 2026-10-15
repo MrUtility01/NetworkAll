@@ -311,6 +311,7 @@ def main():
     print("packs", len(packs))
     sec, wireless = [], []
     routing_extra, vpn_extra, cmd_extra = [], [], []
+    modular_chapters = {}
     for p in packs:
         try:
             d = load_json(p)
@@ -321,6 +322,21 @@ def main():
         lessons = normalize_pack(p, d)
         print(" ", p.name, "lessons", len(lessons))
         if not lessons:
+            continue
+        if "tools/chapters/" in name and d.get("chapter_order") is not None:
+            order = int(d["chapter_order"])
+            entry = modular_chapters.setdefault(order, {
+                "title_fa": d.get("chapter_title_fa") or d.get("title_fa") or ("فصل " + str(order)),
+                "title_en": d.get("chapter_title_en") or d.get("title_en") or ("Chapter " + str(order)),
+                "lessons": [],
+            })
+            for idx, lesson in enumerate(lessons, 1):
+                lesson = dict(lesson)
+                lesson.setdefault("chapter_order", order)
+                lesson.setdefault("subchapter_order", 1)
+                lesson.setdefault("lesson_order", idx)
+                lesson.setdefault("uid", "lesson:ch%02d:mod:%05d" % (order, len(entry["lessons"]) + 1))
+                entry["lessons"].append(lesson)
             continue
         if "security_ethical" in name:
             sec.extend(lessons)
@@ -337,6 +353,10 @@ def main():
             routing_extra.extend(lessons)
         if "vpn" in name or "ipsec" in name:
             vpn_extra.extend(lessons)
+
+    for order, chapter in sorted(modular_chapters.items()):
+        n = append_unmatched_as_extra(data, chapter["lessons"], order, chapter["title_fa"], chapter["title_en"])
+        print("modular chapter", order, n)
 
     if routing_extra:
         n = append_unmatched_as_extra(
