@@ -236,7 +236,8 @@ def collect_lessons(d,n,normalizer):
                 original_uid=f"lesson:ch{n:02d}:pack:{slug}:{idx:05d}"
             new_uid=re.sub(r"^lesson:ch[0-9]{2,3}:", f"lesson:ch{n:02d}:", original_uid)
             if not new_uid.startswith(f"lesson:ch{n:02d}:"):
-                new_uid=f"lesson:ch{n:02d}:pack:{_slug(p.stem)}:{idx:05d}"
+                slug = re.sub(r"[^a-zA-Z0-9_-]+","-",p.stem).strip("-") or "source"
+                new_uid=f"lesson:ch{n:02d}:pack:{slug}:{idx:05d}"
             if new_uid != original_uid:
                 meta=row.get("meta") if isinstance(row.get("meta"),dict) else {}
                 meta.setdefault("source_uid",original_uid)
