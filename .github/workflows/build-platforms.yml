@@ -33,16 +33,10 @@ jobs:
           python-version: "3.11"
 
       - uses: android-actions/setup-android@v3
-
-      - name: Install Android SDK components
-        run: |
-          set -e
-          mkdir -p "$ANDROID_HOME/licenses"
-          printf '%s\n' \
-            "24333f8a63b6825ea9c5514f83c2829b004d1fee" \
-            "d56f51874764545162ea396f5d536e251650e41b" > "$ANDROID_HOME/licenses/android-sdk-license"
-          yes | sdkmanager --licenses >/tmp/sdk-lic.txt 2>&1 || true
-          sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
+        with:
+          cmdline-tools-version: 12266719
+          accept-android-sdk-licenses: true
+          packages: "platform-tools, platforms;android-34, build-tools;34.0.0"
 
       - name: Generate full curriculum and merge chapter packs
         run: |
