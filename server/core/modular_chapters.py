@@ -70,10 +70,35 @@ def import_chapter_packs(database):
                 print(f"[chapters] SKIP non-object lesson {index} in {path.name}")
                 continue
             uid = str(item.get("uid") or f"lesson:ch{order:02d}:mod:{pack_slug}:{index:05d}")
-            if conn.execute("SELECT 1 FROM lessons WHERE uid=? LIMIT 1", (uid,)).fetchone():
-                continue
+            fingerprint = hashlib.sha256(
+                json.dumps(item, ensure_ascii=False, sort_keys=True).encode("utf-8")
+            ).hexdigest()
+            existing = conn.execute(
+                "SELECT content_hash FROM lessons WHERE uid=? LIMIT 1", (uid,)
+            ).fetchone()
+            if existing:
+                # Re-importing the exact same lesson is a no-op. A different lesson with
+                # a colliding UID is preserved under a deterministic collision-safe UID.
+                if str(existing["content_hash"] or "") == fingerprint:
+                    continue
+                base_uid = uid
+                uid = f"{base_uid}:collision:{pack_slug}:{index:05d}"
+                suffix = 2
+                while True:
+                    collision = conn.execute(
+                        "SELECT content_hash FROM lessons WHERE uid=? LIMIT 1", (uid,)
+                    ).fetchone()
+                    if not collision:
+                        break
+                    if str(collision["content_hash"] or "") == fingerprint:
+                        uid = ""
+                        break
+                    uid = f"{base_uid}:collision:{pack_slug}:{index:05d}:{suffix}"
+                    suffix += 1
+                if not uid:
+                    continue
             title = str(item.get("title_fa") or item.get("title_en") or f"درس {index}")
-            pending.append((uid, index, title, item))
+            pending.append((uid, index, title, item, fingerprint))
 
         if not pending:
             continue
@@ -85,7 +110,7 @@ def import_chapter_packs(database):
         )
         level_id = int(cur.lastrowid)
 
-        for lesson_order, (uid, index, title, item) in enumerate(pending, 1):
+        for lesson_order, (uid, index, title, item, fingerprint) in enumerate(pending, 1):
             meta = item.get("meta") if isinstance(item.get("meta"), dict) else {}
             keywords = item.get("search_keywords") or item.get("tags") or []
             if not isinstance(keywords, list):
@@ -105,7 +130,7 @@ def import_chapter_packs(database):
                     str(item.get("notes") or ""), json.dumps(meta, ensure_ascii=False),
                     " ".join(str(x) for x in keywords), str(item.get("learning_objectives") or ""),
                     str(item.get("source_status") or "modular_pack"), now, uid,
-                    hashlib.sha256(json.dumps(item, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest(),
+                    fingerprint,
                     "modular-import",
                 ),
             )
