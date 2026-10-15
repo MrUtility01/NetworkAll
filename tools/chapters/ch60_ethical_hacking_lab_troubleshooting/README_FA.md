@@ -18,3 +18,11 @@ python tools/apply_any_pack.py --db server/data/encyclopedia.db --pack tools/pac
 ```
 
 تمام محتوا فقط برای محیط Lab مجاز طراحی شده است.
+
+
+## فایل‌های اصلی فصل
+
+- base_curriculum.json: تعریف درس‌های پایهٔ همین فصل.
+- chapter.json: بستهٔ استاندارد محتوای افزوده و نرمال‌شده.
+- manifest.json: فهرست فایل‌ها و شمار رکوردها.
+- source_archive/: منابع اولیه، آزمون‌ها و پاسخ‌نامه؛ در build اسکن نمی‌شود.
