@@ -1,8 +1,58 @@
+## Canonical audit policy — all 68 chapters (registered 2026-10-15)
+
+**This section is the active specification. It is not evidence that the audit or enrichment has been completed.**
+
+### Global defaults (Chapters 1–67, unless an explicit per-chapter exception is approved)
+
+| Setting | Required target |
+|---|---|
+| Default expertise level | **فوق‌حرفه‌ای** |
+| Target text/structured-content size | **2 MiB per chapter** (measure UTF-8 source files/JSON structure; report compressed and uncompressed separately where relevant) |
+| Media allowance | **Maximum 5 MiB per chapter**; report separately from text/structured content |
+| Independent practical examples | **100 per chapter** |
+| Independent troubleshooting scenarios | **150 per chapter** |
+| Exam questions | **100 per chapter** |
+| Answer key | Separate file/data structure; never leak answers into question prompts |
+| Explanations | Include deep explanations, worked solutions, command output, safe labs, troubleshooting evidence and verification unless a chapter-specific exception says otherwise |
+
+These are targets, not permission to pad files. Content size is an accounting target, **not** a proxy for scientific correctness, depth, uniqueness, or professional quality. Do not create repeated/template-only records to hit a number. Every example, scenario and question must be meaningfully distinct, chapter-specific, technically accurate, testable and traceable to its learning objective.
+
+### Approved exception — Chapter 68
+
+| Setting | Chapter 68 requirement |
+|---|---|
+| Actual title/topic | Cisco Routing — comprehensive command encyclopedia (verify the canonical title in source data) |
+| Expertise level | **خبره** |
+| Target text/structured-content size | **5 MiB** |
+| Media allowance | **Maximum 5 MiB**, counted separately |
+| Independent practical examples | **100** |
+| Independent troubleshooting scenarios | **150** |
+| Exam questions | **100** |
+| Explanations | **None required by this exception**; retain commands, examples, scenarios and answer key as specified |
+| Status | **Policy recorded; audit and validation pending** |
+
+### Required audit for every chapter, before enrichment is marked complete
+
+1. Read the canonical source and report the **exact title** (do not rely on approximate titles in older audit notes).
+2. Measure text/structured source size and media size separately. Record raw bytes and MiB; distinguish source-pack size, compressed Android asset size and Windows runtime/database size.
+3. Count unique lessons, examples, scenarios and exam questions; verify the separate answer-key count and references.
+4. Detect exact and near duplicates (stable IDs, normalized titles/text, repeated boilerplate, duplicated scenarios/questions).
+5. Review scientific coverage, missing prerequisite concepts, operational examples, command output, lab reproducibility, failure evidence, mitigation and verification.
+6. Verify schema, required fields, stable unique IDs, valid references and parseability.
+7. Verify Android and Windows consume the same intended canonical content; record any platform-specific exclusions, export/merge differences and test evidence.
+8. Report gaps and proposed changes first. Enrichment is not complete until content checks and both platform build/integration checks pass.
+
+### Audit status
+
+**Not yet fully audited or validated.** The older tables below are a preliminary evidence-based inventory. Their approximate titles/status labels are not authoritative, and pack size alone does not establish content quality. The next pass must produce a 68-row inventory with exact titles, per-platform byte sizes, record counts, duplicate counts, coverage gaps and verification status. Do not claim completion until that evidence exists.
+
+---
+
 # CHAPTER RICHNESS AUDIT
 
 **Date:** 2026-10-15  
-**Method:** File size analysis of packs + docs/DENSE_CH21_40.md + ch60 VALIDATION.md + APP_STATUS_FA.md + curriculum structure  
-**Note:** True deep/mid/thin requires running `tools/audit_content.py` against a live encyclopedia.db. This audit is based on available evidence in the repository.
+**Method (preliminary; not a full 68-chapter validation):** File size analysis of packs + docs/DENSE_CH21_40.md + ch60 VALIDATION.md + APP_STATUS_FA.md + curriculum structure  
+**Caveat:** This older snapshot is not a completed 68-chapter audit. True deep/mid/thin requires running `tools/audit_content.py` against a live encyclopedia.db. This audit is based on available evidence in the repository.
 
 ---
 
