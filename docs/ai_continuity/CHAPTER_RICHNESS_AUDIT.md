@@ -1,3 +1,5 @@
+# CHAPTER RICHNESS AUDIT
+
 ## Canonical audit policy — all 68 chapters (registered 2026-10-15)
 
 **This section is the active specification. It is not evidence that the audit or enrichment has been completed.**
@@ -47,8 +49,6 @@ These are targets, not permission to pad files. Content size is an accounting ta
 **Not yet fully audited or validated.** The older tables below are a preliminary evidence-based inventory. Their approximate titles/status labels are not authoritative, and pack size alone does not establish content quality. The next pass must produce a 68-row inventory with exact titles, per-platform byte sizes, record counts, duplicate counts, coverage gaps and verification status. Do not claim completion until that evidence exists.
 
 ---
-
-# CHAPTER RICHNESS AUDIT
 
 **Date:** 2026-10-15  
 **Method (preliminary; not a full 68-chapter validation):** File size analysis of packs + docs/DENSE_CH21_40.md + ch60 VALIDATION.md + APP_STATUS_FA.md + curriculum structure  
