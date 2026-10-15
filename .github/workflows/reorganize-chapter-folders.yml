@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     outputs:
-      commit_sha: \${{ steps.commit.outputs.sha }}
+      commit_sha: ${{ steps.commit.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: \${{ github.ref }}
+          ref: ${{ github.ref }}
           persist-credentials: true
 
       - uses: actions/setup-python@v5
@@ -66,7 +66,7 @@ jobs:
             exit 0
           fi
           git commit -m "refactor: consolidate content into chapter folders"
-          git push origin "HEAD:\${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   android:
@@ -79,7 +79,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: \${{ needs.organize.outputs.commit_sha }}
+          ref: ${{ needs.organize.outputs.commit_sha }}
 
       - uses: actions/setup-java@v4
         with:
@@ -152,7 +152,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: \${{ needs.organize.outputs.commit_sha }}
+          ref: ${{ needs.organize.outputs.commit_sha }}
 
       - name: Verify Python sources
         run: python -m compileall -q server scripts tools/chapters
