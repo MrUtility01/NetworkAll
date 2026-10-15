@@ -498,15 +498,23 @@ def main():
         )
         print("ch68 commands", n)
 
-    data["chapters"] = [c for c in data["chapters"] if c.get("order") != 65]
+    # Preserve the canonical Chapter 65 already populated from tools/chapters/ch65_*/chapter.json.
+    # Only append legacy security/wireless records if an older source format supplied them;
+    # never replace or drop the baseline chapter or its canonical additions.
     extra = list(sec)
     for w in wireless:
         w = dict(w)
         w["subchapter_order"] = 100 + int(w.get("subchapter_order") or 8)
         extra.append(w)
     if extra:
-        data["chapters"].append(build_ch65(extra))
-        print("ch65", sum(len(s["lessons"]) for s in data["chapters"][-1]["subchapters"]))
+        n = append_modular_chapter(
+            data,
+            extra,
+            65,
+            "فصل ۶۵: امنیت سایبری و هک اخلاقی (دفاعی) + بی‌سیم",
+            "Ch65 Security Ethical Hacking Wireless",
+        )
+        print("ch65 legacy additions", n)
 
     ensure_unique_uids(data)
     data["chapters"].sort(key=lambda c: int(c.get("order") or 0))

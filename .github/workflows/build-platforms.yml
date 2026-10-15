@@ -58,7 +58,12 @@ jobs:
           orders = [int(c["order"]) for c in chapters]
           uids = [x.get("uid") for x in lessons]
           assert len(orders) == len(set(orders)), "duplicate chapter order"
-          assert 1 in orders and 68 in orders, "baseline chapters 1 and 68 must remain"
+          expected_orders = set(range(1, 69))
+          missing_orders = sorted(expected_orders - set(orders))
+          extra_orders = sorted(set(orders) - expected_orders)
+          assert len(orders) == 68 and set(orders) == expected_orders, (
+              f"all 68 chapter orders must remain; missing={missing_orders}; extra={extra_orders}"
+          )
           assert len(uids) == len(set(uids)), "duplicate lesson uid"
           assert int(d.get("lesson_count", -1)) == len(lessons), "lesson_count mismatch"
           assert all(x.get("full_content") is not None for x in lessons), "missing full_content field"
