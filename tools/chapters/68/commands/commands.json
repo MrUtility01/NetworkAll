@@ -5,166 +5,6 @@
   "source_of_truth": true,
   "items": [
     {
-      "uid": "lesson:ch68:pack:mikrotik:00001",
-      "title_fa": "نمایش لیست اینترفیس‌ها",
-      "title_en": "Print Interface List",
-      "fields": {
-        "commands": "/interface print\n/interface print detail\n/interface print where type=ether\n/interface print where running=no"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00002",
-      "title_fa": "فعال کردن اینترفیس",
-      "title_en": "Enable Interface",
-      "fields": {
-        "commands": "/interface enable ether5\n/interface enable [find disabled=yes]"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00003",
-      "title_fa": "تنظیم پارامترهای اینترفیس",
-      "title_en": "Set Interface Parameters",
-      "fields": {
-        "commands": "/interface set ether1 name=WAN-ISP\n/interface set ether2 mtu=9000\n/interface set ether3 comment=\"Uplink to Core\""
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00004",
-      "title_fa": "افزودن آدرس IP",
-      "title_en": "Add IP Address",
-      "fields": {
-        "commands": "/ip address add address=192.168.1.1/24 interface=ether2\n/ip address print"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00005",
-      "title_fa": "نمایش آدرس‌های IP",
-      "title_en": "Print IP Addresses",
-      "fields": {
-        "commands": "/ip address print\n/ip address print where interface=ether2\n/ip address print detail"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00006",
-      "title_fa": "افزودن مسیر استاتیک",
-      "title_en": "Add Static Route",
-      "fields": {
-        "commands": "/ip route add dst-address=10.10.0.0/16 gateway=192.168.1.2\n/ip route print"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00007",
-      "title_fa": "نمایش جدول مسیریابی",
-      "title_en": "Print Routing Table",
-      "fields": {
-        "commands": "/ip route print\n/ip route print where active=yes\n/ip route print detail"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00008",
-      "title_fa": "افزودن قانون فوروارد Accept",
-      "title_en": "Add Forward Accept Filter Rule",
-      "fields": {
-        "commands": "/ip firewall filter add chain=forward action=accept src-address=192.168.1.0/24\n/ip firewall filter print"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00009",
-      "title_fa": "نمایش قوانین فایروال",
-      "title_en": "Print Firewall Filter Rules",
-      "fields": {
-        "commands": "/ip firewall filter print\n/ip firewall filter print where chain=forward\n/ip firewall filter print stats"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00010",
-      "title_fa": "تنظیم NAT Masquerade",
-      "title_en": "Configure NAT Masquerade",
-      "fields": {
-        "commands": "/ip firewall nat add chain=srcnat action=masquerade out-interface=WAN\n/ip firewall nat print"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00011",
-      "title_fa": "تنظیم Destination NAT (Port Forwarding)",
-      "title_en": "Configure Destination NAT",
-      "fields": {
-        "commands": "/ip firewall nat add chain=dstnat action=dst-nat dst-port=80 protocol=tcp to-addresses=192.168.1.10\n/ip firewall nat print"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00012",
-      "title_fa": "Mark Connection در Mangle",
-      "title_en": "Mark Connection with Mangle",
-      "fields": {
-        "commands": "/ip firewall mangle add chain=forward action=mark-connection new-connection-mark=conn1\n/ip firewall mangle print"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00013",
-      "title_fa": "Mark Routing در Mangle",
-      "title_en": "Mark Routing with Mangle",
-      "fields": {
-        "commands": "/ip firewall mangle add chain=prerouting action=mark-routing new-routing-mark=isp2\n/ip firewall mangle print"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00014",
-      "title_fa": "تنظیم DNS",
-      "title_en": "Configure DNS",
-      "fields": {
-        "commands": "/ip dns set servers=8.8.8.8,1.1.1.1 allow-remote-requests=yes\n/ip dns print"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00015",
-      "title_fa": "تنظیم سرویس‌های IP",
-      "title_en": "Configure IP Services",
-      "fields": {
-        "commands": "/ip service set ssh address=192.168.1.0/24\n/ip service set telnet disabled=yes\n/ip service print"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00016",
-      "title_fa": "افزودن کاربر مدیریتی",
-      "title_en": "Add Management User",
-      "fields": {
-        "commands": "/user add name=admin2 group=full password=StrongPass\n/user print"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00017",
-      "title_fa": "تنظیم نام روتر",
-      "title_en": "Set System Identity",
-      "fields": {
-        "commands": "/system identity set name=RTR-Core\n/system identity print"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00018",
-      "title_fa": "نمایش منابع سیستم",
-      "title_en": "Print System Resources",
-      "fields": {
-        "commands": "/system resource print\n/system resource monitor"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00019",
-      "title_fa": "استفاده از Tool Torch",
-      "title_en": "Use Tool Torch",
-      "fields": {
-        "commands": "/tool torch interface=ether1\n/tool torch interface=ether1 port=80"
-      }
-    },
-    {
-      "uid": "lesson:ch68:pack:mikrotik:00020",
-      "title_fa": "استفاده از Tool Sniffer (Lab)",
-      "title_en": "Use Tool Sniffer in Lab",
-      "fields": {
-        "commands": "/tool sniffer set filter-interface=ether1 file-name=cap1.pcap\n/tool sniffer start\n/tool sniffer stop"
-      }
-    },
-    {
       "uid": "lesson:ch68:cmd:0001",
       "title_fa": "[L1] show version",
       "title_en": "show version",
@@ -10746,6 +10586,166 @@
       "title_en": "show interfaces Fa0/2 switchport | include Access|Trunk|VLAN",
       "fields": {
         "commands": "show interfaces Fa0/2 switchport | include Access|Trunk|VLAN"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00001",
+      "title_fa": "نمایش لیست اینترفیس‌ها",
+      "title_en": "Print Interface List",
+      "fields": {
+        "commands": "/interface print\n/interface print detail\n/interface print where type=ether\n/interface print where running=no"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00002",
+      "title_fa": "فعال کردن اینترفیس",
+      "title_en": "Enable Interface",
+      "fields": {
+        "commands": "/interface enable ether5\n/interface enable [find disabled=yes]"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00003",
+      "title_fa": "تنظیم پارامترهای اینترفیس",
+      "title_en": "Set Interface Parameters",
+      "fields": {
+        "commands": "/interface set ether1 name=WAN-ISP\n/interface set ether2 mtu=9000\n/interface set ether3 comment=\"Uplink to Core\""
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00004",
+      "title_fa": "افزودن آدرس IP",
+      "title_en": "Add IP Address",
+      "fields": {
+        "commands": "/ip address add address=192.168.1.1/24 interface=ether2\n/ip address print"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00005",
+      "title_fa": "نمایش آدرس‌های IP",
+      "title_en": "Print IP Addresses",
+      "fields": {
+        "commands": "/ip address print\n/ip address print where interface=ether2\n/ip address print detail"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00006",
+      "title_fa": "افزودن مسیر استاتیک",
+      "title_en": "Add Static Route",
+      "fields": {
+        "commands": "/ip route add dst-address=10.10.0.0/16 gateway=192.168.1.2\n/ip route print"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00007",
+      "title_fa": "نمایش جدول مسیریابی",
+      "title_en": "Print Routing Table",
+      "fields": {
+        "commands": "/ip route print\n/ip route print where active=yes\n/ip route print detail"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00008",
+      "title_fa": "افزودن قانون فوروارد Accept",
+      "title_en": "Add Forward Accept Filter Rule",
+      "fields": {
+        "commands": "/ip firewall filter add chain=forward action=accept src-address=192.168.1.0/24\n/ip firewall filter print"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00009",
+      "title_fa": "نمایش قوانین فایروال",
+      "title_en": "Print Firewall Filter Rules",
+      "fields": {
+        "commands": "/ip firewall filter print\n/ip firewall filter print where chain=forward\n/ip firewall filter print stats"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00010",
+      "title_fa": "تنظیم NAT Masquerade",
+      "title_en": "Configure NAT Masquerade",
+      "fields": {
+        "commands": "/ip firewall nat add chain=srcnat action=masquerade out-interface=WAN\n/ip firewall nat print"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00011",
+      "title_fa": "تنظیم Destination NAT (Port Forwarding)",
+      "title_en": "Configure Destination NAT",
+      "fields": {
+        "commands": "/ip firewall nat add chain=dstnat action=dst-nat dst-port=80 protocol=tcp to-addresses=192.168.1.10\n/ip firewall nat print"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00012",
+      "title_fa": "Mark Connection در Mangle",
+      "title_en": "Mark Connection with Mangle",
+      "fields": {
+        "commands": "/ip firewall mangle add chain=forward action=mark-connection new-connection-mark=conn1\n/ip firewall mangle print"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00013",
+      "title_fa": "Mark Routing در Mangle",
+      "title_en": "Mark Routing with Mangle",
+      "fields": {
+        "commands": "/ip firewall mangle add chain=prerouting action=mark-routing new-routing-mark=isp2\n/ip firewall mangle print"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00014",
+      "title_fa": "تنظیم DNS",
+      "title_en": "Configure DNS",
+      "fields": {
+        "commands": "/ip dns set servers=8.8.8.8,1.1.1.1 allow-remote-requests=yes\n/ip dns print"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00015",
+      "title_fa": "تنظیم سرویس‌های IP",
+      "title_en": "Configure IP Services",
+      "fields": {
+        "commands": "/ip service set ssh address=192.168.1.0/24\n/ip service set telnet disabled=yes\n/ip service print"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00016",
+      "title_fa": "افزودن کاربر مدیریتی",
+      "title_en": "Add Management User",
+      "fields": {
+        "commands": "/user add name=admin2 group=full password=StrongPass\n/user print"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00017",
+      "title_fa": "تنظیم نام روتر",
+      "title_en": "Set System Identity",
+      "fields": {
+        "commands": "/system identity set name=RTR-Core\n/system identity print"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00018",
+      "title_fa": "نمایش منابع سیستم",
+      "title_en": "Print System Resources",
+      "fields": {
+        "commands": "/system resource print\n/system resource monitor"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00019",
+      "title_fa": "استفاده از Tool Torch",
+      "title_en": "Use Tool Torch",
+      "fields": {
+        "commands": "/tool torch interface=ether1\n/tool torch interface=ether1 port=80"
+      }
+    },
+    {
+      "uid": "lesson:ch68:pack:mikrotik:00020",
+      "title_fa": "استفاده از Tool Sniffer (Lab)",
+      "title_en": "Use Tool Sniffer in Lab",
+      "fields": {
+        "commands": "/tool sniffer set filter-interface=ether1 file-name=cap1.pcap\n/tool sniffer start\n/tool sniffer stop"
       }
     },
     {
