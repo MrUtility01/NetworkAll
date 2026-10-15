@@ -11,17 +11,13 @@
 5. Validate schema and stable unique IDs; verify Android and Windows both ingest/display the intended content.
 6. Publish findings and gaps in `CHAPTER_RICHNESS_AUDIT.md` before doing broad enrichment. Mark completion only after evidence-backed validation.
 
-## Per-chapter target selection
+## Canonical target policy
 
-- User-facing 68-row selection form: `docs/ai_continuity/CHAPTER_TARGET_SELECTION.md`.
-- Ask the user to confirm or change each chapter's level, text/structured size target, separate media ceiling, independent examples, independent scenarios, exam questions, and explanation requirement before starting broad enrichment.
-- Do not infer a chapter-specific target from content size. Do not claim audit/enrichment completion until measurements, duplicate checks, coverage review, schema checks, and Android/Windows integration evidence are recorded.
-
-## Canonical targets
-
-- Chapters 1–67 default: **فوق‌حرفه‌ای**, 2 MiB text/structured content per chapter, media cap 5 MiB separately, 100 independent examples, 150 independent scenarios, 100 exam questions.
-- Chapter 68 exception: **خبره**, 5 MiB text/structured content, media cap 5 MiB separately, 100 examples, 150 scenarios, 100 exam questions, explanations not required.
-- Size is not a quality score; no repeated filler to reach quotas. See `CHAPTER_RICHNESS_AUDIT.md`.
+- Chapters 1–67: **خبره**, 5 MiB text/structured content, media cap 8 MiB separately, 100 independent examples, 150 independent scenarios, 100 exam questions, explanations required.
+- Chapter 68: **خبره**, 5 MiB text/structured content, media cap 5 MiB separately, 100 examples, 150 scenarios, 100 exam questions, explanations not required.
+- The 68-row register is in `CHAPTER_TARGET_SELECTION.md`; evidence ledger is `CHAPTER_RICHNESS_AUDIT.md`.
+- Policy is registered; all chapters remain **ممیزی‌نشده** until per-chapter measurements, duplicate checks, coverage review, schema checks and Android/Windows integration evidence are recorded.
+- Do not ask the user to choose defaults again. Ask only if a specific chapter-level exception is needed.
 
 ## Priority 1 — Known high-risk content gaps (reconfirm against the new audit)
 
