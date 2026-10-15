@@ -1,50 +1,41 @@
 # 03 — PROGRESS (Single Source of Truth)
 
-**Last updated by:** Grok — 2026-10-15  
-**Overall status:** Professional architecture installed + full chapter richness audit completed.
+**Last updated by:** ChatGPT — 2026-10-15  
+**Overall status:** Chapter richness policy registered; full 68-chapter evidence audit is **pending**. Do not treat the earlier preliminary inventory as a completed validation.
 
 ---
 
-## Architecture
+## Active chapter policy
 
-- `docs/CONTENT_ARCHITECTURE.md` — live
-- `tools/packs/_templates/` + per-chapter folders — live
-- `docs/ai_continuity/CHAPTER_RICHNESS_AUDIT.md` — **new full audit**
+- Chapters 1–67 default to **فوق‌حرفه‌ای**.
+- Target text/structured content: **2 MiB per chapter**.
+- Media cap: **5 MiB per chapter**, accounted separately.
+- Per chapter: **100 independent examples, 150 independent troubleshooting scenarios, 100 exam questions**, with answer keys stored separately.
+- Chapter 68 exception: **خبره**, 5 MiB text/structured target, media cap 5 MiB separately, same example/scenario/question counts, explanations not required.
+- File size is not scientific quality. Duplicate/template-only records do not count toward quotas.
 
-## Chapter richness summary (from audit)
+## Verified changes in this update
 
-### DEEP (strong existing content)
-13 (Cisco SW), 14 (Routing), 21 (MikroTik), 24 (FortiGate), 29 (AD), 35 (PowerShell),  
-64 (Git), 66/68 (Routing deep), 67 (VPN), Windows Server pack, Commands encyclopedia
+- Registered canonical policy and Chapter 68 exception in `CHAPTER_RICHNESS_AUDIT.md`.
+- Updated agent onboarding and project hard constraints so future agents must read and follow the policy.
+- Rewrote next actions around an evidence-backed 68-row inventory and Android/Windows parity.
+- This update records policy only; it does **not** assert that all chapters have been audited, enriched, or validated.
 
-### PARTIAL (good base, needs finishing)
-- **40** VMware Hyper-V — old ~485 KB dense exists; new canonical folder still empty
-- **51** Automation & AI — ~2.9 MB python pack exists
-- **60** Troubleshooting Labs — stage 1 only (8 lessons + 10 scenarios). ~230 lessons still missing per VALIDATION.md
-- 57 Security — ~1.3 MB ethical hacking pack
-- 22–23 Wireless — small pack
+## Audit work still required
 
-### THIN / SKELETON (almost no dedicated rich pack)
-41, 42, 43, 44, 45, 46, 47, 48, 49, 50,  
-52, 53, 54, 55, 56, 58, 59
+1. Establish exact canonical title and content paths for all 68 chapters.
+2. Measure per-chapter text/structured bytes and media bytes separately, including Android compressed asset and Windows runtime/database footprint where measurable.
+3. Count records and unique IDs for lessons/examples/scenarios/questions; validate answer-key mapping.
+4. Detect exact and near duplicates; inspect scientific coverage and practical depth.
+5. Validate schema and test Android + Windows ingestion/display/build.
+6. Publish evidence, counts, defects and status for every chapter.
 
-### Note on Android asset
-`curriculum_index.json.gz` reports **5185 complete lessons**. Many chapters therefore already have some body text from earlier seeding, even if not all meet the strict deep (≥2000 char) audit bar.
+## Architecture references
 
-## Immediate production targets
+- `docs/CONTENT_ARCHITECTURE.md`
+- `docs/ai_continuity/01_PROJECT_RULES.md`
+- `docs/ai_continuity/CHAPTER_RICHNESS_AUDIT.md`
 
-1. Finish **Chapter 40** properly under new structure (15–25 dense lessons).
-2. Expand **Chapter 60** (highest remaining gap among critical chapters).
-3. Expand **Chapter 51**.
-4. Then systematically fill 41–50 and 52–59.
+## Previously reported inventory (preliminary; re-check before relying on it)
 
-## Content type inventory
-
-| Type | Target | Produced (dedicated packs) | Status |
-|------|--------|----------------------------|--------|
-| Rich Lessons | 500+ | Significant in older packs, 0 in new ch40 folder | Architecture ready |
-| Scenarios | 500+ | ch60 has 10 starter | Schema ready |
-| Packet Journeys | 500+ | 0 dedicated | Schema ready |
-| Diagrams | 500+ | ch60 has starter | Schema ready |
-| Scripts | 500+ | inside automation pack | Schema ready |
-| Notes / Cards | — | 0 | Schema ready |
+The older audit noted 5185 lessons in the Android index and large dedicated packs for several topics. Those observations are not equivalent to 68-chapter validation. The exact title map, per-chapter byte counts, duplicate counts and Windows parity still need evidence.
