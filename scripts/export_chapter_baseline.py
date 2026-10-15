@@ -60,6 +60,7 @@ def main():
             "counts": {"levels": len(levels), "lessons": sum(len(x["lessons"]) for x in levels)}
         }
         out_path = chapter_dir / "lessons" / "base_curriculum.json"
+        out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
         numbers.add(order)
     if numbers != set(range(1, 69)):
