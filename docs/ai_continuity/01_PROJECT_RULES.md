@@ -65,14 +65,15 @@ tools/packs/chXX_slug/
 - Committing tokens or private DBs.
 
 
-## 7. Mandatory 68-chapter richness policy (added 2026-10-15)
+## 7. Mandatory 68-chapter richness policy (canonical, 2026-10-15)
 
-Before producing or describing chapter content, read `docs/ai_continuity/CHAPTER_RICHNESS_AUDIT.md`. Its canonical policy applies to **all 68 chapters**.
+Before producing or describing chapter content, read `docs/ai_continuity/CHAPTER_RICHNESS_AUDIT.md` and `docs/ai_continuity/CHAPTER_TARGET_SELECTION.md`.
 
-- Default for Chapters 1–67: expertise **فوق‌حرفه‌ای**, text/structured-content target **2 MiB/chapter**, media cap **5 MiB/chapter**, **100 independent examples**, **150 independent troubleshooting scenarios**, and **100 exam questions**.
-- Chapter 68 is the explicit exception: expertise **خبره**, text/structured-content target **5 MiB**, media cap **5 MiB separately**, 100 independent examples, 150 independent scenarios, 100 exam questions, and no explanations required by the exception.
-- Never conflate file size with scientific depth. Do not pad counts with duplicate, generic, or templated records.
+- Chapters 1–67 default: expertise **خبره**, text/structured-content target **5 MiB per chapter**, separate media cap **8 MiB**, 100 independent examples, 150 independent troubleshooting scenarios, 100 exam questions; explanations required.
+- Chapter 68 exception: expertise **خبره**, text/structured-content target **5 MiB**, separate media cap **5 MiB**, 100 independent examples, 150 independent scenarios, 100 exam questions; explanations not required.
+- Measure text/structure and media separately; distinguish raw source, compressed/uncompressed Android assets and Windows runtime/database sizes.
+- Never conflate size with scientific quality. Do not pad targets with duplicate, generic or templated records.
 - Keep answer keys separate from question prompts.
-- Before marking any chapter complete, report exact canonical title, source/asset/runtime sizes (text and media separately), counts, duplicate checks, scientific coverage gaps, schema validation and Android/Windows parity evidence.
-- An existing pack, a successful JSON parse, or a successful build alone is **not** proof of content completion.
-- Do not claim that all 68 chapters were audited until a 68-row evidence report exists and both Android and Windows integration checks have passed.
+- Every chapter remains **ممیزی‌نشده** until actual counts, duplicate checks, scientific coverage, schema validation and Android/Windows parity evidence are recorded.
+- A pack existing, JSON parsing, or a successful build alone is not proof of chapter completion.
+- Do not claim repository-wide audit completion until the 68-row evidence report is populated and both Android and Windows integration checks have passed.
