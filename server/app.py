@@ -89,6 +89,12 @@ def db() -> WebDB:
             print("seed curriculum...")
             print(_db.seed_full(force=True))
         _db.ensure_sync_columns()
+        try:
+            from core.modular_chapters import import_chapter_packs
+            import_chapter_packs(_db)
+        except Exception as e:
+            # A bad optional pack must not prevent the existing Windows host from starting.
+            print("[chapters] import warning:", e)
     return _db
 
 
