@@ -2,8 +2,8 @@
 from __future__ import annotations
 import re
 from typing import Any, Dict
-from core.chapter01_cpu import _cpu
-from core.chapter01_hw import _ram, _storage, _mb, _psu, _general
+from .chapter01_cpu import _cpu
+from .chapter01_hw import _ram, _storage, _mb, _psu, _general
 
 def _level(title: str) -> str:
     m = re.match(r"\[(L[0-4])\]", title or "")

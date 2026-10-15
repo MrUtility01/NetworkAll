@@ -22,9 +22,10 @@ def _minimal(title_fa: str, title_en: str):
 
 def _git_levels():
     try:
-        from core.chapter64_git_hook import get_git_chapter_levels
+        from core.chapter_loader import load_chapter_authoring
 
-        return get_git_chapter_levels()
+        hook = load_chapter_authoring(64, "chapter64_git_hook")
+        return hook.get_git_chapter_levels()
     except Exception:
         return _minimal("Git و GitHub", "Git GitHub")
 

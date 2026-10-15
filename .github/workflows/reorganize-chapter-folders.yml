@@ -163,6 +163,30 @@ jobs:
       - name: Verify Python sources
         run: python -m compileall -q server scripts tools/chapters
 
+      - name: Smoke-test Windows SQLite seed and chapter imports
+        run: |
+          python - <<'PY'
+          import sys
+          import tempfile
+          from pathlib import Path
+          root = Path.cwd()
+          sys.path.insert(0, str(root / "server"))
+          from core.db import WebDB
+          from core.modular_chapters import import_chapter_packs
+          with tempfile.TemporaryDirectory() as tmp:
+              db = WebDB(Path(tmp) / "smoke.db")
+              seeded = db.seed_full(force=True)
+              db.ensure_sync_columns()
+              imported = import_chapter_packs(db)
+              stats = db.stats()
+              orders = {int(row["order_index"]) for row in db.list_chapters()}
+              assert set(range(1, 69)).issubset(orders), f"missing chapter orders: {sorted(set(range(1,69))-orders)}"
+              assert imported.get("added", 0) > 0, f"chapter packs were not imported: {imported}"
+              assert stats["lessons"] >= seeded["lessons"]
+              print(f"WINDOWS DB SMOKE OK: baseline={seeded['lessons']} imported={imported} stats={stats}")
+              db.conn.close()
+          PY
+
       - name: Package Windows host and chapter content
         run: |
           set -euo pipefail
