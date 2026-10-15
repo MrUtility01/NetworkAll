@@ -21,13 +21,13 @@ if not defined NETENC_TOKEN (
 
 cd /d "%~dp0..\server"
 if not defined NETENC_DEVICE set "NETENC_DEVICE=%COMPUTERNAME%"
-if not defined PORT set "PORT=5050"
+if not defined NETENC_PORT set "NETENC_PORT=5050"
 if not defined NETENC_HOST set "NETENC_HOST=0.0.0.0"
 
 echo ============================================
 echo  NetworkEncyclopedia Server
 echo  Token : %NETENC_TOKEN%
-echo  Port  : %PORT%
+echo  Port  : %NETENC_PORT%
 echo ============================================
 echo.
 echo Save this token in the Android app's sync settings.
@@ -45,7 +45,7 @@ if errorlevel 1 (
 )
 echo.
 echo Starting server and importing chapter folders...
-echo Browser: http://127.0.0.1:%PORT%
+echo Browser: http://127.0.0.1:%NETENC_PORT%
 echo Android: same Wi-Fi + token shown above
 echo.
 python ..\scripts\assemble_chapter_packs.py --strict

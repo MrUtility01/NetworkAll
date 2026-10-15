@@ -4,11 +4,11 @@
 
 ## وضعیت انتشار
 
-**نسخهٔ ۱٫۰٫۰ هنوز کاندید انتشار است، نه نسخهٔ نهایی تأییدشده.** کارهای یکسان‌سازی محتوا، ساخت بستهٔ ویندوز، ممیزی APK و تنظیم توکن/پورت در [پیش‌نویس PR شمارهٔ ۵](https://github.com/MrUtility01/NetworkAll/pull/5) در حال بازبینی‌اند. تا زمانی که کنترل CI سبز نباشد و نصب واقعی روی دستگاه انجام نشود، از معرفی Artifact به‌عنوان نسخهٔ نهایی خودداری کنید.
+**نسخهٔ ۱٫۰٫۰ هنوز کاندید انتشار است، نه نسخهٔ نهایی تأییدشده.** بازآرایی محتوا در شاخهٔ feature/modular-chapter-folders و [پیش‌نویس PR شمارهٔ ۸](https://github.com/MrUtility01/NetworkAll/pull/8) نگهداری می‌شود؛ تا ادغام در main و تست نصب واقعی روی دستگاه، Artifact را نسخهٔ نهایی تلقی نکنید.
 
 - مخزن رسمی: https://github.com/MrUtility01/NetworkAll
 - بررسی ساخت‌ها: https://github.com/MrUtility01/NetworkAll/actions
-- ممیزی و موارد باقی‌مانده: [docs/V1_RELEASE_AUDIT_FA.md در شاخهٔ کاندید](https://github.com/MrUtility01/NetworkAll/blob/codex/android-repair-port86-20261013/docs/V1_RELEASE_AUDIT_FA.md)
+- ممیزی و موارد باقی‌مانده: [ممیزی انتشار v1](https://github.com/MrUtility01/NetworkAll/blob/feature/modular-chapter-folders/docs/V1_RELEASE_AUDIT_FA.md)
 
 ## مسیر پیشنهادی برای کاندید v1
 
@@ -18,7 +18,7 @@
 git clone https://github.com/MrUtility01/NetworkAll.git
 cd NetworkAll
 git fetch origin
-git switch codex/android-repair-port86-20261013
+git switch feature/modular-chapter-folders
 ```
 
 Artifact اندروید و ZIP ویندوز را فقط از یک اجرای موفق GitHub Actions دریافت کنید. ZIP ویندوز بستهٔ میزبان/سورس Python است و **EXE مستقل نیست**.
@@ -30,15 +30,40 @@ Artifact اندروید و ZIP ویندوز را فقط از یک اجرای م�
 | `server/` | Flask، SQLite، وب و API |
 | `android/` | اپ Kotlin و پایگاه دادهٔ آفلاین |
 | `windows/` | راه‌انداز میزبان ویندوز |
-| `tools/packs/` | بسته‌های محتوای JSON |
-| `scripts/` | خروجی‌گیری، ادغام، اعتبارسنجی و بسته‌بندی |
+| `tools/chapters/1/` تا `tools/chapters/68/` | محتوای هر فصل به‌صورت عددی و تفکیک‌شده بر اساس نوع |
+| `scripts/` | خروجی‌گیری، تفکیک محتوا، ساخت بسته‌های سازگاری و اعتبارسنجی |
 | `docs/` | معماری، Sync، ممیزی و محدودیت‌های شناخته‌شده |
+
+## ساختار محتوای آموزشی
+
+در tools/chapters فقط پوشه‌های عددی 1 تا 68 وجود دارند. داخل هر پوشه، متن درس‌ها، سؤال‌ها، پاسخ‌نامه‌ها، مثال‌ها، دستورات و لابراتوارها در فایل‌های مستقل نگهداری می‌شوند؛ منابع اولیه هم در پوشه‌های sources یا source_archive حفظ می‌شوند.
+
+نمونهٔ مسیر فصل ۱۳:
+
+    tools/chapters/13/
+      lessons/base_curriculum.json
+      lessons/lessons.json
+      questions/questions.json
+      questions/sources/
+      answers/answer_key.json
+      answers/sources/
+      examples/examples.json
+      commands/commands.json
+      labs/labs.json
+      android/manifest.json
+      windows/manifest.json
+      source_archive/
+      build/chapter.json  (تولید خودکار، قابل بازتولید)
+
+فایل‌های مرجع در پوشه‌های نوع محتوا ویرایش می‌شوند؛ build/chapter.json خروجی سازگاری است. Windows با windows/start.bat بسته‌ها را پیش از اجرا می‌سازد و workflow اندروید همان فایل‌های مرجع را برای خروجی آفلاین ادغام می‌کند. پیکربندی اندروید/ویندوز در پوشهٔ هر فصل فقط برای تفاوت‌های همان پلتفرم است تا متن درس دوبار تکثیر نشود.
+
+راهنمای کامل: tools/chapters/README_FA.md؛ فهرست ۶۸ فصل: tools/chapters/INDEX_FA.md.
 
 ## قراردادهای کاندید v1
 
 - نام محصول: **NetworkAll**
 - نسخهٔ هدف: **1.0.0**
-- پورت وب/API: TCP **86**
+- پورت پیش‌فرض وب/API در میزبان ویندوز: TCP **5050** (قابل تغییر با NETENC_PORT)
 - درخت هدف: **۶۸ فصل** با فهرست آموزشی ادغام‌شدهٔ مشترک
 - Windows: Python 3.11+ و بستهٔ ZIP
 - Android: APK از Artifact معتبر

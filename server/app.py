@@ -71,7 +71,8 @@ except Exception as _e:
     _MODULE_STATUS["study_error"] = str(_e)
 
 SYNC_TOKEN = (os.environ.get("NETENC_TOKEN") or "").strip()
-if not SYNC_TOKEN:
+TOKEN_GENERATED_FOR_PROCESS = not bool(SYNC_TOKEN)
+if TOKEN_GENERATED_FOR_PROCESS:
     import secrets
     SYNC_TOKEN = secrets.token_urlsafe(32)
     print("WARNING: NETENC_TOKEN was not configured; a random token was generated for this process.")
@@ -147,7 +148,8 @@ def health():
         "schema_version": SCHEMA_VERSION,
         "sync_protocol": "v1-aligned",
         "token_required": bool(SYNC_TOKEN),
-        "default_token_in_use": SYNC_TOKEN == DEFAULT_DEV_TOKEN,
+        "default_token_in_use": False,
+        "token_generated_for_process": TOKEN_GENERATED_FOR_PROCESS,
         "modules": {
             "workspace": _MODULE_STATUS["workspace"],
             "study": bool(register_study_routes),
@@ -309,7 +311,7 @@ def main():
             print("study routes", e)
     print(f"NetEnc listening on http://{host}:{port}")
     print("  sync: /api/sync/hello | manifest | pull | push")
-    print(f"  token_required={bool(SYNC_TOKEN)} default_token={SYNC_TOKEN == DEFAULT_DEV_TOKEN}")
+    print(f"  token_required={bool(SYNC_TOKEN)} token_generated_for_process={TOKEN_GENERATED_FOR_PROCESS}")
     app.run(host=host, port=port, debug=False)
 
 
