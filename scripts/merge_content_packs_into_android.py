@@ -26,6 +26,7 @@ def find_pack_files():
     """فقط مسیرهای مجاز — prompts/ اسکن نمی‌شود (سرعت/پایداری)."""
     files = []
     files += list(ROOT.glob("tools/packs/**/*.json"))
+    files += list(ROOT.glob("tools/chapters/**/*.json"))
     files += list(ROOT.glob("tools/engineer_jokar_*/*pack*.json"))
     files += list(ROOT.glob("tools/engineer_jokar_*/*curriculum*.json"))
     files += list(ROOT.glob("tools/ENGINEER_JOKAR_*.json"))
