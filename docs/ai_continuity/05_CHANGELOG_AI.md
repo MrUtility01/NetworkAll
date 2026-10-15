@@ -2,17 +2,19 @@
 
 ---
 
-## [2026-10-15] — Grok (architecture upgrade)
+## [2026-10-15] — Grok (full chapter richness audit)
 
 ### Done
-- Created `docs/CONTENT_ARCHITECTURE.md` — professional scalable design.
-- Created `tools/packs/_templates/` and canonical `tools/packs/ch40_vmware_hyperv/`.
-- Enforced per-chapter folders with subfolders for lessons / scenarios / packet_journeys / diagrams / scripts / notes.
-- Quality-first policy: size may grow; hang is forbidden; thin content is rejected.
-- Updated all continuity files to match new architecture.
+- Performed repository-wide richness audit based on pack sizes, DENSE_CH21_40.md, ch60 VALIDATION.md, APP_STATUS_FA.md and large content files.
+- Created permanent reference: `docs/ai_continuity/CHAPTER_RICHNESS_AUDIT.md`
+- Classified chapters into DEEP / PARTIAL / THIN-SKELETON.
+- Updated 03_PROGRESS.md and 04_NEXT_ACTIONS.md with real priorities.
 
-### Current state
-Architecture is production-ready. Chapter 40 has zero production lessons yet (only old samples).
+### Key findings
+- Strong existing deep content: 13, 14, 21, 24, 29, 35, 64, 66/68, 67, Windows Server, Commands.
+- Critical partials that need finishing: **40, 51, 60**.
+- Large thin/skeleton zone: 41–50 and most of 52–59.
+- Android already ships 5185 “complete” lessons in curriculum_index — many bodies exist, but not all meet strict deep criteria.
 
-### Next
-Generate `lessons/batch_01.json` for Chapter 40 (12–18 dense lessons).
+### Next recommended action
+Produce first production batch for Chapter 40 under the new structure.
