@@ -290,8 +290,14 @@ def append_modular_chapter(data, lessons, order, title_fa, title_en):
         for src in sorted(grouped[sub_order], key=lambda x: int(x.get("lesson_order") or 0)):
             uid = src.get("uid") or f"lesson:ch{order:02d}:mod:{sub_order:03d}:{len(out)+1:05d}"
             if uid in existing_uids:
-                continue
+                base_uid = uid
+                uid = f"{base_uid}:moddup:{order:02d}:{int(sub_order):03d}:{len(out)+1:05d}"
+                suffix = 2
+                while uid in existing_uids:
+                    uid = f"{base_uid}:moddup:{order:02d}:{int(sub_order):03d}:{len(out)+1:05d}:{suffix}"
+                    suffix += 1
             existing_uids.add(uid)
+            src["uid"] = uid
             notes = as_text(src.get("notes"))
             meta = src.get("meta") or {}
             assessment = meta.get("assessment") if isinstance(meta, dict) else None
@@ -315,6 +321,32 @@ def append_modular_chapter(data, lessons, order, title_fa, title_en):
             })
             added += len(out)
     return added
+
+
+def ensure_unique_uids(data):
+    """Keep every lesson while repairing UID collisions deterministically."""
+    seen = set()
+    fixed = 0
+    for chapter in data.get("chapters", []):
+        order = int(chapter.get("order") or 0)
+        for sub_index, sub in enumerate(chapter.get("subchapters", []), 1):
+            for lesson_index, lesson in enumerate(sub.get("lessons", []), 1):
+                base = str(lesson.get("uid") or f"lesson:ch{order:02d}:s{sub_index:03d}:l{lesson_index:05d}")
+                candidate = base
+                if candidate in seen:
+                    candidate = f"{base}:dedup:{order:02d}:{sub_index:03d}:{lesson_index:05d}"
+                    suffix = 2
+                    while candidate in seen:
+                        candidate = f"{base}:dedup:{order:02d}:{sub_index:03d}:{lesson_index:05d}:{suffix}"
+                        suffix += 1
+                    lesson["uid"] = candidate
+                    fixed += 1
+                else:
+                    lesson["uid"] = candidate
+                seen.add(candidate)
+    if fixed:
+        print("UID collisions repaired without dropping lessons:", fixed)
+    return fixed
 
 
 def build_ch65(lessons):
@@ -444,6 +476,7 @@ def main():
         data["chapters"].append(build_ch65(extra))
         print("ch65", sum(len(s["lessons"]) for s in data["chapters"][-1]["subchapters"]))
 
+    ensure_unique_uids(data)
     data["chapters"].sort(key=lambda c: int(c.get("order") or 0))
     n = sum(len(s.get("lessons", [])) for c in data["chapters"] for s in c.get("subchapters", []))
     data["lesson_count"] = n
