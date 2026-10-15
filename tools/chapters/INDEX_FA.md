@@ -67,7 +67,7 @@
 | 61 | معماری سازمانی Enterprise Architecture | 0 | 4 | tools/chapters/ch61_enterprise_architecture/ |
 | 62 | عملیات IT و NOC | 0 | 4 | tools/chapters/ch62_it_operations_noc/ |
 | 63 | مستندسازی Runbook و CMDB | 0 | 6 | tools/chapters/ch63_documentation_runbooks_cmdb/ |
-| 64 | Git و GitHub | 0 | 8 | tools/chapters/ch64_git_github/ |
+| 64 | Git و GitHub | 0 | 7 | tools/chapters/ch64_git_github/ |
 | 65 | امنیت سایبری و هک اخلاقی (دفاعی) + بی‌سیم | 135 | 12 | tools/chapters/ch65_cybersecurity_ethical_hacking_wireless/ |
 | 66 | مسیریابی عمیق OSPF/BGP/Redistribution | 9 | 6 | tools/chapters/ch66_ospf_bgp_redistribution/ |
 | 67 | VPN سازمانی IPsec/SSL و عیب‌یابی | 15 | 7 | tools/chapters/ch67_enterprise_vpn_ipsec_ssl/ |
