@@ -23,31 +23,17 @@ def load_json(p: Path):
 
 
 def find_pack_files():
-    """فقط مسیرهای مجاز — prompts/ اسکن نمی‌شود (سرعت/پایداری)."""
-    files = []
-    files += list(ROOT.glob("tools/packs/**/*.json"))
-    files += list(ROOT.glob("tools/chapters/**/*.json"))
-    files += list(ROOT.glob("tools/engineer_jokar_*/*pack*.json"))
-    files += list(ROOT.glob("tools/engineer_jokar_*/*curriculum*.json"))
-    files += list(ROOT.glob("tools/ENGINEER_JOKAR_*.json"))
-    uniq, seen = [], set()
-    for f in files:
-        name = f.name.lower()
-        if name.endswith(".md") or name in ("readme.md", "readme_fa.md"):
-            continue
-        if " " in f.name:
-            print(" skip spaced name:", f)
-            continue
-        if name.endswith(".json.json"):
-            print(" skip double ext:", f)
-            continue
-        if "/prompts/" in str(f).replace("\\", "/").lower():
-            continue
-        k = str(f.resolve())
-        if k not in seen and f.stat().st_size > 500:
-            seen.add(k)
-            uniq.append(f)
-    return sorted(uniq)
+    """Use only canonical per-chapter packs; archived/original JSON files are not imported twice."""
+    files = list(ROOT.glob("tools/chapters/ch[0-9][0-9]_*/chapter.json"))
+    uniq = []
+    seen = set()
+    for f in sorted(files):
+        if f.is_file() and f.stat().st_size > 20:
+            k = str(f.resolve())
+            if k not in seen:
+                seen.add(k)
+                uniq.append(f)
+    return uniq
 
 
 def commands_to_lessons(data: dict) -> list:
@@ -201,10 +187,31 @@ def normalize_pack(path: Path, data: dict):
     return []
 
 
+def _merge_preserving_text(old, new):
+    old = as_text(old).strip()
+    new = as_text(new).strip()
+    if not old:
+        return new
+    if not new or new == old or new in old:
+        return old
+    if old in new:
+        return new
+    return old + "\n\n---\n\n" + new
+
+
+def _normalized_title(value):
+    value = re.sub(r"^\[L[0-4]\]\s*", "", str(value or "").strip())
+    return re.sub(r"\s+", " ", value).casefold()
+
+
 def apply_fields(les, src):
-    for k in ("summary", "full_content", "commands", "examples", "notes"):
+    for k in ("full_content", "commands", "examples", "notes"):
         if src.get(k):
-            les[k] = as_text(src.get(k)) if k != "full_content" else (src.get(k) or "")
+            les[k] = _merge_preserving_text(les.get(k), src.get(k))
+    if src.get("summary"):
+        old_summary = as_text(les.get("summary"))
+        new_summary = as_text(src.get("summary"))
+        les["summary"] = new_summary if len(new_summary) > len(old_summary) else old_summary
 
 
 def merge_by_title(data, lessons):
@@ -409,9 +416,34 @@ def main():
             continue
         if "tools/chapters/" in name and d.get("chapter_order") is not None:
             order = int(d["chapter_order"])
+            chapter_title_fa = d.get("chapter_title_fa") or d.get("title_fa") or ("فصل " + str(order))
+            chapter_title_en = d.get("chapter_title_en") or d.get("title_en") or ("Chapter " + str(order))
+            if d.get("merge_strategy") == "by_title":
+                existing_titles = {
+                    _normalized_title(lesson.get("title_fa"))
+                    for ch in data.get("chapters", []) if int(ch.get("order") or 0) == order
+                    for sub in ch.get("subchapters", []) for lesson in sub.get("lessons", [])
+                }
+                matched, unmatched = [], []
+                for idx, original in enumerate(lessons, 1):
+                    lesson = dict(original)
+                    lesson["chapter_order"] = order
+                    lesson.setdefault("subchapter_order", 1)
+                    lesson.setdefault("lesson_order", idx)
+                    lesson.setdefault("uid", f"lesson:ch{order:02d}:pack:{idx:05d}")
+                    if _normalized_title(lesson.get("title_fa")) in existing_titles:
+                        matched.append(lesson)
+                    else:
+                        unmatched.append(lesson)
+                merged_count = merge_by_title(data, matched) if matched else 0
+                added_count = append_modular_chapter(
+                    data, unmatched, order, chapter_title_fa, chapter_title_en
+                ) if unmatched else 0
+                print("canonical chapter pack", order, "title-merged", merged_count, "new", added_count)
+                continue
             entry = modular_chapters.setdefault(order, {
-                "title_fa": d.get("chapter_title_fa") or d.get("title_fa") or ("فصل " + str(order)),
-                "title_en": d.get("chapter_title_en") or d.get("title_en") or ("Chapter " + str(order)),
+                "title_fa": chapter_title_fa,
+                "title_en": chapter_title_en,
                 "lessons": [],
             })
             pack_id = str(p.relative_to(ROOT / "tools" / "chapters").with_suffix(""))

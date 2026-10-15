@@ -17,11 +17,37 @@ def _slug(value: str) -> str:
     return value or "pack"
 
 
+def _text(value) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, list):
+        return "\n".join(str(x) for x in value)
+    if isinstance(value, dict):
+        return json.dumps(value, ensure_ascii=False, sort_keys=True)
+    return str(value)
+
+
+def _title_key(value) -> str:
+    value = re.sub(r"^\[L[0-4]\]\s*", "", str(value or "").strip())
+    return re.sub(r"\s+", " ", value).casefold()
+
+
+def _merge_text(old, new) -> str:
+    old, new = _text(old).strip(), _text(new).strip()
+    if not old:
+        return new
+    if not new or new == old or new in old:
+        return old
+    if old in new:
+        return new
+    return old + "\n\n---\n\n" + new
+
+
 def discover_chapter_packs():
     """Yield validated (path, payload) pairs. Invalid files are reported and skipped."""
     if not CHAPTERS_DIR.exists():
         return
-    for path in sorted(CHAPTERS_DIR.rglob("*.json")):
+    for path in sorted(CHAPTERS_DIR.glob("ch[0-9][0-9]_*/chapter.json")):
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
             order = int(payload["chapter_order"])
@@ -64,41 +90,88 @@ def import_chapter_packs(database):
         ).fetchone()["n"]
         # Do not create an empty level or re-import a pack whose UIDs already exist.
         source_lessons = payload.get("lessons") or []
+        chapter_rows = conn.execute(
+            """SELECT l.id,l.uid,l.title_fa,l.title_en,l.summary,l.full_content,l.commands,
+                      l.examples,l.notes,l.meta_json,l.learning_objectives,l.content_hash
+               FROM lessons l JOIN levels lv ON lv.id=l.level_id
+               JOIN chapters c ON c.id=lv.chapter_id
+               WHERE c.order_index=? ORDER BY l.id""",
+            (order,),
+        ).fetchall()
+        existing_by_title = {}
+        for row in chapter_rows:
+            existing_by_title.setdefault(_title_key(row["title_fa"]), dict(row))
         pending = []
+        merged = 0
         for index, item in enumerate(source_lessons, 1):
             if not isinstance(item, dict):
                 print(f"[chapters] SKIP non-object lesson {index} in {path.name}")
                 continue
-            uid = str(item.get("uid") or f"lesson:ch{order:02d}:mod:{pack_slug}:{index:05d}")
+            title = str(item.get("title_fa") or item.get("title_en") or f"درس {index}")
             fingerprint = hashlib.sha256(
                 json.dumps(item, ensure_ascii=False, sort_keys=True).encode("utf-8")
             ).hexdigest()
+            title_key = _title_key(title)
+            matched = existing_by_title.get(title_key)
+            if matched:
+                old_meta = {}
+                try:
+                    old_meta = json.loads(matched.get("meta_json") or "{}")
+                    if not isinstance(old_meta, dict):
+                        old_meta = {}
+                except Exception:
+                    old_meta = {}
+                new_meta = item.get("meta") if isinstance(item.get("meta"), dict) else {}
+                for meta_key, meta_value in new_meta.items():
+                    if meta_key not in old_meta:
+                        old_meta[meta_key] = meta_value
+                    elif old_meta[meta_key] != meta_value:
+                        old_meta.setdefault(f"source_{meta_key}", meta_value)
+                summary_old = _text(matched.get("summary"))
+                summary_new = _text(item.get("summary"))
+                merged_values = {
+                    "summary": summary_new if len(summary_new) > len(summary_old) else summary_old,
+                    "full_content": _merge_text(matched.get("full_content"), item.get("full_content")),
+                    "commands": _merge_text(matched.get("commands"), item.get("commands")),
+                    "examples": _merge_text(matched.get("examples"), item.get("examples")),
+                    "notes": _merge_text(matched.get("notes"), item.get("notes")),
+                    "learning_objectives": _merge_text(matched.get("learning_objectives"), item.get("learning_objectives")),
+                    "meta_json": json.dumps(old_meta, ensure_ascii=False),
+                }
+                changed = any(_text(matched.get(key)) != _text(value) for key, value in merged_values.items())
+                if changed:
+                    merged_hash = hashlib.sha256(
+                        json.dumps(merged_values, ensure_ascii=False, sort_keys=True).encode("utf-8")
+                    ).hexdigest()
+                    conn.execute(
+                        """UPDATE lessons SET summary=?,full_content=?,commands=?,examples=?,notes=?,
+                           learning_objectives=?,meta_json=?,content_hash=?,last_updated=? WHERE id=?""",
+                        (merged_values["summary"], merged_values["full_content"], merged_values["commands"],
+                         merged_values["examples"], merged_values["notes"], merged_values["learning_objectives"],
+                         merged_values["meta_json"], merged_hash, now, matched["id"]),
+                    )
+                    matched.update(merged_values)
+                    matched["content_hash"] = merged_hash
+                    merged += 1
+                continue
+
+            uid = str(item.get("uid") or f"lesson:ch{order:02d}:mod:{pack_slug}:{index:05d}")
             existing = conn.execute(
-                "SELECT content_hash FROM lessons WHERE uid=? LIMIT 1", (uid,)
+                "SELECT content_hash,title_fa FROM lessons WHERE uid=? LIMIT 1", (uid,)
             ).fetchone()
             if existing:
-                # Re-importing the exact same lesson is a no-op. A different lesson with
-                # a colliding UID is preserved under a deterministic collision-safe UID.
-                if str(existing["content_hash"] or "") == fingerprint:
-                    continue
+                # A matching UID is only a no-op when the title also matches this chapter.
+                # Otherwise keep the new record under a collision-safe UID.
                 base_uid = uid
                 uid = f"{base_uid}:collision:{pack_slug}:{index:05d}"
                 suffix = 2
-                while True:
-                    collision = conn.execute(
-                        "SELECT content_hash FROM lessons WHERE uid=? LIMIT 1", (uid,)
-                    ).fetchone()
-                    if not collision:
-                        break
-                    if str(collision["content_hash"] or "") == fingerprint:
-                        uid = ""
-                        break
+                while conn.execute("SELECT 1 FROM lessons WHERE uid=? LIMIT 1", (uid,)).fetchone():
                     uid = f"{base_uid}:collision:{pack_slug}:{index:05d}:{suffix}"
                     suffix += 1
-                if not uid:
-                    continue
-            title = str(item.get("title_fa") or item.get("title_en") or f"درس {index}")
-            pending.append((uid, index, title, item, fingerprint))
+            keywords = item.get("search_keywords") or item.get("tags") or []
+            if not isinstance(keywords, list):
+                keywords = [str(keywords)]
+            pending.append((uid, index, title, item, fingerprint, keywords))
 
         if not pending:
             continue
@@ -110,7 +183,7 @@ def import_chapter_packs(database):
         )
         level_id = int(cur.lastrowid)
 
-        for lesson_order, (uid, index, title, item, fingerprint) in enumerate(pending, 1):
+        for lesson_order, (uid, index, title, item, fingerprint, keywords) in enumerate(pending, 1):
             meta = item.get("meta") if isinstance(item.get("meta"), dict) else {}
             keywords = item.get("search_keywords") or item.get("tags") or []
             if not isinstance(keywords, list):
@@ -136,7 +209,7 @@ def import_chapter_packs(database):
             )
             added += 1
 
-    if added:
+    if added or merged:
         conn.commit()
-        print(f"[chapters] imported {added} new lessons; existing lessons preserved")
-    return {"ok": True, "added": added}
+        print(f"[chapters] added {added} new lessons; merged {merged} same-title lessons; existing records preserved")
+    return {"ok": True, "added": added, "merged": merged}

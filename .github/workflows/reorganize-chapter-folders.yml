@@ -1,0 +1,177 @@
+name: Reorganize chapter folders and build platforms
+
+on:
+  push:
+    branches:
+      - feature/modular-chapter-folders
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  organize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      commit_sha: \${{ steps.commit.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: \${{ github.ref }}
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Reorganize source files chapter-by-chapter
+        run: python scripts/reorganize_chapters.py
+
+      - name: Validate the canonical folder layout
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path(".")
+          base = root / "tools" / "chapters"
+          folders = sorted(base.glob("ch[0-9][0-9]_*"))
+          assert len(folders) == 68, f"expected 68 chapter folders, got {len(folders)}"
+          totals = 0
+          for n in range(1, 69):
+              matches = list(base.glob(f"ch{n:02d}_*"))
+              assert len(matches) == 1, f"chapter {n} must have exactly one main folder"
+              d = matches[0]
+              pack = json.loads((d / "chapter.json").read_text(encoding="utf-8"))
+              assert pack.get("chapter_order") == n
+              assert isinstance(pack.get("lessons"), list)
+              uids = [x.get("uid") for x in pack["lessons"]]
+              assert len(uids) == len(set(uids)), f"duplicate UIDs in chapter {n}"
+              totals += len(uids)
+          assert (base / "INDEX_FA.md").is_file()
+          assert not list(root.glob("chapter_*.json")), "chapter JSON left scattered in repository root"
+          print(f"LAYOUT VALID: folders=68 canonical_addon_lessons={totals}")
+          PY
+
+      - name: Commit the reorganization
+        id: commit
+        if: github.ref == 'refs/heads/feature/modular-chapter-folders'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "refactor: consolidate content into chapter folders"
+          git push origin "HEAD:\${GITHUB_REF_NAME}"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  android:
+    needs: organize
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: \${{ needs.organize.outputs.commit_sha }}
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: android-actions/setup-android@v3
+        with:
+          cmdline-tools-version: 12266719
+          accept-android-sdk-licenses: true
+          packages: "platform-tools platforms;android-34 build-tools;34.0.0"
+
+      - name: Generate all chapters from retained source content
+        run: |
+          set -euo pipefail
+          python scripts/install_android_icon.py
+          python scripts/export_android_index.py
+          python scripts/merge_content_packs_into_android.py
+
+      - name: Validate complete Android curriculum
+        run: |
+          python - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          p = Path("android/app/src/main/assets/curriculum_index.json.gz")
+          with gzip.open(p, "rt", encoding="utf-8") as f:
+              d = json.load(f)
+          chapters = d.get("chapters", [])
+          lessons = [x for c in chapters for s in c.get("subchapters", []) for x in s.get("lessons", [])]
+          orders = [int(c["order"]) for c in chapters]
+          uids = [x.get("uid") for x in lessons]
+          assert len(orders) == len(set(orders)), "duplicate chapter order"
+          assert 1 in orders and 68 in orders
+          assert len(uids) == len(set(uids)), "duplicate lesson UID"
+          assert int(d.get("lesson_count", -1)) == len(lessons)
+          assert all(x.get("full_content") is not None for x in lessons)
+          print(f"ANDROID CONTENT VALID: chapters={len(chapters)} lessons={len(lessons)} gzip_bytes={p.stat().st_size}")
+          PY
+
+      - name: Prepare Gradle wrapper
+        working-directory: android
+        run: |
+          set -e
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          curl -fsSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.2-bin.zip
+          sudo unzip -qo /tmp/gradle.zip -d /opt
+          /opt/gradle-8.2/bin/gradle wrapper --gradle-version 8.2
+          chmod +x gradlew
+          test -f gradle/wrapper/gradle-wrapper.jar
+
+      - name: Assemble Android APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NetworkAll-Android-APK-Organized
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+  windows:
+    needs: organize
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: \${{ needs.organize.outputs.commit_sha }}
+
+      - name: Verify Python sources
+        run: python -m compileall -q server scripts tools/chapters
+
+      - name: Package Windows host and chapter content
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          zip -qr dist/NetworkAll-Windows-Source-Organized.zip \
+            README.md README_FA.txt INSTALL_FA.md windows server shared tools scripts docs .github
+          test -s dist/NetworkAll-Windows-Source-Organized.zip
+          unzip -t dist/NetworkAll-Windows-Source-Organized.zip
+          unzip -l dist/NetworkAll-Windows-Source-Organized.zip | grep -q 'tools/chapters/INDEX_FA.md'
+          unzip -l dist/NetworkAll-Windows-Source-Organized.zip | grep -q 'tools/chapters/ch68_commands_encyclopedia/chapter.json'
+          ls -lh dist/NetworkAll-Windows-Source-Organized.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NetworkAll-Windows-Source-Organized
+          path: dist/NetworkAll-Windows-Source-Organized.zip
+          if-no-files-found: error
+          retention-days: 30
