@@ -1,0 +1,2189 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll / ENGINEER JOKAR",
+  "generated_on": "2026-10-14",
+  "purpose": "بسته تکمیلی فصل 62: عملیات IT و NOC؛ درس‌های L0-L4، تمرین، RCA، ابزار و آزمون. نیازمند بازبینی تخصصی.",
+  "scope": [
+    {
+      "chapter_order": 62,
+      "title": "فصل 62: عملیات IT و NOC",
+      "topics": [
+        "Incident Management",
+        "Monitoring و Alerting",
+        "SLO و SLI",
+        "On-call و Escalation",
+        "Change Management",
+        "Capacity و Performance",
+        "Backup و Recovery",
+        "Postmortem"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch62:supp:0001",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 1,
+      "level": "L0",
+      "title_fa": "[L0] Incident Management — آشنایی",
+      "title_en": "[L0] Incident Management",
+      "topic": "Incident Management",
+      "summary": "Incident Management: مفهوم را ساده توضیح بده. فصل 62.",
+      "full_content": "# Incident Management\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nرخداد را با شدت، دامنه، شروع، مالک و اثر کسب‌وکار ثبت کن.\n\n## روش بررسی\nاولویت را از impact و urgency تعیین و رخدادهای مشابه را correlate کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nوعده بازیابی بدون شواهد نده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای Incident Management"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1a",
+              "type": "multiple_choice",
+              "question": "برای Incident Management کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q1b",
+              "type": "short_answer",
+              "question": "برای Incident Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q1b",
+              "answer": "پاسخ موضوعی برای Incident Management با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0002",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 2,
+      "level": "L1",
+      "title_fa": "[L1] Incident Management — مقدماتی",
+      "title_en": "[L1] Incident Management",
+      "topic": "Incident Management",
+      "summary": "Incident Management: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 62.",
+      "full_content": "# Incident Management\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nرخداد را با شدت، دامنه، شروع، مالک و اثر کسب‌وکار ثبت کن.\n\n## روش بررسی\nاولویت را از impact و urgency تعیین و رخدادهای مشابه را correlate کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nوعده بازیابی بدون شواهد نده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای Incident Management"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q2a",
+              "type": "multiple_choice",
+              "question": "برای Incident Management کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q2b",
+              "type": "short_answer",
+              "question": "برای Incident Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q2a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q2b",
+              "answer": "پاسخ موضوعی برای Incident Management با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0003",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 3,
+      "level": "L2",
+      "title_fa": "[L2] Incident Management — عملی",
+      "title_en": "[L2] Incident Management",
+      "topic": "Incident Management",
+      "summary": "Incident Management: سناریوی lab را اجرا و شواهد ثبت کن. فصل 62.",
+      "full_content": "# Incident Management\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nرخداد را با شدت، دامنه، شروع، مالک و اثر کسب‌وکار ثبت کن.\n\n## روش بررسی\nاولویت را از impact و urgency تعیین و رخدادهای مشابه را correlate کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nوعده بازیابی بدون شواهد نده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای Incident Management"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q3a",
+              "type": "multiple_choice",
+              "question": "برای Incident Management کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q3b",
+              "type": "short_answer",
+              "question": "برای Incident Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q3a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q3b",
+              "answer": "پاسخ موضوعی برای Incident Management با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0004",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 4,
+      "level": "L3",
+      "title_fa": "[L3] Incident Management — پیشرفته",
+      "title_en": "[L3] Incident Management",
+      "topic": "Incident Management",
+      "summary": "Incident Management: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 62.",
+      "full_content": "# Incident Management\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nرخداد را با شدت، دامنه، شروع، مالک و اثر کسب‌وکار ثبت کن.\n\n## روش بررسی\nاولویت را از impact و urgency تعیین و رخدادهای مشابه را correlate کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nوعده بازیابی بدون شواهد نده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای Incident Management"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q4a",
+              "type": "multiple_choice",
+              "question": "برای Incident Management کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q4b",
+              "type": "short_answer",
+              "question": "برای Incident Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q4a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q4b",
+              "answer": "پاسخ موضوعی برای Incident Management با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0005",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 5,
+      "level": "L4",
+      "title_fa": "[L4] Incident Management — تخصصی",
+      "title_en": "[L4] Incident Management",
+      "topic": "Incident Management",
+      "summary": "Incident Management: runbook، rollback و معیار پذیرش تعریف کن. فصل 62.",
+      "full_content": "# Incident Management\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nرخداد را با شدت، دامنه، شروع، مالک و اثر کسب‌وکار ثبت کن.\n\n## روش بررسی\nاولویت را از impact و urgency تعیین و رخدادهای مشابه را correlate کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nوعده بازیابی بدون شواهد نده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای Incident Management"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q5a",
+              "type": "multiple_choice",
+              "question": "برای Incident Management کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q5b",
+              "type": "short_answer",
+              "question": "برای Incident Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q5a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q5b",
+              "answer": "پاسخ موضوعی برای Incident Management با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0006",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 6,
+      "level": "L0",
+      "title_fa": "[L0] Monitoring و Alerting — آشنایی",
+      "title_en": "[L0] Monitoring و Alerting",
+      "topic": "Monitoring و Alerting",
+      "summary": "Monitoring و Alerting: مفهوم را ساده توضیح بده. فصل 62.",
+      "full_content": "# Monitoring و Alerting\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nآلارم باید آستانه، پنجره، severity، مالک و runbook داشته باشد.\n\n## روش بررسی\nnoise را با correlation و hysteresis کاهش بده.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nهر هشدار باید actionable و دوره‌ای آزموده شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای Monitoring و Alerting"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q6a",
+              "type": "multiple_choice",
+              "question": "برای Monitoring و Alerting کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q6b",
+              "type": "short_answer",
+              "question": "برای Monitoring و Alerting دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q6a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q6b",
+              "answer": "پاسخ موضوعی برای Monitoring و Alerting با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0007",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 7,
+      "level": "L1",
+      "title_fa": "[L1] Monitoring و Alerting — مقدماتی",
+      "title_en": "[L1] Monitoring و Alerting",
+      "topic": "Monitoring و Alerting",
+      "summary": "Monitoring و Alerting: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 62.",
+      "full_content": "# Monitoring و Alerting\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nآلارم باید آستانه، پنجره، severity، مالک و runbook داشته باشد.\n\n## روش بررسی\nnoise را با correlation و hysteresis کاهش بده.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nهر هشدار باید actionable و دوره‌ای آزموده شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای Monitoring و Alerting"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q7a",
+              "type": "multiple_choice",
+              "question": "برای Monitoring و Alerting کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q7b",
+              "type": "short_answer",
+              "question": "برای Monitoring و Alerting دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q7a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q7b",
+              "answer": "پاسخ موضوعی برای Monitoring و Alerting با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0008",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 8,
+      "level": "L2",
+      "title_fa": "[L2] Monitoring و Alerting — عملی",
+      "title_en": "[L2] Monitoring و Alerting",
+      "topic": "Monitoring و Alerting",
+      "summary": "Monitoring و Alerting: سناریوی lab را اجرا و شواهد ثبت کن. فصل 62.",
+      "full_content": "# Monitoring و Alerting\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nآلارم باید آستانه، پنجره، severity، مالک و runbook داشته باشد.\n\n## روش بررسی\nnoise را با correlation و hysteresis کاهش بده.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nهر هشدار باید actionable و دوره‌ای آزموده شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای Monitoring و Alerting"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q8a",
+              "type": "multiple_choice",
+              "question": "برای Monitoring و Alerting کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q8b",
+              "type": "short_answer",
+              "question": "برای Monitoring و Alerting دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q8a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q8b",
+              "answer": "پاسخ موضوعی برای Monitoring و Alerting با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0009",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 9,
+      "level": "L3",
+      "title_fa": "[L3] Monitoring و Alerting — پیشرفته",
+      "title_en": "[L3] Monitoring و Alerting",
+      "topic": "Monitoring و Alerting",
+      "summary": "Monitoring و Alerting: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 62.",
+      "full_content": "# Monitoring و Alerting\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nآلارم باید آستانه، پنجره، severity، مالک و runbook داشته باشد.\n\n## روش بررسی\nnoise را با correlation و hysteresis کاهش بده.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nهر هشدار باید actionable و دوره‌ای آزموده شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای Monitoring و Alerting"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q9a",
+              "type": "multiple_choice",
+              "question": "برای Monitoring و Alerting کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q9b",
+              "type": "short_answer",
+              "question": "برای Monitoring و Alerting دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q9a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q9b",
+              "answer": "پاسخ موضوعی برای Monitoring و Alerting با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0010",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 10,
+      "level": "L4",
+      "title_fa": "[L4] Monitoring و Alerting — تخصصی",
+      "title_en": "[L4] Monitoring و Alerting",
+      "topic": "Monitoring و Alerting",
+      "summary": "Monitoring و Alerting: runbook، rollback و معیار پذیرش تعریف کن. فصل 62.",
+      "full_content": "# Monitoring و Alerting\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nآلارم باید آستانه، پنجره، severity، مالک و runbook داشته باشد.\n\n## روش بررسی\nnoise را با correlation و hysteresis کاهش بده.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nهر هشدار باید actionable و دوره‌ای آزموده شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای Monitoring و Alerting"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q10a",
+              "type": "multiple_choice",
+              "question": "برای Monitoring و Alerting کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q10b",
+              "type": "short_answer",
+              "question": "برای Monitoring و Alerting دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q10a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q10b",
+              "answer": "پاسخ موضوعی برای Monitoring و Alerting با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0011",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 11,
+      "level": "L0",
+      "title_fa": "[L0] SLO و SLI — آشنایی",
+      "title_en": "[L0] SLO و SLI",
+      "topic": "SLO و SLI",
+      "summary": "SLO و SLI: مفهوم را ساده توضیح بده. فصل 62.",
+      "full_content": "# SLO و SLI\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nSLI معیار اندازه‌گیری و SLO هدف سطح خدمت است؛ SLA تعهد بیرونی است.\n\n## روش بررسی\navailability و latency را با پنجره و جمعیت درخواست محاسبه کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nمیانگین، tail latency را پنهان می‌کند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای SLO و SLI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q11a",
+              "type": "multiple_choice",
+              "question": "برای SLO و SLI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q11b",
+              "type": "short_answer",
+              "question": "برای SLO و SLI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q11a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q11b",
+              "answer": "پاسخ موضوعی برای SLO و SLI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0012",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 12,
+      "level": "L1",
+      "title_fa": "[L1] SLO و SLI — مقدماتی",
+      "title_en": "[L1] SLO و SLI",
+      "topic": "SLO و SLI",
+      "summary": "SLO و SLI: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 62.",
+      "full_content": "# SLO و SLI\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nSLI معیار اندازه‌گیری و SLO هدف سطح خدمت است؛ SLA تعهد بیرونی است.\n\n## روش بررسی\navailability و latency را با پنجره و جمعیت درخواست محاسبه کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nمیانگین، tail latency را پنهان می‌کند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای SLO و SLI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q12a",
+              "type": "multiple_choice",
+              "question": "برای SLO و SLI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q12b",
+              "type": "short_answer",
+              "question": "برای SLO و SLI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q12a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q12b",
+              "answer": "پاسخ موضوعی برای SLO و SLI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0013",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 13,
+      "level": "L2",
+      "title_fa": "[L2] SLO و SLI — عملی",
+      "title_en": "[L2] SLO و SLI",
+      "topic": "SLO و SLI",
+      "summary": "SLO و SLI: سناریوی lab را اجرا و شواهد ثبت کن. فصل 62.",
+      "full_content": "# SLO و SLI\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nSLI معیار اندازه‌گیری و SLO هدف سطح خدمت است؛ SLA تعهد بیرونی است.\n\n## روش بررسی\navailability و latency را با پنجره و جمعیت درخواست محاسبه کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nمیانگین، tail latency را پنهان می‌کند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای SLO و SLI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q13a",
+              "type": "multiple_choice",
+              "question": "برای SLO و SLI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q13b",
+              "type": "short_answer",
+              "question": "برای SLO و SLI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q13a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q13b",
+              "answer": "پاسخ موضوعی برای SLO و SLI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0014",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 14,
+      "level": "L3",
+      "title_fa": "[L3] SLO و SLI — پیشرفته",
+      "title_en": "[L3] SLO و SLI",
+      "topic": "SLO و SLI",
+      "summary": "SLO و SLI: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 62.",
+      "full_content": "# SLO و SLI\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nSLI معیار اندازه‌گیری و SLO هدف سطح خدمت است؛ SLA تعهد بیرونی است.\n\n## روش بررسی\navailability و latency را با پنجره و جمعیت درخواست محاسبه کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nمیانگین، tail latency را پنهان می‌کند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای SLO و SLI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q14a",
+              "type": "multiple_choice",
+              "question": "برای SLO و SLI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q14b",
+              "type": "short_answer",
+              "question": "برای SLO و SLI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q14a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q14b",
+              "answer": "پاسخ موضوعی برای SLO و SLI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0015",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 15,
+      "level": "L4",
+      "title_fa": "[L4] SLO و SLI — تخصصی",
+      "title_en": "[L4] SLO و SLI",
+      "topic": "SLO و SLI",
+      "summary": "SLO و SLI: runbook، rollback و معیار پذیرش تعریف کن. فصل 62.",
+      "full_content": "# SLO و SLI\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nSLI معیار اندازه‌گیری و SLO هدف سطح خدمت است؛ SLA تعهد بیرونی است.\n\n## روش بررسی\navailability و latency را با پنجره و جمعیت درخواست محاسبه کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nمیانگین، tail latency را پنهان می‌کند. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای SLO و SLI"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q15a",
+              "type": "multiple_choice",
+              "question": "برای SLO و SLI کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q15b",
+              "type": "short_answer",
+              "question": "برای SLO و SLI دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q15a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q15b",
+              "answer": "پاسخ موضوعی برای SLO و SLI با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0016",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 16,
+      "level": "L0",
+      "title_fa": "[L0] On-call و Escalation — آشنایی",
+      "title_en": "[L0] On-call و Escalation",
+      "topic": "On-call و Escalation",
+      "summary": "On-call و Escalation: مفهوم را ساده توضیح بده. فصل 62.",
+      "full_content": "# On-call و Escalation\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nماتریس escalation شامل زمان پاسخ، تخصص، جانشین و شرط فراخوان است.\n\n## روش بررسی\nhandoff شیفت را با رخداد باز، تغییرات و هشدارها انجام بده.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nخستگی هشدار و وابستگی به یک نفر را کاهش بده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای On-call و Escalation"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q16a",
+              "type": "multiple_choice",
+              "question": "برای On-call و Escalation کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q16b",
+              "type": "short_answer",
+              "question": "برای On-call و Escalation دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q16a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q16b",
+              "answer": "پاسخ موضوعی برای On-call و Escalation با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0017",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 17,
+      "level": "L1",
+      "title_fa": "[L1] On-call و Escalation — مقدماتی",
+      "title_en": "[L1] On-call و Escalation",
+      "topic": "On-call و Escalation",
+      "summary": "On-call و Escalation: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 62.",
+      "full_content": "# On-call و Escalation\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nماتریس escalation شامل زمان پاسخ، تخصص، جانشین و شرط فراخوان است.\n\n## روش بررسی\nhandoff شیفت را با رخداد باز، تغییرات و هشدارها انجام بده.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nخستگی هشدار و وابستگی به یک نفر را کاهش بده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای On-call و Escalation"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q17a",
+              "type": "multiple_choice",
+              "question": "برای On-call و Escalation کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q17b",
+              "type": "short_answer",
+              "question": "برای On-call و Escalation دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q17a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q17b",
+              "answer": "پاسخ موضوعی برای On-call و Escalation با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0018",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 18,
+      "level": "L2",
+      "title_fa": "[L2] On-call و Escalation — عملی",
+      "title_en": "[L2] On-call و Escalation",
+      "topic": "On-call و Escalation",
+      "summary": "On-call و Escalation: سناریوی lab را اجرا و شواهد ثبت کن. فصل 62.",
+      "full_content": "# On-call و Escalation\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nماتریس escalation شامل زمان پاسخ، تخصص، جانشین و شرط فراخوان است.\n\n## روش بررسی\nhandoff شیفت را با رخداد باز، تغییرات و هشدارها انجام بده.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nخستگی هشدار و وابستگی به یک نفر را کاهش بده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای On-call و Escalation"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q18a",
+              "type": "multiple_choice",
+              "question": "برای On-call و Escalation کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q18b",
+              "type": "short_answer",
+              "question": "برای On-call و Escalation دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q18a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q18b",
+              "answer": "پاسخ موضوعی برای On-call و Escalation با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0019",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 19,
+      "level": "L3",
+      "title_fa": "[L3] On-call و Escalation — پیشرفته",
+      "title_en": "[L3] On-call و Escalation",
+      "topic": "On-call و Escalation",
+      "summary": "On-call و Escalation: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 62.",
+      "full_content": "# On-call و Escalation\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nماتریس escalation شامل زمان پاسخ، تخصص، جانشین و شرط فراخوان است.\n\n## روش بررسی\nhandoff شیفت را با رخداد باز، تغییرات و هشدارها انجام بده.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nخستگی هشدار و وابستگی به یک نفر را کاهش بده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای On-call و Escalation"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q19a",
+              "type": "multiple_choice",
+              "question": "برای On-call و Escalation کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q19b",
+              "type": "short_answer",
+              "question": "برای On-call و Escalation دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q19a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q19b",
+              "answer": "پاسخ موضوعی برای On-call و Escalation با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0020",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 20,
+      "level": "L4",
+      "title_fa": "[L4] On-call و Escalation — تخصصی",
+      "title_en": "[L4] On-call و Escalation",
+      "topic": "On-call و Escalation",
+      "summary": "On-call و Escalation: runbook، rollback و معیار پذیرش تعریف کن. فصل 62.",
+      "full_content": "# On-call و Escalation\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nماتریس escalation شامل زمان پاسخ، تخصص، جانشین و شرط فراخوان است.\n\n## روش بررسی\nhandoff شیفت را با رخداد باز، تغییرات و هشدارها انجام بده.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nخستگی هشدار و وابستگی به یک نفر را کاهش بده. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای On-call و Escalation"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q20a",
+              "type": "multiple_choice",
+              "question": "برای On-call و Escalation کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q20b",
+              "type": "short_answer",
+              "question": "برای On-call و Escalation دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q20a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q20b",
+              "answer": "پاسخ موضوعی برای On-call و Escalation با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0021",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 21,
+      "level": "L0",
+      "title_fa": "[L0] Change Management — آشنایی",
+      "title_en": "[L0] Change Management",
+      "topic": "Change Management",
+      "summary": "Change Management: مفهوم را ساده توضیح بده. فصل 62.",
+      "full_content": "# Change Management\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nتغییر باید هدف، اثر، تست، پنجره، تأیید و rollback داشته باشد.\n\n## روش بررسی\nقبل/بعد baseline و smoke test ثبت کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nتغییر اضطراری هم باید بعداً ثبت و بازبینی شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای Change Management"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q21a",
+              "type": "multiple_choice",
+              "question": "برای Change Management کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q21b",
+              "type": "short_answer",
+              "question": "برای Change Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q21a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q21b",
+              "answer": "پاسخ موضوعی برای Change Management با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0022",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 22,
+      "level": "L1",
+      "title_fa": "[L1] Change Management — مقدماتی",
+      "title_en": "[L1] Change Management",
+      "topic": "Change Management",
+      "summary": "Change Management: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 62.",
+      "full_content": "# Change Management\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nتغییر باید هدف، اثر، تست، پنجره، تأیید و rollback داشته باشد.\n\n## روش بررسی\nقبل/بعد baseline و smoke test ثبت کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nتغییر اضطراری هم باید بعداً ثبت و بازبینی شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای Change Management"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q22a",
+              "type": "multiple_choice",
+              "question": "برای Change Management کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q22b",
+              "type": "short_answer",
+              "question": "برای Change Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q22a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q22b",
+              "answer": "پاسخ موضوعی برای Change Management با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0023",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 23,
+      "level": "L2",
+      "title_fa": "[L2] Change Management — عملی",
+      "title_en": "[L2] Change Management",
+      "topic": "Change Management",
+      "summary": "Change Management: سناریوی lab را اجرا و شواهد ثبت کن. فصل 62.",
+      "full_content": "# Change Management\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nتغییر باید هدف، اثر، تست، پنجره، تأیید و rollback داشته باشد.\n\n## روش بررسی\nقبل/بعد baseline و smoke test ثبت کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nتغییر اضطراری هم باید بعداً ثبت و بازبینی شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای Change Management"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q23a",
+              "type": "multiple_choice",
+              "question": "برای Change Management کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q23b",
+              "type": "short_answer",
+              "question": "برای Change Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q23a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q23b",
+              "answer": "پاسخ موضوعی برای Change Management با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0024",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 24,
+      "level": "L3",
+      "title_fa": "[L3] Change Management — پیشرفته",
+      "title_en": "[L3] Change Management",
+      "topic": "Change Management",
+      "summary": "Change Management: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 62.",
+      "full_content": "# Change Management\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nتغییر باید هدف، اثر، تست، پنجره، تأیید و rollback داشته باشد.\n\n## روش بررسی\nقبل/بعد baseline و smoke test ثبت کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nتغییر اضطراری هم باید بعداً ثبت و بازبینی شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای Change Management"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q24a",
+              "type": "multiple_choice",
+              "question": "برای Change Management کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q24b",
+              "type": "short_answer",
+              "question": "برای Change Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q24a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q24b",
+              "answer": "پاسخ موضوعی برای Change Management با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0025",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 25,
+      "level": "L4",
+      "title_fa": "[L4] Change Management — تخصصی",
+      "title_en": "[L4] Change Management",
+      "topic": "Change Management",
+      "summary": "Change Management: runbook، rollback و معیار پذیرش تعریف کن. فصل 62.",
+      "full_content": "# Change Management\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nتغییر باید هدف، اثر، تست، پنجره، تأیید و rollback داشته باشد.\n\n## روش بررسی\nقبل/بعد baseline و smoke test ثبت کن.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nتغییر اضطراری هم باید بعداً ثبت و بازبینی شود. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای Change Management"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q25a",
+              "type": "multiple_choice",
+              "question": "برای Change Management کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q25b",
+              "type": "short_answer",
+              "question": "برای Change Management دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q25a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q25b",
+              "answer": "پاسخ موضوعی برای Change Management با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0026",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 26,
+      "level": "L0",
+      "title_fa": "[L0] Capacity و Performance — آشنایی",
+      "title_en": "[L0] Capacity و Performance",
+      "topic": "Capacity و Performance",
+      "summary": "Capacity و Performance: مفهوم را ساده توضیح بده. فصل 62.",
+      "full_content": "# Capacity و Performance\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nCPU، memory، storage، bandwidth و queue را روندی بررسی کن.\n\n## روش بررسی\np95/p99 و رشد بار را کنار میانگین بسنج.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nافزایش ظرفیت بدون یافتن bottleneck هزینه‌زاست. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای Capacity و Performance"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q26a",
+              "type": "multiple_choice",
+              "question": "برای Capacity و Performance کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q26b",
+              "type": "short_answer",
+              "question": "برای Capacity و Performance دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q26a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q26b",
+              "answer": "پاسخ موضوعی برای Capacity و Performance با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0027",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 27,
+      "level": "L1",
+      "title_fa": "[L1] Capacity و Performance — مقدماتی",
+      "title_en": "[L1] Capacity و Performance",
+      "topic": "Capacity و Performance",
+      "summary": "Capacity و Performance: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 62.",
+      "full_content": "# Capacity و Performance\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nCPU، memory، storage، bandwidth و queue را روندی بررسی کن.\n\n## روش بررسی\np95/p99 و رشد بار را کنار میانگین بسنج.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nافزایش ظرفیت بدون یافتن bottleneck هزینه‌زاست. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای Capacity و Performance"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q27a",
+              "type": "multiple_choice",
+              "question": "برای Capacity و Performance کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q27b",
+              "type": "short_answer",
+              "question": "برای Capacity و Performance دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q27a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q27b",
+              "answer": "پاسخ موضوعی برای Capacity و Performance با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0028",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 28,
+      "level": "L2",
+      "title_fa": "[L2] Capacity و Performance — عملی",
+      "title_en": "[L2] Capacity و Performance",
+      "topic": "Capacity و Performance",
+      "summary": "Capacity و Performance: سناریوی lab را اجرا و شواهد ثبت کن. فصل 62.",
+      "full_content": "# Capacity و Performance\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nCPU، memory، storage، bandwidth و queue را روندی بررسی کن.\n\n## روش بررسی\np95/p99 و رشد بار را کنار میانگین بسنج.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nافزایش ظرفیت بدون یافتن bottleneck هزینه‌زاست. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای Capacity و Performance"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q28a",
+              "type": "multiple_choice",
+              "question": "برای Capacity و Performance کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q28b",
+              "type": "short_answer",
+              "question": "برای Capacity و Performance دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q28a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q28b",
+              "answer": "پاسخ موضوعی برای Capacity و Performance با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0029",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 29,
+      "level": "L3",
+      "title_fa": "[L3] Capacity و Performance — پیشرفته",
+      "title_en": "[L3] Capacity و Performance",
+      "topic": "Capacity و Performance",
+      "summary": "Capacity و Performance: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 62.",
+      "full_content": "# Capacity و Performance\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nCPU، memory، storage، bandwidth و queue را روندی بررسی کن.\n\n## روش بررسی\np95/p99 و رشد بار را کنار میانگین بسنج.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nافزایش ظرفیت بدون یافتن bottleneck هزینه‌زاست. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای Capacity و Performance"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q29a",
+              "type": "multiple_choice",
+              "question": "برای Capacity و Performance کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q29b",
+              "type": "short_answer",
+              "question": "برای Capacity و Performance دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q29a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q29b",
+              "answer": "پاسخ موضوعی برای Capacity و Performance با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0030",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 30,
+      "level": "L4",
+      "title_fa": "[L4] Capacity و Performance — تخصصی",
+      "title_en": "[L4] Capacity و Performance",
+      "topic": "Capacity و Performance",
+      "summary": "Capacity و Performance: runbook، rollback و معیار پذیرش تعریف کن. فصل 62.",
+      "full_content": "# Capacity و Performance\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nCPU، memory، storage، bandwidth و queue را روندی بررسی کن.\n\n## روش بررسی\np95/p99 و رشد بار را کنار میانگین بسنج.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nافزایش ظرفیت بدون یافتن bottleneck هزینه‌زاست. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای Capacity و Performance"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q30a",
+              "type": "multiple_choice",
+              "question": "برای Capacity و Performance کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q30b",
+              "type": "short_answer",
+              "question": "برای Capacity و Performance دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q30a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q30b",
+              "answer": "پاسخ موضوعی برای Capacity و Performance با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0031",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 31,
+      "level": "L0",
+      "title_fa": "[L0] Backup و Recovery — آشنایی",
+      "title_en": "[L0] Backup و Recovery",
+      "topic": "Backup و Recovery",
+      "summary": "Backup و Recovery: مفهوم را ساده توضیح بده. فصل 62.",
+      "full_content": "# Backup و Recovery\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nموفقیت job معادل قابلیت restore نیست؛ RPO/RTO را مشخص کن.\n\n## روش بررسی\nrestore دوره‌ای، checksum و consistency را در محیط جدا بسنج.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nنسخه immutable/offline و دسترسی مدیریتی جدا لازم است. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای Backup و Recovery"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q31a",
+              "type": "multiple_choice",
+              "question": "برای Backup و Recovery کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q31b",
+              "type": "short_answer",
+              "question": "برای Backup و Recovery دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q31a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q31b",
+              "answer": "پاسخ موضوعی برای Backup و Recovery با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0032",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 32,
+      "level": "L1",
+      "title_fa": "[L1] Backup و Recovery — مقدماتی",
+      "title_en": "[L1] Backup و Recovery",
+      "topic": "Backup و Recovery",
+      "summary": "Backup و Recovery: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 62.",
+      "full_content": "# Backup و Recovery\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\nموفقیت job معادل قابلیت restore نیست؛ RPO/RTO را مشخص کن.\n\n## روش بررسی\nrestore دوره‌ای، checksum و consistency را در محیط جدا بسنج.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nنسخه immutable/offline و دسترسی مدیریتی جدا لازم است. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای Backup و Recovery"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q32a",
+              "type": "multiple_choice",
+              "question": "برای Backup و Recovery کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q32b",
+              "type": "short_answer",
+              "question": "برای Backup و Recovery دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q32a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q32b",
+              "answer": "پاسخ موضوعی برای Backup و Recovery با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0033",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 33,
+      "level": "L2",
+      "title_fa": "[L2] Backup و Recovery — عملی",
+      "title_en": "[L2] Backup و Recovery",
+      "topic": "Backup و Recovery",
+      "summary": "Backup و Recovery: سناریوی lab را اجرا و شواهد ثبت کن. فصل 62.",
+      "full_content": "# Backup و Recovery\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\nموفقیت job معادل قابلیت restore نیست؛ RPO/RTO را مشخص کن.\n\n## روش بررسی\nrestore دوره‌ای، checksum و consistency را در محیط جدا بسنج.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nنسخه immutable/offline و دسترسی مدیریتی جدا لازم است. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای Backup و Recovery"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q33a",
+              "type": "multiple_choice",
+              "question": "برای Backup و Recovery کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q33b",
+              "type": "short_answer",
+              "question": "برای Backup و Recovery دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q33a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q33b",
+              "answer": "پاسخ موضوعی برای Backup و Recovery با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0034",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 34,
+      "level": "L3",
+      "title_fa": "[L3] Backup و Recovery — پیشرفته",
+      "title_en": "[L3] Backup و Recovery",
+      "topic": "Backup و Recovery",
+      "summary": "Backup و Recovery: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 62.",
+      "full_content": "# Backup و Recovery\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\nموفقیت job معادل قابلیت restore نیست؛ RPO/RTO را مشخص کن.\n\n## روش بررسی\nrestore دوره‌ای، checksum و consistency را در محیط جدا بسنج.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nنسخه immutable/offline و دسترسی مدیریتی جدا لازم است. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای Backup و Recovery"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q34a",
+              "type": "multiple_choice",
+              "question": "برای Backup و Recovery کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q34b",
+              "type": "short_answer",
+              "question": "برای Backup و Recovery دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q34a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q34b",
+              "answer": "پاسخ موضوعی برای Backup و Recovery با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0035",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 35,
+      "level": "L4",
+      "title_fa": "[L4] Backup و Recovery — تخصصی",
+      "title_en": "[L4] Backup و Recovery",
+      "topic": "Backup و Recovery",
+      "summary": "Backup و Recovery: runbook، rollback و معیار پذیرش تعریف کن. فصل 62.",
+      "full_content": "# Backup و Recovery\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\nموفقیت job معادل قابلیت restore نیست؛ RPO/RTO را مشخص کن.\n\n## روش بررسی\nrestore دوره‌ای، checksum و consistency را در محیط جدا بسنج.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nنسخه immutable/offline و دسترسی مدیریتی جدا لازم است. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای Backup و Recovery"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q35a",
+              "type": "multiple_choice",
+              "question": "برای Backup و Recovery کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q35b",
+              "type": "short_answer",
+              "question": "برای Backup و Recovery دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q35a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q35b",
+              "answer": "پاسخ موضوعی برای Backup و Recovery با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0036",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 36,
+      "level": "L0",
+      "title_fa": "[L0] Postmortem — آشنایی",
+      "title_en": "[L0] Postmortem",
+      "topic": "Postmortem",
+      "summary": "Postmortem: مفهوم را ساده توضیح بده. فصل 62.",
+      "full_content": "# Postmortem\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\ntimeline، علت سیستمی، عوامل مؤثر و اقدام‌ها را بدون سرزنش ثبت کن.\n\n## روش بررسی\nهر اقدام مالک، موعد و معیار تکمیل داشته باشد.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L0\nمفهوم را ساده توضیح بده. دو اصطلاح مرتبط را تعریف کن.\n\n## ایمنی و معیار تکمیل\nتکرار رخداد پس از اصلاح را اندازه‌گیری کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "مفهوم را ساده توضیح بده.",
+        "تحلیل شواهد برای Postmortem"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q36a",
+              "type": "multiple_choice",
+              "question": "برای Postmortem کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q36b",
+              "type": "short_answer",
+              "question": "برای Postmortem دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q36a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q36b",
+              "answer": "پاسخ موضوعی برای Postmortem با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0037",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 37,
+      "level": "L1",
+      "title_fa": "[L1] Postmortem — مقدماتی",
+      "title_en": "[L1] Postmortem",
+      "topic": "Postmortem",
+      "summary": "Postmortem: اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. فصل 62.",
+      "full_content": "# Postmortem\n\n## هدف\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.\n\n## مفهوم\ntimeline، علت سیستمی، عوامل مؤثر و اقدام‌ها را بدون سرزنش ثبت کن.\n\n## روش بررسی\nهر اقدام مالک، موعد و معیار تکمیل داشته باشد.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L1\nاجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن. یک تست read-only و خروجی مورد انتظار را بنویس.\n\n## ایمنی و معیار تکمیل\nتکرار رخداد پس از اصلاح را اندازه‌گیری کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "اجزا، پیش‌نیاز، ورودی و خروجی را مشخص کن.",
+        "تحلیل شواهد برای Postmortem"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q37a",
+              "type": "multiple_choice",
+              "question": "برای Postmortem کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q37b",
+              "type": "short_answer",
+              "question": "برای Postmortem دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q37a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q37b",
+              "answer": "پاسخ موضوعی برای Postmortem با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0038",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 38,
+      "level": "L2",
+      "title_fa": "[L2] Postmortem — عملی",
+      "title_en": "[L2] Postmortem",
+      "topic": "Postmortem",
+      "summary": "Postmortem: سناریوی lab را اجرا و شواهد ثبت کن. فصل 62.",
+      "full_content": "# Postmortem\n\n## هدف\nسناریوی lab را اجرا و شواهد ثبت کن.\n\n## مفهوم\ntimeline، علت سیستمی، عوامل مؤثر و اقدام‌ها را بدون سرزنش ثبت کن.\n\n## روش بررسی\nهر اقدام مالک، موعد و معیار تکمیل داشته باشد.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L2\nسناریوی lab را اجرا و شواهد ثبت کن. یک متغیر را تغییر بده و قبل/بعد را مقایسه کن.\n\n## ایمنی و معیار تکمیل\nتکرار رخداد پس از اصلاح را اندازه‌گیری کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "سناریوی lab را اجرا و شواهد ثبت کن.",
+        "تحلیل شواهد برای Postmortem"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q38a",
+              "type": "multiple_choice",
+              "question": "برای Postmortem کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q38b",
+              "type": "short_answer",
+              "question": "برای Postmortem دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q38a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q38b",
+              "answer": "پاسخ موضوعی برای Postmortem با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0039",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 39,
+      "level": "L3",
+      "title_fa": "[L3] Postmortem — پیشرفته",
+      "title_en": "[L3] Postmortem",
+      "topic": "Postmortem",
+      "summary": "Postmortem: دو فرضیه را با شواهد مستقل مقایسه کن. فصل 62.",
+      "full_content": "# Postmortem\n\n## هدف\nدو فرضیه را با شواهد مستقل مقایسه کن.\n\n## مفهوم\ntimeline، علت سیستمی، عوامل مؤثر و اقدام‌ها را بدون سرزنش ثبت کن.\n\n## روش بررسی\nهر اقدام مالک، موعد و معیار تکمیل داشته باشد.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L3\nدو فرضیه را با شواهد مستقل مقایسه کن. شواهد موافق و مخالف دو فرضیه را ثبت کن.\n\n## ایمنی و معیار تکمیل\nتکرار رخداد پس از اصلاح را اندازه‌گیری کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "دو فرضیه را با شواهد مستقل مقایسه کن.",
+        "تحلیل شواهد برای Postmortem"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q39a",
+              "type": "multiple_choice",
+              "question": "برای Postmortem کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q39b",
+              "type": "short_answer",
+              "question": "برای Postmortem دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q39a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q39b",
+              "answer": "پاسخ موضوعی برای Postmortem با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch62:supp:0040",
+      "chapter_order": 62,
+      "subchapter_order": 90,
+      "lesson_order": 40,
+      "level": "L4",
+      "title_fa": "[L4] Postmortem — تخصصی",
+      "title_en": "[L4] Postmortem",
+      "topic": "Postmortem",
+      "summary": "Postmortem: runbook، rollback و معیار پذیرش تعریف کن. فصل 62.",
+      "full_content": "# Postmortem\n\n## هدف\nrunbook، rollback و معیار پذیرش تعریف کن.\n\n## مفهوم\ntimeline، علت سیستمی، عوامل مؤثر و اقدام‌ها را بدون سرزنش ثبت کن.\n\n## روش بررسی\nهر اقدام مالک، موعد و معیار تکمیل داشته باشد.\n\n## مثال عملی\nlatency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.\n\n## ابزارها\nITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.\n\n## مراحل RCA\n۱) علامت، زمان و دامنه اثر را ثبت کن. ۲) baseline و نسخه را نگه دار. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در محیط مجاز. ۵) با معیار تکرارپذیر Verify کن و نتیجه را مستند کن.\n\n## تمرین L4\nrunbook، rollback و معیار پذیرش تعریف کن. runbook، rollback، معیار موفقیت و اقدام پیشگیرانه تهیه کن.\n\n## ایمنی و معیار تکمیل\nتکرار رخداد پس از اصلاح را اندازه‌گیری کن. هر شاهد باید منبع و زمان داشته باشد؛ اطلاعات حساس را ماسک کن. [ ] baseline [ ] شواهد [ ] Verify [ ] پیشگیری",
+      "commands": "ITSM incident/change، SLI/SLO dashboard، `journalctl`, `Get-WinEvent` و health checks.",
+      "examples": "latency همزمان با CPU بالا می‌رود: impact، SLI، deploy اخیر، p95/p99 و وابستگی سرویس را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 62؛ review_required.",
+      "learning_objectives": [
+        "runbook، rollback و معیار پذیرش تعریف کن.",
+        "تحلیل شواهد برای Postmortem"
+      ],
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q40a",
+              "type": "multiple_choice",
+              "question": "برای Postmortem کدام روش معتبرتر است؟",
+              "options": [
+                "تغییر همزمان چند متغیر",
+                "baseline، شواهد و آزمون یک فرضیه",
+                "حدس از روی یک علامت",
+                "حذف لاگ قبل از بررسی"
+              ]
+            },
+            {
+              "id": "q40b",
+              "type": "short_answer",
+              "question": "برای Postmortem دو شاهد و یک معیار Verify بنویس."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q40a",
+              "answer": "baseline، شواهد و آزمون یک فرضیه",
+              "explanation": "نتیجه قابل بازبینی و تغییر کنترل‌پذیر می‌شود."
+            },
+            {
+              "id": "q40b",
+              "answer": "پاسخ موضوعی برای Postmortem با دو شاهد مستقل و معیار تکرارپذیر.",
+              "explanation": "شواهد و معیار پذیرش مهم‌اند."
+            }
+          ]
+        }
+      },
+      "source_status": "review_required"
+    }
+  ]
+}

@@ -1,0 +1,1969 @@
+{
+  "package_schema_version": "1.0",
+  "project": "NetworkAll / ENGINEER JOKAR",
+  "generated_on": "2026-10-14",
+  "purpose": "Windows/Android shared supplemental lessons chapter 65; 40 lessons L0-L4; review_required.",
+  "chapter_order": 65,
+  "lessons": [
+    {
+      "uid": "lesson:ch65:supp:0001",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 1,
+      "level": "L0",
+      "title_fa": "[L0] Threat Modeling — آشنایی",
+      "title_en": "[L0] Threat Modeling",
+      "topic": "Threat Modeling",
+      "summary": "Threat Modeling: مفهوم را ساده توضیح بده.",
+      "full_content": "# Threat Modeling\n\n## هدف آموزشی\nمفهوم را ساده توضیح بده.\n\n## مفهوم و معماری\nموضوع Threat Modeling را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L0\nمفهوم را ساده توضیح بده. برای Threat Modeling یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1a",
+              "type": "multiple_choice",
+              "question": "برای Threat Modeling کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q1b",
+              "type": "short_answer",
+              "question": "برای Threat Modeling دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q1a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q1b",
+              "answer": "پاسخ موضوعی برای Threat Modeling با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0002",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 2,
+      "level": "L1",
+      "title_fa": "[L1] Threat Modeling — مقدماتی",
+      "title_en": "[L1] Threat Modeling",
+      "topic": "Threat Modeling",
+      "summary": "Threat Modeling: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Threat Modeling\n\n## هدف آموزشی\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم و معماری\nموضوع Threat Modeling را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L1\nاجزا و پیش‌نیازها را مشخص کن. برای Threat Modeling یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q2a",
+              "type": "multiple_choice",
+              "question": "برای Threat Modeling کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q2b",
+              "type": "short_answer",
+              "question": "برای Threat Modeling دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q2a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q2b",
+              "answer": "پاسخ موضوعی برای Threat Modeling با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0003",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 3,
+      "level": "L2",
+      "title_fa": "[L2] Threat Modeling — عملی",
+      "title_en": "[L2] Threat Modeling",
+      "topic": "Threat Modeling",
+      "summary": "Threat Modeling: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# Threat Modeling\n\n## هدف آموزشی\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم و معماری\nموضوع Threat Modeling را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L2\nدر lab کنترل‌شده تمرین کن. برای Threat Modeling یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q3a",
+              "type": "multiple_choice",
+              "question": "برای Threat Modeling کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q3b",
+              "type": "short_answer",
+              "question": "برای Threat Modeling دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q3a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q3b",
+              "answer": "پاسخ موضوعی برای Threat Modeling با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0004",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 4,
+      "level": "L3",
+      "title_fa": "[L3] Threat Modeling — پیشرفته",
+      "title_en": "[L3] Threat Modeling",
+      "topic": "Threat Modeling",
+      "summary": "Threat Modeling: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Threat Modeling\n\n## هدف آموزشی\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم و معماری\nموضوع Threat Modeling را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L3\nدو فرضیه را با شواهد مقایسه کن. برای Threat Modeling یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q4a",
+              "type": "multiple_choice",
+              "question": "برای Threat Modeling کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q4b",
+              "type": "short_answer",
+              "question": "برای Threat Modeling دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q4a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q4b",
+              "answer": "پاسخ موضوعی برای Threat Modeling با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0005",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 5,
+      "level": "L4",
+      "title_fa": "[L4] Threat Modeling — تخصصی",
+      "title_en": "[L4] Threat Modeling",
+      "topic": "Threat Modeling",
+      "summary": "Threat Modeling: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Threat Modeling\n\n## هدف آموزشی\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم و معماری\nموضوع Threat Modeling را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L4\nrunbook و معیار پذیرش تعریف کن. برای Threat Modeling یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q5a",
+              "type": "multiple_choice",
+              "question": "برای Threat Modeling کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q5b",
+              "type": "short_answer",
+              "question": "برای Threat Modeling دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q5a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q5b",
+              "answer": "پاسخ موضوعی برای Threat Modeling با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0006",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 6,
+      "level": "L0",
+      "title_fa": "[L0] Hardening — آشنایی",
+      "title_en": "[L0] Hardening",
+      "topic": "Hardening",
+      "summary": "Hardening: مفهوم را ساده توضیح بده.",
+      "full_content": "# Hardening\n\n## هدف آموزشی\nمفهوم را ساده توضیح بده.\n\n## مفهوم و معماری\nموضوع Hardening را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L0\nمفهوم را ساده توضیح بده. برای Hardening یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q6a",
+              "type": "multiple_choice",
+              "question": "برای Hardening کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q6b",
+              "type": "short_answer",
+              "question": "برای Hardening دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q6a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q6b",
+              "answer": "پاسخ موضوعی برای Hardening با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0007",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 7,
+      "level": "L1",
+      "title_fa": "[L1] Hardening — مقدماتی",
+      "title_en": "[L1] Hardening",
+      "topic": "Hardening",
+      "summary": "Hardening: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Hardening\n\n## هدف آموزشی\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم و معماری\nموضوع Hardening را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L1\nاجزا و پیش‌نیازها را مشخص کن. برای Hardening یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q7a",
+              "type": "multiple_choice",
+              "question": "برای Hardening کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q7b",
+              "type": "short_answer",
+              "question": "برای Hardening دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q7a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q7b",
+              "answer": "پاسخ موضوعی برای Hardening با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0008",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 8,
+      "level": "L2",
+      "title_fa": "[L2] Hardening — عملی",
+      "title_en": "[L2] Hardening",
+      "topic": "Hardening",
+      "summary": "Hardening: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# Hardening\n\n## هدف آموزشی\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم و معماری\nموضوع Hardening را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L2\nدر lab کنترل‌شده تمرین کن. برای Hardening یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q8a",
+              "type": "multiple_choice",
+              "question": "برای Hardening کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q8b",
+              "type": "short_answer",
+              "question": "برای Hardening دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q8a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q8b",
+              "answer": "پاسخ موضوعی برای Hardening با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0009",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 9,
+      "level": "L3",
+      "title_fa": "[L3] Hardening — پیشرفته",
+      "title_en": "[L3] Hardening",
+      "topic": "Hardening",
+      "summary": "Hardening: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Hardening\n\n## هدف آموزشی\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم و معماری\nموضوع Hardening را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L3\nدو فرضیه را با شواهد مقایسه کن. برای Hardening یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q9a",
+              "type": "multiple_choice",
+              "question": "برای Hardening کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q9b",
+              "type": "short_answer",
+              "question": "برای Hardening دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q9a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q9b",
+              "answer": "پاسخ موضوعی برای Hardening با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0010",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 10,
+      "level": "L4",
+      "title_fa": "[L4] Hardening — تخصصی",
+      "title_en": "[L4] Hardening",
+      "topic": "Hardening",
+      "summary": "Hardening: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Hardening\n\n## هدف آموزشی\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم و معماری\nموضوع Hardening را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L4\nrunbook و معیار پذیرش تعریف کن. برای Hardening یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q10a",
+              "type": "multiple_choice",
+              "question": "برای Hardening کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q10b",
+              "type": "short_answer",
+              "question": "برای Hardening دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q10a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q10b",
+              "answer": "پاسخ موضوعی برای Hardening با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0011",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 11,
+      "level": "L0",
+      "title_fa": "[L0] Logging و Detection — آشنایی",
+      "title_en": "[L0] Logging و Detection",
+      "topic": "Logging و Detection",
+      "summary": "Logging و Detection: مفهوم را ساده توضیح بده.",
+      "full_content": "# Logging و Detection\n\n## هدف آموزشی\nمفهوم را ساده توضیح بده.\n\n## مفهوم و معماری\nموضوع Logging و Detection را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L0\nمفهوم را ساده توضیح بده. برای Logging و Detection یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q11a",
+              "type": "multiple_choice",
+              "question": "برای Logging و Detection کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q11b",
+              "type": "short_answer",
+              "question": "برای Logging و Detection دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q11a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q11b",
+              "answer": "پاسخ موضوعی برای Logging و Detection با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0012",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 12,
+      "level": "L1",
+      "title_fa": "[L1] Logging و Detection — مقدماتی",
+      "title_en": "[L1] Logging و Detection",
+      "topic": "Logging و Detection",
+      "summary": "Logging و Detection: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Logging و Detection\n\n## هدف آموزشی\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم و معماری\nموضوع Logging و Detection را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L1\nاجزا و پیش‌نیازها را مشخص کن. برای Logging و Detection یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q12a",
+              "type": "multiple_choice",
+              "question": "برای Logging و Detection کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q12b",
+              "type": "short_answer",
+              "question": "برای Logging و Detection دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q12a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q12b",
+              "answer": "پاسخ موضوعی برای Logging و Detection با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0013",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 13,
+      "level": "L2",
+      "title_fa": "[L2] Logging و Detection — عملی",
+      "title_en": "[L2] Logging و Detection",
+      "topic": "Logging و Detection",
+      "summary": "Logging و Detection: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# Logging و Detection\n\n## هدف آموزشی\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم و معماری\nموضوع Logging و Detection را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L2\nدر lab کنترل‌شده تمرین کن. برای Logging و Detection یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q13a",
+              "type": "multiple_choice",
+              "question": "برای Logging و Detection کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q13b",
+              "type": "short_answer",
+              "question": "برای Logging و Detection دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q13a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q13b",
+              "answer": "پاسخ موضوعی برای Logging و Detection با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0014",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 14,
+      "level": "L3",
+      "title_fa": "[L3] Logging و Detection — پیشرفته",
+      "title_en": "[L3] Logging و Detection",
+      "topic": "Logging و Detection",
+      "summary": "Logging و Detection: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Logging و Detection\n\n## هدف آموزشی\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم و معماری\nموضوع Logging و Detection را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L3\nدو فرضیه را با شواهد مقایسه کن. برای Logging و Detection یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q14a",
+              "type": "multiple_choice",
+              "question": "برای Logging و Detection کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q14b",
+              "type": "short_answer",
+              "question": "برای Logging و Detection دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q14a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q14b",
+              "answer": "پاسخ موضوعی برای Logging و Detection با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0015",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 15,
+      "level": "L4",
+      "title_fa": "[L4] Logging و Detection — تخصصی",
+      "title_en": "[L4] Logging و Detection",
+      "topic": "Logging و Detection",
+      "summary": "Logging و Detection: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Logging و Detection\n\n## هدف آموزشی\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم و معماری\nموضوع Logging و Detection را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L4\nrunbook و معیار پذیرش تعریف کن. برای Logging و Detection یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q15a",
+              "type": "multiple_choice",
+              "question": "برای Logging و Detection کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q15b",
+              "type": "short_answer",
+              "question": "برای Logging و Detection دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q15a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q15b",
+              "answer": "پاسخ موضوعی برای Logging و Detection با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0016",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 16,
+      "level": "L0",
+      "title_fa": "[L0] Incident Response — آشنایی",
+      "title_en": "[L0] Incident Response",
+      "topic": "Incident Response",
+      "summary": "Incident Response: مفهوم را ساده توضیح بده.",
+      "full_content": "# Incident Response\n\n## هدف آموزشی\nمفهوم را ساده توضیح بده.\n\n## مفهوم و معماری\nموضوع Incident Response را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L0\nمفهوم را ساده توضیح بده. برای Incident Response یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q16a",
+              "type": "multiple_choice",
+              "question": "برای Incident Response کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q16b",
+              "type": "short_answer",
+              "question": "برای Incident Response دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q16a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q16b",
+              "answer": "پاسخ موضوعی برای Incident Response با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0017",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 17,
+      "level": "L1",
+      "title_fa": "[L1] Incident Response — مقدماتی",
+      "title_en": "[L1] Incident Response",
+      "topic": "Incident Response",
+      "summary": "Incident Response: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Incident Response\n\n## هدف آموزشی\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم و معماری\nموضوع Incident Response را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L1\nاجزا و پیش‌نیازها را مشخص کن. برای Incident Response یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q17a",
+              "type": "multiple_choice",
+              "question": "برای Incident Response کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q17b",
+              "type": "short_answer",
+              "question": "برای Incident Response دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q17a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q17b",
+              "answer": "پاسخ موضوعی برای Incident Response با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0018",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 18,
+      "level": "L2",
+      "title_fa": "[L2] Incident Response — عملی",
+      "title_en": "[L2] Incident Response",
+      "topic": "Incident Response",
+      "summary": "Incident Response: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# Incident Response\n\n## هدف آموزشی\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم و معماری\nموضوع Incident Response را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L2\nدر lab کنترل‌شده تمرین کن. برای Incident Response یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q18a",
+              "type": "multiple_choice",
+              "question": "برای Incident Response کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q18b",
+              "type": "short_answer",
+              "question": "برای Incident Response دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q18a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q18b",
+              "answer": "پاسخ موضوعی برای Incident Response با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0019",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 19,
+      "level": "L3",
+      "title_fa": "[L3] Incident Response — پیشرفته",
+      "title_en": "[L3] Incident Response",
+      "topic": "Incident Response",
+      "summary": "Incident Response: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Incident Response\n\n## هدف آموزشی\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم و معماری\nموضوع Incident Response را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L3\nدو فرضیه را با شواهد مقایسه کن. برای Incident Response یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q19a",
+              "type": "multiple_choice",
+              "question": "برای Incident Response کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q19b",
+              "type": "short_answer",
+              "question": "برای Incident Response دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q19a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q19b",
+              "answer": "پاسخ موضوعی برای Incident Response با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0020",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 20,
+      "level": "L4",
+      "title_fa": "[L4] Incident Response — تخصصی",
+      "title_en": "[L4] Incident Response",
+      "topic": "Incident Response",
+      "summary": "Incident Response: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Incident Response\n\n## هدف آموزشی\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم و معماری\nموضوع Incident Response را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L4\nrunbook و معیار پذیرش تعریف کن. برای Incident Response یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q20a",
+              "type": "multiple_choice",
+              "question": "برای Incident Response کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q20b",
+              "type": "short_answer",
+              "question": "برای Incident Response دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q20a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q20b",
+              "answer": "پاسخ موضوعی برای Incident Response با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0021",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 21,
+      "level": "L0",
+      "title_fa": "[L0] RF و Channel — آشنایی",
+      "title_en": "[L0] RF و Channel",
+      "topic": "RF و Channel",
+      "summary": "RF و Channel: مفهوم را ساده توضیح بده.",
+      "full_content": "# RF و Channel\n\n## هدف آموزشی\nمفهوم را ساده توضیح بده.\n\n## مفهوم و معماری\nموضوع RF و Channel را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L0\nمفهوم را ساده توضیح بده. برای RF و Channel یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q21a",
+              "type": "multiple_choice",
+              "question": "برای RF و Channel کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q21b",
+              "type": "short_answer",
+              "question": "برای RF و Channel دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q21a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q21b",
+              "answer": "پاسخ موضوعی برای RF و Channel با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0022",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 22,
+      "level": "L1",
+      "title_fa": "[L1] RF و Channel — مقدماتی",
+      "title_en": "[L1] RF و Channel",
+      "topic": "RF و Channel",
+      "summary": "RF و Channel: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# RF و Channel\n\n## هدف آموزشی\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم و معماری\nموضوع RF و Channel را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L1\nاجزا و پیش‌نیازها را مشخص کن. برای RF و Channel یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q22a",
+              "type": "multiple_choice",
+              "question": "برای RF و Channel کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q22b",
+              "type": "short_answer",
+              "question": "برای RF و Channel دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q22a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q22b",
+              "answer": "پاسخ موضوعی برای RF و Channel با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0023",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 23,
+      "level": "L2",
+      "title_fa": "[L2] RF و Channel — عملی",
+      "title_en": "[L2] RF و Channel",
+      "topic": "RF و Channel",
+      "summary": "RF و Channel: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# RF و Channel\n\n## هدف آموزشی\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم و معماری\nموضوع RF و Channel را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L2\nدر lab کنترل‌شده تمرین کن. برای RF و Channel یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q23a",
+              "type": "multiple_choice",
+              "question": "برای RF و Channel کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q23b",
+              "type": "short_answer",
+              "question": "برای RF و Channel دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q23a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q23b",
+              "answer": "پاسخ موضوعی برای RF و Channel با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0024",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 24,
+      "level": "L3",
+      "title_fa": "[L3] RF و Channel — پیشرفته",
+      "title_en": "[L3] RF و Channel",
+      "topic": "RF و Channel",
+      "summary": "RF و Channel: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# RF و Channel\n\n## هدف آموزشی\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم و معماری\nموضوع RF و Channel را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L3\nدو فرضیه را با شواهد مقایسه کن. برای RF و Channel یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q24a",
+              "type": "multiple_choice",
+              "question": "برای RF و Channel کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q24b",
+              "type": "short_answer",
+              "question": "برای RF و Channel دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q24a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q24b",
+              "answer": "پاسخ موضوعی برای RF و Channel با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0025",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 25,
+      "level": "L4",
+      "title_fa": "[L4] RF و Channel — تخصصی",
+      "title_en": "[L4] RF و Channel",
+      "topic": "RF و Channel",
+      "summary": "RF و Channel: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# RF و Channel\n\n## هدف آموزشی\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم و معماری\nموضوع RF و Channel را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L4\nrunbook و معیار پذیرش تعریف کن. برای RF و Channel یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q25a",
+              "type": "multiple_choice",
+              "question": "برای RF و Channel کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q25b",
+              "type": "short_answer",
+              "question": "برای RF و Channel دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q25a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q25b",
+              "answer": "پاسخ موضوعی برای RF و Channel با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0026",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 26,
+      "level": "L0",
+      "title_fa": "[L0] WPA3 و 802.1X — آشنایی",
+      "title_en": "[L0] WPA3 و 802.1X",
+      "topic": "WPA3 و 802.1X",
+      "summary": "WPA3 و 802.1X: مفهوم را ساده توضیح بده.",
+      "full_content": "# WPA3 و 802.1X\n\n## هدف آموزشی\nمفهوم را ساده توضیح بده.\n\n## مفهوم و معماری\nموضوع WPA3 و 802.1X را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L0\nمفهوم را ساده توضیح بده. برای WPA3 و 802.1X یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q26a",
+              "type": "multiple_choice",
+              "question": "برای WPA3 و 802.1X کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q26b",
+              "type": "short_answer",
+              "question": "برای WPA3 و 802.1X دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q26a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q26b",
+              "answer": "پاسخ موضوعی برای WPA3 و 802.1X با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0027",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 27,
+      "level": "L1",
+      "title_fa": "[L1] WPA3 و 802.1X — مقدماتی",
+      "title_en": "[L1] WPA3 و 802.1X",
+      "topic": "WPA3 و 802.1X",
+      "summary": "WPA3 و 802.1X: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# WPA3 و 802.1X\n\n## هدف آموزشی\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم و معماری\nموضوع WPA3 و 802.1X را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L1\nاجزا و پیش‌نیازها را مشخص کن. برای WPA3 و 802.1X یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q27a",
+              "type": "multiple_choice",
+              "question": "برای WPA3 و 802.1X کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q27b",
+              "type": "short_answer",
+              "question": "برای WPA3 و 802.1X دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q27a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q27b",
+              "answer": "پاسخ موضوعی برای WPA3 و 802.1X با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0028",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 28,
+      "level": "L2",
+      "title_fa": "[L2] WPA3 و 802.1X — عملی",
+      "title_en": "[L2] WPA3 و 802.1X",
+      "topic": "WPA3 و 802.1X",
+      "summary": "WPA3 و 802.1X: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# WPA3 و 802.1X\n\n## هدف آموزشی\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم و معماری\nموضوع WPA3 و 802.1X را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L2\nدر lab کنترل‌شده تمرین کن. برای WPA3 و 802.1X یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q28a",
+              "type": "multiple_choice",
+              "question": "برای WPA3 و 802.1X کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q28b",
+              "type": "short_answer",
+              "question": "برای WPA3 و 802.1X دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q28a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q28b",
+              "answer": "پاسخ موضوعی برای WPA3 و 802.1X با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0029",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 29,
+      "level": "L3",
+      "title_fa": "[L3] WPA3 و 802.1X — پیشرفته",
+      "title_en": "[L3] WPA3 و 802.1X",
+      "topic": "WPA3 و 802.1X",
+      "summary": "WPA3 و 802.1X: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# WPA3 و 802.1X\n\n## هدف آموزشی\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم و معماری\nموضوع WPA3 و 802.1X را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L3\nدو فرضیه را با شواهد مقایسه کن. برای WPA3 و 802.1X یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q29a",
+              "type": "multiple_choice",
+              "question": "برای WPA3 و 802.1X کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q29b",
+              "type": "short_answer",
+              "question": "برای WPA3 و 802.1X دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q29a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q29b",
+              "answer": "پاسخ موضوعی برای WPA3 و 802.1X با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0030",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 30,
+      "level": "L4",
+      "title_fa": "[L4] WPA3 و 802.1X — تخصصی",
+      "title_en": "[L4] WPA3 و 802.1X",
+      "topic": "WPA3 و 802.1X",
+      "summary": "WPA3 و 802.1X: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# WPA3 و 802.1X\n\n## هدف آموزشی\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم و معماری\nموضوع WPA3 و 802.1X را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L4\nrunbook و معیار پذیرش تعریف کن. برای WPA3 و 802.1X یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q30a",
+              "type": "multiple_choice",
+              "question": "برای WPA3 و 802.1X کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q30b",
+              "type": "short_answer",
+              "question": "برای WPA3 و 802.1X دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q30a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q30b",
+              "answer": "پاسخ موضوعی برای WPA3 و 802.1X با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0031",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 31,
+      "level": "L0",
+      "title_fa": "[L0] Wireless Troubleshooting — آشنایی",
+      "title_en": "[L0] Wireless Troubleshooting",
+      "topic": "Wireless Troubleshooting",
+      "summary": "Wireless Troubleshooting: مفهوم را ساده توضیح بده.",
+      "full_content": "# Wireless Troubleshooting\n\n## هدف آموزشی\nمفهوم را ساده توضیح بده.\n\n## مفهوم و معماری\nموضوع Wireless Troubleshooting را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L0\nمفهوم را ساده توضیح بده. برای Wireless Troubleshooting یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q31a",
+              "type": "multiple_choice",
+              "question": "برای Wireless Troubleshooting کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q31b",
+              "type": "short_answer",
+              "question": "برای Wireless Troubleshooting دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q31a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q31b",
+              "answer": "پاسخ موضوعی برای Wireless Troubleshooting با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0032",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 32,
+      "level": "L1",
+      "title_fa": "[L1] Wireless Troubleshooting — مقدماتی",
+      "title_en": "[L1] Wireless Troubleshooting",
+      "topic": "Wireless Troubleshooting",
+      "summary": "Wireless Troubleshooting: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Wireless Troubleshooting\n\n## هدف آموزشی\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم و معماری\nموضوع Wireless Troubleshooting را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L1\nاجزا و پیش‌نیازها را مشخص کن. برای Wireless Troubleshooting یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q32a",
+              "type": "multiple_choice",
+              "question": "برای Wireless Troubleshooting کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q32b",
+              "type": "short_answer",
+              "question": "برای Wireless Troubleshooting دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q32a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q32b",
+              "answer": "پاسخ موضوعی برای Wireless Troubleshooting با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0033",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 33,
+      "level": "L2",
+      "title_fa": "[L2] Wireless Troubleshooting — عملی",
+      "title_en": "[L2] Wireless Troubleshooting",
+      "topic": "Wireless Troubleshooting",
+      "summary": "Wireless Troubleshooting: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# Wireless Troubleshooting\n\n## هدف آموزشی\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم و معماری\nموضوع Wireless Troubleshooting را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L2\nدر lab کنترل‌شده تمرین کن. برای Wireless Troubleshooting یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q33a",
+              "type": "multiple_choice",
+              "question": "برای Wireless Troubleshooting کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q33b",
+              "type": "short_answer",
+              "question": "برای Wireless Troubleshooting دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q33a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q33b",
+              "answer": "پاسخ موضوعی برای Wireless Troubleshooting با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0034",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 34,
+      "level": "L3",
+      "title_fa": "[L3] Wireless Troubleshooting — پیشرفته",
+      "title_en": "[L3] Wireless Troubleshooting",
+      "topic": "Wireless Troubleshooting",
+      "summary": "Wireless Troubleshooting: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Wireless Troubleshooting\n\n## هدف آموزشی\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم و معماری\nموضوع Wireless Troubleshooting را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L3\nدو فرضیه را با شواهد مقایسه کن. برای Wireless Troubleshooting یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q34a",
+              "type": "multiple_choice",
+              "question": "برای Wireless Troubleshooting کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q34b",
+              "type": "short_answer",
+              "question": "برای Wireless Troubleshooting دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q34a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q34b",
+              "answer": "پاسخ موضوعی برای Wireless Troubleshooting با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0035",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 35,
+      "level": "L4",
+      "title_fa": "[L4] Wireless Troubleshooting — تخصصی",
+      "title_en": "[L4] Wireless Troubleshooting",
+      "topic": "Wireless Troubleshooting",
+      "summary": "Wireless Troubleshooting: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Wireless Troubleshooting\n\n## هدف آموزشی\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم و معماری\nموضوع Wireless Troubleshooting را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L4\nrunbook و معیار پذیرش تعریف کن. برای Wireless Troubleshooting یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q35a",
+              "type": "multiple_choice",
+              "question": "برای Wireless Troubleshooting کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q35b",
+              "type": "short_answer",
+              "question": "برای Wireless Troubleshooting دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q35a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q35b",
+              "answer": "پاسخ موضوعی برای Wireless Troubleshooting با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0036",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 36,
+      "level": "L0",
+      "title_fa": "[L0] Vulnerability Management — آشنایی",
+      "title_en": "[L0] Vulnerability Management",
+      "topic": "Vulnerability Management",
+      "summary": "Vulnerability Management: مفهوم را ساده توضیح بده.",
+      "full_content": "# Vulnerability Management\n\n## هدف آموزشی\nمفهوم را ساده توضیح بده.\n\n## مفهوم و معماری\nموضوع Vulnerability Management را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L0\nمفهوم را ساده توضیح بده. برای Vulnerability Management یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q36a",
+              "type": "multiple_choice",
+              "question": "برای Vulnerability Management کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q36b",
+              "type": "short_answer",
+              "question": "برای Vulnerability Management دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q36a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q36b",
+              "answer": "پاسخ موضوعی برای Vulnerability Management با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0037",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 37,
+      "level": "L1",
+      "title_fa": "[L1] Vulnerability Management — مقدماتی",
+      "title_en": "[L1] Vulnerability Management",
+      "topic": "Vulnerability Management",
+      "summary": "Vulnerability Management: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Vulnerability Management\n\n## هدف آموزشی\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم و معماری\nموضوع Vulnerability Management را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L1\nاجزا و پیش‌نیازها را مشخص کن. برای Vulnerability Management یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q37a",
+              "type": "multiple_choice",
+              "question": "برای Vulnerability Management کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q37b",
+              "type": "short_answer",
+              "question": "برای Vulnerability Management دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q37a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q37b",
+              "answer": "پاسخ موضوعی برای Vulnerability Management با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0038",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 38,
+      "level": "L2",
+      "title_fa": "[L2] Vulnerability Management — عملی",
+      "title_en": "[L2] Vulnerability Management",
+      "topic": "Vulnerability Management",
+      "summary": "Vulnerability Management: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# Vulnerability Management\n\n## هدف آموزشی\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم و معماری\nموضوع Vulnerability Management را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L2\nدر lab کنترل‌شده تمرین کن. برای Vulnerability Management یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q38a",
+              "type": "multiple_choice",
+              "question": "برای Vulnerability Management کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q38b",
+              "type": "short_answer",
+              "question": "برای Vulnerability Management دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q38a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q38b",
+              "answer": "پاسخ موضوعی برای Vulnerability Management با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0039",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 39,
+      "level": "L3",
+      "title_fa": "[L3] Vulnerability Management — پیشرفته",
+      "title_en": "[L3] Vulnerability Management",
+      "topic": "Vulnerability Management",
+      "summary": "Vulnerability Management: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Vulnerability Management\n\n## هدف آموزشی\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم و معماری\nموضوع Vulnerability Management را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L3\nدو فرضیه را با شواهد مقایسه کن. برای Vulnerability Management یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q39a",
+              "type": "multiple_choice",
+              "question": "برای Vulnerability Management کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q39b",
+              "type": "short_answer",
+              "question": "برای Vulnerability Management دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q39a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q39b",
+              "answer": "پاسخ موضوعی برای Vulnerability Management با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch65:supp:0040",
+      "chapter_order": 65,
+      "subchapter_order": 90,
+      "lesson_order": 40,
+      "level": "L4",
+      "title_fa": "[L4] Vulnerability Management — تخصصی",
+      "title_en": "[L4] Vulnerability Management",
+      "topic": "Vulnerability Management",
+      "summary": "Vulnerability Management: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Vulnerability Management\n\n## هدف آموزشی\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم و معماری\nموضوع Vulnerability Management را از منظر ورودی، خروجی، وابستگی‌ها و حالت خطا بررسی کن. مالک، نسخه، شواهد، اثر و معیار پذیرش را روشن کن.\n\n## روش بررسی\nفقط در محدوده مجاز کار کن؛ کنترل‌ها، لاگ‌ها و شواهد را با baseline مقایسه کن.\n\n## مثال عملی\nWi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.\n\n## ابزارها\nEvent Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.\n\n## تمرین سطح L4\nrunbook و معیار پذیرش تعریف کن. برای Vulnerability Management یک شاهد مستقل، یک معیار Verify قابل تکرار و یک اقدام پیشگیرانه ثبت کن. خروجی مورد انتظار و شرایط شکست را نیز بنویس.\n\n## روند RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab یا پنجره مجاز. ۵) نتیجه را verify و مستندات را به‌روز کن.\n\n## معیار تکمیل\nشواهد باید منبع و زمان داشته باشند؛ داده حساس را ماسک کن. پیش از تغییر عملیاتی، تأیید و مسیر بازگشت مشخص باشد. [ ] baseline [ ] شواهد [ ] Verify [ ] اقدام پیشگیرانه.\n\n## تکمیل روش و معیار پذیرش\nقبل از نتیجه‌گیری، خروجی را با وضعیت سالم و یک شاهد مستقل مقایسه کن. ثبت نسخه، زمان، منبع داده، شرایط آزمایش و محدودیت مشاهده ضروری است. اگر نتیجه با انتظار ناسازگار بود، فرضیه را بازبینی کن و از تغییر هم‌زمان چند عامل پرهیز کن. معیار پذیرش باید قابل اندازه‌گیری، تکرارپذیر و متناسب با اثر کسب‌وکار باشد. نتیجه نهایی باید شامل علت محتمل، شواهد موافق و مخالف، اصلاح کم‌ریسک، روش Verify، مسیر بازگشت و اقدام پیشگیرانه باشد. این درس پیش از استفاده عملیاتی باید با نسخه واقعی ابزار و محیط سازمان بازبینی شود.",
+      "commands": "Event Viewer؛ Defender logs؛ SIEM query؛ Get-NetAdapter؛ netsh wlan show interfaces.",
+      "examples": "Wi-Fi متصل است ولی auth شکست می‌خورد؛ association، EAP، RADIUS، DHCP و DNS را جدا بررسی کن.",
+      "notes": "review_required",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q40a",
+              "type": "multiple_choice",
+              "question": "برای Vulnerability Management کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان چند متغیر",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q40b",
+              "type": "short_answer",
+              "question": "برای Vulnerability Management دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "question_id": "q40a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "question_id": "q40b",
+              "answer": "پاسخ موضوعی برای Vulnerability Management با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

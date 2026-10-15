@@ -3,8 +3,66 @@
 from __future__ import annotations
 from pathlib import Path
 import json
+import runpy
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def _ensure_deep_packs() -> None:
+    """Create the canonical shared 60-68 packs if files are absent or placeholders."""
+    pack_dir = ROOT / "tools" / "packs" / "ch60_68"
+    names = (
+        "ch60_68_ch60_pack.json",
+        "ch60_68_ch61_63_pack.json",
+        "ch60_68_ch64_68_pack.json",
+    )
+    try:
+        valid = True
+        total = 0
+        for name in names:
+            path = pack_dir / name
+            if not path.is_file() or path.stat().st_size < 1000:
+                valid = False
+                break
+            data = json.loads(path.read_text(encoding="utf-8"))
+            lessons = data.get("lessons") or []
+            if not lessons:
+                valid = False
+                break
+            total += len(lessons)
+        base_pack = pack_dir / "chapter_60_68_deep_pack.json"
+        if not (valid and total >= 800):
+            generator = ROOT / "tools" / "generate_ch60_68_packs.py"
+            if generator.is_file():
+                runpy.run_path(str(generator), run_name="__main__")
+        # Keep one aggregate pack for the existing Windows DB importer, plus split
+        # packs for chapter-scoped validation and Android merge.
+        if not base_pack.is_file() or base_pack.stat().st_size < 1000:
+            split_items = []
+            split_scope = []
+            for name in names:
+                path = pack_dir / name
+                data = json.loads(path.read_text(encoding="utf-8"))
+                split_items.extend(data.get("lessons") or [])
+                split_scope.extend(data.get("scope") or [])
+            aggregate = {
+                "package_schema_version": "1.0",
+                "project": "ENGINEER JOKAR / NetworkAll",
+                "generated_on": "2026-10-15",
+                "purpose": "Aggregate shared deep enrichment pack for Windows SQLite import.",
+                "scope": split_scope,
+                "compatibility": {
+                    "preserve_existing_records": True,
+                    "preserve_existing_uids": True,
+                    "questions_and_answers_separate": True,
+                    "android_windows_shared_source": True
+                },
+                "lessons": split_items
+            }
+            base_pack.write_text(json.dumps(aggregate, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    except (OSError, ValueError, TypeError, RuntimeError) as exc:
+        # Preserve the existing curriculum if a read-only deployment cannot generate packs.
+        print("ch60_68 pack generation skipped:", exc)
 
 
 def _minimal(title_fa: str, title_en: str):
@@ -59,6 +117,8 @@ def _lessons_from_pack_json(path: Path, limit: int = 200):
 
 
 def ensure_chapters_1_to_68(curriculum: list) -> list:
+    # The generator is shared by Android export and Windows/Flask seeding.
+    _ensure_deep_packs()
     by = {int(c[0]): c for c in curriculum}
     if 64 not in by:
         by[64] = (64, "فصل ۶۴: Git و GitHub", "Ch64 Git GitHub", _git_levels())
@@ -99,4 +159,42 @@ def ensure_chapters_1_to_68(curriculum: list) -> list:
             "Ch68 Commands Encyclopedia",
             levels,
         )
+
+    # Load every shared chapter 60-68 content pack, including generated add-ons.
+    overlay_paths = sorted((ROOT / "tools" / "packs" / "ch56_59").glob("*pack*.json"))
+    overlay_paths += sorted((ROOT / "tools" / "packs" / "ch60_68").glob("*pack*.json"))
+    overlay_paths += sorted((ROOT / "tools" / "packs" / "ch55").glob("*pack*.json"))
+    for overlay_path in overlay_paths:
+        try:
+            overlay = json.loads(overlay_path.read_text(encoding="utf-8"))
+            chapter_records = overlay.get("chapters") or overlay.get("scope") or []
+            if not chapter_records:
+                chapter_records = [
+                    {"chapter_order": order}
+                    for order in sorted({
+                        int(item.get("chapter_order") or 0)
+                        for item in overlay.get("lessons", [])
+                        if int(item.get("chapter_order") or 0) in by
+                    })
+                ]
+            for chapter in chapter_records:
+                order = int(chapter.get("chapter_order") or 0)
+                if order not in by:
+                    continue
+                record = by[order]
+                subs = list(record[3])
+                existing = {title for sub in subs for title, _ in sub[1]}
+                additions = []
+                for item in overlay.get("lessons", []):
+                    if int(item.get("chapter_order") or 0) == order:
+                        title = item.get("title_fa") or ""
+                        if title and title not in existing:
+                            additions.append((title, item.get("title_en") or title))
+                            existing.add(title)
+                if additions:
+                    subs.append(("غنی‌سازی و اعتبارسنجی", additions))
+                    by[order] = (record[0], record[1], record[2], subs)
+        except (OSError, ValueError, TypeError):
+            continue
+
     return [by[k] for k in sorted(by)]

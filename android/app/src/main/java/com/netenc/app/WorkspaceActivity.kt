@@ -25,6 +25,8 @@ import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 
 class WorkspaceActivity : AppCompatActivity() {
+    private data class WorkspaceRow(val uid: String, val title: String, val subtitle: String, val lastUpdated: String)
+
     private val db by lazy { AppDatabase.get(this) }
     private lateinit var listView: LinearLayout
     private var mode = "tasks" // tasks | notes | vault
@@ -63,10 +65,10 @@ class WorkspaceActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val rows = withContext(Dispatchers.IO) {
                 when (mode) {
-                    "notes" -> db.workspaceDao().allNotes().map { Triple(it.uid, it.title, it.body) }
-                    "vault" -> db.workspaceDao().allVault().map { Triple(it.uid, it.title, it.username) }
+                    "notes" -> db.workspaceDao().allNotes().map { WorkspaceRow(it.uid, it.title, it.body, it.lastUpdated) }
+                    "vault" -> db.workspaceDao().allVault().map { WorkspaceRow(it.uid, it.title, it.username, it.lastUpdated) }
                     else -> db.workspaceDao().allTasks().map {
-                        Triple(it.uid, (if (it.done) "✓ " else "○ ") + it.title, it.body)
+                        WorkspaceRow(it.uid, (if (it.done) "✓ " else "○ ") + it.title, it.body, it.lastUpdated)
                     }
                 }
             }
@@ -77,9 +79,9 @@ class WorkspaceActivity : AppCompatActivity() {
                     setTextColor(Color.GRAY)
                 })
             }
-            rows.forEach { (uid, title, sub) ->
+            rows.forEach { (uid, title, sub, updated) ->
                 listView.addView(TextView(this@WorkspaceActivity).apply {
-                    text = "$title\n$sub"
+                    text = "$title\n$sub\nبه‌روزرسانی شمسی: ${JalaliDate.formatIso(updated)}"
                     textSize = 15f
                     setPadding(8, 16, 8, 16)
                     setTextColor(Color.parseColor("#1E293B"))

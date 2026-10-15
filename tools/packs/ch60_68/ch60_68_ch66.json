@@ -1,0 +1,1989 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll / ENGINEER JOKAR",
+  "generated_on": "2026-10-14",
+  "purpose": "بسته تکمیلی فصل 66: مسیریابی عمیق OSPF/BGP/Redistribution; L0-L4, labs, RCA and assessments; review_required.",
+  "scope": [
+    {
+      "chapter_order": 66,
+      "title": "فصل 66: مسیریابی عمیق OSPF/BGP/Redistribution",
+      "topics": [
+        "OSPF Neighbor",
+        "OSPF LSDB و SPF",
+        "BGP Session",
+        "BGP Policy",
+        "Redistribution",
+        "RIB و FIB",
+        "Convergence و Flap",
+        "لاب چندناحیه‌ای"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch66:supp:0001",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 1,
+      "level": "L0",
+      "title_fa": "[L0] OSPF Neighbor — آشنایی",
+      "title_en": "[L0] OSPF Neighbor",
+      "topic": "OSPF Neighbor",
+      "summary": "OSPF Neighbor: مفهوم را ساده توضیح بده.",
+      "full_content": "# OSPF Neighbor\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nHello/dead timer، area، MTU، authentication و network type باید سازگار باشند.\n\n## روش بررسی\nshow ip ospf neighbor و show ip ospf interface را کنار log بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nstate دقیق را تحلیل کن؛ process را کورکورانه restart نکن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1a",
+              "type": "multiple_choice",
+              "question": "برای OSPF Neighbor کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q1b",
+              "type": "short_answer",
+              "question": "برای OSPF Neighbor دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q1b",
+              "answer": "پاسخ موضوعی برای OSPF Neighbor با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0002",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 2,
+      "level": "L1",
+      "title_fa": "[L1] OSPF Neighbor — مقدماتی",
+      "title_en": "[L1] OSPF Neighbor",
+      "topic": "OSPF Neighbor",
+      "summary": "OSPF Neighbor: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# OSPF Neighbor\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nHello/dead timer، area، MTU، authentication و network type باید سازگار باشند.\n\n## روش بررسی\nshow ip ospf neighbor و show ip ospf interface را کنار log بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nstate دقیق را تحلیل کن؛ process را کورکورانه restart نکن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q2a",
+              "type": "multiple_choice",
+              "question": "برای OSPF Neighbor کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q2b",
+              "type": "short_answer",
+              "question": "برای OSPF Neighbor دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q2a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q2b",
+              "answer": "پاسخ موضوعی برای OSPF Neighbor با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0003",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 3,
+      "level": "L2",
+      "title_fa": "[L2] OSPF Neighbor — عملی",
+      "title_en": "[L2] OSPF Neighbor",
+      "topic": "OSPF Neighbor",
+      "summary": "OSPF Neighbor: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# OSPF Neighbor\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nHello/dead timer، area، MTU، authentication و network type باید سازگار باشند.\n\n## روش بررسی\nshow ip ospf neighbor و show ip ospf interface را کنار log بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nstate دقیق را تحلیل کن؛ process را کورکورانه restart نکن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q3a",
+              "type": "multiple_choice",
+              "question": "برای OSPF Neighbor کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q3b",
+              "type": "short_answer",
+              "question": "برای OSPF Neighbor دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q3a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q3b",
+              "answer": "پاسخ موضوعی برای OSPF Neighbor با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0004",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 4,
+      "level": "L3",
+      "title_fa": "[L3] OSPF Neighbor — پیشرفته",
+      "title_en": "[L3] OSPF Neighbor",
+      "topic": "OSPF Neighbor",
+      "summary": "OSPF Neighbor: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# OSPF Neighbor\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nHello/dead timer، area، MTU، authentication و network type باید سازگار باشند.\n\n## روش بررسی\nshow ip ospf neighbor و show ip ospf interface را کنار log بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nstate دقیق را تحلیل کن؛ process را کورکورانه restart نکن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q4a",
+              "type": "multiple_choice",
+              "question": "برای OSPF Neighbor کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q4b",
+              "type": "short_answer",
+              "question": "برای OSPF Neighbor دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q4a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q4b",
+              "answer": "پاسخ موضوعی برای OSPF Neighbor با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0005",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 5,
+      "level": "L4",
+      "title_fa": "[L4] OSPF Neighbor — تخصصی",
+      "title_en": "[L4] OSPF Neighbor",
+      "topic": "OSPF Neighbor",
+      "summary": "OSPF Neighbor: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# OSPF Neighbor\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nHello/dead timer، area، MTU، authentication و network type باید سازگار باشند.\n\n## روش بررسی\nshow ip ospf neighbor و show ip ospf interface را کنار log بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nstate دقیق را تحلیل کن؛ process را کورکورانه restart نکن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q5a",
+              "type": "multiple_choice",
+              "question": "برای OSPF Neighbor کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q5b",
+              "type": "short_answer",
+              "question": "برای OSPF Neighbor دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q5a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q5b",
+              "answer": "پاسخ موضوعی برای OSPF Neighbor با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0006",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 6,
+      "level": "L0",
+      "title_fa": "[L0] OSPF LSDB و SPF — آشنایی",
+      "title_en": "[L0] OSPF LSDB و SPF",
+      "topic": "OSPF LSDB و SPF",
+      "summary": "OSPF LSDB و SPF: مفهوم را ساده توضیح بده.",
+      "full_content": "# OSPF LSDB و SPF\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nLSDB توپولوژی را نگه می‌دارد و SPF درخت مسیر را محاسبه می‌کند.\n\n## روش بررسی\nLSA type، sequence، age و route selection را مقایسه کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nLSDB مشابه و RIB متفاوت می‌تواند به policy یا distance مربوط باشد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q6a",
+              "type": "multiple_choice",
+              "question": "برای OSPF LSDB و SPF کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q6b",
+              "type": "short_answer",
+              "question": "برای OSPF LSDB و SPF دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q6a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q6b",
+              "answer": "پاسخ موضوعی برای OSPF LSDB و SPF با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0007",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 7,
+      "level": "L1",
+      "title_fa": "[L1] OSPF LSDB و SPF — مقدماتی",
+      "title_en": "[L1] OSPF LSDB و SPF",
+      "topic": "OSPF LSDB و SPF",
+      "summary": "OSPF LSDB و SPF: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# OSPF LSDB و SPF\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nLSDB توپولوژی را نگه می‌دارد و SPF درخت مسیر را محاسبه می‌کند.\n\n## روش بررسی\nLSA type، sequence، age و route selection را مقایسه کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nLSDB مشابه و RIB متفاوت می‌تواند به policy یا distance مربوط باشد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q7a",
+              "type": "multiple_choice",
+              "question": "برای OSPF LSDB و SPF کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q7b",
+              "type": "short_answer",
+              "question": "برای OSPF LSDB و SPF دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q7a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q7b",
+              "answer": "پاسخ موضوعی برای OSPF LSDB و SPF با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0008",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 8,
+      "level": "L2",
+      "title_fa": "[L2] OSPF LSDB و SPF — عملی",
+      "title_en": "[L2] OSPF LSDB و SPF",
+      "topic": "OSPF LSDB و SPF",
+      "summary": "OSPF LSDB و SPF: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# OSPF LSDB و SPF\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nLSDB توپولوژی را نگه می‌دارد و SPF درخت مسیر را محاسبه می‌کند.\n\n## روش بررسی\nLSA type، sequence، age و route selection را مقایسه کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nLSDB مشابه و RIB متفاوت می‌تواند به policy یا distance مربوط باشد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q8a",
+              "type": "multiple_choice",
+              "question": "برای OSPF LSDB و SPF کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q8b",
+              "type": "short_answer",
+              "question": "برای OSPF LSDB و SPF دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q8a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q8b",
+              "answer": "پاسخ موضوعی برای OSPF LSDB و SPF با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0009",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 9,
+      "level": "L3",
+      "title_fa": "[L3] OSPF LSDB و SPF — پیشرفته",
+      "title_en": "[L3] OSPF LSDB و SPF",
+      "topic": "OSPF LSDB و SPF",
+      "summary": "OSPF LSDB و SPF: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# OSPF LSDB و SPF\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nLSDB توپولوژی را نگه می‌دارد و SPF درخت مسیر را محاسبه می‌کند.\n\n## روش بررسی\nLSA type، sequence، age و route selection را مقایسه کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nLSDB مشابه و RIB متفاوت می‌تواند به policy یا distance مربوط باشد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q9a",
+              "type": "multiple_choice",
+              "question": "برای OSPF LSDB و SPF کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q9b",
+              "type": "short_answer",
+              "question": "برای OSPF LSDB و SPF دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q9a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q9b",
+              "answer": "پاسخ موضوعی برای OSPF LSDB و SPF با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0010",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 10,
+      "level": "L4",
+      "title_fa": "[L4] OSPF LSDB و SPF — تخصصی",
+      "title_en": "[L4] OSPF LSDB و SPF",
+      "topic": "OSPF LSDB و SPF",
+      "summary": "OSPF LSDB و SPF: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# OSPF LSDB و SPF\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nLSDB توپولوژی را نگه می‌دارد و SPF درخت مسیر را محاسبه می‌کند.\n\n## روش بررسی\nLSA type، sequence، age و route selection را مقایسه کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nLSDB مشابه و RIB متفاوت می‌تواند به policy یا distance مربوط باشد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q10a",
+              "type": "multiple_choice",
+              "question": "برای OSPF LSDB و SPF کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q10b",
+              "type": "short_answer",
+              "question": "برای OSPF LSDB و SPF دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q10a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q10b",
+              "answer": "پاسخ موضوعی برای OSPF LSDB و SPF با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0011",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 11,
+      "level": "L0",
+      "title_fa": "[L0] BGP Session — آشنایی",
+      "title_en": "[L0] BGP Session",
+      "topic": "BGP Session",
+      "summary": "BGP Session: مفهوم را ساده توضیح بده.",
+      "full_content": "# BGP Session\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nTCP/179، reachability، ASN، password، TTL و capability را بررسی کن.\n\n## روش بررسی\nshow ip bgp summary را با log و TCP state تطبیق بده.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nEstablished بودن به معنی وجود route مطلوب نیست. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q11a",
+              "type": "multiple_choice",
+              "question": "برای BGP Session کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q11b",
+              "type": "short_answer",
+              "question": "برای BGP Session دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q11a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q11b",
+              "answer": "پاسخ موضوعی برای BGP Session با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0012",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 12,
+      "level": "L1",
+      "title_fa": "[L1] BGP Session — مقدماتی",
+      "title_en": "[L1] BGP Session",
+      "topic": "BGP Session",
+      "summary": "BGP Session: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# BGP Session\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nTCP/179، reachability، ASN، password، TTL و capability را بررسی کن.\n\n## روش بررسی\nshow ip bgp summary را با log و TCP state تطبیق بده.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nEstablished بودن به معنی وجود route مطلوب نیست. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q12a",
+              "type": "multiple_choice",
+              "question": "برای BGP Session کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q12b",
+              "type": "short_answer",
+              "question": "برای BGP Session دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q12a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q12b",
+              "answer": "پاسخ موضوعی برای BGP Session با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0013",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 13,
+      "level": "L2",
+      "title_fa": "[L2] BGP Session — عملی",
+      "title_en": "[L2] BGP Session",
+      "topic": "BGP Session",
+      "summary": "BGP Session: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# BGP Session\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nTCP/179، reachability، ASN، password، TTL و capability را بررسی کن.\n\n## روش بررسی\nshow ip bgp summary را با log و TCP state تطبیق بده.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nEstablished بودن به معنی وجود route مطلوب نیست. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q13a",
+              "type": "multiple_choice",
+              "question": "برای BGP Session کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q13b",
+              "type": "short_answer",
+              "question": "برای BGP Session دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q13a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q13b",
+              "answer": "پاسخ موضوعی برای BGP Session با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0014",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 14,
+      "level": "L3",
+      "title_fa": "[L3] BGP Session — پیشرفته",
+      "title_en": "[L3] BGP Session",
+      "topic": "BGP Session",
+      "summary": "BGP Session: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# BGP Session\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nTCP/179، reachability، ASN، password، TTL و capability را بررسی کن.\n\n## روش بررسی\nshow ip bgp summary را با log و TCP state تطبیق بده.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nEstablished بودن به معنی وجود route مطلوب نیست. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q14a",
+              "type": "multiple_choice",
+              "question": "برای BGP Session کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q14b",
+              "type": "short_answer",
+              "question": "برای BGP Session دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q14a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q14b",
+              "answer": "پاسخ موضوعی برای BGP Session با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0015",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 15,
+      "level": "L4",
+      "title_fa": "[L4] BGP Session — تخصصی",
+      "title_en": "[L4] BGP Session",
+      "topic": "BGP Session",
+      "summary": "BGP Session: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# BGP Session\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nTCP/179، reachability، ASN، password، TTL و capability را بررسی کن.\n\n## روش بررسی\nshow ip bgp summary را با log و TCP state تطبیق بده.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nEstablished بودن به معنی وجود route مطلوب نیست. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q15a",
+              "type": "multiple_choice",
+              "question": "برای BGP Session کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q15b",
+              "type": "short_answer",
+              "question": "برای BGP Session دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q15a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q15b",
+              "answer": "پاسخ موضوعی برای BGP Session با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0016",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 16,
+      "level": "L0",
+      "title_fa": "[L0] BGP Policy — آشنایی",
+      "title_en": "[L0] BGP Policy",
+      "topic": "BGP Policy",
+      "summary": "BGP Policy: مفهوم را ساده توضیح بده.",
+      "full_content": "# BGP Policy\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nprefix-list، route-map، local preference، AS_PATH و MED تصمیم را شکل می‌دهند.\n\n## روش بررسی\nreceived/advertised route و best-path reason را بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nتغییر policy با prefix محدود و rollback انجام شود. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q16a",
+              "type": "multiple_choice",
+              "question": "برای BGP Policy کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q16b",
+              "type": "short_answer",
+              "question": "برای BGP Policy دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q16a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q16b",
+              "answer": "پاسخ موضوعی برای BGP Policy با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0017",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 17,
+      "level": "L1",
+      "title_fa": "[L1] BGP Policy — مقدماتی",
+      "title_en": "[L1] BGP Policy",
+      "topic": "BGP Policy",
+      "summary": "BGP Policy: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# BGP Policy\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nprefix-list، route-map، local preference، AS_PATH و MED تصمیم را شکل می‌دهند.\n\n## روش بررسی\nreceived/advertised route و best-path reason را بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nتغییر policy با prefix محدود و rollback انجام شود. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q17a",
+              "type": "multiple_choice",
+              "question": "برای BGP Policy کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q17b",
+              "type": "short_answer",
+              "question": "برای BGP Policy دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q17a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q17b",
+              "answer": "پاسخ موضوعی برای BGP Policy با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0018",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 18,
+      "level": "L2",
+      "title_fa": "[L2] BGP Policy — عملی",
+      "title_en": "[L2] BGP Policy",
+      "topic": "BGP Policy",
+      "summary": "BGP Policy: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# BGP Policy\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nprefix-list، route-map، local preference، AS_PATH و MED تصمیم را شکل می‌دهند.\n\n## روش بررسی\nreceived/advertised route و best-path reason را بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nتغییر policy با prefix محدود و rollback انجام شود. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q18a",
+              "type": "multiple_choice",
+              "question": "برای BGP Policy کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q18b",
+              "type": "short_answer",
+              "question": "برای BGP Policy دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q18a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q18b",
+              "answer": "پاسخ موضوعی برای BGP Policy با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0019",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 19,
+      "level": "L3",
+      "title_fa": "[L3] BGP Policy — پیشرفته",
+      "title_en": "[L3] BGP Policy",
+      "topic": "BGP Policy",
+      "summary": "BGP Policy: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# BGP Policy\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nprefix-list، route-map، local preference، AS_PATH و MED تصمیم را شکل می‌دهند.\n\n## روش بررسی\nreceived/advertised route و best-path reason را بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nتغییر policy با prefix محدود و rollback انجام شود. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q19a",
+              "type": "multiple_choice",
+              "question": "برای BGP Policy کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q19b",
+              "type": "short_answer",
+              "question": "برای BGP Policy دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q19a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q19b",
+              "answer": "پاسخ موضوعی برای BGP Policy با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0020",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 20,
+      "level": "L4",
+      "title_fa": "[L4] BGP Policy — تخصصی",
+      "title_en": "[L4] BGP Policy",
+      "topic": "BGP Policy",
+      "summary": "BGP Policy: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# BGP Policy\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nprefix-list، route-map، local preference، AS_PATH و MED تصمیم را شکل می‌دهند.\n\n## روش بررسی\nreceived/advertised route و best-path reason را بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nتغییر policy با prefix محدود و rollback انجام شود. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q20a",
+              "type": "multiple_choice",
+              "question": "برای BGP Policy کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q20b",
+              "type": "short_answer",
+              "question": "برای BGP Policy دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q20a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q20b",
+              "answer": "پاسخ موضوعی برای BGP Policy با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0021",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 21,
+      "level": "L0",
+      "title_fa": "[L0] Redistribution — آشنایی",
+      "title_en": "[L0] Redistribution",
+      "topic": "Redistribution",
+      "summary": "Redistribution: مفهوم را ساده توضیح بده.",
+      "full_content": "# Redistribution\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nmetric، tag و route-map مرز بازتوزیع را کنترل می‌کنند.\n\n## روش بررسی\nroute tag و مسیر برگشت را در lab بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nmutual redistribution بدون کنترل می‌تواند loop بسازد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q21a",
+              "type": "multiple_choice",
+              "question": "برای Redistribution کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q21b",
+              "type": "short_answer",
+              "question": "برای Redistribution دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q21a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q21b",
+              "answer": "پاسخ موضوعی برای Redistribution با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0022",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 22,
+      "level": "L1",
+      "title_fa": "[L1] Redistribution — مقدماتی",
+      "title_en": "[L1] Redistribution",
+      "topic": "Redistribution",
+      "summary": "Redistribution: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Redistribution\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nmetric، tag و route-map مرز بازتوزیع را کنترل می‌کنند.\n\n## روش بررسی\nroute tag و مسیر برگشت را در lab بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nmutual redistribution بدون کنترل می‌تواند loop بسازد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q22a",
+              "type": "multiple_choice",
+              "question": "برای Redistribution کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q22b",
+              "type": "short_answer",
+              "question": "برای Redistribution دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q22a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q22b",
+              "answer": "پاسخ موضوعی برای Redistribution با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0023",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 23,
+      "level": "L2",
+      "title_fa": "[L2] Redistribution — عملی",
+      "title_en": "[L2] Redistribution",
+      "topic": "Redistribution",
+      "summary": "Redistribution: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# Redistribution\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nmetric، tag و route-map مرز بازتوزیع را کنترل می‌کنند.\n\n## روش بررسی\nroute tag و مسیر برگشت را در lab بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nmutual redistribution بدون کنترل می‌تواند loop بسازد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q23a",
+              "type": "multiple_choice",
+              "question": "برای Redistribution کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q23b",
+              "type": "short_answer",
+              "question": "برای Redistribution دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q23a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q23b",
+              "answer": "پاسخ موضوعی برای Redistribution با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0024",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 24,
+      "level": "L3",
+      "title_fa": "[L3] Redistribution — پیشرفته",
+      "title_en": "[L3] Redistribution",
+      "topic": "Redistribution",
+      "summary": "Redistribution: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Redistribution\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nmetric، tag و route-map مرز بازتوزیع را کنترل می‌کنند.\n\n## روش بررسی\nroute tag و مسیر برگشت را در lab بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nmutual redistribution بدون کنترل می‌تواند loop بسازد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q24a",
+              "type": "multiple_choice",
+              "question": "برای Redistribution کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q24b",
+              "type": "short_answer",
+              "question": "برای Redistribution دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q24a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q24b",
+              "answer": "پاسخ موضوعی برای Redistribution با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0025",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 25,
+      "level": "L4",
+      "title_fa": "[L4] Redistribution — تخصصی",
+      "title_en": "[L4] Redistribution",
+      "topic": "Redistribution",
+      "summary": "Redistribution: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Redistribution\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nmetric، tag و route-map مرز بازتوزیع را کنترل می‌کنند.\n\n## روش بررسی\nroute tag و مسیر برگشت را در lab بررسی کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nmutual redistribution بدون کنترل می‌تواند loop بسازد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q25a",
+              "type": "multiple_choice",
+              "question": "برای Redistribution کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q25b",
+              "type": "short_answer",
+              "question": "برای Redistribution دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q25a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q25b",
+              "answer": "پاسخ موضوعی برای Redistribution با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0026",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 26,
+      "level": "L0",
+      "title_fa": "[L0] RIB و FIB — آشنایی",
+      "title_en": "[L0] RIB و FIB",
+      "topic": "RIB و FIB",
+      "summary": "RIB و FIB: مفهوم را ساده توضیح بده.",
+      "full_content": "# RIB و FIB\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nوجود route در پروتکل با نصب در RIB/FIB یکسان نیست.\n\n## روش بررسی\nshow ip route و show ip cef را مقایسه کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nnext-hop حل‌نشده می‌تواند forwarding را متوقف کند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q26a",
+              "type": "multiple_choice",
+              "question": "برای RIB و FIB کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q26b",
+              "type": "short_answer",
+              "question": "برای RIB و FIB دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q26a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q26b",
+              "answer": "پاسخ موضوعی برای RIB و FIB با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0027",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 27,
+      "level": "L1",
+      "title_fa": "[L1] RIB و FIB — مقدماتی",
+      "title_en": "[L1] RIB و FIB",
+      "topic": "RIB و FIB",
+      "summary": "RIB و FIB: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# RIB و FIB\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nوجود route در پروتکل با نصب در RIB/FIB یکسان نیست.\n\n## روش بررسی\nshow ip route و show ip cef را مقایسه کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nnext-hop حل‌نشده می‌تواند forwarding را متوقف کند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q27a",
+              "type": "multiple_choice",
+              "question": "برای RIB و FIB کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q27b",
+              "type": "short_answer",
+              "question": "برای RIB و FIB دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q27a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q27b",
+              "answer": "پاسخ موضوعی برای RIB و FIB با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0028",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 28,
+      "level": "L2",
+      "title_fa": "[L2] RIB و FIB — عملی",
+      "title_en": "[L2] RIB و FIB",
+      "topic": "RIB و FIB",
+      "summary": "RIB و FIB: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# RIB و FIB\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nوجود route در پروتکل با نصب در RIB/FIB یکسان نیست.\n\n## روش بررسی\nshow ip route و show ip cef را مقایسه کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nnext-hop حل‌نشده می‌تواند forwarding را متوقف کند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q28a",
+              "type": "multiple_choice",
+              "question": "برای RIB و FIB کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q28b",
+              "type": "short_answer",
+              "question": "برای RIB و FIB دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q28a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q28b",
+              "answer": "پاسخ موضوعی برای RIB و FIB با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0029",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 29,
+      "level": "L3",
+      "title_fa": "[L3] RIB و FIB — پیشرفته",
+      "title_en": "[L3] RIB و FIB",
+      "topic": "RIB و FIB",
+      "summary": "RIB و FIB: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# RIB و FIB\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nوجود route در پروتکل با نصب در RIB/FIB یکسان نیست.\n\n## روش بررسی\nshow ip route و show ip cef را مقایسه کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nnext-hop حل‌نشده می‌تواند forwarding را متوقف کند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q29a",
+              "type": "multiple_choice",
+              "question": "برای RIB و FIB کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q29b",
+              "type": "short_answer",
+              "question": "برای RIB و FIB دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q29a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q29b",
+              "answer": "پاسخ موضوعی برای RIB و FIB با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0030",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 30,
+      "level": "L4",
+      "title_fa": "[L4] RIB و FIB — تخصصی",
+      "title_en": "[L4] RIB و FIB",
+      "topic": "RIB و FIB",
+      "summary": "RIB و FIB: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# RIB و FIB\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nوجود route در پروتکل با نصب در RIB/FIB یکسان نیست.\n\n## روش بررسی\nshow ip route و show ip cef را مقایسه کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nnext-hop حل‌نشده می‌تواند forwarding را متوقف کند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q30a",
+              "type": "multiple_choice",
+              "question": "برای RIB و FIB کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q30b",
+              "type": "short_answer",
+              "question": "برای RIB و FIB دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q30a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q30b",
+              "answer": "پاسخ موضوعی برای RIB و FIB با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0031",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 31,
+      "level": "L0",
+      "title_fa": "[L0] Convergence و Flap — آشنایی",
+      "title_en": "[L0] Convergence و Flap",
+      "topic": "Convergence و Flap",
+      "summary": "Convergence و Flap: مفهوم را ساده توضیح بده.",
+      "full_content": "# Convergence و Flap\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nزمان همگرایی و churn را با timeline و log بسنج.\n\n## روش بررسی\nneighbor flap، CPU و تعداد LSA/update را ثبت کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nافزایش timer بدون علت‌یابی تشخیص را کند می‌کند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q31a",
+              "type": "multiple_choice",
+              "question": "برای Convergence و Flap کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q31b",
+              "type": "short_answer",
+              "question": "برای Convergence و Flap دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q31a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q31b",
+              "answer": "پاسخ موضوعی برای Convergence و Flap با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0032",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 32,
+      "level": "L1",
+      "title_fa": "[L1] Convergence و Flap — مقدماتی",
+      "title_en": "[L1] Convergence و Flap",
+      "topic": "Convergence و Flap",
+      "summary": "Convergence و Flap: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Convergence و Flap\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nزمان همگرایی و churn را با timeline و log بسنج.\n\n## روش بررسی\nneighbor flap، CPU و تعداد LSA/update را ثبت کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nافزایش timer بدون علت‌یابی تشخیص را کند می‌کند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q32a",
+              "type": "multiple_choice",
+              "question": "برای Convergence و Flap کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q32b",
+              "type": "short_answer",
+              "question": "برای Convergence و Flap دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q32a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q32b",
+              "answer": "پاسخ موضوعی برای Convergence و Flap با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0033",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 33,
+      "level": "L2",
+      "title_fa": "[L2] Convergence و Flap — عملی",
+      "title_en": "[L2] Convergence و Flap",
+      "topic": "Convergence و Flap",
+      "summary": "Convergence و Flap: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# Convergence و Flap\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nزمان همگرایی و churn را با timeline و log بسنج.\n\n## روش بررسی\nneighbor flap، CPU و تعداد LSA/update را ثبت کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nافزایش timer بدون علت‌یابی تشخیص را کند می‌کند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q33a",
+              "type": "multiple_choice",
+              "question": "برای Convergence و Flap کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q33b",
+              "type": "short_answer",
+              "question": "برای Convergence و Flap دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q33a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q33b",
+              "answer": "پاسخ موضوعی برای Convergence و Flap با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0034",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 34,
+      "level": "L3",
+      "title_fa": "[L3] Convergence و Flap — پیشرفته",
+      "title_en": "[L3] Convergence و Flap",
+      "topic": "Convergence و Flap",
+      "summary": "Convergence و Flap: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Convergence و Flap\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nزمان همگرایی و churn را با timeline و log بسنج.\n\n## روش بررسی\nneighbor flap، CPU و تعداد LSA/update را ثبت کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nافزایش timer بدون علت‌یابی تشخیص را کند می‌کند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q34a",
+              "type": "multiple_choice",
+              "question": "برای Convergence و Flap کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q34b",
+              "type": "short_answer",
+              "question": "برای Convergence و Flap دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q34a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q34b",
+              "answer": "پاسخ موضوعی برای Convergence و Flap با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0035",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 35,
+      "level": "L4",
+      "title_fa": "[L4] Convergence و Flap — تخصصی",
+      "title_en": "[L4] Convergence و Flap",
+      "topic": "Convergence و Flap",
+      "summary": "Convergence و Flap: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Convergence و Flap\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nزمان همگرایی و churn را با timeline و log بسنج.\n\n## روش بررسی\nneighbor flap، CPU و تعداد LSA/update را ثبت کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nافزایش timer بدون علت‌یابی تشخیص را کند می‌کند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q35a",
+              "type": "multiple_choice",
+              "question": "برای Convergence و Flap کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q35b",
+              "type": "short_answer",
+              "question": "برای Convergence و Flap دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q35a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q35b",
+              "answer": "پاسخ موضوعی برای Convergence و Flap با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0036",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 36,
+      "level": "L0",
+      "title_fa": "[L0] لاب چندناحیه‌ای — آشنایی",
+      "title_en": "[L0] لاب چندناحیه‌ای",
+      "topic": "لاب چندناحیه‌ای",
+      "summary": "لاب چندناحیه‌ای: مفهوم را ساده توضیح بده.",
+      "full_content": "# لاب چندناحیه‌ای\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\narea 0، area غیرصفر و eBGP/iBGP را در lab بساز.\n\n## روش بررسی\nخطای کنترل‌شده ایجاد و adjacency، LSDB، RIB و data-plane را ثبت کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nپیش از تغییر config را ذخیره کن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q36a",
+              "type": "multiple_choice",
+              "question": "برای لاب چندناحیه‌ای کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q36b",
+              "type": "short_answer",
+              "question": "برای لاب چندناحیه‌ای دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q36a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q36b",
+              "answer": "پاسخ موضوعی برای لاب چندناحیه‌ای با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0037",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 37,
+      "level": "L1",
+      "title_fa": "[L1] لاب چندناحیه‌ای — مقدماتی",
+      "title_en": "[L1] لاب چندناحیه‌ای",
+      "topic": "لاب چندناحیه‌ای",
+      "summary": "لاب چندناحیه‌ای: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# لاب چندناحیه‌ای\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\narea 0، area غیرصفر و eBGP/iBGP را در lab بساز.\n\n## روش بررسی\nخطای کنترل‌شده ایجاد و adjacency، LSDB، RIB و data-plane را ثبت کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nپیش از تغییر config را ذخیره کن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q37a",
+              "type": "multiple_choice",
+              "question": "برای لاب چندناحیه‌ای کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q37b",
+              "type": "short_answer",
+              "question": "برای لاب چندناحیه‌ای دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q37a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q37b",
+              "answer": "پاسخ موضوعی برای لاب چندناحیه‌ای با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0038",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 38,
+      "level": "L2",
+      "title_fa": "[L2] لاب چندناحیه‌ای — عملی",
+      "title_en": "[L2] لاب چندناحیه‌ای",
+      "topic": "لاب چندناحیه‌ای",
+      "summary": "لاب چندناحیه‌ای: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# لاب چندناحیه‌ای\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\narea 0، area غیرصفر و eBGP/iBGP را در lab بساز.\n\n## روش بررسی\nخطای کنترل‌شده ایجاد و adjacency، LSDB، RIB و data-plane را ثبت کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nپیش از تغییر config را ذخیره کن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q38a",
+              "type": "multiple_choice",
+              "question": "برای لاب چندناحیه‌ای کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q38b",
+              "type": "short_answer",
+              "question": "برای لاب چندناحیه‌ای دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q38a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q38b",
+              "answer": "پاسخ موضوعی برای لاب چندناحیه‌ای با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0039",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 39,
+      "level": "L3",
+      "title_fa": "[L3] لاب چندناحیه‌ای — پیشرفته",
+      "title_en": "[L3] لاب چندناحیه‌ای",
+      "topic": "لاب چندناحیه‌ای",
+      "summary": "لاب چندناحیه‌ای: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# لاب چندناحیه‌ای\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\narea 0، area غیرصفر و eBGP/iBGP را در lab بساز.\n\n## روش بررسی\nخطای کنترل‌شده ایجاد و adjacency، LSDB، RIB و data-plane را ثبت کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nپیش از تغییر config را ذخیره کن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q39a",
+              "type": "multiple_choice",
+              "question": "برای لاب چندناحیه‌ای کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q39b",
+              "type": "short_answer",
+              "question": "برای لاب چندناحیه‌ای دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q39a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q39b",
+              "answer": "پاسخ موضوعی برای لاب چندناحیه‌ای با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch66:supp:0040",
+      "chapter_order": 66,
+      "subchapter_order": 90,
+      "lesson_order": 40,
+      "level": "L4",
+      "title_fa": "[L4] لاب چندناحیه‌ای — تخصصی",
+      "title_en": "[L4] لاب چندناحیه‌ای",
+      "topic": "لاب چندناحیه‌ای",
+      "summary": "لاب چندناحیه‌ای: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# لاب چندناحیه‌ای\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\narea 0، area غیرصفر و eBGP/iBGP را در lab بساز.\n\n## روش بررسی\nخطای کنترل‌شده ایجاد و adjacency، LSDB، RIB و data-plane را ثبت کن.\n\n## مثال عملی\nBGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.\n\n## ابزارها\nshow ip ospf neighbor؛ show ip ospf database؛ show ip bgp summary؛ show ip route؛ show ip cef\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nپیش از تغییر config را ذخیره کن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "show ip ospf neighbor; show ip bgp summary; show ip route; show ip cef",
+      "examples": "BGP Established است ولی prefix نصب نشده؛ received/advertised route، policy، best-path، next-hop و RIB/FIB را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 66؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q40a",
+              "type": "multiple_choice",
+              "question": "برای لاب چندناحیه‌ای کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q40b",
+              "type": "short_answer",
+              "question": "برای لاب چندناحیه‌ای دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q40a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q40b",
+              "answer": "پاسخ موضوعی برای لاب چندناحیه‌ای با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

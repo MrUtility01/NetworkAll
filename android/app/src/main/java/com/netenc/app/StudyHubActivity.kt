@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.HorizontalScrollView
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -52,11 +53,21 @@ class StudyHubActivity : AppCompatActivity() {
                 typeface = Ui.persianTypeface()
                 setPadding(0, 0, 0, 12)
             })
-            addView(statsRow)
+            addView(HorizontalScrollView(this@StudyHubActivity).apply {
+                isHorizontalScrollBarEnabled = false
+                addView(statsRow)
+            })
             addView(goalInput)
             addView(btn("ذخیره هدف", Ui.ACCENT) {
                 study.setDailyGoal(goalInput.text.toString().toIntOrNull() ?: 15)
                 refresh()
+            })
+            addView(TextView(this@StudyHubActivity).apply {
+                text = "تاریخ امروز: ${JalaliDate.today()}"
+                textSize = 12f
+                setTextColor(Ui.MUTED)
+                typeface = Ui.persianTypeface()
+                setPadding(0, 0, 0, 12)
             })
             addView(section("شروع هوشمند"))
             addView(btn("انتخاب فصل → کارت از سطح سبک", Ui.ACCENT) { pickChapterForCards() })
@@ -69,6 +80,9 @@ class StudyHubActivity : AppCompatActivity() {
             })
             addView(btn("عیب‌یابی", Color.parseColor("#C2410C")) {
                 startActivity(Intent(this@StudyHubActivity, FlashcardActivity::class.java).putExtra("mode", "trouble"))
+            })
+            addView(btn("تحلیل گام‌به‌گام پکت شبکه", Color.parseColor("#0F766E")) {
+                startActivity(Intent(this@StudyHubActivity, PacketTraceActivity::class.java))
             })
             addView(section("آزمون و سناریو"))
             addView(btn("آزمون چهارگزینه‌ای", Color.parseColor("#7C3AED")) {
@@ -111,7 +125,7 @@ class StudyHubActivity : AppCompatActivity() {
                 setColor(accent)
             }
             background = bg
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
+            layoutParams = LinearLayout.LayoutParams((116 * resources.displayMetrics.density).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 setMargins(6, 8, 6, 12)
             }
         }
@@ -121,10 +135,10 @@ class StudyHubActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val st = withContext(Dispatchers.IO) { study.stats() }
             statsRow.removeAllViews()
-            statsRow.addView(card("امروز", "${st[\"today\"]}/${st[\"goal\"]}", Color.parseColor("#1D4ED8")))
-            statsRow.addView(card("Due", "${st[\"due\"]}", Color.parseColor("#C2410C")))
-            statsRow.addView(card("زنجیره", "${st[\"streak\"]}", Color.parseColor("#0F766E")))
-            statsRow.addView(card("بلد", "${st[\"known\"]}", Color.parseColor("#166534")))
+            statsRow.addView(card("امروز", "${st["today"]}/${st["goal"]}", Color.parseColor("#1D4ED8")))
+            statsRow.addView(card("Due", "${st["due"]}", Color.parseColor("#C2410C")))
+            statsRow.addView(card("زنجیره", "${st["streak"]}", Color.parseColor("#0F766E")))
+            statsRow.addView(card("بلد", "${st["known"]}", Color.parseColor("#166534")))
         }
     }
 

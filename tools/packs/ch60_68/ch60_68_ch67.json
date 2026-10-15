@@ -1,0 +1,1989 @@
+{
+  "package_schema_version": 1,
+  "project": "NetworkAll / ENGINEER JOKAR",
+  "generated_on": "2026-10-14",
+  "purpose": "بسته تکمیلی فصل 67: VPN سازمانی IPsec/SSL; L0-L4, labs, RCA and assessments; review_required.",
+  "scope": [
+    {
+      "chapter_order": 67,
+      "title": "فصل 67: VPN سازمانی IPsec/SSL",
+      "topics": [
+        "IKE و IPsec SA",
+        "Traffic Selector",
+        "Routing و Split Tunnel",
+        "NAT-T و Firewall",
+        "MTU و Fragmentation",
+        "Certificate و Identity",
+        "Remote Access و MFA",
+        "عیب‌یابی End-to-End"
+      ]
+    }
+  ],
+  "compatibility": {
+    "preserve_existing_records": true,
+    "preserve_existing_uids": true,
+    "questions_and_answers_separate": true
+  },
+  "lessons": [
+    {
+      "uid": "lesson:ch67:supp:0001",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 1,
+      "level": "L0",
+      "title_fa": "[L0] IKE و IPsec SA — آشنایی",
+      "title_en": "[L0] IKE و IPsec SA",
+      "topic": "IKE و IPsec SA",
+      "summary": "IKE و IPsec SA: مفهوم را ساده توضیح بده.",
+      "full_content": "# IKE و IPsec SA\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nIKE مذاکره و CHILD/IPsec SA حفاظت ترافیک را انجام می‌دهد.\n\n## روش بررسی\nidentity، proposal، DH/PFS و lifetime دو سمت را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nلاگ دو peer با timestamp همسان لازم است. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q1a",
+              "type": "multiple_choice",
+              "question": "برای IKE و IPsec SA کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q1b",
+              "type": "short_answer",
+              "question": "برای IKE و IPsec SA دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q1a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q1b",
+              "answer": "پاسخ موضوعی برای IKE و IPsec SA با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0002",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 2,
+      "level": "L1",
+      "title_fa": "[L1] IKE و IPsec SA — مقدماتی",
+      "title_en": "[L1] IKE و IPsec SA",
+      "topic": "IKE و IPsec SA",
+      "summary": "IKE و IPsec SA: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# IKE و IPsec SA\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nIKE مذاکره و CHILD/IPsec SA حفاظت ترافیک را انجام می‌دهد.\n\n## روش بررسی\nidentity، proposal، DH/PFS و lifetime دو سمت را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nلاگ دو peer با timestamp همسان لازم است. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q2a",
+              "type": "multiple_choice",
+              "question": "برای IKE و IPsec SA کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q2b",
+              "type": "short_answer",
+              "question": "برای IKE و IPsec SA دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q2a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q2b",
+              "answer": "پاسخ موضوعی برای IKE و IPsec SA با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0003",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 3,
+      "level": "L2",
+      "title_fa": "[L2] IKE و IPsec SA — عملی",
+      "title_en": "[L2] IKE و IPsec SA",
+      "topic": "IKE و IPsec SA",
+      "summary": "IKE و IPsec SA: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# IKE و IPsec SA\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nIKE مذاکره و CHILD/IPsec SA حفاظت ترافیک را انجام می‌دهد.\n\n## روش بررسی\nidentity، proposal، DH/PFS و lifetime دو سمت را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nلاگ دو peer با timestamp همسان لازم است. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q3a",
+              "type": "multiple_choice",
+              "question": "برای IKE و IPsec SA کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q3b",
+              "type": "short_answer",
+              "question": "برای IKE و IPsec SA دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q3a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q3b",
+              "answer": "پاسخ موضوعی برای IKE و IPsec SA با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0004",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 4,
+      "level": "L3",
+      "title_fa": "[L3] IKE و IPsec SA — پیشرفته",
+      "title_en": "[L3] IKE و IPsec SA",
+      "topic": "IKE و IPsec SA",
+      "summary": "IKE و IPsec SA: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# IKE و IPsec SA\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nIKE مذاکره و CHILD/IPsec SA حفاظت ترافیک را انجام می‌دهد.\n\n## روش بررسی\nidentity، proposal، DH/PFS و lifetime دو سمت را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nلاگ دو peer با timestamp همسان لازم است. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q4a",
+              "type": "multiple_choice",
+              "question": "برای IKE و IPsec SA کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q4b",
+              "type": "short_answer",
+              "question": "برای IKE و IPsec SA دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q4a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q4b",
+              "answer": "پاسخ موضوعی برای IKE و IPsec SA با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0005",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 5,
+      "level": "L4",
+      "title_fa": "[L4] IKE و IPsec SA — تخصصی",
+      "title_en": "[L4] IKE و IPsec SA",
+      "topic": "IKE و IPsec SA",
+      "summary": "IKE و IPsec SA: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# IKE و IPsec SA\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nIKE مذاکره و CHILD/IPsec SA حفاظت ترافیک را انجام می‌دهد.\n\n## روش بررسی\nidentity، proposal، DH/PFS و lifetime دو سمت را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nلاگ دو peer با timestamp همسان لازم است. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q5a",
+              "type": "multiple_choice",
+              "question": "برای IKE و IPsec SA کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q5b",
+              "type": "short_answer",
+              "question": "برای IKE و IPsec SA دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q5a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q5b",
+              "answer": "پاسخ موضوعی برای IKE و IPsec SA با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0006",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 6,
+      "level": "L0",
+      "title_fa": "[L0] Traffic Selector — آشنایی",
+      "title_en": "[L0] Traffic Selector",
+      "topic": "Traffic Selector",
+      "summary": "Traffic Selector: مفهوم را ساده توضیح بده.",
+      "full_content": "# Traffic Selector\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nlocal/remote subnet و selector باید دو سمت را پوشش دهد.\n\n## روش بررسی\nroute و SA counter را برای ترافیک تست بررسی کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nselector گسترده سطح دسترسی را بالا می‌برد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q6a",
+              "type": "multiple_choice",
+              "question": "برای Traffic Selector کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q6b",
+              "type": "short_answer",
+              "question": "برای Traffic Selector دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q6a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q6b",
+              "answer": "پاسخ موضوعی برای Traffic Selector با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0007",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 7,
+      "level": "L1",
+      "title_fa": "[L1] Traffic Selector — مقدماتی",
+      "title_en": "[L1] Traffic Selector",
+      "topic": "Traffic Selector",
+      "summary": "Traffic Selector: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Traffic Selector\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nlocal/remote subnet و selector باید دو سمت را پوشش دهد.\n\n## روش بررسی\nroute و SA counter را برای ترافیک تست بررسی کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nselector گسترده سطح دسترسی را بالا می‌برد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q7a",
+              "type": "multiple_choice",
+              "question": "برای Traffic Selector کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q7b",
+              "type": "short_answer",
+              "question": "برای Traffic Selector دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q7a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q7b",
+              "answer": "پاسخ موضوعی برای Traffic Selector با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0008",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 8,
+      "level": "L2",
+      "title_fa": "[L2] Traffic Selector — عملی",
+      "title_en": "[L2] Traffic Selector",
+      "topic": "Traffic Selector",
+      "summary": "Traffic Selector: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# Traffic Selector\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nlocal/remote subnet و selector باید دو سمت را پوشش دهد.\n\n## روش بررسی\nroute و SA counter را برای ترافیک تست بررسی کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nselector گسترده سطح دسترسی را بالا می‌برد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q8a",
+              "type": "multiple_choice",
+              "question": "برای Traffic Selector کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q8b",
+              "type": "short_answer",
+              "question": "برای Traffic Selector دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q8a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q8b",
+              "answer": "پاسخ موضوعی برای Traffic Selector با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0009",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 9,
+      "level": "L3",
+      "title_fa": "[L3] Traffic Selector — پیشرفته",
+      "title_en": "[L3] Traffic Selector",
+      "topic": "Traffic Selector",
+      "summary": "Traffic Selector: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Traffic Selector\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nlocal/remote subnet و selector باید دو سمت را پوشش دهد.\n\n## روش بررسی\nroute و SA counter را برای ترافیک تست بررسی کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nselector گسترده سطح دسترسی را بالا می‌برد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q9a",
+              "type": "multiple_choice",
+              "question": "برای Traffic Selector کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q9b",
+              "type": "short_answer",
+              "question": "برای Traffic Selector دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q9a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q9b",
+              "answer": "پاسخ موضوعی برای Traffic Selector با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0010",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 10,
+      "level": "L4",
+      "title_fa": "[L4] Traffic Selector — تخصصی",
+      "title_en": "[L4] Traffic Selector",
+      "topic": "Traffic Selector",
+      "summary": "Traffic Selector: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Traffic Selector\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nlocal/remote subnet و selector باید دو سمت را پوشش دهد.\n\n## روش بررسی\nroute و SA counter را برای ترافیک تست بررسی کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nselector گسترده سطح دسترسی را بالا می‌برد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q10a",
+              "type": "multiple_choice",
+              "question": "برای Traffic Selector کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q10b",
+              "type": "short_answer",
+              "question": "برای Traffic Selector دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q10a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q10b",
+              "answer": "پاسخ موضوعی برای Traffic Selector با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0011",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 11,
+      "level": "L0",
+      "title_fa": "[L0] Routing و Split Tunnel — آشنایی",
+      "title_en": "[L0] Routing و Split Tunnel",
+      "topic": "Routing و Split Tunnel",
+      "summary": "Routing و Split Tunnel: مفهوم را ساده توضیح بده.",
+      "full_content": "# Routing و Split Tunnel\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nroute، policy، NAT exemption و split include تعیین‌کننده‌اند.\n\n## روش بررسی\nجدول مسیر و DNS قبل/بعد اتصال را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nroute پیش‌فرض و DNS ممکن است ناسازگار شوند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q11a",
+              "type": "multiple_choice",
+              "question": "برای Routing و Split Tunnel کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q11b",
+              "type": "short_answer",
+              "question": "برای Routing و Split Tunnel دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q11a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q11b",
+              "answer": "پاسخ موضوعی برای Routing و Split Tunnel با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0012",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 12,
+      "level": "L1",
+      "title_fa": "[L1] Routing و Split Tunnel — مقدماتی",
+      "title_en": "[L1] Routing و Split Tunnel",
+      "topic": "Routing و Split Tunnel",
+      "summary": "Routing و Split Tunnel: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Routing و Split Tunnel\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nroute، policy، NAT exemption و split include تعیین‌کننده‌اند.\n\n## روش بررسی\nجدول مسیر و DNS قبل/بعد اتصال را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nroute پیش‌فرض و DNS ممکن است ناسازگار شوند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q12a",
+              "type": "multiple_choice",
+              "question": "برای Routing و Split Tunnel کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q12b",
+              "type": "short_answer",
+              "question": "برای Routing و Split Tunnel دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q12a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q12b",
+              "answer": "پاسخ موضوعی برای Routing و Split Tunnel با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0013",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 13,
+      "level": "L2",
+      "title_fa": "[L2] Routing و Split Tunnel — عملی",
+      "title_en": "[L2] Routing و Split Tunnel",
+      "topic": "Routing و Split Tunnel",
+      "summary": "Routing و Split Tunnel: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# Routing و Split Tunnel\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nroute، policy، NAT exemption و split include تعیین‌کننده‌اند.\n\n## روش بررسی\nجدول مسیر و DNS قبل/بعد اتصال را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nroute پیش‌فرض و DNS ممکن است ناسازگار شوند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q13a",
+              "type": "multiple_choice",
+              "question": "برای Routing و Split Tunnel کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q13b",
+              "type": "short_answer",
+              "question": "برای Routing و Split Tunnel دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q13a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q13b",
+              "answer": "پاسخ موضوعی برای Routing و Split Tunnel با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0014",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 14,
+      "level": "L3",
+      "title_fa": "[L3] Routing و Split Tunnel — پیشرفته",
+      "title_en": "[L3] Routing و Split Tunnel",
+      "topic": "Routing و Split Tunnel",
+      "summary": "Routing و Split Tunnel: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Routing و Split Tunnel\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nroute، policy، NAT exemption و split include تعیین‌کننده‌اند.\n\n## روش بررسی\nجدول مسیر و DNS قبل/بعد اتصال را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nroute پیش‌فرض و DNS ممکن است ناسازگار شوند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q14a",
+              "type": "multiple_choice",
+              "question": "برای Routing و Split Tunnel کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q14b",
+              "type": "short_answer",
+              "question": "برای Routing و Split Tunnel دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q14a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q14b",
+              "answer": "پاسخ موضوعی برای Routing و Split Tunnel با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0015",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 15,
+      "level": "L4",
+      "title_fa": "[L4] Routing و Split Tunnel — تخصصی",
+      "title_en": "[L4] Routing و Split Tunnel",
+      "topic": "Routing و Split Tunnel",
+      "summary": "Routing و Split Tunnel: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Routing و Split Tunnel\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nroute، policy، NAT exemption و split include تعیین‌کننده‌اند.\n\n## روش بررسی\nجدول مسیر و DNS قبل/بعد اتصال را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nroute پیش‌فرض و DNS ممکن است ناسازگار شوند. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q15a",
+              "type": "multiple_choice",
+              "question": "برای Routing و Split Tunnel کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q15b",
+              "type": "short_answer",
+              "question": "برای Routing و Split Tunnel دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q15a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q15b",
+              "answer": "پاسخ موضوعی برای Routing و Split Tunnel با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0016",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 16,
+      "level": "L0",
+      "title_fa": "[L0] NAT-T و Firewall — آشنایی",
+      "title_en": "[L0] NAT-T و Firewall",
+      "topic": "NAT-T و Firewall",
+      "summary": "NAT-T و Firewall: مفهوم را ساده توضیح بده.",
+      "full_content": "# NAT-T و Firewall\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nUDP/500، UDP/4500 و ESP طبق طراحی بررسی می‌شوند.\n\n## روش بررسی\ncapture محدود و session table را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nبازکردن همه پورت‌ها جایگزین rule محدود نیست. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q16a",
+              "type": "multiple_choice",
+              "question": "برای NAT-T و Firewall کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q16b",
+              "type": "short_answer",
+              "question": "برای NAT-T و Firewall دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q16a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q16b",
+              "answer": "پاسخ موضوعی برای NAT-T و Firewall با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0017",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 17,
+      "level": "L1",
+      "title_fa": "[L1] NAT-T و Firewall — مقدماتی",
+      "title_en": "[L1] NAT-T و Firewall",
+      "topic": "NAT-T و Firewall",
+      "summary": "NAT-T و Firewall: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# NAT-T و Firewall\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nUDP/500، UDP/4500 و ESP طبق طراحی بررسی می‌شوند.\n\n## روش بررسی\ncapture محدود و session table را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nبازکردن همه پورت‌ها جایگزین rule محدود نیست. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q17a",
+              "type": "multiple_choice",
+              "question": "برای NAT-T و Firewall کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q17b",
+              "type": "short_answer",
+              "question": "برای NAT-T و Firewall دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q17a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q17b",
+              "answer": "پاسخ موضوعی برای NAT-T و Firewall با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0018",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 18,
+      "level": "L2",
+      "title_fa": "[L2] NAT-T و Firewall — عملی",
+      "title_en": "[L2] NAT-T و Firewall",
+      "topic": "NAT-T و Firewall",
+      "summary": "NAT-T و Firewall: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# NAT-T و Firewall\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nUDP/500، UDP/4500 و ESP طبق طراحی بررسی می‌شوند.\n\n## روش بررسی\ncapture محدود و session table را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nبازکردن همه پورت‌ها جایگزین rule محدود نیست. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q18a",
+              "type": "multiple_choice",
+              "question": "برای NAT-T و Firewall کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q18b",
+              "type": "short_answer",
+              "question": "برای NAT-T و Firewall دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q18a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q18b",
+              "answer": "پاسخ موضوعی برای NAT-T و Firewall با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0019",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 19,
+      "level": "L3",
+      "title_fa": "[L3] NAT-T و Firewall — پیشرفته",
+      "title_en": "[L3] NAT-T و Firewall",
+      "topic": "NAT-T و Firewall",
+      "summary": "NAT-T و Firewall: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# NAT-T و Firewall\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nUDP/500، UDP/4500 و ESP طبق طراحی بررسی می‌شوند.\n\n## روش بررسی\ncapture محدود و session table را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nبازکردن همه پورت‌ها جایگزین rule محدود نیست. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q19a",
+              "type": "multiple_choice",
+              "question": "برای NAT-T و Firewall کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q19b",
+              "type": "short_answer",
+              "question": "برای NAT-T و Firewall دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q19a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q19b",
+              "answer": "پاسخ موضوعی برای NAT-T و Firewall با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0020",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 20,
+      "level": "L4",
+      "title_fa": "[L4] NAT-T و Firewall — تخصصی",
+      "title_en": "[L4] NAT-T و Firewall",
+      "topic": "NAT-T و Firewall",
+      "summary": "NAT-T و Firewall: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# NAT-T و Firewall\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nUDP/500، UDP/4500 و ESP طبق طراحی بررسی می‌شوند.\n\n## روش بررسی\ncapture محدود و session table را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nبازکردن همه پورت‌ها جایگزین rule محدود نیست. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q20a",
+              "type": "multiple_choice",
+              "question": "برای NAT-T و Firewall کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q20b",
+              "type": "short_answer",
+              "question": "برای NAT-T و Firewall دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q20a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q20b",
+              "answer": "پاسخ موضوعی برای NAT-T و Firewall با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0021",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 21,
+      "level": "L0",
+      "title_fa": "[L0] MTU و Fragmentation — آشنایی",
+      "title_en": "[L0] MTU و Fragmentation",
+      "topic": "MTU و Fragmentation",
+      "summary": "MTU و Fragmentation: مفهوم را ساده توضیح بده.",
+      "full_content": "# MTU و Fragmentation\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nencapsulation سربار اضافه و PMTUD را حساس می‌کند.\n\n## روش بررسی\npayload را مرحله‌ای در lab کاهش بده و DF را بررسی کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nMSS clamp باید بر اساس اندازه مسیر باشد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q21a",
+              "type": "multiple_choice",
+              "question": "برای MTU و Fragmentation کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q21b",
+              "type": "short_answer",
+              "question": "برای MTU و Fragmentation دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q21a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q21b",
+              "answer": "پاسخ موضوعی برای MTU و Fragmentation با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0022",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 22,
+      "level": "L1",
+      "title_fa": "[L1] MTU و Fragmentation — مقدماتی",
+      "title_en": "[L1] MTU و Fragmentation",
+      "topic": "MTU و Fragmentation",
+      "summary": "MTU و Fragmentation: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# MTU و Fragmentation\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nencapsulation سربار اضافه و PMTUD را حساس می‌کند.\n\n## روش بررسی\npayload را مرحله‌ای در lab کاهش بده و DF را بررسی کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nMSS clamp باید بر اساس اندازه مسیر باشد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q22a",
+              "type": "multiple_choice",
+              "question": "برای MTU و Fragmentation کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q22b",
+              "type": "short_answer",
+              "question": "برای MTU و Fragmentation دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q22a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q22b",
+              "answer": "پاسخ موضوعی برای MTU و Fragmentation با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0023",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 23,
+      "level": "L2",
+      "title_fa": "[L2] MTU و Fragmentation — عملی",
+      "title_en": "[L2] MTU و Fragmentation",
+      "topic": "MTU و Fragmentation",
+      "summary": "MTU و Fragmentation: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# MTU و Fragmentation\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nencapsulation سربار اضافه و PMTUD را حساس می‌کند.\n\n## روش بررسی\npayload را مرحله‌ای در lab کاهش بده و DF را بررسی کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nMSS clamp باید بر اساس اندازه مسیر باشد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q23a",
+              "type": "multiple_choice",
+              "question": "برای MTU و Fragmentation کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q23b",
+              "type": "short_answer",
+              "question": "برای MTU و Fragmentation دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q23a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q23b",
+              "answer": "پاسخ موضوعی برای MTU و Fragmentation با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0024",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 24,
+      "level": "L3",
+      "title_fa": "[L3] MTU و Fragmentation — پیشرفته",
+      "title_en": "[L3] MTU و Fragmentation",
+      "topic": "MTU و Fragmentation",
+      "summary": "MTU و Fragmentation: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# MTU و Fragmentation\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nencapsulation سربار اضافه و PMTUD را حساس می‌کند.\n\n## روش بررسی\npayload را مرحله‌ای در lab کاهش بده و DF را بررسی کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nMSS clamp باید بر اساس اندازه مسیر باشد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q24a",
+              "type": "multiple_choice",
+              "question": "برای MTU و Fragmentation کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q24b",
+              "type": "short_answer",
+              "question": "برای MTU و Fragmentation دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q24a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q24b",
+              "answer": "پاسخ موضوعی برای MTU و Fragmentation با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0025",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 25,
+      "level": "L4",
+      "title_fa": "[L4] MTU و Fragmentation — تخصصی",
+      "title_en": "[L4] MTU و Fragmentation",
+      "topic": "MTU و Fragmentation",
+      "summary": "MTU و Fragmentation: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# MTU و Fragmentation\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nencapsulation سربار اضافه و PMTUD را حساس می‌کند.\n\n## روش بررسی\npayload را مرحله‌ای در lab کاهش بده و DF را بررسی کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nMSS clamp باید بر اساس اندازه مسیر باشد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q25a",
+              "type": "multiple_choice",
+              "question": "برای MTU و Fragmentation کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q25b",
+              "type": "short_answer",
+              "question": "برای MTU و Fragmentation دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q25a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q25b",
+              "answer": "پاسخ موضوعی برای MTU و Fragmentation با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0026",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 26,
+      "level": "L0",
+      "title_fa": "[L0] Certificate و Identity — آشنایی",
+      "title_en": "[L0] Certificate و Identity",
+      "topic": "Certificate و Identity",
+      "summary": "Certificate و Identity: مفهوم را ساده توضیح بده.",
+      "full_content": "# Certificate و Identity\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nSAN، chain، expiry، EKU، trust store و ساعت مؤثرند.\n\n## روش بررسی\nchain را بررسی کن و کلید خصوصی را export نکن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nvalidation گواهی را خاموش نکن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q26a",
+              "type": "multiple_choice",
+              "question": "برای Certificate و Identity کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q26b",
+              "type": "short_answer",
+              "question": "برای Certificate و Identity دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q26a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q26b",
+              "answer": "پاسخ موضوعی برای Certificate و Identity با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0027",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 27,
+      "level": "L1",
+      "title_fa": "[L1] Certificate و Identity — مقدماتی",
+      "title_en": "[L1] Certificate و Identity",
+      "topic": "Certificate و Identity",
+      "summary": "Certificate و Identity: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Certificate و Identity\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nSAN، chain، expiry، EKU، trust store و ساعت مؤثرند.\n\n## روش بررسی\nchain را بررسی کن و کلید خصوصی را export نکن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nvalidation گواهی را خاموش نکن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q27a",
+              "type": "multiple_choice",
+              "question": "برای Certificate و Identity کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q27b",
+              "type": "short_answer",
+              "question": "برای Certificate و Identity دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q27a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q27b",
+              "answer": "پاسخ موضوعی برای Certificate و Identity با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0028",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 28,
+      "level": "L2",
+      "title_fa": "[L2] Certificate و Identity — عملی",
+      "title_en": "[L2] Certificate و Identity",
+      "topic": "Certificate و Identity",
+      "summary": "Certificate و Identity: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# Certificate و Identity\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nSAN، chain، expiry، EKU، trust store و ساعت مؤثرند.\n\n## روش بررسی\nchain را بررسی کن و کلید خصوصی را export نکن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nvalidation گواهی را خاموش نکن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q28a",
+              "type": "multiple_choice",
+              "question": "برای Certificate و Identity کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q28b",
+              "type": "short_answer",
+              "question": "برای Certificate و Identity دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q28a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q28b",
+              "answer": "پاسخ موضوعی برای Certificate و Identity با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0029",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 29,
+      "level": "L3",
+      "title_fa": "[L3] Certificate و Identity — پیشرفته",
+      "title_en": "[L3] Certificate و Identity",
+      "topic": "Certificate و Identity",
+      "summary": "Certificate و Identity: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Certificate و Identity\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nSAN، chain، expiry، EKU، trust store و ساعت مؤثرند.\n\n## روش بررسی\nchain را بررسی کن و کلید خصوصی را export نکن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nvalidation گواهی را خاموش نکن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q29a",
+              "type": "multiple_choice",
+              "question": "برای Certificate و Identity کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q29b",
+              "type": "short_answer",
+              "question": "برای Certificate و Identity دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q29a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q29b",
+              "answer": "پاسخ موضوعی برای Certificate و Identity با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0030",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 30,
+      "level": "L4",
+      "title_fa": "[L4] Certificate و Identity — تخصصی",
+      "title_en": "[L4] Certificate و Identity",
+      "topic": "Certificate و Identity",
+      "summary": "Certificate و Identity: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Certificate و Identity\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nSAN، chain، expiry، EKU، trust store و ساعت مؤثرند.\n\n## روش بررسی\nchain را بررسی کن و کلید خصوصی را export نکن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nvalidation گواهی را خاموش نکن. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q30a",
+              "type": "multiple_choice",
+              "question": "برای Certificate و Identity کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q30b",
+              "type": "short_answer",
+              "question": "برای Certificate و Identity دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q30a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q30b",
+              "answer": "پاسخ موضوعی برای Certificate و Identity با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0031",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 31,
+      "level": "L0",
+      "title_fa": "[L0] Remote Access و MFA — آشنایی",
+      "title_en": "[L0] Remote Access و MFA",
+      "topic": "Remote Access و MFA",
+      "summary": "Remote Access و MFA: مفهوم را ساده توضیح بده.",
+      "full_content": "# Remote Access و MFA\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\nidentity، MFA، posture و مجوز شبکه را به هم نگاشت کن.\n\n## روش بررسی\nکاربر مجاز/غیرمجاز و لغو دسترسی را تست کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nVPN نباید دسترسی unrestricted بدهد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q31a",
+              "type": "multiple_choice",
+              "question": "برای Remote Access و MFA کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q31b",
+              "type": "short_answer",
+              "question": "برای Remote Access و MFA دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q31a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q31b",
+              "answer": "پاسخ موضوعی برای Remote Access و MFA با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0032",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 32,
+      "level": "L1",
+      "title_fa": "[L1] Remote Access و MFA — مقدماتی",
+      "title_en": "[L1] Remote Access و MFA",
+      "topic": "Remote Access و MFA",
+      "summary": "Remote Access و MFA: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# Remote Access و MFA\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\nidentity، MFA، posture و مجوز شبکه را به هم نگاشت کن.\n\n## روش بررسی\nکاربر مجاز/غیرمجاز و لغو دسترسی را تست کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nVPN نباید دسترسی unrestricted بدهد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q32a",
+              "type": "multiple_choice",
+              "question": "برای Remote Access و MFA کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q32b",
+              "type": "short_answer",
+              "question": "برای Remote Access و MFA دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q32a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q32b",
+              "answer": "پاسخ موضوعی برای Remote Access و MFA با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0033",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 33,
+      "level": "L2",
+      "title_fa": "[L2] Remote Access و MFA — عملی",
+      "title_en": "[L2] Remote Access و MFA",
+      "topic": "Remote Access و MFA",
+      "summary": "Remote Access و MFA: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# Remote Access و MFA\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\nidentity، MFA، posture و مجوز شبکه را به هم نگاشت کن.\n\n## روش بررسی\nکاربر مجاز/غیرمجاز و لغو دسترسی را تست کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nVPN نباید دسترسی unrestricted بدهد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q33a",
+              "type": "multiple_choice",
+              "question": "برای Remote Access و MFA کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q33b",
+              "type": "short_answer",
+              "question": "برای Remote Access و MFA دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q33a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q33b",
+              "answer": "پاسخ موضوعی برای Remote Access و MFA با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0034",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 34,
+      "level": "L3",
+      "title_fa": "[L3] Remote Access و MFA — پیشرفته",
+      "title_en": "[L3] Remote Access و MFA",
+      "topic": "Remote Access و MFA",
+      "summary": "Remote Access و MFA: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# Remote Access و MFA\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\nidentity، MFA، posture و مجوز شبکه را به هم نگاشت کن.\n\n## روش بررسی\nکاربر مجاز/غیرمجاز و لغو دسترسی را تست کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nVPN نباید دسترسی unrestricted بدهد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q34a",
+              "type": "multiple_choice",
+              "question": "برای Remote Access و MFA کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q34b",
+              "type": "short_answer",
+              "question": "برای Remote Access و MFA دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q34a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q34b",
+              "answer": "پاسخ موضوعی برای Remote Access و MFA با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0035",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 35,
+      "level": "L4",
+      "title_fa": "[L4] Remote Access و MFA — تخصصی",
+      "title_en": "[L4] Remote Access و MFA",
+      "topic": "Remote Access و MFA",
+      "summary": "Remote Access و MFA: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# Remote Access و MFA\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\nidentity، MFA، posture و مجوز شبکه را به هم نگاشت کن.\n\n## روش بررسی\nکاربر مجاز/غیرمجاز و لغو دسترسی را تست کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nVPN نباید دسترسی unrestricted بدهد. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q35a",
+              "type": "multiple_choice",
+              "question": "برای Remote Access و MFA کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q35b",
+              "type": "short_answer",
+              "question": "برای Remote Access و MFA دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q35a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q35b",
+              "answer": "پاسخ موضوعی برای Remote Access و MFA با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0036",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 36,
+      "level": "L0",
+      "title_fa": "[L0] عیب‌یابی End-to-End — آشنایی",
+      "title_en": "[L0] عیب‌یابی End-to-End",
+      "topic": "عیب‌یابی End-to-End",
+      "summary": "عیب‌یابی End-to-End: مفهوم را ساده توضیح بده.",
+      "full_content": "# عیب‌یابی End-to-End\n\n## هدف\nمفهوم را ساده توضیح بده.\n\n## مفهوم\npeer، SA، route، policy، NAT و سرویس مقصد را مرحله‌ای بررسی کن.\n\n## روش بررسی\ncounters دو سمت و ping با source مشخص را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nکلید و capture حساس را در گزارش عمومی نگذار. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q36a",
+              "type": "multiple_choice",
+              "question": "برای عیب‌یابی End-to-End کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q36b",
+              "type": "short_answer",
+              "question": "برای عیب‌یابی End-to-End دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q36a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q36b",
+              "answer": "پاسخ موضوعی برای عیب‌یابی End-to-End با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0037",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 37,
+      "level": "L1",
+      "title_fa": "[L1] عیب‌یابی End-to-End — مقدماتی",
+      "title_en": "[L1] عیب‌یابی End-to-End",
+      "topic": "عیب‌یابی End-to-End",
+      "summary": "عیب‌یابی End-to-End: اجزا و پیش‌نیازها را مشخص کن.",
+      "full_content": "# عیب‌یابی End-to-End\n\n## هدف\nاجزا و پیش‌نیازها را مشخص کن.\n\n## مفهوم\npeer، SA، route، policy، NAT و سرویس مقصد را مرحله‌ای بررسی کن.\n\n## روش بررسی\ncounters دو سمت و ping با source مشخص را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nکلید و capture حساس را در گزارش عمومی نگذار. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q37a",
+              "type": "multiple_choice",
+              "question": "برای عیب‌یابی End-to-End کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q37b",
+              "type": "short_answer",
+              "question": "برای عیب‌یابی End-to-End دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q37a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q37b",
+              "answer": "پاسخ موضوعی برای عیب‌یابی End-to-End با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0038",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 38,
+      "level": "L2",
+      "title_fa": "[L2] عیب‌یابی End-to-End — عملی",
+      "title_en": "[L2] عیب‌یابی End-to-End",
+      "topic": "عیب‌یابی End-to-End",
+      "summary": "عیب‌یابی End-to-End: در lab کنترل‌شده تمرین کن.",
+      "full_content": "# عیب‌یابی End-to-End\n\n## هدف\nدر lab کنترل‌شده تمرین کن.\n\n## مفهوم\npeer، SA، route، policy، NAT و سرویس مقصد را مرحله‌ای بررسی کن.\n\n## روش بررسی\ncounters دو سمت و ping با source مشخص را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nکلید و capture حساس را در گزارش عمومی نگذار. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q38a",
+              "type": "multiple_choice",
+              "question": "برای عیب‌یابی End-to-End کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q38b",
+              "type": "short_answer",
+              "question": "برای عیب‌یابی End-to-End دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q38a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q38b",
+              "answer": "پاسخ موضوعی برای عیب‌یابی End-to-End با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0039",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 39,
+      "level": "L3",
+      "title_fa": "[L3] عیب‌یابی End-to-End — پیشرفته",
+      "title_en": "[L3] عیب‌یابی End-to-End",
+      "topic": "عیب‌یابی End-to-End",
+      "summary": "عیب‌یابی End-to-End: دو فرضیه را با شواهد مقایسه کن.",
+      "full_content": "# عیب‌یابی End-to-End\n\n## هدف\nدو فرضیه را با شواهد مقایسه کن.\n\n## مفهوم\npeer، SA، route، policy، NAT و سرویس مقصد را مرحله‌ای بررسی کن.\n\n## روش بررسی\ncounters دو سمت و ping با source مشخص را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nکلید و capture حساس را در گزارش عمومی نگذار. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q39a",
+              "type": "multiple_choice",
+              "question": "برای عیب‌یابی End-to-End کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q39b",
+              "type": "short_answer",
+              "question": "برای عیب‌یابی End-to-End دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q39a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q39b",
+              "answer": "پاسخ موضوعی برای عیب‌یابی End-to-End با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "uid": "lesson:ch67:supp:0040",
+      "chapter_order": 67,
+      "subchapter_order": 90,
+      "lesson_order": 40,
+      "level": "L4",
+      "title_fa": "[L4] عیب‌یابی End-to-End — تخصصی",
+      "title_en": "[L4] عیب‌یابی End-to-End",
+      "topic": "عیب‌یابی End-to-End",
+      "summary": "عیب‌یابی End-to-End: runbook و معیار پذیرش تعریف کن.",
+      "full_content": "# عیب‌یابی End-to-End\n\n## هدف\nrunbook و معیار پذیرش تعریف کن.\n\n## مفهوم\npeer، SA، route، policy، NAT و سرویس مقصد را مرحله‌ای بررسی کن.\n\n## روش بررسی\ncounters دو سمت و ping با source مشخص را مقایسه کن.\n\n## مثال عملی\nIPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.\n\n## ابزارها\nIKE/IPsec logs؛ SA counters؛ route table؛ capture محدود؛ Test-NetConnection\n\n## RCA\n۱) زمان و دامنه اثر را ثبت کن. ۲) baseline را حفظ کن. ۳) دو فرضیه و آزمون تفکیک‌کننده بساز. ۴) تغییر حداقلی فقط در lab/پنجره مجاز. ۵) Verify تکرارپذیر و اقدام پیشگیرانه ثبت شود.\n\n## ایمنی\nکلید و capture حساس را در گزارش عمومی نگذار. نسخه، شواهد و محدودیت‌ها را مستند کن.",
+      "commands": "IKE/IPsec logs; SA counters; route table; Test-NetConnection",
+      "examples": "IPsec SA برقرار است ولی subnet دوردست unreachable است؛ selector، route، NAT exemption، policy، counter و MTU را بررسی کن.",
+      "notes": "بسته تکمیلی فصل 67؛ review_required.",
+      "meta": {
+        "assessment": {
+          "questions": [
+            {
+              "id": "q40a",
+              "type": "multiple_choice",
+              "question": "برای عیب‌یابی End-to-End کدام روش بهتر است؟",
+              "options": [
+                "تغییر هم‌زمان همه تنظیمات",
+                "ثبت baseline و آزمون فرضیه",
+                "نادیده گرفتن شواهد",
+                "اعتماد به یک علامت"
+              ]
+            },
+            {
+              "id": "q40b",
+              "type": "short_answer",
+              "question": "برای عیب‌یابی End-to-End دو شاهد و یک معیار Verify ذکر کن."
+            }
+          ],
+          "answer_key": [
+            {
+              "id": "q40a",
+              "answer": "ثبت baseline و آزمون فرضیه",
+              "explanation": "نتیجه قابل بازبینی می‌شود."
+            },
+            {
+              "id": "q40b",
+              "answer": "پاسخ موضوعی برای عیب‌یابی End-to-End با دو شاهد و معیار تکرارپذیر.",
+              "explanation": "معیار روشن از حدس جداست."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -16,6 +16,9 @@ interface ScenarioDao {
     @Query("SELECT * FROM scenarios WHERE code = :code LIMIT 1")
     suspend fun byCode(code: String): ScenarioEntity?
 
+    @Query("DELETE FROM scenarios")
+    suspend fun clearAll()
+
     @Query("SELECT COUNT(*) FROM scenarios")
     suspend fun count(): Int
 }

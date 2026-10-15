@@ -204,6 +204,12 @@ def apply_fields(les, src):
     for k in ("summary", "full_content", "commands", "examples", "notes"):
         if src.get(k):
             les[k] = as_text(src.get(k)) if k != "full_content" else (src.get(k) or "")
+    assessment = (src.get("meta") or {}).get("assessment")
+    notes = as_text(src.get("notes"))
+    if assessment and "EJ_ASSESSMENT" not in notes:
+        notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n-->\n"
+    if notes:
+        les["notes"] = notes
 
 
 def merge_by_title(data, lessons):
@@ -264,6 +270,41 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
     return sum(len(s["lessons"]) for s in out_subs)
 
 
+def append_to_existing_chapter(data, lessons, order, subchapter_title="غنی‌سازی و اعتبارسنجی"):
+    """Append unmatched pack lessons without deleting the chapter's existing curriculum."""
+    chapter = next((c for c in data.get("chapters", []) if int(c.get("order") or 0) == order), None)
+    if chapter is None or not lessons:
+        return 0
+    used_uids = {str(les.get("uid") or "") for ch in data["chapters"] for sub in ch.get("subchapters", []) for les in sub.get("lessons", [])}
+    existing_titles = {str(les.get("title_fa") or "").strip() for sub in chapter.get("subchapters", []) for les in sub.get("lessons", [])}
+    sub = next((x for x in chapter.setdefault("subchapters", []) if x.get("title_fa") == subchapter_title), None)
+    if sub is None:
+        sub = {"title_fa": subchapter_title, "lessons": []}
+        chapter["subchapters"].append(sub)
+    appended = 0
+    for src in sorted(lessons, key=lambda x: (x.get("subchapter_order") or 1, x.get("lesson_order") or 0)):
+        title = str(src.get("title_fa") or "").strip()
+        if not title or title in existing_titles:
+            continue
+        uid = str(src.get("uid") or "")
+        if not uid or uid in used_uids:
+            uid = f"lesson:ch{order:02d}:deep-extra:{appended + 1:05d}"
+        used_uids.add(uid)
+        notes = as_text(src.get("notes"))
+        assessment = (src.get("meta") or {}).get("assessment")
+        if assessment and "EJ_ASSESSMENT" not in notes:
+            notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n-->\n"
+        sub["lessons"].append({
+            "uid": uid, "title_fa": title, "title_en": src.get("title_en") or title,
+            "level": src.get("level") or "L0", "summary": src.get("summary") or "",
+            "full_content": src.get("full_content") or "", "commands": as_text(src.get("commands")),
+            "examples": as_text(src.get("examples")), "notes": notes,
+        })
+        existing_titles.add(title)
+        appended += 1
+    return appended
+
+
 def build_ch65(lessons):
     subs = defaultdict(list)
     for les in lessons:
@@ -310,6 +351,8 @@ def main():
     print("packs", len(packs))
     sec, wireless = [], []
     routing_extra, vpn_extra, cmd_extra = [], [], []
+    shared_deep_extra = []
+    ch55_extra = []
     for p in packs:
         try:
             d = load_json(p)
@@ -332,10 +375,34 @@ def main():
             continue
         n = merge_by_title(data, lessons)
         print("   title-merge", n)
+        if "ch60_68_" in name:
+            shared_deep_extra.extend(lessons)
+        if "ch55" in name and any(int(x.get("chapter_order") or 0) == 55 for x in lessons):
+            ch55_extra.extend(x for x in lessons if int(x.get("chapter_order") or 0) == 55)
         if "ospf" in name or "bgp" in name or "redistribution" in name or "routing_deep" in name:
             routing_extra.extend(lessons)
         if "vpn" in name or "ipsec" in name:
             vpn_extra.extend(lessons)
+
+    # Re-key pack lessons in the combined result. Different vendor packs often
+    # restart command/lesson numbering at 1; carrying source UIDs through caused
+    # duplicate lesson UIDs in curriculum_index.json.gz and made offline seeding fail.
+    routing_extra = [
+        {**src, "uid": f"lesson:ch66:bp-extra:{i:05d}", "chapter_order": 66, "lesson_order": i}
+        for i, src in enumerate(routing_extra, 1)
+    ]
+    vpn_extra = [
+        {**src, "uid": f"lesson:ch67:bp-extra:{i:05d}", "chapter_order": 67, "lesson_order": i}
+        for i, src in enumerate(vpn_extra, 1)
+    ]
+    cmd_extra = [
+        {**src, "uid": f"lesson:ch68:cmd-extra:{i:05d}", "chapter_order": 68, "lesson_order": i}
+        for i, src in enumerate(cmd_extra, 1)
+    ]
+
+    if ch55_extra:
+        n = append_to_existing_chapter(data, ch55_extra, 55)
+        print("ch55 CCTV/Access/BMS/IoT appended", n)
 
     if routing_extra:
         n = append_unmatched_as_extra(
@@ -368,6 +435,63 @@ def main():
     if extra:
         data["chapters"].append(build_ch65(extra))
         print("ch65", sum(len(s["lessons"]) for s in data["chapters"][-1]["subchapters"]))
+
+    # Re-apply shared chapter 60-68 content after special chapter rebuilds (notably chapter 65).
+    if shared_deep_extra:
+        merge_by_title(data, shared_deep_extra)
+        by_order = {int(ch.get("order") or 0): ch for ch in data["chapters"]}
+        used_uids = {
+            str(les.get("uid") or "")
+            for ch in data["chapters"]
+            for sub in ch.get("subchapters", [])
+            for les in sub.get("lessons", [])
+        }
+        appended = 0
+        for order in range(60, 69):
+            chapter = by_order.get(order)
+            if chapter is None:
+                continue
+            existing_titles = {
+                str(les.get("title_fa") or "").strip()
+                for sub in chapter.get("subchapters", [])
+                for les in sub.get("lessons", [])
+            }
+            new_items = [
+                src for src in shared_deep_extra
+                if int(src.get("chapter_order") or 0) == order
+                and str(src.get("title_fa") or "").strip()
+                and str(src.get("title_fa") or "").strip() not in existing_titles
+            ]
+            if not new_items:
+                continue
+            sub = next((s for s in chapter.get("subchapters", [])
+                        if s.get("title_fa") == "غنی‌سازی و اعتبارسنجی تکمیلی"), None)
+            if sub is None:
+                sub = {"title_fa": "غنی‌سازی و اعتبارسنجی تکمیلی", "lessons": []}
+                chapter.setdefault("subchapters", []).append(sub)
+            for src in new_items:
+                uid = str(src.get("uid") or "")
+                if not uid or uid in used_uids:
+                    uid = f"lesson:ch{order:02d}:deep-extra:{appended + 1:05d}"
+                used_uids.add(uid)
+                notes = as_text(src.get("notes"))
+                assessment = (src.get("meta") or {}).get("assessment")
+                if assessment and "EJ_ASSESSMENT" not in notes:
+                    notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n-->\n"
+                sub["lessons"].append({
+                    "uid": uid,
+                    "title_fa": src.get("title_fa") or "",
+                    "title_en": src.get("title_en") or "",
+                    "level": src.get("level") or "L0",
+                    "summary": src.get("summary") or "",
+                    "full_content": src.get("full_content") or "",
+                    "commands": as_text(src.get("commands")),
+                    "examples": as_text(src.get("examples")),
+                    "notes": notes,
+                })
+                existing_titles.add(str(src.get("title_fa") or "").strip())
+                appended += 1
+        print("shared chapters 60-68 appended", appended)
 
     data["chapters"].sort(key=lambda c: int(c.get("order") or 0))
     n = sum(len(s.get("lessons", [])) for c in data["chapters"] for s in c.get("subchapters", []))

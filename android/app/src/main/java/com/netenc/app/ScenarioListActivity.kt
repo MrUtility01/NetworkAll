@@ -96,7 +96,7 @@ class ScenarioListActivity : AppCompatActivity() {
                 items = withContext(Dispatchers.IO) {
                     val db = AppDatabase.get(this@ScenarioListActivity)
                     if (force || db.scenarioDao().count() == 0) {
-                        db.lessonDao().putMeta(SyncMetaEntity("scenarios_seeded_v4", "0"))
+                        db.lessonDao().putMeta(SyncMetaEntity("scenarios_seeded_v6_shared_150", "0"))
                     }
                     ScenarioSeeder.ensure(this@ScenarioListActivity)
                     db.scenarioDao().all()

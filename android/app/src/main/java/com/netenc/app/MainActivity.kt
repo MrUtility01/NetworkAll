@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        findViewById<TextView>(R.id.todayJalali).text = "تاریخ شمسی: ${JalaliDate.today()}"
         repo = LessonRepository(this)
         hostInput = findViewById(R.id.hostInput)
         tokenInput = findViewById(R.id.tokenInput)
@@ -43,6 +44,9 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnStudyHub).setOnClickListener {
             startActivity(Intent(this, StudyHubActivity::class.java))
+        }
+        findViewById<Button>(R.id.btnPacketTrace).setOnClickListener {
+            startActivity(Intent(this, PacketTraceActivity::class.java))
         }
         // Workspace
         safeBtn(R.id.btnTasks) {
@@ -140,7 +144,7 @@ class MainActivity : AppCompatActivity() {
             val st = withContext(Dispatchers.IO) { StudyRepository(this@MainActivity).stats() }
             AlertDialog.Builder(this@MainActivity)
                 .setTitle("آمار")
-                .setMessage("درس: $lessons\nمتن‌دار: $filled\nسناریو: $sc\nامروز: ${st[\"today\"]}/${st[\"goal\"]}")
+                .setMessage("درس: $lessons\nمتن‌دار: $filled\nسناریو: $sc\nامروز: ${st["today"]}/${st["goal"]}")
                 .setPositiveButton("باشه", null)
                 .show()
         }

@@ -17,7 +17,63 @@ def clean_topic(title: str) -> str:
 def _fmt_cmds(pairs):
     return "\n".join(f"```\n{cmd}\n```\n→ {desc}\n" for cmd, desc in pairs)
 
+_CH60_68_OVERLAY_CACHE: Dict[str, Dict[str, Any]] | None = None
+
+
+def _shared_ch60_68_overlay(title_fa: str) -> Dict[str, Any] | None:
+    """Return shared reviewed-pack lesson content for Windows and Android export."""
+    global _CH60_68_OVERLAY_CACHE
+    if _CH60_68_OVERLAY_CACHE is None:
+        _CH60_68_OVERLAY_CACHE = {}
+        try:
+            from pathlib import Path
+            import json
+            root = Path(__file__).resolve().parents[2]
+            pack_dirs = [root / "tools" / "packs" / "ch56_59", root / "tools" / "packs" / "ch60_68"]
+            paths = [path for pack_dir in pack_dirs for path in sorted(pack_dir.glob("*pack*.json"))]
+            for path in paths:
+                if not path.is_file():
+                    continue
+                data = json.loads(path.read_text(encoding="utf-8"))
+                for item in data.get("lessons", []):
+                    title = item.get("title_fa")
+                    if not title:
+                        continue
+                    assessment = (item.get("meta") or {}).get("assessment")
+                    notes = item.get("notes") or ""
+                    if assessment and "EJ_ASSESSMENT" not in notes:
+                        marker = chr(60) + chr(33) + chr(45) + chr(45)
+                        notes += "\n\n" + marker + " EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n" + chr(45) + chr(45) + chr(62) + "\n"
+                    candidate = {
+                        "summary": item.get("summary") or "",
+                        "full_content": item.get("full_content") or "",
+                        "commands": item.get("commands") or "",
+                        "examples": item.get("examples") or "",
+                        "notes": notes,
+                    }
+                    current = dict(_CH60_68_OVERLAY_CACHE.get(title) or {})
+                    # Keep the richest full-content variant instead of letting a later,
+                    # shorter legacy pack overwrite a newer deep lesson.
+                    candidate_len = len(str(candidate.get("full_content") or ""))
+                    current_len = len(str(current.get("full_content") or ""))
+                    if not current or candidate_len > current_len:
+                        current = {k: v for k, v in candidate.items() if v}
+                    else:
+                        for field, value in candidate.items():
+                            if value and not current.get(field):
+                                current[field] = value
+                    if current:
+                        _CH60_68_OVERLAY_CACHE[title] = current
+        except (OSError, ValueError, TypeError):
+            pass
+    return _CH60_68_OVERLAY_CACHE.get(title_fa)
+
+
+
 def build_rich_lesson(title_fa: str, title_en: str = "", level: str | None = None) -> Dict[str, Any]:
+    shared_overlay = _shared_ch60_68_overlay(title_fa)
+    if shared_overlay:
+        return shared_overlay
     try:
         from core.chapter64_git_hook import is_git_title, build_git_lesson
         if is_git_title(title_fa or ""):

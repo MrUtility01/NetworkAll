@@ -3,13 +3,14 @@ package com.netenc.app.data
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
 /**
  * سناریوهای سازمانی غنی و ملموس — هر کدام با داستان واقعی، علائم، وظایف گام‌به‌گام،
  * شواهد، راه‌حل و معیار Verify.
  */
 object ScenarioSeeder {
-    private const val META = "scenarios_seeded_v5_rich"
+    private const val META = "scenarios_seeded_v6_shared_150"
 
     data class RichScenario(
         val name: String,
@@ -262,43 +263,56 @@ object ScenarioSeeder {
         val db = AppDatabase.get(context)
         val dao = db.scenarioDao()
         val existing = dao.count()
-        if (existing > 0 && db.lessonDao().getMeta(META) == "1" && existing >= RICH.size) {
-            return@withContext existing
-        }
+        if (existing >= 150 && db.lessonDao().getMeta(META) == "1") return@withContext existing
 
-        val items = RICH.mapIndexed { idx, r ->
-            val i = idx + 1
-            val code = "CAP-%03d".format(i)
-            sc(
-                code = code,
-                title = r.name,
-                users = 200 + (i * 37) % 2800,
-                sites = 1 + (i % 5),
-                vendors = r.vendors,
-                business = r.business,
-                req = "پایداری سرویس، جمع‌آوری شواهد، Fix با backup، Verify از کلاینت واقعی، Runbook.",
-                constraints = "پنجره Change محدود؛ حداقل قطعی؛ هماهنگی با تیم‌های وابسته.",
-                incident = r.incident,
-                symptoms = r.symptoms,
-                tasks = r.tasks,
-                expected = "سرویس پایدار + مستند RCA + Runbook قابل استفاده توسط شیفت بعد",
-                hints = r.hints,
-                solution = r.solution,
-                verification = r.verification,
-                difficulty = r.difficulty,
-                hours = r.hours,
-            )
+        val fromSharedPack = try {
+            val raw = context.assets.open("scenarios_150.json").bufferedReader(Charsets.UTF_8).use { it.readText() }
+            val arr = JSONObject(raw).optJSONArray("scenarios") ?: throw IllegalStateException("missing scenarios array")
+            (0 until arr.length()).map { index ->
+                val o = arr.getJSONObject(index)
+                ScenarioEntity(
+                    code = o.optString("code"), titleFa = o.optString("title_fa"),
+                    titleEn = o.optString("title_en"), category = o.optString("category", "Troubleshooting"),
+                    level = o.optString("level", "L3"), difficulty = o.optString("difficulty", "متوسط"),
+                    users = o.optInt("users", 0), sites = o.optInt("sites", 1), vendors = o.optString("vendors"),
+                    businessContext = o.optString("business_context"), requirements = o.optString("requirements"),
+                    constraintsText = o.optString("constraints_text"), initialState = o.optString("initial_state"),
+                    incident = o.optString("incident"), symptoms = o.optString("symptoms"),
+                    objectives = o.optString("objectives"), tasks = o.optString("tasks"), hints = o.optString("hints"),
+                    expectedResult = o.optString("expected_result"), solution = o.optString("solution"),
+                    verification = o.optString("verification"), skillsRequired = o.optString("skills_required"),
+                    estimatedHours = o.optInt("estimated_hours", 2)
+                )
+            }.filter { it.code.isNotBlank() && it.titleFa.isNotBlank() }
+        } catch (_: Exception) { emptyList() }
+
+        val finalItems = if (fromSharedPack.size >= 150) fromSharedPack else {
+            val baseItems = RICH.mapIndexed { idx, r ->
+                val i = idx + 1
+                sc(
+                    code = "CAP-%03d".format(i), title = r.name, users = 200 + (i * 37) % 2800,
+                    sites = 1 + (i % 5), vendors = r.vendors, business = r.business,
+                    req = "پایداری سرویس، جمع‌آوری شواهد، Fix با backup، Verify از کلاینت واقعی، Runbook.",
+                    constraints = "پنجره Change محدود؛ حداقل قطعی؛ هماهنگی با تیم‌های وابسته.",
+                    incident = r.incident, symptoms = r.symptoms, tasks = r.tasks,
+                    expected = "سرویس پایدار + مستند RCA + Runbook قابل استفاده توسط شیفت بعد",
+                    hints = r.hints, solution = r.solution, verification = r.verification,
+                    difficulty = r.difficulty, hours = r.hours
+                )
+            }
+            (1..150).map { i ->
+                val base = baseItems[(i - 1) % baseItems.size]
+                if (i <= baseItems.size) base else base.copy(
+                    code = "CAP-%03d".format(i),
+                    titleFa = "${base.titleFa} — تمرین تکمیلی ${i}",
+                    businessContext = base.businessContext + "\nبستر تمرین شماره ${i}: ابتدا baseline، سپس capture و counters را ثبت کنید.",
+                    initialState = "محیط آزمایشگاهی کنترل‌شده؛ baseline ثبت شده؛ این مورد تمرین ${i} است.",
+                    users = 150 + (i * 23) % 3200, sites = 1 + i % 5
+                )
+            }
         }
-        val expanded = (1..maxOf(40, RICH.size)).map { i ->
-            val base = items[(i - 1) % items.size]
-            if (i <= items.size) base
-            else base.copy(
-                code = "CAP-%03d".format(i),
-                titleFa = base.titleFa + " — واریانت #$i",
-                users = 150 + (i * 23) % 3200,
-            )
-        }
-        dao.upsertAll(expanded)
+        // حفظ سناریوهای محلی قبلی؛ بستهٔ مشترک OPS-001..OPS-150 به‌صورت upsert افزوده می‌شود.
+        dao.upsertAll(finalItems)
         db.lessonDao().putMeta(SyncMetaEntity(META, "1"))
         dao.count()
     }
