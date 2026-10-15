@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "chapter_order": 66,
+  "chapter_title_fa": "مسیریابی عمیق OSPF/BGP/Redistribution",
+  "source_of_truth": true,
+  "pack_metadata": {
+    "schema_version": 1,
+    "chapter_order": 66,
+    "chapter_title_fa": "مسیریابی عمیق OSPF/BGP/Redistribution",
+    "chapter_title_en": "Chapter 66 — Ospf Bgp Redistribution",
+    "merge_strategy": "by_title",
+    "preserve_existing_records": true,
+    "source_of_truth_note": "Base definitions live in lessons/base_curriculum.json. Source-of-truth fields are separated into lessons, questions, answers, examples, commands and labs; chapter.json is a generated compatibility pack."
+  },
+  "items": [
+    {
+      "uid": "lesson:ch66:bp:0001",
+      "title_fa": "[L2] OSPF و معماری Link-State",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "OSPF یک پروتکل Link-State است: روترها وضعیت لینک‌های خود را با LSAها اعلام می‌کنند، LSDB می‌سازند و با الگوریتم Dijkstra/SPF مسیرهای کم‌هزینه را محاسبه می‌کنند. چرخه اصلی شامل Hello، کشف Neighbor، همگام‌سازی LSDB، اجرای",
+      "full_content": "OSPF یک پروتکل Link-State است: روترها وضعیت لینک‌های خود را با LSAها اعلام می‌کنند، LSDB می‌سازند و با الگوریتم Dijkstra/SPF مسیرهای کم‌هزینه را محاسبه می‌کنند. چرخه اصلی شامل Hello، کشف Neighbor، همگام‌سازی LSDB، اجرای SPF و نصب مسیر منتخب در RIB/FIB است. LSDB نقشه توپولوژی است؛ RIB جدول مسیرهای منتخب و FIB ساختار فورواردینگ بسته‌هاست. وجود Prefix در LSDB تضمین نمی‌کند که در RIB نصب شود؛ سیاست، مسیر بهتر از منبع دیگر یا Next-Hop نامعتبر می‌تواند مانع شود.\n\nتشبیه: هر روتر مانند شهری است که وضعیت جاده‌های اطرافش را اعلام می‌کند؛ همه روترها نقشه منطقه را می‌سازند و مسیر را از روی نقشه محاسبه می‌کنند. برخلاف پروتکل‌های Distance-Vector، OSPF فقط فاصله اعلام‌شده از همسایه را مبنا قرار نمی‌دهد.\n\nاجزای کلیدی: Router ID شناسه منطقی روتر است؛ Neighbor روتر کشف‌شده است؛ Adjacency رابطه تبادل پایگاه داده است؛ LSA اعلان وضعیت لینک/Prefix است؛ LSDB پایگاه داده Area است؛ SPF درخت کوتاه‌ترین مسیر را می‌سازد. OSPF در هر Area اطلاعات توپولوژی مرتبط را همگام می‌کند. Area 0 ستون فقرات طراحی چندمنطقه‌ای است.\n\nمثال: R1 و R2 در Area 0 روی 10.0.12.0/30 همسایه می‌شوند. اگر R2 شبکه 192.168.20.0/24 را اعلام کند، R1 آن را محاسبه می‌کند و در صورت نبود مانع در RIB نصب می‌کند. پس از قطع لینک، LSA جدید منتشر می‌شود و روترها با به‌روزرسانی LSDB و اجرای SPF همگرا می‌شوند. همگرایی می‌تواند بازه‌ای کوتاه با تفاوت موقت جدول‌ها داشته باشد.\n\n## دستورات\n\nCisco IOS/IOS-XE (دستورات مشاهده‌ای):\nshow ip ospf neighbor\nshow ip ospf database\nshow ip route\nshow ip bgp summary\nshow ip bgp <prefix>\nshow ip protocols\nshow route-map\nshow ip prefix-list",
+      "notes": "blueprint status=reviewed_content",
+      "lesson_order": 1,
+      "meta": {
+        "source_uid": "lesson:ch14:bp:0001",
+        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:bp:0002",
+      "title_fa": "[L2] SPF و Cost",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "OSPF با الگوریتم Dijkstra روی گراف حاصل از LSDB درخت کوتاه‌ترین مسیر را می‌سازد. هر لینک دارای Cost است و مسیر با مجموع Cost کمتر ترجیح دارد؛ OSPF معمولاً سریع‌ترین لینک منفرد را انتخاب نمی‌کند. مقدار Cost پیش‌فرض در برخ",
+      "full_content": "OSPF با الگوریتم Dijkstra روی گراف حاصل از LSDB درخت کوتاه‌ترین مسیر را می‌سازد. هر لینک دارای Cost است و مسیر با مجموع Cost کمتر ترجیح دارد؛ OSPF معمولاً سریع‌ترین لینک منفرد را انتخاب نمی‌کند. مقدار Cost پیش‌فرض در برخی پیاده‌سازی‌های Cisco از پهنای‌باند مرجع و پهنای‌باند رابط محاسبه می‌شود، بنابراین باید مقدار واقعی را با CLI بررسی کرد.\n\nمثال: مسیر A دارای Costهای 10+10=20 و مسیر B دارای 5+30=35 است؛ با ثابت‌بودن سایر شرایط، مسیر A ترجیح OSPF دارد. اگر چند مسیر هم‌هزینه باشند، ممکن است ECMP نصب شود.\n\nمراحل تحلیل: ابتدا Cost رابط را ببین؛ سپس Prefix را در جدول مسیر بررسی کن؛ در نهایت FIB را کنترل کن. LSDB، نتیجه SPF، RIB و FIB یک چیز نیستند. Administrative Distance نیز با Cost فرق دارد: Cost برای مقایسه مسیرهای OSPF و AD برای مقایسه منابع مسیر در روتر استفاده می‌شود. تغییر Cost بدون بررسی مسیر برگشت می‌تواند ترافیک نامتقارن بسازد.\n\n## دستورات\n\nCisco IOS/IOS-XE (دستورات مشاهده‌ای):\nshow ip ospf neighbor\nshow ip ospf database\nshow ip route\nshow ip bgp summary\nshow ip bgp <prefix>\nshow ip protocols\nshow route-map\nshow ip prefix-list",
+      "notes": "blueprint status=reviewed_content",
+      "lesson_order": 2,
+      "meta": {
+        "source_uid": "lesson:ch14:bp:0002",
+        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:bp:0003",
+      "title_fa": "[L2] Neighbor و Adjacency",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "OSPF با Hello همسایه‌ها را کشف می‌کند. حالت‌های متداول شامل Down، Init، 2-Way، ExStart، Exchange، Loading و Full است. Full یعنی پایگاه داده مربوط به آن Adjacency همگام شده؛ به‌تنهایی تضمین نمی‌کند همه Prefixها در جدول مس",
+      "full_content": "OSPF با Hello همسایه‌ها را کشف می‌کند. حالت‌های متداول شامل Down، Init، 2-Way، ExStart، Exchange، Loading و Full است. Full یعنی پایگاه داده مربوط به آن Adjacency همگام شده؛ به‌تنهایی تضمین نمی‌کند همه Prefixها در جدول مسیر نصب شده‌اند. در شبکه Broadcast، روترهای غیر DR/BDR ممکن است به‌طور طبیعی در 2-Way باقی بمانند و با همه روترها Full نشوند.\n\nعیب‌یابی مرحله‌ای: ۱) IP و Mask و Reachability؛ ۲) Area ID؛ ۳) Hello/Dead Timer؛ ۴) نوع شبکه؛ ۵) احراز هویت؛ ۶) Router ID تکراری؛ ۷) Passive Interface و ACL؛ ۸) MTU، به‌ویژه گیرکردن در ExStart/Exchange؛ ۹) لاگ‌ها. اگر Neighbor Full است اما مسیر وجود ندارد، اعلان Prefix، LSDB، فیلترها و RIB را بررسی کن، نه اینکه بی‌دلیل همسایگی را از نو بسازی.\n\n## دستورات\n\nCisco IOS/IOS-XE (دستورات مشاهده‌ای):\nshow ip ospf neighbor\nshow ip ospf database\nshow ip route\nshow ip bgp summary\nshow ip bgp <prefix>\nshow ip protocols\nshow route-map\nshow ip prefix-list",
+      "notes": "blueprint status=reviewed_content",
+      "lesson_order": 3,
+      "meta": {
+        "source_uid": "lesson:ch14:bp:0003",
+        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:bp:0004",
+      "title_fa": "[L2] BGP و Autonomous System",
+      "chapter_order": 66,
+      "subchapter_order": 4,
+      "level": "L2",
+      "summary": "BGP پروتکل Path-Vector برای تبادل Reachability بین Autonomous Systemهاست و سیاست‌محور است. AS مجموعه‌ای از شبکه‌ها تحت سیاست مسیریابی مشترک است و ASN شناسه عددی آن است. BGP معمولاً روی TCP پورت 179 کار می‌کند و Prefixها",
+      "full_content": "BGP پروتکل Path-Vector برای تبادل Reachability بین Autonomous Systemهاست و سیاست‌محور است. AS مجموعه‌ای از شبکه‌ها تحت سیاست مسیریابی مشترک است و ASN شناسه عددی آن است. BGP معمولاً روی TCP پورت 179 کار می‌کند و Prefixها را همراه Path Attributeهایی مانند AS_PATH، NEXT_HOP، LOCAL_PREF، MED و Community مبادله می‌کند.\n\nOSPF برای مسیریابی داخلی از Link-State و SPF استفاده می‌کند؛ BGP برای انتخاب مسیر بین دامنه‌ها Attribute و Policy را ارزیابی می‌کند. کوتاه‌ترین مسیر فیزیکی الزاماً مسیر برنده BGP نیست.\n\nمثال: سازمانی با دو ISP می‌تواند از eBGP برای تبادل Prefixهای مجاز استفاده کند و همچنان OSPF را برای شبکه داخلی نگه دارد. ASN و Prefixهای عمومی باید طبق تخصیص و مجوزهای مربوط استفاده شوند؛ در آزمایشگاه از ASN و آدرس‌های مستندسازی‌شده استفاده کن.\n\n## دستورات\n\nCisco IOS/IOS-XE (دستورات مشاهده‌ای):\nshow ip ospf neighbor\nshow ip ospf database\nshow ip route\nshow ip bgp summary\nshow ip bgp <prefix>\nshow ip protocols\nshow route-map\nshow ip prefix-list",
+      "notes": "blueprint status=reviewed_content",
+      "lesson_order": 4,
+      "meta": {
+        "source_uid": "lesson:ch14:bp:0004",
+        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:bp:0005",
+      "title_fa": "[L2] eBGP در برابر iBGP",
+      "chapter_order": 66,
+      "subchapter_order": 4,
+      "level": "L2",
+      "summary": "eBGP بین ASNهای متفاوت و iBGP داخل یک AS تشکیل می‌شود. در eBGP، ASN ارسال‌کننده معمولاً به AS_PATH افزوده می‌شود تا حلقه‌های بین ASها قابل تشخیص باشند. در iBGP، مسیر آموخته‌شده از یک همتای iBGP به‌طور پیش‌فرض به همتای iB",
+      "full_content": "eBGP بین ASNهای متفاوت و iBGP داخل یک AS تشکیل می‌شود. در eBGP، ASN ارسال‌کننده معمولاً به AS_PATH افزوده می‌شود تا حلقه‌های بین ASها قابل تشخیص باشند. در iBGP، مسیر آموخته‌شده از یک همتای iBGP به‌طور پیش‌فرض به همتای iBGP دیگر بازاعلام نمی‌شود؛ برای مقیاس، Full Mesh یا Route Reflector طراحی می‌شود.\n\nNext-Hop نکته مهمی است: eBGP اغلب Next-Hop را به روتر ارسال‌کننده تغییر می‌دهد؛ iBGP معمولاً آن را حفظ می‌کند، مگر تنظیمات خلاف آن را انجام دهد. بنابراین ممکن است Prefix در جدول BGP دیده شود اما به دلیل Next-Hop غیرقابل دسترس در RIB نصب نشود.\n\nدر عیب‌یابی، Session، Prefix در BGP، Next-Hop، نصب در RIB و سیاست‌های ورودی/خروجی را جداگانه بررسی کن. Established بودن نشست فقط سلامت نشست کنترلی را نشان می‌دهد.\n\n## دستورات\n\nCisco IOS/IOS-XE (دستورات مشاهده‌ای):\nshow ip ospf neighbor\nshow ip ospf database\nshow ip route\nshow ip bgp summary\nshow ip bgp <prefix>\nshow ip protocols\nshow route-map\nshow ip prefix-list",
+      "notes": "blueprint status=reviewed_content",
+      "lesson_order": 5,
+      "meta": {
+        "source_uid": "lesson:ch14:bp:0005",
+        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:bp:0006",
+      "title_fa": "[L2] BGP Peering",
+      "chapter_order": 66,
+      "subchapter_order": 4,
+      "level": "L2",
+      "summary": "BGP ابتدا TCP را برقرار می‌کند و سپس از پیام‌های OPEN، KEEPALIVE، UPDATE و NOTIFICATION برای مدیریت نشست و تبادل مسیر استفاده می‌کند. پیش‌نیازها: Reachability بین همتاها، Remote-AS صحیح، TCP/179 مجاز، آدرس مبدأ مناسب، تن",
+      "full_content": "BGP ابتدا TCP را برقرار می‌کند و سپس از پیام‌های OPEN، KEEPALIVE، UPDATE و NOTIFICATION برای مدیریت نشست و تبادل مسیر استفاده می‌کند. پیش‌نیازها: Reachability بین همتاها، Remote-AS صحیح، TCP/179 مجاز، آدرس مبدأ مناسب، تنظیمات سازگار و احراز هویت یکسان در صورت استفاده. برای همتای Loopback ممکن است update-source و eBGP multihop لازم باشد.\n\nحالت‌های رایج ماشین حالت شامل Idle، Connect، Active، OpenSent، OpenConfirm و Established هستند. گیرکردن در Active اغلب به اتصال TCP یا Reachability مربوط است، اما باید لاگ و تنظیمات را بررسی کرد. پس از Established اگر Prefix نمی‌رسد، اعلان سمت مقابل، Prefix Filter، Route Policy، Address Family و محدودیت Prefix را بررسی کن. پیش از اتصال واقعی به ISP، فیلترهای ورودی/خروجی و سیاست Default Route را طراحی کن.\n\n## دستورات\n\nCisco IOS/IOS-XE (دستورات مشاهده‌ای):\nshow ip ospf neighbor\nshow ip ospf database\nshow ip route\nshow ip bgp summary\nshow ip bgp <prefix>\nshow ip protocols\nshow route-map\nshow ip prefix-list",
+      "notes": "blueprint status=reviewed_content",
+      "lesson_order": 6,
+      "meta": {
+        "source_uid": "lesson:ch14:bp:0006",
+        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:bp:0007",
+      "title_fa": "[L2] Redistribution؛ مفاهیم",
+      "chapter_order": 66,
+      "subchapter_order": 5,
+      "level": "L2",
+      "summary": "Redistribution یعنی واردکردن مسیرهای یک منبع مسیریابی به منبع دیگر؛ برای نمونه OSPF به BGP یا BGP به OSPF. این کار صرفاً کپی‌کردن همه مسیرها نیست و باید با سیاست محدود انجام شود. موارد کاربرد: مهاجرت پروتکل، اتصال دامنه‌",
+      "full_content": "Redistribution یعنی واردکردن مسیرهای یک منبع مسیریابی به منبع دیگر؛ برای نمونه OSPF به BGP یا BGP به OSPF. این کار صرفاً کپی‌کردن همه مسیرها نیست و باید با سیاست محدود انجام شود. موارد کاربرد: مهاجرت پروتکل، اتصال دامنه‌های مدیریتی، انتشار Prefixهای داخلی به BGP یا تزریق Default Route به OSPF.\n\nخطرها: حلقه مسیر، Metric نامتناسب، انتشار Prefixهای ناخواسته، بزرگ‌شدن جدول‌ها و تغییر مسیر ترافیک. طراحی امن مشخص می‌کند دقیقاً چه Prefixهایی، در چه جهتی و با چه Metric/Attributeای مجازند. از Prefix-List و Route-Map/Policy استفاده کن؛ سیاست پیش‌فرض را محدودکننده نگه دار؛ مسیرهای برگشتی را با Route Tag یا BGP Community علامت‌گذاری و مهار کن؛ پیش و پس از تغییر، RIB، جدول OSPF و جدول BGP را مقایسه کن.\n\nنکته: Administrative Distance فقط انتخاب محلی مسیر را کنترل می‌کند و جایگزین فیلتر انتشار یا جلوگیری از Redistribution Loop نیست.\n\n## دستورات\n\nCisco IOS/IOS-XE (دستورات مشاهده‌ای):\nshow ip ospf neighbor\nshow ip ospf database\nshow ip route\nshow ip bgp summary\nshow ip bgp <prefix>\nshow ip protocols\nshow route-map\nshow ip prefix-list",
+      "notes": "blueprint status=reviewed_content",
+      "lesson_order": 7,
+      "meta": {
+        "source_uid": "lesson:ch14:bp:0007",
+        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:bp:0008",
+      "title_fa": "[L2] Seed Metric و Metric مقصد",
+      "chapter_order": 66,
+      "subchapter_order": 5,
+      "level": "L2",
+      "summary": "Metric پروتکل‌ها قابل جایگزینی مستقیم نیست: OSPF از Cost، برخی پروتکل‌ها از معیارهای دیگر و BGP از مجموعه Attributeها استفاده می‌کند. هنگام Redistribution باید برای پروتکل مقصد Metric و نوع مسیر مناسب تعیین شود؛ رفتار مق",
+      "full_content": "Metric پروتکل‌ها قابل جایگزینی مستقیم نیست: OSPF از Cost، برخی پروتکل‌ها از معیارهای دیگر و BGP از مجموعه Attributeها استفاده می‌کند. هنگام Redistribution باید برای پروتکل مقصد Metric و نوع مسیر مناسب تعیین شود؛ رفتار مقدار پیش‌فرض به سازنده و نسخه وابسته است.\n\nدر OSPF، مسیر خارجی می‌تواند E1 یا E2 باشد. E1 هزینه داخلی تا ASBR را همراه Metric خارجی لحاظ می‌کند؛ E2 معمولاً Metric خارجی را معیار اصلی نگه می‌دارد و هزینه داخلی در شرایط بعدی اهمیت پیدا می‌کند. در چند ASBR یا Metricهای برابر، جزئیات انتخاب باید روی نسخه مورد استفاده بررسی شود.\n\nپس از Redistribution، نوع مسیر و Metric را در جدول Route و LSDB ببین. به مقادیر پیش‌فرض ناشناخته اعتماد نکن و تغییر را در لابراتوار با مسیر رفت و برگشت آزمایش کن.\n\n## دستورات\n\nCisco IOS/IOS-XE (دستورات مشاهده‌ای):\nshow ip ospf neighbor\nshow ip ospf database\nshow ip route\nshow ip bgp summary\nshow ip bgp <prefix>\nshow ip protocols\nshow route-map\nshow ip prefix-list",
+      "notes": "blueprint status=reviewed_content",
+      "lesson_order": 8,
+      "meta": {
+        "source_uid": "lesson:ch14:bp:0008",
+        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:bp:0009",
+      "title_fa": "[L2] Loop Prevention در Redistribution",
+      "chapter_order": 66,
+      "subchapter_order": 5,
+      "level": "L2",
+      "summary": "حلقه می‌تواند زمانی شکل بگیرد که مسیر از OSPF به BGP بازتوزیع شود و بعد دوباره از BGP به OSPF بازگردد. AS_PATH به‌تنهایی همه حلقه‌های بین پروتکل‌ها یا داخل یک AS را حل نمی‌کند. طراحی باید مسیرهای واردشده را علامت‌گذاری ک",
+      "full_content": "حلقه می‌تواند زمانی شکل بگیرد که مسیر از OSPF به BGP بازتوزیع شود و بعد دوباره از BGP به OSPF بازگردد. AS_PATH به‌تنهایی همه حلقه‌های بین پروتکل‌ها یا داخل یک AS را حل نمی‌کند. طراحی باید مسیرهای واردشده را علامت‌گذاری کند و هنگام ورود مجدد آن‌ها را رد کند.\n\nابزارها: Prefix-List برای محدودکردن Prefixها؛ Route-Map/Policy برای شروط و تغییر Attribute؛ Route Tag برای شناسایی مسیرهای بازتوزیع‌شده؛ BGP Community برای حمل برچسب سیاستی در دامنه BGP؛ و پایش تعداد Prefixها.\n\nالگوی طراحی: مسیرهای OSPF واردشده به BGP را با Tag/Community مشخص کن؛ هنگام بازتوزیع از BGP به OSPF مسیرهای دارای همان علامت را رد کن؛ اعلان به ISP را به Prefixهای مجاز محدود کن؛ قطع و بازگشت لینک را در لابراتوار آزمایش کن. استفاده از AD به‌عنوان تنها راه جلوگیری از حلقه اشتباه است؛ AD انتشار مسیر را کنترل نمی‌کند.\n\n## دستورات\n\nCisco IOS/IOS-XE (دستورات مشاهده‌ای):\nshow ip ospf neighbor\nshow ip ospf database\nshow ip route\nshow ip bgp summary\nshow ip bgp <prefix>\nshow ip protocols\nshow route-map\nshow ip prefix-list",
+      "notes": "blueprint status=reviewed_content",
+      "lesson_order": 9,
+      "meta": {
+        "source_uid": "lesson:ch14:bp:0009",
+        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+      },
+      "source_status": "review_required"
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "chapter_order": 67,
+  "category": "examples",
+  "source_of_truth": true,
+  "items": [
+    {
+      "uid": "lesson:ch67:bp:0001",
+      "title_fa": "[L2] Policy",
+      "title_en": "",
+      "fields": {
+        "examples": "قبل از masquerade عمومی، rule مناسب برای bypass کردن NAT ترافیک بین subnetهای VPN قرار می‌گیرد؛ ترتیب دقیق را با طراحی و نسخه RouterOS بررسی کن."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0002",
+      "title_fa": "[L2] Peer",
+      "title_en": "",
+      "fields": {
+        "examples": "اگر peerهای متعددی تعریف شده‌اند، بررسی کن اتصال با peer/identity مورد انتظار match می‌شود؛ از wildcardهای بیش از حد گسترده پرهیز کن."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0003",
+      "title_fa": "[L2] Proposal",
+      "title_en": "",
+      "fields": {
+        "examples": "تغییر proposal ممکن است Child SAهای موجود را پس از rekey قطع کند؛ زمان و rollback را برنامه‌ریزی کن."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0004",
+      "title_fa": "[L2] Mode Config",
+      "title_en": "",
+      "fields": {
+        "examples": "کلاینت آدرس گرفته ولی شبکه داخلی را نمی‌بیند: route، policy، NAT و مسیر برگشت را جدا بررسی کن."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0005",
+      "title_fa": "[L2] Site-to-Site",
+      "title_en": "",
+      "fields": {
+        "examples": "سناریو: IKE برقرار است اما شبکه شعبه دیده نمی‌شود. route، policy، selector و NAT را به‌ترتیب بررسی کن؛ قبل از restart، خروجی وضعیت و لاگ را ذخیره کن."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0006",
+      "title_fa": "[L2] Dial-up",
+      "title_en": "",
+      "fields": {
+        "examples": "اگر کلاینت وصل می‌شود ولی subnet داخلی را نمی‌بیند، address pool به‌تنهایی کافی نیست؛ route، split tunnel و policy نیز باید درست باشند."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0007",
+      "title_fa": "[L2] Phase 1/2",
+      "title_en": "",
+      "fields": {
+        "examples": "تغییر proposal ممکن است تونل‌های وابسته را قطع کند؛ ابتدا از تنظیمات backup بگیر و پنجره تغییر تعریف کن."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0008",
+      "title_fa": "[L2] Routing",
+      "title_en": "",
+      "fields": {
+        "examples": "برای تست، از یک میزبان داخل subnet واقعی استفاده کن؛ ping از خود فایروال ممکن است source انتخابی متفاوت داشته باشد."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0009",
+      "title_fa": "[L2] Portal",
+      "title_en": "",
+      "fields": {
+        "examples": "Portal access را با tunnel access یکی ندان؛ انتشار یک برنامه خاص الزاماً دسترسی IP عمومی به subnet را ایجاد نمی‌کند."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0010",
+      "title_fa": "[L2] Tunnel",
+      "title_en": "",
+      "fields": {
+        "examples": "کلاینت IP گرفته اما سرویس داخلی در دسترس نیست: اول route و policy و مسیر برگشت، سپس DNS و MTU را بررسی کن."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0011",
+      "title_fa": "[L2] Authentication",
+      "title_en": "",
+      "fields": {
+        "examples": "برای تغییر گروه، تست با حساب آزمایشی و یک کاربر نماینده انجام بده؛ دسترسی ادمین را به‌عنوان تست عمومی استفاده نکن."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0012",
+      "title_fa": "[L2] IPsec IKEv2",
+      "title_en": "",
+      "fields": {
+        "examples": "سناریو: IKE SA برقرار است اما ping از `10.10.1.10` به `10.20.1.20` پاسخ نمی‌گیرد.\n1. روی هر دو سمت Child SA را ببین.\n2. selector باید شبکه‌های `10.10.0.0/16` و `10.20.0.0/16` را پوشش دهد.\n3. route مقصد و route برگشت را بررسی کن.\n4. ببین شمارنده encaps/decaps افزایش می‌یابد یا خیر: encaps بالا و decaps صفر معمولاً به مسیر برگشت، peer/selector یا فیلتر سمت مقابل اشاره می‌کند؛ این نشانه قطعی نیست و باید با capture تأیید شود.\n5. NAT exemption را پیش از ruleهای عمومی source NAT بررسی کن."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0013",
+      "title_fa": "[L2] SSL VPN",
+      "title_en": "",
+      "fields": {
+        "examples": "کاربر به VPN وصل شده و IP از pool گرفته اما `intranet.example.local` باز نمی‌شود:\n1. `nslookup` را اجرا و DNS پاسخ‌دهنده را ثبت کن.\n2. اگر نام resolve نمی‌شود، DNS/suffix/split DNS را بررسی کن.\n3. اگر IP resolve می‌شود، route مقصد را با `route print` بررسی کن.\n4. اتصال به IP و پورت سرویس را جداگانه تست کن.\n5. policy و مسیر برگشت را در فایروال بررسی کن.\n6. اگر فقط انتقال فایل بزرگ مشکل دارد، MTU/MSS را بررسی کن."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0014",
+      "title_fa": "[L2] IPsec SA",
+      "title_en": "",
+      "fields": {
+        "examples": "اگر بسته از شبکه A به B ارسال می‌شود، encaps در A بالا می‌رود اما decaps در B بالا نمی‌رود، نقطه بررسی را به مسیر بین دو peer و رسیدن ESP/UDP4500 در B محدود کن. اگر در B بسته decrypt می‌شود اما میزبان پاسخ نمی‌دهد، دیگر مشکل صرفاً IKE نیست؛ policy داخلی، route برگشت یا فایروال میزبان را بررسی کن."
+      }
+    },
+    {
+      "uid": "lesson:ch67:bp:0015",
+      "title_fa": "[L2] Performance",
+      "title_en": "",
+      "fields": {
+        "examples": "کاربران می‌گویند ورود به فایل‌سرور موفق است اما انتقال فایل‌های بزرگ متوقف می‌شود. اگر ارتباط کوچک پایدار است، بررسی MTU/PMTUD/MSS و ICMP را قبل از تغییر PSK یا الگوریتم انجام بده. اگر throughput از ابتدا پایین و CPU یکی از peerها نزدیک سقف است، محدودیت ظرفیت رمزنگاری یا inspection محتمل‌تر است."
+      }
+    }
+  ]
+}
