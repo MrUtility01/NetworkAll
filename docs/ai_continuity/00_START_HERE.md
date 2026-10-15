@@ -14,7 +14,8 @@
    - `02_CONTENT_SCHEMA.md`
    - `03_PROGRESS.md`
    - `04_NEXT_ACTIONS.md`
-   - `05_CHANGELOG_AI.md` (latest entries)\n   - `CHAPTER_RICHNESS_AUDIT.md` (canonical 68-chapter targets, Chapter 68 exception, and audit status)
+   - `05_CHANGELOG_AI.md` (latest entries)\n   - `CHAPTER_RICHNESS_AUDIT.md` (canonical targets and audit status)
+   - `CHAPTER_TARGET_SELECTION.md` (the 68-row user selection form; retain the user’s per-chapter choices)
 3. Check `03_PROGRESS.md` before any content work.\n4. Before chapter work, apply the per-chapter targets and validation gates in `CHAPTER_RICHNESS_AUDIT.md`; do not infer completion from file size or build success.
 4. After every batch, update `03_PROGRESS.md` + `05_CHANGELOG_AI.md`.
 5. Never violate rules in `01_PROJECT_RULES.md`.
