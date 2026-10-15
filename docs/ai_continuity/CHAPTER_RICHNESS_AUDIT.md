@@ -1,172 +1,128 @@
-# CHAPTER RICHNESS AUDIT
+# ممیزی غنای محتوا — NetworkAll، ۶۸ فصل
 
-## Canonical audit policy — all 68 chapters (registered 2026-10-15)
+**وضعیت کل پروژه: ممیزی‌نشده.** این سند سیاست و دفتر ثبت ممیزی است؛ ثبت هدف‌ها به معنی اندازه‌گیری، اعتبارسنجی یا تکمیل محتوا نیست.
 
-**This section is the active specification. It is not evidence that the audit or enrichment has been completed.**
+## ۱. سیاست قطعی
 
-### Global defaults (Chapters 1–67, unless an explicit per-chapter exception is approved)
+### پیش‌فرض فصل‌های ۱ تا ۶۷
 
-| Setting | Required target |
-|---|---|
-| Default expertise level | **فوق‌حرفه‌ای** |
-| Target text/structured-content size | **2 MiB per chapter** (measure UTF-8 source files/JSON structure; report compressed and uncompressed separately where relevant) |
-| Media allowance | **Maximum 5 MiB per chapter**; report separately from text/structured content |
-| Independent practical examples | **100 per chapter** |
-| Independent troubleshooting scenarios | **150 per chapter** |
-| Exam questions | **100 per chapter** |
-| Answer key | Separate file/data structure; never leak answers into question prompts |
-| Explanations | Include deep explanations, worked solutions, command output, safe labs, troubleshooting evidence and verification unless a chapter-specific exception says otherwise |
+| معیار | هدف قطعی |
+|---|---:|
+| سطح هدف | **خبره** |
+| هدف محتوای متنی/ساختاری | **5 MiB برای هر فصل** |
+| سقف رسانه، جدا از محتوا | **8 MiB برای هر فصل** |
+| مثال عملی مستقل | **100** |
+| سناریوی عیب‌یابی مستقل | **150** |
+| سؤال آزمون | **100** |
+| پاسخ‌نامه | فایل/ساختار جدا از سؤال‌ها |
+| توضیحات | لازم؛ مگر استثنای مصوب فصل |
 
-These are targets, not permission to pad files. Content size is an accounting target, **not** a proxy for scientific correctness, depth, uniqueness, or professional quality. Do not create repeated/template-only records to hit a number. Every example, scenario and question must be meaningfully distinct, chapter-specific, technically accurate, testable and traceable to its learning objective.
+### استثنای مستقل فصل ۶۸
 
-### Approved exception — Chapter 68
+| معیار | هدف فصل ۶۸ |
+|---|---:|
+| عنوان مرجع | دانشنامه جامع دستورات |
+| سطح | **خبره** |
+| محتوای متنی/ساختاری | **5 MiB** |
+| سقف رسانه، جدا از محتوا | **5 MiB** |
+| مثال مستقل | **100** |
+| سناریوی مستقل | **150** |
+| سؤال آزمون | **100** |
+| توضیحات | **ندارد** |
 
-| Setting | Chapter 68 requirement |
-|---|---|
-| Actual title/topic | دانشنامه جامع دستورات (verify the exact canonical title in source data during the audit) |
-| Expertise level | **خبره** |
-| Target text/structured-content size | **5 MiB** |
-| Media allowance | **Maximum 5 MiB**, measured and reported separately from text/structured content |
-| Independent practical examples | **100** |
-| Independent troubleshooting scenarios | **150** |
-| Exam questions | **100** |
-| Answer key | Separate file/data structure; never leak answers into question prompts |
-| Explanations | **ندارد** — explanations are not a required quota for this exception |
-| Notes | **ندارد** |
-| Status | **Policy recorded; audit and validation pending** |
+**قواعد اندازه‌گیری:** 1 MiB = 1,048,576 بایت. حجم متن/ساختار و حجم رسانه دو شاخص مستقل‌اند و نباید با هم جمع یا جایگزین شوند. برای هر فصل باید اندازهٔ فایل منبع، اندازهٔ بازشده و فشردهٔ دارایی Android و حجم دادهٔ قابل استفاده در Windows جدا ثبت شود. هدف حجم، امتیاز کیفیت علمی نیست و مجوز افزودن محتوای تکراری یا پرکننده محسوب نمی‌شود.
 
-This exception overrides the global defaults only for Chapter 68. The 5 MiB content target and 5 MiB media ceiling are separate measurements and must not be combined. Neither size target is evidence of scientific quality, uniqueness, completeness, or successful Android/Windows integration.
+## ۲. فهرست مرجع و دفتر ممیزی ۶۸ فصل
 
-### Required audit for every chapter, before enrichment is marked complete
+عنوان‌های ۱ تا ۶۳ از تعریف فصل‌ها در `server/core/full_curriculum.py` استخراج شده‌اند؛ عنوان‌های ۶۴ تا ۶۸ از `server/core/extra_chapters.py` و مسیرهای پک مرتبط بررسی شده‌اند. عنوان و منبع ثبت‌شده، مبنای شروع ممیزی است؛ وجود تعریف عنوان به معنی وجود محتوای عمیق یا یکسان بودن خروجی دو پلتفرم نیست.
 
-1. Read the canonical source and report the **exact title** (do not rely on approximate titles in older audit notes).
-2. Measure text/structured source size and media size separately. Record raw bytes and MiB; distinguish source-pack size, compressed Android asset size and Windows runtime/database size.
-3. Count unique lessons, examples, scenarios and exam questions; verify the separate answer-key count and references.
-4. Detect exact and near duplicates (stable IDs, normalized titles/text, repeated boilerplate, duplicated scenarios/questions).
-5. Review scientific coverage, missing prerequisite concepts, operational examples, command output, lab reproducibility, failure evidence, mitigation and verification.
-6. Verify schema, required fields, stable unique IDs, valid references and parseability.
-7. Verify Android and Windows consume the same intended canonical content; record any platform-specific exclusions, export/merge differences and test evidence.
-8. Report gaps and proposed changes first. Enrichment is not complete until content checks and both platform build/integration checks pass.
+| فصل | عنوان مرجع | منبع عنوان/تعریف | سطح | هدف محتوا | سقف رسانه | مثال | سناریو | آزمون | توضیحات | اندازه‌ها، شمارش و یافته‌ها | وضعیت |
+|---:|---|---|---|---:|---:|---:|---:|---:|---|---|---|
+| 01 | مبانی IT و معماری کامپیوتر | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 02 | اسمبل، عیب‌یابی و سرورهای سازمانی | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 03 | BIOS UEFI و بوت | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 04 | سیستم‌عامل پایه | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 05 | فایل‌سیستم و Storage پایه | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 06 | مبانی شبکه | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 07 | اترنت و سوییچینگ پایه | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 08 | IPv4 IPv6 ساب‌نتینگ | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 09 | ARP ICMP TCP UDP | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 10 | DNS | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 11 | DHCP و IPAM | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 12 | کابل‌کشی فیبر رک | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 13 | سوییچینگ سیسکو | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 14 | مسیریابی پیشرفته | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 15 | MPLS VRF L3VPN | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 16 | Multicast | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 17 | EVPN VXLAN | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 18 | SDN SD-WAN SASE | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 19 | MikroTik مبانی | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 20 | MikroTik Routing Firewall NAT | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 21 | MikroTik QoS VPN HA | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 22 | وایرلس سازمانی | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 23 | PtP PtMP | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 24 | FortiGate | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 25 | pfSense OPNsense Sophos | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 26 | PKI TLS | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 27 | AAA NAC | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 28 | Windows Server Core | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 29 | Active Directory | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 30 | Windows DNS DHCP NPS | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 31 | فایل چاپ DFS | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 32 | امنیت Endpoint ویندوز | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 33 | Entra ID Hybrid | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 34 | M365 Intune ایمیل | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 35 | PowerShell CMD | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 36 | مدیریت لینوکس | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 37 | شبکه لینوکس | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 38 | سرویس لینوکس وب | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 39 | امنیت لینوکس | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 40 | VMware Hyper-V | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 41 | Proxmox Docker | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 42 | Kubernetes | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 43 | شبکه ابری | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 44 | امنیت ابر Governance | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 45 | Storage سازمانی | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 46 | Backup DR | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 47 | Data Center | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 48 | HA و Load Balancing | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 49 | مانیتورینگ | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 50 | SIEM ELK | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 51 | اتوماسیون و AI در IT | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 52 | مدیریت دیتابیس | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 53 | امنیت دیتابیس | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 54 | VoIP سانترال | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 55 | CCTV Access BMS IoT | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 56 | امنیت پایه Zero Trust ITIL | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 57 | امنیت شبکه | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 58 | Endpoint AppSec DevSecOps | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 59 | SOC IR Hunting | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 60 | عیب‌یابی هک اخلاقی لاب سازمانی | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 61 | معماری سازمانی Enterprise Architecture | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 62 | عملیات IT و NOC | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 63 | مستندسازی Runbook و CMDB | server/core/full_curriculum.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 64 | Git و GitHub | server/core/extra_chapters.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 65 | امنیت سایبری و هک اخلاقی (دفاعی) + بی‌سیم | server/core/extra_chapters.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 66 | مسیریابی عمیق OSPF/BGP/Redistribution | server/core/extra_chapters.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 67 | VPN سازمانی IPsec/SSL و عیب‌یابی | server/core/extra_chapters.py | خبره | 5 MiB | 8 MiB | 100 | 150 | 100 | لازم | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
+| 68 | دانشنامه جامع دستورات | server/core/extra_chapters.py | خبره | 5 MiB | 5 MiB | 100 | 150 | 100 | ندارد | اندازه: اندازه‌گیری‌نشده؛ رکوردها: شمارش‌نشده؛ تکرار: بررسی‌نشده؛ شکاف علمی: بررسی‌نشده؛ Android/Windows: اعتبارسنجی‌نشده | ممیزی‌نشده |
 
-### Audit status
+## ۳. شواهد لازم برای تغییر وضعیت هر فصل
 
-**Not yet fully audited or validated.** The older tables below are a preliminary evidence-based inventory. Their approximate titles/status labels are not authoritative, and pack size alone does not establish content quality. The next pass must produce a 68-row inventory with exact titles, per-platform byte sizes, record counts, duplicate counts, coverage gaps and verification status. Do not claim completion until that evidence exists.
+هر ردیف تا زمان ثبت شواهد زیر باید «ممیزی‌نشده» بماند:
 
----
+1. اندازه‌گیری بایت خام و MiB محتوای متنی/ساختاری، رسانه، Android asset (فشرده و بازشده) و دادهٔ runtime/DB در Windows؛ هرکدام جدا.
+2. شمارش درس‌ها، مثال‌های مستقل، سناریوهای مستقل، سؤال‌ها و پاسخ‌نامه؛ بررسی ارجاع یک‌به‌یک و عدم نشت پاسخ به صورت سؤال.
+3. تشخیص تکرار دقیق و نزدیک با شناسه، عنوان نرمال‌شده و متن؛ حذف یا ادغام فقط با حفظ ارجاع‌ها.
+4. مرور پوشش علمی، پیش‌نیازها، صحت فنی، فرمان و خروجی قابل بازتولید، لاب امن، شواهد عیب‌یابی، راه‌حل و تأیید رفع مشکل.
+5. اعتبارسنجی Schema، فیلدهای اجباری، شناسه‌های یکتا، JSON قابل parse و ارجاع‌های سالم.
+6. آزمون مسیر ادغام و نمایش محتوا در Android و Windows و ثبت نتیجهٔ واقعی build/integration برای هر دو.
+7. ثبت اختلاف هدف و نتیجهٔ واقعی؛ کمبود محتوا یا حجم نباید با رکوردهای تکراری جبران شود.
 
-**Date:** 2026-10-15  
-**Method (preliminary; not a full 68-chapter validation):** File size analysis of packs + docs/DENSE_CH21_40.md + ch60 VALIDATION.md + APP_STATUS_FA.md + curriculum structure  
-**Caveat:** This older snapshot is not a completed 68-chapter audit. True deep/mid/thin requires running `tools/audit_content.py` against a live encyclopedia.db. This audit is based on available evidence in the repository.
+## ۴. وضعیت اجرا
 
----
+- سیاست هدف برای هر ۶۸ فصل ثبت شده است.
+- **ممیزی واقعی هر فصل هنوز انجام‌نشده است.**
+- تا زمانی که شواهد بالا برای یک فصل ثبت نشده، آن فصل تکمیل‌شده تلقی نمی‌شود.
+- اندازهٔ یک پک منفرد، تعداد عنوان‌ها، موفقیت parse یا موفقیت build به‌تنهایی اثبات‌کنندهٔ عمق علمی یا سازگاری دو پلتفرم نیست.
 
-## Legend
-
-| Status | Meaning |
-|--------|--------|
-| **DEEP** | Substantial dense content exists (hundreds of KB+ of real teaching material) |
-| **PARTIAL** | Some real content or early packs exist, but far from complete |
-| **THIN / SKELETON** | Mostly titles from full_curriculum.py, little or no rich body |
-| **UNKNOWN** | No dedicated pack found; may still have seed text from rich_content.py |
-
----
-
-## Chapters 1–20
-
-| Ch | Title (approx) | Status | Evidence |
-|----|----------------|--------|----------|
-| 01–07 | Hardware, OS, Ethernet, IPv4/6 basics | UNKNOWN / likely mixed | Core curriculum + possible early rich_content |
-| 08 | IPv4/IPv6/Subnetting | Likely better | Critical chapter |
-| 09–12 | ARP/ICMP/TCP, DNS, DHCP, Cabling | UNKNOWN | — |
-| 13 | Cisco Switching | **DEEP** | cisco_switching.json ~5.0 MB |
-| 14 | Advanced Routing | **DEEP** | switching_routing pack ~7.5 MB + OSPF/BGP deep packs |
-| 15–17 | MPLS, Multicast, EVPN | UNKNOWN | — |
-| 18 | SDN / SD-WAN | UNKNOWN | — |
-| 19–21 | MikroTik | **PARTIAL → DEEP** | DENSE_CH21_40 lists ch21 ~759 KB; MikroTik json present |
-| 22–23 | Wireless / PtP | **PARTIAL** | wireless_security pack ~0.36 MB |
-| 24 | FortiGate | **DEEP** | DENSE ~898 KB |
-| 25 | pfSense / OPNsense | UNKNOWN | — |
-
-## Chapters 21–40 (from DENSE_CH21_40.md)
-
-Documented as having produced ~9.3 MB total dense content for the range, with explicit samples:
-
-| Ch | Topic | Approx size | Status |
-|----|-------|-------------|--------|
-| 21 | MikroTik QoS VPN HA | ~759 KB | **DEEP** |
-| 24 | FortiGate | ~898 KB | **DEEP** |
-| 29 | Active Directory | ~726 KB | **DEEP** |
-| 35 | PowerShell | ~520 KB | **DEEP** |
-| 40 | VMware Hyper-V | ~485 KB (old) | **PARTIAL** (old dense exists, new canonical folder empty) |
-
-Android asset claims **5185 complete lessons** in curriculum_index.json.gz — this is strong evidence that many chapters already have full bodies seeded, even if not all are “deep” by the 2000+ char audit rule.
-
-## Chapters 41–60
-
-| Ch | Title | Status | Evidence |
-|----|-------|--------|----------|
-| 41 | Proxmox Docker | **THIN / SKELETON** | No dedicated pack |
-| 42 | Kubernetes | **THIN / SKELETON** | No dedicated pack |
-| 43 | Cloud Networking | **THIN / SKELETON** | No dedicated pack |
-| 44 | Cloud Security | **THIN / SKELETON** | No dedicated pack |
-| 45 | Enterprise Storage | **THIN / SKELETON** | No dedicated pack |
-| 46 | Backup / DR | **THIN / SKELETON** | No dedicated pack |
-| 47 | Data Center | **THIN / SKELETON** | No dedicated pack |
-| 48 | HA & Load Balancing | **THIN / SKELETON** | No dedicated pack |
-| 49 | Monitoring | **THIN / SKELETON** | No dedicated pack |
-| 50 | SIEM / ELK | **THIN / SKELETON** | No dedicated pack |
-| 51 | Automation & AI | **PARTIAL** | automation_python pack ~2.9 MB (good base) |
-| 52 | Database Admin | **THIN / SKELETON** | No dedicated pack |
-| 53 | DB Security | **THIN / SKELETON** | No dedicated pack |
-| 54 | VoIP | **THIN / SKELETON** | No dedicated pack |
-| 55 | CCTV / IoT | **THIN / SKELETON** | No dedicated pack |
-| 56 | Zero Trust / ITIL | **THIN / SKELETON** | No dedicated pack |
-| 57 | Network Security | **PARTIAL** | security_ethical_hacking pack ~1.3 MB |
-| 58 | Endpoint / AppSec | **THIN / SKELETON** | — |
-| 59 | SOC / IR | **THIN / SKELETON** | — |
-| 60 | Troubleshooting Labs | **PARTIAL** | ch60 pack exists (8 lessons + 10 scenarios + Q&A). VALIDATION says ~230 lessons still missing |
-
-## Extra / Extension chapters
-
-| Ch / Pack | Status | Size / Notes |
-|-----------|--------|--------------|
-| 64 Git | **DEEP** | Git_Chapter_64_Full.md ~2.1 MB |
-| 66/68 Routing deep | **DEEP** | chapter_68_cisco_routing ~9.7 MB |
-| 67 VPN Enterprise | **DEEP** | ~5.2 MB deep pack |
-| Windows Server pack | **DEEP** | ~7.2 MB |
-| Commands encyclopedia | **DEEP** | cisco_switching ~5 MB + mikrotik |
-
----
-
-## Summary ranking (priority for enrichment)
-
-### Already strong (protect & only improve)
-- 13, 14, 21, 24, 29, 35, 64, 66/68, 67, Windows Server, Commands
-
-### Partial — high value to finish
-- **40** (VMware) — old dense exists, new structure empty → finish properly
-- **51** (Automation) — good base pack, needs expansion + AI parts
-- **60** (Labs) — only stage 1 done, needs massive expansion
-- 57 (Security) — base pack exists
-
-### Thin / Skeleton — need full production (especially 41–50, 52–56, 58–59)
-These currently have almost no dedicated rich packs under the new architecture.
-
----
-
-## Important caveats
-
-1. `curriculum_index.json.gz` claims 5185 complete lessons → many chapters already have *some* body text from earlier seed/rich_content runs.
-2. True deep/mid/thin counts require running:
-   ```bash
-   python tools/audit_content.py --db server/data/encyclopedia.db
-   ```
-3. Large packs (5–10 MB) are strong evidence of deep content for their topics, but may not map 1:1 to every subchapter.
-4. Chapter 40 old dense (~485 KB) is valuable but should be migrated/expanded into the new `tools/packs/ch40_vmware_hyperv/` structure.
-
-
-## Per-chapter target selection form
-
-The user requested a one-time, chapter-by-chapter choice of expertise level, text/structured-content target, media ceiling, independent examples, independent scenarios, exam questions, and whether explanations are required. The complete 68-row prefilled selection table is maintained at [CHAPTER_TARGET_SELECTION.md](CHAPTER_TARGET_SELECTION.md).
-
-**Selection status: awaiting user choices.** The global defaults remain in force for Chapters 1–67 until the user specifies exceptions. Chapter 68 retains its explicit exception: خبره; 5 MiB text/structured target; 5 MiB media ceiling; 100 examples; 150 scenarios; 100 exam questions; explanations not required. This is a policy entry only, not an audit or completion claim.
