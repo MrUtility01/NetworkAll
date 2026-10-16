@@ -81,28 +81,7 @@ button{background:#0ea5e9;color:#fff;font-weight:bold}
 <button type=submit>ورود</button>
 <p style="font-size:12px;color:#64748b"><a href="/" style="color:#38bdf8">بازگشت</a></p>
 </form>
-</body>
-{% if tab=='tasks' %}
-<script>
-(function(){
- const btn=document.getElementById('enableReminder');
- if(btn) btn.addEventListener('click',async()=>{
-   if(!('Notification' in window)){alert('این مرورگر اعلان را پشتیبانی نمی‌کند.');return;}
-   const permission=await Notification.requestPermission();
-   alert(permission==='granted'?'اعلان‌ها فعال شدند؛ صفحه را باز نگه دارید.':'اجازه اعلان داده نشد.');
- });
- if(!('Notification' in window)||Notification.permission!=='granted') return;
- document.querySelectorAll('[data-due]').forEach(card=>{
-   const raw=card.dataset.due; if(!raw) return;
-   const at=Date.parse(raw), delay=at-Date.now();
-   if(!Number.isFinite(at)||delay < -60000) return;
-   const fire=()=>{if(Notification.permission==='granted') new Notification('یادآوری: '+card.dataset.title,{body:'زمان انجام این کار رسیده است.'});};
-   if(delay<=0) fire(); else if(delay<2147480000) setTimeout(fire,delay);
- });
-})();
-</script>
-{% endif %}
-</html>
+</body></html>
 """
 
 PAGE = """
@@ -143,7 +122,28 @@ nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
 <button type=submit style="background:#ef4444">حذف</button></form>
 </div>
 {% else %}<p>موردی نیست.</p>{% endfor %}
-</body></html>
+</body>
+{% if tab=='tasks' %}
+<script>
+(function(){
+ const btn=document.getElementById('enableReminder');
+ if(btn) btn.addEventListener('click',async()=>{
+   if(!('Notification' in window)){alert('این مرورگر اعلان را پشتیبانی نمی‌کند.');return;}
+   const permission=await Notification.requestPermission();
+   alert(permission==='granted'?'اعلان‌ها فعال شدند؛ صفحه را باز نگه دارید.':'اجازه اعلان داده نشد.');
+ });
+ if(!('Notification' in window)||Notification.permission!=='granted') return;
+ document.querySelectorAll('[data-due]').forEach(card=>{
+   const raw=card.dataset.due; if(!raw) return;
+   const at=Date.parse(raw), delay=at-Date.now();
+   if(!Number.isFinite(at)||delay < -60000) return;
+   const fire=()=>{if(Notification.permission==='granted') new Notification('یادآوری: '+card.dataset.title,{body:'زمان انجام این کار رسیده است.'});};
+   if(delay<=0) fire(); else if(delay<2147480000) setTimeout(fire,delay);
+ });
+})();
+</script>
+{% endif %}
+</html>
 """
 
 
