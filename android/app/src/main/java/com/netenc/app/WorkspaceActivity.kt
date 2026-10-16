@@ -44,6 +44,7 @@ class WorkspaceActivity : AppCompatActivity() {
         root.addView(TextView(this).apply {
             text = when (mode) {
                 "notes" -> "یادداشت‌ها"
+                "tips" -> "نکته‌ها"
                 "vault" -> "مدیریت رمزها"
                 else -> "کارها و یادآوری‌ها"
             }
@@ -121,7 +122,8 @@ class WorkspaceActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val rows = withContext(Dispatchers.IO) {
                 when (mode) {
-                    "notes" -> db.workspaceDao().allNotes().map { Triple(it.uid, it.title, it.body) }
+                    "notes" -> db.workspaceDao().allNotes().filter { it.tags != "tip" }.map { Triple(it.uid, it.title, it.body) }
+                    "tips" -> db.workspaceDao().allNotes().filter { it.tags == "tip" }.map { Triple(it.uid, it.title, it.body) }
                     "vault" -> db.workspaceDao().allVault().map { Triple(it.uid, it.title, it.username) }
                     else -> db.workspaceDao().allTasks().map {
                         val due = if (it.dueAt.isNotBlank()) "\\n" + jalaliLabel(it.dueAt) else ""
@@ -162,7 +164,7 @@ class WorkspaceActivity : AppCompatActivity() {
 
     private fun addItem() {
         val title = EditText(this).apply { hint = "عنوان" }
-        val body = EditText(this).apply { hint = if (mode == "vault") "رمز / توضیحات" else "متن / نکته" }
+        val body = EditText(this).apply { hint = if (mode == "vault") "رمز / توضیحات" else if (mode == "tips") "نکته کاربردی" else "متن یادداشت" }
         val user = EditText(this).apply { hint = "نام کاربری (اختیاری)" }
         val dueDate = EditText(this).apply { hint = "تاریخ شمسی یادآوری: ۱۴۰۵/۰۷/۲۴" }
         val dueTime = EditText(this).apply { hint = "ساعت یادآوری: ۱۸:۳۰" }
@@ -190,7 +192,7 @@ class WorkspaceActivity : AppCompatActivity() {
                     val id = UUID.randomUUID().toString()
                     withContext(Dispatchers.IO) {
                         when (mode) {
-                            "notes" -> db.workspaceDao().upsertNote(NoteEntity(id, t, body.text.toString(), lastUpdated = now()))
+                            "notes" -> db.workspaceDao().upsertNote(NoteEntity(id, t, body.text.toString(), tags = if (mode == "tips") "tip" else "note", lastUpdated = now()))
                             "vault" -> db.workspaceDao().upsertVault(VaultEntity(
                                 id, t, user.text.toString(), secretEnc = simpleEnc(body.text.toString()), lastUpdated = now()
                             ))
