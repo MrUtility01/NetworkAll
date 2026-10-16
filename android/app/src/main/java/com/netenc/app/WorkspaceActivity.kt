@@ -21,8 +21,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.util.UUID
-import android.icu.util.PersianCalendar
-import android.icu.util.ULocale
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.LocalDateTime
+import java.time.ZoneId
 import android.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
@@ -83,38 +85,27 @@ class WorkspaceActivity : AppCompatActivity() {
             ?: throw IllegalArgumentException("تاریخ را به شکل ۱۴۰۵/۰۷/۲۴ وارد کن.")
         val tm = Regex("^(\\d{1,2}):(\\d{2})$").matchEntire(time)
             ?: throw IllegalArgumentException("ساعت را به شکل ۱۸:۳۰ وارد کن.")
-        val y = dm.groupValues[1].toInt()
-        val m = dm.groupValues[2].toInt()
-        val d = dm.groupValues[3].toInt()
-        val h = tm.groupValues[1].toInt()
+        val jy = dm.groupValues[1].toInt()
+        val jm = dm.groupValues[2].toInt()
+        val jd = dm.groupValues[3].toInt()
+        val hour = tm.groupValues[1].toInt()
         val minute = tm.groupValues[2].toInt()
-        if (m !in 1..12 || d !in 1..31 || h !in 0..23 || minute !in 0..59)
-            throw IllegalArgumentException("تاریخ یا ساعت خارج از محدوده است.")
-        val cal = PersianCalendar(android.icu.util.TimeZone.getDefault(), ULocale("fa_IR")).apply {
-            isLenient = false
-            clear()
-            set(PersianCalendar.YEAR, y)
-            set(PersianCalendar.MONTH, m - 1)
-            set(PersianCalendar.DAY_OF_MONTH, d)
-            set(PersianCalendar.HOUR_OF_DAY, h)
-            set(PersianCalendar.MINUTE, minute)
-            set(PersianCalendar.SECOND, 0)
-            set(PersianCalendar.MILLISECOND, 0)
+        if (hour !in 0..23 || minute !in 0..59) throw IllegalArgumentException("ساعت خارج از محدوده است.")
+        val gregorian = try { PersianDate.toGregorian(jy, jm, jd) } catch (e: Exception) {
+            throw IllegalArgumentException(e.message ?: "تاریخ شمسی معتبر نیست.")
         }
-        val millis = try { cal.timeInMillis } catch (_: Exception) {
-            throw IllegalArgumentException("این تاریخ شمسی معتبر نیست.")
-        }
+        val local = LocalDateTime.of(gregorian, LocalTime.of(hour, minute))
+        val millis = local.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
         if (millis <= System.currentTimeMillis()) throw IllegalArgumentException("زمان یادآوری باید در آینده باشد.")
         return millis
     }
 
     private fun jalaliLabel(raw: String): String {
         val millis = raw.toLongOrNull() ?: runCatching { Instant.parse(raw).toEpochMilli() }.getOrNull() ?: return ""
-        val cal = PersianCalendar(TimeZone.getDefault(), ULocale("fa_IR")).apply { timeInMillis = millis }
+        val local = Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault())
+        val jalali = PersianDate.fromGregorian(local.toLocalDate())
         return "یادآوری: %04d/%02d/%02d  %02d:%02d".format(
-            cal.get(PersianCalendar.YEAR), cal.get(PersianCalendar.MONTH) + 1,
-            cal.get(PersianCalendar.DAY_OF_MONTH), cal.get(PersianCalendar.HOUR_OF_DAY),
-            cal.get(PersianCalendar.MINUTE)
+            jalali.year, jalali.month, jalali.day, local.hour, local.minute
         )
     }
 
