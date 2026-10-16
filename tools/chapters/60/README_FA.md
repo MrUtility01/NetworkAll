@@ -1,35 +1,41 @@
-# فصل ۶۰ — بسته غنی‌سازی (مرحله ۱ و ۲)
+# فصل ۶۰ — عیب‌یابی هک اخلاقی لاب سازمانی
 
-**وضعیت:** review_required  
-**شاخه:** content/ch60-enrichment-stage1-2
+**وضعیت:** `review_required`  
+**شاخه:** `main`  
+**اصل ایمنی:** تمام تمرین‌های تست امنیتی فقط برای لاب ایزوله و دارایی‌های دارای مجوز کتبی هستند.
 
-## محتویات
-- `ch60_pack.json` — درس‌های غنی‌شده (روش‌شناسی + عیب‌یابی عملی + قوانین Authorized Only + Nmap)
-- `ch60_scenarios.json` — سناریوهای عملیاتی
-- `ch60_questions.json` / `ch60_answer_key.json` — بانک سؤال و پاسخ‌نامه جدا
-- `diagrams/ch60/` — دیاگرام‌های Mermaid
-- `VALIDATION.md` — گزارش اعتبارسنجی و دستور ادغام
+## محتوای مرجع
 
-## ادغام
-```bash
-python tools/apply_any_pack.py --db server/data/encyclopedia.db --pack tools/packs/ch60/ch60_pack.json
-# پس از بررسی:
-python tools/apply_any_pack.py --db server/data/encyclopedia.db --pack tools/packs/ch60/ch60_pack.json --apply
-```
+| بخش | فایل | تعداد رکورد |
+|---|---|---:|
+| درس‌های پایه | `lessons/base_curriculum.json` | ۲۴۰ درس پایه |
+| درس‌های افزوده | `lessons/lessons.json` | ۱۸ درس |
+| سؤال‌ها | `questions/questions.json` | 20 |
+| پاسخ‌نامه مستقل | `answers/answer_key.json` | 20 |
+| مثال‌ها | `examples/examples.json` | 18 |
+| دستورات | `commands/commands.json` | 18 |
+| لابراتوارها | `labs/labs.json` | 10 |
 
-تمام محتوا فقط برای محیط Lab مجاز طراحی شده است.
+## موضوعات
 
+- روش‌شناسی RCA، Bottom-Up، Top-Down، Divide and Conquer و Follow the Path
+- مقایسه Known-Good، Baseline و بررسی Change History
+- عیب‌یابی DNS/DHCP، شبکه در Windows و Linux، تحلیل مسیر و شواهد
+- Nmap و تست امنیتی محدود به Scope مجاز
+- Rules of Engagement، شرایط توقف، مستندسازی و گزارش‌دهی
+- لابراتوارها با هدف، شواهد اولیه، فرضیه‌ها، مراحل، نتیجه مورد انتظار، راستی‌آزمایی و بازگردانی در صورت وجود
 
-## فایل‌های اصلی فصل
+## ساختار و سازگاری
 
-- base_curriculum.json: تعریف درس‌های پایهٔ همین فصل.
-- chapter.json: بستهٔ استاندارد محتوای افزوده و نرمال‌شده.
-- manifest.json: فهرست فایل‌ها و شمار رکوردها.
-- source_archive/: منابع اولیه، آزمون‌ها و پاسخ‌نامه؛ در build اسکن نمی‌شود.
+- فایل‌های canonical برای مصرف برنامه در مسیرهای بالا قرار دارند.
+- منابع اولیه در `questions/sources/`، `answers/sources/` و `labs/sources/` حفظ شده‌اند.
+- `manifest.json` شمار رکوردها را ثبت می‌کند.
+- `build/chapter.json` فایل تولیدی است؛ آن را دستی ویرایش نکنید.
+- JSON و تطابق شناسه‌های سؤال/پاسخ بررسی می‌شوند؛ پیش از انتشار، اعتبارسنج پروژه و build برنامه نیز باید اجرا شوند.
 
+## نکات اجرایی ایمنی
 
-## ساختار پوشه‌های فصل
-
-مسیر فصل: tools/chapters/60/
-
-متن درس در lessons/، سؤال‌ها در questions/، پاسخ‌نامه در answers/، مثال‌ها در examples/، دستورات در commands/ و لابراتوارها در labs/ قرار دارد. android/ و windows/ فقط منابع مخصوص همان بستر را دارند. build/chapter.json خروجی تولیدشده برای سازگاری برنامه‌هاست و نباید دستی ویرایش شود.
+1. Scope، مجوز، بازه زمانی و دارایی‌های هدف را پیش از تست ثبت کنید.
+2. از اسکن یا آزمون تهاجمی خارج از محیط ایزوله و مجاز خودداری کنید.
+3. پیش از تغییرات، شواهد و وضعیت اولیه را ثبت کنید و Rollback آماده داشته باشید.
+4. با مشاهده اثر ناخواسته، خروج از Scope یا اختلال سرویس، آزمایش را متوقف کنید.
