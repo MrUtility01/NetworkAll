@@ -57,6 +57,9 @@ class MainActivity : AppCompatActivity() {
         safeBtn(R.id.btnNotes) {
             startActivity(Intent(this, WorkspaceActivity::class.java).putExtra("mode", "notes"))
         }
+        safeBtn(R.id.btnTips) {
+            startActivity(Intent(this, WorkspaceActivity::class.java).putExtra("mode", "tips"))
+        }
         safeBtn(R.id.btnVault) {
             startActivity(Intent(this, WorkspaceActivity::class.java).putExtra("mode", "vault"))
         }
