@@ -23707,6 +23707,670 @@
       "fields": {
         "examples": "REM1# shutdown\n! فرمان/رویداد اجرا شد یا prompt تأیید نمایش داده می‌شود.\n! اثر واقعی وابسته به وضعیت شبکه است؛ فقط لابراتوار.\n! پایان کار: show ip interface brief"
       }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2964",
+      "title_fa": "[L1] نمایش پیکربندی IP",
+      "title_en": "Get-NetIPConfiguration",
+      "fields": {
+        "examples": "**فرمان:** Get-NetIPConfiguration\n**نمونه اجرا:**\nGet-NetIPConfiguration | Format-List InterfaceAlias,IPv4Address,IPv4DefaultGateway,DNSServer\n**توضیح:** نمونه، نام رابط، آدرس IPv4، gateway و DNS را برای عیب‌یابی اولیه نشان می‌دهد.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2965",
+      "title_fa": "[L1] فهرست رابط‌های شبکه",
+      "title_en": "Get-NetAdapter",
+      "fields": {
+        "examples": "**فرمان:** Get-NetAdapter\n**نمونه اجرا:**\nGet-NetAdapter | Select-Object Name,Status,LinkSpeed,MacAddress\n**توضیح:** رابط‌های Up/Down و سرعت لینک را مقایسه کنید؛ این فرمان تنظیمات را تغییر نمی‌دهد.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2966",
+      "title_fa": "[L1] آزمون پورت TCP",
+      "title_en": "Test-NetConnection",
+      "fields": {
+        "examples": "**فرمان:** Test-NetConnection\n**نمونه اجرا:**\nTest-NetConnection server01.example.test -Port 443 -InformationLevel Detailed\n**توضیح:** TcpTestSucceeded نتیجه آزمون TCP را نشان می‌دهد؛ موفقیت ping به‌تنهایی جایگزین آزمون پورت نیست.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2967",
+      "title_fa": "[L1] بررسی DNS",
+      "title_en": "Resolve-DnsName",
+      "fields": {
+        "examples": "**فرمان:** Resolve-DnsName\n**نمونه اجرا:**\nResolve-DnsName server01.example.test -Type A\n**توضیح:** پاسخ A را بررسی کنید؛ در صورت نیاز AAAA، CNAME یا سرور DNS مشخص را جداگانه آزمایش کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2968",
+      "title_fa": "[L1] اتصال‌های TCP",
+      "title_en": "Get-NetTCPConnection",
+      "fields": {
+        "examples": "**فرمان:** Get-NetTCPConnection\n**نمونه اجرا:**\nGet-NetTCPConnection | Group-Object State | Select-Object Name,Count\n**توضیح:** توزیع وضعیت اتصال‌ها را می‌بینید؛ برای PID از OwningProcess و سپس Get-Process استفاده کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2969",
+      "title_fa": "[L1] جدول مسیریابی",
+      "title_en": "Get-NetRoute",
+      "fields": {
+        "examples": "**فرمان:** Get-NetRoute\n**نمونه اجرا:**\nGet-NetRoute -AddressFamily IPv4 | Sort-Object RouteMetric | Select-Object DestinationPrefix,NextHop,InterfaceAlias,RouteMetric\n**توضیح:** RouteMetric یکی از عوامل انتخاب مسیر است؛ prefix و interface را نیز بررسی کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2970",
+      "title_fa": "[L1] مشاهده سرویس‌های متوقف",
+      "title_en": "Get-Service",
+      "fields": {
+        "examples": "**فرمان:** Get-Service\n**نمونه اجرا:**\nGet-Service | Where-Object Status -eq 'Stopped' | Select-Object Name,DisplayName\n**توضیح:** خروجی فقط فهرست سرویس‌های متوقف است؛ هر سرویس متوقف‌شده لزوماً مشکل نیست.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2971",
+      "title_fa": "[L1] رخدادهای System در ۲۴ ساعت",
+      "title_en": "Get-WinEvent",
+      "fields": {
+        "examples": "**فرمان:** Get-WinEvent\n**نمونه اجرا:**\nGet-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddHours(-24)} -MaxEvents 100 | Select-Object TimeCreated,Id,LevelDisplayName,ProviderName,Message\n**توضیح:** برای بازه زمانی محدود استفاده کنید؛ دسترسی و حجم رخدادها ممکن است نتیجه را محدود کند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2972",
+      "title_fa": "[L1] بررسی پروفایل فایروال",
+      "title_en": "Get-NetFirewallProfile",
+      "fields": {
+        "examples": "**فرمان:** Get-NetFirewallProfile\n**نمونه اجرا:**\nGet-NetFirewallProfile | Select-Object Name,Enabled,DefaultInboundAction,DefaultOutboundAction\n**توضیح:** وضعیت هر profile را بررسی کنید؛ برای عیب‌یابی، فایروال را سراسری خاموش نکنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2973",
+      "title_fa": "[L1] قوانین فایروال فعال",
+      "title_en": "Get-NetFirewallRule",
+      "fields": {
+        "examples": "**فرمان:** Get-NetFirewallRule\n**نمونه اجرا:**\nGet-NetFirewallRule -PolicyStore ActiveStore -Enabled True | Select-Object DisplayName,Direction,Action,Profile\n**توضیح:** برای پورت/آدرس دقیق، فیلترهای متناظر را نیز با Get-NetFirewallPortFilter و Get-NetFirewallAddressFilter بررسی کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2974",
+      "title_fa": "[L1] فضای Volumeها",
+      "title_en": "Get-Volume",
+      "fields": {
+        "examples": "**فرمان:** Get-Volume\n**نمونه اجرا:**\nGet-Volume | Select-Object DriveLetter,FileSystemLabel,FileSystem,Size,SizeRemaining\n**توضیح:** فضای آزاد و کل را برای شناسایی فشار ذخیره‌سازی مقایسه کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2975",
+      "title_fa": "[L1] فهرست Hotfixها",
+      "title_en": "Get-HotFix",
+      "fields": {
+        "examples": "**فرمان:** Get-HotFix\n**نمونه اجرا:**\nGet-HotFix | Sort-Object InstalledOn -Descending | Select-Object -First 20 HotFixID,InstalledOn,Description\n**توضیح:** Get-HotFix منبع کمکی است و تضمین نمی‌کند تمام انواع update را نشان دهد.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2976",
+      "title_fa": "[L1] اطلاعات نسخه Windows",
+      "title_en": "Get-ComputerInfo",
+      "fields": {
+        "examples": "**فرمان:** Get-ComputerInfo\n**نمونه اجرا:**\nGet-ComputerInfo | Select-Object CsName,WindowsProductName,WindowsVersion,OsBuildNumber,OsLastBootUpTime\n**توضیح:** نسخه و build را پیش از/پس از patch ثبت کنید؛ فیلدهای موجود به نسخه بستگی دارند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2977",
+      "title_fa": "[L1] حساب‌های محلی",
+      "title_en": "Get-LocalUser",
+      "fields": {
+        "examples": "**فرمان:** Get-LocalUser\n**نمونه اجرا:**\nGet-LocalUser | Select-Object Name,Enabled,LastLogon,PasswordRequired\n**توضیح:** حساب‌های سرویس و اضطراری را قبل از هر اقدام با مالک سیستم تأیید کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2978",
+      "title_fa": "[L1] اعضای Administrators محلی",
+      "title_en": "Get-LocalGroupMember",
+      "fields": {
+        "examples": "**فرمان:** Get-LocalGroupMember\n**نمونه اجرا:**\nGet-LocalGroupMember -Group 'Administrators' | Select-Object Name,ObjectClass,PrincipalSource\n**توضیح:** عضویت را audit کنید؛ حذف عضو بدون بررسی وابستگی و مجوز تغییر انجام نشود.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2979",
+      "title_fa": "[L1] گزارش فرایندهای پرمصرف",
+      "title_en": "Get-Process",
+      "fields": {
+        "examples": "**فرمان:** Get-Process\n**نمونه اجرا:**\nGet-Process | Sort-Object CPU -Descending | Select-Object -First 15 ProcessName,Id,CPU,WorkingSet64\n**توضیح:** CPU تجمعی و WorkingSet را تفسیر کنید؛ snapshot لحظه‌ای علت قطعی مصرف بالا نیست.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2980",
+      "title_fa": "[L1] تست HTTP headers",
+      "title_en": "Invoke-WebRequest",
+      "fields": {
+        "examples": "**فرمان:** Invoke-WebRequest\n**نمونه اجرا:**\nInvoke-WebRequest -Uri 'https://example.com' -Method Head -MaximumRedirection 3\n**توضیح:** در محیط آزمایش و با مقصد مجاز اجرا کنید؛ proxy، TLS و سیاست مقصد می‌توانند نتیجه را تغییر دهند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2981",
+      "title_fa": "[L1] خروجی CSV قابل‌تحلیل",
+      "title_en": "Export-Csv",
+      "fields": {
+        "examples": "**فرمان:** Export-Csv\n**نمونه اجرا:**\nGet-Service | Select-Object Name,Status,StartType | Export-Csv -Path .\\services.csv -NoTypeInformation -Encoding utf8\n**توضیح:** خروجی ساختاریافته را برای مقایسه baseline نگه دارید؛ فایل را در مسیر با دسترسی مناسب ذخیره کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2982",
+      "title_fa": "[L1] اعتبارسنجی امضای فایل",
+      "title_en": "Get-AuthenticodeSignature",
+      "fields": {
+        "examples": "**فرمان:** Get-AuthenticodeSignature\n**نمونه اجرا:**\nGet-AuthenticodeSignature .\\installer.exe | Select-Object Status,StatusMessage,SignerCertificate\n**توضیح:** امضای معتبر به‌تنهایی تضمین‌کننده بی‌خطر بودن فایل نیست؛ ناشر و hash را هم بررسی کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2983",
+      "title_fa": "[L1] بررسی نیاز به reboot با نشانه‌های رایج",
+      "title_en": "Get-ItemProperty",
+      "fields": {
+        "examples": "**فرمان:** Get-ItemProperty\n**نمونه اجرا:**\nGet-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing\\RebootPending' -ErrorAction SilentlyContinue\n**توضیح:** این فقط یکی از نشانه‌های رایج pending reboot است و به‌تنهایی تشخیص قطعی همه سناریوها نیست.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2984",
+      "title_fa": "[L1] نمایش آدرس‌های شبکه",
+      "title_en": "ip addr",
+      "fields": {
+        "examples": "**فرمان:** ip addr\n**نمونه اجرا:**\nip -brief address show\n**توضیح:** وضعیت و آدرس رابط‌ها را خلاصه می‌کند؛ تغییرات را با ip addr add/del اشتباه نگیرید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2985",
+      "title_fa": "[L1] نمایش جدول route",
+      "title_en": "ip route",
+      "fields": {
+        "examples": "**فرمان:** ip route\n**نمونه اجرا:**\nip route show table main\n**توضیح:** default route و مسیرهای خاص را بررسی کنید؛ route برگشت نیز برای اتصال دوطرفه مهم است.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2986",
+      "title_fa": "[L1] سوکت‌های listening",
+      "title_en": "ss",
+      "fields": {
+        "examples": "**فرمان:** ss\n**نمونه اجرا:**\nsudo ss -ltnp\n**توضیح:** -l listening، -t TCP، -n پورت عددی و -p پردازش را نشان می‌دهد؛ sudo برای PID ممکن است لازم باشد.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2987",
+      "title_fa": "[L1] بررسی DNS با dig",
+      "title_en": "dig",
+      "fields": {
+        "examples": "**فرمان:** dig\n**نمونه اجرا:**\ndig example.test A +time=2 +tries=1\n**توضیح:** خروجی status، ANSWER SECTION و SERVER را بخوانید؛ برای resolver متفاوت از @server استفاده کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2988",
+      "title_fa": "[L1] آزمون HTTPS و TLS",
+      "title_en": "curl",
+      "fields": {
+        "examples": "**فرمان:** curl\n**نمونه اجرا:**\ncurl -I --connect-timeout 5 --max-time 15 https://example.com\n**توضیح:** کد HTTP و خطاهای TLS/timeout را تفکیک کنید؛ -k را به‌عنوان راه‌حل دائمی به کار نبرید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2989",
+      "title_fa": "[L1] وضعیت سرویس systemd",
+      "title_en": "systemctl",
+      "fields": {
+        "examples": "**فرمان:** systemctl\n**نمونه اجرا:**\nsystemctl status ssh --no-pager\n**توضیح:** نام واحد ممکن است در توزیع‌ها sshd باشد؛ خروجی status و exit code را ثبت کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2990",
+      "title_fa": "[L1] لاگ سرویس در بوت جاری",
+      "title_en": "journalctl",
+      "fields": {
+        "examples": "**فرمان:** journalctl\n**نمونه اجرا:**\njournalctl -u ssh -b --since '-1 hour' --no-pager\n**توضیح:** بازه زمانی و boot را محدود کنید؛ در صورت نیاز نام واحد صحیح را از systemctl list-units پیدا کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2991",
+      "title_fa": "[L1] فضای فایل‌سیستم",
+      "title_en": "df",
+      "fields": {
+        "examples": "**فرمان:** df\n**نمونه اجرا:**\ndf -hT\n**توضیح:** استفاده، فضای آزاد و نوع filesystem را می‌بینید؛ برای inode از df -i استفاده کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2992",
+      "title_fa": "[L1] اندازه مسیرها",
+      "title_en": "du",
+      "fields": {
+        "examples": "**فرمان:** du\n**نمونه اجرا:**\nsudo du -xhd1 /var | sort -h\n**توضیح:** -x مانع عبور از filesystemهای دیگر می‌شود؛ قبل از حذف، log rotation و مالکیت را بررسی کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2993",
+      "title_fa": "[L1] فایل‌های دارای مجوز نوشتن عمومی",
+      "title_en": "find",
+      "fields": {
+        "examples": "**فرمان:** find\n**نمونه اجرا:**\nfind /srv/lab -xdev -type f -perm -0002 -print\n**توضیح:** یافته‌ها را ابتدا audit کنید؛ اصلاح بازگشتی مجوزها بدون شناخت برنامه می‌تواند سرویس را خراب کند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2994",
+      "title_fa": "[L1] فهرست به‌روزرسانی‌های Debian",
+      "title_en": "apt list --upgradable",
+      "fields": {
+        "examples": "**فرمان:** apt list --upgradable\n**نمونه اجرا:**\napt list --upgradable\n**توضیح:** این فرمان فهرست بسته‌های قابل ارتقا را نشان می‌دهد؛ ابتدا apt update و سپس بررسی change plan لازم است.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2995",
+      "title_fa": "[L1] به‌روزرسانی فهرست مخازن APT",
+      "title_en": "apt update",
+      "fields": {
+        "examples": "**فرمان:** apt update\n**نمونه اجرا:**\nsudo apt update\n**توضیح:** metadata را تازه می‌کند اما به‌خودی‌خود بسته‌ها را ارتقا نمی‌دهد.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2996",
+      "title_fa": "[L1] بررسی بسته‌های قابل ارتقا در DNF",
+      "title_en": "dnf check-update",
+      "fields": {
+        "examples": "**فرمان:** dnf check-update\n**نمونه اجرا:**\nsudo dnf check-update\n**توضیح:** کد خروجی ممکن است برای وجود update برابر 100 باشد؛ در اسکریپت، exit code را مطابق مستندات نسخه تفسیر کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2997",
+      "title_fa": "[L1] نسخه کرنل در حال اجرا",
+      "title_en": "uname -r",
+      "fields": {
+        "examples": "**فرمان:** uname -r\n**نمونه اجرا:**\nuname -r\n**توضیح:** نسخه نصب‌شده در دیسک با کرنل در حال اجرا ممکن است تا reboot متفاوت باشد.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2998",
+      "title_fa": "[L1] اطلاعات boot و uptime",
+      "title_en": "uptime",
+      "fields": {
+        "examples": "**فرمان:** uptime\n**نمونه اجرا:**\nuptime -p; who -b\n**توضیح:** برای timeline پس از patch از زمان boot، uptime و logهای سرویس کنار هم استفاده کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:2999",
+      "title_fa": "[L1] فهرست سرویس‌های failed",
+      "title_en": "systemctl --failed",
+      "fields": {
+        "examples": "**فرمان:** systemctl --failed\n**نمونه اجرا:**\nsystemctl --failed --no-pager\n**توضیح:** واحد failed را با journalctl و وابستگی‌ها بررسی کنید؛ reset-failed به‌تنهایی علت را رفع نمی‌کند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3000",
+      "title_fa": "[L1] اعتبارسنجی فضای inode",
+      "title_en": "df -i",
+      "fields": {
+        "examples": "**فرمان:** df -i\n**نمونه اجرا:**\ndf -iP\n**توضیح:** filesystem می‌تواند با وجود فضای بایت آزاد، به دلیل اتمام inode فایل جدید نپذیرد.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3001",
+      "title_fa": "[L1] بررسی فایل‌های باز",
+      "title_en": "lsof",
+      "fields": {
+        "examples": "**فرمان:** lsof\n**نمونه اجرا:**\nsudo lsof +L1\n**توضیح:** فایل حذف‌شده‌ای که هنوز توسط process باز است ممکن است فضا را مصرف کند؛ پیش از restart اثر سرویس را بسنجید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3002",
+      "title_fa": "[L1] تست دسترسی HTTP محلی",
+      "title_en": "curl",
+      "fields": {
+        "examples": "**فرمان:** curl\n**نمونه اجرا:**\ncurl -sS -o /dev/null -w '%{http_code} %{time_total}\\n' http://127.0.0.1:8080/health\n**توضیح:** کد HTTP و زمان را ثبت کنید؛ endpoint سلامت باید مطابق قرارداد برنامه تفسیر شود.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3003",
+      "title_fa": "[L1] گزارش packageهای Debian",
+      "title_en": "dpkg-query",
+      "fields": {
+        "examples": "**فرمان:** dpkg-query\n**نمونه اجرا:**\ndpkg-query -W -f='${Package}\\t${Version}\\n' | sort\n**توضیح:** خروجی را به‌عنوان baseline نسخه‌ها نگه دارید؛ قبل/بعد را با توجه به معماری و repo مقایسه کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3004",
+      "title_fa": "[L1] نمایش تنظیمات IP",
+      "title_en": "ipconfig",
+      "fields": {
+        "examples": "**فرمان:** ipconfig\n**نمونه اجرا:**\nipconfig /all\n**توضیح:** آدرس، gateway، DHCP و DNS را ثبت کنید؛ برای renew روی اتصال راه‌دور احتیاط کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3005",
+      "title_fa": "[L1] جدول مسیریابی",
+      "title_en": "route",
+      "fields": {
+        "examples": "**فرمان:** route\n**نمونه اجرا:**\nroute print\n**توضیح:** IPv4 و IPv6 را بررسی کنید؛ وجود route به‌تنهایی سلامت مسیر برگشت را تضمین نمی‌کند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3006",
+      "title_fa": "[L1] اتصال‌های شبکه",
+      "title_en": "netstat",
+      "fields": {
+        "examples": "**فرمان:** netstat\n**نمونه اجرا:**\nnetstat -ano\n**توضیح:** PID را با tasklist یا Get-Process تطبیق دهید؛ پورت listening و اتصال established دو وضعیت متفاوت‌اند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3007",
+      "title_fa": "[L1] آزمون resolver cache",
+      "title_en": "ipconfig /displaydns",
+      "fields": {
+        "examples": "**فرمان:** ipconfig /displaydns\n**نمونه اجرا:**\nipconfig /displaydns\n**توضیح:** برای پاک‌کردن cache در محیط مدیریت‌شده ابتدا baseline و اثر را ثبت کنید؛ flush راه‌حل همه خطاهای DNS نیست.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3008",
+      "title_fa": "[L1] بررسی فایل سیستمی",
+      "title_en": "sfc",
+      "fields": {
+        "examples": "**فرمان:** sfc\n**نمونه اجرا:**\nsfc /verifyonly\n**توضیح:** این حالت بررسی انجام می‌دهد؛ /scannow ممکن است تعمیر انجام دهد و باید در برنامه نگهداری اجرا شود.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3009",
+      "title_fa": "[L1] بررسی component store",
+      "title_en": "DISM",
+      "fields": {
+        "examples": "**فرمان:** DISM\n**نمونه اجرا:**\nDISM /Online /Cleanup-Image /CheckHealth\n**توضیح:** CheckHealth بررسی سریع وضعیت ثبت‌شده است؛ RestoreHealth عملیات تعمیر جداگانه‌ای است.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3010",
+      "title_fa": "[L1] نمایش رویدادهای اخیر",
+      "title_en": "wevtutil",
+      "fields": {
+        "examples": "**فرمان:** wevtutil\n**نمونه اجرا:**\nwevtutil qe System /c:20 /rd:true /f:text\n**توضیح:** برای بررسی دقیق‌تر از XPath یا PowerShell FilterHashtable استفاده کنید و اطلاعات حساس را پالایش کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3011",
+      "title_fa": "[L1] فهرست وظایف زمان‌بندی‌شده",
+      "title_en": "schtasks",
+      "fields": {
+        "examples": "**فرمان:** schtasks\n**نمونه اجرا:**\nschtasks /query /fo LIST /v\n**توضیح:** خروجی verbose ممکن است جزئیات عملیاتی حساس داشته باشد؛ فقط در مسیر امن ذخیره شود.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3012",
+      "title_fa": "[L1] بررسی وضعیت سرویس",
+      "title_en": "sc query",
+      "fields": {
+        "examples": "**فرمان:** sc query\n**نمونه اجرا:**\nsc query type= service state= all\n**توضیح:** syntax فاصله بعد از type= مهم است؛ برای تغییر start mode مجوز و change approval لازم است.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3013",
+      "title_fa": "[L1] بررسی فضای دیسک",
+      "title_en": "fsutil volume diskfree",
+      "fields": {
+        "examples": "**فرمان:** fsutil volume diskfree\n**نمونه اجرا:**\nfsutil volume diskfree C:\n**توضیح:** برای گزارش فضای ذخیره‌سازی از ابزارهای مناسب حجم استفاده کنید؛ بعضی عملیات fsutil نیازمند elevation هستند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3014",
+      "title_fa": "[L1] فهرست hotfixهای اخیر",
+      "title_en": "Get-HotFix",
+      "fields": {
+        "examples": "**فرمان:** Get-HotFix\n**نمونه اجرا:**\nGet-HotFix | Sort-Object InstalledOn -Descending | Select-Object -First 10\n**توضیح:** این خروجی یکی از منابع inventory است، نه فهرست جامع همه به‌روزرسانی‌های Windows.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3015",
+      "title_fa": "[L1] ثبت build قبل و بعد",
+      "title_en": "Get-ComputerInfo",
+      "fields": {
+        "examples": "**فرمان:** Get-ComputerInfo\n**نمونه اجرا:**\nGet-ComputerInfo | Select-Object CsName,WindowsVersion,OsBuildNumber,OsLastBootUpTime\n**توضیح:** baseline قبل از patch را نگه دارید و پس از reboot همان فیلدها را دوباره جمع‌آوری کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3016",
+      "title_fa": "[L1] بررسی تاریخچه بسته‌های Debian",
+      "title_en": "apt history",
+      "fields": {
+        "examples": "**فرمان:** apt history\n**نمونه اجرا:**\ngrep -E '^(Start-Date|Commandline|Upgrade|Install|End-Date)' /var/log/apt/history.log\n**توضیح:** لاگ ممکن است rotation شده باشد؛ timestamp و وضعیت نهایی را با dpkg logs تطبیق دهید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3017",
+      "title_fa": "[L1] تاریخچه تراکنش‌های DNF",
+      "title_en": "dnf history",
+      "fields": {
+        "examples": "**فرمان:** dnf history\n**نمونه اجرا:**\nsudo dnf history list\n**توضیح:** تراکنش را قبل از rollback بررسی کنید؛ undo یا rollback بسته‌ها می‌تواند وابستگی‌ها را تحت‌تأثیر قرار دهد.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3018",
+      "title_fa": "[L1] بررسی نیاز reboot در Linux",
+      "title_en": "needs-restarting",
+      "fields": {
+        "examples": "**فرمان:** needs-restarting\n**نمونه اجرا:**\nsudo needs-restarting -r\n**توضیح:** این ابزار در محیط‌های پشتیبانی‌شده (مانند برخی RHEL-family) موجود است؛ برای همه توزیع‌ها فرض نکنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3019",
+      "title_fa": "[L1] فهرست updateهای Winget",
+      "title_en": "winget upgrade",
+      "fields": {
+        "examples": "**فرمان:** winget upgrade\n**نمونه اجرا:**\nwinget upgrade\n**توضیح:** موجودی و source وابسته به محیط است؛ پیش از upgrade گسترده نسخه، scope و روش rollback را بررسی کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3020",
+      "title_fa": "[L1] اعتبارسنجی سرویس پس از تغییر",
+      "title_en": "Test-NetConnection",
+      "fields": {
+        "examples": "**فرمان:** Test-NetConnection\n**نمونه اجرا:**\nTest-NetConnection app01.example.test -Port 443; Get-Service AppService\n**توضیح:** آزمون شبکه و وضعیت سرویس را با health check کاربردی تکمیل کنید؛ نام سرویس نمونه را جایگزین کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3021",
+      "title_fa": "[L1] بررسی رخدادهای reboot",
+      "title_en": "Get-WinEvent",
+      "fields": {
+        "examples": "**فرمان:** Get-WinEvent\n**نمونه اجرا:**\nGet-WinEvent -FilterHashtable @{LogName='System'; Id=1074,6005,6006; StartTime=(Get-Date).AddDays(-7)} -MaxEvents 100\n**توضیح:** این شناسه‌ها سرنخ‌اند نه اثبات کامل علت؛ پیام، provider و timeline را نیز بررسی کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3022",
+      "title_fa": "[L1] مقایسه نسخه بسته قبل و بعد",
+      "title_en": "dpkg-query",
+      "fields": {
+        "examples": "**فرمان:** dpkg-query\n**نمونه اجرا:**\ndpkg-query -W -f='${Package} ${Version}\\n' openssl\n**توضیح:** نسخه نصب‌شده را ثبت کنید و با advisory رسمی، معماری و backportهای توزیع تطبیق دهید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3023",
+      "title_fa": "[L1] اعتبارسنجی systemd پس از patch",
+      "title_en": "systemctl is-active",
+      "fields": {
+        "examples": "**فرمان:** systemctl is-active\n**نمونه اجرا:**\nsystemctl is-active ssh; systemctl --failed --no-pager\n**توضیح:** کد خروجی و نام واحد درست را بررسی کنید؛ active بودن به‌تنهایی آزمون کاربردی را جایگزین نمی‌کند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3024",
+      "title_fa": "[L1] بازبینی فایل‌های پیکربندی تغییرکرده",
+      "title_en": "git diff --no-index",
+      "fields": {
+        "examples": "**فرمان:** git diff --no-index\n**نمونه اجرا:**\ngit diff --no-index /backup/config.before /etc/example.conf\n**توضیح:** فرمان صرفاً نمونه مقایسه است؛ مسیرها را در محیط آزمایش تنظیم کنید و secretها را از diff پاک کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3025",
+      "title_fa": "[L1] ثبت شناسه تغییر و timestamp",
+      "title_en": "Get-Date",
+      "fields": {
+        "examples": "**فرمان:** Get-Date\n**نمونه اجرا:**\nGet-Date -Format o; $env:COMPUTERNAME\n**توضیح:** timestamp با timezone و نام میزبان را در گزارش نگه دارید؛ رمز و token را ثبت نکنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3026",
+      "title_fa": "[L1] آزمون سلامت HTTP پس از rollout",
+      "title_en": "curl",
+      "fields": {
+        "examples": "**فرمان:** curl\n**نمونه اجرا:**\ncurl -fsS --connect-timeout 3 --max-time 10 https://app.example.test/health\n**توضیح:** کد خروجی غیرصفر شکست درخواست را نشان می‌دهد؛ پاسخ health باید معیارهای سازمان را هم برآورده کند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3027",
+      "title_fa": "[L1] بررسی سرویس‌های failed پس از ارتقا",
+      "title_en": "systemctl --failed",
+      "fields": {
+        "examples": "**فرمان:** systemctl --failed\n**نمونه اجرا:**\nsystemctl --failed --no-legend --no-pager\n**توضیح:** خروجی را با baseline مقایسه کنید و برای هر واحد failed، journal و وابستگی‌ها را بررسی کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3028",
+      "title_fa": "[L1] طرح rollback برای بسته",
+      "title_en": "apt-cache policy",
+      "fields": {
+        "examples": "**فرمان:** apt-cache policy\n**نمونه اجرا:**\napt-cache policy openssl\n**توضیح:** وجود نسخه قدیمی در cache/repository تضمین نیست؛ قبل از patch منبع بسته و روش بازگشت را تأیید کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3029",
+      "title_fa": "[L1] ثبت checksum artifact",
+      "title_en": "Get-FileHash",
+      "fields": {
+        "examples": "**فرمان:** Get-FileHash\n**نمونه اجرا:**\nGet-FileHash .\\update-package.msi -Algorithm SHA256\n**توضیح:** hash را با مقدار منبع معتبر و مستقل مقایسه کنید؛ hash تنها اصالت ناشر را اثبات نمی‌کند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3030",
+      "title_fa": "[L1] بررسی امضای package RPM",
+      "title_en": "rpm -K",
+      "fields": {
+        "examples": "**فرمان:** rpm -K\n**نمونه اجرا:**\nrpm -K package.rpm\n**توضیح:** اعتبار کلید و زنجیره اعتماد مخزن را نیز بررسی کنید؛ پیام امضا را متناسب با سیاست سازمان تفسیر کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3031",
+      "title_fa": "[L1] گزارش وضعیت reboot Windows",
+      "title_en": "Get-WinEvent",
+      "fields": {
+        "examples": "**فرمان:** Get-WinEvent\n**نمونه اجرا:**\nGet-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddHours(-12)} -MaxEvents 200 | Where-Object Message -Match 'restart|reboot|shutdown'\n**توضیح:** جست‌وجوی متن سرنخ اولیه است و ممکن است زبان پیام یا provider متفاوت باشد.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3032",
+      "title_fa": "[L1] بررسی وابستگی‌های systemd",
+      "title_en": "systemctl list-dependencies",
+      "fields": {
+        "examples": "**فرمان:** systemctl list-dependencies\n**نمونه اجرا:**\nsystemctl list-dependencies --reverse nginx.service --no-pager\n**توضیح:** پیش از restart/reboot، سرویس‌های وابسته و اثر روی برنامه را بررسی کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3033",
+      "title_fa": "[L1] تولید baseline سرویس‌ها",
+      "title_en": "Get-Service",
+      "fields": {
+        "examples": "**فرمان:** Get-Service\n**نمونه اجرا:**\nGet-Service | Sort-Object Name | Select-Object Name,Status,StartType | Export-Csv .\\services-baseline.csv -NoTypeInformation -Encoding utf8\n**توضیح:** baseline را با timestamp و change ID ذخیره کنید؛ از نگهداری اطلاعات حساس در مسیر عمومی اجتناب کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3034",
+      "title_fa": "[L1] مشاهده زمان و timezone",
+      "title_en": "timedatectl",
+      "fields": {
+        "examples": "**فرمان:** timedatectl\n**نمونه اجرا:**\ntimedatectl status\n**توضیح:** اختلاف ساعت می‌تواند تحلیل لاگ و TLS را مخدوش کند؛ همگام‌سازی زمان را جدا بررسی کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3035",
+      "title_fa": "[L1] بررسی RAM و swap",
+      "title_en": "free",
+      "fields": {
+        "examples": "**فرمان:** free\n**نمونه اجرا:**\nfree -h; swapon --show\n**توضیح:** فشار حافظه را همراه با روند و OOM logs بررسی کنید؛ یک snapshot برای علت‌یابی کافی نیست.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3036",
+      "title_fa": "[L1] رخدادهای OOM کرنل",
+      "title_en": "journalctl -k",
+      "fields": {
+        "examples": "**فرمان:** journalctl -k\n**نمونه اجرا:**\njournalctl -k --since '-24 hours' --no-pager | grep -i -E 'oom|out of memory|killed process'\n**توضیح:** خروجی grep فقط سرنخ است؛ timestamp و فرایند قربانی را با metrics تطبیق دهید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3037",
+      "title_fa": "[L1] بررسی وضعیت BitLocker",
+      "title_en": "manage-bde",
+      "fields": {
+        "examples": "**فرمان:** manage-bde\n**نمونه اجرا:**\nmanage-bde -status C:\n**توضیح:** پیش از تغییرات boot/firmware مطمئن شوید recovery key طبق سیاست امن و قابل‌دسترسی است.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3038",
+      "title_fa": "[L1] بررسی وضعیت Defender",
+      "title_en": "Get-MpComputerStatus",
+      "fields": {
+        "examples": "**فرمان:** Get-MpComputerStatus\n**نمونه اجرا:**\nGet-MpComputerStatus | Select-Object AMServiceEnabled,AntivirusEnabled,RealTimeProtectionEnabled,AntivirusSignatureLastUpdated\n**توضیح:** در دسترس بودن فیلدها به نسخه و سیاست endpoint وابسته است؛ نتیجه را با کنسول مرکزی تطبیق دهید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3039",
+      "title_fa": "[L1] بررسی امضای درایور/فایل",
+      "title_en": "Get-AuthenticodeSignature",
+      "fields": {
+        "examples": "**فرمان:** Get-AuthenticodeSignature\n**نمونه اجرا:**\nGet-AuthenticodeSignature C:\\Windows\\System32\\notepad.exe | Select-Object Status,SignerCertificate\n**توضیح:** برای فایل‌های سیستمی نمونه، status و signer را بررسی کنید؛ این فرمان جایگزین کنترل integrity کامل نیست.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3040",
+      "title_fa": "[L1] محدودکردن خطا در اسکریپت",
+      "title_en": "try/catch",
+      "fields": {
+        "examples": "**فرمان:** try/catch\n**نمونه اجرا:**\ntry { Get-Service -Name 'Spooler' -ErrorAction Stop } catch { $_.Exception.Message; exit 1 }\n**توضیح:** خطا را آشکارا مدیریت کنید؛ پیام خطا را قبل از ثبت در سامانه خارجی از داده حساس پاک کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3041",
+      "title_fa": "[L1] پیش‌نمایش تغییر فایل",
+      "title_en": "Compare-Object",
+      "fields": {
+        "examples": "**فرمان:** Compare-Object\n**نمونه اجرا:**\nCompare-Object (Get-Content .\\before.txt) (Get-Content .\\after.txt)\n**توضیح:** برای فایل‌های بزرگ یا باینری از ابزار مقایسه مناسب‌تر استفاده کنید؛ ورودی‌ها باید متعلق به آزمایشگاه باشند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3042",
+      "title_fa": "[L1] اعتبارسنجی syntax واحد systemd",
+      "title_en": "systemd-analyze verify",
+      "fields": {
+        "examples": "**فرمان:** systemd-analyze verify\n**نمونه اجرا:**\nsystemd-analyze verify /etc/systemd/system/example.service\n**توضیح:** قبل از reload/restart واحد، خطاهای syntax و مسیرها را بررسی کنید؛ مسیر نمونه را جایگزین کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3043",
+      "title_fa": "[L1] بررسی نسخه بسته نصب‌شده",
+      "title_en": "apt-cache policy",
+      "fields": {
+        "examples": "**فرمان:** apt-cache policy\n**نمونه اجرا:**\napt-cache policy nginx\n**توضیح:** نسخه نصب‌شده، candidate و repository را با سیاست نگهداری تطبیق دهید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3044",
+      "title_fa": "[L1] فهرست hotfix از راه دور با CIM",
+      "title_en": "Get-CimInstance",
+      "fields": {
+        "examples": "**فرمان:** Get-CimInstance\n**نمونه اجرا:**\nGet-CimInstance -ClassName Win32_QuickFixEngineering -ComputerName lab-win01 | Select-Object HotFixID,InstalledOn,Description\n**توضیح:** به دسترسی راه‌دور و firewall مناسب نیاز دارد؛ همه updateها لزوماً در این کلاس ثبت نمی‌شوند.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3045",
+      "title_fa": "[L1] بررسی فضای آزاد پیش از patch",
+      "title_en": "Get-Volume",
+      "fields": {
+        "examples": "**فرمان:** Get-Volume\n**نمونه اجرا:**\nGet-Volume | Where-Object DriveLetter -ne $null | Select-Object DriveLetter,@{N='FreeGiB';E={[math]::Round($_.SizeRemaining/1GB,2)}}\n**توضیح:** آستانه فضای آزاد را بر اساس اندازه update، temp و نیاز rollback تعریف کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch68:cmd:3046",
+      "title_fa": "[L1] بررسی سلامت مخزن APT",
+      "title_en": "apt-get check",
+      "fields": {
+        "examples": "**فرمان:** apt-get check\n**نمونه اجرا:**\nsudo apt-get check\n**توضیح:** وابستگی‌های شکسته را بررسی می‌کند؛ خروجی و کد بازگشت را پیش از هر اقدام اصلاحی ثبت کنید.\n**ایمنی:** ابتدا روی میزبان آزمایش اجرا کنید و پیش از هر تغییر در محیط تولید، مجوز، baseline و روش بازگشت را مشخص کنید."
+      }
     }
   ]
 }
