@@ -130,7 +130,7 @@ nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
  if(btn) btn.addEventListener('click',async()=>{
    if(!('Notification' in window)){alert('این مرورگر اعلان را پشتیبانی نمی‌کند.');return;}
    const permission=await Notification.requestPermission();
-   alert(permission==='granted'?'اعلان‌ها فعال شدند؛ صفحه را باز نگه دارید.':'اجازه اعلان داده نشد.');
+   if(permission==='granted'){alert('اعلان‌ها فعال شدند؛ صفحه را باز نگه دارید.');location.reload();}else{alert('اجازه اعلان داده نشد.');}
  });
  if(!('Notification' in window)||Notification.permission!=='granted') return;
  document.querySelectorAll('[data-due]').forEach(card=>{
