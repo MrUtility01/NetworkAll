@@ -81,7 +81,28 @@ button{background:#0ea5e9;color:#fff;font-weight:bold}
 <button type=submit>ورود</button>
 <p style="font-size:12px;color:#64748b"><a href="/" style="color:#38bdf8">بازگشت</a></p>
 </form>
-</body></html>
+</body>
+{% if tab=='tasks' %}
+<script>
+(function(){
+ const btn=document.getElementById('enableReminder');
+ if(btn) btn.addEventListener('click',async()=>{
+   if(!('Notification' in window)){alert('این مرورگر اعلان را پشتیبانی نمی‌کند.');return;}
+   const permission=await Notification.requestPermission();
+   alert(permission==='granted'?'اعلان‌ها فعال شدند؛ صفحه را باز نگه دارید.':'اجازه اعلان داده نشد.');
+ });
+ if(!('Notification' in window)||Notification.permission!=='granted') return;
+ document.querySelectorAll('[data-due]').forEach(card=>{
+   const raw=card.dataset.due; if(!raw) return;
+   const at=Date.parse(raw), delay=at-Date.now();
+   if(!Number.isFinite(at)||delay < -60000) return;
+   const fire=()=>{if(Notification.permission==='granted') new Notification('یادآوری: '+card.dataset.title,{body:'زمان انجام این کار رسیده است.'});};
+   if(delay<=0) fire(); else if(delay<2147480000) setTimeout(fire,delay);
+ });
+})();
+</script>
+{% endif %}
+</html>
 """
 
 PAGE = """
@@ -109,12 +130,12 @@ nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
 <form method=post>
 <input name=title placeholder="عنوان" required>
 <textarea name=body rows=4 placeholder="{{ 'رمز (ذخیره sealed)' if tab=='vault' else 'متن' }}"></textarea>
-{% if tab=='tasks' %}<input name=due_date placeholder="تاریخ شمسی (مثلاً ۱۴۰۵/۰۷/۲۴)"><input name=due_time placeholder="ساعت یادآوری (مثلاً ۱۸:۳۰)"><p class="badge">یادآوری مرورگر به اجازه اعلان و بازبودن صفحه نیاز دارد.</p>{% endif %}
+{% if tab=='tasks' %}<input name=due_date placeholder="تاریخ شمسی (مثلاً ۱۴۰۵/۰۷/۲۴)"><input name=due_time placeholder="ساعت یادآوری (مثلاً ۱۸:۳۰)"><p class="badge">یادآوری مرورگر به اجازه اعلان و بازبودن صفحه نیاز دارد.</p><button type=button id="enableReminder">فعال‌کردن اعلان مرورگر</button>{% endif %}
 {% if tab=='vault' %}<input name=username placeholder="نام کاربری">{% endif %}
 <button type=submit>ذخیره</button>
 </form>
 {% for it in items %}
-<div class=card>
+<div class=card {% if tab=='tasks' %}data-due="{{ it.due_at|default('') }}" data-title="{{ it.title }}"{% endif %}>
 <b>{{ it.title }}</b>
 {% if it.due_label|default('') %}<p class="badge">{{ it.due_label }}</p>{% endif %}
 <pre style="white-space:pre-wrap;margin:8px 0">{{ it.body }}</pre>
