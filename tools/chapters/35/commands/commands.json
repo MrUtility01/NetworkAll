@@ -1,0 +1,608 @@
+{
+  "schema_version": 1,
+  "chapter_order": 35,
+  "category": "commands",
+  "source_of_truth": true,
+  "items": [
+    {
+      "uid": "lesson:ch35:lv003:l0001",
+      "title_fa": "[L0] Remoting — آشنایی",
+      "title_en": "[L0] PowerShell Remoting — Intro",
+      "fields": {
+        "commands": "# روی کلاینت مجاز\nTest-WSMan -ComputerName server01.contoso.com\n$session = New-PSSession -ComputerName server01.contoso.com -Authentication Kerberos\nInvoke-Command -Session $session -ScriptBlock { Get-Service -Name WinRM }\nRemove-PSSession $session\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n---\n\nTest-WSMan SERVER01; Invoke-Command -ComputerName SERVER01 -ScriptBlock { $env:COMPUTERNAME }\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0002",
+      "title_fa": "[L1] Remoting — مقدماتی",
+      "title_en": "[L1] PowerShell Remoting — Junior",
+      "fields": {
+        "commands": "# روی کلاینت مجاز\nTest-WSMan -ComputerName server01.contoso.com\n$session = New-PSSession -ComputerName server01.contoso.com -Authentication Kerberos\nInvoke-Command -Session $session -ScriptBlock { Get-Service -Name WinRM }\nRemove-PSSession $session\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n---\n\nTest-WSMan SERVER01; Invoke-Command -ComputerName SERVER01 -ScriptBlock { $env:COMPUTERNAME }\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0003",
+      "title_fa": "[L2] Remoting — ادمین",
+      "title_en": "[L2] PowerShell Remoting — Admin",
+      "fields": {
+        "commands": "# روی کلاینت مجاز\nTest-WSMan -ComputerName server01.contoso.com\n$session = New-PSSession -ComputerName server01.contoso.com -Authentication Kerberos\nInvoke-Command -Session $session -ScriptBlock { Get-Service -Name WinRM }\nRemove-PSSession $session\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n---\n\nTest-WSMan SERVER01; Invoke-Command -ComputerName SERVER01 -ScriptBlock { $env:COMPUTERNAME }\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0004",
+      "title_fa": "[L3] Remoting — مهندس",
+      "title_en": "[L3] PowerShell Remoting — Senior",
+      "fields": {
+        "commands": "# روی کلاینت مجاز\nTest-WSMan -ComputerName server01.contoso.com\n$session = New-PSSession -ComputerName server01.contoso.com -Authentication Kerberos\nInvoke-Command -Session $session -ScriptBlock { Get-Service -Name WinRM }\nRemove-PSSession $session\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n---\n\nTest-WSMan SERVER01; Invoke-Command -ComputerName SERVER01 -ScriptBlock { $env:COMPUTERNAME }\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0005",
+      "title_fa": "[L4] Remoting — خبره",
+      "title_en": "[L4] PowerShell Remoting — Architect",
+      "fields": {
+        "commands": "# روی کلاینت مجاز\nTest-WSMan -ComputerName server01.contoso.com\n$session = New-PSSession -ComputerName server01.contoso.com -Authentication Kerberos\nInvoke-Command -Session $session -ScriptBlock { Get-Service -Name WinRM }\nRemove-PSSession $session\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n---\n\nTest-WSMan SERVER01; Invoke-Command -ComputerName SERVER01 -ScriptBlock { $env:COMPUTERNAME }\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0006",
+      "title_fa": "[L0] AD Module — آشنایی",
+      "title_en": "[L0] Active Directory PowerShell Module — Intro",
+      "fields": {
+        "commands": "Import-Module ActiveDirectory\nGet-ADUser -Filter * -SearchBase \"OU=Lab,DC=example,DC=com\" -Properties Enabled | Select-Object SamAccountName,Enabled\n# قبل از تغییر دسته‌ای از -WhatIf استفاده کنید؛ پشتیبانی WhatIf به cmdlet وابسته است.\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n---\n\nGet-Module ActiveDirectory -ListAvailable; Get-ADUser -Filter * -ResultSetSize 5\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0007",
+      "title_fa": "[L1] AD Module — مقدماتی",
+      "title_en": "[L1] Active Directory PowerShell Module — Junior",
+      "fields": {
+        "commands": "Import-Module ActiveDirectory\nGet-ADUser -Filter * -SearchBase \"OU=Lab,DC=example,DC=com\" -Properties Enabled | Select-Object SamAccountName,Enabled\n# قبل از تغییر دسته‌ای از -WhatIf استفاده کنید؛ پشتیبانی WhatIf به cmdlet وابسته است.\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n---\n\nGet-Module ActiveDirectory -ListAvailable; Get-ADUser -Filter * -ResultSetSize 5\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0008",
+      "title_fa": "[L2] AD Module — ادمین",
+      "title_en": "[L2] Active Directory PowerShell Module — Admin",
+      "fields": {
+        "commands": "Import-Module ActiveDirectory\nGet-ADUser -Filter * -SearchBase \"OU=Lab,DC=example,DC=com\" -Properties Enabled | Select-Object SamAccountName,Enabled\n# قبل از تغییر دسته‌ای از -WhatIf استفاده کنید؛ پشتیبانی WhatIf به cmdlet وابسته است.\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n---\n\nGet-Module ActiveDirectory -ListAvailable; Get-ADUser -Filter * -ResultSetSize 5\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0009",
+      "title_fa": "[L3] AD Module — مهندس",
+      "title_en": "[L3] Active Directory PowerShell Module — Senior",
+      "fields": {
+        "commands": "Import-Module ActiveDirectory\nGet-ADUser -Filter * -SearchBase \"OU=Lab,DC=example,DC=com\" -Properties Enabled | Select-Object SamAccountName,Enabled\n# قبل از تغییر دسته‌ای از -WhatIf استفاده کنید؛ پشتیبانی WhatIf به cmdlet وابسته است.\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n---\n\nGet-Module ActiveDirectory -ListAvailable; Get-ADUser -Filter * -ResultSetSize 5\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0010",
+      "title_fa": "[L4] AD Module — خبره",
+      "title_en": "[L4] Active Directory PowerShell Module — Architect",
+      "fields": {
+        "commands": "Import-Module ActiveDirectory\nGet-ADUser -Filter * -SearchBase \"OU=Lab,DC=example,DC=com\" -Properties Enabled | Select-Object SamAccountName,Enabled\n# قبل از تغییر دسته‌ای از -WhatIf استفاده کنید؛ پشتیبانی WhatIf به cmdlet وابسته است.\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n---\n\nGet-Module ActiveDirectory -ListAvailable; Get-ADUser -Filter * -ResultSetSize 5\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0011",
+      "title_fa": "[L0] Network Scripts — آشنایی",
+      "title_en": "[L0] PowerShell Network Scripts — Intro",
+      "fields": {
+        "commands": "Get-NetIPConfiguration\nTest-NetConnection -ComputerName example.com -Port 443\nResolve-DnsName example.com\nGet-NetRoute -AddressFamily IPv4 | Sort-Object RouteMetric\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n---\n\nTest-NetConnection -ComputerName SERVER01 -Port 5985; Get-NetIPConfiguration\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0012",
+      "title_fa": "[L1] Network Scripts — مقدماتی",
+      "title_en": "[L1] PowerShell Network Scripts — Junior",
+      "fields": {
+        "commands": "Get-NetIPConfiguration\nTest-NetConnection -ComputerName example.com -Port 443\nResolve-DnsName example.com\nGet-NetRoute -AddressFamily IPv4 | Sort-Object RouteMetric\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n---\n\nTest-NetConnection -ComputerName SERVER01 -Port 5985; Get-NetIPConfiguration\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0013",
+      "title_fa": "[L2] Network Scripts — ادمین",
+      "title_en": "[L2] PowerShell Network Scripts — Admin",
+      "fields": {
+        "commands": "Get-NetIPConfiguration\nTest-NetConnection -ComputerName example.com -Port 443\nResolve-DnsName example.com\nGet-NetRoute -AddressFamily IPv4 | Sort-Object RouteMetric\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n---\n\nTest-NetConnection -ComputerName SERVER01 -Port 5985; Get-NetIPConfiguration\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0014",
+      "title_fa": "[L3] Network Scripts — مهندس",
+      "title_en": "[L3] PowerShell Network Scripts — Senior",
+      "fields": {
+        "commands": "Get-NetIPConfiguration\nTest-NetConnection -ComputerName example.com -Port 443\nResolve-DnsName example.com\nGet-NetRoute -AddressFamily IPv4 | Sort-Object RouteMetric\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n---\n\nTest-NetConnection -ComputerName SERVER01 -Port 5985; Get-NetIPConfiguration\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0015",
+      "title_fa": "[L4] Network Scripts — خبره",
+      "title_en": "[L4] PowerShell Network Scripts — Architect",
+      "fields": {
+        "commands": "Get-NetIPConfiguration\nTest-NetConnection -ComputerName example.com -Port 443\nResolve-DnsName example.com\nGet-NetRoute -AddressFamily IPv4 | Sort-Object RouteMetric\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n---\n\nTest-NetConnection -ComputerName SERVER01 -Port 5985; Get-NetIPConfiguration\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0016",
+      "title_fa": "[L0] Scheduled Jobs — آشنایی",
+      "title_en": "[L0] PowerShell Scheduled Jobs — Intro",
+      "fields": {
+        "commands": "# مشاهدهٔ Taskها\nGet-ScheduledTask | Select-Object TaskName,TaskPath,State\n# اجرای دستی یک task آزمایشی\nStart-ScheduledTask -TaskName \"Lab-NetworkReport\"\nGet-ScheduledTaskInfo -TaskName \"Lab-NetworkReport\"\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n---\n\nGet-ScheduledTask | Select-Object TaskName,TaskPath,State\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0017",
+      "title_fa": "[L1] Scheduled Jobs — مقدماتی",
+      "title_en": "[L1] PowerShell Scheduled Jobs — Junior",
+      "fields": {
+        "commands": "# مشاهدهٔ Taskها\nGet-ScheduledTask | Select-Object TaskName,TaskPath,State\n# اجرای دستی یک task آزمایشی\nStart-ScheduledTask -TaskName \"Lab-NetworkReport\"\nGet-ScheduledTaskInfo -TaskName \"Lab-NetworkReport\"\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n---\n\nGet-ScheduledTask | Select-Object TaskName,TaskPath,State\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0018",
+      "title_fa": "[L2] Scheduled Jobs — ادمین",
+      "title_en": "[L2] PowerShell Scheduled Jobs — Admin",
+      "fields": {
+        "commands": "# مشاهدهٔ Taskها\nGet-ScheduledTask | Select-Object TaskName,TaskPath,State\n# اجرای دستی یک task آزمایشی\nStart-ScheduledTask -TaskName \"Lab-NetworkReport\"\nGet-ScheduledTaskInfo -TaskName \"Lab-NetworkReport\"\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n---\n\nGet-ScheduledTask | Select-Object TaskName,TaskPath,State\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0019",
+      "title_fa": "[L3] Scheduled Jobs — مهندس",
+      "title_en": "[L3] PowerShell Scheduled Jobs — Senior",
+      "fields": {
+        "commands": "# مشاهدهٔ Taskها\nGet-ScheduledTask | Select-Object TaskName,TaskPath,State\n# اجرای دستی یک task آزمایشی\nStart-ScheduledTask -TaskName \"Lab-NetworkReport\"\nGet-ScheduledTaskInfo -TaskName \"Lab-NetworkReport\"\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n---\n\nGet-ScheduledTask | Select-Object TaskName,TaskPath,State\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0020",
+      "title_fa": "[L4] Scheduled Jobs — خبره",
+      "title_en": "[L4] PowerShell Scheduled Jobs — Architect",
+      "fields": {
+        "commands": "# مشاهدهٔ Taskها\nGet-ScheduledTask | Select-Object TaskName,TaskPath,State\n# اجرای دستی یک task آزمایشی\nStart-ScheduledTask -TaskName \"Lab-NetworkReport\"\nGet-ScheduledTaskInfo -TaskName \"Lab-NetworkReport\"\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n---\n\nGet-ScheduledTask | Select-Object TaskName,TaskPath,State\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0021",
+      "title_fa": "[L0] DSC مقدماتی — آشنایی",
+      "title_en": "[L0] Desired State Configuration — Intro",
+      "fields": {
+        "commands": "# بررسی موتور/ماژول‌های موجود پیش از اجرای نمونه\n$PSVersionTable\nGet-Module -ListAvailable PSDesiredStateConfiguration\nGet-Command -Module PSDesiredStateConfiguration -ErrorAction SilentlyContinue\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n---\n\nGet-Module -ListAvailable PSDesiredStateConfiguration; Get-DscLocalConfigurationManager -ErrorAction SilentlyContinue\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0022",
+      "title_fa": "[L1] DSC مقدماتی — مقدماتی",
+      "title_en": "[L1] Desired State Configuration — Junior",
+      "fields": {
+        "commands": "# بررسی موتور/ماژول‌های موجود پیش از اجرای نمونه\n$PSVersionTable\nGet-Module -ListAvailable PSDesiredStateConfiguration\nGet-Command -Module PSDesiredStateConfiguration -ErrorAction SilentlyContinue\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n---\n\nGet-Module -ListAvailable PSDesiredStateConfiguration; Get-DscLocalConfigurationManager -ErrorAction SilentlyContinue\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0023",
+      "title_fa": "[L2] DSC مقدماتی — ادمین",
+      "title_en": "[L2] Desired State Configuration — Admin",
+      "fields": {
+        "commands": "# بررسی موتور/ماژول‌های موجود پیش از اجرای نمونه\n$PSVersionTable\nGet-Module -ListAvailable PSDesiredStateConfiguration\nGet-Command -Module PSDesiredStateConfiguration -ErrorAction SilentlyContinue\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n---\n\nGet-Module -ListAvailable PSDesiredStateConfiguration; Get-DscLocalConfigurationManager -ErrorAction SilentlyContinue\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0024",
+      "title_fa": "[L3] DSC مقدماتی — مهندس",
+      "title_en": "[L3] Desired State Configuration — Senior",
+      "fields": {
+        "commands": "# بررسی موتور/ماژول‌های موجود پیش از اجرای نمونه\n$PSVersionTable\nGet-Module -ListAvailable PSDesiredStateConfiguration\nGet-Command -Module PSDesiredStateConfiguration -ErrorAction SilentlyContinue\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n---\n\nGet-Module -ListAvailable PSDesiredStateConfiguration; Get-DscLocalConfigurationManager -ErrorAction SilentlyContinue\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv003:l0025",
+      "title_fa": "[L4] DSC مقدماتی — خبره",
+      "title_en": "[L4] Desired State Configuration — Architect",
+      "fields": {
+        "commands": "# بررسی موتور/ماژول‌های موجود پیش از اجرای نمونه\n$PSVersionTable\nGet-Module -ListAvailable PSDesiredStateConfiguration\nGet-Command -Module PSDesiredStateConfiguration -ErrorAction SilentlyContinue\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n---\n\nGet-Module -ListAvailable PSDesiredStateConfiguration; Get-DscLocalConfigurationManager -ErrorAction SilentlyContinue\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0001",
+      "title_fa": "[L0] ipconfig — آشنایی",
+      "title_en": "[L0] ipconfig — Intro",
+      "fields": {
+        "commands": "ipconfig /all; ipconfig /displaydns\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0002",
+      "title_fa": "[L1] ipconfig — مقدماتی",
+      "title_en": "[L1] ipconfig — Junior",
+      "fields": {
+        "commands": "ipconfig /all; ipconfig /displaydns\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0003",
+      "title_fa": "[L2] ipconfig — ادمین",
+      "title_en": "[L2] ipconfig — Admin",
+      "fields": {
+        "commands": "ipconfig /all; ipconfig /displaydns\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0004",
+      "title_fa": "[L3] ipconfig — مهندس",
+      "title_en": "[L3] ipconfig — Senior",
+      "fields": {
+        "commands": "ipconfig /all; ipconfig /displaydns\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0005",
+      "title_fa": "[L4] ipconfig — خبره",
+      "title_en": "[L4] ipconfig — Architect",
+      "fields": {
+        "commands": "ipconfig /all; ipconfig /displaydns\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0006",
+      "title_fa": "[L0] ping pathping — آشنایی",
+      "title_en": "[L0] ping pathping — Intro",
+      "fields": {
+        "commands": "ping -n 4 192.0.2.10; pathping -n 192.0.2.10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0007",
+      "title_fa": "[L1] ping pathping — مقدماتی",
+      "title_en": "[L1] ping pathping — Junior",
+      "fields": {
+        "commands": "ping -n 4 192.0.2.10; pathping -n 192.0.2.10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0008",
+      "title_fa": "[L2] ping pathping — ادمین",
+      "title_en": "[L2] ping pathping — Admin",
+      "fields": {
+        "commands": "ping -n 4 192.0.2.10; pathping -n 192.0.2.10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0009",
+      "title_fa": "[L3] ping pathping — مهندس",
+      "title_en": "[L3] ping pathping — Senior",
+      "fields": {
+        "commands": "ping -n 4 192.0.2.10; pathping -n 192.0.2.10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0010",
+      "title_fa": "[L4] ping pathping — خبره",
+      "title_en": "[L4] ping pathping — Architect",
+      "fields": {
+        "commands": "ping -n 4 192.0.2.10; pathping -n 192.0.2.10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0011",
+      "title_fa": "[L0] tracert — آشنایی",
+      "title_en": "[L0] tracert — Intro",
+      "fields": {
+        "commands": "tracert -d 192.0.2.10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0012",
+      "title_fa": "[L1] tracert — مقدماتی",
+      "title_en": "[L1] tracert — Junior",
+      "fields": {
+        "commands": "tracert -d 192.0.2.10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0013",
+      "title_fa": "[L2] tracert — ادمین",
+      "title_en": "[L2] tracert — Admin",
+      "fields": {
+        "commands": "tracert -d 192.0.2.10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0014",
+      "title_fa": "[L3] tracert — مهندس",
+      "title_en": "[L3] tracert — Senior",
+      "fields": {
+        "commands": "tracert -d 192.0.2.10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0015",
+      "title_fa": "[L4] tracert — خبره",
+      "title_en": "[L4] tracert — Architect",
+      "fields": {
+        "commands": "tracert -d 192.0.2.10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0016",
+      "title_fa": "[L0] nslookup — آشنایی",
+      "title_en": "[L0] nslookup — Intro",
+      "fields": {
+        "commands": "nslookup -type=SRV _ldap._tcp.dc._msdcs.example.test\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0017",
+      "title_fa": "[L1] nslookup — مقدماتی",
+      "title_en": "[L1] nslookup — Junior",
+      "fields": {
+        "commands": "nslookup -type=SRV _ldap._tcp.dc._msdcs.example.test\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0018",
+      "title_fa": "[L2] nslookup — ادمین",
+      "title_en": "[L2] nslookup — Admin",
+      "fields": {
+        "commands": "nslookup -type=SRV _ldap._tcp.dc._msdcs.example.test\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0019",
+      "title_fa": "[L3] nslookup — مهندس",
+      "title_en": "[L3] nslookup — Senior",
+      "fields": {
+        "commands": "nslookup -type=SRV _ldap._tcp.dc._msdcs.example.test\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0020",
+      "title_fa": "[L4] nslookup — خبره",
+      "title_en": "[L4] nslookup — Architect",
+      "fields": {
+        "commands": "nslookup -type=SRV _ldap._tcp.dc._msdcs.example.test\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0021",
+      "title_fa": "[L0] netsh — آشنایی",
+      "title_en": "[L0] netsh — Intro",
+      "fields": {
+        "commands": "netsh interface ip show config; netsh advfirewall show allprofiles\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0022",
+      "title_fa": "[L1] netsh — مقدماتی",
+      "title_en": "[L1] netsh — Junior",
+      "fields": {
+        "commands": "netsh interface ip show config; netsh advfirewall show allprofiles\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0023",
+      "title_fa": "[L2] netsh — ادمین",
+      "title_en": "[L2] netsh — Admin",
+      "fields": {
+        "commands": "netsh interface ip show config; netsh advfirewall show allprofiles\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0024",
+      "title_fa": "[L3] netsh — مهندس",
+      "title_en": "[L3] netsh — Senior",
+      "fields": {
+        "commands": "netsh interface ip show config; netsh advfirewall show allprofiles\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0025",
+      "title_fa": "[L4] netsh — خبره",
+      "title_en": "[L4] netsh — Architect",
+      "fields": {
+        "commands": "netsh interface ip show config; netsh advfirewall show allprofiles\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0026",
+      "title_fa": "[L0] arp route — آشنایی",
+      "title_en": "[L0] arp route — Intro",
+      "fields": {
+        "commands": "arp -a; route print; Get-NetRoute\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0027",
+      "title_fa": "[L1] arp route — مقدماتی",
+      "title_en": "[L1] arp route — Junior",
+      "fields": {
+        "commands": "arp -a; route print; Get-NetRoute\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0028",
+      "title_fa": "[L2] arp route — ادمین",
+      "title_en": "[L2] arp route — Admin",
+      "fields": {
+        "commands": "arp -a; route print; Get-NetRoute\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0029",
+      "title_fa": "[L3] arp route — مهندس",
+      "title_en": "[L3] arp route — Senior",
+      "fields": {
+        "commands": "arp -a; route print; Get-NetRoute\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv001:l0030",
+      "title_fa": "[L4] arp route — خبره",
+      "title_en": "[L4] arp route — Architect",
+      "fields": {
+        "commands": "arp -a; route print; Get-NetRoute\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0001",
+      "title_fa": "[L0] Cmdlets — آشنایی",
+      "title_en": "[L0] Cmdlets — Intro",
+      "fields": {
+        "commands": "Get-Command *DnsServer*; Get-Help Get-DnsServerZone -Examples\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0002",
+      "title_fa": "[L1] Cmdlets — مقدماتی",
+      "title_en": "[L1] Cmdlets — Junior",
+      "fields": {
+        "commands": "Get-Command *DnsServer*; Get-Help Get-DnsServerZone -Examples\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0003",
+      "title_fa": "[L2] Cmdlets — ادمین",
+      "title_en": "[L2] Cmdlets — Admin",
+      "fields": {
+        "commands": "Get-Command *DnsServer*; Get-Help Get-DnsServerZone -Examples\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0004",
+      "title_fa": "[L3] Cmdlets — مهندس",
+      "title_en": "[L3] Cmdlets — Senior",
+      "fields": {
+        "commands": "Get-Command *DnsServer*; Get-Help Get-DnsServerZone -Examples\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0005",
+      "title_fa": "[L4] Cmdlets — خبره",
+      "title_en": "[L4] Cmdlets — Architect",
+      "fields": {
+        "commands": "Get-Command *DnsServer*; Get-Help Get-DnsServerZone -Examples\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0006",
+      "title_fa": "[L0] Pipeline — آشنایی",
+      "title_en": "[L0] Pipeline — Intro",
+      "fields": {
+        "commands": "Get-Service | Where-Object Status -eq Running | Sort-Object DisplayName | Select-Object -First 10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0007",
+      "title_fa": "[L1] Pipeline — مقدماتی",
+      "title_en": "[L1] Pipeline — Junior",
+      "fields": {
+        "commands": "Get-Service | Where-Object Status -eq Running | Sort-Object DisplayName | Select-Object -First 10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0008",
+      "title_fa": "[L2] Pipeline — ادمین",
+      "title_en": "[L2] Pipeline — Admin",
+      "fields": {
+        "commands": "Get-Service | Where-Object Status -eq Running | Sort-Object DisplayName | Select-Object -First 10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0009",
+      "title_fa": "[L3] Pipeline — مهندس",
+      "title_en": "[L3] Pipeline — Senior",
+      "fields": {
+        "commands": "Get-Service | Where-Object Status -eq Running | Sort-Object DisplayName | Select-Object -First 10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0010",
+      "title_fa": "[L4] Pipeline — خبره",
+      "title_en": "[L4] Pipeline — Architect",
+      "fields": {
+        "commands": "Get-Service | Where-Object Status -eq Running | Sort-Object DisplayName | Select-Object -First 10\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0011",
+      "title_fa": "[L0] Objects — آشنایی",
+      "title_en": "[L0] Objects — Intro",
+      "fields": {
+        "commands": "Get-Process | Select-Object Name,Id,CPU | Sort-Object CPU -Descending | Select-Object -First 5\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0012",
+      "title_fa": "[L1] Objects — مقدماتی",
+      "title_en": "[L1] Objects — Junior",
+      "fields": {
+        "commands": "Get-Process | Select-Object Name,Id,CPU | Sort-Object CPU -Descending | Select-Object -First 5\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0013",
+      "title_fa": "[L2] Objects — ادمین",
+      "title_en": "[L2] Objects — Admin",
+      "fields": {
+        "commands": "Get-Process | Select-Object Name,Id,CPU | Sort-Object CPU -Descending | Select-Object -First 5\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0014",
+      "title_fa": "[L3] Objects — مهندس",
+      "title_en": "[L3] Objects — Senior",
+      "fields": {
+        "commands": "Get-Process | Select-Object Name,Id,CPU | Sort-Object CPU -Descending | Select-Object -First 5\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0015",
+      "title_fa": "[L4] Objects — خبره",
+      "title_en": "[L4] Objects — Architect",
+      "fields": {
+        "commands": "Get-Process | Select-Object Name,Id,CPU | Sort-Object CPU -Descending | Select-Object -First 5\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0016",
+      "title_fa": "[L0] Providers — آشنایی",
+      "title_en": "[L0] Providers — Intro",
+      "fields": {
+        "commands": "Get-PSProvider; Get-PSDrive\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0017",
+      "title_fa": "[L1] Providers — مقدماتی",
+      "title_en": "[L1] Providers — Junior",
+      "fields": {
+        "commands": "Get-PSProvider; Get-PSDrive\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0018",
+      "title_fa": "[L2] Providers — ادمین",
+      "title_en": "[L2] Providers — Admin",
+      "fields": {
+        "commands": "Get-PSProvider; Get-PSDrive\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0019",
+      "title_fa": "[L3] Providers — مهندس",
+      "title_en": "[L3] Providers — Senior",
+      "fields": {
+        "commands": "Get-PSProvider; Get-PSDrive\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    },
+    {
+      "uid": "lesson:ch35:lv002:l0020",
+      "title_fa": "[L4] Providers — خبره",
+      "title_en": "[L4] Providers — Architect",
+      "fields": {
+        "commands": "Get-PSProvider; Get-PSDrive\n\nفرمان‌ها را ابتدا با دادهٔ آزمایش اجرا کنید؛ cmdletها و پارامترهای موجود ممکن است با نسخهٔ PowerShell یا role نصب‌شده فرق کنند."
+      }
+    }
+  ]
+}

@@ -1,0 +1,679 @@
+{
+  "schema_version": 1,
+  "chapter_order": 60,
+  "chapter_title_fa": "عیب‌یابی هک اخلاقی لاب سازمانی",
+  "source_of_truth": true,
+  "pack_metadata": {
+    "schema_version": 1,
+    "chapter_order": 60,
+    "chapter_title_fa": "عیب‌یابی هک اخلاقی لاب سازمانی",
+    "chapter_title_en": "Chapter 60 — Ethical Hacking Lab Troubleshooting",
+    "merge_strategy": "by_title",
+    "preserve_existing_records": true,
+    "source_of_truth_note": "Base definitions live in lessons/base_curriculum.json. Source-of-truth fields are separated into lessons, questions, answers, examples, commands and labs; chapter.json is a generated compatibility pack."
+  },
+  "items": [
+    {
+      "uid": "lesson:ch60:lv001:l0001",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 1,
+      "lesson_order": 1,
+      "topic": "Symptom to Root Cause",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L0",
+      "title_fa": "[L0] Symptom to Root Cause — آشنایی",
+      "title_en": "[L0] Symptom to Root Cause — Intro",
+      "tags": [
+        "L0",
+        "troubleshooting",
+        "methodology",
+        "RCA",
+        "ch60"
+      ],
+      "summary": "تبدیل علامت (Symptom) به علت ریشه‌ای (Root Cause) هستهٔ هر عیب‌یابی حرفه‌ای است. بدون این مسیر، فقط علامت را درمان می‌کنید و مشکل بازمی‌گردد.",
+      "full_content": "# [L0] Symptom to Root Cause — آشنایی\n\n## ۱. معرفی و نقشه راه\nعلامت (Symptom) چیزی است که کاربر یا سیستم گزارش می‌دهد: «اینترنت قطع است»، «لاگین کند است»، «پرینتر کار نمی‌کند». علت ریشه‌ای (Root Cause) آن چیزی است که واقعاً مشکل را ایجاد کرده: کابل قطع، DNS اشتباه، GPO خراب، یا تغییر پیکربندی دیروز.\n\nهدف این درس: یاد بگیرید هیچ‌وقت مستقیماً از علامت به راه‌حل نپرید.\n\n## ۲. آموزش از صفر\nفرآیند استاندارد:\n1. **جمع‌آوری علامت‌ها** — دقیق بنویسید چه کسی، چه زمانی، چه چیزی، در چه شرایطی.\n2. **جمع‌آوری شواهد** — لاگ، خروجی فرمان، وضعیت اینترفیس، تاریخچه تغییر.\n3. **ساخت فرضیه** — حداقل ۳ فرضیه محتمل بنویسید.\n4. **آزمون فرضیه** — هر فرضیه را با یک تست ساده و برگشت‌پذیر بررسی کنید.\n5. **تأیید علت ریشه‌ای** — وقتی فرضیه تأیید شد، علت را مستند کنید.\n6. **رفع + Verify** — رفع کنید و ثابت کنید علامت از بین رفته.\n7. **درس‌آموخته** — چرا رخ داد و چگونه از تکرار جلوگیری کنیم.\n\n## ۳. تشبیه واقعی سازمانی\nفرض کنید در یک سازمان ۳۰۰ نفره، همه می‌گویند «اینترنت قطع است». علامت مشترک است. اما علت می‌تواند یکی از این‌ها باشد:\n- لینک ISP قطع شده\n- Firewall rule جدید اشتباه\n- DHCP scope پر شده\n- DNS forwarder از کار افتاده\n- کابل uplink Core قطع شده\n\nاگر فقط «ری‌استارت مودم» کنید، ممکن است موقتاً درست شود یا اصلاً درست نشود و زمان تلف شود.\n\n## ۴. معماری فنی فرآیند\n```\nSymptom → Evidence Collection → Hypothesis Generation → Hypothesis Testing → Root Cause Confirmation → Fix → Verify → Post-Incident Review\n```\n\n## ۵. مثال حل‌شده (ساده)\n**علامت:** کاربر می‌گوید «نمی‌توانم به فایل‌سرور دسترسی داشته باشم».\n**شواهد:**\n- پینگ به IP فایل‌سرور موفق است.\n- پینگ به نام فایل‌سرور ناموفق است.\n- nslookup نام فایل‌سرور جواب نمی‌دهد.\n**فرضیه:** مشکل DNS است.\n**آزمون:** تغییر موقت DNS کلاینت به ۸.۸.۸.۸ → دسترسی برقرار شد.\n**علت ریشه‌ای:** سرویس DNS داخلی از کار افتاده یا zone خراب است.\n\n## ۶. دستورات مرتبط (مشاهده)\n```\n# Windows\nipconfig /all\nnslookup fileserver.company.local\nping fileserver.company.local\n\n# Linux\nresolvectl status\ndig fileserver.company.local\n\n# Cisco\nshow ip interface brief\nshow logging | include DOWN\n```\n\n## ۷. لابراتوار ایمن (پایه)\n1. یک کلاینت و یک سرور DNS ساده در GNS3 یا VirtualBox آماده کنید.\n2. عمداً سرویس DNS را متوقف کنید.\n3. علامت را از دید کاربر ثبت کنید.\n4. مسیر Symptom → Root Cause را کامل طی کنید.\n5. سرویس را برگردانید و Verify کنید.\n\n## ۸. عیب‌یابی (Symptom→Evidence→Fix→Verify)\n| مرحله | کار |\n|-------|-----|\n| Symptom | گزارش کاربر |\n| Evidence | خروجی nslookup، ipconfig، لاگ |\n| Fix | راه‌اندازی مجدد سرویس DNS یا اصلاح zone |\n| Verify | nslookup موفق + دسترسی به share |\n\n## ۹. امنیت و محدودیت\n- هرگز بدون مجوز و بدون Backup تغییر ندهید.\n- در محیط production فقط مشاهده کنید مگر Change Request تأیید شده باشد.\n- لاگ تمام مراحل را نگه دارید.\n\n## ۱۰. خلاصه + واژه‌نامه\n- **Symptom**: آنچه دیده یا گزارش می‌شود.\n- **Root Cause**: علت واقعی و عمیق.\n- **RCA**: Root Cause Analysis.\n- قانون طلایی: علامت را درمان نکنید؛ علت را پیدا کنید.\n\n## ۱۱. سؤالات (بدون جواب)\n(در فایل جداگانه answer_key ثبت می‌شود)",
+      "notes": "منبع: ITIL Problem Management, Cisco Troubleshooting Methodology. فقط در محیط مجاز آزمایش کنید. source_status=review_required",
+      "search_query": "Symptom to Root Cause RCA troubleshooting methodology L0 ch60",
+      "learning_objectives": [
+        "تمایز علامت از علت ریشه‌ای",
+        "شرح ۷ مرحله استاندارد تبدیل Symptom به Root Cause",
+        "ثبت دقیق علامت و شواهد"
+      ],
+      "meta": {
+        "level": "L0",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۱ روش‌شناسی",
+        "assessment": {
+          "questions": [
+            {
+              "id": "q-ch60-001",
+              "type": "multiple_choice",
+              "text": "تفاوت اصلی Symptom و Root Cause چیست؟",
+              "options": [
+                "الف) Symptom همان Root Cause است",
+                "ب) Symptom آنچه دیده می‌شود و Root Cause علت واقعی است",
+                "ج) Root Cause همیشه سخت‌افزاری است",
+                "د) Symptom فقط در لاگ ظاهر می‌شود"
+              ]
+            }
+          ]
+        },
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv001:l0002",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 1,
+      "lesson_order": 2,
+      "topic": "Symptom to Root Cause",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L1",
+      "title_fa": "[L1] Symptom to Root Cause — مقدماتی",
+      "title_en": "[L1] Symptom to Root Cause — Junior",
+      "tags": [
+        "L1",
+        "troubleshooting",
+        "methodology",
+        "RCA",
+        "ch60"
+      ],
+      "summary": "در سطح Junior یاد می‌گیرید چگونه علامت را دقیق ثبت کنید، شواهد اولیه جمع کنید و اولین فرضیه‌ها را بسازید.",
+      "full_content": "# [L1] Symptom to Root Cause — مقدماتی\n\n## ۱. معرفی و نقشه راه\nدر سطح L0 مفهوم را فهمیدید. حالا باید بتوانید در یک سناریوی ساده، علامت را ثبت و اولین شواهد را جمع‌آوری کنید.\n\n## ۲. آموزش از صفر — ثبت علامت حرفه‌ای\nفرم استاندارد ثبت علامت:\n- **چه کسی** گزارش داد؟\n- **چه زمانی** شروع شد؟\n- **چه چیزی** دقیقاً کار نمی‌کند؟\n- **در چه شرایطی**؟ (همیشه / گاهی / بعد از تغییر)\n- **چند نفر** تحت تأثیرند؟\n- **آیا قبلاً درست کار می‌کرد؟**\n\n## ۳. تشبیه واقعی\nدر یک دفتر ۵۰ نفره، ساعت ۱۰ صبح سه نفر می‌گویند «ایمیل باز نمی‌شود». اگر فقط بگویید «Outlook را ری‌استارت کنید» ممکن است علامت موقتاً برود اما علت (مثلاً پر شدن mailbox یا مشکل Autodiscover) باقی بماند.\n\n## ۴. معماری فنی — لایه شواهد\nشواهد را در سه لایه جمع کنید:\n1. **لایه کاربر**: پیام خطا، زمان، دامنه تأثیر\n2. **لایه سیستم**: Event Viewer، journalctl، show logging\n3. **لایه شبکه**: ping، traceroute، nslookup، arp\n\n## ۵. مثال حل‌شده\n**علامت ثبت‌شده:**\n- گزارش‌دهنده: واحد مالی\n- زمان: از ساعت ۰۹:۱۵\n- مشکل: دسترسی به share \\\\fs01\\finance قطع است\n- دامنه: فقط واحد مالی (۱۲ نفر)\n- وضعیت قبلی: تا دیروز درست بود\n\n**شواهد اولیه:**\n```\nping 10.10.10.20   → موفق\nping fs01          → ناموفق\nnslookup fs01      → نمی‌تواند resolve کند\n```\n\n**فرضیه‌های اولیه:**\n1. مشکل DNS\n2. مشکل name resolution محلی کلاینت\n3. مشکل permission (کم‌احتمال چون پینگ نام هم شکست خورده)\n\n## ۶. دستورات\n```\n# جمع‌آوری سریع\nipconfig /all > C:\\temp\\ipconfig.txt\nnslookup fs01\nping -a 10.10.10.20\n\n# Linux\nhostname -I\ngetent hosts fs01\n```\n\n## ۷. لابراتوار\nمحیط: یک کلاینت ویندوز + یک سرور با نام fs01.\nعمداً رکورد DNS را پاک کنید.\nمسیر کامل ثبت علامت و جمع‌آوری شواهد را انجام دهید.\n\n## ۸. عیب‌یابی\nSymptom → Evidence (DNS failure) → Hypothesis (DNS) → Test (تغییر DNS موقت) → Confirm.\n\n## ۹. امنیت\nخروجی فرمان‌ها را در مسیر امن ذخیره کنید. از کپی‌کردن credential خودداری کنید.\n\n## ۱۰. خلاصه\nثبت دقیق علامت نصف راه حل است. بدون ثبت خوب، فرضیه‌ها بی‌پایه می‌مانند.",
+      "notes": "review_required — فقط Lab مجاز",
+      "search_query": "Symptom Root Cause junior registration evidence L1 ch60",
+      "learning_objectives": [
+        "ثبت حرفه‌ای علامت با ۶ سؤال کلیدی",
+        "جمع‌آوری شواهد در سه لایه",
+        "ساخت حداقل ۳ فرضیه اولیه"
+      ],
+      "meta": {
+        "level": "L1",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۱ روش‌شناسی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv001:l0003",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 1,
+      "lesson_order": 3,
+      "topic": "Symptom to Root Cause",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L2",
+      "title_fa": "[L2] Symptom to Root Cause — ادمین",
+      "title_en": "[L2] Symptom to Root Cause — Admin",
+      "tags": [
+        "L2",
+        "troubleshooting",
+        "methodology",
+        "RCA",
+        "ch60"
+      ],
+      "summary": "در سطح Admin باید بتوانید فرضیه‌ها را سیستماتیک تست کنید، Rollback آماده داشته باشید و علت را با شواهد تأیید کنید.",
+      "full_content": "# [L2] Symptom to Root Cause — ادمین\n\n## ۱. معرفی\nحالا باید از «حدس زدن» به «آزمون کنترل‌شده» برسید. هر تست باید برگشت‌پذیر باشد.\n\n## ۲. آموزش — چرخه فرضیه و آزمون\n1. فرضیه را بنویسید.\n2. پیش‌بینی کنید اگر فرضیه درست باشد چه چیزی می‌بینید.\n3. تست را طراحی کنید (حداقلی و ایمن).\n4. Backup بگیرید.\n5. تست را اجرا کنید.\n6. نتیجه را با پیش‌بینی مقایسه کنید.\n7. اگر تأیید شد → علت ریشه‌ای را اعلام کنید.\n8. اگر رد شد → فرضیه بعدی.\n\n## ۳. تشبیه\nفرض کنید لینک WAN قطع و وصل می‌شود. فرضیه‌ها:\n- مشکل فیزیکی کابل/SFP\n- مشکل Negotiation\n- مشکل Routing flap\n- مشکل ISP\n\nهر فرضیه تست جداگانه دارد و نباید همزمان چند چیز را تغییر دهید.\n\n## ۴. معماری\n```\nHypothesis → Predicted Evidence → Controlled Test → Observe → Confirm/Reject → Next Hypothesis\n```\n\n## ۵. مثال کامل\n**علامت:** قطعی متناوب دسترسی به اینترنت هر ۱۵–۲۰ دقیقه.\n**شواهد:**\n- show interface Gi0/0 → CRC error در حال افزایش\n- log → %LINEPROTO-5-UPDOWN\n\n**فرضیه ۱:** مشکل فیزیکی کابل یا SFP.\n**تست:** تعویض کابل با کابل known-good.\n**نتیجه:** CRC متوقف شد → فرضیه تأیید.\n\n## ۶. دستورات کلیدی\n```\n# Cisco\nshow interface Gi0/0\nshow logging | include UPDOWN|CRC\nshow controllers Gi0/0\n\n# قبل از هر تغییر\ncopy running-config flash:pre-ts.cfg\n```\n\n## ۷. لابراتوار متوسط\nدر GNS3 یک لینک را با rate-limit یا error injection خراب کنید.\nمسیر کامل فرضیه → تست → تأیید را مستند کنید.\n\n## ۸. عیب‌یابی + Rollback\nهمیشه قبل از تغییر:\n```\ncopy running-config startup-config\n# یا\nshow running-config | redirect flash:backup.cfg\n```\n\n## ۹. امنیت و Change\nدر production فقط با Change Request و در Maintenance Window.\n\n## ۱۰. خلاصه\nادمین خوب فرضیه را می‌کشد، نه دستگاه را.",
+      "notes": "review_required",
+      "search_query": "Symptom Root Cause admin hypothesis testing L2 ch60",
+      "learning_objectives": [
+        "طراحی تست کنترل‌شده و برگشت‌پذیر",
+        "تأیید یا رد فرضیه با شواهد",
+        "آماده‌سازی Rollback قبل از هر تغییر"
+      ],
+      "meta": {
+        "level": "L2",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۱ روش‌شناسی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv001:l0004",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 1,
+      "lesson_order": 4,
+      "topic": "Symptom to Root Cause",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L3",
+      "title_fa": "[L3] Symptom to Root Cause — مهندس",
+      "title_en": "[L3] Symptom to Root Cause — Senior",
+      "tags": [
+        "L3",
+        "troubleshooting",
+        "methodology",
+        "RCA",
+        "ch60"
+      ],
+      "summary": "مهندس باید بتواند RCA را در محیط پیچیده چندلایه انجام دهد، تأثیر جانبی را بسنجد و گزارش فنی بنویسد.",
+      "full_content": "# [L3] Symptom to Root Cause — مهندس\n\n## ۱. معرفی\nدر سطح Senior، مشکلات ساده نیستند. چندین علامت همزمان، چندین دامنه (شبکه، سرور، اپلیکیشن) و فشار زمانی وجود دارد.\n\n## ۲. آموزش — RCA چندلایه\nاز مدل OSI یا TCP/IP به عنوان نقشه استفاده کنید اما در آن گیر نکنید. ترکیبی از Bottom-Up و Top-Down و Follow-the-Path به کار ببرید.\n\n## ۳. تشبیه سازمانی\nسازمان ۱۰۰۰ نفره: کاربران می‌گویند «سامانه ERP کند است».  \nعلامت‌های همزمان:\n- CPU سرور ERP بالا\n- Latency شبکه بین اپ و دیتابیس بالا\n- Queryهای طولانی در دیتابیس\n\nعلت ریشه‌ای ممکن است یکی باشد یا زنجیره‌ای از چند علت.\n\n## ۴. معماری تحلیل\n1. Timeline بسازید (چه زمانی چه تغییری رخ داد).\n2. Blast Radius را مشخص کنید.\n3. Dependency map سرویس را بکشید.\n4. فرضیه‌ها را بر اساس احتمال و تأثیر اولویت‌بندی کنید.\n\n## ۵. مثال پیشرفته\n**علامت:** کندی ERP از ساعت ۱۴:۰۰.\n**Timeline:** ساعت ۱۳:۴۵ یک Change روی Firewall برای rule جدید اعمال شده.\n**شواهد:**\n- sessionهای ERP روی firewall در حال drop شدن به دلیل session limit\n- لاگ firewall نشان‌دهنده hit روی rule جدید\n\n**Root Cause:** rule جدید session limit پایینی برای پورت دیتابیس گذاشته بود.\n\n## ۶. دستورات و ابزار\n```\n# Timeline\nshow logging | include 13:4\n# Firewall\nshow session table | include erp\n# Network\ntraceroute -T -p 1521 db-server\n```\n\n## ۷. لابراتوار پیشرفته\nیک زنجیره وابستگی (کلاینت → FW → App → DB) بسازید و عمداً یک bottleneck ایجاد کنید. RCA کامل بنویسید.\n\n## ۸. گزارش RCA\nباید شامل: Symptom، Timeline، Evidence، Root Cause، Fix، Verify، Prevention باشد.\n\n## ۹. امنیت\nتغییرات production فقط با CAB و Rollback plan مکتوب.\n\n## ۱۰. خلاصه\nمهندس خوب مشکل را «حل» نمی‌کند؛ سیستم را طوری تغییر می‌دهد که مشکل دوباره ایجاد نشود.",
+      "notes": "review_required",
+      "search_query": "Symptom Root Cause senior multi-layer RCA L3 ch60",
+      "learning_objectives": [
+        "انجام RCA در محیط چندلایه",
+        "ساخت Timeline و Dependency map",
+        "نوشتن گزارش RCA استاندارد"
+      ],
+      "meta": {
+        "level": "L3",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۱ روش‌شناسی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv001:l0005",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 1,
+      "lesson_order": 5,
+      "topic": "Symptom to Root Cause",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L4",
+      "title_fa": "[L4] Symptom to Root Cause — خبره",
+      "title_en": "[L4] Symptom to Root Cause — Architect",
+      "tags": [
+        "L4",
+        "troubleshooting",
+        "methodology",
+        "RCA",
+        "architecture",
+        "ch60"
+      ],
+      "summary": "معمار باید RCA را به سطح سازمانی ببرد: طراحی سیستم‌هایی که خودشان شواهد تولید کنند و از تکرار مشکل جلوگیری کنند.",
+      "full_content": "# [L4] Symptom to Root Cause — خبره / معمار\n\n## ۱. معرفی\nدر سطح Architect، هدف فقط پیدا کردن علت یک حادثه نیست. هدف طراحی سیستم و فرآیندهایی است که:\n- علائم را زود تشخیص دهند\n- شواهد را خودکار جمع کنند\n- از تکرار جلوگیری کنند\n\n## ۲. آموزش — از RCA به Resilience\nپس از هر RCA بزرگ:\n1. آیا Monitoring کافی بود؟\n2. آیا Alerting درست تنظیم شده بود؟\n3. آیا Runbook وجود داشت؟\n4. آیا Change Management ضعف داشت؟\n5. آیا معماری SPOF داشت؟\n\n## ۳. تشبیه\nبعد از یک قطعی بزرگ DNS، معمار نباید فقط بگوید «سرویس را ری‌استارت کردیم». باید بپرسد:\n- چرا secondary DNS کار نکرد؟\n- چرا monitoring متوجه نشد؟\n- چرا TTL بالا بود و cache طولانی ماند؟\n\n## ۴. معماری پیشنهادی\n- Observability کامل (Metrics + Logs + Traces)\n- Automatic evidence collection در زمان Incident\n- Post-Incident Review اجباری با Action Items\n- Chaos Engineering کنترل‌شده در Lab\n\n## ۵. مثال سازمانی\nپس از قطعی Core Switch:\n- Root Cause: Bug در نسخه firmware + نبودن Graceful Restart\n- Action: ارتقای استاندارد firmware، اضافه کردن BFD، به‌روزرسانی Runbook، تمرین Failover ماهانه\n\n## ۶. چک‌لیست معمار\n- [ ] Monitoring برای این failure mode وجود دارد؟\n- [ ] Alert به تیم درست می‌رسد؟\n- [ ] Runbook تست‌شده دارد؟\n- [ ] Rollback در کمتر از RTO ممکن است؟\n- [ ] درس‌آموخته به Knowledge Base اضافه شده؟\n\n## ۷. لابراتوار معمار\nیک failure mode را انتخاب کنید و کل زنجیره از Detection تا Prevention را طراحی و در Lab پیاده کنید.\n\n## ۸. امنیت و Governance\nRCAهای امنیتی باید با تیم IR و Legal هماهنگ باشند. Evidence handling طبق زنجیره نگهداری (Chain of Custody).\n\n## ۹. خلاصه\nمعمار خوب از هر حادثه یک سیستم قوی‌تر می‌سازد.",
+      "notes": "review_required — سطح معمار",
+      "search_query": "Symptom Root Cause architect resilience post-incident L4 ch60",
+      "learning_objectives": [
+        "تبدیل RCA به اقدام معماری و فرآیندی",
+        "طراحی Observability برای failure modeها",
+        "هدایت Post-Incident Review سازمانی"
+      ],
+      "meta": {
+        "level": "L4",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۱ روش‌شناسی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv003:l0001",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 3,
+      "lesson_order": 6,
+      "topic": "قوانین Authorized Only",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L0",
+      "title_fa": "[L0] قوانین Authorized Only — آشنایی",
+      "title_en": "[L0] Authorized Only Rules — Intro",
+      "tags": [
+        "L0",
+        "ethical-hacking",
+        "authorized-only",
+        "legal",
+        "ch60"
+      ],
+      "summary": "هیچ‌گونه اسکن، exploitation یا تست نفوذ بدون مجوز کتبی و صریح در محیط تعریف‌شده مجاز نیست. این درس مرز قرمز اخلاقی و قانونی را مشخص می‌کند.",
+      "full_content": "# [L0] قوانین Authorized Only — آشنایی\n\n## ۱. معرفی و نقشه راه\n«هک اخلاقی» فقط وقتی اخلاقی است که **مجاز** باشد. بدون مجوز کتبی، هرگونه اسکن یا تست می‌تواند جرم باشد.\n\n## ۲. آموزش از صفر\nسه شرط ضروری:\n1. **مجوز کتبی** از مالک سیستم یا نماینده قانونی\n2. **محدوده دقیق** (Scope): IPها، دامنه‌ها، زمان، روش‌های مجاز و غیرمجاز\n3. **محیط کنترل‌شده** یا توافق صریح برای production با شرایط سخت\n\n## ۳. تشبیه\nوارد شدن به خانه همسایه برای «چک کردن قفل» بدون اجازه، حتی با نیت خوب، غیرقانونی است. تست نفوذ هم همین است.\n\n## ۴. قوانین طلایی Lab در این فصل\n- فقط روی ماشین‌ها و شبکه‌هایی که خودتان ساخته‌اید یا مجوز رسمی دارید کار کنید.\n- هرگز ابزارهای این فصل را روی شبکه شرکت، دانشگاه یا اینترنت عمومی بدون مجوز اجرا نکنید.\n- Metasploit، Nmap aggressive، Burp و BloodHound فقط در Lab ایزوله.\n\n## ۵. مثال\nمجاز: اسکن یک VM که خودتان در VirtualBox ساخته‌اید.\nغیرمجاز: اسکن شبکه دانشگاه یا IPهای عمومی.\n\n## ۶. پیامد نقض\nپیگرد قانونی، اخراج، محرومیت از گواهینامه‌ها و مسئولیت مدنی.\n\n## ۷. لابراتوار\nیک سند مجوز نمونه (Rules of Engagement) برای Lab شخصی خود بنویسید.\n\n## ۸. خلاصه\nAuthorized Only = بدون مجوز حتی یک پینگ هم نزنید اگر در Scope نیست.",
+      "notes": "review_required — حیاتی‌ترین درس اخلاقی فصل",
+      "search_query": "Authorized Only ethical hacking rules legal L0 ch60",
+      "learning_objectives": [
+        "درک ضرورت مجوز کتبی",
+        "تمایز محیط مجاز و غیرمجاز",
+        "شناخت پیامدهای نقض"
+      ],
+      "meta": {
+        "level": "L0",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۳ هک اخلاقی Lab",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part1.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv003:l0002",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 3,
+      "lesson_order": 7,
+      "topic": "قوانین Authorized Only",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L2",
+      "title_fa": "[L2] قوانین Authorized Only — ادمین",
+      "title_en": "[L2] Authorized Only Rules — Admin",
+      "tags": [
+        "L2",
+        "ethical-hacking",
+        "authorized-only",
+        "RoE",
+        "ch60"
+      ],
+      "summary": "ادمین باید بتواند Rules of Engagement (RoE) بنویسد و Scope را دقیق تعریف کند.",
+      "full_content": "# [L2] قوانین Authorized Only — ادمین\n\n## ۱. معرفی\nRules of Engagement (RoE) سند رسمی است که مرزهای تست را مشخص می‌کند.\n\n## ۲. اجزای ضروری RoE\n- طرفین قرارداد\n- Scope (IP، دامنه، اپلیکیشن)\n- زمان‌بندی\n- روش‌های مجاز و ممنوع\n- داده‌های حساس و نحوه برخورد\n- کانال ارتباطی اضطراری\n- شرایط توقف فوری (Stop Conditions)\n- نحوه گزارش‌دهی\n\n## ۳. مثال RoE خلاصه برای Lab سازمانی\n```\nScope: 10.50.0.0/24 (فقط VLAN Lab)\nزمان: شنبه ۱۴:۰۰–۱۸:۰۰\nمجاز: Port scan, Vulnerability scan, Credentialed scan با حساب تست\nممنوع: DoS، Social Engineering، دسترسی به داده‌های واقعی تولید\nStop: هرگونه تأثیر روی production یا شکایت کاربر\n```\n\n## ۴. لابراتوار\nیک RoE کامل برای یکی از LAB-01 تا LAB-05 بنویسید.\n\n## ۵. خلاصه\nبدون RoE مکتوب، تست نفوذ شروع نمی‌شود.",
+      "notes": "review_required",
+      "search_query": "Rules of Engagement RoE authorized only L2 ch60",
+      "learning_objectives": [
+        "نوشتن RoE استاندارد",
+        "تعریف Scope و Stop Conditions",
+        "رعایت مرزهای قانونی در عمل"
+      ],
+      "meta": {
+        "level": "L2",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۳ هک اخلاقی Lab",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part2.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv004:l0001",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 4,
+      "lesson_order": 8,
+      "topic": "Nmap",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L1",
+      "title_fa": "[L1] Nmap — مقدماتی",
+      "title_en": "[L1] Nmap — Junior",
+      "tags": [
+        "L1",
+        "nmap",
+        "scanning",
+        "lab-tools",
+        "ch60"
+      ],
+      "summary": "Nmap ابزار استاندارد کشف میزبان و پورت در Lab مجاز است. در این درس فقط اسکن‌های غیرتهاجمی در محیط کنترل‌شده آموزش داده می‌شود.",
+      "full_content": "# [L1] Nmap — مقدماتی\n\n## ۱. معرفی\nNmap (Network Mapper) برای کشف میزبان‌های زنده، پورت‌های باز و سرویس‌ها استفاده می‌شود. **فقط در Lab مجاز**.\n\n## ۲. آموزش پایه\n```\n# کشف میزبان‌های زنده (غیرتهاجمی)\nnmap -sn 10.50.0.0/24\n\n# اسکن پورت‌های رایج\nnmap -sV -sC -O 10.50.0.10\n\n# اسکن سریع پورت‌های top\nnmap --top-ports 100 10.50.0.10\n```\n\n## ۳. تشبیه\nNmap مثل چراغ‌قوه‌ای است که در یک اتاق تاریک (شبکه Lab) می‌تابانید تا ببینید چه چیزهایی آنجا هستند — به شرطی که صاحب اتاق اجازه داده باشد.\n\n## ۴. خروجی مورد انتظار\n```\nNmap scan report for 10.50.0.10\nHost is up (0.0012s latency).\nPORT    STATE SERVICE VERSION\n22/tcp  open  ssh     OpenSSH 8.9\n80/tcp  open  http    Apache httpd 2.4.52\n```\n\n## ۵. لابراتوار\nدر یک شبکه مجازی ایزوله:\n1. چند VM با سرویس‌های مختلف روشن کنید.\n2. با -sn میزبان‌ها را پیدا کنید.\n3. با -sV سرویس‌ها را شناسایی کنید.\n4. نتیجه را مستند کنید.\n\n## ۶. نکات امنیتی\n- هرگز -A یا --script vuln را روی شبکه‌ای که مجوز ندارید اجرا نکنید.\n- اسکن‌های سنگین می‌توانند IDS را تحریک کنند حتی در Lab.\n\n## ۷. خلاصه\nNmap قدرتمند است؛ قدرت بدون مجوز = مشکل قانونی.",
+      "notes": "فقط Lab مجاز — review_required",
+      "search_query": "Nmap basic scan authorized lab L1 ch60",
+      "learning_objectives": [
+        "اجرای اسکن کشف میزبان و پورت در Lab",
+        "تفسیر خروجی پایه Nmap",
+        "رعایت محدودیت‌های اخلاقی"
+      ],
+      "meta": {
+        "level": "L1",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۴ ابزار Lab",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part2.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv001:l0010",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 1,
+      "lesson_order": 9,
+      "topic": "Bottom-Up",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L1",
+      "title_fa": "[L1] Bottom-Up — مقدماتی",
+      "title_en": "[L1] Bottom-Up — Junior",
+      "tags": [
+        "L1",
+        "troubleshooting",
+        "methodology",
+        "bottom-up",
+        "ch60"
+      ],
+      "summary": "روش Bottom-Up از لایه‌های پایین مدل OSI (فیزیکی و Data Link) شروع می‌کند و به سمت بالا حرکت می‌کند. مناسب وقتی علامت نشان‌دهنده مشکل زیرساختی است.",
+      "full_content": "# [L1] Bottom-Up — مقدماتی\n\n## ۱. معرفی\nBottom-Up یعنی از کابل، پورت، لینک و لایه ۲ شروع کنید. وقتی interface down است یا CRC error دارید، این روش سریع‌ترین راه است.\n\n## ۲. ترتیب پیشنهادی\n1. فیزیکی: کابل، SFP، پورت، LED\n2. Data Link: MAC table، STP state، duplex/speed\n3. Network: IP، ARP، routing\n4. Transport و بالاتر فقط بعد از تأیید لایه‌های پایین\n\n## ۳. مثال\nعلامت: هیچ کاربری به Gateway نمی‌رسد.\nشروع Bottom-Up:\n- show interface → down\n- تعویض کابل → up\n- مشکل حل شد بدون دست زدن به لایه ۳.\n\n## ۴. دستورات\n```\nshow interface status\nshow interface Gi0/1\nshow mac address-table\nshow spanning-tree\n```\n\n## ۵. لاب\nعمداً یک کابل را شل کنید و مسیر Bottom-Up را کامل طی کنید.\n\n## ۶. خلاصه\nاگر لایه پایین خراب باشد، لایه‌های بالا هرگز درست کار نمی‌کنند.",
+      "notes": "review_required",
+      "search_query": "Bottom-Up troubleshooting OSI physical L1 ch60",
+      "learning_objectives": [
+        "شروع عیب‌یابی از لایه فیزیکی",
+        "استفاده از show interface و MAC table",
+        "تشخیص سریع مشکل لایه ۱/۲"
+      ],
+      "meta": {
+        "level": "L1",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۱ روش‌شناسی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part2.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv001:l0011",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 1,
+      "lesson_order": 10,
+      "topic": "Top-Down",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L1",
+      "title_fa": "[L1] Top-Down — مقدماتی",
+      "title_en": "[L1] Top-Down — Junior",
+      "tags": [
+        "L1",
+        "troubleshooting",
+        "methodology",
+        "top-down",
+        "ch60"
+      ],
+      "summary": "روش Top-Down از تجربه کاربر و لایه Application شروع می‌کند و به لایه‌های پایین‌تر می‌رود. مناسب وقتی سرویس خاص مشکل دارد اما شبکه کلی سالم به نظر می‌رسد.",
+      "full_content": "# [L1] Top-Down — مقدماتی\n\n## ۱. معرفی\nکاربر می‌گوید «ایمیل کار نمی‌کند» اما پینگ به اینترنت موفق است. اینجا Top-Down منطقی‌تر است.\n\n## ۲. ترتیب\n1. تجربه کاربر و پیام خطا\n2. Application / سرویس\n3. Transport (پورت، TCP/UDP)\n4. Network و پایین‌تر در صورت نیاز\n\n## ۳. مثال\nعلامت: Outlook خطای Autodiscover می‌دهد.\n- پینگ و DNS کلی سالم\n- تست مستقیم به https://mail.../autodiscover → مشکل گواهی یا URL\n- Root Cause در لایه Application/Identity پیدا شد.\n\n## ۴. خلاصه\nTop-Down وقتی علامت «سرویس خاص» است سریع‌تر به نتیجه می‌رسد.",
+      "notes": "review_required",
+      "search_query": "Top-Down troubleshooting application layer L1 ch60",
+      "learning_objectives": [
+        "شروع از تجربه کاربر",
+        "تمرکز روی سرویس خاص",
+        "ترکیب با سایر روش‌ها"
+      ],
+      "meta": {
+        "level": "L1",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۱ روش‌شناسی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part2.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv001:l0012",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 1,
+      "lesson_order": 11,
+      "topic": "Divide and Conquer",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L2",
+      "title_fa": "[L2] Divide and Conquer — ادمین",
+      "title_en": "[L2] Divide and Conquer — Admin",
+      "tags": [
+        "L2",
+        "troubleshooting",
+        "methodology",
+        "divide-conquer",
+        "ch60"
+      ],
+      "summary": "تقسیم مسیر یا سیستم به بخش‌های کوچک‌تر و ایزوله کردن محل خرابی. یکی از قدرتمندترین روش‌ها در شبکه‌های پیچیده.",
+      "full_content": "# [L2] Divide and Conquer — ادمین\n\n## ۱. معرفی\nمسیر کلاینت → Access → Distribution → Core → WAN را نصف کنید. ببینید مشکل در کدام نیمه است، سپس همان نیمه را دوباره نصف کنید.\n\n## ۲. مثال عملی\nکاربر به سرور داخل DC دسترسی ندارد.\n- پینگ از کلاینت به Gateway موفق\n- پینگ از Gateway به سرور ناموفق\n→ مشکل بین Gateway و سرور است (نه کلاینت).\n\n## ۳. دستورات\n```\nping با source از نقاط میانی\ntraceroute\nshow ip route\n```\n\n## ۴. لاب\nیک مسیر چندhop بسازید و عمداً در یک hop مشکل ایجاد کنید. با Divide and Conquer محل را پیدا کنید.\n\n## ۵. خلاصه\nنصف کردن مکرر، فضای جستجو را به صورت لگاریتمی کوچک می‌کند.",
+      "notes": "review_required",
+      "search_query": "Divide and Conquer troubleshooting path isolation L2 ch60",
+      "learning_objectives": [
+        "تقسیم مسیر به بخش‌های قابل ایزوله",
+        "استفاده از source ping و traceroute",
+        "کاهش سریع فضای جستجو"
+      ],
+      "meta": {
+        "level": "L2",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۱ روش‌شناسی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part2.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv001:l0013",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 1,
+      "lesson_order": 12,
+      "topic": "Follow the Path",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L2",
+      "title_fa": "[L2] Follow the Path — ادمین",
+      "title_en": "[L2] Follow the Path — Admin",
+      "tags": [
+        "L2",
+        "troubleshooting",
+        "methodology",
+        "follow-the-path",
+        "ch60"
+      ],
+      "summary": "دنبال کردن دقیق مسیر بسته از مبدأ تا مقصد و بررسی هر hop. مکمل قوی برای Divide and Conquer.",
+      "full_content": "# [L2] Follow the Path — ادمین\n\n## ۱. معرفی\nبسته از کجا وارد می‌شود، از کدام اینترفیس‌ها رد می‌شود، کجا NAT می‌شود، کجا ACL می‌خورد و کجا خارج می‌شود؟\n\n## ۲. ابزارها\n- traceroute / tracert\n- pathping (ویندوز)\n- show ip cef / show forwarding\n- packet-tracer (Cisco ASA/FTD) یا debug flow\n\n## ۳. مثال\nترافیک به سرور خاص drop می‌شود.\nبا Follow the Path متوجه می‌شوید در Firewall یک rule deny برای آن پورت وجود دارد.\n\n## ۴. خلاصه\nمسیر را قدم‌به‌قدم دنبال کنید؛ حدس نزنید.",
+      "notes": "review_required",
+      "search_query": "Follow the Path packet path troubleshooting L2 ch60",
+      "learning_objectives": [
+        "دنبال کردن مسیر end-to-end",
+        "شناسایی hop مشکل‌دار",
+        "ترکیب با packet-tracer"
+      ],
+      "meta": {
+        "level": "L2",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۱ روش‌شناسی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part2.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv001:l0014",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 1,
+      "lesson_order": 13,
+      "topic": "Compare Known-Good",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L1",
+      "title_fa": "[L1] Compare Known-Good — مقدماتی",
+      "title_en": "[L1] Compare Known-Good — Junior",
+      "tags": [
+        "L1",
+        "troubleshooting",
+        "methodology",
+        "compare",
+        "ch60"
+      ],
+      "summary": "مقایسه دستگاه یا کلاینت مشکل‌دار با یک نمونه سالم. یکی از سریع‌ترین روش‌های تشخیص اختلاف.",
+      "full_content": "# [L1] Compare Known-Good — مقدماتی\n\n## ۱. معرفی\nیک کلاینت کار می‌کند، یکی کار نمی‌کند. تنظیمات، IP، DNS، Gateway، درایور و GPO را با هم مقایسه کنید.\n\n## ۲. مثال\nکلاینت A به share دسترسی دارد، کلاینت B ندارد.\n- ipconfig /all هر دو را مقایسه کنید\n- اختلاف در DNS یا Suffix پیدا می‌شود.\n\n## ۳. دستورات مفید\n```\nipconfig /all > good.txt\nipconfig /all > bad.txt\nfc good.txt bad.txt\n```\n\n## ۴. خلاصه\nاختلاف را پیدا کنید؛ علت معمولاً همان‌جاست.",
+      "notes": "review_required",
+      "search_query": "Compare Known-Good troubleshooting L1 ch60",
+      "learning_objectives": [
+        "انتخاب نمونه known-good",
+        "مقایسه سیستماتیک تنظیمات",
+        "پیدا کردن اختلاف کلیدی"
+      ],
+      "meta": {
+        "level": "L1",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۱ روش‌شناسی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part3.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv001:l0015",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 1,
+      "lesson_order": 14,
+      "topic": "Baseline",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L2",
+      "title_fa": "[L2] Baseline — ادمین",
+      "title_en": "[L2] Baseline — Admin",
+      "tags": [
+        "L2",
+        "troubleshooting",
+        "methodology",
+        "baseline",
+        "ch60"
+      ],
+      "summary": "Baseline وضعیت طبیعی سیستم در زمان سلامت است. بدون آن بعد از Change یا حادثه نمی‌توانید بگویید چه چیزی عوض شده.",
+      "full_content": "# [L2] Baseline — ادمین\n\n## ۱. معرفی\nقبل از هر Change بزرگ یا به‌صورت دوره‌ای، خروجی‌های کلیدی را ذخیره کنید.\n\n## ۲. چه چیزهایی Baseline شوند؟\n- show running-config / startup\n- interface counters\n- routing table\n- STP root و port roles\n- HSRP/VRRP state\n- CPU/Memory نرمال\n\n## ۳. مثال\nبعد از ارتقای IOS، latency بالا رفته. با مقایسه counters و CPU با Baseline متوجه افزایش process خاص می‌شوید.\n\n## ۴. خلاصه\nBaseline سرمایه‌گذاری است نه هزینه.",
+      "notes": "review_required",
+      "search_query": "Baseline configuration troubleshooting L2 ch60",
+      "learning_objectives": [
+        "تعریف و جمع‌آوری Baseline",
+        "مقایسه قبل/بعد Change",
+        "استفاده از Baseline در RCA"
+      ],
+      "meta": {
+        "level": "L2",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۱ روش‌شناسی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part3.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv001:l0016",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 1,
+      "lesson_order": 15,
+      "topic": "Change History",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L2",
+      "title_fa": "[L2] Change History — ادمین",
+      "title_en": "[L2] Change History — Admin",
+      "tags": [
+        "L2",
+        "troubleshooting",
+        "methodology",
+        "change",
+        "ch60"
+      ],
+      "summary": "بسیاری از مشکلات دقیقاً بعد از یک Change شروع می‌شوند. بررسی تاریخچه تغییرات اولین اقدام منطقی است.",
+      "full_content": "# [L2] Change History — ادمین\n\n## ۱. معرفی\nاگر مشکل از ساعت ۱۴:۳۰ شروع شده، ببینید ساعت ۱۴:۱۵ چه Changeای ثبت شده.\n\n## ۲. منابع Change History\n- سیستم ITSM / Change Management\n- لاگ پیکربندی دستگاه (archive, conf t logging)\n- Git برای config as code\n- تیکت‌ها و ایمیل‌ها\n\n## ۳. مثال\nمشکل دسترسی به یک VLAN بعد از اضافه شدن ACL جدید. با بررسی Change، ACL شناسایی و اصلاح شد.\n\n## ۴. خلاصه\nزمان شروع مشکل + Change نزدیک = فرضیه قوی.",
+      "notes": "review_required",
+      "search_query": "Change History troubleshooting RCA L2 ch60",
+      "learning_objectives": [
+        "ارتباط زمان شروع مشکل با Change",
+        "استفاده از سیستم Change Management",
+        "Diff پیکربندی"
+      ],
+      "meta": {
+        "level": "L2",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۱ روش‌شناسی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part3.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv002:l0001",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 2,
+      "lesson_order": 16,
+      "topic": "Network TS Tools",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L1",
+      "title_fa": "[L1] Network TS Tools — مقدماتی",
+      "title_en": "[L1] Network TS Tools — Junior",
+      "tags": [
+        "L1",
+        "troubleshooting",
+        "tools",
+        "network",
+        "ch60"
+      ],
+      "summary": "مجموعه‌ای از ابزارهای پایه عیب‌یابی شبکه که هر ادمین باید مسلط باشد: ping, traceroute, nslookup, arp, netstat.",
+      "full_content": "# [L1] Network TS Tools — مقدماتی\n\n## ۱. معرفی\nقبل از ابزارهای پیچیده، این فرمان‌های پایه را کامل بلد باشید.\n\n## ۲. فرمان‌های ضروری\n```\nping / ping -t / ping -a\ntracert / traceroute\nnslookup / dig\narp -a\nnetstat -an / ss -tuln\nipconfig /all / ip -br a\n```\n\n## ۳. تفسیر سریع\n- پینگ IP موفق + نام ناموفق = DNS\n- traceroute در hop خاص تمام می‌شود = مشکل در آن hop یا فایروال\n- ARP incomplete = مشکل لایه ۲ یا Gateway\n\n## ۴. لاب\nهر فرمان را روی یک مشکل شبیه‌سازی‌شده اجرا و خروجی را تفسیر کنید.\n\n## ۵. خلاصه\nابزار ساده + تفسیر درست = عیب‌یابی سریع.",
+      "notes": "review_required",
+      "search_query": "Network troubleshooting tools ping traceroute nslookup L1 ch60",
+      "learning_objectives": [
+        "اجرای فرمان‌های پایه",
+        "تفسیر خروجی",
+        "انتخاب ابزار مناسب برای علامت"
+      ],
+      "meta": {
+        "level": "L1",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۲ عیب‌یابی عملی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part3.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv002:l0002",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 2,
+      "lesson_order": 17,
+      "topic": "Windows TS",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L2",
+      "title_fa": "[L2] Windows TS — ادمین",
+      "title_en": "[L2] Windows TS — Admin",
+      "tags": [
+        "L2",
+        "troubleshooting",
+        "windows",
+        "ch60"
+      ],
+      "summary": "عیب‌یابی شبکه و سیستم در ویندوز با ابزارهای بومی: Event Viewer, Resource Monitor, netsh, PowerShell.",
+      "full_content": "# [L2] Windows TS — ادمین\n\n## ۱. معرفی\nویندوز ابزارهای قدرتمند بومی دارد؛ اول آن‌ها را تمام کنید.\n\n## ۲. فرمان‌ها و ابزارها\n```\nipconfig /all\nipconfig /flushdns\nnetsh interface ip show config\nGet-NetIPConfiguration\nGet-DnsClientServerAddress\nTest-NetConnection -ComputerName x -Port 443\nGet-WinEvent -LogName System -MaxEvents 50\n```\n\n## ۳. Event Viewer کلیدی\n- System: سرویس‌ها و درایورها\n- Application: خطای نرم‌افزار\n- Security: لاگین و دسترسی\n\n## ۴. خلاصه\nPowerShell + Event Viewer نیم بیشتر مشکلات ویندوزی را حل می‌کند.",
+      "notes": "review_required — netsh winsock reset فقط در Lab یا با Backup",
+      "search_query": "Windows network troubleshooting PowerShell Event Viewer L2 ch60",
+      "learning_objectives": [
+        "استفاده از PowerShell برای تست شبکه",
+        "خواندن Event Viewer",
+        "flushdns و ابزارهای پایه"
+      ],
+      "meta": {
+        "level": "L2",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۲ عیب‌یابی عملی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part3.json"
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch60:lv002:l0003",
+      "entity": "lesson",
+      "chapter_order": 60,
+      "subchapter_order": 2,
+      "lesson_order": 18,
+      "topic": "Linux TS",
+      "domain": "عیب‌یابی هک اخلاقی لاب سازمانی",
+      "level": "L2",
+      "title_fa": "[L2] Linux TS — ادمین",
+      "title_en": "[L2] Linux TS — Admin",
+      "tags": [
+        "L2",
+        "troubleshooting",
+        "linux",
+        "ch60"
+      ],
+      "summary": "عیب‌یابی شبکه در لینوکس با ip, ss, journalctl, tcpdump و ابزارهای مدرن.",
+      "full_content": "# [L2] Linux TS — ادمین\n\n## ۱. معرفی\nدر لینوکس مدرن به جای ifconfig از ip استفاده کنید.\n\n## ۲. فرمان‌های کلیدی\n```\nip -br a\nip route\nss -tuln\njournalctl -u NetworkManager -n 50\njournalctl -xe\ntcpdump -i eth0 -n port 53\nresolvectl status\n```\n\n## ۳. مثال\nسرویس listening نیست:\nss -tuln | grep :80 → خالی → مشکل سرویس نه شبکه.\n\n## ۴. خلاصه\nip + ss + journalctl پایه عیب‌یابی لینوکس هستند.",
+      "notes": "review_required",
+      "search_query": "Linux network troubleshooting ip ss journalctl L2 ch60",
+      "learning_objectives": [
+        "استفاده از ip و ss",
+        "خواندن journalctl",
+        "tcpdump پایه"
+      ],
+      "meta": {
+        "level": "L2",
+        "chapter_title": "فصل ۶۰: عیب‌یابی هک اخلاقی لاب سازمانی",
+        "subchapter_title": "۶۰.۲ عیب‌یابی عملی",
+        "source_file": "source_archive/ch60_pack.json",
+        "source_source_file": "source_archive/ch60_pack_part3.json"
+      },
+      "source_status": "review_required"
+    }
+  ]
+}

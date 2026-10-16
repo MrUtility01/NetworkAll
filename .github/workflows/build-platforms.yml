@@ -1,0 +1,144 @@
+name: Build Android APK and Windows package
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  android-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: android-actions/setup-android@v3
+        with:
+          cmdline-tools-version: 12266719
+          accept-android-sdk-licenses: true
+          packages: "platform-tools platforms;android-34 build-tools;34.0.0"
+
+      - name: Generate full curriculum and merge chapter packs
+        run: |
+          set -euo pipefail
+          python3 scripts/install_android_icon.py
+          python3 scripts/export_android_index.py
+          python3 scripts/assemble_chapter_packs.py --strict
+          python3 scripts/merge_content_packs_into_android.py
+
+      - name: Validate full curriculum without trimming
+        run: |
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          p = Path("android/app/src/main/assets/curriculum_index.json.gz")
+          with gzip.open(p, "rt", encoding="utf-8") as f:
+              d = json.load(f)
+          chapters = d.get("chapters", [])
+          lessons = [x for c in chapters for s in c.get("subchapters", []) for x in s.get("lessons", [])]
+          orders = [int(c["order"]) for c in chapters]
+          uids = [x.get("uid") for x in lessons]
+          expected_orders = set(range(1, 69))
+          missing_orders = sorted(expected_orders - set(orders))
+          extra_orders = sorted(set(orders) - expected_orders)
+          assert len(orders) == 68 and set(orders) == expected_orders, (
+              f"all 68 chapter orders must remain; missing={missing_orders}; extra={extra_orders}"
+          )
+          base_total = sum(
+              int((json.loads((Path("tools/chapters") / str(n) / "manifest.json").read_text(encoding="utf-8")).get("counts") or {}).get("baseline_lessons", 0))
+              for n in range(1, 69)
+          )
+          assert len(lessons) > base_total, (
+              f"chapter add-ons were not merged: total={len(lessons)}, base={base_total}"
+          )
+          assert "lesson:ch68:pack:mikrotik:00001" in set(uids), (
+              "Chapter 68 command add-on was not merged into Android curriculum"
+          )
+          assert len(uids) == len(set(uids)), "duplicate lesson uid"
+          assert int(d.get("lesson_count", -1)) == len(lessons), "lesson_count mismatch"
+          assert all(x.get("full_content") is not None for x in lessons), "missing full_content field"
+          print(f"VALID: chapters={len(chapters)} lessons={len(lessons)} gzip_bytes={p.stat().st_size}")
+          PY
+
+      - name: Prepare Gradle wrapper
+        working-directory: android
+        run: |
+          set -e
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          curl -fsSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.2-bin.zip
+          sudo unzip -qo /tmp/gradle.zip -d /opt
+          /opt/gradle-8.2/bin/gradle wrapper --gradle-version 8.2
+          chmod +x gradlew
+          test -f gradle/wrapper/gradle-wrapper.jar
+
+      - name: Assemble APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NetworkAll-Android-APK
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Prepare numeric chapter source layout and compile chapter packs
+        run: |
+          set -euo pipefail
+          python scripts/export_chapter_baseline.py
+          python scripts/assemble_chapter_packs.py
+          python scripts/reorganize_chapters.py
+          python scripts/organize_chapter_layout.py
+          python scripts/assemble_chapter_packs.py --strict
+
+      - name: Verify Python sources
+        run: python -m compileall -q server scripts tools/chapters
+
+      - name: Package complete Windows host and all content sources
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          zip -qr dist/NetworkAll-Windows-Source-Full.zip \
+            README.md README_FA.txt INSTALL_FA.md windows server shared tools scripts docs .github \
+            -x 'tools/chapters/*/build/chapter.json' '*/__pycache__/*' '*.pyc'
+          test -s dist/NetworkAll-Windows-Source-Full.zip
+          unzip -t dist/NetworkAll-Windows-Source-Full.zip
+          unzip -l dist/NetworkAll-Windows-Source-Full.zip | grep -q 'tools/chapters/INDEX_FA.md'
+          unzip -l dist/NetworkAll-Windows-Source-Full.zip | grep -q 'tools/chapters/68/commands/commands.json'
+          unzip -l dist/NetworkAll-Windows-Source-Full.zip | grep -q 'server/core/modular_chapters.py'
+          ls -lh dist/NetworkAll-Windows-Source-Full.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NetworkAll-Windows-Full-Package
+          path: dist/NetworkAll-Windows-Source-Full.zip
+          if-no-files-found: error
+          retention-days: 30

@@ -1,36 +1,43 @@
-# نصب و همگام‌سازی
+# نصب و همگام‌سازی NetworkAll
 
-## ویندوز (میزبان)
+## ویندوز
 
-```bat
-git clone https://github.com/MrUtility01/NetworkEncyclopedia.git
-cd NetworkEncyclopedia
-```
+1. مخزن یا ZIP کامل NetworkAll را دریافت و استخراج کنید.
+2. Python 3.11 یا بالاتر نصب باشد.
+3. فایل windows/start.bat را اجرا کنید.
 
-### هسته ۶۳ فصل
-فایل‌های `server/core/db.py`، `phase_a.py`، `full_curriculum.py` را از بسته محلی
-`NetworkEncyclopediaWeb` یا `NetworkEncyclopedia_full_core_for_github.zip` داخل `server/core/` کپی کنید.
+راه‌انداز ویندوز ابتدا داده‌های تفکیک‌شدهٔ فصل‌ها را به بسته‌های سازگاری تبدیل می‌کند و سپس سرور را اجرا می‌کند. اجرای دستی و کپی‌کردن فایل‌های یک پروژهٔ قدیمی دیگر لازم نیست.
 
-همچنین `server/static/app.css` و `app.js` را از همان بسته کپی کنید.
+نشانی محلی پیش‌فرض: http://127.0.0.1:5050
+برای اتصال از اندروید، نشانی IP رایانهٔ میزبان و توکن چاپ‌شده در پنجرهٔ ویندوز را وارد کنید. هر دو دستگاه باید به شبکهٔ قابل‌دسترسی مشترک متصل باشند.
 
-```bat
-cd server
-python -m pip install -r requirements.txt
-python app.py
-```
+تنظیم دستی پیش از اجرا:
 
-LAN IP در کنسول چاپ می‌شود. اندروید همان IP را می‌زند.
+    set NETENC_TOKEN=یک-توکن-طولانی-و-تصادفی
+    set NETENC_PORT=5050
+    windows\start.bat
+
+توکن نصب به‌صورت محلی در windows/.netenc_token ذخیره می‌شود. فایل توکن و دیتابیس را به Git یا افراد دیگر ارسال نکنید.
 
 ## اندروید
 
-Android Studio → Open → `android/` → Run  
-دکمه **اتصال** سپس **همگام‌سازی** (دوطرفه + ذخیره آفلاین JSON)
+پوشهٔ android/ را در Android Studio باز کنید و برنامه را روی دستگاه اجرا/نصب کنید. برای همگام‌سازی، IP و توکن سرور ویندوز را در تنظیمات اتصال برنامه وارد کنید.
+
+## ساختار مرجع محتوا
+
+تمام فصل‌ها در tools/chapters/1/ تا tools/chapters/68/ هستند. متن درس در lessons/، سؤال در questions/، پاسخ‌نامه در answers/، مثال در examples/، دستورات در commands/ و لابراتوارها در labs/ است. هر پوشهٔ فصل manifest، منابع اولیه و پوشه‌های پلتفرمی android/ و windows/ را هم دارد.
+
+برای تولید بسته‌های سازگاری:
+
+    python scripts/assemble_chapter_packs.py --strict
+
+برای build اندروید، workflow مخزن علاوه بر تولید فهرست آفلاین، این بسته‌ها را ادغام می‌کند.
 
 ## Sync
 
-- GET `/api/sync/hello`
-- GET `/api/sync/manifest?since=`
-- POST `/api/sync/pull`
-- POST `/api/sync/push`
+- GET /api/sync/hello
+- GET /api/sync/manifest?since=
+- POST /api/sync/pull
+- POST /api/sync/push
 
-تعارض: Last-Write-Wins
+تعارض‌ها طبق سیاست همگام‌سازی فعلی برنامه مدیریت می‌شوند. این راهنما تأیید انتشار نهایی یا تضمین همگام‌سازی کامل همهٔ انواع داده نیست؛ پیش از استفادهٔ عملیاتی از داده‌های مهم، بکاپ جداگانه نگه دارید.

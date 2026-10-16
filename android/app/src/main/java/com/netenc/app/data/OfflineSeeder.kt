@@ -1,14 +1,25 @@
 package com.netenc.app.data
 
 import android.content.Context
+import android.util.JsonReader
+import android.util.JsonToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import java.io.BufferedInputStream
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.nio.charset.StandardCharsets
 import java.util.zip.GZIPInputStream
 
+/**
+ * Streams the curriculum directly into Room in small batches.
+ *
+ * The complete curriculum remains bundled and available offline, but we never
+ * build one giant String/JSONObject containing every lesson in memory.
+ */
 object OfflineSeeder {
-    private const val META_SEEDED = "offline_seeded_v13"
+    private const val META_SEEDED = "offline_seeded_v14"
+    private const val BATCH_SIZE = 50
 
     suspend fun ensureSeeded(context: Context): Int = withContext(Dispatchers.IO) {
         val dao = AppDatabase.get(context).lessonDao()
@@ -17,71 +28,191 @@ object OfflineSeeder {
         if (dao.getMeta(META_SEEDED) == "1" && existing > 5000 && filled > 2000) {
             return@withContext existing
         }
-        val json = readCurriculumAsset(context) ?: return@withContext existing
-        val root = JSONObject(json)
-        val chapters = root.optJSONArray("chapters") ?: return@withContext existing
-        if (chapters.length() == 0) return@withContext existing
 
+        val input = openCurriculumStream(context) ?: return@withContext existing
         val batch = mutableListOf<LessonEntity>()
-        for (ci in 0 until chapters.length()) {
-            val ch = chapters.getJSONObject(ci)
-            val chOrder = ch.optInt("order", ci + 1)
-            val chTitle = ch.optString("title_fa")
-            val subs = ch.optJSONArray("subchapters") ?: continue
-            var lessonOrd = 0
-            for (si in 0 until subs.length()) {
-                val sub = subs.getJSONObject(si)
-                val subTitle = sub.optString("title_fa")
-                val lessons = sub.optJSONArray("lessons") ?: continue
-                for (li in 0 until lessons.length()) {
-                    val les = lessons.getJSONObject(li)
-                    val uid = les.optString("uid")
-                    if (uid.isBlank()) continue
-                    lessonOrd++
-                    batch.add(
-                        LessonEntity(
-                            uid = uid,
-                            titleFa = les.optString("title_fa"),
-                            titleEn = les.optString("title_en"),
-                            tags = les.optString("level", "L0"),
-                            summary = les.optString("summary"),
-                            fullContent = les.optString("full_content"),
-                            commands = les.optString("commands"),
-                            examples = les.optString("examples"),
-                            notes = les.optString("notes"),
-                            lastUpdated = "2026-10-11T12:00:00Z",
-                            contentHash = "offline-v13-ch68",
-                            deviceId = "android-offline",
-                            chapterOrder = chOrder,
-                            chapterTitle = chTitle,
-                            subTitle = subTitle,
-                            lessonOrder = lessonOrd
-                        )
-                    )
-                    if (batch.size >= 50) {
-                        dao.upsertAll(batch.toList())
-                        batch.clear()
+        var imported = 0
+
+        val reader = JsonReader(InputStreamReader(BufferedInputStream(input), StandardCharsets.UTF_8))
+        try {
+            reader.beginObject()
+            while (reader.hasNext()) {
+                when (reader.nextName()) {
+                    "chapters" -> {
+                        reader.beginArray()
+                        while (reader.hasNext()) {
+                            imported += readChapter(reader, dao, batch)
+                        }
+                        reader.endArray()
                     }
+                    else -> reader.skipValue()
                 }
             }
+            reader.endObject()
+            if (batch.isNotEmpty()) {
+                dao.upsertAll(batch.toList())
+                batch.clear()
+            }
+        } finally {
+            reader.close()
         }
-        if (batch.isNotEmpty()) dao.upsertAll(batch)
-        dao.putMeta(SyncMetaEntity(META_SEEDED, "1"))
+
+        if (imported > 0 || existing == 0) {
+            dao.putMeta(SyncMetaEntity(META_SEEDED, "1"))
+        }
+        android.util.Log.i("NetworkAll", "Streaming seed complete: imported=$imported active=${dao.countActive()}")
         dao.countActive()
     }
 
-    private fun readCurriculumAsset(context: Context): String? {
-        try {
-            context.assets.open("curriculum_index.json").use {
-                return it.bufferedReader(Charsets.UTF_8).readText()
+    private suspend fun readChapter(
+        reader: JsonReader,
+        dao: LessonDao,
+        batch: MutableList<LessonEntity>
+    ): Int {
+        var chapterOrder = 0
+        var chapterTitle = ""
+        var imported = 0
+        val lessonCounter = ChapterLessonCounter()
+
+        reader.beginObject()
+        while (reader.hasNext()) {
+            when (reader.nextName()) {
+                "order" -> chapterOrder = readInt(reader)
+                "title_fa" -> chapterTitle = readString(reader)
+                "subchapters" -> {
+                    reader.beginArray()
+                    while (reader.hasNext()) {
+                        imported += readSubchapter(
+                            reader, dao, batch, chapterOrder, chapterTitle, lessonCounter
+                        )
+                    }
+                    reader.endArray()
+                }
+                else -> reader.skipValue()
             }
-        } catch (_: Exception) {}
-        try {
-            context.assets.open("curriculum_index.json.gz").use { raw ->
-                return GZIPInputStream(BufferedInputStream(raw))
-                    .bufferedReader(Charsets.UTF_8).readText()
-            }
-        } catch (_: Exception) {}
-        return null
+        }
+        reader.endObject()
+        return imported
     }
+
+    private suspend fun readSubchapter(
+        reader: JsonReader,
+        dao: LessonDao,
+        batch: MutableList<LessonEntity>,
+        chapterOrder: Int,
+        chapterTitle: String,
+        lessonCounter: ChapterLessonCounter
+    ): Int {
+        var subTitle = ""
+        var imported = 0
+        reader.beginObject()
+        while (reader.hasNext()) {
+            when (reader.nextName()) {
+                "title_fa" -> subTitle = readString(reader)
+                "lessons" -> {
+                    reader.beginArray()
+                    while (reader.hasNext()) {
+                        val lesson = readLesson(reader)
+                        if (lesson.uid.isNotBlank()) {
+                            lessonCounter.value += 1
+                            batch.add(
+                                lesson.copy(
+                                    chapterOrder = chapterOrder,
+                                    chapterTitle = chapterTitle,
+                                    subTitle = subTitle,
+                                    lessonOrder = lessonCounter.value
+                                )
+                            )
+                            imported += 1
+                            if (batch.size >= BATCH_SIZE) {
+                                dao.upsertAll(batch.toList())
+                                batch.clear()
+                            }
+                        }
+                    }
+                    reader.endArray()
+                }
+                else -> reader.skipValue()
+            }
+        }
+        reader.endObject()
+        return imported
+    }
+
+    private fun readLesson(reader: JsonReader): LessonEntity {
+        var uid = ""
+        var titleFa = ""
+        var titleEn = ""
+        var level = "L0"
+        var summary = ""
+        var fullContent = ""
+        var commands = ""
+        var examples = ""
+        var notes = ""
+
+        reader.beginObject()
+        while (reader.hasNext()) {
+            when (reader.nextName()) {
+                "uid" -> uid = readString(reader)
+                "title_fa" -> titleFa = readString(reader)
+                "title_en" -> titleEn = readString(reader)
+                "level" -> level = readString(reader)
+                "summary" -> summary = readString(reader)
+                "full_content" -> fullContent = readString(reader)
+                "commands" -> commands = readString(reader)
+                "examples" -> examples = readString(reader)
+                "notes" -> notes = readString(reader)
+                else -> reader.skipValue()
+            }
+        }
+        reader.endObject()
+
+        return LessonEntity(
+            uid = uid,
+            titleFa = titleFa,
+            titleEn = titleEn,
+            tags = level,
+            summary = summary,
+            fullContent = fullContent,
+            commands = commands,
+            examples = examples,
+            notes = notes,
+            lastUpdated = "2026-10-15T00:00:00Z",
+            contentHash = "offline-stream-v14",
+            deviceId = "android-offline"
+        )
+    }
+
+    private fun readString(reader: JsonReader): String {
+        return if (reader.peek() == JsonToken.NULL) {
+            reader.nextNull()
+            ""
+        } else {
+            reader.nextString()
+        }
+    }
+
+    private fun readInt(reader: JsonReader): Int {
+        return if (reader.peek() == JsonToken.NULL) {
+            reader.nextNull()
+            0
+        } else {
+            reader.nextInt()
+        }
+    }
+
+    private fun openCurriculumStream(context: Context): InputStream? {
+        try {
+            return context.assets.open("curriculum_index.json")
+        } catch (_: Exception) {
+            // Fall through to the gzip asset for development/source builds.
+        }
+        return try {
+            GZIPInputStream(BufferedInputStream(context.assets.open("curriculum_index.json.gz")))
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    private class ChapterLessonCounter(var value: Int = 0)
 }

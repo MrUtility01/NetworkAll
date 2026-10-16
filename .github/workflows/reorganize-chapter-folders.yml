@@ -1,0 +1,257 @@
+name: Reorganize chapter folders and build platforms
+
+on:
+  push:
+    branches:
+      - feature/modular-chapter-folders
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  organize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      commit_sha: ${{ steps.commit.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Export baseline curriculum into chapter-local files
+        run: python scripts/export_chapter_baseline.py
+
+      - name: Assemble existing numeric content before rebuilding indexes
+        run: python scripts/assemble_chapter_packs.py
+
+      - name: Reorganize source files chapter-by-chapter
+        run: python scripts/reorganize_chapters.py
+
+      - name: Split chapter content into type-specific files
+        run: python scripts/organize_chapter_layout.py
+
+      - name: Compile all 68 compatibility packs
+        run: python scripts/assemble_chapter_packs.py --strict
+
+      - name: Validate numeric content layout
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path(".")
+          base = root / "tools" / "chapters"
+          folders = [p for p in base.iterdir() if p.is_dir() and p.name.isdigit()]
+          assert len(folders) == 68 and {int(p.name) for p in folders} == set(range(1,69)), (
+              f"expected numeric folders 1..68, got {[p.name for p in folders]}"
+          )
+          extras = [p.name for p in base.iterdir() if p.is_dir() and not p.name.isdigit()]
+          assert not extras, f"extra folders under tools/chapters: {extras}"
+          total = 0
+          for n in range(1,69):
+              d = base / str(n)
+              manifest = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
+              base_pack = json.loads((d / "lessons" / "base_curriculum.json").read_text(encoding="utf-8"))
+              lesson_doc = json.loads((d / "lessons" / "lessons.json").read_text(encoding="utf-8"))
+              pack = json.loads((d / "build" / "chapter.json").read_text(encoding="utf-8"))
+              assert pack.get("chapter_order") == n and base_pack.get("chapter_order") == n
+              assert isinstance(base_pack.get("levels"), list) and isinstance(lesson_doc.get("items"), list)
+              assert isinstance(pack.get("lessons"), list)
+              for sub, filename in [
+                  ("questions","questions.json"),("answers","answer_key.json"),
+                  ("examples","examples.json"),("commands","commands.json"),("labs","labs.json")
+              ]:
+                  bank = json.loads((d / sub / filename).read_text(encoding="utf-8"))
+                  assert isinstance(bank.get("items"), list), f"invalid {d / sub / filename}"
+              uids = [row.get("uid") for row in pack["lessons"]]
+              assert len(uids) == len(set(uids)), f"duplicate UID in chapter {n}"
+              assert (d / "android" / "manifest.json").is_file()
+              assert (d / "windows" / "manifest.json").is_file()
+              assert not (d / "chapter.json").exists() and not (d / "base_curriculum.json").exists()
+              total += len(uids)
+          assert (base / "INDEX_FA.md").is_file() and (base / "README_FA.md").is_file()
+          assert not list(root.glob("chapter_*.json")), "chapter JSON left in repository root"
+          print(f"NUMERIC LAYOUT VALID: folders=68 compatibility_lessons={total}")
+          PY
+
+      - name: Commit the reorganization
+        id: commit
+        if: github.ref == 'refs/heads/feature/modular-chapter-folders'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "refactor: consolidate content into chapter folders"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  android:
+    needs: organize
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.organize.outputs.commit_sha }}
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: android-actions/setup-android@v3
+        with:
+          cmdline-tools-version: 12266719
+          accept-android-sdk-licenses: true
+          packages: "platform-tools platforms;android-34 build-tools;34.0.0"
+
+      - name: Generate all chapters from retained source content
+        run: |
+          set -euo pipefail
+          python scripts/install_android_icon.py
+          python scripts/export_android_index.py
+          python scripts/assemble_chapter_packs.py --strict
+          python scripts/merge_content_packs_into_android.py
+
+      - name: Validate complete Android curriculum
+        run: |
+          python - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          p = Path("android/app/src/main/assets/curriculum_index.json.gz")
+          with gzip.open(p, "rt", encoding="utf-8") as f:
+              d = json.load(f)
+          chapters = d.get("chapters", [])
+          lessons = [x for c in chapters for s in c.get("subchapters", []) for x in s.get("lessons", [])]
+          orders = [int(c["order"]) for c in chapters]
+          uids = [x.get("uid") for x in lessons]
+          assert len(orders) == 68 and set(orders) == set(range(1, 69)), (
+              f"expected every chapter 1..68, got {sorted(set(orders))}"
+          )
+          base_total = sum(
+              int((json.loads((Path("tools/chapters") / str(n) / "manifest.json").read_text(encoding="utf-8")).get("counts") or {}).get("baseline_lessons", 0))
+              for n in range(1, 69)
+          )
+          assert len(lessons) > base_total, (
+              f"chapter add-ons were not merged: total={len(lessons)}, base={base_total}"
+          )
+          assert "lesson:ch68:pack:mikrotik:00001" in set(uids), (
+              "Chapter 68 command add-on was not merged into Android curriculum"
+          )
+          assert len(uids) == len(set(uids)), "duplicate lesson UID"
+          assert int(d.get("lesson_count", -1)) == len(lessons)
+          assert all(x.get("full_content") is not None for x in lessons)
+          print(f"ANDROID CONTENT VALID: chapters={len(chapters)} lessons={len(lessons)} gzip_bytes={p.stat().st_size}")
+          PY
+
+      - name: Prepare Gradle wrapper
+        working-directory: android
+        run: |
+          set -e
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          curl -fsSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.2-bin.zip
+          sudo unzip -qo /tmp/gradle.zip -d /opt
+          /opt/gradle-8.2/bin/gradle wrapper --gradle-version 8.2
+          chmod +x gradlew
+          test -f gradle/wrapper/gradle-wrapper.jar
+
+      - name: Assemble Android APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NetworkAll-Android-APK-Organized
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+  windows:
+    needs: organize
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.organize.outputs.commit_sha }}
+
+      - name: Verify Python sources and compile chapter packs
+        run: |
+          python -m compileall -q server scripts tools/chapters
+          python scripts/assemble_chapter_packs.py --strict
+
+      - name: Install Windows runtime dependencies
+        run: python -m pip install -r server/requirements.txt
+
+      - name: Smoke-test Windows SQLite seed and chapter imports
+        run: |
+          python - <<'PY'
+          import sys
+          import tempfile
+          from pathlib import Path
+          root = Path.cwd()
+          sys.path.insert(0, str(root / "server"))
+          from core.db import WebDB
+          from core.modular_chapters import import_chapter_packs
+          with tempfile.TemporaryDirectory() as tmp:
+              db = WebDB(Path(tmp) / "smoke.db")
+              seeded = db.seed_full(force=True)
+              db.ensure_sync_columns()
+              imported = import_chapter_packs(db)
+              stats = db.stats()
+              orders = {int(row["order_index"]) for row in db.list_chapters()}
+              assert set(range(1, 69)).issubset(orders), f"missing chapter orders: {sorted(set(range(1,69))-orders)}"
+              assert imported.get("added", 0) > 0, f"chapter packs were not imported: {imported}"
+              assert stats["lessons"] >= seeded["lessons"]
+              print(f"WINDOWS DB SMOKE OK: baseline={seeded['lessons']} imported={imported} stats={stats}")
+              db.conn.close()
+              # Exercise real host startup without binding a public port.
+              import os
+              os.environ["NETENC_TOKEN"] = "ci-only-smoke-token"
+              import app as windows_host
+              windows_host.WebDB = lambda: WebDB(Path(tmp) / "host-startup.db")
+              windows_host._db = None
+              windows_host.app.run = lambda **kwargs: print(f"APP_RUN_INTERCEPTED {kwargs}")
+              windows_host.main()
+              assert windows_host._db is not None
+              windows_host._db.conn.close()
+              print("WINDOWS HOST STARTUP SMOKE OK")
+          PY
+
+      - name: Package Windows host and chapter content
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          zip -qr dist/NetworkAll-Windows-Source-Organized.zip \
+            README.md README_FA.txt INSTALL_FA.md windows server shared tools scripts docs .github \
+            -x 'tools/chapters/*/build/chapter.json' '*/__pycache__/*' '*.pyc'
+          test -s dist/NetworkAll-Windows-Source-Organized.zip
+          unzip -t dist/NetworkAll-Windows-Source-Organized.zip
+          unzip -l dist/NetworkAll-Windows-Source-Organized.zip | grep -q 'tools/chapters/INDEX_FA.md'
+          unzip -l dist/NetworkAll-Windows-Source-Organized.zip | grep -q 'tools/chapters/68/commands/commands.json'
+          ls -lh dist/NetworkAll-Windows-Source-Organized.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NetworkAll-Windows-Source-Organized
+          path: dist/NetworkAll-Windows-Source-Organized.zip
+          if-no-files-found: error
+          retention-days: 30

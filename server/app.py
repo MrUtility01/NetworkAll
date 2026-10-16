@@ -70,13 +70,15 @@ except Exception as _e:
     register_study_routes = None
     _MODULE_STATUS["study_error"] = str(_e)
 
-DEFAULT_DEV_TOKEN = "09136555866"
-SYNC_TOKEN = os.environ.get("NETENC_TOKEN", DEFAULT_DEV_TOKEN)
+SYNC_TOKEN = (os.environ.get("NETENC_TOKEN") or "").strip()
+TOKEN_GENERATED_FOR_PROCESS = not bool(SYNC_TOKEN)
+if TOKEN_GENERATED_FOR_PROCESS:
+    import secrets
+    SYNC_TOKEN = secrets.token_urlsafe(32)
+    print("WARNING: NETENC_TOKEN was not configured; a random token was generated for this process.")
+    print("Temporary NETENC_TOKEN=" + SYNC_TOKEN)
 DEVICE_ID = os.environ.get("NETENC_DEVICE", socket.gethostname() or "windows-host")
 BIND_HOST = os.environ.get("NETENC_HOST", "0.0.0.0")
-
-if SYNC_TOKEN == DEFAULT_DEV_TOKEN:
-    print("WARNING: using default NETENC_TOKEN — set env NETENC_TOKEN for LAN use")
 
 _db = None
 
@@ -89,6 +91,12 @@ def db() -> WebDB:
             print("seed curriculum...")
             print(_db.seed_full(force=True))
         _db.ensure_sync_columns()
+        try:
+            from core.modular_chapters import import_chapter_packs
+            import_chapter_packs(_db)
+        except Exception as e:
+            # A bad optional pack must not prevent the existing Windows host from starting.
+            print("[chapters] import warning:", e)
     return _db
 
 
@@ -140,7 +148,8 @@ def health():
         "schema_version": SCHEMA_VERSION,
         "sync_protocol": "v1-aligned",
         "token_required": bool(SYNC_TOKEN),
-        "default_token_in_use": SYNC_TOKEN == DEFAULT_DEV_TOKEN,
+        "default_token_in_use": False,
+        "token_generated_for_process": TOKEN_GENERATED_FOR_PROCESS,
         "modules": {
             "workspace": _MODULE_STATUS["workspace"],
             "study": bool(register_study_routes),
@@ -302,7 +311,7 @@ def main():
             print("study routes", e)
     print(f"NetEnc listening on http://{host}:{port}")
     print("  sync: /api/sync/hello | manifest | pull | push")
-    print(f"  token_required={bool(SYNC_TOKEN)} default_token={SYNC_TOKEN == DEFAULT_DEV_TOKEN}")
+    print(f"  token_required={bool(SYNC_TOKEN)} token_generated_for_process={TOKEN_GENERATED_FOR_PROCESS}")
     app.run(host=host, port=port, debug=False)
 
 

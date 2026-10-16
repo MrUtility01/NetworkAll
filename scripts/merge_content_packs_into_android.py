@@ -23,30 +23,23 @@ def load_json(p: Path):
 
 
 def find_pack_files():
-    """فقط مسیرهای مجاز — prompts/ اسکن نمی‌شود (سرعت/پایداری)."""
-    files = []
-    files += list(ROOT.glob("tools/packs/**/*.json"))
-    files += list(ROOT.glob("tools/engineer_jokar_*/*pack*.json"))
-    files += list(ROOT.glob("tools/engineer_jokar_*/*curriculum*.json"))
-    files += list(ROOT.glob("tools/ENGINEER_JOKAR_*.json"))
-    uniq, seen = [], set()
-    for f in files:
-        name = f.name.lower()
-        if name.endswith(".md") or name in ("readme.md", "readme_fa.md"):
-            continue
-        if " " in f.name:
-            print(" skip spaced name:", f)
-            continue
-        if name.endswith(".json.json"):
-            print(" skip double ext:", f)
-            continue
-        if "/prompts/" in str(f).replace("\\", "/").lower():
-            continue
-        k = str(f.resolve())
-        if k not in seen and f.stat().st_size > 500:
-            seen.add(k)
-            uniq.append(f)
-    return sorted(uniq)
+    """Use only canonical per-chapter packs; archived/original JSON files are not imported twice."""
+    # Prefer the compiled numeric layout; retain a fallback while the migration runs.
+    files = list(ROOT.glob("tools/chapters/[0-9]/build/chapter.json"))
+    files += list(ROOT.glob("tools/chapters/[0-9][0-9]/build/chapter.json"))
+    files += list(ROOT.glob("tools/chapters/[0-9]/chapter.json"))
+    files += list(ROOT.glob("tools/chapters/[0-9][0-9]/chapter.json"))
+    if not files:
+        files = list(ROOT.glob("tools/chapters/ch[0-9][0-9]_*/chapter.json"))
+    uniq = []
+    seen = set()
+    for f in sorted(files):
+        if f.is_file() and f.stat().st_size > 20:
+            k = str(f.resolve())
+            if k not in seen:
+                seen.add(k)
+                uniq.append(f)
+    return uniq
 
 
 def commands_to_lessons(data: dict) -> list:
@@ -200,10 +193,31 @@ def normalize_pack(path: Path, data: dict):
     return []
 
 
+def _merge_preserving_text(old, new):
+    old = as_text(old).strip()
+    new = as_text(new).strip()
+    if not old:
+        return new
+    if not new or new == old or new in old:
+        return old
+    if old in new:
+        return new
+    return old + "\n\n---\n\n" + new
+
+
+def _normalized_title(value):
+    value = re.sub(r"^\[L[0-4]\]\s*", "", str(value or "").strip())
+    return re.sub(r"\s+", " ", value).casefold()
+
+
 def apply_fields(les, src):
-    for k in ("summary", "full_content", "commands", "examples", "notes"):
+    for k in ("full_content", "commands", "examples", "notes"):
         if src.get(k):
-            les[k] = as_text(src.get(k)) if k != "full_content" else (src.get(k) or "")
+            les[k] = _merge_preserving_text(les.get(k), src.get(k))
+    if src.get("summary"):
+        old_summary = as_text(les.get("summary"))
+        new_summary = as_text(src.get("summary"))
+        les["summary"] = new_summary if len(new_summary) > len(old_summary) else old_summary
 
 
 def merge_by_title(data, lessons):
@@ -264,6 +278,90 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
     return sum(len(s["lessons"]) for s in out_subs)
 
 
+def append_modular_chapter(data, lessons, order, title_fa, title_en):
+    """Append modular lessons without replacing any existing chapter content."""
+    if not lessons:
+        return 0
+    chapter = next((c for c in data["chapters"] if int(c.get("order") or 0) == order), None)
+    if chapter is None:
+        return append_unmatched_as_extra(data, lessons, order, title_fa, title_en)
+
+    existing_uids = {
+        lesson.get("uid")
+        for ch in data["chapters"]
+        for sub in ch.get("subchapters", [])
+        for lesson in sub.get("lessons", [])
+        if lesson.get("uid")
+    }
+    grouped = defaultdict(list)
+    for lesson in lessons:
+        grouped[int(lesson.get("subchapter_order") or 1)].append(lesson)
+
+    added = 0
+    for sub_order in sorted(grouped):
+        out = []
+        for src in sorted(grouped[sub_order], key=lambda x: int(x.get("lesson_order") or 0)):
+            uid = src.get("uid") or f"lesson:ch{order:02d}:mod:{sub_order:03d}:{len(out)+1:05d}"
+            if uid in existing_uids:
+                base_uid = uid
+                uid = f"{base_uid}:moddup:{order:02d}:{int(sub_order):03d}:{len(out)+1:05d}"
+                suffix = 2
+                while uid in existing_uids:
+                    uid = f"{base_uid}:moddup:{order:02d}:{int(sub_order):03d}:{len(out)+1:05d}:{suffix}"
+                    suffix += 1
+            existing_uids.add(uid)
+            src["uid"] = uid
+            notes = as_text(src.get("notes"))
+            meta = src.get("meta") or {}
+            assessment = meta.get("assessment") if isinstance(meta, dict) else None
+            if assessment and "EJ_ASSESSMENT" not in notes:
+                notes += "\\n\\n<!-- EJ_ASSESSMENT\\n" + json.dumps(assessment, ensure_ascii=False) + "\\n-->\\n"
+            out.append({
+                "uid": uid,
+                "title_fa": src.get("title_fa") or "",
+                "title_en": src.get("title_en") or "",
+                "level": src.get("level") or "L0",
+                "summary": as_text(src.get("summary")),
+                "full_content": as_text(src.get("full_content")),
+                "commands": as_text(src.get("commands")),
+                "examples": as_text(src.get("examples")),
+                "notes": notes,
+            })
+        if out:
+            chapter.setdefault("subchapters", []).append({
+                "title_fa": f"محتوای افزوده — زیرفصل {sub_order}",
+                "lessons": out,
+            })
+            added += len(out)
+    return added
+
+
+def ensure_unique_uids(data):
+    """Keep every lesson while repairing UID collisions deterministically."""
+    seen = set()
+    fixed = 0
+    for chapter in data.get("chapters", []):
+        order = int(chapter.get("order") or 0)
+        for sub_index, sub in enumerate(chapter.get("subchapters", []), 1):
+            for lesson_index, lesson in enumerate(sub.get("lessons", []), 1):
+                base = str(lesson.get("uid") or f"lesson:ch{order:02d}:s{sub_index:03d}:l{lesson_index:05d}")
+                candidate = base
+                if candidate in seen:
+                    candidate = f"{base}:dedup:{order:02d}:{sub_index:03d}:{lesson_index:05d}"
+                    suffix = 2
+                    while candidate in seen:
+                        candidate = f"{base}:dedup:{order:02d}:{sub_index:03d}:{lesson_index:05d}:{suffix}"
+                        suffix += 1
+                    lesson["uid"] = candidate
+                    fixed += 1
+                else:
+                    lesson["uid"] = candidate
+                seen.add(candidate)
+    if fixed:
+        print("UID collisions repaired without dropping lessons:", fixed)
+    return fixed
+
+
 def build_ch65(lessons):
     subs = defaultdict(list)
     for les in lessons:
@@ -310,6 +408,7 @@ def main():
     print("packs", len(packs))
     sec, wireless = [], []
     routing_extra, vpn_extra, cmd_extra = [], [], []
+    modular_chapters = {}
     for p in packs:
         try:
             d = load_json(p)
@@ -320,6 +419,48 @@ def main():
         lessons = normalize_pack(p, d)
         print(" ", p.name, "lessons", len(lessons))
         if not lessons:
+            continue
+        if "tools/chapters/" in name and d.get("chapter_order") is not None:
+            order = int(d["chapter_order"])
+            chapter_title_fa = d.get("chapter_title_fa") or d.get("title_fa") or ("فصل " + str(order))
+            chapter_title_en = d.get("chapter_title_en") or d.get("title_en") or ("Chapter " + str(order))
+            if d.get("merge_strategy") == "by_title":
+                existing_titles = {
+                    _normalized_title(lesson.get("title_fa"))
+                    for ch in data.get("chapters", []) if int(ch.get("order") or 0) == order
+                    for sub in ch.get("subchapters", []) for lesson in sub.get("lessons", [])
+                }
+                matched, unmatched = [], []
+                for idx, original in enumerate(lessons, 1):
+                    lesson = dict(original)
+                    lesson["chapter_order"] = order
+                    lesson.setdefault("subchapter_order", 1)
+                    lesson.setdefault("lesson_order", idx)
+                    lesson.setdefault("uid", f"lesson:ch{order:02d}:pack:{idx:05d}")
+                    if _normalized_title(lesson.get("title_fa")) in existing_titles:
+                        matched.append(lesson)
+                    else:
+                        unmatched.append(lesson)
+                merged_count = merge_by_title(data, matched) if matched else 0
+                added_count = append_modular_chapter(
+                    data, unmatched, order, chapter_title_fa, chapter_title_en
+                ) if unmatched else 0
+                print("canonical chapter pack", order, "title-merged", merged_count, "new", added_count)
+                continue
+            entry = modular_chapters.setdefault(order, {
+                "title_fa": chapter_title_fa,
+                "title_en": chapter_title_en,
+                "lessons": [],
+            })
+            pack_id = str(p.relative_to(ROOT / "tools" / "chapters").with_suffix(""))
+            pack_id = re.sub(r"[^a-zA-Z0-9_-]+", "-", pack_id.replace("\\", "/").replace("/", "-")).strip("-") or "pack"
+            for idx, lesson in enumerate(lessons, 1):
+                lesson = dict(lesson)
+                lesson.setdefault("chapter_order", order)
+                lesson.setdefault("subchapter_order", 1)
+                lesson.setdefault("lesson_order", idx)
+                lesson.setdefault("uid", f"lesson:ch{order:02d}:mod:{pack_id}:{idx:05d}")
+                entry["lessons"].append(lesson)
             continue
         if "security_ethical" in name:
             sec.extend(lessons)
@@ -336,6 +477,10 @@ def main():
             routing_extra.extend(lessons)
         if "vpn" in name or "ipsec" in name:
             vpn_extra.extend(lessons)
+
+    for order, chapter in sorted(modular_chapters.items()):
+        n = append_modular_chapter(data, chapter["lessons"], order, chapter["title_fa"], chapter["title_en"])
+        print("modular chapter", order, n)
 
     if routing_extra:
         n = append_unmatched_as_extra(
@@ -359,16 +504,25 @@ def main():
         )
         print("ch68 commands", n)
 
-    data["chapters"] = [c for c in data["chapters"] if c.get("order") != 65]
+    # Preserve the canonical Chapter 65 already populated from tools/chapters/ch65_*/chapter.json.
+    # Only append legacy security/wireless records if an older source format supplied them;
+    # never replace or drop the baseline chapter or its canonical additions.
     extra = list(sec)
     for w in wireless:
         w = dict(w)
         w["subchapter_order"] = 100 + int(w.get("subchapter_order") or 8)
         extra.append(w)
     if extra:
-        data["chapters"].append(build_ch65(extra))
-        print("ch65", sum(len(s["lessons"]) for s in data["chapters"][-1]["subchapters"]))
+        n = append_modular_chapter(
+            data,
+            extra,
+            65,
+            "فصل ۶۵: امنیت سایبری و هک اخلاقی (دفاعی) + بی‌سیم",
+            "Ch65 Security Ethical Hacking Wireless",
+        )
+        print("ch65 legacy additions", n)
 
+    ensure_unique_uids(data)
     data["chapters"].sort(key=lambda c: int(c.get("order") or 0))
     n = sum(len(s.get("lessons", [])) for c in data["chapters"] for s in c.get("subchapters", []))
     data["lesson_count"] = n
