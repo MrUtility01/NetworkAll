@@ -1,41 +1,65 @@
-# ساختار برنامه و استاندارد عمق محتوا
+# ساختار برنامه و استاندارد عمق محتوا — NetworkAll
 
-## معماری سه‌لایه (باید حفظ شود)
+## معماری یکسان ویندوز و اندروید (اجباری)
 
 ```
-Windows (Flask + SQLite)  ←—Sync LAN—→  Android (Room + assets)
-         │                                    │
-         └──────── offline-complete ──────────┘
+Windows (Flask + SQLite)  ←—Sync LAN (اختیاری)—→  Android (Room + assets)
+         │                                              │
+         └──────────── offline-complete ────────────────┘
+                      منبع حقیقت مشترک:
+                   tools/chapters/1 … 68
 ```
 
 1. **ویندوز** بدون گوشی کامل است.
-2. **اندروید** بدون PC کامل است (seed از `curriculum_index.json.gz`).
-3. **Sync** اختیاری است و قراردادش در `docs/SYNC_PROTOCOL.md` است.
+2. **اندروید** بدون PC کامل است.
+3. **محتوا، امکانات، ساختار درس، سوال، دستور و لاب** برای هر دو پلتفرم **دقیقاً یکسان** است.
+4. **هیچ ویدیو، فیلم یا فایل حجیم** اضافه نمی‌شود (حجم اندروید کنترل‌شده می‌ماند).
+5. **Sync** اختیاری است (جزئیات در `docs/SYNC_PROTOCOL.md`).
 
-## نقشهٔ پوشه‌ها
+---
+
+## منبع حقیقت محتوا
 
 | مسیر | نقش |
 |------|-----|
-| `server/app.py` | API + Sync + health |
-| `server/core/full_curriculum.py` | اسکلت ۶۳ فصل |
-| `server/core/rich_content.py` | تولید متن غنی هنگام seed |
-| `server/core/db.py` | SQLite و seed |
-| `server/workspace_routes.py` | کارها/یادداشت/vault (با توکن) |
-| `android/.../OfflineSeeder.kt` | بارگذاری فهرست آفلاین |
-| `android/.../QuizActivity.kt` | آزمون |
-| `android/.../ScenarioSeeder.kt` | لابراتوار/سناریوی Capstone |
+| `tools/chapters/1` تا `tools/chapters/68` | **منبع حقیقت اصلی** همهٔ درس‌ها، سوالات، دستورات، لاب‌ها |
+| `tools/chapters/index.json` | فهرست ماشینی برای کشف محتوا توسط هر دو اپ |
+| `tools/chapters/INDEX_FA.md` | فهرست انسانی |
+| `tools/chapters/README_FA.md` | قرارداد ساختار (این فایل را بخوانید) |
+| `tools/packs/` | بسته‌های غنی قدیمی / تخصصی (در حال مهاجرت به chapters) |
+| `server/core/full_curriculum.py` | اسکلت پایه runtime |
+
+---
+
+## نقشهٔ پوشه‌های اصلی پروژه
+
+| مسیر | نقش |
+|------|-----|
+| `server/` | Flask + SQLite (ویندوز) |
+| `android/` | اپ اندروید |
+| `windows/` | راهنما و لانچر ویندوز |
+| `shared/` | پروتکل sync مشترک |
+| `tools/chapters/` | **محتوای اصلی و نهایی** |
+| `tools/packs/` | پک‌های تخصصی |
 | `tools/chapter_prompts/` | پرامپت تولید محتوا |
-| `tools/packs/` | JSON بسته‌های غنی |
-| `tools/audit_content.py` | ممیزی عمق و ساختار |
+| `scripts/` | اسکریپت‌های assemble و merge |
+| `docs/` | مستندات |
+
+---
 
 ## تعداد فصل
 
 | لایه | تعداد |
 |------|--------|
-| هسته seed (`full_curriculum`) | **۶۳** |
-| بسته/افزونه (Git, Security, Routing deep, VPN) | **۶۴–۶۷** پس از merge pack در اندروید |
+| کل فصل‌ها (ساختار ماژولار) | **۶۸** |
+| هسته seed (`full_curriculum`) | ۶۳ |
+| افزونه‌ها (Git, Security, Routing deep, VPN, Commands) | ۶۴–۶۸ |
 
-## تعریف درس «کامل»
+---
+
+## تعریف درس «کامل» (استاندارد عمق)
+
+هر درس کامل باید این بخش‌ها را داشته باشد:
 
 1. معرفی و پیش‌نیاز
 2. آموزش از صفر + تشبیه سازمانی
@@ -46,7 +70,7 @@ Windows (Flask + SQLite)  ←—Sync LAN—→  Android (Room + assets)
 7. عیب‌یابی RCA
 8. نکات امنیتی
 9. خلاصه + واژه‌نامه
-10. `meta.assessment.questions` + `answer_key` جدا
+10. سوال + پاسخ‌نامه جدا
 
 آستانه‌های ممیزی (`tools/audit_content.py`):
 
@@ -54,22 +78,28 @@ Windows (Flask + SQLite)  ←—Sync LAN—→  Android (Room + assets)
 - **mid:** ۸۰۰–۱۹۹۹
 - **thin:** < ۸۰۰ → نیاز به غنی‌سازی
 
-## آزمون و لابراتوار — وضعیت
+---
 
-| جزء | وضعیت | کار بعدی |
-|-----|--------|----------|
-| آزمون اندروید | از بانک درس سؤال می‌سازد | ترجیح `meta.assessment` وقتی موجود باشد |
-| سناریو Capstone | جدول `scenarios` + ScenarioSeeder | یکسان‌سازی ویندوز/اندروید |
-| Lab داخل درس | در `full_content` درس‌های غنی | پر کردن فصل‌های thin |
-| بانک سؤال جدا | در پک‌های JSON تخصصی | استاندارد questions/answer_key |
+## قوانین حجم و یکسان‌سازی
 
-## ترتیب اصولی کار محتوا
+- فقط **متن + JSON ساختاریافته**.
+- ویدیو / فیلم / فایل صوتی بزرگ **ممنوع**.
+- پوشه‌های `windows/` و `android/` داخل هر فصل فقط تنظیمات پلتفرم دارند (بدون تکرار محتوا).
+- هر دو اپ از همان `tools/chapters/N/` می‌خوانند.
+
+---
+
+## ترتیب کار محتوا
 
 1. `python tools/audit_content.py --db server/data/encyclopedia.db`
-2. ضعیف‌ترین فصل‌ها از `weakest_chapters`
-3. پرامپت `tools/chapter_prompts/`
-4. JSON → `tools/packs/` → `apply_any_pack.py`
-5. دوباره audit
-6. سپس APK
+2. ضعیف‌ترین فصل‌ها را از گزارش بگیرید
+3. محتوا را در `tools/chapters/N/lessons/`, `questions/` و ... بنویسید
+4. `python scripts/assemble_chapter_packs.py --strict`
+5. `python scripts/merge_content_packs_into_android.py`
+6. دوباره audit و سپس build
 
-**قانون:** تا فصل‌های حیاتی (۸، ۱۳، ۱۴، ۲۰، ۲۴، ۲۹، ۵۱، ۶۰) از thin خارج نشده‌اند، فصل جدید اضافه نکن.
+**قانون:** تا فصل‌های حیاتی (۸، ۱۳، ۱۴، ۲۰، ۲۴، ۲۹، ۵۱، ۶۰) از حالت thin خارج نشده‌اند، فصل جدید اضافه نکنید.
+
+---
+
+این ساختار برای تجربهٔ کاملاً یکسان ویندوز و اندروید و گسترش‌پذیری بلندمدت طراحی شده است.
