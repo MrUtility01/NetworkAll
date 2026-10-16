@@ -9,8 +9,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.netenc.app.FlashcardActivity
-import com.netenc.app.StudyHubActivity
+import com.netenc.app.SplashActivity
 import com.netenc.app.data.StudyRepository
 
 class ReviewWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, params) {
@@ -30,7 +29,7 @@ class ReviewWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx
                 NotificationChannel(channelId, "یادآوری مطالعه", NotificationManager.IMPORTANCE_DEFAULT)
             )
         }
-        val open = Intent(applicationContext, if (due.isNotEmpty()) FlashcardActivity::class.java else StudyHubActivity::class.java)
+        val open = Intent(applicationContext, SplashActivity::class.java).putExtra("open_mode", if (due.isNotEmpty()) "flashcards" else "study")
         val pi = PendingIntent.getActivity(
             applicationContext, 0, open,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
