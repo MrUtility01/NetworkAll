@@ -100,6 +100,7 @@ nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
 <a href="/">خانه</a>
 <a href="/workspace?tab=tasks">کارها</a>
 <a href="/workspace?tab=notes">یادداشت</a>
+<a href="/workspace?tab=tips">نکته‌ها</a>
 <a href="/workspace?tab=vault">رمزها</a>
 <a href="/workspace/logout">خروج</a>
 </nav>
@@ -204,14 +205,14 @@ def workspace_page():
     if not _authorized() and not _cookie_ok():
         return redirect("/workspace/login")
     tab = request.args.get("tab") or "tasks"
-    if tab not in ("tasks", "notes", "vault"):
+    if tab not in ("tasks", "notes", "tips", "vault"):
         tab = "tasks"
     c = _conn()
     error = ""
     if request.method == "POST":
         if request.form.get("delete"):
             uid = request.form["delete"]
-            table = {"notes": "ws_notes", "vault": "ws_vault"}.get(tab, "ws_tasks")
+            table = {"notes": "ws_notes", "tips": "ws_notes", "vault": "ws_vault"}.get(tab, "ws_tasks")
             c.execute(f"DELETE FROM {table} WHERE uid=?", (uid,))
             c.commit()
         else:
@@ -240,16 +241,21 @@ def workspace_page():
             if title and not error:
                 uid = str(uuid.uuid4())
                 now = datetime.now(timezone.utc).isoformat()
-                if tab == "notes":
-                    c.execute("INSERT INTO ws_notes VALUES(?,?,?,?)", (uid, title, body, now))
+                if tab in ("notes", "tips"):
+                    stored_title = ("[نکته] " + title) if tab == "tips" else title
+                    c.execute("INSERT INTO ws_notes VALUES(?,?,?,?)", (uid, stored_title, body, now))
                 elif tab == "vault":
                     c.execute("INSERT INTO ws_vault VALUES(?,?,?,?,?)", (uid, title, username, _seal(body), now))
                 else:
                     c.execute("INSERT INTO ws_tasks(uid,title,body,done,last_updated,due_at) VALUES(?,?,?,?,?,?)", (uid, title, body, 0, now, due_at))
                 c.commit()
-    if tab == "notes":
-        items = c.execute("SELECT uid,title,body FROM ws_notes ORDER BY last_updated DESC").fetchall()
-        title = "یادداشت‌ها"
+    if tab in ("notes", "tips"):
+        if tab == "tips":
+            items = c.execute("SELECT uid,title,body FROM ws_notes WHERE title LIKE ? ORDER BY last_updated DESC", ("[نکته] %",)).fetchall()
+            title = "نکته‌ها"
+        else:
+            items = c.execute("SELECT uid,title,body FROM ws_notes WHERE title NOT LIKE ? ORDER BY last_updated DESC", ("[نکته] %",)).fetchall()
+            title = "یادداشت‌ها"
     elif tab == "vault":
         rows = c.execute("SELECT uid,title,username,secret FROM ws_vault ORDER BY title").fetchall()
         items = []
