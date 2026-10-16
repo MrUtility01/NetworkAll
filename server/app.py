@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import os
 import socket
@@ -132,6 +133,10 @@ if _MODULE_STATUS["workspace"]:
 
 @app.get("/")
 def index():
+    # Require the per-installation token before exposing the Windows/web interface.
+    if SYNC_TOKEN and not hmac.compare_digest(request.cookies.get("netenc_token") or "", SYNC_TOKEN):
+        from flask import redirect
+        return redirect("/workspace/login")
     return render_template("index.html")
 
 
