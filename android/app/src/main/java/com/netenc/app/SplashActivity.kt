@@ -101,7 +101,13 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun enterApp() {
-        startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+        val destination = when (intent.getStringExtra("open_mode")) {
+            "tasks" -> Intent(this, WorkspaceActivity::class.java).putExtra("mode", "tasks")
+            "flashcards" -> Intent(this, FlashcardActivity::class.java).putExtra("mode", "review")
+            "study" -> Intent(this, StudyHubActivity::class.java)
+            else -> Intent(this, MainActivity::class.java)
+        }.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(destination)
         finish()
     }
 
