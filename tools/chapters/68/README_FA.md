@@ -1,31 +1,54 @@
 # فصل ۶۸: دانشنامه جامع دستورات و عملیات سیستم
 
-این فصل، مرجع عملیاتی چندسکویی برای مدیریت شبکه و سیستم‌عامل است. ساختار موجود حفظ شده و محتوای تکمیلی برای **PowerShell، Linux، Windows و Patch Management** افزوده شده است.
+این فصل، مرجع عملیاتی چندسکویی برای مدیریت شبکه و سیستم‌عامل است.
 
-## محتوای canonical
+## دانشنامه enrichment (جدید)
 
-- `lessons/base_curriculum.json`: ۱۴ مسیر/درس پایه برای مبانی PowerShell، شبکه، سرویس‌ها، مجوزها، لاگ‌ها و مدیریت وصله‌ها.
-- `lessons/lessons.json`: محتوای افزودهٔ قبلی فصل؛ منبع موجود حفظ شده است.
-- `commands/commands.json`: ۳٬۰۴۶ رکورد؛ شامل دستورات موجود و ۸۳ فرمان عملی تکمیلی برای Windows، Linux، PowerShell و چرخه patch.
-- `examples/examples.json`: ۳٬۰۴۶ رکورد؛ شامل مثال‌های مرتبط با فرمان‌ها، توضیح کاربرد و ملاحظات ایمنی.
-- `questions/questions.json`: ۵۱ سؤال چندگزینه‌ای موضوعی با گزینه‌های متوازن.
-- `answers/answer_key.json`: ۵۱ پاسخ‌نامهٔ جداگانه همراه با دلیل فنی.
-- `labs/labs.json`: ۱۸ لابراتوار عملی، با هدف، فرمان‌ها، معیار قبولی، ملاحظات ایمنی و مسیر بازگردانی.
+- **فایل ZIP:** `ch68_all_domains.zip`
+- **مسیر استخراج:** `commands/sources/encyclopedia/`
+- **اسکریپت:** `commands/sources/encyclopedia/EXTRACT.sh`
 
-## حوزه‌های آموزشی
+```bash
+cd tools/chapters/68
+bash commands/sources/encyclopedia/EXTRACT.sh
+# یا:
+unzip -o ch68_all_domains.zip
+mkdir -p commands/sources/encyclopedia
+cp -r ch68_commands_encyclopedia/* commands/sources/encyclopedia/
+# پاک‌سازی مسیر تو در توی اشتباه:
+rm -rf commands/sources/tools
+```
 
-1. PowerShell: خط لوله، شبکه، DNS، TCP، سرویس‌ها، رخدادها، فایروال و گزارش‌گیری.
-2. Linux: مجوزها، فرایندها، شبکه، DNS، systemd، journal، دیسک و بسته‌ها.
-3. Windows: پیکربندی شبکه، سرویس‌ها، Event Log، فایل‌های سیستمی، حساب‌ها و امنیت.
-4. Patch Management: موجودی دارایی، اولویت‌بندی ریسک، پایلوت، پنجره نگهداری، اعتبارسنجی پس از patch و rollback.
+| حوزه | تعداد |
+|------|--------|
+| Linux | 500 |
+| Windows PowerShell | 500 |
+| Windows Batch/CMD | 500 |
+| Cisco IOS-XE | 500 |
+| MikroTik | 500 |
+| FortiGate | 500 |
+| Docker | 300 |
+| Windows Server/AD | 300 |
+| **جمع دستورات SCHEMA** | **3600** |
+| آزمون کاربرد دستور | **1120** |
 
-## ایمنی و اجرای لابراتوار
+هر رکورد شامل: vendor، category، when_to_use_fa، flashcards، assessment (دستور→کاربرد).
 
-- سناریوهای تغییردهنده را فقط در VM یا محیط آزمایشگاهی و با مجوز اجرا کنید.
-- پیش از تغییر production، baseline، change approval، backup/restore و معیار rollback را ثبت کنید.
-- فایروال را برای عیب‌یابی به‌صورت سراسری خاموش نکنید و secretها را در log یا transcript ذخیره نکنید.
-- خروجی دستورات ممکن است با نسخه سیستم‌عامل، توزیع، سطح دسترسی و سیاست سازمان تفاوت داشته باشد.
+## محتوای canonical قبلی
 
-## سازگاری برنامه
+- `lessons/base_curriculum.json`: ۱۴ مسیر/درس پایه
+- `lessons/lessons.json`: محتوای افزودهٔ قبلی
+- `commands/commands.json`: ۳٬۰۴۶ رکورد موجود (حفظ شود؛ overwrite نشود)
+- `examples/examples.json`: ۳٬۰۴۶ رکورد
+- `questions/questions.json` / `answers/answer_key.json`: ۵۱ سؤال/پاسخ قبلی
+- `labs/labs.json`: ۱۸ لاب
 
-فایل‌های canonical موجود حفظ شده‌اند و فایل `build/chapter.json` همچنان خروجی تولیدی است؛ آن را دستی ویرایش نکنید. شمارش‌ها در `manifest.json` به‌روزرسانی شده‌اند. این تغییرات ساختار JSON را حفظ می‌کنند، اما build واقعی Android/Windows باید در CI یا محیط پروژه اجرا شود تا سازگاری زمان اجرا تأیید شود.
+## ایمنی
+
+- فقط Lab / با مجوز
+- secret در لاگ ذخیره نشود
+- فایروال را سراسری خاموش نکنید
+
+## سازگاری
+
+`build/chapter.json` را دستی ویرایش نکنید. `manifest.json` شمارش encyclopedia را دارد. status enrichment: review_required
