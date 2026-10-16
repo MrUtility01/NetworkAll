@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.util.UUID
-import java.util.TimeZone
 import android.icu.util.PersianCalendar
 import android.icu.util.ULocale
 import android.util.Base64
@@ -90,7 +89,7 @@ class WorkspaceActivity : AppCompatActivity() {
         val minute = tm.groupValues[2].toInt()
         if (m !in 1..12 || d !in 1..31 || h !in 0..23 || minute !in 0..59)
             throw IllegalArgumentException("تاریخ یا ساعت خارج از محدوده است.")
-        val cal = PersianCalendar(TimeZone.getDefault(), ULocale("fa_IR")).apply {
+        val cal = PersianCalendar(android.icu.util.TimeZone.getDefault(), ULocale("fa_IR")).apply {
             isLenient = false
             clear()
             set(PersianCalendar.YEAR, y)
