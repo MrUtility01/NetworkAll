@@ -14,7 +14,7 @@
 ## Canonical target policy
 
 - Chapters 1–67: **خبره**, 5 MiB text/structured content, media cap 8 MiB separately, 100 independent examples, 150 independent scenarios, 100 exam questions, explanations required.
-- Chapter 68: **خبره**, 5 MiB text/structured content, media cap 5 MiB separately, 100 examples, 150 scenarios, 100 exam questions, explanations not required.
+- Chapter 68: **خبره**, 8 MiB text/structured content, media cap 5 MiB separately, 100 examples, 150 scenarios, 100 exam questions, explanations not required.
 - The 68-row register is in `CHAPTER_TARGET_SELECTION.md`; evidence ledger is `CHAPTER_RICHNESS_AUDIT.md`.
 - Policy is registered; all chapters remain **ممیزی‌نشده** until per-chapter measurements, duplicate checks, coverage review, schema checks and Android/Windows integration evidence are recorded.
 - Do not ask the user to choose defaults again. Ask only if a specific chapter-level exception is needed.
