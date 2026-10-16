@@ -3,5 +3,134 @@
   "chapter_order": 3,
   "category": "commands",
   "source_of_truth": true,
-  "items": []
+  "items": [
+    {
+      "uid": "lesson:ch03:boot:0003",
+      "title_fa": "[L2] BIOS سنتی — ادمین",
+      "title_en": "[L2] BIOS سنتی — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nmsinfo32; Get-CimInstance Win32_BIOS | Select SMBIOSBIOSVersion,Manufacturer\n# Linux\nsudo dmidecode -t bios; [ -d /sys/firmware/efi ] && echo UEFI || echo Legacy\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0008",
+      "title_fa": "[L2] UEFI ساختار — ادمین",
+      "title_en": "[L2] UEFI ساختار — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nmsinfo32; bcdedit /enum firmware\n# Linux\nsudo efibootmgr -v; lsblk -f\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0013",
+      "title_fa": "[L2] Secure Boot — ادمین",
+      "title_en": "[L2] Secure Boot — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nConfirm-SecureBootUEFI; msinfo32\n# Linux\nmokutil --sb-state; bootctl status\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0018",
+      "title_fa": "[L2] CSM — ادمین",
+      "title_en": "[L2] CSM — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nmsinfo32; Get-Disk | Select Number,PartitionStyle\n# Linux\n[ -d /sys/firmware/efi ] && echo UEFI || echo Legacy; sudo efibootmgr -v\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0023",
+      "title_fa": "[L2] TPM در فریمور — ادمین",
+      "title_en": "[L2] TPM در فریمور — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\ntpm.msc; Get-Tpm\n# Linux\nls -l /dev/tpm*; systemd-analyze has-tpm2\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0028",
+      "title_fa": "[L2] Virtualization VT-x AMD-V — ادمین",
+      "title_en": "[L2] Virtualization VT-x AMD-V — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nsysteminfo; Get-ComputerInfo | Select HyperVRequirement*\n# Linux\nlscpu | grep -E 'Virtualization|vmx|svm'; grep -E -m1 'vmx|svm' /proc/cpuinfo\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0033",
+      "title_fa": "[L2] SATA Mode AHCI RAID — ادمین",
+      "title_en": "[L2] SATA Mode AHCI RAID — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nGet-CimInstance Win32_DiskDrive; Get-PnpDevice -Class SCSIAdapter\n# Linux\nlsblk -o NAME,TYPE,FSTYPE,MOUNTPOINT; lspci -nn | grep -i -E 'sata|raid|ahci'\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0038",
+      "title_fa": "[L2] زنجیره POST تا OS — ادمین",
+      "title_en": "[L2] زنجیره POST تا OS — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nGet-WinEvent -LogName System -MaxEvents 50\n# Linux\njournalctl -b -p warning; systemd-analyze time; systemctl --failed\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0043",
+      "title_fa": "[L2] Boot Order — ادمین",
+      "title_en": "[L2] Boot Order — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nbcdedit /enum firmware; Get-Disk\n# Linux\nsudo efibootmgr -v; lsblk -f\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0048",
+      "title_fa": "[L2] PXE Boot — ادمین",
+      "title_en": "[L2] PXE Boot — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nipconfig /all; Get-NetIPConfiguration\n# Linux\nip -br link; ip route; sudo tcpdump -ni any 'port 67 or port 68 or port 69'\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0053",
+      "title_fa": "[L2] MBR محدودیت — ادمین",
+      "title_en": "[L2] MBR محدودیت — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nGet-Disk | Select Number,PartitionStyle,Size; diskpart سپس list disk\n# Linux\nsudo fdisk -l; sudo parted -l\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0058",
+      "title_fa": "[L2] GPT و ESP — ادمین",
+      "title_en": "[L2] GPT و ESP — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nGet-Disk; Get-Partition; mountvol S: /S (فقط مشاهده)\n# Linux\nlsblk -f; sudo parted -l; findmnt /boot/efi\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0063",
+      "title_fa": "[L2] Windows BCD — ادمین",
+      "title_en": "[L2] Windows BCD — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nbcdedit /enum all; bcdedit /enum firmware; reagentc /info\n# Linux\nاز WinRE و ابزارهای ویندوز برای بررسی استفاده کنید؛ پیش از تعمیر از پارتیشن‌ها نسخه بگیرید.\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0068",
+      "title_fa": "[L2] GRUB2 — ادمین",
+      "title_en": "[L2] GRUB2 — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nفقط ورودی‌های firmware را با bcdedit /enum firmware مشاهده کنید.\n# Linux\ngrep -E 'GRUB|GRUB_TIMEOUT' /etc/default/grub; ls -l /boot; sudo grub-mkconfig -o /boot/grub/grub.cfg (مسیر بسته به توزیع)\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0073",
+      "title_fa": "[L2] systemd-boot — ادمین",
+      "title_en": "[L2] systemd-boot — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nbcdedit /enum firmware فقط برای مشاهده ورودی‌های firmware است.\n# Linux\nbootctl status; bootctl list; findmnt /boot; ls -R /boot/loader\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    },
+    {
+      "uid": "lesson:ch03:boot:0078",
+      "title_fa": "[L2] بازیابی بوت خراب — ادمین",
+      "title_en": "[L2] بازیابی بوت خراب — Admin",
+      "fields": {
+        "commands": "# فقط تشخیصی؛ خروجی را پیش از هر تغییر ذخیره کنید\n# Windows\nWinRE; bcdedit /enum all; reagentc /info\n# Linux\nlsblk -f; efibootmgr -v; journalctl -b -1 -p warning\n# تغییر firmware/BCD/GRUB/partition فقط با بکاپ و rollback."
+      }
+    }
+  ]
 }
