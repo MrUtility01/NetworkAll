@@ -105,6 +105,7 @@ nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
 </nav>
 <p class="badge">دسترسی با توکن · vault به صورت sealed ذخیره می‌شود</p>
 <h2>{{ title }}</h2>
+{% if error %}<p style="color:#b91c1c">{{ error }}</p>{% endif %}
 <form method=post>
 <input name=title placeholder="عنوان" required>
 <textarea name=body rows=4 placeholder="{{ 'رمز (ذخیره sealed)' if tab=='vault' else 'متن' }}"></textarea>
@@ -185,6 +186,7 @@ def workspace_page():
     if tab not in ("tasks", "notes", "vault"):
         tab = "tasks"
     c = _conn()
+    error = ""
     if request.method == "POST":
         if request.form.get("delete"):
             uid = request.form["delete"]
@@ -195,7 +197,26 @@ def workspace_page():
             title = (request.form.get("title") or "").strip()
             body = request.form.get("body") or ""
             username = request.form.get("username") or ""
-            if title:
+            due_at = ""
+            if tab == "tasks":
+                digits = str.maketrans("۰۱۲۳۴۵۶۷۸۹٠١٢٣٤٥٦٧٨٩", "01234567890123456789")
+                jalali_date = (request.form.get("due_date") or "").translate(digits).strip()
+                due_time = (request.form.get("due_time") or "").translate(digits).strip()
+                if jalali_date or due_time:
+                    try:
+                        if not jdatetime:
+                            raise ValueError("بسته jdatetime نصب نیست؛ start.bat را دوباره اجرا کنید.")
+                        if not jalali_date or not due_time:
+                            raise ValueError("برای یادآوری، تاریخ شمسی و ساعت را هر دو وارد کنید.")
+                        jy, jm, jd = [int(x) for x in jalali_date.replace("-", "/").split("/")]
+                        hh, mm = [int(x) for x in due_time.split(":")]
+                        jdt = jdatetime.datetime(jy, jm, jd, hh, mm)
+                        due_at = jdt.togregorian().astimezone().isoformat(timespec="seconds")
+                        if datetime.fromisoformat(due_at).timestamp() <= datetime.now().timestamp():
+                            raise ValueError("زمان یادآوری باید در آینده باشد.")
+                    except Exception as exc:
+                        error = "تاریخ/ساعت نامعتبر: " + str(exc)
+            if title and not error:
                 uid = str(uuid.uuid4())
                 now = datetime.now(timezone.utc).isoformat()
                 if tab == "notes":
@@ -203,7 +224,7 @@ def workspace_page():
                 elif tab == "vault":
                     c.execute("INSERT INTO ws_vault VALUES(?,?,?,?,?)", (uid, title, username, _seal(body), now))
                 else:
-                    c.execute("INSERT INTO ws_tasks VALUES(?,?,?,?,?)", (uid, title, body, 0, now))
+                    c.execute("INSERT INTO ws_tasks(uid,title,body,done,last_updated,due_at) VALUES(?,?,?,?,?,?)", (uid, title, body, 0, now, due_at))
                 c.commit()
     if tab == "notes":
         items = c.execute("SELECT uid,title,body FROM ws_notes ORDER BY last_updated DESC").fetchall()
@@ -216,9 +237,23 @@ def workspace_page():
             items.append({"uid": r["uid"], "title": r["title"], "body": f"{r['username']}\n{secret_show}"})
         title = "مدیریت رمز ورود (sealed)"
     else:
-        items = c.execute("SELECT uid,title,body FROM ws_tasks ORDER BY last_updated DESC").fetchall()
+        rows = c.execute("SELECT uid,title,body,due_at FROM ws_tasks ORDER BY last_updated DESC").fetchall()
+        items = []
+        for row in rows:
+            item = dict(row)
+            item["due_label"] = ""
+            if item.get("due_at"):
+                try:
+                    dt = datetime.fromisoformat(item["due_at"])
+                    if jdatetime:
+                        item["due_label"] = "یادآوری: " + jdatetime.datetime.fromgregorian(datetime=dt).strftime("%Y/%m/%d %H:%M")
+                    else:
+                        item["due_label"] = "یادآوری: " + dt.strftime("%Y-%m-%d %H:%M")
+                except Exception:
+                    item["due_label"] = "یادآوری: " + item["due_at"]
+            items.append(item)
         title = "مدیریت کارها"
-    return render_template_string(PAGE, items=items, title=title, tab=tab)
+    return render_template_string(PAGE, items=items, title=title, tab=tab, error=error)
 
 
 @bp.route("/api/workspace/export")
