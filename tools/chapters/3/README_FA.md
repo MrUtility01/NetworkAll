@@ -1,20 +1,21 @@
-# فصل 03: BIOS UEFI و بوت
+# فصل ۰۳ — BIOS، UEFI و فرآیند بوت
 
-مسیر اصلی: tools/chapters/ch03_bios_uefi_boot/
+محتوای افزوده با ساختار نوع‌تفکیک‌شده نگهداری می‌شود. تعریف‌های پایه در `lessons/base_curriculum.json` حفظ شده‌اند و درس‌ها با `merge_strategy: by_title` غنی می‌شوند.
 
-chapter.json بسته استاندارد افزایشی برای اندروید و ویندوز است. فایل‌های اولیه، آزمون‌ها، پاسخ‌نامه‌ها و نسخه‌های قبلی در source_archive نگهداری شده‌اند. محتوای پایه هنوز از منبع runtime پروژه ساخته می‌شود؛ این پوشه محل محتوای اختصاصی و افزودهٔ همین فصل است.
+## محتوا
+- ۱۶ درس عمیق سطح ادمین برای ۱۶ موضوع فصل
+- ۱۶ مجموعه دستور تشخیصی Windows/Linux
+- ۱۶ مثال سناریومحور
+- ۴۸ سؤال چهارگزینه‌ای و ۴۸ پاسخ تشریحی جدا
+- ۱۲ لابراتوار با شواهد، معیار پذیرش و rollback
 
+## ایمنی
+پیش از تغییر firmware، TPM، BCD، GRUB یا جدول پارتیشن بکاپ و طرح بازگشت تهیه کنید. ابتدا فرمان‌های مشاهده‌ای را اجرا کنید؛ از `format`، `diskpart clean` و بازنویسی کور bootloader پرهیز کنید. کلید بازیابی BitLocker و سازگاری UEFI/GPT را پیش از تغییر بررسی کنید.
 
-## فایل‌های اصلی فصل
-
-- base_curriculum.json: تعریف درس‌های پایهٔ همین فصل.
-- chapter.json: بستهٔ استاندارد محتوای افزوده و نرمال‌شده.
-- manifest.json: فهرست فایل‌ها و شمار رکوردها.
-- source_archive/: منابع اولیه، آزمون‌ها و پاسخ‌نامه؛ در build اسکن نمی‌شود.
-
-
-## ساختار پوشه‌های فصل
-
-مسیر فصل: tools/chapters/3/
-
-متن درس در lessons/، سؤال‌ها در questions/، پاسخ‌نامه در answers/، مثال‌ها در examples/، دستورات در commands/ و لابراتوارها در labs/ قرار دارد. android/ و windows/ فقط منابع مخصوص همان بستر را دارند. build/chapter.json خروجی تولیدشده برای سازگاری برنامه‌هاست و نباید دستی ویرایش شود.
+## ساخت
+```bash
+python scripts/assemble_chapter_packs.py --strict
+python scripts/export_android_index.py
+python scripts/merge_content_packs_into_android.py
+```
+`build/chapter.json` و شاخص Android خروجی تولیدی‌اند و نباید دستی ویرایش شوند.
