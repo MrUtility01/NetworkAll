@@ -8,7 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.netenc.app.MainActivity
+import com.netenc.app.SplashActivity
 
 class TaskReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -23,7 +23,7 @@ class TaskReminderReceiver : BroadcastReceiver() {
             )
         }
         val open = PendingIntent.getActivity(
-            context, uid.hashCode(), Intent(context, MainActivity::class.java),
+            context, uid.hashCode(), Intent(context, SplashActivity::class.java).putExtra("open_mode", "tasks"),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         val text = if (body.isBlank()) "زمان انجام این کار رسیده است." else body
