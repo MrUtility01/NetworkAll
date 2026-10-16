@@ -118,7 +118,7 @@ class SplashActivity : AppCompatActivity() {
         inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
         layoutDirection = View.LAYOUT_DIRECTION_LTR
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-        singleLine = true
+        isSingleLine = true
     }
 
     private fun form(first: EditText, second: EditText?, message: String) = LinearLayout(this).apply {
