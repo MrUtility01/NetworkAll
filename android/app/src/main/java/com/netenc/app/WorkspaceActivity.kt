@@ -147,7 +147,7 @@ class WorkspaceActivity : AppCompatActivity() {
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO) {
                                 when (mode) {
-                                    "notes" -> db.workspaceDao().deleteNote(uid)
+                                    "notes", "tips" -> db.workspaceDao().deleteNote(uid)
                                     "vault" -> db.workspaceDao().deleteVault(uid)
                                     else -> db.workspaceDao().deleteTask(uid)
                                 }
@@ -192,7 +192,7 @@ class WorkspaceActivity : AppCompatActivity() {
                     val id = UUID.randomUUID().toString()
                     withContext(Dispatchers.IO) {
                         when (mode) {
-                            "notes" -> db.workspaceDao().upsertNote(NoteEntity(id, t, body.text.toString(), tags = if (mode == "tips") "tip" else "note", lastUpdated = now()))
+                            "notes", "tips" -> db.workspaceDao().upsertNote(NoteEntity(id, t, body.text.toString(), tags = if (mode == "tips") "tip" else "note", lastUpdated = now()))
                             "vault" -> db.workspaceDao().upsertVault(VaultEntity(
                                 id, t, user.text.toString(), secretEnc = simpleEnc(body.text.toString()), lastUpdated = now()
                             ))
