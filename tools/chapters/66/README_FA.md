@@ -1,20 +1,22 @@
 # فصل 66: مسیریابی عمیق OSPF/BGP/Redistribution
 
-مسیر اصلی: tools/chapters/ch66_ospf_bgp_redistribution/
+مسیر اصلی: `tools/chapters/66/`
 
-chapter.json بسته استاندارد افزایشی برای اندروید و ویندوز است. فایل‌های اولیه، آزمون‌ها، پاسخ‌نامه‌ها و نسخه‌های قبلی در source_archive نگهداری شده‌اند. محتوای پایه هنوز از منبع runtime پروژه ساخته می‌شود؛ این پوشه محل محتوای اختصاصی و افزودهٔ همین فصل است.
+این فصل روی مفاهیم پیشرفته مسیریابی، عیب‌یابی همسایگی OSPF، سیاست‌های BGP و Redistribution امن تمرکز دارد. محتوای منبع در فایل‌های جداگانه نگهداری می‌شود؛ `build/chapter.json` خروجی تولیدی سازگاری است و نباید دستی ویرایش شود.
 
+## فایل‌های مرجع
 
-## فایل‌های اصلی فصل
+- `lessons/base_curriculum.json`: تعریف سه درس پایه که runtime از آن استفاده می‌کند.
+- `lessons/lessons.json`: نه درس افزوده درباره OSPF، SPF/Cost، adjacency، BGP، eBGP/iBGP، peering، redistribution، metric و loop prevention.
+- `commands/commands.json`: دستورات مشاهده‌ای اختصاصی هر درس برای Cisco IOS/IOS-XE.
+- `examples/examples.json`: مثال‌های عملی و قابل‌راستی‌آزمایی متناسب با هر درس.
+- `questions/questions.json`: ۲۷ سؤال تخصصی چندگزینه‌ای.
+- `answers/answer_key.json`: ۲۷ پاسخ مستقل با توضیح و شناسه متناظر.
+- `labs/labs.json`: ۹ سناریوی لابراتواری شامل OSPF Multi-Area، BGP peering، policy و جلوگیری از حلقه.
+- `manifest.json`: شمار رکوردها و وضعیت بازبینی.
 
-- base_curriculum.json: تعریف درس‌های پایهٔ همین فصل.
-- chapter.json: بستهٔ استاندارد محتوای افزوده و نرمال‌شده.
-- manifest.json: فهرست فایل‌ها و شمار رکوردها.
-- source_archive/: منابع اولیه، آزمون‌ها و پاسخ‌نامه؛ در build اسکن نمی‌شود.
+## ایمنی و اعتبارسنجی
 
+لابراتوارها برای شبیه‌سازهای ایزوله مانند GNS3/EVE-NG/CML نوشته شده‌اند. قبل از هر تغییر، baseline بگیرید و Rollback را آماده کنید. از اعلان Prefix آزمایشی یا تغییر سیاست در شبکه عملیاتی خودداری کنید.
 
-## ساختار پوشه‌های فصل
-
-مسیر فصل: tools/chapters/66/
-
-متن درس در lessons/، سؤال‌ها در questions/، پاسخ‌نامه در answers/، مثال‌ها در examples/، دستورات در commands/ و لابراتوارها در labs/ قرار دارد. android/ و windows/ فقط منابع مخصوص همان بستر را دارند. build/chapter.json خروجی تولیدشده برای سازگاری برنامه‌هاست و نباید دستی ویرایش شود.
+وضعیت فعلی `review_required` است: ساختار JSON و تطبیق شناسه‌ها باید کنترل شود و Build واقعی برنامه‌های Android و Windows هنوز تأیید نهایی لازم دارد.
