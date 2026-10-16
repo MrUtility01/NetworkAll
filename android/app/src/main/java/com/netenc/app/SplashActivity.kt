@@ -57,6 +57,7 @@ class SplashActivity : AppCompatActivity() {
                             .putString("password_hash", Base64.encodeToString(hash, Base64.NO_WRAP))
                             .putInt("password_iterations", iterations)
                             .apply()
+                        NetEncApplication.isAuthenticated = true
                         dialog.dismiss()
                         enterApp()
                     }
@@ -86,6 +87,7 @@ class SplashActivity : AppCompatActivity() {
                     val expected = Base64.decode(hashText, Base64.NO_WRAP)
                     val rounds = prefs.getInt("password_iterations", iterations).coerceIn(100_000, 500_000)
                     if (MessageDigest.isEqual(expected, derive(candidate, salt, rounds))) {
+                        NetEncApplication.isAuthenticated = true
                         dialog.dismiss()
                         enterApp()
                     } else {
