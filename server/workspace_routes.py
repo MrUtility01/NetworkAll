@@ -10,6 +10,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 import sqlite3
 
+try:
+    import jdatetime
+except ImportError:
+    jdatetime = None
+
 from flask import Blueprint, request, jsonify, render_template_string, make_response, redirect
 
 bp = Blueprint("workspace", __name__)
@@ -103,12 +108,14 @@ nav a{margin-left:12px;color:#0369a1;text-decoration:none;font-weight:bold}
 <form method=post>
 <input name=title placeholder="عنوان" required>
 <textarea name=body rows=4 placeholder="{{ 'رمز (ذخیره sealed)' if tab=='vault' else 'متن' }}"></textarea>
+{% if tab=='tasks' %}<input name=due_date placeholder="تاریخ شمسی (مثلاً ۱۴۰۵/۰۷/۲۴)"><input name=due_time placeholder="ساعت یادآوری (مثلاً ۱۸:۳۰)"><p class="badge">یادآوری مرورگر به اجازه اعلان و بازبودن صفحه نیاز دارد.</p>{% endif %}
 {% if tab=='vault' %}<input name=username placeholder="نام کاربری">{% endif %}
 <button type=submit>ذخیره</button>
 </form>
 {% for it in items %}
 <div class=card>
 <b>{{ it.title }}</b>
+{% if it.due_label|default('') %}<p class="badge">{{ it.due_label }}</p>{% endif %}
 <pre style="white-space:pre-wrap;margin:8px 0">{{ it.body }}</pre>
 <form method=post><input type=hidden name=delete value="{{ it.uid }}">
 <button type=submit style="background:#ef4444">حذف</button></form>
@@ -131,7 +138,10 @@ def _db_path():
 def _conn():
     c = sqlite3.connect(str(_db_path()))
     c.row_factory = sqlite3.Row
-    c.execute("CREATE TABLE IF NOT EXISTS ws_tasks(uid TEXT PRIMARY KEY, title TEXT, body TEXT, done INT, last_updated TEXT)")
+    c.execute("CREATE TABLE IF NOT EXISTS ws_tasks(uid TEXT PRIMARY KEY, title TEXT, body TEXT, done INT, last_updated TEXT, due_at TEXT NOT NULL DEFAULT '')")
+    task_cols = {row[1] for row in c.execute("PRAGMA table_info(ws_tasks)").fetchall()}
+    if "due_at" not in task_cols:
+        c.execute("ALTER TABLE ws_tasks ADD COLUMN due_at TEXT NOT NULL DEFAULT ''")
     c.execute("CREATE TABLE IF NOT EXISTS ws_notes(uid TEXT PRIMARY KEY, title TEXT, body TEXT, last_updated TEXT)")
     c.execute("CREATE TABLE IF NOT EXISTS ws_vault(uid TEXT PRIMARY KEY, title TEXT, username TEXT, secret TEXT, last_updated TEXT)")
     c.commit()
