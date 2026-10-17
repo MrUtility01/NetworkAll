@@ -130,3 +130,14 @@ python tools/chapters/68/authoring/audit_coverage.py --strict
 موج اول و دوم غنی‌سازی افزایشی در مجموع شامل ۱۲۵ مرجع فرمان جدید در ۹ حوزهٔ Ubiquiti، SNMP/Syslog، DNS/DHCP/NTP، Web/TLS، Cloud، Fortinet Management، Security Operations، Git و Backup/Recovery است. برای ۹ حوزهٔ موج اول و ۸ خانوادهٔ اصلی موج دوم، مثال عملی، سناریوی آزمایش، واحد یادگیری، سؤال و answer key جداگانه نیز افزوده شده‌اند. این موج‌ها آغاز کارند، نه تکمیل سهمیهٔ ۵۰۰/۱۰۰/۱۰۰/۵۰۰.
 
 فایل‌های افزوده از مسیرهای `examples/sources/encyclopedia/`, `labs/sources/encyclopedia/`, `lessons/sources/encyclopedia/`, `questions/sources/encyclopedia/` و `answers/sources/encyclopedia/` بارگذاری می‌شوند. ساخت ویندوز و اندروید باید این مسیرها را از طریق `scripts/assemble_chapter_packs.py` ادغام کند؛ خروجی تولیدی دستی ویرایش نشود.
+
+
+## موج دوم غنی‌سازی دستورات (۱۸ اکتبر ۲۰۲۶)
+
+در موج دوم، **۱۶۲ رکورد دستوری افزایشی در ۲۵ حوزه** به فایل مرجع commands/sources/encyclopedia/commands_additional_technologies.json اضافه شد. حوزه‌ها شامل Git، DNS/DHCP/NTP، SNMP/Syslog، Web/TLS/PKI، Backup/Recovery، Security Operations، FortiManager/FortiAnalyzer، AWS/Azure CLI، Zabbix، Wireshark/TShark، Proxmox VE، Hyper-V، Ansible، Terraform، Kubernetes، VoIP/Asterisk، VMware ESXi، Juniper Junos، Aruba AOS-CX، Ubiquiti EdgeOS، SSH/OpenSSH، Telnet/TCP diagnostics، FTP، FTPS و SFTP هستند.
+
+- شناسه‌های جدید یکتا هستند و پیش از درج، تکرار دقیق فرمان در همان حوزه بررسی شد.
+- رکوردها با technology_id مشخص شده‌اند تا در ممیزی به حوزهٔ صحیح نسبت داده شوند.
+- برای هر رکورد، پلتفرم/پیش‌نیاز، کاربرد، مراحل اجرا، ملاحظات امنیتی، کلیدواژه، فلش‌کارت و سؤال با کلید پاسخ وجود دارد.
+- وضعیت اعتبارسنجی این موج عمداً review_required است؛ متن و ساختار JSON به‌تنهایی جایگزین اجرای واقعی روی نسخهٔ هدف نیست.
+- این موج به معنی تکمیل سهمیهٔ کل ۳۳ حوزه نیست. پس از اجرای CI، گزارش پوشش باید دوباره بررسی شود و کمبودهای باقی‌مانده با محتوای غیرتکراری ادامه پیدا کنند.
