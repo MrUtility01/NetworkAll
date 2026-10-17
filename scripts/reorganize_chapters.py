@@ -457,8 +457,13 @@ def main():
         try: packroot.rmdir()
         except OSError: pass
 
-    dirs=sorted(p for p in CHAPTERS.iterdir() if p.is_dir() and p.name.isdigit())
-    assert len(dirs)==68 and {int(p.name) for p in dirs}==set(range(1,69)), f"Expected exactly numeric chapter folders 1..68, got {[p.name for p in dirs]}"
+    dirs=sorted(p for p in CHAPTERS.iterdir() if p.is_dir() and p.name.isdigit(), key=lambda p: int(p.name))
+    actual_numbers = {int(p.name) for p in dirs}
+    required_numbers = set(range(1, 69))
+    assert required_numbers.issubset(actual_numbers), (
+        f"Missing required numeric chapter folders 1..68; found {[p.name for p in dirs]}"
+    )
+    # Newer chapter folders are retained; this workflow normalizes chapters 1..68 only.
     count=0
     for n,d in folders.items():
         obj=read_json(d/"chapter.json")
@@ -466,7 +471,7 @@ def main():
         uids=[x.get("uid") for x in obj["lessons"]]
         assert len(uids)==len(set(uids)), f"Duplicate UIDs in {d}"
         count += len(uids)
-    print(f"[organize] 68 chapter folders; {count} normalized add-on lessons")
+    print(f"[organize] normalized chapters 1..68; preserved additional numeric folders {[p.name for p in dirs if int(p.name) > 68]}; {count} normalized add-on lessons")
     print(f"[organize] shared original sources: {len(list(SHARED.glob('*.json')))}")
     print("[organize] source files preserved in chapter-local source_archive or the shared original-source register")
 
