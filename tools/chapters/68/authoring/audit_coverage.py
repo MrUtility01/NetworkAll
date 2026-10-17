@@ -307,33 +307,40 @@ def main():
         "learning_units": [ROOT / "lessons" / "lessons.json", ROOT / "lessons" / "base_curriculum.json"],
         "exam_questions": [ROOT / "questions" / "questions.json"],
     }
-    for metric, paths in content_files.items():
+    seen_content_uids = {metric: set() for metric in content_files}
+    for metric, base_paths in content_files.items():
+        paths = []
+        for base_path in base_paths:
+            paths.append(base_path)
+            source_dir = base_path.parent / "sources" / "encyclopedia"
+            if source_dir.is_dir():
+                paths.extend(sorted(source_dir.glob("*.json")))
         for path in paths:
             if not path.exists():
-                if metric in ("examples", "scenarios", "learning_units"):
+                if path == base_paths[0] and metric in ("examples", "scenarios", "learning_units"):
                     missing_files.append(str(path.relative_to(ROOT)))
                 continue
             try:
                 records = records_from(load_json(path))
-                file_count = Counter()
+                attributed = Counter()
                 for rec in records:
                     slug = technology_of(rec, metric)
                     if not slug or slug not in TARGETS:
                         continue
+                    uid = unique_id(rec)
+                    if not uid:
+                        continue
+                    key = (slug, str(uid))
+                    if key in seen_content_uids[metric]:
+                        continue
+                    seen_content_uids[metric].add(key)
+                    counts[slug][metric] += 1 if metric != "exam_questions" else 0
+                    attributed[slug] += 1
                     if metric == "exam_questions":
-                        counts[slug][metric] += 1
-                    else:
-                        uid = unique_id(rec)
-                        if uid:
-                            file_count[(slug, uid)] += 1
-                if metric != "exam_questions":
-                    for (slug, uid), n in file_count.items():
                         counts[slug][metric] += 1
                 source_stats[str(path.relative_to(ROOT))] = {
                     "records": len(records),
-                    "attributed_" + metric: sum(file_count.values()) if metric != "exam_questions" else sum(
-                        1 for rec in records if technology_of(rec, metric) in TARGETS
-                    ),
+                    "attributed_" + metric: sum(attributed.values()),
                 }
             except Exception as exc:
                 malformed.append(f"{path.relative_to(ROOT)}: {type(exc).__name__}: {exc}")
