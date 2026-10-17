@@ -44,6 +44,27 @@ jobs:
           python3 scripts/install_android_icon.py
           python3 scripts/export_android_index.py
           python3 scripts/assemble_chapter_packs.py --strict
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("tools/chapters/68/build/chapter.json")
+          d = json.loads(p.read_text(encoding="utf-8"))
+          uids = {x.get("uid") for x in d.get("lessons", [])}
+          expected = {
+              "lesson:ch68:ubiquiti:wave1",
+              "lesson:ch68:snmp_syslog:wave1",
+              "lesson:ch68:dns_dhcp_ntp:wave1",
+              "lesson:ch68:web_tls:wave1",
+              "lesson:ch68:cloud:wave1",
+              "lesson:ch68:fortinet_management:wave1",
+              "lesson:ch68:security_ops:wave1",
+              "lesson:ch68:git:wave1",
+              "lesson:ch68:backup_recovery:wave1",
+          }
+          missing = sorted(expected - uids)
+          print(f"CH68 wave1 source validation: found={len(expected)-len(missing)}/{len(expected)}")
+          assert not missing, f"Chapter 68 wave-one source lessons missing from build pack: {missing}"
+          PY
           python3 scripts/merge_content_packs_into_android.py
 
       - name: Validate full curriculum without trimming
