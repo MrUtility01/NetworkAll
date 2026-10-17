@@ -5,7 +5,7 @@
 ## اصل‌های غیرقابل‌مذاکره
 
 1. محتوای فعلی فصل ۶۸ و بسته‌های ZIP/JSON حفظ شود؛ هیچ فایل یا رکوردی صرفاً برای کم‌کردن حجم حذف نشود.
-2. دستهٔ اصلی با نام فناوری نمایش داده شود؛ نمونه: «MikroTik RouterOS»، «Cisco IOS/IOS-XE»، «Windows Batch»، «PowerShell»، «VoIP»، «FortiGate FortiOS»، «VMware ESXi/vSphere»، «SSH»، «Telnet»، «FTP/SFTP».
+2. دستهٔ اصلی با نام فناوری نمایش داده شود؛ نمونه: «MikroTik RouterOS»، «Cisco IOS/IOS-XE»، «Windows Batch»، «PowerShell»، «VoIP»، «FortiGate FortiOS»، «VMware ESXi/vSphere»، «SSH»، «Telnet»، «FTP»، «FTPS»، «SFTP».
 3. جستجو باید در نام فناوری، نام بخش، عنوان، نام/الگوی دستور، آرگومان‌ها، توضیح فارسی، واژه‌های انگلیسی، کاربرد، نسخه و برچسب‌ها انجام شود.
 4. UID پایدار و یکتا باشد. تکرار همان دستور با توضیح متفاوت، رکورد دستور تازه محسوب نمی‌شود؛ تفاوت نسخه/سیستم‌عامل/حالت اجرا باید صریح ثبت شود.
 5. برای هر دستور، صحت syntax، جای اجرا، سطح دسترسی، نسخه/پلتفرم، اثر جانبی، خطر و روش تأیید نتیجه مشخص شود. دستورات مخرب باید هشدار و روش rollback داشته باشند.
@@ -13,7 +13,7 @@
 
 ## حداقل هدف محتوایی هر فناوری
 
-برای هر حوزهٔ اصلی زیر، هدف پایه ۵۰۰ مرجع/ورودی دستوری معتبر، ۱۰۰ مثال اجرایی، ۱۰۰ سناریوی عیب‌یابی یا پیاده‌سازی و ۵۰۰ واحد یادگیری است. این‌ها چهار نوع محتوا هستند و نباید با هم جمع زده شوند یا یکی به‌جای دیگری شمرده شود.
+برای هر یک از ۳۳ حوزهٔ مستقل زیر، هدف پایه ۵۰۰ مرجع/ورودی دستوری معتبر، ۱۰۰ مثال اجرایی، ۱۰۰ سناریوی عیب‌یابی یا پیاده‌سازی و ۵۰۰ واحد یادگیری است. این‌ها چهار نوع محتوا هستند و نباید با هم جمع زده شوند یا یکی به‌جای دیگری شمرده شود.
 
 | شناسه | نام نمایشی | پوشش فنی ضروری |
 |---|---|---|
@@ -26,10 +26,12 @@
 | vmware_esxi | VMware ESXi / vSphere | ESXCLI namespaces، esxcli/vim-cmd، networking/vSwitch/vDS، storage/datastore، VM lifecycle، snapshots، services، logs، certificates، permissions، lifecycle/patching؛ نسخه‌بندی دقیق |
 | ssh | SSH / OpenSSH | ssh/scp/sftp/ssh-keygen/ssh-agent/ssh-add/sshd، config directives، keys/certificates، ProxyJump/tunnels، host keys، hardening، troubleshooting؛ تفکیک client/server و OS |
 | telnet | Telnet | کلاینت‌های سیستم‌عامل، گزینه‌ها، RFC/negotiation basics، تست پورت TCP، تشخیص سرویس؛ هشدار روشن که Telnet انتقال رمزنگاری‌نشده است و برای مدیریت امن توصیه نمی‌شود |
-| ftp | FTP / FTPS / SFTP | ftp/lftp/curl/wget و سرورهای منتخب، active/passive، ports/NAT، TLS برای FTPS، تفکیک کامل SFTP (پروتکل SSH) از FTP/FTPS، مجوزها و عیب‌یابی |
+| ftp | FTP | ftp/lftp/curl و سرورهای FTP منتخب، active/passive، ports/NAT، مجوزها و عیب‌یابی؛ انتقال بدون TLS ناامن است |
+| ftps | FTPS | FTP over TLS، implicit/explicit TLS، گواهی، trust chain، passive ports، عیب‌یابی handshake و certificate |
+| sftp | SFTP | انتقال فایل روی SSH، کلیدها، known_hosts، batch mode، chroot و مجوز فایل؛ مستقل از FTP/FTPS |
 | linux_bash | Linux Bash / GNU utilities | shell built-ins، coreutils، grep/sed/awk/find/xargs، pipes/redirection، process/service، networking، package، permissions، scripting/testing، distro notes |
 
-## ماتریس اجباری سهمیه برای تمام فناوری‌های فصل ۶۸
+## ماتریس اجباری سهمیه برای تمام فناوری‌های فصل ۶۸ (۳۳ حوزهٔ مستقل)
 
 سهمیه برای **هر فناوری به‌صورت مستقل** اعمال می‌شود؛ اعداد بین فناوری‌ها قابل تجمیع نیستند. هر ردیف باید به چهار مجموعهٔ واقعی و جداگانه برسد: **۵۰۰ مرجع دستور/گزینه + ۱۰۰ مثال + ۱۰۰ سناریو + ۵۰۰ واحد یادگیری**. فایل‌های موجود با شمار کمتر (از جمله Docker و Windows Server) هنوز ناقص‌اند و باید تکمیل شوند.
 
@@ -47,7 +49,9 @@
 | vmware_esxi | VMware ESXi / vSphere | 500 | 100 | 100 | 500 |
 | ssh | SSH / OpenSSH | 500 | 100 | 100 | 500 |
 | telnet | Telnet / TCP diagnostic | 500 | 100 | 100 | 500 |
-| ftp | FTP / FTPS / SFTP | 500 | 100 | 100 | 500 |
+| ftp | FTP | 500 | 100 | 100 | 500 |
+| ftps | FTPS | 500 | 100 | 100 | 500 |
+| sftp | SFTP (SSH File Transfer Protocol) | 500 | 100 | 100 | 500 |
 | zabbix | Zabbix monitoring/API | 500 | 100 | 100 | 500 |
 | wireshark | Wireshark / TShark / tcpdump | 500 | 100 | 100 | 500 |
 | juniper | Juniper Junos | 500 | 100 | 100 | 500 |
@@ -67,7 +71,7 @@
 | git | Git / GitHub / release workflows | 500 | 100 | 100 | 500 |
 | backup_recovery | Backup / restore / disaster recovery | 500 | 100 | 100 | 500 |
 
-**مجموع هدف این ماتریس (۳۱ فناوری/خانواده):** ۱۵٬۵۰۰ مرجع دستوری، ۳٬۱۰۰ مثال، ۳٬۱۰۰ سناریو و ۱۵٬۵۰۰ واحد یادگیری. این‌ها هدف تولید هستند، نه شمار محتوای موجود. فناوری‌های دارای چند محصول یا سیستم‌عامل باید در زیرگروه‌های جداگانه طبقه‌بندی شوند؛ سهمیهٔ یک محصول را نمی‌توان با محصول دیگر پر کرد.
+**مجموع هدف این ماتریس (۳۳ فناوری/خانواده):** ۱۵٬۵۰۰ مرجع دستوری، ۳٬۱۰۰ مثال، ۳٬۱۰۰ سناریو و ۱۵٬۵۰۰ واحد یادگیری. این‌ها هدف تولید هستند، نه شمار محتوای موجود. فناوری‌های دارای چند محصول یا سیستم‌عامل باید در زیرگروه‌های جداگانه طبقه‌بندی شوند؛ سهمیهٔ یک محصول را نمی‌توان با محصول دیگر پر کرد.
 
 ## ترتیب اجرا و گزارش پیشرفت
 
