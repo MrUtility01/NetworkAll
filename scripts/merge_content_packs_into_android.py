@@ -575,6 +575,36 @@ def main():
         print(" ", p.name, "lessons", len(lessons))
         if not lessons:
             continue
+        if "commands_additional_technologies.json" in name:
+            # Process this additive pack before the generic chapter-pack branch.
+            # Do not replace Chapter 68 or duplicate stable UIDs on repeated builds.
+            existing_uids = {
+                lesson.get("uid")
+                for chapter in data.get("chapters", [])
+                for sub in chapter.get("subchapters", [])
+                for lesson in sub.get("lessons", [])
+                if lesson.get("uid")
+            }
+            entry = modular_chapters.setdefault(68, {
+                "title_fa": "فصل ۶۸: دانشنامه جامع دستورات",
+                "title_en": "Ch68 Commands Encyclopedia",
+                "lessons": [],
+            })
+            staged_uids = {lesson.get("uid") for lesson in entry["lessons"] if lesson.get("uid")}
+            added_from_pack = 0
+            for idx, lesson in enumerate(lessons, 1):
+                lesson = dict(lesson)
+                lesson.setdefault("chapter_order", 68)
+                lesson.setdefault("lesson_order", idx)
+                uid = lesson.get("uid")
+                if uid and (uid in existing_uids or uid in staged_uids):
+                    continue
+                entry["lessons"].append(lesson)
+                if uid:
+                    staged_uids.add(uid)
+                added_from_pack += 1
+            print("ch68 additional technology lessons", added_from_pack)
+            continue
         if "tools/chapters/" in name and d.get("chapter_order") is not None:
             order = int(d["chapter_order"])
             chapter_title_fa = d.get("chapter_title_fa") or d.get("title_fa") or ("فصل " + str(order))
@@ -622,33 +652,6 @@ def main():
             continue
         if "wireless" in name and "vpn" not in name:
             wireless.extend(lessons)
-            continue
-        if "commands_additional_technologies.json" in name:
-            # Add these new technology sections to Chapter 68 without replacing
-            # any existing chapter content. Stable UIDs make repeated builds idempotent.
-            existing_uids = {
-                lesson.get("uid")
-                for chapter in data.get("chapters", [])
-                for sub in chapter.get("subchapters", [])
-                for lesson in sub.get("lessons", [])
-                if lesson.get("uid")
-            }
-            entry = modular_chapters.setdefault(68, {
-                "title_fa": "فصل ۶۸: دانشنامه جامع دستورات",
-                "title_en": "Ch68 Commands Encyclopedia",
-                "lessons": [],
-            })
-            added_from_pack = 0
-            for idx, lesson in enumerate(lessons, 1):
-                lesson = dict(lesson)
-                lesson.setdefault("chapter_order", 68)
-                lesson.setdefault("lesson_order", idx)
-                if lesson.get("uid") in existing_uids:
-                    continue
-                entry["lessons"].append(lesson)
-                existing_uids.add(lesson.get("uid"))
-                added_from_pack += 1
-            print("ch68 additional technology lessons", added_from_pack)
             continue
         if d.get("commands") or "commands_encyclopedia" in name:
             cmd_extra.extend(lessons)
