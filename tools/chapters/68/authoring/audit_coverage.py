@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
-"""Audit Chapter 68 per-technology content quotas without modifying source files.
+"""Audit Chapter 68 quotas from canonical JSON packs.
 
-Usage:
-  python tools/chapters/68/authoring/audit_coverage.py
-  python tools/chapters/68/authoring/audit_coverage.py --strict
-
-The audit deliberately does not count command flashcards, lab hints, embedded
-assessment prompts, or generic descriptions as standalone examples/scenarios/
-learning units. Only dedicated records explicitly attributable to a technology
-are counted. This prevents inflated or misleading completion claims.
+Counts unique command records by technology and standalone example/lab/lesson
+records only when attribution can be established from structured metadata,
+lesson_uid, title, or an explicit **حوزه:** marker in the record body.
+Writes authoring/coverage_report.json. --strict returns non-zero for any deficit.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -24,15 +21,17 @@ TARGETS = {
     "cisco": "Cisco IOS / IOS-XE",
     "fortigate": "FortiGate / FortiOS",
     "windows_batch": "Windows Batch / CMD",
-    "powershell": "PowerShell",
+    "powershell": "PowerShell 5.1 / 7+",
     "windows_server": "Windows Server / Active Directory",
-    "linux": "Linux / Bash",
+    "linux_bash": "Linux / Bash / GNU utilities",
     "docker": "Docker / Compose",
     "voip": "VoIP / SIP / PBX",
     "vmware_esxi": "VMware ESXi / vSphere",
     "ssh": "SSH / OpenSSH",
     "telnet": "Telnet / TCP diagnostics",
-    "ftp": "FTP / FTPS / SFTP",
+    "ftp": "FTP (plain FTP)",
+    "ftps": "FTPS (FTP over TLS)",
+    "sftp": "SFTP (SSH File Transfer Protocol)",
     "zabbix": "Zabbix",
     "wireshark": "Wireshark / TShark / tcpdump",
     "juniper": "Juniper Junos",
@@ -59,138 +58,279 @@ COMMAND_FILES = {
     "fortigate": "commands_fortigate.json",
     "windows_batch": "commands_windows_batch.json",
     "windows_server": "commands_windows_server.json",
-    "linux": "commands_linux.json",
+    "linux_bash": "commands_linux.json",
     "docker": "commands_docker.json",
 }
 ADDITIONAL_FILE = Path("commands/sources/encyclopedia/commands_additional_technologies.json")
-
+ALIASES = {
+    "routeros": "mikrotik", "mikrotik_routeros": "mikrotik",
+    "cisco_ios": "cisco", "ios_xe": "cisco", "cisco_ios_xe": "cisco",
+    "fortios": "fortigate", "fortigate_fortios": "fortigate",
+    "powershell_5_1": "powershell", "powershell_7": "powershell",
+    "cmd": "windows_batch", "batch": "windows_batch", "windows_cmd": "windows_batch",
+    "bash": "linux_bash", "linux": "linux_bash", "linux_bash": "linux_bash",
+    "windows_server_ad": "windows_server", "openssh": "ssh",
+    "wireshark_tshark": "wireshark", "vmware": "vmware_esxi",
+    "ftp_ftps_sftp": "ftp",
+}
 
 def load_json(path: Path):
-    with path.open("r", encoding="utf-8") as handle:
+    with path.open("r", encoding="utf-8-sig") as handle:
         return json.load(handle)
 
-
-def records_from(obj):
+def records_from(obj, preferred=()):
     if isinstance(obj, list):
         return obj
-    if isinstance(obj, dict):
-        for key in ("commands", "examples", "scenarios", "lessons", "items", "questions", "labs", "records"):
-            value = obj.get(key)
-            if isinstance(value, list):
-                return value
+    if not isinstance(obj, dict):
+        return []
+    for key in (*preferred, "commands", "examples", "scenarios", "lessons", "items", "questions", "labs", "records"):
+        value = obj.get(key)
+        if isinstance(value, list):
+            return value
     return []
 
+def strings_in(value):
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, dict):
+        for child in value.values():
+            yield from strings_in(child)
+    elif isinstance(value, list):
+        for child in value:
+            yield from strings_in(child)
 
-def technology_of(record):
+def ftp_subtype(record):
+    text = " ".join(strings_in(record)).lower()
+    if re.search(r"\bsftp\b|sftp://|cmd:sftp", text):
+        return "sftp"
+    if "ftps://" in text or "--ssl-reqd" in text or "--ftp-ssl" in text or "ftp over tls" in text:
+        return "ftps"
+    return "ftp"
+
+def technology_of(record, source_kind=None):
     if not isinstance(record, dict):
         return None
+    # Structured metadata takes precedence.
     for key in ("technology_id", "technology", "domain", "vendor_pack", "category", "platform", "vendor", "product"):
         value = record.get(key)
-        if isinstance(value, str) and value.strip():
-            slug = value.strip().lower().replace(" ", "_").replace("/", "_").replace("-", "_")
-            if slug in TARGETS:
-                return slug
-            aliases = {
-                "mikrotik_routeros": "mikrotik", "routeros": "mikrotik",
-                "cisco_ios": "cisco", "ios_xe": "cisco", "cisco_ios_xe": "cisco",
-                "fortios": "fortigate", "fortigate_fortios": "fortigate",
-                "powershell_5_1": "powershell", "powershell_7": "powershell",
-                "bash": "linux", "linux_bash": "linux",
-                "ftp_ftps_sftp": "ftp", "openssh": "ssh",
-                "wireshark_tshark": "wireshark", "vmware": "vmware_esxi",
-                "windows_server_ad": "windows_server", "cmd": "windows_batch",
-                "batch": "windows_batch",
-            }
-            if slug in aliases:
-                return aliases[slug]
+        if not isinstance(value, str) or not value.strip():
+            continue
+        raw = value.strip().lower()
+        slug = raw.replace(" ", "_").replace("/", "_").replace("-", "_")
+        if slug in TARGETS:
+            return slug
+        if slug in ALIASES:
+            return ALIASES[slug]
+        # Mixed Windows legacy records often carry a human-readable category.
+        if "powershell" in raw or "pwsh" in raw:
+            return "powershell"
+        if "windows-cmd" in raw or "batch" in raw or re.search(r"\bcmd\b", raw):
+            return "windows_batch"
+        if "windows server" in raw or "active directory" in raw or re.search(r"\bad_ds\b", raw):
+            return "windows_server"
+        if "linux" in raw or "bash" in raw or "gnu utilities" in raw:
+            return "linux_bash"
+        if "mikrotik" in raw or "routeros" in raw:
+            return "mikrotik"
+        if "cisco" in raw or "ios-xe" in raw:
+            return "cisco"
+        if "fortigate" in raw or "fortios" in raw:
+            return "fortigate"
+        if "docker" in raw or "compose" in raw:
+            return "docker"
+        if "vmware" in raw or "esxi" in raw or "vsphere" in raw:
+            return "vmware_esxi"
+        if "open ssh" in raw or "openssh" in raw or raw == "ssh":
+            return "ssh"
+        if "telnet" in raw:
+            return "telnet"
+        if "zabbix" in raw:
+            return "zabbix"
+        if "wireshark" in raw or "tshark" in raw or "tcpdump" in raw:
+            return "wireshark"
+        if "juniper" in raw or "junos" in raw:
+            return "juniper"
+        if "aruba" in raw or "aos-cx" in raw:
+            return "aruba"
+        if "proxmox" in raw or "pve" == raw:
+            return "proxmox"
+        if "hyper-v" in raw or "hyperv" in raw:
+            return "hyperv"
+        if "ansible" in raw:
+            return "ansible"
+        if "terraform" in raw:
+            return "terraform"
+        if "kubernetes" in raw or "kubectl" in raw:
+            return "kubernetes"
+        if "ubiquiti" in raw or "unifi" in raw or "edgeos" in raw:
+            return "ubiquiti"
+        if "snmp" in raw or "syslog" in raw or "netflow" in raw or "ipfix" in raw:
+            return "snmp_syslog"
+        if "dns" in raw or "dhcp" in raw or "ntp" in raw or "ipam" in raw:
+            return "dns_dhcp_ntp"
+        if "nginx" in raw or "apache" in raw or "tls" in raw or "http" in raw or "pki" in raw:
+            return "web_tls"
+        if "aws" in raw or "azure" in raw or "cloud" in raw:
+            return "cloud"
+        if "fortimanager" in raw or "fortianalyzer" in raw:
+            return "fortinet_management"
+        if "sysmon" in raw or "siem" in raw or "soc" in raw or "incident response" in raw:
+            return "security_ops"
+        if re.search(r"\bgit\b|github", raw):
+            return "git"
+        if "backup" in raw or "restore" in raw or "disaster recovery" in raw:
+            return "backup_recovery"
+
+    # Attribute learning content through canonical lesson UID, explicit labels,
+    # or descriptive title/body. This does not inspect generic hints in commands.
+    text = " ".join(strings_in(record)).lower()
+    uid = str(record.get("lesson_uid", "")).lower()
+    if uid.startswith("lesson:ch68:ps:") or "**حوزه:** powershell" in text:
+        return "powershell"
+    if uid.startswith("lesson:ch68:linux:") or "**حوزه:** linux" in text or "**حوزه:** bash" in text:
+        return "linux_bash"
+    if uid.startswith("lesson:ch68:windows:") or "**حوزه:** windows batch" in text or "**حوزه:** cmd" in text:
+        return "windows_batch"
+    if "**حوزه:**" in text:
+        marker = text.split("**حوزه:**", 1)[1].splitlines()[0]
+        return technology_of({"technology": marker})
     return None
 
+def unique_id(record):
+    if not isinstance(record, dict):
+        return None
+    return record.get("uid") or record.get("id")
+
+def command_kind(record, default_slug=None):
+    slug = technology_of(record)
+    if slug in ("ftp", "ftps", "sftp"):
+        return ftp_subtype(record)
+    if slug:
+        return slug
+    if default_slug == "ftp":
+        return ftp_subtype(record)
+    return default_slug
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--strict", action="store_true", help="exit 1 if any technology misses a quota")
+    parser.add_argument("--strict", action="store_true", help="exit 1 if any quota is below target")
     args = parser.parse_args()
-
     counts = {slug: Counter() for slug in TARGETS}
-    missing_files = []
-    malformed = []
-    command_paths = dict(COMMAND_FILES)
-    additional = ROOT / ADDITIONAL_FILE
+    seen_command_uids = {slug: set() for slug in TARGETS}
+    seen_command_text = {slug: set() for slug in TARGETS}
+    missing_files, malformed, source_stats = [], [], {}
 
-    for slug, filename in command_paths.items():
-        path = ROOT / filename
+    def count_command_file(path, default_slug=None):
         if not path.exists():
             missing_files.append(str(path.relative_to(ROOT)))
-            continue
+            return
         try:
-            records = records_from(load_json(path))
-            counts[slug]["commands"] += len(records)
+            records = records_from(load_json(path), preferred=("commands",))
+            valid = 0
+            for rec in records:
+                slug = command_kind(rec, default_slug)
+                if slug not in TARGETS:
+                    continue
+                uid = unique_id(rec)
+                cmd = str(rec.get("command") or rec.get("syntax") or "").strip().lower() if isinstance(rec, dict) else ""
+                # Count only records with a stable identifier and a non-empty command.
+                if not uid or not cmd or uid in seen_command_uids[slug] or cmd in seen_command_text[slug]:
+                    continue
+                seen_command_uids[slug].add(uid)
+                seen_command_text[slug].add(cmd)
+                counts[slug]["commands"] += 1
+                valid += 1
+            source_stats[str(path.relative_to(ROOT))] = {"records": len(records), "unique_valid_commands": valid}
         except Exception as exc:
-            malformed.append(f"{path.relative_to(ROOT)}: {exc}")
+            malformed.append(f"{path.relative_to(ROOT)}: {type(exc).__name__}: {exc}")
 
+    for slug, filename in COMMAND_FILES.items():
+        count_command_file(ROOT / filename, slug)
+
+    additional = ROOT / ADDITIONAL_FILE
     if additional.exists():
         try:
-            for record in records_from(load_json(additional)):
-                slug = technology_of(record)
-                if slug:
-                    counts[slug]["commands"] += 1
+            data = load_json(additional)
+            records = records_from(data, preferred=("commands",))
+            for rec in records:
+                slug = command_kind(rec, rec.get("category") if isinstance(rec, dict) else None)
+                if slug not in TARGETS:
+                    continue
+                uid = unique_id(rec)
+                cmd = str(rec.get("command") or rec.get("syntax") or "").strip().lower()
+                if not uid or not cmd or uid in seen_command_uids[slug] or cmd in seen_command_text[slug]:
+                    continue
+                seen_command_uids[slug].add(uid)
+                seen_command_text[slug].add(cmd)
+                counts[slug]["commands"] += 1
+            source_stats[str(ADDITIONAL_FILE)] = {"records": len(records)}
         except Exception as exc:
-            malformed.append(f"{ADDITIONAL_FILE}: {exc}")
+            malformed.append(f"{ADDITIONAL_FILE}: {type(exc).__name__}: {exc}")
     else:
         missing_files.append(str(ADDITIONAL_FILE))
 
-    # The legacy Windows pack mixes CMD and PowerShell. Attribute each record
-    # only when its own metadata explicitly identifies a technology; never count
-    # the whole mixed pack toward either quota.
-    mixed_windows = ROOT / "commands_windows.json"
-    if mixed_windows.exists():
-        try:
-            for record in records_from(load_json(mixed_windows)):
-                slug = technology_of(record)
-                if slug in ("powershell", "windows_batch", "windows_server"):
-                    counts[slug]["commands"] += 1
-        except Exception as exc:
-            malformed.append(f"{mixed_windows.relative_to(ROOT)}: {exc}")
+    # Legacy mixed Windows pack: classify per record, never credit the full pack
+    # to both technologies. Exact command duplication is excluded.
+    count_command_file(ROOT / "commands_windows.json")
 
-    # Count only dedicated records with an explicit technology identifier.
-    # Embedded flashcards/assessment/lab hints are intentionally not inferred.
-    typed_paths = [
-        ROOT / "examples" / "examples.json",
-        ROOT / "labs" / "labs.json",
-        ROOT / "lessons" / "lessons.json",
-        ROOT / "lessons" / "base_curriculum.json",
-        ROOT / "questions" / "questions.json",
-    ]
-    for path in typed_paths:
-        if not path.exists():
-            continue
+    content_files = {
+        "examples": [ROOT / "examples" / "examples.json"],
+        "scenarios": [ROOT / "labs" / "labs.json"],
+        "learning_units": [ROOT / "lessons" / "lessons.json", ROOT / "lessons" / "base_curriculum.json"],
+        "exam_questions": [ROOT / "questions" / "questions.json"],
+    }
+    for metric, paths in content_files.items():
+        for path in paths:
+            if not path.exists():
+                if metric in ("examples", "scenarios", "learning_units"):
+                    missing_files.append(str(path.relative_to(ROOT)))
+                continue
+            try:
+                records = records_from(load_json(path))
+                file_count = Counter()
+                for rec in records:
+                    slug = technology_of(rec, metric)
+                    if not slug or slug not in TARGETS:
+                        continue
+                    if metric == "exam_questions":
+                        counts[slug][metric] += 1
+                    else:
+                        uid = unique_id(rec)
+                        if uid:
+                            file_count[(slug, uid)] += 1
+                if metric != "exam_questions":
+                    for (slug, uid), n in file_count.items():
+                        counts[slug][metric] += 1
+                source_stats[str(path.relative_to(ROOT))] = {
+                    "records": len(records),
+                    "attributed_" + metric: sum(file_count.values()) if metric != "exam_questions" else sum(
+                        1 for rec in records if technology_of(rec, metric) in TARGETS
+                    ),
+                }
+            except Exception as exc:
+                malformed.append(f"{path.relative_to(ROOT)}: {type(exc).__name__}: {exc}")
+
+    # Separate count of answer-key entries in the canonical answer file.
+    answer_path = ROOT / "answers" / "answer_key.json"
+    answer_key_count = 0
+    if answer_path.exists():
         try:
-            for record in records_from(load_json(path)):
-                slug = technology_of(record)
-                if not slug:
-                    continue
-                name = path.parent.name
-                if name == "examples":
-                    counts[slug]["examples"] += 1
-                elif name == "labs":
-                    counts[slug]["scenarios"] += 1
-                elif name == "lessons":
-                    counts[slug]["learning_units"] += 1
+            answer_data = load_json(answer_path)
+            answer_key_count = len(records_from(answer_data, preferred=("answers", "items", "answer_key")))
         except Exception as exc:
-            malformed.append(f"{path.relative_to(ROOT)}: {exc}")
+            malformed.append(f"{answer_path.relative_to(ROOT)}: {type(exc).__name__}: {exc}")
 
     report = {
         "chapter": 68,
         "status": "review_required",
-        "quotas_per_technology": QUOTAS,
         "technology_count": len(TARGETS),
+        "quotas_per_technology": QUOTAS,
         "technologies": {},
-        "missing_source_files": missing_files,
+        "source_files": source_stats,
+        "missing_source_files": sorted(set(missing_files)),
         "parse_errors": malformed,
-        "counting_policy": (
-            "Only standalone records attributed to a technology count. "
-            "Flashcards, embedded assessments, generic hints and duplicated variants do not count as examples/scenarios/learning units."
-        ),
+        "answer_key_entries_unattributed_total": answer_key_count,
+        "counting_policy": "Unique non-empty command+UID records count as commands. Examples, scenarios and lessons count only when standalone records can be attributed through metadata, lesson_uid, title, or explicit technology marker. Embedded flashcards, command hints and embedded assessment questions do not count as standalone units.",
     }
     incomplete = []
     for slug, title in TARGETS.items():
@@ -199,31 +339,24 @@ def main():
         for kind, quota in QUOTAS.items():
             actual = counts[slug][kind]
             row[kind] = actual
-            row[f"{kind}_target"] = quota
-            row[f"{kind}_missing"] = max(0, quota - actual)
+            row[kind + "_target"] = quota
+            row[kind + "_missing"] = max(0, quota - actual)
             if actual < quota:
                 deficits[kind] = quota - actual
+        row["exam_questions"] = counts[slug]["exam_questions"]
         row["status"] = "target_met_by_count_only_review_required" if not deficits else "in_progress"
         if deficits:
             incomplete.append(slug)
         report["technologies"][slug] = row
-
     report["incomplete_technology_count"] = len(incomplete)
     report["incomplete_technologies"] = incomplete
     out = ROOT / "authoring" / "coverage_report.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({
-        "report": str(out.relative_to(ROOT)),
-        "technology_count": len(TARGETS),
-        "incomplete_technology_count": len(incomplete),
-        "missing_source_files": missing_files,
-        "parse_errors": malformed,
-    }, ensure_ascii=False, indent=2))
+    print(json.dumps(report, ensure_ascii=False, indent=2))
     if malformed or (args.strict and incomplete):
         return 1
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())
