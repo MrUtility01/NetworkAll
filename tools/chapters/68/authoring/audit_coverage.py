@@ -194,7 +194,7 @@ def technology_of(record, source_kind=None):
     # than top-level metadata. Treat only explicit UID tokens as attribution.
     uid_aliases = [
         (("mikrotik", "routeros"), "mikrotik"), (("cisco",), "cisco"),
-        (("fortigate", "fortios"), "fortigate"), (("windows_batch", "batch", "cmd"), "windows_batch"),
+        (("fortigate", "fortios"), "fortigate"), (("windows_batch", "batch"), "windows_batch"),
         (("powershell", "pwsh"), "powershell"), (("windows_server", "active_directory"), "windows_server"),
         (("linux", "linux_bash", "bash"), "linux_bash"), (("docker",), "docker"),
         (("voip", "sip", "pbx"), "voip"), (("vmware_esxi", "vmware", "esxi"), "vmware_esxi"),
