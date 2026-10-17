@@ -457,7 +457,7 @@ def main():
         try: packroot.rmdir()
         except OSError: pass
 
-    dirs=sorted(p for p in CHAPTERS.iterdir() if p.is_dir() and p.name.isdigit(), key=lambda p: int(p.name))
+    dirs=sorted((p for p in CHAPTERS.iterdir() if p.is_dir() and p.name.isdigit()), key=lambda p: int(p.name))
     actual_numbers = {int(p.name) for p in dirs}
     required_numbers = set(range(1, 69))
     assert required_numbers.issubset(actual_numbers), (
