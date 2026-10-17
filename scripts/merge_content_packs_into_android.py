@@ -77,6 +77,75 @@ def commands_to_lessons(data: dict) -> list:
         technology = str(c.get("technology_id") or c.get("category") or "").strip().lower()
         if technology == "linux":
             technology = "linux_bash"
+        if technology not in sub_map:
+            # Legacy command packs often use category for a topic (routing/ACL/etc.)
+            # and store the actual technology in vendor/platform. Prefer a dedicated
+            # technology section when that metadata is explicit.
+            meta_text = " ".join(str(c.get(k) or "") for k in ("vendor", "platform", "product", "vendor_pack", "category")).lower()
+            if "fortimanager" in meta_text or "fortianalyzer" in meta_text:
+                technology = "fortinet_management"
+            elif "powershell" in meta_text or "pwsh" in meta_text:
+                technology = "powershell"
+            elif "windows batch" in meta_text or "cmd.exe" in meta_text or "batch/cmd" in meta_text:
+                technology = "windows_batch"
+            elif "windows server" in meta_text or "active directory" in meta_text or "ad ds" in meta_text:
+                technology = "windows_server"
+            elif "mikrotik" in meta_text or "routeros" in meta_text:
+                technology = "mikrotik"
+            elif "cisco" in meta_text or "ios-xe" in meta_text or "ios xe" in meta_text:
+                technology = "cisco"
+            elif "fortigate" in meta_text or "fortios" in meta_text:
+                technology = "fortigate"
+            elif "docker" in meta_text or "compose" in meta_text:
+                technology = "docker"
+            elif "linux" in meta_text or "bash" in meta_text or "gnu utilities" in meta_text:
+                technology = "linux_bash"
+            elif "vmware" in meta_text or "esxi" in meta_text or "vsphere" in meta_text:
+                technology = "vmware_esxi"
+            elif "ubiquiti" in meta_text or "unifi" in meta_text or "edgeos" in meta_text:
+                technology = "ubiquiti"
+            elif "net-snmp" in meta_text or "snmp" in meta_text or "syslog" in meta_text or "netflow" in meta_text:
+                technology = "snmp_syslog"
+            elif "dns" in meta_text or "dhcp" in meta_text or "chrony" in meta_text or "ipam" in meta_text:
+                technology = "dns_dhcp_ntp"
+            elif "nginx" in meta_text or "apache" in meta_text or "openssl" in meta_text or "tls" in meta_text or "pki" in meta_text:
+                technology = "web_tls"
+            elif "aws" in meta_text or "azure" in meta_text:
+                technology = "cloud"
+            elif "sysmon" in meta_text or "siem" in meta_text or "soc" in meta_text or "osquery" in meta_text:
+                technology = "security_ops"
+            elif "git" in meta_text or "github" in meta_text:
+                technology = "git"
+            elif "restic" in meta_text or "borg" in meta_text or "backup" in meta_text or "recovery" in meta_text:
+                technology = "backup_recovery"
+            elif "voip" in meta_text or "sip" in meta_text or "pbx" in meta_text:
+                technology = "voip"
+            elif "zabbix" in meta_text:
+                technology = "zabbix"
+            elif "wireshark" in meta_text or "tshark" in meta_text or "tcpdump" in meta_text:
+                technology = "wireshark"
+            elif "juniper" in meta_text or "junos" in meta_text:
+                technology = "juniper"
+            elif "aruba" in meta_text or "aos-cx" in meta_text:
+                technology = "aruba"
+            elif "proxmox" in meta_text or "pve" in meta_text:
+                technology = "proxmox"
+            elif "hyper-v" in meta_text or "hyperv" in meta_text:
+                technology = "hyperv"
+            elif "ansible" in meta_text:
+                technology = "ansible"
+            elif "terraform" in meta_text:
+                technology = "terraform"
+            elif "kubernetes" in meta_text or "kubectl" in meta_text:
+                technology = "kubernetes"
+            elif "telnet" in meta_text:
+                technology = "telnet"
+            elif "sftp" in meta_text:
+                technology = "sftp"
+            elif "ftps" in meta_text:
+                technology = "ftps"
+            elif "ftp" in meta_text:
+                technology = "ftp"
         if technology in sub_map:
             sub_order = sub_map[technology]
         else:
