@@ -62,6 +62,48 @@ def assemble_chapter(order: int, strict: bool = False):
         rows[uid] = item
         order_uids.append(uid)
 
+    # Load additive standalone learning units before category records so their
+    # stable UIDs can be linked by examples, labs, questions and answer keys.
+    lesson_source_dir = chapter / "lessons" / "sources" / "encyclopedia"
+    lesson_source_paths = sorted(lesson_source_dir.glob("*_wave*.json")) if lesson_source_dir.is_dir() else []
+    for source_path in lesson_source_paths:
+        source_doc = read_json(source_path)
+        source_items = source_doc.get("items")
+        if not isinstance(source_items, list):
+            raise ValueError(f"{source_path.relative_to(ROOT)} must have an items array")
+        for index, item in enumerate(source_items, 1):
+            if not isinstance(item, dict) or not item.get("uid"):
+                raise ValueError(f"Invalid learning unit {index} in {source_path.relative_to(ROOT)}")
+            uid = str(item["uid"])
+            if uid not in rows:
+                rows[uid] = {
+                    "uid": uid,
+                    "chapter_order": order,
+                    "title_fa": str(item.get("title_fa") or f"واحد یادگیری افزوده {index}"),
+                    "title_en": str(item.get("title_en") or ""),
+                    "level": item.get("level") or "L1",
+                    "summary": item.get("summary") or "",
+                    "full_content": item.get("full_content") or "",
+                    "meta": {"additive_learning_source": source_path.relative_to(ROOT).as_posix()},
+                }
+                order_uids.append(uid)
+            else:
+                # Existing UIDs are intentionally updated in-place, never duplicated.
+                if item.get("title_fa"):
+                    rows[uid]["title_fa"] = item["title_fa"]
+                if item.get("title_en"):
+                    rows[uid]["title_en"] = item["title_en"]
+                for key in ("level", "summary", "full_content", "subchapter_order", "lesson_order"):
+                    if item.get(key) is not None:
+                        rows[uid][key] = item[key]
+            fields = item.get("fields")
+            if isinstance(fields, dict):
+                rows[uid].update(fields)
+            if item.get("full_content"):
+                rows[uid]["full_content"] = item["full_content"]
+            if item.get("summary"):
+                rows[uid]["summary"] = item["summary"]
+
     for category, filename in CATEGORIES.items():
         base_path = chapter / category / filename
         source_dir = chapter / category / "sources" / "encyclopedia"
@@ -84,9 +126,18 @@ def assemble_chapter(order: int, strict: bool = False):
                         "chapter_order": order,
                         "title_fa": str(item.get("title_fa") or f"محتوای پیوندنشده {index}"),
                         "title_en": str(item.get("title_en") or ""),
+                        "level": item.get("level") or "L1",
+                        "summary": item.get("summary") or "",
+                        "full_content": item.get("full_content") or "",
+                        "subchapter_order": item.get("subchapter_order") or 1,
+                        "lesson_order": item.get("lesson_order") or index,
                         "meta": {"orphaned_category_source": path.relative_to(ROOT).as_posix()},
                     }
                     order_uids.append(uid)
+                else:
+                    for key in ("full_content", "summary", "level", "subchapter_order", "lesson_order"):
+                        if item.get(key) is not None:
+                            rows[uid][key] = item[key]
                 fields = item.get("fields")
                 if isinstance(fields, dict):
                     # Canonical and additive category files use the same UID merge contract.
