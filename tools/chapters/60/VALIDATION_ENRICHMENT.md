@@ -1,12 +1,8 @@
-# فصل 60 — عیب‌یابی هک اخلاقی لاب سازمانی
+# فصل 60 — عیب‌یابی هک اخلاقی لاب افزایشی — ~20x
 
-review_required | preserve_existing
-
-| نوع | تعداد |
-|-----|--------|
-| lessons | 88 |
+| lessons | 350 |
 | questions | 400 |
-| answers | 400 |
-| labs | 8 |
-| examples | 12 |
-| commands | 12 |
+| labs | 36 |
+| examples | 100 |
+
+preserve_existing | review_required
