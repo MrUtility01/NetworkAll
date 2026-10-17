@@ -288,9 +288,9 @@ Workflow مخزن `.github/workflows/build-platforms.yml` برای شاخهٔ `m
 
 ## پیگیری تکمیلی فصل ۶۸ — فناوری‌های زیرساختی مستقل (۱۷ اکتبر ۲۰۲۶)
 
-- بستهٔ افزایشی `tools/chapters/68/commands/sources/encyclopedia/commands_additional_technologies.json` به `main` افزوده شد: ۷۵ رکورد اولیه در ۱۵ فناوری SSH/OpenSSH، Telnet، FTP/FTPS/SFTP، VoIP/SIP/PBX، VMware ESXi، Zabbix، Wireshark/TShark، Juniper Junos، Aruba AOS-CX، Proxmox VE، Ansible، Terraform، Kubernetes، PowerShell و Hyper-V.
+- بستهٔ افزایشی `tools/chapters/68/commands/sources/encyclopedia/commands_additional_technologies.json` به `main` افزوده شد: ۱۵۰ رکورد اولیه در ۱۵ فناوری SSH/OpenSSH، Telnet، FTP/FTPS/SFTP، VoIP/SIP/PBX، VMware ESXi، Zabbix، Wireshark/TShark، Juniper Junos، Aruba AOS-CX، Proxmox VE، Ansible، Terraform، Kubernetes، PowerShell و Hyper-V.
 - هر رکورد شامل UID، فناوری/پلتفرم، دستور، کاربرد، آرگومان‌ها (در صورت نیاز)، مراحل، خروجی نمونه، نکتهٔ امنیتی، کلیدواژه و سؤال/پاسخ جاسازی‌شده است. این بسته به ZIP اصلی وابسته نیست و به‌صورت افزایشی نگهداری می‌شود.
 - `scripts/merge_content_packs_into_android.py` به‌روزرسانی شد تا این بسته را به‌عنوان بخش‌های مستقل فصل ۶۸ اضافه کند، UIDهای پایدار را حفظ کند و محتوای موجود فصل را جایگزین نکند.
-- شمار مرجع در manifest/index از ۳۶۰۰ به ۳۶۷۵ دستور و با احتساب آزمون‌های جاسازی‌شده از ۱۱۲۰ به ۱۱۹۵ سؤال/پاسخ اعلام شده است. بستهٔ جدید با بررسی برنامه‌ای ۷۵ دستور، ۷۵ UID یکتا، ۷۵ سؤال و ۷۵ پاسخ متناظر را گذراند.
+- شمار مرجع در manifest/index از ۳۶۰۰ به ۳۷۵۰ دستور و با احتساب آزمون‌های جاسازی‌شده از ۱۱۲۰ به ۱۲۷۰ سؤال/پاسخ اعلام شده است. بستهٔ جدید با بررسی برنامه‌ای ۷۵ دستور، ۷۵ UID یکتا، ۷۵ سؤال و ۷۵ پاسخ متناظر را گذراند.
 - وضعیت کیفیت همچنان `review_required` است: پنج رکورد برای هر فناوری فقط شروع کار است، نه تکمیل. بازبینی syntax وابسته به نسخه، تشخیص duplicate معنایی، تست جستجو و تأیید runtime همچنان لازم است.
 - اجرای GitHub Actions برای commit فعلی: [Build Android APK and Windows package](https://github.com/MrUtility01/NetworkAll/actions/runs/39057739025). Windows package موفق شده و مرحلهٔ merge/validation اندروید موفق شده است؛ نتیجهٔ نهایی APK هنوز در حال اجرا/تأیید است.
