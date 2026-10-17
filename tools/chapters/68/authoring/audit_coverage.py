@@ -349,13 +349,40 @@ def main():
             except Exception as exc:
                 malformed.append(f"{path.relative_to(ROOT)}: {type(exc).__name__}: {exc}")
 
-    # Separate count of answer-key entries in the canonical answer file.
-    answer_path = ROOT / "answers" / "answer_key.json"
+    # Count answer keys across canonical and additive sources, deduplicated by question UID.
+    answer_base = ROOT / "answers" / "answer_key.json"
+    answer_source_dir = ROOT / "answers" / "sources" / "encyclopedia"
+    answer_paths = [answer_base] + (sorted(answer_source_dir.glob("*_wave*.json")) if answer_source_dir.is_dir() else [])
     answer_key_count = 0
-    if answer_path.exists():
+    answer_key_uids = set()
+    answer_key_by_technology = Counter()
+    answer_source_stats = {}
+    for answer_path in answer_paths:
+        if not answer_path.exists():
+            continue
         try:
             answer_data = load_json(answer_path)
-            answer_key_count = len(records_from(answer_data, preferred=("answers", "items", "answer_key")))
+            answer_records = records_from(answer_data, preferred=("answers", "items", "answer_key"))
+            local_count = 0
+            for record in answer_records:
+                uid = unique_id(record)
+                if not uid or uid in answer_key_uids:
+                    continue
+                answer_text = record.get("answer_key") if isinstance(record, dict) else None
+                if not answer_text and isinstance(record, dict):
+                    answer_text = (record.get("fields") or {}).get("answer_key")
+                if not answer_text:
+                    continue
+                answer_key_uids.add(uid)
+                answer_key_count += 1
+                local_count += 1
+                slug = technology_of(record)
+                if slug in TARGETS:
+                    answer_key_by_technology[slug] += 1
+            answer_source_stats[str(answer_path.relative_to(ROOT))] = {
+                "records": len(answer_records),
+                "unique_answer_keys": local_count,
+            }
         except Exception as exc:
             malformed.append(f"{answer_path.relative_to(ROOT)}: {type(exc).__name__}: {exc}")
 
@@ -368,7 +395,9 @@ def main():
         "source_files": source_stats,
         "missing_source_files": sorted(set(missing_files)),
         "parse_errors": malformed,
-        "answer_key_entries_unattributed_total": answer_key_count,
+        "answer_key_entries_total": answer_key_count,
+        "answer_key_entries_by_technology": dict(answer_key_by_technology),
+        "answer_key_sources": answer_source_stats,
         "counting_policy": "Unique non-empty command+UID records count as commands. Examples, scenarios and lessons count only when standalone records can be attributed through metadata, lesson_uid, title, or explicit technology marker. Embedded flashcards, command hints and embedded assessment questions do not count as standalone units.",
     }
     incomplete = []
