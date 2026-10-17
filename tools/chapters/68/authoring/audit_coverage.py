@@ -87,6 +87,11 @@ def records_from(obj, preferred=()):
         value = obj.get(key)
         if isinstance(value, list):
             return value
+    # baseline_curriculum stores lessons under levels[].lessons[].
+    levels = obj.get("levels")
+    if isinstance(levels, list):
+        return [lesson for level in levels if isinstance(level, dict)
+                for lesson in level.get("lessons", []) if isinstance(lesson, dict)]
     return []
 
 def strings_in(value):
@@ -184,7 +189,30 @@ def technology_of(record, source_kind=None):
     # Attribute learning content through canonical lesson UID, explicit labels,
     # or descriptive title/body. This does not inspect generic hints in commands.
     text = " ".join(strings_in(record)).lower()
-    uid = str(record.get("lesson_uid", "")).lower()
+    uid = str(record.get("lesson_uid") or record.get("uid") or "").lower()
+    # Many legacy canonical packs encode the technology in stable UIDs rather
+    # than top-level metadata. Treat only explicit UID tokens as attribution.
+    uid_aliases = [
+        (("mikrotik", "routeros"), "mikrotik"), (("cisco",), "cisco"),
+        (("fortigate", "fortios"), "fortigate"), (("windows_batch", "batch", "cmd"), "windows_batch"),
+        (("powershell", "pwsh"), "powershell"), (("windows_server", "active_directory"), "windows_server"),
+        (("linux", "linux_bash", "bash"), "linux_bash"), (("docker",), "docker"),
+        (("voip", "sip", "pbx"), "voip"), (("vmware_esxi", "vmware", "esxi"), "vmware_esxi"),
+        (("ssh", "openssh"), "ssh"), (("telnet",), "telnet"), (("ftps",), "ftps"),
+        (("sftp",), "sftp"), (("ftp",), "ftp"), (("zabbix",), "zabbix"),
+        (("wireshark", "tshark", "tcpdump"), "wireshark"), (("juniper", "junos"), "juniper"),
+        (("aruba",), "aruba"), (("proxmox", "pve"), "proxmox"), (("hyperv", "hyper_v"), "hyperv"),
+        (("ansible",), "ansible"), (("terraform",), "terraform"), (("kubernetes", "kubectl"), "kubernetes"),
+        (("ubiquiti", "unifi", "edgeos"), "ubiquiti"), (("snmp_syslog", "snmp", "syslog", "netflow", "ipfix"), "snmp_syslog"),
+        (("dns_dhcp_ntp", "ipam"), "dns_dhcp_ntp"), (("web_tls", "nginx", "apache", "pki"), "web_tls"),
+        (("cloud", "aws", "azure"), "cloud"), (("fortinet_management", "fortimanager", "fortianalyzer"), "fortinet_management"),
+        (("security_ops", "sysmon", "siem", "soc"), "security_ops"), (("git", "github"), "git"),
+        (("backup_recovery", "backup", "restore"), "backup_recovery"),
+    ]
+    uid_tokens = set(re.split(r"[:/_-]+", uid))
+    for tokens, mapped in uid_aliases:
+        if uid_tokens.intersection(tokens):
+            return mapped
     if uid.startswith("lesson:ch68:ps:") or "**حوزه:** powershell" in text:
         return "powershell"
     if uid.startswith("lesson:ch68:linux:") or "**حوزه:** linux" in text or "**حوزه:** bash" in text:
