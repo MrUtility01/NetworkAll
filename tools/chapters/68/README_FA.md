@@ -95,7 +95,7 @@ python scripts/merge_content_packs_into_android.py
 
 ## افزونهٔ فناوری‌های تکمیلی (۱۷ اکتبر ۲۰۲۶)
 
-فایل افزایشی `commands/sources/encyclopedia/commands_additional_technologies.json` به مخزن اضافه شده است: **۷۵ رکورد اولیه در ۱۵ حوزه**: SSH/OpenSSH، Telnet، FTP/FTPS/SFTP، VoIP/SIP/PBX، VMware ESXi، Zabbix، Wireshark/TShark، Juniper Junos، Aruba AOS-CX، Proxmox VE، Ansible، Terraform، Kubernetes، PowerShell و Hyper-V.
+فایل افزایشی `commands/sources/encyclopedia/commands_additional_technologies.json` به مخزن اضافه شده است: **۱۵۰ رکورد اولیه در ۱۵ حوزه**: SSH/OpenSSH، Telnet، FTP/FTPS/SFTP، VoIP/SIP/PBX، VMware ESXi، Zabbix، Wireshark/TShark، Juniper Junos، Aruba AOS-CX، Proxmox VE، Ansible، Terraform، Kubernetes، PowerShell و Hyper-V.
 
 اسکریپت `scripts/merge_content_packs_into_android.py` اکنون این فایل را نیز می‌خواند و فناوری‌های افزوده را در بخش‌های مجزای فصل ۶۸ قرار می‌دهد. برای بازسازی خروجی تولیدی، از ریشهٔ مخزن اجرا کنید:
 
@@ -103,4 +103,4 @@ python scripts/merge_content_packs_into_android.py
 python scripts/merge_content_packs_into_android.py
 ```
 
-**مهم:** ۵ رکورد در هر فناوری صرفاً نقطهٔ شروع است؛ هیچ‌یک از این ۱۵ فناوری هنوز به سهمیهٔ کامل قرارداد `AUTHORING_TARGETS_FA.md` نرسیده است. build و تست runtime پس از تغییر هنوز اجرا/تأیید نشده‌اند. محتوای موجود و ZIP قبلی حذف نشده‌اند.
+**مهم:** ۱۰ رکورد در هر فناوری صرفاً نقطهٔ شروع است؛ هیچ‌یک از این ۱۵ فناوری هنوز به سهمیهٔ کامل قرارداد `AUTHORING_TARGETS_FA.md` نرسیده است. build و تست runtime پس از تغییر هنوز اجرا/تأیید نشده‌اند. محتوای موجود و ZIP قبلی حذف نشده‌اند.
