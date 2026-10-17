@@ -303,6 +303,8 @@ def main():
 
     # Additive wave 3 command pack for the seven core platform families.
     count_command_file(ROOT / "commands" / "sources" / "encyclopedia" / "commands_core_wave3.json")
+    # Additive wave 4 command pack spans all 33 tracked technology domains.
+    count_command_file(ROOT / "commands" / "sources" / "encyclopedia" / "commands_multi_technology_wave4.json")
 
     # Legacy mixed Windows pack: classify per record, never credit the full pack
     # to both technologies. Exact command duplication is excluded.
