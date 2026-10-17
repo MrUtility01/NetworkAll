@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "chapter_order": 68,
+  "category": "examples",
+  "source_of_truth": true,
+  "source_status": "review_required",
+  "items": [
+    {
+      "uid": "example:ch68:ubiquiti:wave1",
+      "lesson_uid": "lesson:ch68:ubiquiti:wave1",
+      "title_fa": "بررسی default route در EdgeOS",
+      "fields": {
+        "examples": "**حوزه:** Ubiquiti EdgeOS\n**هدف:** تشخیص مسیر پیش‌فرض بدون تغییر پیکربندی.\n**فرمان:** `show ip route`\n**روش:** مسیر `0.0.0.0/0`، next-hop و رابط خروجی را ثبت کنید؛ سپس دسترسی به مقصد آزمایش را جداگانه بررسی کنید.\n**تفسیر:** وجود route فقط انتخاب مسیر را نشان می‌دهد؛ سلامت gateway، ACL، NAT و مسیر برگشت مستقل‌اند.\n**ایمنی:** خروجی را پیش از انتشار از IPهای عمومی و نام‌های داخلی پالایش کنید."
+      }
+    },
+    {
+      "uid": "example:ch68:snmp_syslog:wave1",
+      "lesson_uid": "lesson:ch68:snmp_syslog:wave1",
+      "title_fa": "خواندن sysName با SNMPv3",
+      "fields": {
+        "examples": "**حوزه:** SNMP / Syslog\n**هدف:** گرفتن یک OID مشخص بدون پیمایش کامل MIB.\n**فرمان:** `snmpget -v3 -l authPriv -u monitor HOST 1.3.6.1.2.1.1.5.0`\n**روش:** credential را از secret store فراهم کنید، OID را query کنید و نوع مقدار را بررسی کنید.\n**تفسیر:** timeout را از authorization failure و OID نامعتبر تفکیک کنید.\n**ایمنی:** از SNMPv3 authPriv استفاده کنید؛ secret را در shell history ذخیره نکنید."
+      }
+    },
+    {
+      "uid": "example:ch68:dns_dhcp_ntp:wave1",
+      "lesson_uid": "lesson:ch68:dns_dhcp_ntp:wave1",
+      "title_fa": "مقایسهٔ پاسخ DNS دو resolver",
+      "fields": {
+        "examples": "**حوزه:** DNS / DHCP / NTP\n**فرمان‌ها:** `dig @192.0.2.53 intranet.example.test A +noall +answer` و همین query علیه resolver دوم.\n**روش:** answer، TTL و زمان پاسخ را کنار هم ثبت کنید.\n**تفسیر:** تفاوت پاسخ می‌تواند از cache، split-horizon یا zone replication باشد؛ قبل از تغییر رکورد، سرور authoritative و SOA serial را بررسی کنید.\n**ایمنی:** از نام‌های آزمایشی و resolverهای مجاز استفاده کنید."
+      }
+    },
+    {
+      "uid": "example:ch68:web_tls:wave1",
+      "lesson_uid": "lesson:ch68:web_tls:wave1",
+      "title_fa": "اعتبارسنجی Nginx پیش از reload",
+      "fields": {
+        "examples": "**حوزه:** Web/TLS\n**فرمان:** `sudo nginx -t`\n**روش:** فرمان را روی همان host یا container اجرا کنید؛ فایل و شماره خط خطا را اصلاح کنید؛ فقط پس از موفقیت و تأیید تغییر reload کنید.\n**اعتبارسنجی:** با `curl -sS -I https://www.example.test/` status و headerها را بررسی کنید.\n**ایمنی:** موفقیت syntax به‌تنهایی سلامت TLS یا دسترسی بیرونی را ثابت نمی‌کند."
+      }
+    },
+    {
+      "uid": "example:ch68:cloud:wave1",
+      "lesson_uid": "lesson:ch68:cloud:wave1",
+      "title_fa": "تأیید هویت AWS پیش از عملیات",
+      "fields": {
+        "examples": "**حوزه:** AWS CLI\n**فرمان:** `aws sts get-caller-identity`\n**روش:** profile/role مورد انتظار را انتخاب کنید؛ Account و Arn خروجی را با محیط dev/test/prod تطبیق دهید.\n**قاعده:** نام profile تضمین نمی‌کند role درست فعال است؛ قبل از هر فرمان تغییردهنده context را دوباره تأیید کنید.\n**ایمنی:** Account ID و Arn را در گزارش عمومی پالایش کنید."
+      }
+    },
+    {
+      "uid": "example:ch68:fortinet_management:wave1",
+      "lesson_uid": "lesson:ch68:fortinet_management:wave1",
+      "title_fa": "تأیید ADOM پیش از مدیریت policy",
+      "fields": {
+        "examples": "**حوزه:** FortiManager / FortiAnalyzer\n**فرمان تشخیصی:** `diagnose dvm adom list` (نسخه‌وابسته)\n**روش:** نسخهٔ FortiManager را ثبت کنید، ADOM مربوط به محیط را پیدا کنید و mapping دستگاه‌ها را با change request تطبیق دهید.\n**تفسیر:** ADOM اشتباه می‌تواند policy package نادرست را هدف قرار دهد.\n**ایمنی:** پیش از install یا تغییر package، مجوز و rollback را تأیید کنید."
+      }
+    },
+    {
+      "uid": "example:ch68:security_ops:wave1",
+      "lesson_uid": "lesson:ch68:security_ops:wave1",
+      "title_fa": "مرور رخدادهای Sysmon",
+      "fields": {
+        "examples": "**حوزه:** Security Operations / Sysmon\n**فرمان:** `wevtutil qe Microsoft-Windows-Sysmon/Operational /c:20 /rd:true /f:text`\n**روش:** وجود channel، آخرین timestamp و Event ID را بررسی کنید؛ رخدادهای process creation را با baseline و alert مربوط مقایسه کنید.\n**تفسیر:** نبود رخداد می‌تواند به معنی نصب یا پیکربندی‌نشدن Sysmon باشد، نه نبود فعالیت.\n**ایمنی:** command line و نام کاربری را قبل از ارسال پالایش کنید."
+      }
+    },
+    {
+      "uid": "example:ch68:git:wave1",
+      "lesson_uid": "lesson:ch68:git:wave1",
+      "title_fa": "بازبینی تغییرات پیش از commit",
+      "fields": {
+        "examples": "**حوزه:** Git / GitHub\n**فرمان‌ها:** `git status --short --branch` و `git diff --check`\n**روش:** فایل‌های staged/unstaged/untracked را بررسی کنید، whitespace error را اصلاح کنید و secretها یا فایل‌های build ناخواسته را از staging خارج کنید.\n**اعتبارسنجی:** `git diff --cached` را هم مرور کنید؛ تست‌ها و secret scanning مستقل‌اند.\n**ایمنی:** `.gitignore` به‌تنهایی مانع commit فایل حساس نمی‌شود."
+      }
+    },
+    {
+      "uid": "example:ch68:backup_recovery:wave1",
+      "lesson_uid": "lesson:ch68:backup_recovery:wave1",
+      "title_fa": "بررسی snapshot پیش از بازیابی",
+      "fields": {
+        "examples": "**حوزه:** Backup / Recovery\n**فرمان‌ها:** `restic snapshots` و سپس `restic check`\n**روش:** snapshot مورد انتظار را با host، path و زمان انتخاب کنید؛ یکپارچگی repository را بررسی کنید؛ restore آزمایشی را به مسیر جداگانه انجام دهید.\n**تفسیر:** وجود snapshot یا موفقیت check استاندارد، آزمون کامل بازیابی را جایگزین نمی‌کند.\n**ایمنی:** کلید repository را در command line یا log قرار ندهید."
+      }
+    }
+  ]
+}
