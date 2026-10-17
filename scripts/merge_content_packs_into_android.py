@@ -414,8 +414,9 @@ def append_modular_chapter(data, lessons, order, title_fa, title_en):
                 "notes": notes,
             })
         if out:
+            section_title = CH68_SECTION_TITLES.get(int(sub_order), f"بخش {sub_order}") if int(order) == 68 else f"محتوای افزوده — زیرفصل {sub_order}"
             chapter.setdefault("subchapters", []).append({
-                "title_fa": f"محتوای افزوده — زیرفصل {sub_order}",
+                "title_fa": section_title,
                 "lessons": out,
             })
             added += len(out)
