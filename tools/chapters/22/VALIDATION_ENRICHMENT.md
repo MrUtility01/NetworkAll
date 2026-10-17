@@ -1,4 +1,4 @@
-# فصل ۲۲ — وایرلس سازمانی — بسته غنی‌سازی
+# فصل 22 — وایرلس سازمانی
 
 review_required | preserve_existing
 
@@ -6,7 +6,7 @@ review_required | preserve_existing
 |-----|--------|
 | lessons | 175 |
 | questions | 450 |
+| answers | 450 |
 | labs | 16 |
-| examples/commands | 40 |
-
-منبع: tools/chapters/New/ch22_wifi_enrichment.zip — با INTEGRATE.sh ادغام شود.
+| examples | 40 |
+| commands | 40 |
