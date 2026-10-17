@@ -124,6 +124,21 @@ jobs:
           }
           missing_wave1 = sorted(wave1_uids - set(uids))
           assert not missing_wave1, f"Chapter 68 additive lessons missing from Android: {missing_wave1}"
+          chapter68 = next(ch for ch in chapters if int(ch.get("order") or 0) == 68)
+          section_titles = {sub.get("title_fa") for sub in chapter68.get("subchapters", [])}
+          required_sections = {
+              "MikroTik RouterOS", "Cisco IOS / IOS-XE", "FortiGate / FortiOS",
+              "Windows Batch / CMD", "Windows Server / Active Directory",
+              "Linux / Bash", "Docker / Compose", "FTP", "FTPS / FTP over TLS",
+              "SFTP / SSH File Transfer", "VoIP / SIP / PBX", "VMware ESXi / vSphere",
+              "Zabbix Monitoring", "Wireshark / TShark", "Ubiquiti UniFi / EdgeOS",
+              "SNMP / Syslog / NetFlow", "DNS / DHCP / NTP / IPAM",
+              "Web Servers / TLS / PKI", "Cloud CLI / AWS / Azure",
+              "FortiManager / FortiAnalyzer", "Security Operations / SIEM / SOC",
+              "Git / GitHub", "Backup / Recovery / DR",
+          }
+          missing_sections = sorted(required_sections - section_titles)
+          assert not missing_sections, f"Chapter 68 technology sections missing: {missing_sections}"
           assert len(uids) == len(set(uids)), "duplicate lesson uid"
           assert int(d.get("lesson_count", -1)) == len(lessons), "lesson_count mismatch"
           assert all(x.get("full_content") is not None for x in lessons), "missing full_content field"
