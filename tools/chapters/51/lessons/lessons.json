@@ -76,6 +76,606 @@
       "fields": {
         "lessons": "## تست و rollback\n\nتست واحد، integration و dry-run جدا باشند؛ تغییر پرریسک snapshot و rollback می‌خواهد.\n\n### تمرین عملی\nنسخهٔ قبلی فایل نمونه را بازیابی کنید.\n\n### معیار قبولی\nنتیجه باید قابل بازتولید باشد؛ شواهد، محدودیت‌ها و مسیر بازگشت ثبت شوند. اقدامات محیط واقعی فقط با مجوز و دامنهٔ مشخص انجام شوند."
       }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0001",
+      "title_fa": "[L0] Paramiko — آشنایی",
+      "title_en": "[L0] Paramiko — Intro",
+      "fields": {
+        "lessons": "## [L0] Paramiko — آشنایی\n\n### مثال کاربردی\nدستور show version مثال روتر است و در همهٔ سیستم‌ها وجود ندارد؛ «192.0.2.10» آدرس مستنداتی است. host key را قبلاً از کانال مورداعتماد ثبت کنید و از AutoAddPolicy در اسکریپت عملیاتی استفاده نکنید مگر workflow اعتماد به میزبان به‌درستی مدیریت شده باشد.\n\n### فرمان‌ها و روش اجرا\npython -m pip install paramiko\npython - <<'PY'\nimport paramiko\nclient = paramiko.SSHClient()\nclient.load_system_host_keys()\nclient.set_missing_host_key_policy(paramiko.RejectPolicy())\nclient.connect(\"192.0.2.10\", username=\"netops\", key_filename=\"~/.ssh/id_ed25519\", timeout=5, banner_timeout=5, auth_timeout=5)\nstdin, stdout, stderr = client.exec_command(\"show version\", timeout=10)\nprint(stdout.read().decode(errors=\"replace\"))\nprint(stderr.read().decode(errors=\"replace\"))\nclient.close()\nPY\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0002",
+      "title_fa": "[L1] Paramiko — مقدماتی",
+      "title_en": "[L1] Paramiko — Junior",
+      "fields": {
+        "lessons": "## [L1] Paramiko — مقدماتی\n\n### مثال کاربردی\nدستور show version مثال روتر است و در همهٔ سیستم‌ها وجود ندارد؛ «192.0.2.10» آدرس مستنداتی است. host key را قبلاً از کانال مورداعتماد ثبت کنید و از AutoAddPolicy در اسکریپت عملیاتی استفاده نکنید مگر workflow اعتماد به میزبان به‌درستی مدیریت شده باشد.\n\n### فرمان‌ها و روش اجرا\npython -m pip install paramiko\npython - <<'PY'\nimport paramiko\nclient = paramiko.SSHClient()\nclient.load_system_host_keys()\nclient.set_missing_host_key_policy(paramiko.RejectPolicy())\nclient.connect(\"192.0.2.10\", username=\"netops\", key_filename=\"~/.ssh/id_ed25519\", timeout=5, banner_timeout=5, auth_timeout=5)\nstdin, stdout, stderr = client.exec_command(\"show version\", timeout=10)\nprint(stdout.read().decode(errors=\"replace\"))\nprint(stderr.read().decode(errors=\"replace\"))\nclient.close()\nPY\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0003",
+      "title_fa": "[L2] Paramiko — ادمین",
+      "title_en": "[L2] Paramiko — Admin",
+      "fields": {
+        "lessons": "## [L2] Paramiko — ادمین\n\n### مثال کاربردی\nدستور show version مثال روتر است و در همهٔ سیستم‌ها وجود ندارد؛ «192.0.2.10» آدرس مستنداتی است. host key را قبلاً از کانال مورداعتماد ثبت کنید و از AutoAddPolicy در اسکریپت عملیاتی استفاده نکنید مگر workflow اعتماد به میزبان به‌درستی مدیریت شده باشد.\n\n### فرمان‌ها و روش اجرا\npython -m pip install paramiko\npython - <<'PY'\nimport paramiko\nclient = paramiko.SSHClient()\nclient.load_system_host_keys()\nclient.set_missing_host_key_policy(paramiko.RejectPolicy())\nclient.connect(\"192.0.2.10\", username=\"netops\", key_filename=\"~/.ssh/id_ed25519\", timeout=5, banner_timeout=5, auth_timeout=5)\nstdin, stdout, stderr = client.exec_command(\"show version\", timeout=10)\nprint(stdout.read().decode(errors=\"replace\"))\nprint(stderr.read().decode(errors=\"replace\"))\nclient.close()\nPY\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0004",
+      "title_fa": "[L3] Paramiko — مهندس",
+      "title_en": "[L3] Paramiko — Senior",
+      "fields": {
+        "lessons": "## [L3] Paramiko — مهندس\n\n### مثال کاربردی\nدستور show version مثال روتر است و در همهٔ سیستم‌ها وجود ندارد؛ «192.0.2.10» آدرس مستنداتی است. host key را قبلاً از کانال مورداعتماد ثبت کنید و از AutoAddPolicy در اسکریپت عملیاتی استفاده نکنید مگر workflow اعتماد به میزبان به‌درستی مدیریت شده باشد.\n\n### فرمان‌ها و روش اجرا\npython -m pip install paramiko\npython - <<'PY'\nimport paramiko\nclient = paramiko.SSHClient()\nclient.load_system_host_keys()\nclient.set_missing_host_key_policy(paramiko.RejectPolicy())\nclient.connect(\"192.0.2.10\", username=\"netops\", key_filename=\"~/.ssh/id_ed25519\", timeout=5, banner_timeout=5, auth_timeout=5)\nstdin, stdout, stderr = client.exec_command(\"show version\", timeout=10)\nprint(stdout.read().decode(errors=\"replace\"))\nprint(stderr.read().decode(errors=\"replace\"))\nclient.close()\nPY\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0005",
+      "title_fa": "[L4] Paramiko — خبره",
+      "title_en": "[L4] Paramiko — Architect",
+      "fields": {
+        "lessons": "## [L4] Paramiko — خبره\n\n### مثال کاربردی\nدستور show version مثال روتر است و در همهٔ سیستم‌ها وجود ندارد؛ «192.0.2.10» آدرس مستنداتی است. host key را قبلاً از کانال مورداعتماد ثبت کنید و از AutoAddPolicy در اسکریپت عملیاتی استفاده نکنید مگر workflow اعتماد به میزبان به‌درستی مدیریت شده باشد.\n\n### فرمان‌ها و روش اجرا\npython -m pip install paramiko\npython - <<'PY'\nimport paramiko\nclient = paramiko.SSHClient()\nclient.load_system_host_keys()\nclient.set_missing_host_key_policy(paramiko.RejectPolicy())\nclient.connect(\"192.0.2.10\", username=\"netops\", key_filename=\"~/.ssh/id_ed25519\", timeout=5, banner_timeout=5, auth_timeout=5)\nstdin, stdout, stderr = client.exec_command(\"show version\", timeout=10)\nprint(stdout.read().decode(errors=\"replace\"))\nprint(stderr.read().decode(errors=\"replace\"))\nclient.close()\nPY\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0006",
+      "title_fa": "[L0] Netmiko — آشنایی",
+      "title_en": "[L0] Netmiko — Intro",
+      "fields": {
+        "lessons": "## [L0] Netmiko — آشنایی\n\n### مثال کاربردی\nfrom netmiko import ConnectHandler\nfrom getpass import getpass\n\ndevice = {\n    \"device_type\": \"cisco_ios\",\n    \"host\": \"192.0.2.20\",\n    \"username\": \"netops\",\n    \"password\": getpass(\"Password: \"),\n    \"conn_timeout\": 5,\n}\nwith ConnectHandler(**device) as conn:\n    output = conn.send_command(\"show version\", read_timeout=20)\n    print(output)\n\n### فرمان‌ها و روش اجرا\npython -m pip install netmiko\n\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0007",
+      "title_fa": "[L1] Netmiko — مقدماتی",
+      "title_en": "[L1] Netmiko — Junior",
+      "fields": {
+        "lessons": "## [L1] Netmiko — مقدماتی\n\n### مثال کاربردی\nfrom netmiko import ConnectHandler\nfrom getpass import getpass\n\ndevice = {\n    \"device_type\": \"cisco_ios\",\n    \"host\": \"192.0.2.20\",\n    \"username\": \"netops\",\n    \"password\": getpass(\"Password: \"),\n    \"conn_timeout\": 5,\n}\nwith ConnectHandler(**device) as conn:\n    output = conn.send_command(\"show version\", read_timeout=20)\n    print(output)\n\n### فرمان‌ها و روش اجرا\npython -m pip install netmiko\n\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0008",
+      "title_fa": "[L2] Netmiko — ادمین",
+      "title_en": "[L2] Netmiko — Admin",
+      "fields": {
+        "lessons": "## [L2] Netmiko — ادمین\n\n### مثال کاربردی\nfrom netmiko import ConnectHandler\nfrom getpass import getpass\n\ndevice = {\n    \"device_type\": \"cisco_ios\",\n    \"host\": \"192.0.2.20\",\n    \"username\": \"netops\",\n    \"password\": getpass(\"Password: \"),\n    \"conn_timeout\": 5,\n}\nwith ConnectHandler(**device) as conn:\n    output = conn.send_command(\"show version\", read_timeout=20)\n    print(output)\n\n### فرمان‌ها و روش اجرا\npython -m pip install netmiko\n\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0009",
+      "title_fa": "[L3] Netmiko — مهندس",
+      "title_en": "[L3] Netmiko — Senior",
+      "fields": {
+        "lessons": "## [L3] Netmiko — مهندس\n\n### مثال کاربردی\nfrom netmiko import ConnectHandler\nfrom getpass import getpass\n\ndevice = {\n    \"device_type\": \"cisco_ios\",\n    \"host\": \"192.0.2.20\",\n    \"username\": \"netops\",\n    \"password\": getpass(\"Password: \"),\n    \"conn_timeout\": 5,\n}\nwith ConnectHandler(**device) as conn:\n    output = conn.send_command(\"show version\", read_timeout=20)\n    print(output)\n\n### فرمان‌ها و روش اجرا\npython -m pip install netmiko\n\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0010",
+      "title_fa": "[L4] Netmiko — خبره",
+      "title_en": "[L4] Netmiko — Architect",
+      "fields": {
+        "lessons": "## [L4] Netmiko — خبره\n\n### مثال کاربردی\nfrom netmiko import ConnectHandler\nfrom getpass import getpass\n\ndevice = {\n    \"device_type\": \"cisco_ios\",\n    \"host\": \"192.0.2.20\",\n    \"username\": \"netops\",\n    \"password\": getpass(\"Password: \"),\n    \"conn_timeout\": 5,\n}\nwith ConnectHandler(**device) as conn:\n    output = conn.send_command(\"show version\", read_timeout=20)\n    print(output)\n\n### فرمان‌ها و روش اجرا\npython -m pip install netmiko\n\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0011",
+      "title_fa": "[L0] NAPALM — آشنایی",
+      "title_en": "[L0] NAPALM — Intro",
+      "fields": {
+        "lessons": "## [L0] NAPALM — آشنایی\n\n### مثال کاربردی\nfrom napalm import get_network_driver\nfrom getpass import getpass\n\ndriver = get_network_driver(\"ios\")\ndevice = driver(host=\"192.0.2.20\", username=\"netops\", password=getpass(), optional_args={})\ntry:\n    device.open()\n    facts = device.get_facts()\n    print(facts.get(\"hostname\"), facts.get(\"os_version\"))\nfinally:\n    device.close()\n\n### فرمان‌ها و روش اجرا\npython -m pip install napalm\n\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0012",
+      "title_fa": "[L1] NAPALM — مقدماتی",
+      "title_en": "[L1] NAPALM — Junior",
+      "fields": {
+        "lessons": "## [L1] NAPALM — مقدماتی\n\n### مثال کاربردی\nfrom napalm import get_network_driver\nfrom getpass import getpass\n\ndriver = get_network_driver(\"ios\")\ndevice = driver(host=\"192.0.2.20\", username=\"netops\", password=getpass(), optional_args={})\ntry:\n    device.open()\n    facts = device.get_facts()\n    print(facts.get(\"hostname\"), facts.get(\"os_version\"))\nfinally:\n    device.close()\n\n### فرمان‌ها و روش اجرا\npython -m pip install napalm\n\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0013",
+      "title_fa": "[L2] NAPALM — ادمین",
+      "title_en": "[L2] NAPALM — Admin",
+      "fields": {
+        "lessons": "## [L2] NAPALM — ادمین\n\n### مثال کاربردی\nfrom napalm import get_network_driver\nfrom getpass import getpass\n\ndriver = get_network_driver(\"ios\")\ndevice = driver(host=\"192.0.2.20\", username=\"netops\", password=getpass(), optional_args={})\ntry:\n    device.open()\n    facts = device.get_facts()\n    print(facts.get(\"hostname\"), facts.get(\"os_version\"))\nfinally:\n    device.close()\n\n### فرمان‌ها و روش اجرا\npython -m pip install napalm\n\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0014",
+      "title_fa": "[L3] NAPALM — مهندس",
+      "title_en": "[L3] NAPALM — Senior",
+      "fields": {
+        "lessons": "## [L3] NAPALM — مهندس\n\n### مثال کاربردی\nfrom napalm import get_network_driver\nfrom getpass import getpass\n\ndriver = get_network_driver(\"ios\")\ndevice = driver(host=\"192.0.2.20\", username=\"netops\", password=getpass(), optional_args={})\ntry:\n    device.open()\n    facts = device.get_facts()\n    print(facts.get(\"hostname\"), facts.get(\"os_version\"))\nfinally:\n    device.close()\n\n### فرمان‌ها و روش اجرا\npython -m pip install napalm\n\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0015",
+      "title_fa": "[L4] NAPALM — خبره",
+      "title_en": "[L4] NAPALM — Architect",
+      "fields": {
+        "lessons": "## [L4] NAPALM — خبره\n\n### مثال کاربردی\nfrom napalm import get_network_driver\nfrom getpass import getpass\n\ndriver = get_network_driver(\"ios\")\ndevice = driver(host=\"192.0.2.20\", username=\"netops\", password=getpass(), optional_args={})\ntry:\n    device.open()\n    facts = device.get_facts()\n    print(facts.get(\"hostname\"), facts.get(\"os_version\"))\nfinally:\n    device.close()\n\n### فرمان‌ها و روش اجرا\npython -m pip install napalm\n\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0016",
+      "title_fa": "[L0] Scrapli — آشنایی",
+      "title_en": "[L0] Scrapli — Intro",
+      "fields": {
+        "lessons": "## [L0] Scrapli — آشنایی\n\n### مثال کاربردی\nfrom getpass import getpass\nfrom scrapli.driver.core import IOSXEDriver\n\ndevice = {\n    \"host\": \"192.0.2.20\", \"auth_username\": \"netops\",\n    \"auth_password\": getpass(), \"auth_strict_key\": True,\n    \"transport\": \"system\", \"timeout_socket\": 5,\n}\nwith IOSXEDriver(**device) as conn:\n    response = conn.send_command(\"show version\")\n    print(response.result)\n\n### فرمان‌ها و روش اجرا\npython -m pip install scrapli\n\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0017",
+      "title_fa": "[L1] Scrapli — مقدماتی",
+      "title_en": "[L1] Scrapli — Junior",
+      "fields": {
+        "lessons": "## [L1] Scrapli — مقدماتی\n\n### مثال کاربردی\nfrom getpass import getpass\nfrom scrapli.driver.core import IOSXEDriver\n\ndevice = {\n    \"host\": \"192.0.2.20\", \"auth_username\": \"netops\",\n    \"auth_password\": getpass(), \"auth_strict_key\": True,\n    \"transport\": \"system\", \"timeout_socket\": 5,\n}\nwith IOSXEDriver(**device) as conn:\n    response = conn.send_command(\"show version\")\n    print(response.result)\n\n### فرمان‌ها و روش اجرا\npython -m pip install scrapli\n\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0018",
+      "title_fa": "[L2] Scrapli — ادمین",
+      "title_en": "[L2] Scrapli — Admin",
+      "fields": {
+        "lessons": "## [L2] Scrapli — ادمین\n\n### مثال کاربردی\nfrom getpass import getpass\nfrom scrapli.driver.core import IOSXEDriver\n\ndevice = {\n    \"host\": \"192.0.2.20\", \"auth_username\": \"netops\",\n    \"auth_password\": getpass(), \"auth_strict_key\": True,\n    \"transport\": \"system\", \"timeout_socket\": 5,\n}\nwith IOSXEDriver(**device) as conn:\n    response = conn.send_command(\"show version\")\n    print(response.result)\n\n### فرمان‌ها و روش اجرا\npython -m pip install scrapli\n\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0019",
+      "title_fa": "[L3] Scrapli — مهندس",
+      "title_en": "[L3] Scrapli — Senior",
+      "fields": {
+        "lessons": "## [L3] Scrapli — مهندس\n\n### مثال کاربردی\nfrom getpass import getpass\nfrom scrapli.driver.core import IOSXEDriver\n\ndevice = {\n    \"host\": \"192.0.2.20\", \"auth_username\": \"netops\",\n    \"auth_password\": getpass(), \"auth_strict_key\": True,\n    \"transport\": \"system\", \"timeout_socket\": 5,\n}\nwith IOSXEDriver(**device) as conn:\n    response = conn.send_command(\"show version\")\n    print(response.result)\n\n### فرمان‌ها و روش اجرا\npython -m pip install scrapli\n\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0020",
+      "title_fa": "[L4] Scrapli — خبره",
+      "title_en": "[L4] Scrapli — Architect",
+      "fields": {
+        "lessons": "## [L4] Scrapli — خبره\n\n### مثال کاربردی\nfrom getpass import getpass\nfrom scrapli.driver.core import IOSXEDriver\n\ndevice = {\n    \"host\": \"192.0.2.20\", \"auth_username\": \"netops\",\n    \"auth_password\": getpass(), \"auth_strict_key\": True,\n    \"transport\": \"system\", \"timeout_socket\": 5,\n}\nwith IOSXEDriver(**device) as conn:\n    response = conn.send_command(\"show version\")\n    print(response.result)\n\n### فرمان‌ها و روش اجرا\npython -m pip install scrapli\n\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0021",
+      "title_fa": "[L0] Requests API — آشنایی",
+      "title_en": "[L0] Requests API — Intro",
+      "fields": {
+        "lessons": "## [L0] Requests API — آشنایی\n\n### مثال کاربردی\nimport requests\n\nwith requests.Session() as session:\n    response = session.get(\n        \"https://api.github.com/repos/psf/requests\",\n        timeout=(3.05, 10), verify=True,\n    )\n    response.raise_for_status()\n    data = response.json()\n    print(data.get(\"full_name\"), response.status_code)\n\n### فرمان‌ها و روش اجرا\npython -m pip install requests\n\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0022",
+      "title_fa": "[L1] Requests API — مقدماتی",
+      "title_en": "[L1] Requests API — Junior",
+      "fields": {
+        "lessons": "## [L1] Requests API — مقدماتی\n\n### مثال کاربردی\nimport requests\n\nwith requests.Session() as session:\n    response = session.get(\n        \"https://api.github.com/repos/psf/requests\",\n        timeout=(3.05, 10), verify=True,\n    )\n    response.raise_for_status()\n    data = response.json()\n    print(data.get(\"full_name\"), response.status_code)\n\n### فرمان‌ها و روش اجرا\npython -m pip install requests\n\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0023",
+      "title_fa": "[L2] Requests API — ادمین",
+      "title_en": "[L2] Requests API — Admin",
+      "fields": {
+        "lessons": "## [L2] Requests API — ادمین\n\n### مثال کاربردی\nimport requests\n\nwith requests.Session() as session:\n    response = session.get(\n        \"https://api.github.com/repos/psf/requests\",\n        timeout=(3.05, 10), verify=True,\n    )\n    response.raise_for_status()\n    data = response.json()\n    print(data.get(\"full_name\"), response.status_code)\n\n### فرمان‌ها و روش اجرا\npython -m pip install requests\n\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0024",
+      "title_fa": "[L3] Requests API — مهندس",
+      "title_en": "[L3] Requests API — Senior",
+      "fields": {
+        "lessons": "## [L3] Requests API — مهندس\n\n### مثال کاربردی\nimport requests\n\nwith requests.Session() as session:\n    response = session.get(\n        \"https://api.github.com/repos/psf/requests\",\n        timeout=(3.05, 10), verify=True,\n    )\n    response.raise_for_status()\n    data = response.json()\n    print(data.get(\"full_name\"), response.status_code)\n\n### فرمان‌ها و روش اجرا\npython -m pip install requests\n\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv001:l0025",
+      "title_fa": "[L4] Requests API — خبره",
+      "title_en": "[L4] Requests API — Architect",
+      "fields": {
+        "lessons": "## [L4] Requests API — خبره\n\n### مثال کاربردی\nimport requests\n\nwith requests.Session() as session:\n    response = session.get(\n        \"https://api.github.com/repos/psf/requests\",\n        timeout=(3.05, 10), verify=True,\n    )\n    response.raise_for_status()\n    data = response.json()\n    print(data.get(\"full_name\"), response.status_code)\n\n### فرمان‌ها و روش اجرا\npython -m pip install requests\n\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0001",
+      "title_fa": "[L0] Ansible Playbook — آشنایی",
+      "title_en": "[L0] Ansible Playbook — Intro",
+      "fields": {
+        "lessons": "## [L0] Ansible Playbook — آشنایی\n\n### مثال کاربردی\n# playbook نمونهٔ read-only؛ ماژول دقیق را با collection پلتفرم تطبیق دهید\n- name: Collect network facts\n  hosts: lab_routers\n  gather_facts: false\n  tasks:\n    - name: Query device facts\n      ansible.builtin.debug:\n        msg: \"اجرای واقعی facts به ماژول پلتفرم وابسته است\"\n\n### فرمان‌ها و روش اجرا\nansible --version\nansible-inventory -i inventory.yml --list\nansible-playbook -i inventory.yml site.yml --syntax-check\nansible-playbook -i inventory.yml site.yml --check --diff\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0002",
+      "title_fa": "[L1] Ansible Playbook — مقدماتی",
+      "title_en": "[L1] Ansible Playbook — Junior",
+      "fields": {
+        "lessons": "## [L1] Ansible Playbook — مقدماتی\n\n### مثال کاربردی\n# playbook نمونهٔ read-only؛ ماژول دقیق را با collection پلتفرم تطبیق دهید\n- name: Collect network facts\n  hosts: lab_routers\n  gather_facts: false\n  tasks:\n    - name: Query device facts\n      ansible.builtin.debug:\n        msg: \"اجرای واقعی facts به ماژول پلتفرم وابسته است\"\n\n### فرمان‌ها و روش اجرا\nansible --version\nansible-inventory -i inventory.yml --list\nansible-playbook -i inventory.yml site.yml --syntax-check\nansible-playbook -i inventory.yml site.yml --check --diff\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0003",
+      "title_fa": "[L2] Ansible Playbook — ادمین",
+      "title_en": "[L2] Ansible Playbook — Admin",
+      "fields": {
+        "lessons": "## [L2] Ansible Playbook — ادمین\n\n### مثال کاربردی\n# playbook نمونهٔ read-only؛ ماژول دقیق را با collection پلتفرم تطبیق دهید\n- name: Collect network facts\n  hosts: lab_routers\n  gather_facts: false\n  tasks:\n    - name: Query device facts\n      ansible.builtin.debug:\n        msg: \"اجرای واقعی facts به ماژول پلتفرم وابسته است\"\n\n### فرمان‌ها و روش اجرا\nansible --version\nansible-inventory -i inventory.yml --list\nansible-playbook -i inventory.yml site.yml --syntax-check\nansible-playbook -i inventory.yml site.yml --check --diff\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0004",
+      "title_fa": "[L3] Ansible Playbook — مهندس",
+      "title_en": "[L3] Ansible Playbook — Senior",
+      "fields": {
+        "lessons": "## [L3] Ansible Playbook — مهندس\n\n### مثال کاربردی\n# playbook نمونهٔ read-only؛ ماژول دقیق را با collection پلتفرم تطبیق دهید\n- name: Collect network facts\n  hosts: lab_routers\n  gather_facts: false\n  tasks:\n    - name: Query device facts\n      ansible.builtin.debug:\n        msg: \"اجرای واقعی facts به ماژول پلتفرم وابسته است\"\n\n### فرمان‌ها و روش اجرا\nansible --version\nansible-inventory -i inventory.yml --list\nansible-playbook -i inventory.yml site.yml --syntax-check\nansible-playbook -i inventory.yml site.yml --check --diff\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0005",
+      "title_fa": "[L4] Ansible Playbook — خبره",
+      "title_en": "[L4] Ansible Playbook — Architect",
+      "fields": {
+        "lessons": "## [L4] Ansible Playbook — خبره\n\n### مثال کاربردی\n# playbook نمونهٔ read-only؛ ماژول دقیق را با collection پلتفرم تطبیق دهید\n- name: Collect network facts\n  hosts: lab_routers\n  gather_facts: false\n  tasks:\n    - name: Query device facts\n      ansible.builtin.debug:\n        msg: \"اجرای واقعی facts به ماژول پلتفرم وابسته است\"\n\n### فرمان‌ها و روش اجرا\nansible --version\nansible-inventory -i inventory.yml --list\nansible-playbook -i inventory.yml site.yml --syntax-check\nansible-playbook -i inventory.yml site.yml --check --diff\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0006",
+      "title_fa": "[L0] Inventory — آشنایی",
+      "title_en": "[L0] Ansible Inventory — Intro",
+      "fields": {
+        "lessons": "## [L0] Inventory — آشنایی\n\n### مثال کاربردی\nall:\n  children:\n    lab_routers:\n      hosts:\n        rtr-lab-01:\n          ansible_host: 192.0.2.21\n          ansible_connection: ansible.netcommon.network_cli\n          ansible_network_os: cisco.ios.ios\n\n\n### فرمان‌ها و روش اجرا\nansible-inventory -i inventory.yml --graph\nansible-inventory -i inventory.yml --host lab-sw1\nansible all -i inventory.yml --list-hosts\nansible-playbook -i inventory.yml site.yml --list-hosts\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0007",
+      "title_fa": "[L1] Inventory — مقدماتی",
+      "title_en": "[L1] Ansible Inventory — Junior",
+      "fields": {
+        "lessons": "## [L1] Inventory — مقدماتی\n\n### مثال کاربردی\nall:\n  children:\n    lab_routers:\n      hosts:\n        rtr-lab-01:\n          ansible_host: 192.0.2.21\n          ansible_connection: ansible.netcommon.network_cli\n          ansible_network_os: cisco.ios.ios\n\n\n### فرمان‌ها و روش اجرا\nansible-inventory -i inventory.yml --graph\nansible-inventory -i inventory.yml --host lab-sw1\nansible all -i inventory.yml --list-hosts\nansible-playbook -i inventory.yml site.yml --list-hosts\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0008",
+      "title_fa": "[L2] Inventory — ادمین",
+      "title_en": "[L2] Ansible Inventory — Admin",
+      "fields": {
+        "lessons": "## [L2] Inventory — ادمین\n\n### مثال کاربردی\nall:\n  children:\n    lab_routers:\n      hosts:\n        rtr-lab-01:\n          ansible_host: 192.0.2.21\n          ansible_connection: ansible.netcommon.network_cli\n          ansible_network_os: cisco.ios.ios\n\n\n### فرمان‌ها و روش اجرا\nansible-inventory -i inventory.yml --graph\nansible-inventory -i inventory.yml --host lab-sw1\nansible all -i inventory.yml --list-hosts\nansible-playbook -i inventory.yml site.yml --list-hosts\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0009",
+      "title_fa": "[L3] Inventory — مهندس",
+      "title_en": "[L3] Ansible Inventory — Senior",
+      "fields": {
+        "lessons": "## [L3] Inventory — مهندس\n\n### مثال کاربردی\nall:\n  children:\n    lab_routers:\n      hosts:\n        rtr-lab-01:\n          ansible_host: 192.0.2.21\n          ansible_connection: ansible.netcommon.network_cli\n          ansible_network_os: cisco.ios.ios\n\n\n### فرمان‌ها و روش اجرا\nansible-inventory -i inventory.yml --graph\nansible-inventory -i inventory.yml --host lab-sw1\nansible all -i inventory.yml --list-hosts\nansible-playbook -i inventory.yml site.yml --list-hosts\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0010",
+      "title_fa": "[L4] Inventory — خبره",
+      "title_en": "[L4] Ansible Inventory — Architect",
+      "fields": {
+        "lessons": "## [L4] Inventory — خبره\n\n### مثال کاربردی\nall:\n  children:\n    lab_routers:\n      hosts:\n        rtr-lab-01:\n          ansible_host: 192.0.2.21\n          ansible_connection: ansible.netcommon.network_cli\n          ansible_network_os: cisco.ios.ios\n\n\n### فرمان‌ها و روش اجرا\nansible-inventory -i inventory.yml --graph\nansible-inventory -i inventory.yml --host lab-sw1\nansible all -i inventory.yml --list-hosts\nansible-playbook -i inventory.yml site.yml --list-hosts\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0011",
+      "title_fa": "[L0] Terraform State — آشنایی",
+      "title_en": "[L0] Terraform State — Intro",
+      "fields": {
+        "lessons": "## [L0] Terraform State — آشنایی\n\n### مثال کاربردی\n`terraform plan` تغییر پیشنهادی را پیش از `apply` نمایش می‌دهد. آدرس `example_resource.demo` صرفاً الگو است و باید با resource واقعی پیکربندی جایگزین شود.\n\n### فرمان‌ها و روش اجرا\nterraform init\nterraform validate\nterraform plan\nterraform state list\nterraform state show 'example_resource.demo'\n# دستورات بالا را فقط در دایرکتوری پیکربندی آزمایشی اجرا کنید.\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0012",
+      "title_fa": "[L1] Terraform State — مقدماتی",
+      "title_en": "[L1] Terraform State — Junior",
+      "fields": {
+        "lessons": "## [L1] Terraform State — مقدماتی\n\n### مثال کاربردی\n`terraform plan` تغییر پیشنهادی را پیش از `apply` نمایش می‌دهد. آدرس `example_resource.demo` صرفاً الگو است و باید با resource واقعی پیکربندی جایگزین شود.\n\n### فرمان‌ها و روش اجرا\nterraform init\nterraform validate\nterraform plan\nterraform state list\nterraform state show 'example_resource.demo'\n# دستورات بالا را فقط در دایرکتوری پیکربندی آزمایشی اجرا کنید.\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0013",
+      "title_fa": "[L2] Terraform State — ادمین",
+      "title_en": "[L2] Terraform State — Admin",
+      "fields": {
+        "lessons": "## [L2] Terraform State — ادمین\n\n### مثال کاربردی\n`terraform plan` تغییر پیشنهادی را پیش از `apply` نمایش می‌دهد. آدرس `example_resource.demo` صرفاً الگو است و باید با resource واقعی پیکربندی جایگزین شود.\n\n### فرمان‌ها و روش اجرا\nterraform init\nterraform validate\nterraform plan\nterraform state list\nterraform state show 'example_resource.demo'\n# دستورات بالا را فقط در دایرکتوری پیکربندی آزمایشی اجرا کنید.\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0014",
+      "title_fa": "[L3] Terraform State — مهندس",
+      "title_en": "[L3] Terraform State — Senior",
+      "fields": {
+        "lessons": "## [L3] Terraform State — مهندس\n\n### مثال کاربردی\n`terraform plan` تغییر پیشنهادی را پیش از `apply` نمایش می‌دهد. آدرس `example_resource.demo` صرفاً الگو است و باید با resource واقعی پیکربندی جایگزین شود.\n\n### فرمان‌ها و روش اجرا\nterraform init\nterraform validate\nterraform plan\nterraform state list\nterraform state show 'example_resource.demo'\n# دستورات بالا را فقط در دایرکتوری پیکربندی آزمایشی اجرا کنید.\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0015",
+      "title_fa": "[L4] Terraform State — خبره",
+      "title_en": "[L4] Terraform State — Architect",
+      "fields": {
+        "lessons": "## [L4] Terraform State — خبره\n\n### مثال کاربردی\n`terraform plan` تغییر پیشنهادی را پیش از `apply` نمایش می‌دهد. آدرس `example_resource.demo` صرفاً الگو است و باید با resource واقعی پیکربندی جایگزین شود.\n\n### فرمان‌ها و روش اجرا\nterraform init\nterraform validate\nterraform plan\nterraform state list\nterraform state show 'example_resource.demo'\n# دستورات بالا را فقط در دایرکتوری پیکربندی آزمایشی اجرا کنید.\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0016",
+      "title_fa": "[L0] Git Workflow — آشنایی",
+      "title_en": "[L0] Git Workflow for Automation — Intro",
+      "fields": {
+        "lessons": "## [L0] Git Workflow — آشنایی\n\n### مثال کاربردی\nقبل از `git add` فایل‌های شامل credential یا state را بررسی کنید. `.gitignore` مانع commit فایل‌های از قبل tracked نمی‌شود و پاک‌کردن secret از آخرین commit لزوماً آن را از تاریخچه حذف نمی‌کند.\n\n### فرمان‌ها و روش اجرا\ngit status\ngit diff --check\ngit diff --staged\ngit switch -c change/lab-snmp\ngit add playbooks/ inventory/\ngit commit -m \"Add read-only lab network check\"\ngit log --oneline --decorate -10\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0017",
+      "title_fa": "[L1] Git Workflow — مقدماتی",
+      "title_en": "[L1] Git Workflow for Automation — Junior",
+      "fields": {
+        "lessons": "## [L1] Git Workflow — مقدماتی\n\n### مثال کاربردی\nقبل از `git add` فایل‌های شامل credential یا state را بررسی کنید. `.gitignore` مانع commit فایل‌های از قبل tracked نمی‌شود و پاک‌کردن secret از آخرین commit لزوماً آن را از تاریخچه حذف نمی‌کند.\n\n### فرمان‌ها و روش اجرا\ngit status\ngit diff --check\ngit diff --staged\ngit switch -c change/lab-snmp\ngit add playbooks/ inventory/\ngit commit -m \"Add read-only lab network check\"\ngit log --oneline --decorate -10\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0018",
+      "title_fa": "[L2] Git Workflow — ادمین",
+      "title_en": "[L2] Git Workflow for Automation — Admin",
+      "fields": {
+        "lessons": "## [L2] Git Workflow — ادمین\n\n### مثال کاربردی\nقبل از `git add` فایل‌های شامل credential یا state را بررسی کنید. `.gitignore` مانع commit فایل‌های از قبل tracked نمی‌شود و پاک‌کردن secret از آخرین commit لزوماً آن را از تاریخچه حذف نمی‌کند.\n\n### فرمان‌ها و روش اجرا\ngit status\ngit diff --check\ngit diff --staged\ngit switch -c change/lab-snmp\ngit add playbooks/ inventory/\ngit commit -m \"Add read-only lab network check\"\ngit log --oneline --decorate -10\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0019",
+      "title_fa": "[L3] Git Workflow — مهندس",
+      "title_en": "[L3] Git Workflow for Automation — Senior",
+      "fields": {
+        "lessons": "## [L3] Git Workflow — مهندس\n\n### مثال کاربردی\nقبل از `git add` فایل‌های شامل credential یا state را بررسی کنید. `.gitignore` مانع commit فایل‌های از قبل tracked نمی‌شود و پاک‌کردن secret از آخرین commit لزوماً آن را از تاریخچه حذف نمی‌کند.\n\n### فرمان‌ها و روش اجرا\ngit status\ngit diff --check\ngit diff --staged\ngit switch -c change/lab-snmp\ngit add playbooks/ inventory/\ngit commit -m \"Add read-only lab network check\"\ngit log --oneline --decorate -10\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0020",
+      "title_fa": "[L4] Git Workflow — خبره",
+      "title_en": "[L4] Git Workflow for Automation — Architect",
+      "fields": {
+        "lessons": "## [L4] Git Workflow — خبره\n\n### مثال کاربردی\nقبل از `git add` فایل‌های شامل credential یا state را بررسی کنید. `.gitignore` مانع commit فایل‌های از قبل tracked نمی‌شود و پاک‌کردن secret از آخرین commit لزوماً آن را از تاریخچه حذف نمی‌کند.\n\n### فرمان‌ها و روش اجرا\ngit status\ngit diff --check\ngit diff --staged\ngit switch -c change/lab-snmp\ngit add playbooks/ inventory/\ngit commit -m \"Add read-only lab network check\"\ngit log --oneline --decorate -10\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0021",
+      "title_fa": "[L0] CI برای شبکه — آشنایی",
+      "title_en": "[L0] CI for Network Automation — Intro",
+      "fields": {
+        "lessons": "## [L0] CI برای شبکه — آشنایی\n\n### مثال کاربردی\nفرمان Terraform فقط وقتی اجراشدنی است که دایرکتوری مذکور پیکربندی مناسب داشته باشد؛ syntax-check و validate را در lab نگه دارید و `apply` خودکار را بدون approval، state locking و scope محدود به production وصل نکنید.\n\n### فرمان‌ها و روش اجرا\npython -m compileall -q scripts/\npython -m unittest discover -s tests -v\nansible-playbook -i inventory/lab.yml site.yml --syntax-check\nterraform -chdir=infra/lab validate\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0022",
+      "title_fa": "[L1] CI برای شبکه — مقدماتی",
+      "title_en": "[L1] CI for Network Automation — Junior",
+      "fields": {
+        "lessons": "## [L1] CI برای شبکه — مقدماتی\n\n### مثال کاربردی\nفرمان Terraform فقط وقتی اجراشدنی است که دایرکتوری مذکور پیکربندی مناسب داشته باشد؛ syntax-check و validate را در lab نگه دارید و `apply` خودکار را بدون approval، state locking و scope محدود به production وصل نکنید.\n\n### فرمان‌ها و روش اجرا\npython -m compileall -q scripts/\npython -m unittest discover -s tests -v\nansible-playbook -i inventory/lab.yml site.yml --syntax-check\nterraform -chdir=infra/lab validate\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0023",
+      "title_fa": "[L2] CI برای شبکه — ادمین",
+      "title_en": "[L2] CI for Network Automation — Admin",
+      "fields": {
+        "lessons": "## [L2] CI برای شبکه — ادمین\n\n### مثال کاربردی\nفرمان Terraform فقط وقتی اجراشدنی است که دایرکتوری مذکور پیکربندی مناسب داشته باشد؛ syntax-check و validate را در lab نگه دارید و `apply` خودکار را بدون approval، state locking و scope محدود به production وصل نکنید.\n\n### فرمان‌ها و روش اجرا\npython -m compileall -q scripts/\npython -m unittest discover -s tests -v\nansible-playbook -i inventory/lab.yml site.yml --syntax-check\nterraform -chdir=infra/lab validate\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0024",
+      "title_fa": "[L3] CI برای شبکه — مهندس",
+      "title_en": "[L3] CI for Network Automation — Senior",
+      "fields": {
+        "lessons": "## [L3] CI برای شبکه — مهندس\n\n### مثال کاربردی\nفرمان Terraform فقط وقتی اجراشدنی است که دایرکتوری مذکور پیکربندی مناسب داشته باشد؛ syntax-check و validate را در lab نگه دارید و `apply` خودکار را بدون approval، state locking و scope محدود به production وصل نکنید.\n\n### فرمان‌ها و روش اجرا\npython -m compileall -q scripts/\npython -m unittest discover -s tests -v\nansible-playbook -i inventory/lab.yml site.yml --syntax-check\nterraform -chdir=infra/lab validate\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv002:l0025",
+      "title_fa": "[L4] CI برای شبکه — خبره",
+      "title_en": "[L4] CI for Network Automation — Architect",
+      "fields": {
+        "lessons": "## [L4] CI برای شبکه — خبره\n\n### مثال کاربردی\nفرمان Terraform فقط وقتی اجراشدنی است که دایرکتوری مذکور پیکربندی مناسب داشته باشد؛ syntax-check و validate را در lab نگه دارید و `apply` خودکار را بدون approval، state locking و scope محدود به production وصل نکنید.\n\n### فرمان‌ها و روش اجرا\npython -m compileall -q scripts/\npython -m unittest discover -s tests -v\nansible-playbook -i inventory/lab.yml site.yml --syntax-check\nterraform -chdir=infra/lab validate\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0001",
+      "title_fa": "[L0] ChatOps — آشنایی",
+      "title_en": "[L0] ChatOps — Intro",
+      "fields": {
+        "lessons": "## [L0] ChatOps — آشنایی\n\n### مثال کاربردی\n«وضعیت روتر آزمایشگاه را نشان بده» می‌تواند به action ثابت `read_only_health` نگاشت شود. درخواست «هرچه لازم است firewall را تغییر بده» باید رد یا به گردش‌کار تأییدشده تبدیل شود.\n\n### فرمان‌ها و روش اجرا\n# الگوی امن: API عملیاتی از پیش‌تعریف‌شده، نه اجرای متن آزاد shell\nPOST /ops/v1/health-check\nContent-Type: application/json\n{\"target\":\"lab-router-01\",\"action\":\"read_only_health\",\"request_id\":\"change-123\"}\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0002",
+      "title_fa": "[L1] ChatOps — مقدماتی",
+      "title_en": "[L1] ChatOps — Junior",
+      "fields": {
+        "lessons": "## [L1] ChatOps — مقدماتی\n\n### مثال کاربردی\n«وضعیت روتر آزمایشگاه را نشان بده» می‌تواند به action ثابت `read_only_health` نگاشت شود. درخواست «هرچه لازم است firewall را تغییر بده» باید رد یا به گردش‌کار تأییدشده تبدیل شود.\n\n### فرمان‌ها و روش اجرا\n# الگوی امن: API عملیاتی از پیش‌تعریف‌شده، نه اجرای متن آزاد shell\nPOST /ops/v1/health-check\nContent-Type: application/json\n{\"target\":\"lab-router-01\",\"action\":\"read_only_health\",\"request_id\":\"change-123\"}\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0003",
+      "title_fa": "[L2] ChatOps — ادمین",
+      "title_en": "[L2] ChatOps — Admin",
+      "fields": {
+        "lessons": "## [L2] ChatOps — ادمین\n\n### مثال کاربردی\n«وضعیت روتر آزمایشگاه را نشان بده» می‌تواند به action ثابت `read_only_health` نگاشت شود. درخواست «هرچه لازم است firewall را تغییر بده» باید رد یا به گردش‌کار تأییدشده تبدیل شود.\n\n### فرمان‌ها و روش اجرا\n# الگوی امن: API عملیاتی از پیش‌تعریف‌شده، نه اجرای متن آزاد shell\nPOST /ops/v1/health-check\nContent-Type: application/json\n{\"target\":\"lab-router-01\",\"action\":\"read_only_health\",\"request_id\":\"change-123\"}\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0004",
+      "title_fa": "[L3] ChatOps — مهندس",
+      "title_en": "[L3] ChatOps — Senior",
+      "fields": {
+        "lessons": "## [L3] ChatOps — مهندس\n\n### مثال کاربردی\n«وضعیت روتر آزمایشگاه را نشان بده» می‌تواند به action ثابت `read_only_health` نگاشت شود. درخواست «هرچه لازم است firewall را تغییر بده» باید رد یا به گردش‌کار تأییدشده تبدیل شود.\n\n### فرمان‌ها و روش اجرا\n# الگوی امن: API عملیاتی از پیش‌تعریف‌شده، نه اجرای متن آزاد shell\nPOST /ops/v1/health-check\nContent-Type: application/json\n{\"target\":\"lab-router-01\",\"action\":\"read_only_health\",\"request_id\":\"change-123\"}\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0005",
+      "title_fa": "[L4] ChatOps — خبره",
+      "title_en": "[L4] ChatOps — Architect",
+      "fields": {
+        "lessons": "## [L4] ChatOps — خبره\n\n### مثال کاربردی\n«وضعیت روتر آزمایشگاه را نشان بده» می‌تواند به action ثابت `read_only_health` نگاشت شود. درخواست «هرچه لازم است firewall را تغییر بده» باید رد یا به گردش‌کار تأییدشده تبدیل شود.\n\n### فرمان‌ها و روش اجرا\n# الگوی امن: API عملیاتی از پیش‌تعریف‌شده، نه اجرای متن آزاد shell\nPOST /ops/v1/health-check\nContent-Type: application/json\n{\"target\":\"lab-router-01\",\"action\":\"read_only_health\",\"request_id\":\"change-123\"}\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0006",
+      "title_fa": "[L0] RAG روی مستندات — آشنایی",
+      "title_en": "[L0] RAG for IT Documentation — Intro",
+      "fields": {
+        "lessons": "## [L0] RAG روی مستندات — آشنایی\n\n### مثال کاربردی\nپاسخ «چگونه VPN سایت را بازیابی کنم؟» باید به نسخهٔ مصوب runbook و تاریخ آن ارجاع دهد و هر مرحلهٔ پرخطر را از متن بازیابی‌شده جدا و نیازمند تأیید نشان دهد.\n\n### فرمان‌ها و روش اجرا\n# طرح سادهٔ pipeline\n1. ingest approved documents\n2. preserve source_id, version, timestamp, ACL metadata\n3. retrieve authorized chunks for query\n4. generate answer with citations to chunk IDs\n5. validate citations and refuse when evidence is missing\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0007",
+      "title_fa": "[L1] RAG روی مستندات — مقدماتی",
+      "title_en": "[L1] RAG for IT Documentation — Junior",
+      "fields": {
+        "lessons": "## [L1] RAG روی مستندات — مقدماتی\n\n### مثال کاربردی\nپاسخ «چگونه VPN سایت را بازیابی کنم؟» باید به نسخهٔ مصوب runbook و تاریخ آن ارجاع دهد و هر مرحلهٔ پرخطر را از متن بازیابی‌شده جدا و نیازمند تأیید نشان دهد.\n\n### فرمان‌ها و روش اجرا\n# طرح سادهٔ pipeline\n1. ingest approved documents\n2. preserve source_id, version, timestamp, ACL metadata\n3. retrieve authorized chunks for query\n4. generate answer with citations to chunk IDs\n5. validate citations and refuse when evidence is missing\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0008",
+      "title_fa": "[L2] RAG روی مستندات — ادمین",
+      "title_en": "[L2] RAG for IT Documentation — Admin",
+      "fields": {
+        "lessons": "## [L2] RAG روی مستندات — ادمین\n\n### مثال کاربردی\nپاسخ «چگونه VPN سایت را بازیابی کنم؟» باید به نسخهٔ مصوب runbook و تاریخ آن ارجاع دهد و هر مرحلهٔ پرخطر را از متن بازیابی‌شده جدا و نیازمند تأیید نشان دهد.\n\n### فرمان‌ها و روش اجرا\n# طرح سادهٔ pipeline\n1. ingest approved documents\n2. preserve source_id, version, timestamp, ACL metadata\n3. retrieve authorized chunks for query\n4. generate answer with citations to chunk IDs\n5. validate citations and refuse when evidence is missing\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0009",
+      "title_fa": "[L3] RAG روی مستندات — مهندس",
+      "title_en": "[L3] RAG for IT Documentation — Senior",
+      "fields": {
+        "lessons": "## [L3] RAG روی مستندات — مهندس\n\n### مثال کاربردی\nپاسخ «چگونه VPN سایت را بازیابی کنم؟» باید به نسخهٔ مصوب runbook و تاریخ آن ارجاع دهد و هر مرحلهٔ پرخطر را از متن بازیابی‌شده جدا و نیازمند تأیید نشان دهد.\n\n### فرمان‌ها و روش اجرا\n# طرح سادهٔ pipeline\n1. ingest approved documents\n2. preserve source_id, version, timestamp, ACL metadata\n3. retrieve authorized chunks for query\n4. generate answer with citations to chunk IDs\n5. validate citations and refuse when evidence is missing\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0010",
+      "title_fa": "[L4] RAG روی مستندات — خبره",
+      "title_en": "[L4] RAG for IT Documentation — Architect",
+      "fields": {
+        "lessons": "## [L4] RAG روی مستندات — خبره\n\n### مثال کاربردی\nپاسخ «چگونه VPN سایت را بازیابی کنم؟» باید به نسخهٔ مصوب runbook و تاریخ آن ارجاع دهد و هر مرحلهٔ پرخطر را از متن بازیابی‌شده جدا و نیازمند تأیید نشان دهد.\n\n### فرمان‌ها و روش اجرا\n# طرح سادهٔ pipeline\n1. ingest approved documents\n2. preserve source_id, version, timestamp, ACL metadata\n3. retrieve authorized chunks for query\n4. generate answer with citations to chunk IDs\n5. validate citations and refuse when evidence is missing\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0011",
+      "title_fa": "[L0] Ollama محلی — آشنایی",
+      "title_en": "[L0] Local Ollama Models — Intro",
+      "fields": {
+        "lessons": "## [L0] Ollama محلی — آشنایی\n\n### مثال کاربردی\nپس از pull کردن مدل مجاز، یک prompt بدون دادهٔ حساس اجرا کنید؛ نسخهٔ مدل و زمان پاسخ را ثبت کنید؛ endpoint مدیریت را به شبکهٔ عمومی bind نکنید.\n\n### فرمان‌ها و روش اجرا\nollama --version\nollama list\nollama pull llama3.2\nollama run llama3.2\n# نام مدل نمونه است؛ نیازمندی، مجوز و hash/tag مدل را قبل از استفاده بررسی کنید.\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0012",
+      "title_fa": "[L1] Ollama محلی — مقدماتی",
+      "title_en": "[L1] Local Ollama Models — Junior",
+      "fields": {
+        "lessons": "## [L1] Ollama محلی — مقدماتی\n\n### مثال کاربردی\nپس از pull کردن مدل مجاز، یک prompt بدون دادهٔ حساس اجرا کنید؛ نسخهٔ مدل و زمان پاسخ را ثبت کنید؛ endpoint مدیریت را به شبکهٔ عمومی bind نکنید.\n\n### فرمان‌ها و روش اجرا\nollama --version\nollama list\nollama pull llama3.2\nollama run llama3.2\n# نام مدل نمونه است؛ نیازمندی، مجوز و hash/tag مدل را قبل از استفاده بررسی کنید.\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0013",
+      "title_fa": "[L2] Ollama محلی — ادمین",
+      "title_en": "[L2] Local Ollama Models — Admin",
+      "fields": {
+        "lessons": "## [L2] Ollama محلی — ادمین\n\n### مثال کاربردی\nپس از pull کردن مدل مجاز، یک prompt بدون دادهٔ حساس اجرا کنید؛ نسخهٔ مدل و زمان پاسخ را ثبت کنید؛ endpoint مدیریت را به شبکهٔ عمومی bind نکنید.\n\n### فرمان‌ها و روش اجرا\nollama --version\nollama list\nollama pull llama3.2\nollama run llama3.2\n# نام مدل نمونه است؛ نیازمندی، مجوز و hash/tag مدل را قبل از استفاده بررسی کنید.\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0014",
+      "title_fa": "[L3] Ollama محلی — مهندس",
+      "title_en": "[L3] Local Ollama Models — Senior",
+      "fields": {
+        "lessons": "## [L3] Ollama محلی — مهندس\n\n### مثال کاربردی\nپس از pull کردن مدل مجاز، یک prompt بدون دادهٔ حساس اجرا کنید؛ نسخهٔ مدل و زمان پاسخ را ثبت کنید؛ endpoint مدیریت را به شبکهٔ عمومی bind نکنید.\n\n### فرمان‌ها و روش اجرا\nollama --version\nollama list\nollama pull llama3.2\nollama run llama3.2\n# نام مدل نمونه است؛ نیازمندی، مجوز و hash/tag مدل را قبل از استفاده بررسی کنید.\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0015",
+      "title_fa": "[L4] Ollama محلی — خبره",
+      "title_en": "[L4] Local Ollama Models — Architect",
+      "fields": {
+        "lessons": "## [L4] Ollama محلی — خبره\n\n### مثال کاربردی\nپس از pull کردن مدل مجاز، یک prompt بدون دادهٔ حساس اجرا کنید؛ نسخهٔ مدل و زمان پاسخ را ثبت کنید؛ endpoint مدیریت را به شبکهٔ عمومی bind نکنید.\n\n### فرمان‌ها و روش اجرا\nollama --version\nollama list\nollama pull llama3.2\nollama run llama3.2\n# نام مدل نمونه است؛ نیازمندی، مجوز و hash/tag مدل را قبل از استفاده بررسی کنید.\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0016",
+      "title_fa": "[L0] Anomaly Detection مانیتورینگ — آشنایی",
+      "title_en": "[L0] Anomaly Detection for Monitoring — Intro",
+      "fields": {
+        "lessons": "## [L0] Anomaly Detection مانیتورینگ — آشنایی\n\n### مثال کاربردی\nدر نمونه، 80 نسبت به مشاهدات قبلی بالاتر است، اما قبل از ایجاد Incident باید بدانیم متریک چیست، واحد آن چیست، آیا maintenance بوده و آیا data gap وجود داشته است.\n\n### فرمان‌ها و روش اجرا\n# حداقل تحلیل قابل‌تکرار در Python\nimport statistics\nvalues = [22, 24, 23, 25, 24, 80]  # دادهٔ ساختگی\nbaseline = statistics.mean(values[:-1])\nprint(\"baseline:\", baseline, \"latest:\", values[-1], \"delta:\", values[-1] - baseline)\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0017",
+      "title_fa": "[L1] Anomaly Detection مانیتورینگ — مقدماتی",
+      "title_en": "[L1] Anomaly Detection for Monitoring — Junior",
+      "fields": {
+        "lessons": "## [L1] Anomaly Detection مانیتورینگ — مقدماتی\n\n### مثال کاربردی\nدر نمونه، 80 نسبت به مشاهدات قبلی بالاتر است، اما قبل از ایجاد Incident باید بدانیم متریک چیست، واحد آن چیست، آیا maintenance بوده و آیا data gap وجود داشته است.\n\n### فرمان‌ها و روش اجرا\n# حداقل تحلیل قابل‌تکرار در Python\nimport statistics\nvalues = [22, 24, 23, 25, 24, 80]  # دادهٔ ساختگی\nbaseline = statistics.mean(values[:-1])\nprint(\"baseline:\", baseline, \"latest:\", values[-1], \"delta:\", values[-1] - baseline)\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0018",
+      "title_fa": "[L2] Anomaly Detection مانیتورینگ — ادمین",
+      "title_en": "[L2] Anomaly Detection for Monitoring — Admin",
+      "fields": {
+        "lessons": "## [L2] Anomaly Detection مانیتورینگ — ادمین\n\n### مثال کاربردی\nدر نمونه، 80 نسبت به مشاهدات قبلی بالاتر است، اما قبل از ایجاد Incident باید بدانیم متریک چیست، واحد آن چیست، آیا maintenance بوده و آیا data gap وجود داشته است.\n\n### فرمان‌ها و روش اجرا\n# حداقل تحلیل قابل‌تکرار در Python\nimport statistics\nvalues = [22, 24, 23, 25, 24, 80]  # دادهٔ ساختگی\nbaseline = statistics.mean(values[:-1])\nprint(\"baseline:\", baseline, \"latest:\", values[-1], \"delta:\", values[-1] - baseline)\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0019",
+      "title_fa": "[L3] Anomaly Detection مانیتورینگ — مهندس",
+      "title_en": "[L3] Anomaly Detection for Monitoring — Senior",
+      "fields": {
+        "lessons": "## [L3] Anomaly Detection مانیتورینگ — مهندس\n\n### مثال کاربردی\nدر نمونه، 80 نسبت به مشاهدات قبلی بالاتر است، اما قبل از ایجاد Incident باید بدانیم متریک چیست، واحد آن چیست، آیا maintenance بوده و آیا data gap وجود داشته است.\n\n### فرمان‌ها و روش اجرا\n# حداقل تحلیل قابل‌تکرار در Python\nimport statistics\nvalues = [22, 24, 23, 25, 24, 80]  # دادهٔ ساختگی\nbaseline = statistics.mean(values[:-1])\nprint(\"baseline:\", baseline, \"latest:\", values[-1], \"delta:\", values[-1] - baseline)\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0020",
+      "title_fa": "[L4] Anomaly Detection مانیتورینگ — خبره",
+      "title_en": "[L4] Anomaly Detection for Monitoring — Architect",
+      "fields": {
+        "lessons": "## [L4] Anomaly Detection مانیتورینگ — خبره\n\n### مثال کاربردی\nدر نمونه، 80 نسبت به مشاهدات قبلی بالاتر است، اما قبل از ایجاد Incident باید بدانیم متریک چیست، واحد آن چیست، آیا maintenance بوده و آیا data gap وجود داشته است.\n\n### فرمان‌ها و روش اجرا\n# حداقل تحلیل قابل‌تکرار در Python\nimport statistics\nvalues = [22, 24, 23, 25, 24, 80]  # دادهٔ ساختگی\nbaseline = statistics.mean(values[:-1])\nprint(\"baseline:\", baseline, \"latest:\", values[-1], \"delta:\", values[-1] - baseline)\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0021",
+      "title_fa": "[L0] تولید Runbook با AI — آشنایی",
+      "title_en": "[L0] AI-assisted Runbook Authoring — Intro",
+      "fields": {
+        "lessons": "## [L0] تولید Runbook با AI — آشنایی\n\n### مثال کاربردی\nپیش‌نویس برای «عیب‌یابی DNS» باید فرمان‌های خواندنی مثل nslookup/Resolve-DnsName را از تغییر DNS server جدا کند؛ هر تغییر باید دستور بازگشت، مقصد دقیق و معیار قبولی داشته باشد.\n\n### فرمان‌ها و روش اجرا\n# قالب پیشنهادی هر اقدام در runbook\n- هدف و دامنه\n- پیش‌شرط/نسخه/سطح دسترسی\n- backup و pre-check\n- دستور با placeholderهای واضح\n- خروجی مورد انتظار و verify\n- شرط توقف/rollback\n- evidence و timestamp\n\nنکته: ابتدا فقط فرمان/کد خواندنی را اجرا کنید؛ خروجی را قبل از ادامه توضیح دهید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0022",
+      "title_fa": "[L1] تولید Runbook با AI — مقدماتی",
+      "title_en": "[L1] AI-assisted Runbook Authoring — Junior",
+      "fields": {
+        "lessons": "## [L1] تولید Runbook با AI — مقدماتی\n\n### مثال کاربردی\nپیش‌نویس برای «عیب‌یابی DNS» باید فرمان‌های خواندنی مثل nslookup/Resolve-DnsName را از تغییر DNS server جدا کند؛ هر تغییر باید دستور بازگشت، مقصد دقیق و معیار قبولی داشته باشد.\n\n### فرمان‌ها و روش اجرا\n# قالب پیشنهادی هر اقدام در runbook\n- هدف و دامنه\n- پیش‌شرط/نسخه/سطح دسترسی\n- backup و pre-check\n- دستور با placeholderهای واضح\n- خروجی مورد انتظار و verify\n- شرط توقف/rollback\n- evidence و timestamp\n\nقبل از اجرای واقعی، مقصد و حساب را با یک محیط آزمایشگاهی تطبیق دهید و هر گزینه را جداگانه بررسی کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0023",
+      "title_fa": "[L2] تولید Runbook با AI — ادمین",
+      "title_en": "[L2] AI-assisted Runbook Authoring — Admin",
+      "fields": {
+        "lessons": "## [L2] تولید Runbook با AI — ادمین\n\n### مثال کاربردی\nپیش‌نویس برای «عیب‌یابی DNS» باید فرمان‌های خواندنی مثل nslookup/Resolve-DnsName را از تغییر DNS server جدا کند؛ هر تغییر باید دستور بازگشت، مقصد دقیق و معیار قبولی داشته باشد.\n\n### فرمان‌ها و روش اجرا\n# قالب پیشنهادی هر اقدام در runbook\n- هدف و دامنه\n- پیش‌شرط/نسخه/سطح دسترسی\n- backup و pre-check\n- دستور با placeholderهای واضح\n- خروجی مورد انتظار و verify\n- شرط توقف/rollback\n- evidence و timestamp\n\nبرای اجرای عملیاتی، timeout، مدیریت exception، log بدون secret و validation خروجی را به wrapper اضافه کنید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0024",
+      "title_fa": "[L3] تولید Runbook با AI — مهندس",
+      "title_en": "[L3] AI-assisted Runbook Authoring — Senior",
+      "fields": {
+        "lessons": "## [L3] تولید Runbook با AI — مهندس\n\n### مثال کاربردی\nپیش‌نویس برای «عیب‌یابی DNS» باید فرمان‌های خواندنی مثل nslookup/Resolve-DnsName را از تغییر DNS server جدا کند؛ هر تغییر باید دستور بازگشت، مقصد دقیق و معیار قبولی داشته باشد.\n\n### فرمان‌ها و روش اجرا\n# قالب پیشنهادی هر اقدام در runbook\n- هدف و دامنه\n- پیش‌شرط/نسخه/سطح دسترسی\n- backup و pre-check\n- دستور با placeholderهای واضح\n- خروجی مورد انتظار و verify\n- شرط توقف/rollback\n- evidence و timestamp\n\nنسخهٔ مهندسی باید تست، کنترل تعداد هدف‌ها، concurrency limit، idempotency و راهکار rollback داشته باشد.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
+    },
+    {
+      "uid": "lesson:ch51:lv003:l0025",
+      "title_fa": "[L4] تولید Runbook با AI — خبره",
+      "title_en": "[L4] AI-assisted Runbook Authoring — Architect",
+      "fields": {
+        "lessons": "## [L4] تولید Runbook با AI — خبره\n\n### مثال کاربردی\nپیش‌نویس برای «عیب‌یابی DNS» باید فرمان‌های خواندنی مثل nslookup/Resolve-DnsName را از تغییر DNS server جدا کند؛ هر تغییر باید دستور بازگشت، مقصد دقیق و معیار قبولی داشته باشد.\n\n### فرمان‌ها و روش اجرا\n# قالب پیشنهادی هر اقدام در runbook\n- هدف و دامنه\n- پیش‌شرط/نسخه/سطح دسترسی\n- backup و pre-check\n- دستور با placeholderهای واضح\n- خروجی مورد انتظار و verify\n- شرط توقف/rollback\n- evidence و timestamp\n\nدر محیط سازمانی این نمونه را در plan → approval → canary → rollout → verification تقسیم کنید و دسترسی prod را از validation job جدا نگه دارید.\n\n### ملاحظات عملیاتی\nابتدا مقصد و دسترسی را بررسی کنید؛ از host-key verification، timeout و حداقل دسترسی استفاده کنید. secret را در log قرار ندهید و تغییرات نوشتنی را فقط پس از review و داشتن rollback اجرا کنید.\n\n### تمرین\nخروجی را در محیط آزمایشگاهی ثبت کنید و یک نتیجهٔ مورد انتظار و یک حالت خطا را بررسی کنید."
+      }
     }
   ]
 }
