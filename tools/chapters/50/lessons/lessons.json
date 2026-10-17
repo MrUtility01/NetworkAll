@@ -7,10 +7,75 @@
     "schema_version": 1,
     "chapter_order": 50,
     "chapter_title_fa": "SIEM ELK",
-    "chapter_title_en": "Chapter 50 — Siem Elk",
-    "merge_strategy": "by_title",
+    "chapter_title_en": "Chapter 50 — SIEM ELK",
+    "merge_strategy": "by_uid",
     "preserve_existing_records": true,
-    "source_of_truth_note": "Base definitions live in lessons/base_curriculum.json. Source-of-truth fields are separated into lessons, questions, answers, examples, commands and labs; chapter.json is a generated compatibility pack."
+    "source_of_truth_note": "Canonical source. Base definitions remain in lessons/base_curriculum.json. build/chapter.json is generated; do not edit directly."
   },
-  "items": []
+  "items": [
+    {
+      "uid": "lesson:ch50:enrich:001",
+      "title_fa": "1. Elastic Stack",
+      "title_en": "Elastic Stack",
+      "fields": {
+        "lessons": "## Elastic Stack\n\nجریان رویداد را از Agent تا ingest، data stream و داشبورد دنبال کنید؛ lag و health هر لایه جداگانه پایش شود.\n\n### تمرین عملی\nتأخیر ingest را با زمان رویداد مقایسه و parsing را جدا آزمایش کنید.\n\n### معیار قبولی\nنتیجه باید قابل بازتولید باشد؛ شواهد، محدودیت‌ها و مسیر بازگشت ثبت شوند. اقدامات محیط واقعی فقط با مجوز و دامنهٔ مشخص انجام شوند."
+      }
+    },
+    {
+      "uid": "lesson:ch50:enrich:002",
+      "title_fa": "2. Mapping و ECS",
+      "title_en": "Mapping و ECS",
+      "fields": {
+        "lessons": "## Mapping و ECS\n\nفیلدهای timestamp، IP، user و event action باید نوع مناسب داشته باشند تا query و aggregation قابل اتکا باشد.\n\n### تمرین عملی\nmapping را ابتدا در index آزمایشی تغییر دهید.\n\n### معیار قبولی\nنتیجه باید قابل بازتولید باشد؛ شواهد، محدودیت‌ها و مسیر بازگشت ثبت شوند. اقدامات محیط واقعی فقط با مجوز و دامنهٔ مشخص انجام شوند."
+      }
+    },
+    {
+      "uid": "lesson:ch50:enrich:003",
+      "title_fa": "3. Log pipeline",
+      "title_en": "Log pipeline",
+      "fields": {
+        "lessons": "## Log pipeline\n\nparser ورودی نامنظم را نرمال می‌کند؛ خطای parse را tag کنید و رویداد خام را نگه دارید.\n\n### تمرین عملی\nورودی معتبر و بدقالب را مقایسه کنید.\n\n### معیار قبولی\nنتیجه باید قابل بازتولید باشد؛ شواهد، محدودیت‌ها و مسیر بازگشت ثبت شوند. اقدامات محیط واقعی فقط با مجوز و دامنهٔ مشخص انجام شوند."
+      }
+    },
+    {
+      "uid": "lesson:ch50:enrich:004",
+      "title_fa": "4. جست‌وجو",
+      "title_en": "جست‌وجو",
+      "fields": {
+        "lessons": "## جست‌وجو\n\nquery را به بازهٔ زمانی و فیلد مشخص محدود کنید؛ exact match و full-text متفاوت‌اند.\n\n### تمرین عملی\nنتیجه را با دادهٔ مبنا تطبیق دهید.\n\n### معیار قبولی\nنتیجه باید قابل بازتولید باشد؛ شواهد، محدودیت‌ها و مسیر بازگشت ثبت شوند. اقدامات محیط واقعی فقط با مجوز و دامنهٔ مشخص انجام شوند."
+      }
+    },
+    {
+      "uid": "lesson:ch50:enrich:005",
+      "title_fa": "5. Detection engineering",
+      "title_en": "Detection engineering",
+      "fields": {
+        "lessons": "## Detection engineering\n\nقانون تشخیص به فرضیه، پنجره، استثنا، شدت و اقدام نیاز دارد؛ تعداد رخداد به‌تنهایی کافی نیست.\n\n### تمرین عملی\nنمونهٔ مثبت و منفی بسازید.\n\n### معیار قبولی\nنتیجه باید قابل بازتولید باشد؛ شواهد، محدودیت‌ها و مسیر بازگشت ثبت شوند. اقدامات محیط واقعی فقط با مجوز و دامنهٔ مشخص انجام شوند."
+      }
+    },
+    {
+      "uid": "lesson:ch50:enrich:006",
+      "title_fa": "6. Retention و ILM",
+      "title_en": "Retention و ILM",
+      "fields": {
+        "lessons": "## Retention و ILM\n\nنگهداری بر اساس ارزش امنیتی، حجم و الزام قانونی تعیین شود؛ rollover و delete را آزمایش کنید.\n\n### تمرین عملی\nRPO و نیاز بررسی حادثه را لحاظ کنید.\n\n### معیار قبولی\nنتیجه باید قابل بازتولید باشد؛ شواهد، محدودیت‌ها و مسیر بازگشت ثبت شوند. اقدامات محیط واقعی فقط با مجوز و دامنهٔ مشخص انجام شوند."
+      }
+    },
+    {
+      "uid": "lesson:ch50:enrich:007",
+      "title_fa": "7. امنیت خوشه",
+      "title_en": "امنیت خوشه",
+      "fields": {
+        "lessons": "## امنیت خوشه\n\nTLS، احراز هویت، حداقل دسترسی و جداسازی هویت ingest را اعمال کنید؛ secret در log نباشد.\n\n### تمرین عملی\nنقش read-only و ingest را آزمایش کنید.\n\n### معیار قبولی\nنتیجه باید قابل بازتولید باشد؛ شواهد، محدودیت‌ها و مسیر بازگشت ثبت شوند. اقدامات محیط واقعی فقط با مجوز و دامنهٔ مشخص انجام شوند."
+      }
+    },
+    {
+      "uid": "lesson:ch50:enrich:008",
+      "title_fa": "8. ظرفیت",
+      "title_en": "ظرفیت",
+      "fields": {
+        "lessons": "## ظرفیت\n\nheap، shard، disk watermark و ingest lag را با هم بسنجید؛ افزایش shard راه‌حل عمومی نیست.\n\n### تمرین عملی\nقبل و بعد از تغییر latency و خطا را ثبت کنید.\n\n### معیار قبولی\nنتیجه باید قابل بازتولید باشد؛ شواهد، محدودیت‌ها و مسیر بازگشت ثبت شوند. اقدامات محیط واقعی فقط با مجوز و دامنهٔ مشخص انجام شوند."
+      }
+    }
+  ]
 }
