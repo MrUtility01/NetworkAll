@@ -367,9 +367,12 @@ def main():
         if not isinstance(pack,dict):
             raise RuntimeError(f"Chapter {order} has no chapter pack to split")
         finish_chapter(chapter,order)
-    # Preserve unexpected old directories outside the numeric chapter root.
+    # Preserve unexpected and future chapter folders outside the app's canonical 1..68 set.
+    # Move their contents to an archive; never delete those contents.
     for item in list(CHAPTERS.iterdir()):
-        if item.is_dir() and not item.name.isdigit():
+        if not item.is_dir():
+            continue
+        if not item.name.isdigit() or int(item.name) > 68:
             move_contents(item,AUTHORING/"legacy_chapter_layout"/item.name)
             try: item.rmdir()
             except OSError: pass
