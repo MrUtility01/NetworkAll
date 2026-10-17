@@ -127,6 +127,6 @@ python tools/chapters/68/authoring/audit_coverage.py --strict
 
 گزارش شمارش اجراشده در GitHub Actions در [`authoring/coverage_report.json`](authoring/coverage_report.json) ثبت شده است. گزارش ۳۳ حوزهٔ مستقل را بررسی می‌کند و در وضعیت فعلی هیچ حوزه‌ای سهمیهٔ کامل چهارگانه را ندارد؛ عدد خام رکوردها به‌جای محتوای یکتا پذیرفته نشده است.
 
-موج اول غنی‌سازی افزایشی شامل ۴۵ مرجع فرمان جدید در ۹ حوزهٔ Ubiquiti، SNMP/Syslog، DNS/DHCP/NTP، Web/TLS، Cloud، Fortinet Management، Security Operations، Git و Backup/Recovery است. برای همین ۹ حوزه، مثال عملی، سناریوی آزمایش، واحد یادگیری، سؤال و answer key جداگانه نیز افزوده شده‌اند. این موج آغاز کار است، نه تکمیل سهمیهٔ ۵۰۰/۱۰۰/۱۰۰/۵۰۰.
+موج اول و دوم غنی‌سازی افزایشی در مجموع شامل ۱۲۵ مرجع فرمان جدید در ۹ حوزهٔ Ubiquiti، SNMP/Syslog، DNS/DHCP/NTP، Web/TLS، Cloud، Fortinet Management، Security Operations، Git و Backup/Recovery است. برای ۹ حوزهٔ موج اول و ۸ خانوادهٔ اصلی موج دوم، مثال عملی، سناریوی آزمایش، واحد یادگیری، سؤال و answer key جداگانه نیز افزوده شده‌اند. این موج‌ها آغاز کارند، نه تکمیل سهمیهٔ ۵۰۰/۱۰۰/۱۰۰/۵۰۰.
 
 فایل‌های افزوده از مسیرهای `examples/sources/encyclopedia/`, `labs/sources/encyclopedia/`, `lessons/sources/encyclopedia/`, `questions/sources/encyclopedia/` و `answers/sources/encyclopedia/` بارگذاری می‌شوند. ساخت ویندوز و اندروید باید این مسیرها را از طریق `scripts/assemble_chapter_packs.py` ادغام کند؛ خروجی تولیدی دستی ویرایش نشود.
