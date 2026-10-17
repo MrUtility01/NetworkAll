@@ -36,6 +36,9 @@ def find_pack_files():
     core_wave3_commands = ROOT / "tools/chapters/68/commands/sources/encyclopedia/commands_core_wave3.json"
     if core_wave3_commands.is_file():
         files.append(core_wave3_commands)
+    multi_technology_wave4 = ROOT / "tools/chapters/68/commands/sources/encyclopedia/commands_multi_technology_wave4.json"
+    if multi_technology_wave4.is_file():
+        files.append(multi_technology_wave4)
     files += list(ROOT.glob("tools/chapters/[0-9][0-9]/build/chapter.json"))
     files += list(ROOT.glob("tools/chapters/[0-9]/chapter.json"))
     files += list(ROOT.glob("tools/chapters/[0-9][0-9]/chapter.json"))
