@@ -305,6 +305,8 @@ def main():
     count_command_file(ROOT / "commands" / "sources" / "encyclopedia" / "commands_core_wave3.json")
     # Additive wave 4 command pack spans all 33 tracked technology domains.
     count_command_file(ROOT / "commands" / "sources" / "encyclopedia" / "commands_multi_technology_wave4.json")
+    # Additive wave 5 command pack adds three distinct entries per tracked domain.
+    count_command_file(ROOT / "commands" / "sources" / "encyclopedia" / "commands_multi_technology_wave5.json")
 
     # Legacy mixed Windows pack: classify per record, never credit the full pack
     # to both technologies. Exact command duplication is excluded.
