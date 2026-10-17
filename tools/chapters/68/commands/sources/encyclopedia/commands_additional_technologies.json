@@ -4,10 +4,10 @@
   "chapter_order": 68,
   "domain": "additional_technologies",
   "domain_title_fa": "فناوری‌های تکمیلی زیرساخت",
-  "count": 150,
+  "count": 195,
   "preserve_existing_records": true,
   "source_status": "review_required",
-  "note": "افزونهٔ افزایشی؛ محتوای قبلی حفظ شده است. اکنون ۱۵ فناوری با ۱۰ رکورد اولیه برای هر فناوری دارد؛ این حجم هنوز سهمیهٔ نهایی نیست و بازبینی فنی/نسخه‌ای لازم است.",
+  "note": "افزونه افزایشی؛ ۱۵ حوزه اولیه به‌علاوه ۹ حوزه تکمیلی. سهمیه نهایی هنوز تکمیل نیست؛ FTP، FTPS و SFTP باید مستقل ممیزی شوند.",
   "commands": [
     {
       "uid": "cmd:ssh:system:ssh-v",
@@ -12312,6 +12312,3523 @@
             "id": "q-hyperv-extra2-5",
             "correct_index": 1,
             "explain_fa": "برای بررسی دستگاه‌های قابل استفاده در سناریوهای Discrete Device Assignment در نسخه‌های پشتیبان."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:ubiquiti:edgeos-show-interfaces",
+      "vendor": "Ubiquiti",
+      "platform": "Ubiquiti EdgeOS",
+      "category": "ubiquiti",
+      "subcategory": "edgeos",
+      "level": "L1",
+      "title_fa": "نمایش وضعیت رابط‌ها در EdgeOS",
+      "title_en": "show interfaces",
+      "command": "show interfaces",
+      "aliases": [],
+      "syntax": "show interfaces",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهدهٔ وضعیت، آدرس و شمارنده‌های رابط‌های EdgeRouter.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "به CLI مجاز وارد شوید.",
+        "فرمان را اجرا کنید.",
+        "وضعیت و شمارنده‌های خطا را با baseline مقایسه کنید."
+      ],
+      "sample_output": "خروجی وضعیت و شمارنده‌های رابط‌ها را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "show ip route"
+      ],
+      "common_mistakes_fa": [
+        "خروجی یک رابط را با کل دستگاه اشتباه نگیرید."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، show interfaces را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "خروجی را پیش از اشتراک‌گذاری از IPهای عمومی پالایش کنید.",
+      "search_keywords": [
+        "EdgeOS",
+        "interfaces",
+        "counters",
+        "Ubiquiti UniFi / EdgeOS",
+        "show interfaces",
+        "نمایش وضعیت رابط‌ها در EdgeOS",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show interfaces چیست؟",
+          "back": "برای مشاهدهٔ وضعیت، آدرس و شمارنده‌های رابط‌های EdgeRouter."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ubiquiti-edgeos-show-interfaces",
+            "prompt": "در Ubiquiti UniFi / EdgeOS، کاربرد اصلی فرمان زیر چیست؟\nshow interfaces",
+            "options": [
+              "برای مشاهدهٔ وضعیت، آدرس و شمارنده‌های رابط‌های EdgeRouter.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ubiquiti-edgeos-show-interfaces",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهدهٔ وضعیت، آدرس و شمارنده‌های رابط‌های EdgeRouter."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:ubiquiti:edgeos-show-route",
+      "vendor": "Ubiquiti",
+      "platform": "Ubiquiti EdgeOS",
+      "category": "ubiquiti",
+      "subcategory": "edgeos",
+      "level": "L1",
+      "title_fa": "بررسی جدول مسیریابی EdgeOS",
+      "title_en": "show ip route",
+      "command": "show ip route",
+      "aliases": [],
+      "syntax": "show ip route",
+      "arguments": [],
+      "when_to_use_fa": "برای تشخیص مسیر انتخاب‌شده، default route و next-hop.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "جدول را پیش از تغییر ثبت کنید.",
+        "مسیر مقصد و next-hop را پیدا کنید.",
+        "با رابط خروجی تطبیق دهید."
+      ],
+      "sample_output": "خروجی شامل مسیرهای connected/static/dynamic است.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "show interfaces",
+        "ping"
+      ],
+      "common_mistakes_fa": [
+        "وجود route تضمین دسترسی end-to-end نیست."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، show ip route را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "route را بدون فهم اولویت و rollback تغییر ندهید.",
+      "search_keywords": [
+        "EdgeOS",
+        "routing",
+        "default route",
+        "Ubiquiti UniFi / EdgeOS",
+        "show ip route",
+        "بررسی جدول مسیریابی EdgeOS",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show ip route چیست؟",
+          "back": "برای تشخیص مسیر انتخاب‌شده، default route و next-hop."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ubiquiti-edgeos-show-route",
+            "prompt": "در Ubiquiti UniFi / EdgeOS، کاربرد اصلی فرمان زیر چیست؟\nshow ip route",
+            "options": [
+              "برای تشخیص مسیر انتخاب‌شده، default route و next-hop.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ubiquiti-edgeos-show-route",
+            "correct_index": 0,
+            "explain_fa": "برای تشخیص مسیر انتخاب‌شده، default route و next-hop."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:ubiquiti:edgeos-config-commands",
+      "vendor": "Ubiquiti",
+      "platform": "Ubiquiti EdgeOS",
+      "category": "ubiquiti",
+      "subcategory": "edgeos",
+      "level": "L1",
+      "title_fa": "استخراج پیکربندی فرمانی EdgeOS",
+      "title_en": "show configuration commands",
+      "command": "show configuration commands",
+      "aliases": [],
+      "syntax": "show configuration commands",
+      "arguments": [],
+      "when_to_use_fa": "برای بازبینی تغییرات و مقایسهٔ پیکربندی؛ خروجی ممکن است حساس باشد.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "فرمان را در نشست مجاز اجرا کنید.",
+        "خروجی را در محل امن ذخیره کنید.",
+        "secretها و IPهای عمومی را پیش از ارسال پالایش کنید."
+      ],
+      "sample_output": "خروجی خطوط set/delete پیکربندی را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "show interfaces"
+      ],
+      "common_mistakes_fa": [
+        "فرض نکنید تمام secretها از خروجی حذف شده‌اند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، show configuration commands را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "فایل خروجی را دادهٔ محرمانهٔ زیرساخت تلقی کنید.",
+      "search_keywords": [
+        "EdgeOS",
+        "configuration audit",
+        "Ubiquiti UniFi / EdgeOS",
+        "show configuration commands",
+        "استخراج پیکربندی فرمانی EdgeOS",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show configuration commands چیست؟",
+          "back": "برای بازبینی تغییرات و مقایسهٔ پیکربندی؛ خروجی ممکن است حساس باشد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ubiquiti-edgeos-config-commands",
+            "prompt": "در Ubiquiti UniFi / EdgeOS، کاربرد اصلی فرمان زیر چیست؟\nshow configuration commands",
+            "options": [
+              "برای بازبینی تغییرات و مقایسهٔ پیکربندی؛ خروجی ممکن است حساس باشد.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ubiquiti-edgeos-config-commands",
+            "correct_index": 0,
+            "explain_fa": "برای بازبینی تغییرات و مقایسهٔ پیکربندی؛ خروجی ممکن است حساس باشد."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:ubiquiti:unifi-device-diagnostics",
+      "vendor": "Ubiquiti",
+      "platform": "UniFi device shell; مدل/firmware وابسته",
+      "category": "ubiquiti",
+      "subcategory": "unifi",
+      "level": "L1",
+      "title_fa": "دریافت پیکربندی تشخیصی UniFi در مدل‌های پشتیبانی‌شده",
+      "title_en": "mca-ctrl -t dump-cfg",
+      "command": "mca-ctrl -t dump-cfg",
+      "aliases": [],
+      "syntax": "mca-ctrl -t dump-cfg",
+      "arguments": [],
+      "when_to_use_fa": "برای جمع‌آوری اطلاعات تشخیصی روی دستگاهی که ابزار را پشتیبانی می‌کند؛ فرمان عمومی همهٔ مدل‌ها نیست.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "مدل و firmware را تأیید کنید.",
+        "فقط از SSH مجاز استفاده کنید.",
+        "اگر فرمان پشتیبانی نشد، از ابزار رسمی UniFi Network استفاده کنید."
+      ],
+      "sample_output": "خروجی به مدل و firmware وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "show interfaces"
+      ],
+      "common_mistakes_fa": [
+        "این فرمان را روی هر دستگاه UniFi کورکورانه اجرا نکنید."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، mca-ctrl -t dump-cfg را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "SSH را فقط برای عیب‌یابی مجاز فعال کنید و خروجی را امن نگه دارید.",
+      "search_keywords": [
+        "UniFi",
+        "mca-ctrl",
+        "diagnostics",
+        "Ubiquiti UniFi / EdgeOS",
+        "mca-ctrl -t dump-cfg",
+        "دریافت پیکربندی تشخیصی UniFi در مدل‌های پشتیبانی‌شده",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد mca-ctrl -t dump-cfg چیست؟",
+          "back": "برای جمع‌آوری اطلاعات تشخیصی روی دستگاهی که ابزار را پشتیبانی می‌کند؛ فرمان عمومی همهٔ مدل‌ها نیست."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ubiquiti-unifi-device-diagnostics",
+            "prompt": "در Ubiquiti UniFi / EdgeOS، کاربرد اصلی فرمان زیر چیست؟\nmca-ctrl -t dump-cfg",
+            "options": [
+              "برای جمع‌آوری اطلاعات تشخیصی روی دستگاهی که ابزار را پشتیبانی می‌کند؛ فرمان عمومی همهٔ مدل‌ها نیست.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ubiquiti-unifi-device-diagnostics",
+            "correct_index": 0,
+            "explain_fa": "برای جمع‌آوری اطلاعات تشخیصی روی دستگاهی که ابزار را پشتیبانی می‌کند؛ فرمان عمومی همهٔ مدل‌ها نیست."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:ubiquiti:edgeos-ping-source",
+      "vendor": "Ubiquiti",
+      "platform": "Ubiquiti EdgeOS",
+      "category": "ubiquiti",
+      "subcategory": "edgeos",
+      "level": "L1",
+      "title_fa": "آزمون ICMP با مبدأ مشخص در EdgeOS",
+      "title_en": "ping 192.0.2.10 source-address 192.0.2.1 count 5",
+      "command": "ping 192.0.2.10 source-address 192.0.2.1 count 5",
+      "aliases": [],
+      "syntax": "ping 192.0.2.10 source-address 192.0.2.1 count 5",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی مسیر برگشت از آدرس مبدأ مشخص در آزمایشگاه.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "مبدأ و مقصد آزمایش را جایگزین کنید.",
+        "پنج بسته ارسال کنید.",
+        "loss و latency را با مسیر دیگر مقایسه کنید."
+      ],
+      "sample_output": "نتیجه شامل تعداد بسته‌های ارسالی/دریافتی است.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "show ip route"
+      ],
+      "common_mistakes_fa": [
+        "عدم پاسخ ICMP معادل قطعی TCP نیست."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، ping 192.0.2.10 source-address 192.0.2.1 count 5 را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "فقط مقصدهای مجاز را آزمایش کنید.",
+      "search_keywords": [
+        "EdgeOS",
+        "ping source address",
+        "ICMP",
+        "Ubiquiti UniFi / EdgeOS",
+        "ping 192.0.2.10 source-address 192.0.2.1 count 5",
+        "آزمون ICMP با مبدأ مشخص در EdgeOS",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد ping 192.0.2.10 source-address 192.0.2.1 count 5 چیست؟",
+          "back": "برای بررسی مسیر برگشت از آدرس مبدأ مشخص در آزمایشگاه."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ubiquiti-edgeos-ping-source",
+            "prompt": "در Ubiquiti UniFi / EdgeOS، کاربرد اصلی فرمان زیر چیست؟\nping 192.0.2.10 source-address 192.0.2.1 count 5",
+            "options": [
+              "برای بررسی مسیر برگشت از آدرس مبدأ مشخص در آزمایشگاه.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ubiquiti-edgeos-ping-source",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی مسیر برگشت از آدرس مبدأ مشخص در آزمایشگاه."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:snmp_syslog:snmpwalk-v3-system",
+      "vendor": "Net-SNMP / Syslog tools",
+      "platform": "Net-SNMP client",
+      "category": "snmp_syslog",
+      "subcategory": "snmpwalk",
+      "level": "L1",
+      "title_fa": "خواندن درخت system با SNMPv3",
+      "title_en": "snmpwalk -v3 -l authPriv -u monitor -a SHA -A AUTH_PLACEHOLDER -x AES -X PRIV_PLACEHOLDER 192.0.2.20 1.3.6.1.2.1.1",
+      "command": "snmpwalk -v3 -l authPriv -u monitor -a SHA -A AUTH_PLACEHOLDER -x AES -X PRIV_PLACEHOLDER 192.0.2.20 1.3.6.1.2.1.1",
+      "aliases": [],
+      "syntax": "snmpwalk -v3 -l authPriv -u USER -a SHA -A AUTH -x AES -X PRIV HOST OID",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی sysDescr، sysName و uptime با احراز هویت و رمزگذاری SNMPv3.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "credential را از secret store وارد کنید.",
+        "OID system را query کنید.",
+        "پاسخ و timeout را ثبت کنید."
+      ],
+      "sample_output": "خروجی شامل sysDescr و sysUpTime است.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "snmpget",
+        "snmptranslate"
+      ],
+      "common_mistakes_fa": [
+        "community عمومی SNMPv1/v2c را در شبکهٔ غیرقابل‌اعتماد استفاده نکنید."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، snmpwalk -v3 -l authPriv -u monitor -a SHA -A AUTH_PLACEHOLDER -x AES -X PRIV_PLACEHOLDER 192.0.2.20 1.3.6.1.2.1.1 را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "از authPriv استفاده کنید؛ secretها را در shell history نگذارید.",
+      "search_keywords": [
+        "SNMPv3",
+        "snmpwalk",
+        "OID",
+        "SNMP / Syslog / NetFlow / IPFIX",
+        "snmpwalk -v3 -l authPriv -u monitor -a SHA -A AUTH_PLACEHOLDER -x AES -X PRIV_PLACEHOLDER 192.0.2.20 1.3.6.1.2.1.1",
+        "خواندن درخت system با SNMPv3",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد snmpwalk -v3 -l authPriv -u monitor -a SHA -A AUTH_PLACEHOLDER -x AES -X PRIV_PLACEHOLDER 192.0.2.20 1.3.6.1.2.1.1 چیست؟",
+          "back": "برای بررسی sysDescr، sysName و uptime با احراز هویت و رمزگذاری SNMPv3."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-snmp_syslog-snmpwalk-v3-system",
+            "prompt": "در SNMP / Syslog / NetFlow / IPFIX، کاربرد اصلی فرمان زیر چیست؟\nsnmpwalk -v3 -l authPriv -u monitor -a SHA -A AUTH_PLACEHOLDER -x AES -X PRIV_PLACEHOLDER 192.0.2.20 1.3.6.1.2.1.1",
+            "options": [
+              "برای بررسی sysDescr، sysName و uptime با احراز هویت و رمزگذاری SNMPv3.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-snmp_syslog-snmpwalk-v3-system",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی sysDescr، sysName و uptime با احراز هویت و رمزگذاری SNMPv3."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:snmp_syslog:snmpget-sysname",
+      "vendor": "Net-SNMP / Syslog tools",
+      "platform": "Net-SNMP client",
+      "category": "snmp_syslog",
+      "subcategory": "snmpget",
+      "level": "L1",
+      "title_fa": "خواندن OID مشخص با SNMP",
+      "title_en": "snmpget -v3 -l authPriv -u monitor 192.0.2.20 1.3.6.1.2.1.1.5.0",
+      "command": "snmpget -v3 -l authPriv -u monitor 192.0.2.20 1.3.6.1.2.1.1.5.0",
+      "aliases": [],
+      "syntax": "snmpget -v3 -l authPriv -u USER HOST OID",
+      "arguments": [],
+      "when_to_use_fa": "برای گرفتن مقدار یک شیء مشخص مانند sysName بدون پیمایش کل درخت.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "پارامترهای امنیتی SNMPv3 را تنظیم کنید.",
+        "OID دقیق را query کنید.",
+        "نوع و مقدار پاسخ را بررسی کنید."
+      ],
+      "sample_output": "نمونه: SNMPv2-MIB::sysName.0 = STRING: router-lab",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "snmpwalk"
+      ],
+      "common_mistakes_fa": [
+        "scalarها معمولاً به instance suffix مانند .0 نیاز دارند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، snmpget -v3 -l authPriv -u monitor 192.0.2.20 1.3.6.1.2.1.1.5.0 را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "از credential در command line سیستم مشترک اجتناب کنید.",
+      "search_keywords": [
+        "snmpget",
+        "sysName",
+        "SNMP scalar",
+        "SNMP / Syslog / NetFlow / IPFIX",
+        "snmpget -v3 -l authPriv -u monitor 192.0.2.20 1.3.6.1.2.1.1.5.0",
+        "خواندن OID مشخص با SNMP",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد snmpget -v3 -l authPriv -u monitor 192.0.2.20 1.3.6.1.2.1.1.5.0 چیست؟",
+          "back": "برای گرفتن مقدار یک شیء مشخص مانند sysName بدون پیمایش کل درخت."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-snmp_syslog-snmpget-sysname",
+            "prompt": "در SNMP / Syslog / NetFlow / IPFIX، کاربرد اصلی فرمان زیر چیست؟\nsnmpget -v3 -l authPriv -u monitor 192.0.2.20 1.3.6.1.2.1.1.5.0",
+            "options": [
+              "برای گرفتن مقدار یک شیء مشخص مانند sysName بدون پیمایش کل درخت.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-snmp_syslog-snmpget-sysname",
+            "correct_index": 0,
+            "explain_fa": "برای گرفتن مقدار یک شیء مشخص مانند sysName بدون پیمایش کل درخت."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:snmp_syslog:logger-test",
+      "vendor": "Net-SNMP / Syslog tools",
+      "platform": "Linux util-linux logger",
+      "category": "snmp_syslog",
+      "subcategory": "logger",
+      "level": "L1",
+      "title_fa": "ارسال رخداد آزمایشی Syslog",
+      "title_en": "logger -p local5.notice -t networkall-audit 'syslog test event'",
+      "command": "logger -p local5.notice -t networkall-audit 'syslog test event'",
+      "aliases": [],
+      "syntax": "logger -p FACILITY.PRIORITY -t TAG MESSAGE",
+      "arguments": [],
+      "when_to_use_fa": "برای آزمون مسیر ثبت رخداد و بررسی tag/priority در مقصد.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "پیام ساختگی و غیرحساس انتخاب کنید.",
+        "پیام را ارسال کنید.",
+        "دریافت محلی و مرکزی را بررسی کنید."
+      ],
+      "sample_output": "پیام با tag و priority انتخاب‌شده ثبت می‌شود.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "journalctl",
+        "tcpdump"
+      ],
+      "common_mistakes_fa": [
+        "ارسال محلی سلامت forwarding مرکزی را ثابت نمی‌کند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، logger -p local5.notice -t networkall-audit 'syslog test event' را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "رمز، token یا دادهٔ شخصی را در پیام قرار ندهید.",
+      "search_keywords": [
+        "logger",
+        "Syslog",
+        "facility priority",
+        "SNMP / Syslog / NetFlow / IPFIX",
+        "logger -p local5.notice -t networkall-audit 'syslog test event'",
+        "ارسال رخداد آزمایشی Syslog",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد logger -p local5.notice -t networkall-audit 'syslog test event' چیست؟",
+          "back": "برای آزمون مسیر ثبت رخداد و بررسی tag/priority در مقصد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-snmp_syslog-logger-test",
+            "prompt": "در SNMP / Syslog / NetFlow / IPFIX، کاربرد اصلی فرمان زیر چیست؟\nlogger -p local5.notice -t networkall-audit 'syslog test event'",
+            "options": [
+              "برای آزمون مسیر ثبت رخداد و بررسی tag/priority در مقصد.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-snmp_syslog-logger-test",
+            "correct_index": 0,
+            "explain_fa": "برای آزمون مسیر ثبت رخداد و بررسی tag/priority در مقصد."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:snmp_syslog:tcpdump-syslog",
+      "vendor": "Net-SNMP / Syslog tools",
+      "platform": "Linux tcpdump",
+      "category": "snmp_syslog",
+      "subcategory": "tcpdump",
+      "level": "L1",
+      "title_fa": "بررسی ترافیک Syslog UDP/514",
+      "title_en": "sudo tcpdump -ni any 'udp port 514'",
+      "command": "sudo tcpdump -ni any 'udp port 514'",
+      "aliases": [],
+      "syntax": "tcpdump -ni IFACE 'udp port 514'",
+      "arguments": [],
+      "when_to_use_fa": "برای تأیید رسیدن datagramهای Syslog به collector؛ TLS یا پورت سفارشی نیازمند فیلتر دیگر است.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "روی collector مجاز اجرا کنید.",
+        "فیلتر را محدود کنید.",
+        "مبدأ و تعداد بسته‌ها را ثبت کنید."
+      ],
+      "sample_output": "نمونه: مبدأ → collector.514/UDP.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "logger",
+        "ss"
+      ],
+      "common_mistakes_fa": [
+        "رابط اشتباه می‌تواند نتیجهٔ منفی کاذب بدهد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، sudo tcpdump -ni any 'udp port 514' را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "capture را کوتاه نگه دارید؛ payload ممکن است حساس باشد.",
+      "search_keywords": [
+        "tcpdump",
+        "UDP 514",
+        "syslog capture",
+        "SNMP / Syslog / NetFlow / IPFIX",
+        "sudo tcpdump -ni any 'udp port 514'",
+        "بررسی ترافیک Syslog UDP/514",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد sudo tcpdump -ni any 'udp port 514' چیست؟",
+          "back": "برای تأیید رسیدن datagramهای Syslog به collector؛ TLS یا پورت سفارشی نیازمند فیلتر دیگر است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-snmp_syslog-tcpdump-syslog",
+            "prompt": "در SNMP / Syslog / NetFlow / IPFIX، کاربرد اصلی فرمان زیر چیست؟\nsudo tcpdump -ni any 'udp port 514'",
+            "options": [
+              "برای تأیید رسیدن datagramهای Syslog به collector؛ TLS یا پورت سفارشی نیازمند فیلتر دیگر است.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-snmp_syslog-tcpdump-syslog",
+            "correct_index": 0,
+            "explain_fa": "برای تأیید رسیدن datagramهای Syslog به collector؛ TLS یا پورت سفارشی نیازمند فیلتر دیگر است."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:snmp_syslog:nfdump-summary",
+      "vendor": "Net-SNMP / Syslog tools",
+      "platform": "nfdump",
+      "category": "snmp_syslog",
+      "subcategory": "nfdump",
+      "level": "L1",
+      "title_fa": "خلاصه‌سازی فایل NetFlow",
+      "title_en": "nfdump -r /var/cache/nfdump/flows.nfcapd.20261017 -s record/flows",
+      "command": "nfdump -r /var/cache/nfdump/flows.nfcapd.20261017 -s record/flows",
+      "aliases": [],
+      "syntax": "nfdump -r FILE -s record/flows",
+      "arguments": [],
+      "when_to_use_fa": "برای خلاصه‌سازی رکوردهای flow ذخیره‌شده و بررسی میزبان‌های پرترافیک.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "فایل و بازهٔ زمانی را تعیین کنید.",
+        "خلاصه را تولید کنید.",
+        "نتیجه را با retention و timezone تطبیق دهید."
+      ],
+      "sample_output": "خروجی شمار جریان‌ها و حجم ثبت‌شده را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "tcpdump",
+        "snmpwalk"
+      ],
+      "common_mistakes_fa": [
+        "NetFlow/IPFIX معادل packet capture کامل نیست."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، nfdump -r /var/cache/nfdump/flows.nfcapd.20261017 -s record/flows را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "دادهٔ flow می‌تواند الگوی ارتباط کاربران را افشا کند.",
+      "search_keywords": [
+        "NetFlow",
+        "nfdump",
+        "flow summary",
+        "SNMP / Syslog / NetFlow / IPFIX",
+        "nfdump -r /var/cache/nfdump/flows.nfcapd.20261017 -s record/flows",
+        "خلاصه‌سازی فایل NetFlow",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد nfdump -r /var/cache/nfdump/flows.nfcapd.20261017 -s record/flows چیست؟",
+          "back": "برای خلاصه‌سازی رکوردهای flow ذخیره‌شده و بررسی میزبان‌های پرترافیک."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-snmp_syslog-nfdump-summary",
+            "prompt": "در SNMP / Syslog / NetFlow / IPFIX، کاربرد اصلی فرمان زیر چیست؟\nnfdump -r /var/cache/nfdump/flows.nfcapd.20261017 -s record/flows",
+            "options": [
+              "برای خلاصه‌سازی رکوردهای flow ذخیره‌شده و بررسی میزبان‌های پرترافیک.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-snmp_syslog-nfdump-summary",
+            "correct_index": 0,
+            "explain_fa": "برای خلاصه‌سازی رکوردهای flow ذخیره‌شده و بررسی میزبان‌های پرترافیک."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:dns_dhcp_ntp:dig-a-answer",
+      "vendor": "BIND / ISC / chrony",
+      "platform": "BIND utilities",
+      "category": "dns_dhcp_ntp",
+      "subcategory": "dig",
+      "level": "L1",
+      "title_fa": "بررسی رکورد A با dig",
+      "title_en": "dig A intranet.example.test +noall +answer",
+      "command": "dig A intranet.example.test +noall +answer",
+      "aliases": [],
+      "syntax": "dig NAME TYPE +noall +answer",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی پاسخ A و TTL از resolver انتخاب‌شده.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "نام آزمایش را وارد کنید.",
+        "پاسخ و TTL را ثبت کنید.",
+        "در صورت اختلاف، resolver مشخص را query کنید."
+      ],
+      "sample_output": "نمونه: intranet.example.test. 300 IN A 192.0.2.40",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "dig +trace",
+        "resolvectl status"
+      ],
+      "common_mistakes_fa": [
+        "پاسخ cacheشده را با authoritative response یکی نگیرید."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، dig A intranet.example.test +noall +answer را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "نام‌های داخلی واقعی را در گزارش عمومی منتشر نکنید.",
+      "search_keywords": [
+        "DNS",
+        "dig",
+        "A record",
+        "TTL",
+        "DNS / DHCP / NTP / IPAM",
+        "dig A intranet.example.test +noall +answer",
+        "بررسی رکورد A با dig",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد dig A intranet.example.test +noall +answer چیست؟",
+          "back": "برای بررسی پاسخ A و TTL از resolver انتخاب‌شده."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-dns_dhcp_ntp-dig-a-answer",
+            "prompt": "در DNS / DHCP / NTP / IPAM، کاربرد اصلی فرمان زیر چیست؟\ndig A intranet.example.test +noall +answer",
+            "options": [
+              "برای بررسی پاسخ A و TTL از resolver انتخاب‌شده.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-dns_dhcp_ntp-dig-a-answer",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی پاسخ A و TTL از resolver انتخاب‌شده."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:dns_dhcp_ntp:dig-soa-authoritative",
+      "vendor": "BIND / ISC / chrony",
+      "platform": "BIND utilities",
+      "category": "dns_dhcp_ntp",
+      "subcategory": "dig",
+      "level": "L1",
+      "title_fa": "بررسی SOA از DNS مشخص",
+      "title_en": "dig @192.0.2.53 example.test SOA +norecurse",
+      "command": "dig @192.0.2.53 example.test SOA +norecurse",
+      "aliases": [],
+      "syntax": "dig @SERVER NAME SOA +norecurse",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی مستقیم serial و timerهای zone از سرور authoritative آزمایش.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "سرور DNS آزمایش را مشخص کنید.",
+        "flags و serial را بررسی کنید.",
+        "با secondary مقایسه کنید."
+      ],
+      "sample_output": "پاسخ SOA شامل serial و refresh/retry/expire است.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "named-checkzone"
+      ],
+      "common_mistakes_fa": [
+        "پاسخ یک سرور، صحت تمام رکوردهای zone را ثابت نمی‌کند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، dig @192.0.2.53 example.test SOA +norecurse را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "فقط zoneهای مجاز را query کنید.",
+      "search_keywords": [
+        "SOA",
+        "authoritative DNS",
+        "dig",
+        "DNS / DHCP / NTP / IPAM",
+        "dig @192.0.2.53 example.test SOA +norecurse",
+        "بررسی SOA از DNS مشخص",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد dig @192.0.2.53 example.test SOA +norecurse چیست؟",
+          "back": "برای بررسی مستقیم serial و timerهای zone از سرور authoritative آزمایش."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-dns_dhcp_ntp-dig-soa-authoritative",
+            "prompt": "در DNS / DHCP / NTP / IPAM، کاربرد اصلی فرمان زیر چیست؟\ndig @192.0.2.53 example.test SOA +norecurse",
+            "options": [
+              "برای بررسی مستقیم serial و timerهای zone از سرور authoritative آزمایش.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-dns_dhcp_ntp-dig-soa-authoritative",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی مستقیم serial و timerهای zone از سرور authoritative آزمایش."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:dns_dhcp_ntp:chronyc-tracking",
+      "vendor": "BIND / ISC / chrony",
+      "platform": "Linux chrony",
+      "category": "dns_dhcp_ntp",
+      "subcategory": "chronyc",
+      "level": "L1",
+      "title_fa": "بررسی همگام‌سازی NTP با chrony",
+      "title_en": "chronyc tracking",
+      "command": "chronyc tracking",
+      "aliases": [],
+      "syntax": "chronyc tracking",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهدهٔ source، stratum، offset و وضعیت همگام‌سازی ساعت.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "وضعیت chronyd را بررسی کنید.",
+        "خروجی tracking را ثبت کنید.",
+        "offset و leap status را با آستانه مقایسه کنید."
+      ],
+      "sample_output": "خروجی شامل Reference ID، stratum و system time offset است.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "chronyc sources",
+        "timedatectl"
+      ],
+      "common_mistakes_fa": [
+        "خروجی لحظه‌ای را به روند زمانی تعمیم ندهید."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، chronyc tracking را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "زمان دقیق برای گواهی‌ها، احراز هویت و هم‌بستگی لاگ حیاتی است.",
+      "search_keywords": [
+        "NTP",
+        "chronyc",
+        "clock offset",
+        "DNS / DHCP / NTP / IPAM",
+        "chronyc tracking",
+        "بررسی همگام‌سازی NTP با chrony",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد chronyc tracking چیست؟",
+          "back": "برای مشاهدهٔ source، stratum، offset و وضعیت همگام‌سازی ساعت."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-dns_dhcp_ntp-chronyc-tracking",
+            "prompt": "در DNS / DHCP / NTP / IPAM، کاربرد اصلی فرمان زیر چیست؟\nchronyc tracking",
+            "options": [
+              "برای مشاهدهٔ source، stratum، offset و وضعیت همگام‌سازی ساعت.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-dns_dhcp_ntp-chronyc-tracking",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهدهٔ source، stratum، offset و وضعیت همگام‌سازی ساعت."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:dns_dhcp_ntp:dhclient-verbose",
+      "vendor": "BIND / ISC / chrony",
+      "platform": "ISC dhclient",
+      "category": "dns_dhcp_ntp",
+      "subcategory": "dhclient",
+      "level": "L1",
+      "title_fa": "درخواست DHCP یک‌باره در رابط آزمایش",
+      "title_en": "sudo dhclient -v -1 eth0",
+      "command": "sudo dhclient -v -1 eth0",
+      "aliases": [],
+      "syntax": "dhclient -v -1 IFACE",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهدهٔ روند DHCP؛ اجرای آن ممکن است lease یا آدرس رابط را تغییر دهد.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "مسیر کنسولی یا بازگشت داشته باشید.",
+        "فقط روی رابط آزمایش اجرا کنید.",
+        "مراحل DORA را با لاگ سرور تطبیق دهید."
+      ],
+      "sample_output": "خروجی ممکن است Discover/Offer/Request/ACK را نشان دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "ip address",
+        "journalctl"
+      ],
+      "common_mistakes_fa": [
+        "روی رابط production بدون هماهنگی اجرا نکنید."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، sudo dhclient -v -1 eth0 را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "فرمان تغییردهنده است؛ مجوز و rollback لازم است.",
+      "search_keywords": [
+        "DHCP",
+        "dhclient",
+        "DORA",
+        "DNS / DHCP / NTP / IPAM",
+        "sudo dhclient -v -1 eth0",
+        "درخواست DHCP یک‌باره در رابط آزمایش",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد sudo dhclient -v -1 eth0 چیست؟",
+          "back": "برای مشاهدهٔ روند DHCP؛ اجرای آن ممکن است lease یا آدرس رابط را تغییر دهد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-dns_dhcp_ntp-dhclient-verbose",
+            "prompt": "در DNS / DHCP / NTP / IPAM، کاربرد اصلی فرمان زیر چیست؟\nsudo dhclient -v -1 eth0",
+            "options": [
+              "برای مشاهدهٔ روند DHCP؛ اجرای آن ممکن است lease یا آدرس رابط را تغییر دهد.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-dns_dhcp_ntp-dhclient-verbose",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهدهٔ روند DHCP؛ اجرای آن ممکن است lease یا آدرس رابط را تغییر دهد."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:dns_dhcp_ntp:tcpdump-dhcp",
+      "vendor": "BIND / ISC / chrony",
+      "platform": "Linux tcpdump",
+      "category": "dns_dhcp_ntp",
+      "subcategory": "tcpdump",
+      "level": "L1",
+      "title_fa": "مشاهدهٔ بسته‌های DHCP",
+      "title_en": "sudo tcpdump -ni eth0 'udp port 67 or udp port 68'",
+      "command": "sudo tcpdump -ni eth0 'udp port 67 or udp port 68'",
+      "aliases": [],
+      "syntax": "tcpdump -ni IFACE 'udp port 67 or udp port 68'",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی تبادل DHCP در VLAN آزمایش.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "رابط متصل به VLAN را انتخاب کنید.",
+        "capture کوتاه شروع کنید.",
+        "DORA و relay address را بررسی کنید."
+      ],
+      "sample_output": "نمونه: UDP/68 به UDP/67 و پاسخ معکوس.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "dhclient",
+        "dig"
+      ],
+      "common_mistakes_fa": [
+        "capture روی رابط اشتباه ممکن است فقط بخشی از جریان را نشان دهد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، sudo tcpdump -ni eth0 'udp port 67 or udp port 68' را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "فایل capture می‌تواند MAC و hostname را آشکار کند.",
+      "search_keywords": [
+        "DHCP",
+        "tcpdump",
+        "UDP 67 68",
+        "DNS / DHCP / NTP / IPAM",
+        "sudo tcpdump -ni eth0 'udp port 67 or udp port 68'",
+        "مشاهدهٔ بسته‌های DHCP",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد sudo tcpdump -ni eth0 'udp port 67 or udp port 68' چیست؟",
+          "back": "برای بررسی تبادل DHCP در VLAN آزمایش."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-dns_dhcp_ntp-tcpdump-dhcp",
+            "prompt": "در DNS / DHCP / NTP / IPAM، کاربرد اصلی فرمان زیر چیست؟\nsudo tcpdump -ni eth0 'udp port 67 or udp port 68'",
+            "options": [
+              "برای بررسی تبادل DHCP در VLAN آزمایش.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-dns_dhcp_ntp-tcpdump-dhcp",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی تبادل DHCP در VLAN آزمایش."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:web_tls:nginx-test",
+      "vendor": "Nginx / Apache / OpenSSL",
+      "platform": "Nginx",
+      "category": "web_tls",
+      "subcategory": "nginx",
+      "level": "L1",
+      "title_fa": "اعتبارسنجی پیکربندی Nginx",
+      "title_en": "sudo nginx -t",
+      "command": "sudo nginx -t",
+      "aliases": [],
+      "syntax": "nginx -t",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی syntax فایل‌ها پیش از reload.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "روی میزبان/container درست اجرا کنید.",
+        "خطا و شماره خط را اصلاح کنید.",
+        "پس از موفقیت و مجوز، reload کنید."
+      ],
+      "sample_output": "نمونه: syntax is ok; test is successful.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "nginx -T",
+        "systemctl status nginx"
+      ],
+      "common_mistakes_fa": [
+        "موفقیت syntax صحت دسترسی خارجی را تضمین نمی‌کند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، sudo nginx -t را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "پیش از تغییر، نسخهٔ پشتیبان config را بگیرید.",
+      "search_keywords": [
+        "Nginx",
+        "nginx -t",
+        "configuration",
+        "Nginx / Apache / HTTP(S) / TLS / PKI",
+        "sudo nginx -t",
+        "اعتبارسنجی پیکربندی Nginx",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد sudo nginx -t چیست؟",
+          "back": "برای بررسی syntax فایل‌ها پیش از reload."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-web_tls-nginx-test",
+            "prompt": "در Nginx / Apache / HTTP(S) / TLS / PKI، کاربرد اصلی فرمان زیر چیست؟\nsudo nginx -t",
+            "options": [
+              "برای بررسی syntax فایل‌ها پیش از reload.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-web_tls-nginx-test",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی syntax فایل‌ها پیش از reload."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:web_tls:curl-head",
+      "vendor": "Nginx / Apache / OpenSSL",
+      "platform": "curl",
+      "category": "web_tls",
+      "subcategory": "curl",
+      "level": "L1",
+      "title_fa": "بررسی headerهای HTTP(S)",
+      "title_en": "curl -sS -I https://www.example.test/",
+      "command": "curl -sS -I https://www.example.test/",
+      "aliases": [],
+      "syntax": "curl -sS -I URL",
+      "arguments": [],
+      "when_to_use_fa": "برای دیدن status و header بدون دریافت کامل body.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "URL آزمایش را تعیین کنید.",
+        "status و security headers را ثبت کنید.",
+        "در صورت نیاز redirectها را جدا بررسی کنید."
+      ],
+      "sample_output": "نمونه: HTTP/2 200 و headerهای پاسخ.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "openssl s_client"
+      ],
+      "common_mistakes_fa": [
+        "HEAD ممکن است متفاوت از GET پیاده‌سازی شده باشد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، curl -sS -I https://www.example.test/ را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "فقط مقصدهای مجاز را بررسی کنید؛ header ممکن است نسخه افشا کند.",
+      "search_keywords": [
+        "curl",
+        "HTTP headers",
+        "TLS",
+        "Nginx / Apache / HTTP(S) / TLS / PKI",
+        "curl -sS -I https://www.example.test/",
+        "بررسی headerهای HTTP(S)",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد curl -sS -I https://www.example.test/ چیست؟",
+          "back": "برای دیدن status و header بدون دریافت کامل body."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-web_tls-curl-head",
+            "prompt": "در Nginx / Apache / HTTP(S) / TLS / PKI، کاربرد اصلی فرمان زیر چیست؟\ncurl -sS -I https://www.example.test/",
+            "options": [
+              "برای دیدن status و header بدون دریافت کامل body.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-web_tls-curl-head",
+            "correct_index": 0,
+            "explain_fa": "برای دیدن status و header بدون دریافت کامل body."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:web_tls:openssl-sclient",
+      "vendor": "Nginx / Apache / OpenSSL",
+      "platform": "OpenSSL",
+      "category": "web_tls",
+      "subcategory": "openssl",
+      "level": "L1",
+      "title_fa": "بررسی handshake و زنجیرهٔ TLS",
+      "title_en": "openssl s_client -connect www.example.test:443 -servername www.example.test -verify_return_error",
+      "command": "openssl s_client -connect www.example.test:443 -servername www.example.test -verify_return_error",
+      "aliases": [],
+      "syntax": "openssl s_client -connect HOST:443 -servername NAME -verify_return_error",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی گواهی و handshake همراه SNI و خطای اعتبارسنجی.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "نام میزبان و SNI را تعیین کنید.",
+        "handshake را اجرا کنید.",
+        "issuer، dates و verify return code را بررسی کنید."
+      ],
+      "sample_output": "خروجی شامل certificate chain و Verify return code است.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "curl -I",
+        "certbot certificates"
+      ],
+      "common_mistakes_fa": [
+        "بدون SNI ممکن است گواهی virtual host دیگری دریافت شود."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، openssl s_client -connect www.example.test:443 -servername www.example.test -verify_return_error را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "اعتبارسنجی گواهی را برای عیب‌یابی دائمی غیرفعال نکنید.",
+      "search_keywords": [
+        "OpenSSL",
+        "s_client",
+        "SNI",
+        "certificate",
+        "Nginx / Apache / HTTP(S) / TLS / PKI",
+        "openssl s_client -connect www.example.test:443 -servername www.example.test -verify_return_error",
+        "بررسی handshake و زنجیرهٔ TLS",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد openssl s_client -connect www.example.test:443 -servername www.example.test -verify_return_error چیست؟",
+          "back": "برای بررسی گواهی و handshake همراه SNI و خطای اعتبارسنجی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-web_tls-openssl-sclient",
+            "prompt": "در Nginx / Apache / HTTP(S) / TLS / PKI، کاربرد اصلی فرمان زیر چیست؟\nopenssl s_client -connect www.example.test:443 -servername www.example.test -verify_return_error",
+            "options": [
+              "برای بررسی گواهی و handshake همراه SNI و خطای اعتبارسنجی.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-web_tls-openssl-sclient",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی گواهی و handshake همراه SNI و خطای اعتبارسنجی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:web_tls:certbot-certificates",
+      "vendor": "Nginx / Apache / OpenSSL",
+      "platform": "Certbot / ACME",
+      "category": "web_tls",
+      "subcategory": "certbot",
+      "level": "L1",
+      "title_fa": "فهرست گواهی‌های Certbot",
+      "title_en": "sudo certbot certificates",
+      "command": "sudo certbot certificates",
+      "aliases": [],
+      "syntax": "certbot certificates",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی دامنه‌ها، مسیر certificate و زمان انقضا.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "با دسترسی مناسب اجرا کنید.",
+        "دامنه و تاریخ انقضا را بررسی کنید.",
+        "مسیر نصب و reload را با سرویس تطبیق دهید."
+      ],
+      "sample_output": "خروجی certificate name، domains و expiry date را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "openssl s_client",
+        "nginx -t"
+      ],
+      "common_mistakes_fa": [
+        "وجود گواهی در Certbot نصب‌شدن آن در همهٔ virtual hostها را ثابت نمی‌کند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، sudo certbot certificates را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "private key را در ticket یا گزارش درج نکنید.",
+      "search_keywords": [
+        "Certbot",
+        "certificate expiry",
+        "ACME",
+        "Nginx / Apache / HTTP(S) / TLS / PKI",
+        "sudo certbot certificates",
+        "فهرست گواهی‌های Certbot",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد sudo certbot certificates چیست؟",
+          "back": "برای بررسی دامنه‌ها، مسیر certificate و زمان انقضا."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-web_tls-certbot-certificates",
+            "prompt": "در Nginx / Apache / HTTP(S) / TLS / PKI، کاربرد اصلی فرمان زیر چیست؟\nsudo certbot certificates",
+            "options": [
+              "برای بررسی دامنه‌ها، مسیر certificate و زمان انقضا.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-web_tls-certbot-certificates",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی دامنه‌ها، مسیر certificate و زمان انقضا."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:web_tls:apache-vhosts",
+      "vendor": "Nginx / Apache / OpenSSL",
+      "platform": "Apache HTTP Server",
+      "category": "web_tls",
+      "subcategory": "apache",
+      "level": "L1",
+      "title_fa": "نمایش نگاشت virtual hostهای Apache",
+      "title_en": "sudo apachectl -S",
+      "command": "sudo apachectl -S",
+      "aliases": [],
+      "syntax": "apachectl -S",
+      "arguments": [],
+      "when_to_use_fa": "برای تشخیص اینکه hostname/port به کدام virtual host متصل می‌شود.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "روی میزبان Apache اجرا کنید.",
+        "ServerName و فایل منبع را بررسی کنید.",
+        "با DNS و SNI تطبیق دهید."
+      ],
+      "sample_output": "خروجی نگاشت vhost و فایل/خط منبع را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "curl -I"
+      ],
+      "common_mistakes_fa": [
+        "default vhost درخواست‌های بدون تطبیق را می‌گیرد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، sudo apachectl -S را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "مسیرها و hostname داخلی را پیش از اشتراک‌گذاری پالایش کنید.",
+      "search_keywords": [
+        "Apache",
+        "apachectl -S",
+        "virtual host",
+        "Nginx / Apache / HTTP(S) / TLS / PKI",
+        "sudo apachectl -S",
+        "نمایش نگاشت virtual hostهای Apache",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد sudo apachectl -S چیست؟",
+          "back": "برای تشخیص اینکه hostname/port به کدام virtual host متصل می‌شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-web_tls-apache-vhosts",
+            "prompt": "در Nginx / Apache / HTTP(S) / TLS / PKI، کاربرد اصلی فرمان زیر چیست؟\nsudo apachectl -S",
+            "options": [
+              "برای تشخیص اینکه hostname/port به کدام virtual host متصل می‌شود.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-web_tls-apache-vhosts",
+            "correct_index": 0,
+            "explain_fa": "برای تشخیص اینکه hostname/port به کدام virtual host متصل می‌شود."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cloud:aws-caller-identity",
+      "vendor": "AWS / Microsoft Azure",
+      "platform": "AWS CLI v2",
+      "category": "cloud",
+      "subcategory": "aws",
+      "level": "L1",
+      "title_fa": "تأیید هویت مؤثر AWS CLI",
+      "title_en": "aws sts get-caller-identity",
+      "command": "aws sts get-caller-identity",
+      "aliases": [],
+      "syntax": "aws sts get-caller-identity",
+      "arguments": [],
+      "when_to_use_fa": "برای تأیید account و principal پیش از عملیات مدیریت.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "profile/role را تعیین کنید.",
+        "فرمان را اجرا کنید.",
+        "Account و Arn را با محیط هدف تطبیق دهید."
+      ],
+      "sample_output": "خروجی شامل Account، Arn و UserId است.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "aws configure list"
+      ],
+      "common_mistakes_fa": [
+        "نام profile به تنهایی هویت مؤثر را ثابت نمی‌کند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، aws sts get-caller-identity را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "Account ID و Arn را پیش از انتشار عمومی پالایش کنید.",
+      "search_keywords": [
+        "AWS CLI",
+        "STS",
+        "caller identity",
+        "AWS / Azure CLI",
+        "aws sts get-caller-identity",
+        "تأیید هویت مؤثر AWS CLI",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد aws sts get-caller-identity چیست؟",
+          "back": "برای تأیید account و principal پیش از عملیات مدیریت."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cloud-aws-caller-identity",
+            "prompt": "در AWS / Azure CLI، کاربرد اصلی فرمان زیر چیست؟\naws sts get-caller-identity",
+            "options": [
+              "برای تأیید account و principal پیش از عملیات مدیریت.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cloud-aws-caller-identity",
+            "correct_index": 0,
+            "explain_fa": "برای تأیید account و principal پیش از عملیات مدیریت."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cloud:aws-ec2-inventory",
+      "vendor": "AWS / Microsoft Azure",
+      "platform": "AWS CLI v2",
+      "category": "cloud",
+      "subcategory": "aws",
+      "level": "L1",
+      "title_fa": "گزارش read-only نمونه‌های EC2",
+      "title_en": "aws ec2 describe-instances --region us-east-1 --query 'Reservations[].Instances[].[InstanceId,State.Name,PrivateIpAddress]' --output table",
+      "command": "aws ec2 describe-instances --region us-east-1 --query 'Reservations[].Instances[].[InstanceId,State.Name,PrivateIpAddress]' --output table",
+      "aliases": [],
+      "syntax": "aws ec2 describe-instances --region REGION --query QUERY --output table",
+      "arguments": [],
+      "when_to_use_fa": "برای inventory وضعیت و IP خصوصی در region مشخص.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "region را صریح تعیین کنید.",
+        "خروجی را با CMDB و tags تطبیق دهید.",
+        "regionهای دیگر را جداگانه بررسی کنید."
+      ],
+      "sample_output": "خروجی شامل InstanceId، State و PrivateIpAddress است.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "aws sts get-caller-identity"
+      ],
+      "common_mistakes_fa": [
+        "یک region را به کل account تعمیم ندهید."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، aws ec2 describe-instances --region us-east-1 --query 'Reservations[].Instances[].[InstanceId,State.Name,PrivateIpAddress]' --output table را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "IAM read-only را ترجیح دهید.",
+      "search_keywords": [
+        "AWS EC2",
+        "describe-instances",
+        "inventory",
+        "AWS / Azure CLI",
+        "aws ec2 describe-instances --region us-east-1 --query 'Reservations[].Instances[].[InstanceId,State.Name,PrivateIpAddress]' --output table",
+        "گزارش read-only نمونه‌های EC2",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد aws ec2 describe-instances --region us-east-1 --query 'Reservations[].Instances[].[InstanceId,State.Name,PrivateIpAddress]' --output table چیست؟",
+          "back": "برای inventory وضعیت و IP خصوصی در region مشخص."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cloud-aws-ec2-inventory",
+            "prompt": "در AWS / Azure CLI، کاربرد اصلی فرمان زیر چیست؟\naws ec2 describe-instances --region us-east-1 --query 'Reservations[].Instances[].[InstanceId,State.Name,PrivateIpAddress]' --output table",
+            "options": [
+              "برای inventory وضعیت و IP خصوصی در region مشخص.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cloud-aws-ec2-inventory",
+            "correct_index": 0,
+            "explain_fa": "برای inventory وضعیت و IP خصوصی در region مشخص."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cloud:aws-s3-list",
+      "vendor": "AWS / Microsoft Azure",
+      "platform": "AWS CLI v2",
+      "category": "cloud",
+      "subcategory": "aws",
+      "level": "L1",
+      "title_fa": "فهرست اشیای S3",
+      "title_en": "aws s3 ls s3://example-audit-bucket/",
+      "command": "aws s3 ls s3://example-audit-bucket/",
+      "aliases": [],
+      "syntax": "aws s3 ls s3://BUCKET/PREFIX/",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی read-only دسترسی به bucket آزمایش.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "bucket مجاز را مشخص کنید.",
+        "فرمان را اجرا کنید.",
+        "AccessDenied را از bucket خالی تفکیک کنید."
+      ],
+      "sample_output": "خروجی تاریخ و نام اشیا را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "aws sts get-caller-identity"
+      ],
+      "common_mistakes_fa": [
+        "فهرست‌نشدن اشیا می‌تواند ناشی از IAM یا prefix باشد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، aws s3 ls s3://example-audit-bucket/ را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "نام bucket و داده‌های حساس را عمومی نکنید.",
+      "search_keywords": [
+        "AWS S3",
+        "aws s3 ls",
+        "IAM",
+        "AWS / Azure CLI",
+        "aws s3 ls s3://example-audit-bucket/",
+        "فهرست اشیای S3",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد aws s3 ls s3://example-audit-bucket/ چیست؟",
+          "back": "برای بررسی read-only دسترسی به bucket آزمایش."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cloud-aws-s3-list",
+            "prompt": "در AWS / Azure CLI، کاربرد اصلی فرمان زیر چیست؟\naws s3 ls s3://example-audit-bucket/",
+            "options": [
+              "برای بررسی read-only دسترسی به bucket آزمایش.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cloud-aws-s3-list",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی read-only دسترسی به bucket آزمایش."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cloud:azure-account-show",
+      "vendor": "AWS / Microsoft Azure",
+      "platform": "Azure CLI",
+      "category": "cloud",
+      "subcategory": "azure",
+      "level": "L1",
+      "title_fa": "تأیید subscription فعال Azure CLI",
+      "title_en": "az account show --output table",
+      "command": "az account show --output table",
+      "aliases": [],
+      "syntax": "az account show --output table",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی tenant و subscription فعال پیش از عملیات.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "هویت CLI را تأیید کنید.",
+        "subscription و tenant را بررسی کنید.",
+        "context را قبل از هر تغییر دوباره کنترل کنید."
+      ],
+      "sample_output": "خروجی نام subscription و tenant را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "az account list"
+      ],
+      "common_mistakes_fa": [
+        "context قبلی CLI ممکن است به subscription دیگری اشاره کند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، az account show --output table را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "شناسه tenant و subscription را طبق سیاست سازمان محافظت کنید.",
+      "search_keywords": [
+        "Azure CLI",
+        "subscription context",
+        "AWS / Azure CLI",
+        "az account show --output table",
+        "تأیید subscription فعال Azure CLI",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد az account show --output table چیست؟",
+          "back": "برای بررسی tenant و subscription فعال پیش از عملیات."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cloud-azure-account-show",
+            "prompt": "در AWS / Azure CLI، کاربرد اصلی فرمان زیر چیست؟\naz account show --output table",
+            "options": [
+              "برای بررسی tenant و subscription فعال پیش از عملیات.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cloud-azure-account-show",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی tenant و subscription فعال پیش از عملیات."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cloud:azure-nsg-list",
+      "vendor": "AWS / Microsoft Azure",
+      "platform": "Azure CLI",
+      "category": "cloud",
+      "subcategory": "azure",
+      "level": "L1",
+      "title_fa": "فهرست NSGهای یک resource group",
+      "title_en": "az network nsg list --resource-group rg-lab --output table",
+      "command": "az network nsg list --resource-group rg-lab --output table",
+      "aliases": [],
+      "syntax": "az network nsg list --resource-group RESOURCE_GROUP --output table",
+      "arguments": [],
+      "when_to_use_fa": "برای inventory گروه‌های امنیت شبکه در resource group مشخص.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "subscription و resource group را تأیید کنید.",
+        "فهرست NSGها را بگیرید.",
+        "اتصال NSG به NIC/subnet را جدا بررسی کنید."
+      ],
+      "sample_output": "خروجی نام و resource group را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "az account show"
+      ],
+      "common_mistakes_fa": [
+        "فهرست NSG اثبات اتصال آن به NIC/subnet نیست."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، az network nsg list --resource-group rg-lab --output table را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "قبل از تغییر rule، مسیر مدیریت و rollback را بررسی کنید.",
+      "search_keywords": [
+        "Azure NSG",
+        "network security",
+        "AWS / Azure CLI",
+        "az network nsg list --resource-group rg-lab --output table",
+        "فهرست NSGهای یک resource group",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد az network nsg list --resource-group rg-lab --output table چیست؟",
+          "back": "برای inventory گروه‌های امنیت شبکه در resource group مشخص."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cloud-azure-nsg-list",
+            "prompt": "در AWS / Azure CLI، کاربرد اصلی فرمان زیر چیست؟\naz network nsg list --resource-group rg-lab --output table",
+            "options": [
+              "برای inventory گروه‌های امنیت شبکه در resource group مشخص.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cloud-azure-nsg-list",
+            "correct_index": 0,
+            "explain_fa": "برای inventory گروه‌های امنیت شبکه در resource group مشخص."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortinet_management:fmgr-device-list",
+      "vendor": "Fortinet",
+      "platform": "FortiManager CLI; نسخه‌وابسته",
+      "category": "fortinet_management",
+      "subcategory": "fmgr",
+      "level": "L1",
+      "title_fa": "فهرست دستگاه‌های ثبت‌شده در FortiManager",
+      "title_en": "diagnose dvm device list",
+      "command": "diagnose dvm device list",
+      "aliases": [],
+      "syntax": "diagnose dvm device list",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی inventory دستگاه‌های تحت مدیریت مرکزی.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "نسخه را ثبت کنید.",
+        "در CLI مجاز اجرا کنید.",
+        "وضعیت را با inventory تطبیق دهید."
+      ],
+      "sample_output": "خروجی دستگاه‌های مدیریت‌شده را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "diagnose dvm adom list"
+      ],
+      "common_mistakes_fa": [
+        "قالب CLI بین نسخه‌ها تغییر می‌کند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، diagnose dvm device list را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "IP و serial را پیش از اشتراک‌گذاری پالایش کنید.",
+      "search_keywords": [
+        "FortiManager",
+        "device inventory",
+        "FortiManager / FortiAnalyzer",
+        "diagnose dvm device list",
+        "فهرست دستگاه‌های ثبت‌شده در FortiManager",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد diagnose dvm device list چیست؟",
+          "back": "برای بررسی inventory دستگاه‌های تحت مدیریت مرکزی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortinet_management-fmgr-device-list",
+            "prompt": "در FortiManager / FortiAnalyzer، کاربرد اصلی فرمان زیر چیست؟\ndiagnose dvm device list",
+            "options": [
+              "برای بررسی inventory دستگاه‌های تحت مدیریت مرکزی.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortinet_management-fmgr-device-list",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی inventory دستگاه‌های تحت مدیریت مرکزی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortinet_management:fmgr-adom-list",
+      "vendor": "Fortinet",
+      "platform": "FortiManager CLI",
+      "category": "fortinet_management",
+      "subcategory": "fmgr",
+      "level": "L1",
+      "title_fa": "بررسی فهرست ADOMها",
+      "title_en": "diagnose dvm adom list",
+      "command": "diagnose dvm adom list",
+      "aliases": [],
+      "syntax": "diagnose dvm adom list",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی دامنه‌های مدیریتی و scope policy package.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "دسترسی read-only را ترجیح دهید.",
+        "ADOMها را با ساختار سازمانی تطبیق دهید.",
+        "context را پیش از تغییر دوباره تأیید کنید."
+      ],
+      "sample_output": "خروجی نام و شناسهٔ ADOM را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "diagnose dvm device list"
+      ],
+      "common_mistakes_fa": [
+        "انتخاب ADOM اشتباه ممکن است policy را در دامنهٔ نادرست تغییر دهد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، diagnose dvm adom list را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "قبل از تغییر policy package، mapping دستگاه را تأیید کنید.",
+      "search_keywords": [
+        "FortiManager",
+        "ADOM",
+        "scope",
+        "FortiManager / FortiAnalyzer",
+        "diagnose dvm adom list",
+        "بررسی فهرست ADOMها",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد diagnose dvm adom list چیست؟",
+          "back": "برای بررسی دامنه‌های مدیریتی و scope policy package."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortinet_management-fmgr-adom-list",
+            "prompt": "در FortiManager / FortiAnalyzer، کاربرد اصلی فرمان زیر چیست؟\ndiagnose dvm adom list",
+            "options": [
+              "برای بررسی دامنه‌های مدیریتی و scope policy package.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortinet_management-fmgr-adom-list",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی دامنه‌های مدیریتی و scope policy package."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortinet_management:fmgr-fgfm-sessions",
+      "vendor": "Fortinet",
+      "platform": "FortiManager CLI; نسخه‌وابسته",
+      "category": "fortinet_management",
+      "subcategory": "fmgr",
+      "level": "L1",
+      "title_fa": "بررسی نشست‌های FGFM",
+      "title_en": "diagnose fgfm session-list",
+      "command": "diagnose fgfm session-list",
+      "aliases": [],
+      "syntax": "diagnose fgfm session-list",
+      "arguments": [],
+      "when_to_use_fa": "برای عیب‌یابی ارتباط مدیریتی FortiGate با FortiManager.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "وضعیت session را بررسی کنید.",
+        "آدرس و وضعیت را با inventory تطبیق دهید.",
+        "routing، policy و نسخه‌ها را در صورت شکست بررسی کنید."
+      ],
+      "sample_output": "خروجی sessionهای FGFM را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "diagnose dvm device list"
+      ],
+      "common_mistakes_fa": [
+        "شکست session می‌تواند ناشی از routing، policy یا certificate باشد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، diagnose fgfm session-list را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "برای رفع مشکل management policy را بدون مجوز باز نکنید.",
+      "search_keywords": [
+        "FGFM",
+        "session troubleshooting",
+        "FortiManager / FortiAnalyzer",
+        "diagnose fgfm session-list",
+        "بررسی نشست‌های FGFM",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد diagnose fgfm session-list چیست؟",
+          "back": "برای عیب‌یابی ارتباط مدیریتی FortiGate با FortiManager."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortinet_management-fmgr-fgfm-sessions",
+            "prompt": "در FortiManager / FortiAnalyzer، کاربرد اصلی فرمان زیر چیست؟\ndiagnose fgfm session-list",
+            "options": [
+              "برای عیب‌یابی ارتباط مدیریتی FortiGate با FortiManager.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortinet_management-fmgr-fgfm-sessions",
+            "correct_index": 0,
+            "explain_fa": "برای عیب‌یابی ارتباط مدیریتی FortiGate با FortiManager."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortinet_management:faz-log-device",
+      "vendor": "Fortinet",
+      "platform": "FortiAnalyzer CLI; نسخه‌وابسته",
+      "category": "fortinet_management",
+      "subcategory": "faz",
+      "level": "L1",
+      "title_fa": "بررسی وضعیت دستگاه‌های log در FortiAnalyzer",
+      "title_en": "diagnose log device",
+      "command": "diagnose log device",
+      "aliases": [],
+      "syntax": "diagnose log device",
+      "arguments": [],
+      "when_to_use_fa": "برای عیب‌یابی ingestion و وضعیت دستگاه‌های log.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "نسخه و role را ثبت کنید.",
+        "فرمان را در CLI مربوط اجرا کنید.",
+        "آخرین timestamp دریافتی را بررسی کنید."
+      ],
+      "sample_output": "خروجی تشخیصی دستگاه‌های log است؛ قالب وابسته به نسخه.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "diagnose dvm device list"
+      ],
+      "common_mistakes_fa": [
+        "ثبت دستگاه الزاماً به معنی دریافت log تازه نیست."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، diagnose log device را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "خروجی ممکن است IP و نام داخلی را افشا کند.",
+      "search_keywords": [
+        "FortiAnalyzer",
+        "log ingestion",
+        "FortiManager / FortiAnalyzer",
+        "diagnose log device",
+        "بررسی وضعیت دستگاه‌های log در FortiAnalyzer",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد diagnose log device چیست؟",
+          "back": "برای عیب‌یابی ingestion و وضعیت دستگاه‌های log."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortinet_management-faz-log-device",
+            "prompt": "در FortiManager / FortiAnalyzer، کاربرد اصلی فرمان زیر چیست؟\ndiagnose log device",
+            "options": [
+              "برای عیب‌یابی ingestion و وضعیت دستگاه‌های log.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortinet_management-faz-log-device",
+            "correct_index": 0,
+            "explain_fa": "برای عیب‌یابی ingestion و وضعیت دستگاه‌های log."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortinet_management:faz-event-filter",
+      "vendor": "Fortinet",
+      "platform": "FortiAnalyzer CLI; نسخه/context وابسته",
+      "category": "fortinet_management",
+      "subcategory": "faz",
+      "level": "L1",
+      "title_fa": "فیلتر category رخداد در CLI پشتیبانی‌شده",
+      "title_en": "execute log filter category event",
+      "command": "execute log filter category event",
+      "aliases": [],
+      "syntax": "execute log filter category event",
+      "arguments": [],
+      "when_to_use_fa": "برای محدود کردن بررسی به event در context فیلتر؛ syntax نسخه را ابتدا بررسی کنید.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "راهنمای CLI نسخهٔ نصب‌شده را بررسی کنید.",
+        "فیلتر را در context مناسب تنظیم کنید.",
+        "نتیجه را با بازه زمانی تطبیق دهید."
+      ],
+      "sample_output": "ممکن است خروجی مستقیم نداشته باشد؛ context فیلتر تغییر می‌کند.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "diagnose log device"
+      ],
+      "common_mistakes_fa": [
+        "این فرمان به تنهایی export کامل انجام نمی‌دهد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، execute log filter category event را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "فیلتر قبلی را ثبت کنید تا به وضعیت اولیه برگردید.",
+      "search_keywords": [
+        "FortiAnalyzer",
+        "event filter",
+        "FortiManager / FortiAnalyzer",
+        "execute log filter category event",
+        "فیلتر category رخداد در CLI پشتیبانی‌شده",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد execute log filter category event چیست؟",
+          "back": "برای محدود کردن بررسی به event در context فیلتر؛ syntax نسخه را ابتدا بررسی کنید."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortinet_management-faz-event-filter",
+            "prompt": "در FortiManager / FortiAnalyzer، کاربرد اصلی فرمان زیر چیست؟\nexecute log filter category event",
+            "options": [
+              "برای محدود کردن بررسی به event در context فیلتر؛ syntax نسخه را ابتدا بررسی کنید.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortinet_management-faz-event-filter",
+            "correct_index": 0,
+            "explain_fa": "برای محدود کردن بررسی به event در context فیلتر؛ syntax نسخه را ابتدا بررسی کنید."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:security_ops:wevtutil-sysmon",
+      "vendor": "Microsoft / Linux / osquery",
+      "platform": "Windows wevtutil",
+      "category": "security_ops",
+      "subcategory": "wevtutil",
+      "level": "L1",
+      "title_fa": "خواندن ۲۰ رخداد آخر Sysmon",
+      "title_en": "wevtutil qe Microsoft-Windows-Sysmon/Operational /c:20 /rd:true /f:text",
+      "command": "wevtutil qe Microsoft-Windows-Sysmon/Operational /c:20 /rd:true /f:text",
+      "aliases": [],
+      "syntax": "wevtutil qe LOGNAME /c:COUNT /rd:true /f:text",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی سریع رخدادهای Sysmon بدون تغییر پیکربندی.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "وجود channel و مجوز خواندن را بررسی کنید.",
+        "۲۰ رخداد آخر را بخوانید.",
+        "Event ID و زمان را تحلیل کنید."
+      ],
+      "sample_output": "خروجی متن رخدادها را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "Get-WinEvent"
+      ],
+      "common_mistakes_fa": [
+        "نبود رخداد می‌تواند ناشی از نصب/پیکربندی نبودن Sysmon باشد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، wevtutil qe Microsoft-Windows-Sysmon/Operational /c:20 /rd:true /f:text را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "command line و نام کاربری را پیش از ارسال پالایش کنید.",
+      "search_keywords": [
+        "Sysmon",
+        "wevtutil",
+        "event triage",
+        "Sysmon / SIEM / SOC",
+        "wevtutil qe Microsoft-Windows-Sysmon/Operational /c:20 /rd:true /f:text",
+        "خواندن ۲۰ رخداد آخر Sysmon",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد wevtutil qe Microsoft-Windows-Sysmon/Operational /c:20 /rd:true /f:text چیست؟",
+          "back": "برای بررسی سریع رخدادهای Sysmon بدون تغییر پیکربندی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-security_ops-wevtutil-sysmon",
+            "prompt": "در Sysmon / SIEM / SOC، کاربرد اصلی فرمان زیر چیست؟\nwevtutil qe Microsoft-Windows-Sysmon/Operational /c:20 /rd:true /f:text",
+            "options": [
+              "برای بررسی سریع رخدادهای Sysmon بدون تغییر پیکربندی.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-security_ops-wevtutil-sysmon",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی سریع رخدادهای Sysmon بدون تغییر پیکربندی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:security_ops:get-winevent-4624",
+      "vendor": "Microsoft / Linux / osquery",
+      "platform": "Windows PowerShell",
+      "category": "security_ops",
+      "subcategory": "get",
+      "level": "L1",
+      "title_fa": "جست‌وجوی رخدادهای ورود موفق ویندوز",
+      "title_en": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624; StartTime=(Get-Date).AddHours(-2)} -MaxEvents 50",
+      "command": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624; StartTime=(Get-Date).AddHours(-2)} -MaxEvents 50",
+      "aliases": [],
+      "syntax": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624; StartTime=...} -MaxEvents N",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی رخداد 4624 در بازهٔ محدود؛ logon type باید در context بررسی شود.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "بازه زمانی و میزبان را تعیین کنید.",
+        "رخدادها را استخراج کنید.",
+        "LogonType و SourceNetworkAddress را تحلیل کنید."
+      ],
+      "sample_output": "خروجی object شامل TimeCreated، Id و Message است.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "wevtutil qe"
+      ],
+      "common_mistakes_fa": [
+        "هر 4624 به معنی ورود تعاملی انسان نیست."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624; StartTime=(Get-Date).AddHours(-2)} -MaxEvents 50 را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "داده‌های هویتی و IP را ناشناس‌سازی کنید.",
+      "search_keywords": [
+        "Get-WinEvent",
+        "Event ID 4624",
+        "SOC",
+        "Sysmon / SIEM / SOC",
+        "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624; StartTime=(Get-Date).AddHours(-2)} -MaxEvents 50",
+        "جست‌وجوی رخدادهای ورود موفق ویندوز",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624; StartTime=(Get-Date).AddHours(-2)} -MaxEvents 50 چیست؟",
+          "back": "برای بررسی رخداد 4624 در بازهٔ محدود؛ logon type باید در context بررسی شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-security_ops-get-winevent-4624",
+            "prompt": "در Sysmon / SIEM / SOC، کاربرد اصلی فرمان زیر چیست؟\nGet-WinEvent -FilterHashtable @{LogName='Security'; Id=4624; StartTime=(Get-Date).AddHours(-2)} -MaxEvents 50",
+            "options": [
+              "برای بررسی رخداد 4624 در بازهٔ محدود؛ logon type باید در context بررسی شود.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-security_ops-get-winevent-4624",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی رخداد 4624 در بازهٔ محدود؛ logon type باید در context بررسی شود."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:security_ops:journalctl-ssh",
+      "vendor": "Microsoft / Linux / osquery",
+      "platform": "systemd Linux",
+      "category": "security_ops",
+      "subcategory": "journalctl",
+      "level": "L1",
+      "title_fa": "بررسی لاگ سرویس SSH",
+      "title_en": "sudo journalctl -u ssh --since '30 minutes ago' --no-pager",
+      "command": "sudo journalctl -u ssh --since '30 minutes ago' --no-pager",
+      "aliases": [],
+      "syntax": "journalctl -u UNIT --since TIME --no-pager",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی خطاهای احراز هویت و اتصال سرویس ssh در بازه محدود.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "نام unit را در توزیع تأیید کنید.",
+        "بازه را محدود کنید.",
+        "IPها و خطاها را با firewall هم‌بسته کنید."
+      ],
+      "sample_output": "خروجی رخدادهای سرویس ssh است.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "ss -tnp"
+      ],
+      "common_mistakes_fa": [
+        "نام سرویس ممکن است sshd یا ssh باشد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، sudo journalctl -u ssh --since '30 minutes ago' --no-pager را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "نام کاربری و آدرس‌ها را قبل از ارسال پالایش کنید.",
+      "search_keywords": [
+        "journalctl",
+        "SSH logs",
+        "incident triage",
+        "Sysmon / SIEM / SOC",
+        "sudo journalctl -u ssh --since '30 minutes ago' --no-pager",
+        "بررسی لاگ سرویس SSH",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد sudo journalctl -u ssh --since '30 minutes ago' --no-pager چیست؟",
+          "back": "برای بررسی خطاهای احراز هویت و اتصال سرویس ssh در بازه محدود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-security_ops-journalctl-ssh",
+            "prompt": "در Sysmon / SIEM / SOC، کاربرد اصلی فرمان زیر چیست؟\nsudo journalctl -u ssh --since '30 minutes ago' --no-pager",
+            "options": [
+              "برای بررسی خطاهای احراز هویت و اتصال سرویس ssh در بازه محدود.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-security_ops-journalctl-ssh",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی خطاهای احراز هویت و اتصال سرویس ssh در بازه محدود."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:security_ops:osquery-processes",
+      "vendor": "Microsoft / Linux / osquery",
+      "platform": "osquery",
+      "category": "security_ops",
+      "subcategory": "osquery",
+      "level": "L1",
+      "title_fa": "گزارش read-only پردازش‌ها با osquery",
+      "title_en": "osqueryi 'SELECT pid, name, path FROM processes LIMIT 20;'",
+      "command": "osqueryi 'SELECT pid, name, path FROM processes LIMIT 20;'",
+      "aliases": [],
+      "syntax": "osqueryi 'SELECT columns FROM table LIMIT N;'",
+      "arguments": [],
+      "when_to_use_fa": "برای inventory پردازش‌ها در میزبان مجاز.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "نسخه و دسترسی را بررسی کنید.",
+        "query محدود اجرا کنید.",
+        "نتیجه را با baseline تطبیق دهید."
+      ],
+      "sample_output": "جدول pid، name و path برمی‌گردد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "Get-Process"
+      ],
+      "common_mistakes_fa": [
+        "path به تنهایی سالم یا مخرب بودن را ثابت نمی‌کند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، osqueryi 'SELECT pid, name, path FROM processes LIMIT 20;' را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "از query read-only و دسترسی حداقلی استفاده کنید.",
+      "search_keywords": [
+        "osquery",
+        "process inventory",
+        "Sysmon / SIEM / SOC",
+        "osqueryi 'SELECT pid, name, path FROM processes LIMIT 20;'",
+        "گزارش read-only پردازش‌ها با osquery",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد osqueryi 'SELECT pid, name, path FROM processes LIMIT 20;' چیست؟",
+          "back": "برای inventory پردازش‌ها در میزبان مجاز."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-security_ops-osquery-processes",
+            "prompt": "در Sysmon / SIEM / SOC، کاربرد اصلی فرمان زیر چیست؟\nosqueryi 'SELECT pid, name, path FROM processes LIMIT 20;'",
+            "options": [
+              "برای inventory پردازش‌ها در میزبان مجاز.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-security_ops-osquery-processes",
+            "correct_index": 0,
+            "explain_fa": "برای inventory پردازش‌ها در میزبان مجاز."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:security_ops:jq-event-fields",
+      "vendor": "Microsoft / Linux / osquery",
+      "platform": "jq",
+      "category": "security_ops",
+      "subcategory": "jq",
+      "level": "L1",
+      "title_fa": "استخراج فیلدهای JSON رخداد",
+      "title_en": "jq -r '.events[] | [.timestamp,.event_id,.host] | @tsv' events.json",
+      "command": "jq -r '.events[] | [.timestamp,.event_id,.host] | @tsv' events.json",
+      "aliases": [],
+      "syntax": "jq FILTER INPUT.json",
+      "arguments": [],
+      "when_to_use_fa": "برای تبدیل JSON آزمایشی به TSV قابل‌بررسی.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "ساختار JSON را بررسی کنید.",
+        "فیلتر را روی نمونه غیرحساس اجرا کنید.",
+        "تعداد ردیف‌ها را تطبیق دهید."
+      ],
+      "sample_output": "خروجی TSV شامل timestamp، event_id و host است.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "python -m json.tool"
+      ],
+      "common_mistakes_fa": [
+        "مسیر .events[] با همه schemaها سازگار نیست."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، jq -r '.events[] | [.timestamp,.event_id,.host] | @tsv' events.json را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "شناسه‌ها و داده‌های شخصی را پالایش کنید.",
+      "search_keywords": [
+        "jq",
+        "JSON normalization",
+        "SIEM",
+        "Sysmon / SIEM / SOC",
+        "jq -r '.events[] | [.timestamp,.event_id,.host] | @tsv' events.json",
+        "استخراج فیلدهای JSON رخداد",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد jq -r '.events[] | [.timestamp,.event_id,.host] | @tsv' events.json چیست؟",
+          "back": "برای تبدیل JSON آزمایشی به TSV قابل‌بررسی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-security_ops-jq-event-fields",
+            "prompt": "در Sysmon / SIEM / SOC، کاربرد اصلی فرمان زیر چیست؟\njq -r '.events[] | [.timestamp,.event_id,.host] | @tsv' events.json",
+            "options": [
+              "برای تبدیل JSON آزمایشی به TSV قابل‌بررسی.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-security_ops-jq-event-fields",
+            "correct_index": 0,
+            "explain_fa": "برای تبدیل JSON آزمایشی به TSV قابل‌بررسی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:git:git-status-short",
+      "vendor": "Git",
+      "platform": "Git 2.x",
+      "category": "git",
+      "subcategory": "git",
+      "level": "L1",
+      "title_fa": "بررسی شاخه و تغییرات Git",
+      "title_en": "git status --short --branch",
+      "command": "git status --short --branch",
+      "aliases": [],
+      "syntax": "git status --short --branch",
+      "arguments": [],
+      "when_to_use_fa": "برای دیدن شاخه و وضعیت staged/unstaged/untracked پیش از commit.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "در ریشهٔ مخزن اجرا کنید.",
+        "فایل‌های untracked و تغییرات را بررسی کنید.",
+        "secretها را قبل از stage بازبینی کنید."
+      ],
+      "sample_output": "خروجی شاخه و تغییرات را خلاصه می‌کند.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "git diff --check"
+      ],
+      "common_mistakes_fa": [
+        "untracked بودن به معنی بی‌اهمیت بودن فایل نیست."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، git status --short --branch را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "secretها را stage نکنید؛ .gitignore جای بازبینی را نمی‌گیرد.",
+      "search_keywords": [
+        "Git",
+        "status",
+        "staged",
+        "Git / GitHub",
+        "git status --short --branch",
+        "بررسی شاخه و تغییرات Git",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد git status --short --branch چیست؟",
+          "back": "برای دیدن شاخه و وضعیت staged/unstaged/untracked پیش از commit."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-git-git-status-short",
+            "prompt": "در Git / GitHub، کاربرد اصلی فرمان زیر چیست؟\ngit status --short --branch",
+            "options": [
+              "برای دیدن شاخه و وضعیت staged/unstaged/untracked پیش از commit.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-git-git-status-short",
+            "correct_index": 0,
+            "explain_fa": "برای دیدن شاخه و وضعیت staged/unstaged/untracked پیش از commit."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:git:git-diff-check",
+      "vendor": "Git",
+      "platform": "Git 2.x",
+      "category": "git",
+      "subcategory": "git",
+      "level": "L1",
+      "title_fa": "یافتن خطاهای whitespace در diff",
+      "title_en": "git diff --check",
+      "command": "git diff --check",
+      "aliases": [],
+      "syntax": "git diff --check",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی whitespace error پیش از commit.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "پس از تغییر اجرا کنید.",
+        "هشدارها را اصلاح کنید.",
+        "برای staged changes از git diff --cached --check هم استفاده کنید."
+      ],
+      "sample_output": "مسیر و خط دارای مشکل گزارش می‌شود.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "git status"
+      ],
+      "common_mistakes_fa": [
+        "این فرمان منطق یا syntax برنامه را بررسی نمی‌کند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، git diff --check را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "تست و secret scanning را جداگانه اجرا کنید.",
+      "search_keywords": [
+        "Git",
+        "diff check",
+        "pre-commit",
+        "Git / GitHub",
+        "git diff --check",
+        "یافتن خطاهای whitespace در diff",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد git diff --check چیست؟",
+          "back": "برای بررسی whitespace error پیش از commit."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-git-git-diff-check",
+            "prompt": "در Git / GitHub، کاربرد اصلی فرمان زیر چیست؟\ngit diff --check",
+            "options": [
+              "برای بررسی whitespace error پیش از commit.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-git-git-diff-check",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی whitespace error پیش از commit."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:git:git-log-oneline",
+      "vendor": "Git",
+      "platform": "Git 2.x",
+      "category": "git",
+      "subcategory": "git",
+      "level": "L1",
+      "title_fa": "مرور ۱۰ commit اخیر",
+      "title_en": "git log --oneline --decorate -n 10",
+      "command": "git log --oneline --decorate -n 10",
+      "aliases": [],
+      "syntax": "git log --oneline --decorate -n N",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی تاریخچه و HEAD پیش از merge یا cherry-pick.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "در مخزن اجرا کنید.",
+        "commit و شاخه مورد نظر را بیابید.",
+        "برای جزئیات git show اجرا کنید."
+      ],
+      "sample_output": "هر commit در یک خط نمایش داده می‌شود.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "git status",
+        "git show"
+      ],
+      "common_mistakes_fa": [
+        "تاریخچهٔ commit تغییرات unstaged را نشان نمی‌دهد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، git log --oneline --decorate -n 10 را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "اطلاعات author و محتوای commit را پیش از انتشار بررسی کنید.",
+      "search_keywords": [
+        "Git",
+        "log",
+        "HEAD",
+        "Git / GitHub",
+        "git log --oneline --decorate -n 10",
+        "مرور ۱۰ commit اخیر",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد git log --oneline --decorate -n 10 چیست؟",
+          "back": "برای بررسی تاریخچه و HEAD پیش از merge یا cherry-pick."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-git-git-log-oneline",
+            "prompt": "در Git / GitHub، کاربرد اصلی فرمان زیر چیست؟\ngit log --oneline --decorate -n 10",
+            "options": [
+              "برای بررسی تاریخچه و HEAD پیش از merge یا cherry-pick.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-git-git-log-oneline",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی تاریخچه و HEAD پیش از merge یا cherry-pick."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:git:git-switch-create",
+      "vendor": "Git",
+      "platform": "Git 2.23+",
+      "category": "git",
+      "subcategory": "git",
+      "level": "L1",
+      "title_fa": "ساخت شاخهٔ کاری",
+      "title_en": "git switch -c audit/ch68-content",
+      "command": "git switch -c audit/ch68-content",
+      "aliases": [],
+      "syntax": "git switch -c BRANCH_NAME",
+      "arguments": [],
+      "when_to_use_fa": "برای جداسازی تغییرات از شاخه فعلی.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "working tree را بررسی کنید.",
+        "نام شاخه را مطابق convention انتخاب کنید.",
+        "شاخه را ایجاد کنید."
+      ],
+      "sample_output": "HEAD روی شاخهٔ جدید قرار می‌گیرد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "git branch --show-current"
+      ],
+      "common_mistakes_fa": [
+        "اگر شاخه موجود باشد، -c خطا می‌دهد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، git switch -c audit/ch68-content را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "پیش از push فایل‌های حساس را بررسی کنید.",
+      "search_keywords": [
+        "Git",
+        "git switch -c",
+        "branch workflow",
+        "Git / GitHub",
+        "git switch -c audit/ch68-content",
+        "ساخت شاخهٔ کاری",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد git switch -c audit/ch68-content چیست؟",
+          "back": "برای جداسازی تغییرات از شاخه فعلی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-git-git-switch-create",
+            "prompt": "در Git / GitHub، کاربرد اصلی فرمان زیر چیست؟\ngit switch -c audit/ch68-content",
+            "options": [
+              "برای جداسازی تغییرات از شاخه فعلی.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-git-git-switch-create",
+            "correct_index": 0,
+            "explain_fa": "برای جداسازی تغییرات از شاخه فعلی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:git:git-remote-v",
+      "vendor": "Git",
+      "platform": "Git 2.x",
+      "category": "git",
+      "subcategory": "git",
+      "level": "L1",
+      "title_fa": "بررسی URLهای remote",
+      "title_en": "git remote -v",
+      "command": "git remote -v",
+      "aliases": [],
+      "syntax": "git remote -v",
+      "arguments": [],
+      "when_to_use_fa": "برای تأیید مقصد fetch/push پیش از ارسال commit.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "در مخزن اجرا کنید.",
+        "URL را با مخزن رسمی تطبیق دهید.",
+        "مقصد push را قبل از ارسال تأیید کنید."
+      ],
+      "sample_output": "URLهای fetch/push را نمایش می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "git status"
+      ],
+      "common_mistakes_fa": [
+        "نام origin به تنهایی مقصد درست را ثابت نمی‌کند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، git remote -v را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "URLهای خصوصی را عمومی نکنید.",
+      "search_keywords": [
+        "Git",
+        "remote URL",
+        "push destination",
+        "Git / GitHub",
+        "git remote -v",
+        "بررسی URLهای remote",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد git remote -v چیست؟",
+          "back": "برای تأیید مقصد fetch/push پیش از ارسال commit."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-git-git-remote-v",
+            "prompt": "در Git / GitHub، کاربرد اصلی فرمان زیر چیست؟\ngit remote -v",
+            "options": [
+              "برای تأیید مقصد fetch/push پیش از ارسال commit.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-git-git-remote-v",
+            "correct_index": 0,
+            "explain_fa": "برای تأیید مقصد fetch/push پیش از ارسال commit."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:backup_recovery:restic-snapshots",
+      "vendor": "Restic / Borg / rsync / PostgreSQL",
+      "platform": "Restic",
+      "category": "backup_recovery",
+      "subcategory": "restic",
+      "level": "L1",
+      "title_fa": "فهرست snapshotهای Restic",
+      "title_en": "restic snapshots",
+      "command": "restic snapshots",
+      "aliases": [],
+      "syntax": "restic snapshots",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی زمان، host و tagهای backup پیش از restore.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "repository و credential را امن تنظیم کنید.",
+        "snapshotها را فهرست کنید.",
+        "زمان و مسیر را با policy تطبیق دهید."
+      ],
+      "sample_output": "خروجی ID، زمان، host و path را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "restic check"
+      ],
+      "common_mistakes_fa": [
+        "وجود snapshot قابل‌بازیابی بودن را تضمین نمی‌کند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، restic snapshots را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "کلید و password را در command line یا log افشا نکنید.",
+      "search_keywords": [
+        "Restic",
+        "snapshots",
+        "backup inventory",
+        "Backup / Restore / Disaster Recovery",
+        "restic snapshots",
+        "فهرست snapshotهای Restic",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد restic snapshots چیست؟",
+          "back": "برای بررسی زمان، host و tagهای backup پیش از restore."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-backup_recovery-restic-snapshots",
+            "prompt": "در Backup / Restore / Disaster Recovery، کاربرد اصلی فرمان زیر چیست؟\nrestic snapshots",
+            "options": [
+              "برای بررسی زمان، host و tagهای backup پیش از restore.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-backup_recovery-restic-snapshots",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی زمان، host و tagهای backup پیش از restore."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:backup_recovery:restic-check",
+      "vendor": "Restic / Borg / rsync / PostgreSQL",
+      "platform": "Restic",
+      "category": "backup_recovery",
+      "subcategory": "restic",
+      "level": "L1",
+      "title_fa": "بررسی یکپارچگی repository در Restic",
+      "title_en": "restic check",
+      "command": "restic check",
+      "aliases": [],
+      "syntax": "restic check [--read-data]",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی ساختار repository؛ بررسی کامل داده‌ها ممکن است به --read-data نیاز داشته باشد.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "بار I/O را در نظر بگیرید.",
+        "check استاندارد را اجرا کنید.",
+        "در صورت نیاز read-data را زمان‌بندی کنید."
+      ],
+      "sample_output": "موفقیت یعنی بررسی‌های اجراشده خطایی گزارش نکرده‌اند.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "restic snapshots"
+      ],
+      "common_mistakes_fa": [
+        "بدون --read-data تمام blobها خوانده نمی‌شوند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، restic check را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "بررسی کامل repository بزرگ را زمان‌بندی کنید.",
+      "search_keywords": [
+        "Restic",
+        "integrity",
+        "backup verification",
+        "Backup / Restore / Disaster Recovery",
+        "restic check",
+        "بررسی یکپارچگی repository در Restic",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد restic check چیست؟",
+          "back": "برای بررسی ساختار repository؛ بررسی کامل داده‌ها ممکن است به --read-data نیاز داشته باشد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-backup_recovery-restic-check",
+            "prompt": "در Backup / Restore / Disaster Recovery، کاربرد اصلی فرمان زیر چیست؟\nrestic check",
+            "options": [
+              "برای بررسی ساختار repository؛ بررسی کامل داده‌ها ممکن است به --read-data نیاز داشته باشد.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-backup_recovery-restic-check",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی ساختار repository؛ بررسی کامل داده‌ها ممکن است به --read-data نیاز داشته باشد."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:backup_recovery:borg-list",
+      "vendor": "Restic / Borg / rsync / PostgreSQL",
+      "platform": "BorgBackup",
+      "category": "backup_recovery",
+      "subcategory": "borg",
+      "level": "L1",
+      "title_fa": "فهرست آرشیوهای Borg",
+      "title_en": "borg list /backup/repo",
+      "command": "borg list /backup/repo",
+      "aliases": [],
+      "syntax": "borg list REPOSITORY",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهدهٔ آرشیوهای موجود پیش از انتخاب نقطه بازیابی.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "نسخه و مسیر repository را تأیید کنید.",
+        "آرشیوها را فهرست کنید.",
+        "زمان آرشیو را با retention تطبیق دهید."
+      ],
+      "sample_output": "فهرست آرشیوهای ذخیره‌شده نمایش داده می‌شود.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "borg check"
+      ],
+      "common_mistakes_fa": [
+        "syntax بین نسخه‌های Borg می‌تواند متفاوت باشد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، borg list /backup/repo را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "passphrase و دسترسی repository را محدود نگه دارید.",
+      "search_keywords": [
+        "BorgBackup",
+        "borg list",
+        "archive inventory",
+        "Backup / Restore / Disaster Recovery",
+        "borg list /backup/repo",
+        "فهرست آرشیوهای Borg",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد borg list /backup/repo چیست؟",
+          "back": "برای مشاهدهٔ آرشیوهای موجود پیش از انتخاب نقطه بازیابی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-backup_recovery-borg-list",
+            "prompt": "در Backup / Restore / Disaster Recovery، کاربرد اصلی فرمان زیر چیست؟\nborg list /backup/repo",
+            "options": [
+              "برای مشاهدهٔ آرشیوهای موجود پیش از انتخاب نقطه بازیابی.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-backup_recovery-borg-list",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهدهٔ آرشیوهای موجود پیش از انتخاب نقطه بازیابی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:backup_recovery:rsync-dry-run",
+      "vendor": "Restic / Borg / rsync / PostgreSQL",
+      "platform": "rsync Linux/Unix",
+      "category": "backup_recovery",
+      "subcategory": "rsync",
+      "level": "L1",
+      "title_fa": "پیش‌نمایش همگام‌سازی rsync",
+      "title_en": "rsync -aHAXn --numeric-ids /srv/data/ /mnt/backup/data/",
+      "command": "rsync -aHAXn --numeric-ids /srv/data/ /mnt/backup/data/",
+      "aliases": [],
+      "syntax": "rsync -aHAXn SOURCE/ DESTINATION/",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهدهٔ تغییرات احتمالی پیش از انتقال واقعی؛ -n حالت dry-run است.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "source و destination را دقیق بررسی کنید.",
+        "خروجی dry-run را بازبینی کنید.",
+        "پس از تأیید، اجرای واقعی را برنامه‌ریزی کنید."
+      ],
+      "sample_output": "فایل‌های کاندید انتقال فهرست می‌شوند.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "restic snapshots"
+      ],
+      "common_mistakes_fa": [
+        "slash انتهای مسیر دامنهٔ عملیات را تغییر می‌دهد."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، rsync -aHAXn --numeric-ids /srv/data/ /mnt/backup/data/ را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "--delete را بدون dry-run و تأیید مستقل اضافه نکنید.",
+      "search_keywords": [
+        "rsync",
+        "dry-run",
+        "backup sync",
+        "Backup / Restore / Disaster Recovery",
+        "rsync -aHAXn --numeric-ids /srv/data/ /mnt/backup/data/",
+        "پیش‌نمایش همگام‌سازی rsync",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد rsync -aHAXn --numeric-ids /srv/data/ /mnt/backup/data/ چیست؟",
+          "back": "برای مشاهدهٔ تغییرات احتمالی پیش از انتقال واقعی؛ -n حالت dry-run است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-backup_recovery-rsync-dry-run",
+            "prompt": "در Backup / Restore / Disaster Recovery، کاربرد اصلی فرمان زیر چیست؟\nrsync -aHAXn --numeric-ids /srv/data/ /mnt/backup/data/",
+            "options": [
+              "برای مشاهدهٔ تغییرات احتمالی پیش از انتقال واقعی؛ -n حالت dry-run است.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-backup_recovery-rsync-dry-run",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهدهٔ تغییرات احتمالی پیش از انتقال واقعی؛ -n حالت dry-run است."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:backup_recovery:pg-restore-list",
+      "vendor": "Restic / Borg / rsync / PostgreSQL",
+      "platform": "PostgreSQL client tools",
+      "category": "backup_recovery",
+      "subcategory": "pg",
+      "level": "L1",
+      "title_fa": "فهرست محتویات dump PostgreSQL",
+      "title_en": "pg_restore --list /backup/db.dump",
+      "command": "pg_restore --list /backup/db.dump",
+      "aliases": [],
+      "syntax": "pg_restore --list DUMP_FILE",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی objectهای dump پیش از restore واقعی.",
+      "prerequisites_fa": [
+        "نسخه/محیط اجرا و سطح دسترسی را پیش از اجرا بررسی کنید.",
+        "فقط روی سامانهٔ تحت مدیریت یا محیط آزمایش دارای مجوز اجرا شود."
+      ],
+      "steps_fa": [
+        "نسخه ابزار و فرمت dump را بررسی کنید.",
+        "فهرست objectها را بخوانید.",
+        "restore را ابتدا در محیط جدا تمرین کنید."
+      ],
+      "sample_output": "فهرست TOC از objectهای dump نمایش داده می‌شود.",
+      "output_fields_fa": [
+        {
+          "field": "status/output",
+          "meaning": "خروجی به نسخه و وضعیت واقعی وابسته است؛ نمونه صرفاً راهنمای تفسیر است."
+        }
+      ],
+      "related_commands": [
+        "pg_dump"
+      ],
+      "common_mistakes_fa": [
+        "فهرست موفق، سلامت کامل یا سازگاری مقصد را تضمین نمی‌کند."
+      ],
+      "lab_hint_fa": "در محیط آزمایش، pg_restore --list /backup/db.dump را اجرا کنید؛ خروجی را با baseline مقایسه و نسخه ابزار و نتیجه را ثبت کنید.",
+      "security_notes_fa": "dump ممکن است داده حساس داشته باشد؛ دسترسی را محدود کنید.",
+      "search_keywords": [
+        "PostgreSQL",
+        "pg_restore",
+        "restore preflight",
+        "Backup / Restore / Disaster Recovery",
+        "pg_restore --list /backup/db.dump",
+        "فهرست محتویات dump PostgreSQL",
+        "audit",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد pg_restore --list /backup/db.dump چیست؟",
+          "back": "برای بررسی objectهای dump پیش از restore واقعی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-backup_recovery-pg-restore-list",
+            "prompt": "در Backup / Restore / Disaster Recovery، کاربرد اصلی فرمان زیر چیست؟\npg_restore --list /backup/db.dump",
+            "options": [
+              "برای بررسی objectهای dump پیش از restore واقعی.",
+              "برای حذف دائمی تمام تنظیمات دستگاه",
+              "برای خاموش‌کردن همه کنترل‌های امنیتی",
+              "در همه نسخه‌ها بدون پیش‌نیاز همین خروجی را تضمین می‌کند"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-backup_recovery-pg-restore-list",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی objectهای dump پیش از restore واقعی."
           }
         ]
       },
