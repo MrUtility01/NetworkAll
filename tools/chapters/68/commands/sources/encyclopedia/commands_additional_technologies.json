@@ -4,10 +4,10 @@
   "chapter_order": 68,
   "domain": "additional_technologies",
   "domain_title_fa": "فناوری‌های تکمیلی زیرساخت",
-  "count": 195,
+  "count": 255,
   "preserve_existing_records": true,
   "source_status": "review_required",
-  "note": "افزونه افزایشی؛ ۱۵ حوزه اولیه به‌علاوه ۹ حوزه تکمیلی. سهمیه نهایی هنوز تکمیل نیست؛ FTP، FTPS و SFTP باید مستقل ممیزی شوند.",
+  "note": "افزونه افزایشی؛ موج اول فناوری‌های تکمیلی و موج دوم تکمیل دستورهای منتخب خانواده‌های اصلی. تمام رکوردها نیازمند بازبینی نسخه‌ای هستند؛ سهمیه نهایی ۵۰۰/۱۰۰/۱۰۰/۵۰۰ هنوز تکمیل نشده است.",
   "commands": [
     {
       "uid": "cmd:ssh:system:ssh-v",
@@ -15829,6 +15829,4395 @@
             "id": "q-backup_recovery-pg-restore-list",
             "correct_index": 0,
             "explain_fa": "برای بررسی objectهای dump پیش از restore واقعی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:route-print-detail",
+      "vendor": "MikroTik",
+      "platform": "RouterOS v6/v7",
+      "category": "mikrotik",
+      "subcategory": "route",
+      "level": "L1",
+      "title_fa": "نمایش جزئیات routeها",
+      "title_en": "/ip route print detail",
+      "command": "/ip route print detail",
+      "aliases": [],
+      "syntax": "/ip route print detail",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی gateway، distance، routing-table و وضعیت route پیش از عیب‌یابی.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "route چاپ‌شده را با flagهای active/inactive و route مقصد مقایسه کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "فرض نکنید هر route چاپ‌شده فعال است.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "خروجی را از IPهای حساس پالایش کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، /ip route print detail را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "routing",
+        "distance",
+        "RouterOS"
+      ],
+      "search_keywords": [
+        "/ip route get",
+        "/ip address print",
+        "MikroTik RouterOS",
+        "/ip route print detail",
+        "نمایش جزئیات routeها",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد /ip route print detail چیست؟",
+          "back": "برای بررسی gateway، distance، routing-table و وضعیت route پیش از عیب‌یابی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-mikrotik-route-print-detail",
+            "prompt": "در MikroTik RouterOS، کاربرد فرمان زیر چیست؟\n/ip route print detail",
+            "options": [
+              "برای بررسی gateway، distance، routing-table و وضعیت route پیش از عیب‌یابی.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-mikrotik-route-print-detail",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی gateway، distance، routing-table و وضعیت route پیش از عیب‌یابی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:route-get-default",
+      "vendor": "MikroTik",
+      "platform": "RouterOS v7",
+      "category": "mikrotik",
+      "subcategory": "route",
+      "level": "L1",
+      "title_fa": "خواندن ویژگی‌های route پیش‌فرض",
+      "title_en": "/ip route get [find dst-address=\"0.0.0.0/0\"]",
+      "command": "/ip route get [find dst-address=\"0.0.0.0/0\"]",
+      "aliases": [],
+      "syntax": "/ip route get [find dst-address=\"0.0.0.0/0\"]",
+      "arguments": [],
+      "when_to_use_fa": "برای استخراج ویژگی‌های default route بدون تغییر config.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "ابتدا تعداد default routeها را با print بررسی کنید؛ سپس gateway و routing-table را بخوانید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "اگر چند default route باشد find می‌تواند چند نتیجه بدهد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "پیش از تغییر، policy routing و دسترسی مدیریتی را بررسی کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، /ip route get [find dst-address=\"0.0.0.0/0\"] را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "default route",
+        "route get"
+      ],
+      "search_keywords": [
+        "/ip route print detail",
+        "MikroTik RouterOS",
+        "/ip route get [find dst-address=\"0.0.0.0/0\"]",
+        "خواندن ویژگی‌های route پیش‌فرض",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد /ip route get [find dst-address=\"0.0.0.0/0\"] چیست؟",
+          "back": "برای استخراج ویژگی‌های default route بدون تغییر config."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-mikrotik-route-get-default",
+            "prompt": "در MikroTik RouterOS، کاربرد فرمان زیر چیست؟\n/ip route get [find dst-address=\"0.0.0.0/0\"]",
+            "options": [
+              "برای استخراج ویژگی‌های default route بدون تغییر config.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-mikrotik-route-get-default",
+            "correct_index": 0,
+            "explain_fa": "برای استخراج ویژگی‌های default route بدون تغییر config."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:bridge-vlan-print",
+      "vendor": "MikroTik",
+      "platform": "RouterOS v6/v7",
+      "category": "mikrotik",
+      "subcategory": "bridge",
+      "level": "L1",
+      "title_fa": "بازبینی VLAN membership در bridge",
+      "title_en": "/interface bridge vlan print detail",
+      "command": "/interface bridge vlan print detail",
+      "aliases": [],
+      "syntax": "/interface bridge vlan print detail",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی tagged/untagged ports و VLAN IDهای bridge.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "خروجی را با bridge port، PVID و طراحی VLAN تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "فقط VLAN table برای تشخیص PVID کافی نیست.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "تغییر VLAN می‌تواند دسترسی مدیریت را قطع کند.",
+      "lab_hint_fa": "در محیط کنترل‌شده، /interface bridge vlan print detail را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "bridge vlan",
+        "tagged",
+        "untagged"
+      ],
+      "search_keywords": [
+        "/interface bridge port print detail",
+        "MikroTik RouterOS",
+        "/interface bridge vlan print detail",
+        "بازبینی VLAN membership در bridge",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد /interface bridge vlan print detail چیست؟",
+          "back": "برای بررسی tagged/untagged ports و VLAN IDهای bridge."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-mikrotik-bridge-vlan-print",
+            "prompt": "در MikroTik RouterOS، کاربرد فرمان زیر چیست؟\n/interface bridge vlan print detail",
+            "options": [
+              "برای بررسی tagged/untagged ports و VLAN IDهای bridge.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-mikrotik-bridge-vlan-print",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی tagged/untagged ports و VLAN IDهای bridge."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:bridge-host-print",
+      "vendor": "MikroTik",
+      "platform": "RouterOS v6/v7",
+      "category": "mikrotik",
+      "subcategory": "bridge",
+      "level": "L1",
+      "title_fa": "بررسی جدول MAC bridge",
+      "title_en": "/interface bridge host print",
+      "command": "/interface bridge host print",
+      "aliases": [],
+      "syntax": "/interface bridge host print",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده MACهای یادگرفته‌شده و پورت متناظر.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "MAC، bridge و on-interface را با VLAN و زمان مشاهده تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "MAC table فقط دستگاه‌های اخیراً یادگرفته‌شده را نشان می‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "MAC و نام دستگاه اطلاعات داخلی محسوب می‌شوند.",
+      "lab_hint_fa": "در محیط کنترل‌شده، /interface bridge host print را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "MAC table",
+        "bridge host"
+      ],
+      "search_keywords": [
+        "/interface bridge vlan print detail",
+        "MikroTik RouterOS",
+        "/interface bridge host print",
+        "بررسی جدول MAC bridge",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد /interface bridge host print چیست؟",
+          "back": "برای مشاهده MACهای یادگرفته‌شده و پورت متناظر."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-mikrotik-bridge-host-print",
+            "prompt": "در MikroTik RouterOS، کاربرد فرمان زیر چیست؟\n/interface bridge host print",
+            "options": [
+              "برای مشاهده MACهای یادگرفته‌شده و پورت متناظر.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-mikrotik-bridge-host-print",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده MACهای یادگرفته‌شده و پورت متناظر."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:filter-stats",
+      "vendor": "MikroTik",
+      "platform": "RouterOS v6/v7",
+      "category": "mikrotik",
+      "subcategory": "filter",
+      "level": "L1",
+      "title_fa": "مشاهده شمارنده‌های ruleهای firewall",
+      "title_en": "/ip firewall filter print stats",
+      "command": "/ip firewall filter print stats",
+      "aliases": [],
+      "syntax": "/ip firewall filter print stats",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی packet/byte counters هنگام عیب‌یابی rule matching.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "counterها را در دو زمان مقایسه و ترتیب ruleها را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "counter صفر به‌تنهایی بی‌استفاده‌بودن rule را ثابت نمی‌کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "در این مرحله فقط مشاهده کنید؛ rule را حذف یا جابه‌جا نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، /ip firewall filter print stats را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "firewall counters",
+        "filter stats"
+      ],
+      "search_keywords": [
+        "/ip firewall filter print detail",
+        "MikroTik RouterOS",
+        "/ip firewall filter print stats",
+        "مشاهده شمارنده‌های ruleهای firewall",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد /ip firewall filter print stats چیست؟",
+          "back": "برای بررسی packet/byte counters هنگام عیب‌یابی rule matching."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-mikrotik-filter-stats",
+            "prompt": "در MikroTik RouterOS، کاربرد فرمان زیر چیست؟\n/ip firewall filter print stats",
+            "options": [
+              "برای بررسی packet/byte counters هنگام عیب‌یابی rule matching.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-mikrotik-filter-stats",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی packet/byte counters هنگام عیب‌یابی rule matching."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:nat-print-detail",
+      "vendor": "MikroTik",
+      "platform": "RouterOS v6/v7",
+      "category": "mikrotik",
+      "subcategory": "nat",
+      "level": "L1",
+      "title_fa": "بازبینی جزئیات NAT",
+      "title_en": "/ip firewall nat print detail",
+      "command": "/ip firewall nat print detail",
+      "aliases": [],
+      "syntax": "/ip firewall nat print detail",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی chain، action و match conditions در NAT.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "rule مرتبط را با connection tuple و ترتیب اجرا تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "وجود NAT rule ثابت نمی‌کند ترافیک به آن می‌رسد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "پیش از تغییر NAT مسیر برگشت و دسترسی مدیریت را حفظ کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، /ip firewall nat print detail را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "NAT",
+        "firewall nat"
+      ],
+      "search_keywords": [
+        "/ip firewall connection print",
+        "MikroTik RouterOS",
+        "/ip firewall nat print detail",
+        "بازبینی جزئیات NAT",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد /ip firewall nat print detail چیست؟",
+          "back": "برای بررسی chain، action و match conditions در NAT."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-mikrotik-nat-print-detail",
+            "prompt": "در MikroTik RouterOS، کاربرد فرمان زیر چیست؟\n/ip firewall nat print detail",
+            "options": [
+              "برای بررسی chain، action و match conditions در NAT.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-mikrotik-nat-print-detail",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی chain، action و match conditions در NAT."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:dhcp-lease-detail",
+      "vendor": "MikroTik",
+      "platform": "RouterOS v6/v7",
+      "category": "mikrotik",
+      "subcategory": "dhcp",
+      "level": "L1",
+      "title_fa": "بررسی leaseهای DHCP",
+      "title_en": "/ip dhcp-server lease print detail",
+      "command": "/ip dhcp-server lease print detail",
+      "aliases": [],
+      "syntax": "/ip dhcp-server lease print detail",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی address، MAC، status و lease type.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "MAC کلاینت را پیدا و lease را با pool و طراحی IPAM تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "static و dynamic lease را اشتباه نگیرید.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "MAC و hostname کاربران را در گزارش عمومی منتشر نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، /ip dhcp-server lease print detail را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "DHCP lease",
+        "address assignment"
+      ],
+      "search_keywords": [
+        "/ip dhcp-server print detail",
+        "MikroTik RouterOS",
+        "/ip dhcp-server lease print detail",
+        "بررسی leaseهای DHCP",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد /ip dhcp-server lease print detail چیست؟",
+          "back": "برای بررسی address، MAC، status و lease type."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-mikrotik-dhcp-lease-detail",
+            "prompt": "در MikroTik RouterOS، کاربرد فرمان زیر چیست؟\n/ip dhcp-server lease print detail",
+            "options": [
+              "برای بررسی address، MAC، status و lease type.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-mikrotik-dhcp-lease-detail",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی address، MAC، status و lease type."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:torch-ether1",
+      "vendor": "MikroTik",
+      "platform": "RouterOS v7; verify CLI version",
+      "category": "mikrotik",
+      "subcategory": "torch",
+      "level": "L1",
+      "title_fa": "مشاهده ترافیک رابط برای ۱۰ ثانیه",
+      "title_en": "/tool torch interface=ether1 duration=10",
+      "command": "/tool torch interface=ether1 duration=10",
+      "aliases": [],
+      "syntax": "/tool torch interface=ether1 duration=10",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده جریان‌های پرترافیک روی رابط مشخص در بازه کوتاه.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "رابط را تأیید کنید و source/destination/protocol را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "Torch روی روتر پرترافیک ممکن است بار ایجاد کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "الگوی ارتباط و آدرس مقصد را محرمانه تلقی کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، /tool torch interface=ether1 duration=10 را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Torch",
+        "traffic analysis"
+      ],
+      "search_keywords": [
+        "/interface monitor-traffic ether1",
+        "MikroTik RouterOS",
+        "/tool torch interface=ether1 duration=10",
+        "مشاهده ترافیک رابط برای ۱۰ ثانیه",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد /tool torch interface=ether1 duration=10 چیست؟",
+          "back": "برای مشاهده جریان‌های پرترافیک روی رابط مشخص در بازه کوتاه."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-mikrotik-torch-ether1",
+            "prompt": "در MikroTik RouterOS، کاربرد فرمان زیر چیست؟\n/tool torch interface=ether1 duration=10",
+            "options": [
+              "برای مشاهده جریان‌های پرترافیک روی رابط مشخص در بازه کوتاه.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-mikrotik-torch-ether1",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده جریان‌های پرترافیک روی رابط مشخص در بازه کوتاه."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:resource-print",
+      "vendor": "MikroTik",
+      "platform": "RouterOS v6/v7",
+      "category": "mikrotik",
+      "subcategory": "resource",
+      "level": "L1",
+      "title_fa": "نمایش منابع سیستم RouterOS",
+      "title_en": "/system resource print",
+      "command": "/system resource print",
+      "aliases": [],
+      "syntax": "/system resource print",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی CPU، حافظه، uptime و نسخه در شروع عیب‌یابی.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "خروجی را با baseline و زمان وقوع مشکل مقایسه کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "یک snapshot جایگزین روند تاریخی نیست.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "اطلاعات identity را قبل از انتشار پالایش کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، /system resource print را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "CPU",
+        "memory",
+        "uptime"
+      ],
+      "search_keywords": [
+        "/system package print",
+        "MikroTik RouterOS",
+        "/system resource print",
+        "نمایش منابع سیستم RouterOS",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد /system resource print چیست؟",
+          "back": "برای بررسی CPU، حافظه، uptime و نسخه در شروع عیب‌یابی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-mikrotik-resource-print",
+            "prompt": "در MikroTik RouterOS، کاربرد فرمان زیر چیست؟\n/system resource print",
+            "options": [
+              "برای بررسی CPU، حافظه، uptime و نسخه در شروع عیب‌یابی.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-mikrotik-resource-print",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی CPU، حافظه، uptime و نسخه در شروع عیب‌یابی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:mikrotik:export-hide-sensitive",
+      "vendor": "MikroTik",
+      "platform": "RouterOS v6/v7; verify version",
+      "category": "mikrotik",
+      "subcategory": "export",
+      "level": "L1",
+      "title_fa": "خروجی terse پیکربندی RouterOS",
+      "title_en": "/export terse hide-sensitive",
+      "command": "/export terse hide-sensitive",
+      "aliases": [],
+      "syntax": "/export terse hide-sensitive",
+      "arguments": [],
+      "when_to_use_fa": "برای تهیه baseline متنی؛ hidden شدن secretها تضمین محرمانگی کامل نیست.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "خروجی را در محل امن نگه دارید و قبل از اشتراک‌گذاری دستی پالایش کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "فرض نکنید همه داده‌های حساس حذف شده‌اند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "پیکربندی را داده محرمانه زیرساخت تلقی کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، /export terse hide-sensitive را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "export",
+        "configuration backup"
+      ],
+      "search_keywords": [
+        "/system backup save",
+        "MikroTik RouterOS",
+        "/export terse hide-sensitive",
+        "خروجی terse پیکربندی RouterOS",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد /export terse hide-sensitive چیست؟",
+          "back": "برای تهیه baseline متنی؛ hidden شدن secretها تضمین محرمانگی کامل نیست."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-mikrotik-export-hide-sensitive",
+            "prompt": "در MikroTik RouterOS، کاربرد فرمان زیر چیست؟\n/export terse hide-sensitive",
+            "options": [
+              "برای تهیه baseline متنی؛ hidden شدن secretها تضمین محرمانگی کامل نیست.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-mikrotik-export-hide-sensitive",
+            "correct_index": 0,
+            "explain_fa": "برای تهیه baseline متنی؛ hidden شدن secretها تضمین محرمانگی کامل نیست."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:ospf-neighbor",
+      "vendor": "Cisco",
+      "platform": "Cisco IOS/IOS-XE",
+      "category": "cisco",
+      "subcategory": "ospf",
+      "level": "L1",
+      "title_fa": "بررسی همسایه‌های OSPF",
+      "title_en": "show ip ospf neighbor",
+      "command": "show ip ospf neighbor",
+      "aliases": [],
+      "syntax": "show ip ospf neighbor",
+      "arguments": [],
+      "when_to_use_fa": "برای تشخیص adjacencyهایی که به FULL نمی‌رسند.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "Neighbor ID، state، interface و dead time را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "INIT/EXSTART را adjacency سالم فرض نکنید.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "خروجی را از آدرس‌های داخلی پالایش کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، show ip ospf neighbor را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "OSPF",
+        "neighbor",
+        "adjacency"
+      ],
+      "search_keywords": [
+        "show ip ospf interface brief",
+        "Cisco IOS/IOS-XE",
+        "show ip ospf neighbor",
+        "بررسی همسایه‌های OSPF",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show ip ospf neighbor چیست؟",
+          "back": "برای تشخیص adjacencyهایی که به FULL نمی‌رسند."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cisco-ospf-neighbor",
+            "prompt": "در Cisco IOS/IOS-XE، کاربرد فرمان زیر چیست؟\nshow ip ospf neighbor",
+            "options": [
+              "برای تشخیص adjacencyهایی که به FULL نمی‌رسند.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cisco-ospf-neighbor",
+            "correct_index": 0,
+            "explain_fa": "برای تشخیص adjacencyهایی که به FULL نمی‌رسند."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:ospf-interface-brief",
+      "vendor": "Cisco",
+      "platform": "Cisco IOS/IOS-XE",
+      "category": "cisco",
+      "subcategory": "ospf",
+      "level": "L1",
+      "title_fa": "خلاصه رابط‌های OSPF",
+      "title_en": "show ip ospf interface brief",
+      "command": "show ip ospf interface brief",
+      "aliases": [],
+      "syntax": "show ip ospf interface brief",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی رابط‌های فعال OSPF و area.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "network type و area را با طراحی تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "wildcard یا area اشتباه می‌تواند رابط را از OSPF خارج کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "پیش از تغییر area اثر adjacency را بررسی کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، show ip ospf interface brief را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "OSPF interface",
+        "area"
+      ],
+      "search_keywords": [
+        "show ip ospf neighbor",
+        "Cisco IOS/IOS-XE",
+        "show ip ospf interface brief",
+        "خلاصه رابط‌های OSPF",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show ip ospf interface brief چیست؟",
+          "back": "برای بررسی رابط‌های فعال OSPF و area."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cisco-ospf-interface-brief",
+            "prompt": "در Cisco IOS/IOS-XE، کاربرد فرمان زیر چیست؟\nshow ip ospf interface brief",
+            "options": [
+              "برای بررسی رابط‌های فعال OSPF و area.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cisco-ospf-interface-brief",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی رابط‌های فعال OSPF و area."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:acl-show",
+      "vendor": "Cisco",
+      "platform": "Cisco IOS/IOS-XE",
+      "category": "cisco",
+      "subcategory": "acl",
+      "level": "L1",
+      "title_fa": "بازبینی ACL و hit counter",
+      "title_en": "show access-lists",
+      "command": "show access-lists",
+      "aliases": [],
+      "syntax": "show access-lists",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی ترتیب ACEها و شمارنده‌ها هنگام عیب‌یابی دسترسی.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "ACL مرتبط را پیدا و first-match order را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "ACE گسترده در بالا ممکن است rule پایین‌تر را بی‌اثر کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "تغییر ACL فقط با change review انجام شود.",
+      "lab_hint_fa": "در محیط کنترل‌شده، show access-lists را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "ACL",
+        "ACE",
+        "hit counter"
+      ],
+      "search_keywords": [
+        "show ip interface",
+        "Cisco IOS/IOS-XE",
+        "show access-lists",
+        "بازبینی ACL و hit counter",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show access-lists چیست؟",
+          "back": "برای بررسی ترتیب ACEها و شمارنده‌ها هنگام عیب‌یابی دسترسی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cisco-acl-show",
+            "prompt": "در Cisco IOS/IOS-XE، کاربرد فرمان زیر چیست؟\nshow access-lists",
+            "options": [
+              "برای بررسی ترتیب ACEها و شمارنده‌ها هنگام عیب‌یابی دسترسی.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cisco-acl-show",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی ترتیب ACEها و شمارنده‌ها هنگام عیب‌یابی دسترسی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:nat-translations",
+      "vendor": "Cisco",
+      "platform": "Cisco IOS/IOS-XE",
+      "category": "cisco",
+      "subcategory": "nat",
+      "level": "L1",
+      "title_fa": "بررسی جدول ترجمه NAT",
+      "title_en": "show ip nat translations",
+      "command": "show ip nat translations",
+      "aliases": [],
+      "syntax": "show ip nat translations",
+      "arguments": [],
+      "when_to_use_fa": "برای تطبیق inside-local و inside-global در ترافیک آزمایش.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "translation را با NAT config و ACL مرتبط تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "نبود entry ممکن است به معنی نبود ترافیک یا mismatch باشد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "آدرس‌های عمومی را قبل از انتشار پالایش کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، show ip nat translations را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "NAT translations",
+        "inside local"
+      ],
+      "search_keywords": [
+        "show ip nat statistics",
+        "Cisco IOS/IOS-XE",
+        "show ip nat translations",
+        "بررسی جدول ترجمه NAT",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show ip nat translations چیست؟",
+          "back": "برای تطبیق inside-local و inside-global در ترافیک آزمایش."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cisco-nat-translations",
+            "prompt": "در Cisco IOS/IOS-XE، کاربرد فرمان زیر چیست؟\nshow ip nat translations",
+            "options": [
+              "برای تطبیق inside-local و inside-global در ترافیک آزمایش.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cisco-nat-translations",
+            "correct_index": 0,
+            "explain_fa": "برای تطبیق inside-local و inside-global در ترافیک آزمایش."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:dhcp-binding",
+      "vendor": "Cisco",
+      "platform": "Cisco IOS/IOS-XE",
+      "category": "cisco",
+      "subcategory": "dhcp",
+      "level": "L1",
+      "title_fa": "مشاهده DHCP bindingها",
+      "title_en": "show ip dhcp binding",
+      "command": "show ip dhcp binding",
+      "aliases": [],
+      "syntax": "show ip dhcp binding",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی leaseهای DHCP server محلی.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "IP، client identifier و expiration را با کلاینت تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "این فرمان leaseهای DHCP خارجی را لزوماً نشان نمی‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "شناسه کلاینت را عمومی نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، show ip dhcp binding را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "DHCP binding",
+        "lease"
+      ],
+      "search_keywords": [
+        "show ip dhcp pool",
+        "Cisco IOS/IOS-XE",
+        "show ip dhcp binding",
+        "مشاهده DHCP bindingها",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show ip dhcp binding چیست؟",
+          "back": "برای بررسی leaseهای DHCP server محلی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cisco-dhcp-binding",
+            "prompt": "در Cisco IOS/IOS-XE، کاربرد فرمان زیر چیست؟\nshow ip dhcp binding",
+            "options": [
+              "برای بررسی leaseهای DHCP server محلی.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cisco-dhcp-binding",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی leaseهای DHCP server محلی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:etherchannel-summary",
+      "vendor": "Cisco",
+      "platform": "Cisco IOS/IOS-XE",
+      "category": "cisco",
+      "subcategory": "etherchannel",
+      "level": "L1",
+      "title_fa": "بررسی EtherChannel",
+      "title_en": "show etherchannel summary",
+      "command": "show etherchannel summary",
+      "aliases": [],
+      "syntax": "show etherchannel summary",
+      "arguments": [],
+      "when_to_use_fa": "برای تشخیص عضوهای bundle و وضعیت port-channel.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "group، protocol، flags و member ports را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "اختلاف LACP، speed یا VLAN می‌تواند عضو را suspend کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "تغییر member port می‌تواند ترافیک را مختل کند.",
+      "lab_hint_fa": "در محیط کنترل‌شده، show etherchannel summary را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "EtherChannel",
+        "LACP"
+      ],
+      "search_keywords": [
+        "show interfaces port-channel",
+        "Cisco IOS/IOS-XE",
+        "show etherchannel summary",
+        "بررسی EtherChannel",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show etherchannel summary چیست؟",
+          "back": "برای تشخیص عضوهای bundle و وضعیت port-channel."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cisco-etherchannel-summary",
+            "prompt": "در Cisco IOS/IOS-XE، کاربرد فرمان زیر چیست؟\nshow etherchannel summary",
+            "options": [
+              "برای تشخیص عضوهای bundle و وضعیت port-channel.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cisco-etherchannel-summary",
+            "correct_index": 0,
+            "explain_fa": "برای تشخیص عضوهای bundle و وضعیت port-channel."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:stp-vlan",
+      "vendor": "Cisco",
+      "platform": "Cisco IOS/IOS-XE",
+      "category": "cisco",
+      "subcategory": "stp",
+      "level": "L1",
+      "title_fa": "بررسی STP برای VLAN مشخص",
+      "title_en": "show spanning-tree vlan 10",
+      "command": "show spanning-tree vlan 10",
+      "aliases": [],
+      "syntax": "show spanning-tree vlan 10",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده root bridge، port role و state در VLAN هدف.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "VLAN ID را جایگزین و root/path cost را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "تغییر priority بدون طراحی می‌تواند root را جابه‌جا کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "در تولید تغییر STP نیازمند طرح و rollback است.",
+      "lab_hint_fa": "در محیط کنترل‌شده، show spanning-tree vlan 10 را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "STP",
+        "root bridge",
+        "VLAN"
+      ],
+      "search_keywords": [
+        "show spanning-tree summary",
+        "Cisco IOS/IOS-XE",
+        "show spanning-tree vlan 10",
+        "بررسی STP برای VLAN مشخص",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show spanning-tree vlan 10 چیست؟",
+          "back": "برای مشاهده root bridge، port role و state در VLAN هدف."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cisco-stp-vlan",
+            "prompt": "در Cisco IOS/IOS-XE، کاربرد فرمان زیر چیست؟\nshow spanning-tree vlan 10",
+            "options": [
+              "برای مشاهده root bridge، port role و state در VLAN هدف.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cisco-stp-vlan",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده root bridge، port role و state در VLAN هدف."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:interface-errors",
+      "vendor": "Cisco",
+      "platform": "Cisco IOS/IOS-XE; model-dependent",
+      "category": "cisco",
+      "subcategory": "interface",
+      "level": "L1",
+      "title_fa": "بررسی شمارنده‌های خطای رابط",
+      "title_en": "show interfaces counters errors",
+      "command": "show interfaces counters errors",
+      "aliases": [],
+      "syntax": "show interfaces counters errors",
+      "arguments": [],
+      "when_to_use_fa": "برای یافتن CRC/input/output errors و نشانه‌های فیزیکی.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "counterها را در دو زمان مقایسه و کابل/optic/duplex را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "مقدار تجمعی را بدون مقایسه زمانی تفسیر نکنید.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "توپولوژی و پورت‌های حساس را پالایش کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، show interfaces counters errors را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "CRC",
+        "interface errors"
+      ],
+      "search_keywords": [
+        "show interfaces status",
+        "Cisco IOS/IOS-XE",
+        "show interfaces counters errors",
+        "بررسی شمارنده‌های خطای رابط",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show interfaces counters errors چیست؟",
+          "back": "برای یافتن CRC/input/output errors و نشانه‌های فیزیکی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cisco-interface-errors",
+            "prompt": "در Cisco IOS/IOS-XE، کاربرد فرمان زیر چیست؟\nshow interfaces counters errors",
+            "options": [
+              "برای یافتن CRC/input/output errors و نشانه‌های فیزیکی.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cisco-interface-errors",
+            "correct_index": 0,
+            "explain_fa": "برای یافتن CRC/input/output errors و نشانه‌های فیزیکی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:logging-last",
+      "vendor": "Cisco",
+      "platform": "Cisco IOS-XE; pipe support varies",
+      "category": "cisco",
+      "subcategory": "logging",
+      "level": "L1",
+      "title_fa": "مشاهده انتهای buffer لاگ",
+      "title_en": "show logging | last 50",
+      "command": "show logging | last 50",
+      "aliases": [],
+      "syntax": "show logging | last 50",
+      "arguments": [],
+      "when_to_use_fa": "برای مرور پیام‌های اخیر در releaseهای پشتیبانی‌شده.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "اگر pipe `last` پشتیبانی نشد از show logging استفاده کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "syntax فیلتر بین releaseها متفاوت است.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "لاگ ممکن است IP و نام کاربری داشته باشد.",
+      "lab_hint_fa": "در محیط کنترل‌شده، show logging | last 50 را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "show logging",
+        "recent events"
+      ],
+      "search_keywords": [
+        "show clock",
+        "Cisco IOS/IOS-XE",
+        "show logging | last 50",
+        "مشاهده انتهای buffer لاگ",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show logging | last 50 چیست؟",
+          "back": "برای مرور پیام‌های اخیر در releaseهای پشتیبانی‌شده."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cisco-logging-last",
+            "prompt": "در Cisco IOS/IOS-XE، کاربرد فرمان زیر چیست؟\nshow logging | last 50",
+            "options": [
+              "برای مرور پیام‌های اخیر در releaseهای پشتیبانی‌شده.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cisco-logging-last",
+            "correct_index": 0,
+            "explain_fa": "برای مرور پیام‌های اخیر در releaseهای پشتیبانی‌شده."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:cisco:save-config",
+      "vendor": "Cisco",
+      "platform": "Cisco IOS/IOS-XE",
+      "category": "cisco",
+      "subcategory": "save",
+      "level": "L1",
+      "title_fa": "ذخیره config جاری برای boot بعدی",
+      "title_en": "copy running-config startup-config",
+      "command": "copy running-config startup-config",
+      "aliases": [],
+      "syntax": "copy running-config startup-config",
+      "arguments": [],
+      "when_to_use_fa": "فقط پس از review و approval برای پایدار کردن تغییر.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "پیش از اجرا diff و change approval را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "اجرای زودهنگام می‌تواند config ناسالم را پایدار کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "فرمان تغییردهنده است؛ فقط در change window اجرا شود.",
+      "lab_hint_fa": "در محیط کنترل‌شده، copy running-config startup-config را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "startup-config",
+        "save configuration"
+      ],
+      "search_keywords": [
+        "show running-config",
+        "Cisco IOS/IOS-XE",
+        "copy running-config startup-config",
+        "ذخیره config جاری برای boot بعدی",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد copy running-config startup-config چیست؟",
+          "back": "فقط پس از review و approval برای پایدار کردن تغییر."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cisco-save-config",
+            "prompt": "در Cisco IOS/IOS-XE، کاربرد فرمان زیر چیست؟\ncopy running-config startup-config",
+            "options": [
+              "فقط پس از review و approval برای پایدار کردن تغییر.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cisco-save-config",
+            "correct_index": 0,
+            "explain_fa": "فقط پس از review و approval برای پایدار کردن تغییر."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_batch:if-errorlevel",
+      "vendor": "Microsoft Windows CMD",
+      "platform": "Windows CMD / Batch",
+      "category": "windows_batch",
+      "subcategory": "if",
+      "level": "L1",
+      "title_fa": "خروج با کد خطا در Batch",
+      "title_en": "if errorlevel 1 exit /b 1",
+      "command": "if errorlevel 1 exit /b 1",
+      "aliases": [],
+      "syntax": "if errorlevel 1 exit /b 1",
+      "arguments": [],
+      "when_to_use_fa": "برای توقف اسکریپت پس از شکست فرمان قبلی.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "بلافاصله پس از فرمان هدف ERRORLEVEL را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "شرط errorlevel به صورت greater-than-or-equal تفسیر می‌شود.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "خطاها را ثبت کنید و از ادامه عملیات مخرب جلوگیری کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، if errorlevel 1 exit /b 1 را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "ERRORLEVEL",
+        "exit /b"
+      ],
+      "search_keywords": [
+        "setlocal",
+        "Windows Batch/CMD",
+        "if errorlevel 1 exit /b 1",
+        "خروج با کد خطا در Batch",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد if errorlevel 1 exit /b 1 چیست؟",
+          "back": "برای توقف اسکریپت پس از شکست فرمان قبلی."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_batch-if-errorlevel",
+            "prompt": "در Windows Batch/CMD، کاربرد فرمان زیر چیست؟\nif errorlevel 1 exit /b 1",
+            "options": [
+              "برای توقف اسکریپت پس از شکست فرمان قبلی.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_batch-if-errorlevel",
+            "correct_index": 0,
+            "explain_fa": "برای توقف اسکریپت پس از شکست فرمان قبلی."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_batch:setlocal-delayed",
+      "vendor": "Microsoft Windows CMD",
+      "platform": "Windows CMD / Batch",
+      "category": "windows_batch",
+      "subcategory": "setlocal",
+      "level": "L1",
+      "title_fa": "تنظیم scope متغیرهای Batch",
+      "title_en": "setlocal EnableExtensions EnableDelayedExpansion",
+      "command": "setlocal EnableExtensions EnableDelayedExpansion",
+      "aliases": [],
+      "syntax": "setlocal EnableExtensions EnableDelayedExpansion",
+      "arguments": [],
+      "when_to_use_fa": "برای محدودکردن اثر متغیرها و استفاده از !VAR! داخل حلقه.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "در داده‌هایی که ! دارند، delayed expansion را با احتیاط به کار ببرید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "Delayed expansion می‌تواند ! را در داده تغییر دهد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "ورودی غیرقابل‌اعتماد را مستقیم در فرمان وارد نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، setlocal EnableExtensions EnableDelayedExpansion را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "setlocal",
+        "delayed expansion"
+      ],
+      "search_keywords": [
+        "endlocal",
+        "Windows Batch/CMD",
+        "setlocal EnableExtensions EnableDelayedExpansion",
+        "تنظیم scope متغیرهای Batch",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد setlocal EnableExtensions EnableDelayedExpansion چیست؟",
+          "back": "برای محدودکردن اثر متغیرها و استفاده از !VAR! داخل حلقه."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_batch-setlocal-delayed",
+            "prompt": "در Windows Batch/CMD، کاربرد فرمان زیر چیست؟\nsetlocal EnableExtensions EnableDelayedExpansion",
+            "options": [
+              "برای محدودکردن اثر متغیرها و استفاده از !VAR! داخل حلقه.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_batch-setlocal-delayed",
+            "correct_index": 0,
+            "explain_fa": "برای محدودکردن اثر متغیرها و استفاده از !VAR! داخل حلقه."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_batch:for-files",
+      "vendor": "Microsoft Windows CMD",
+      "platform": "Windows CMD / Batch",
+      "category": "windows_batch",
+      "subcategory": "for",
+      "level": "L1",
+      "title_fa": "پیمایش فایل‌های log",
+      "title_en": "for %%F in (*.log) do @echo %%F",
+      "command": "for %%F in (*.log) do @echo %%F",
+      "aliases": [],
+      "syntax": "for %%F in (*.log) do @echo %%F",
+      "arguments": [],
+      "when_to_use_fa": "برای فهرست‌کردن فایل‌های log در پوشه کاری.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "داخل .bat از %%F و در prompt تعاملی از %F استفاده کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "تعداد درصد در batch file و prompt متفاوت است.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "نام فایل‌ها ممکن است اطلاعات داخلی افشا کند.",
+      "lab_hint_fa": "در محیط کنترل‌شده، for %%F in (*.log) do @echo %%F را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "for loop",
+        "log files"
+      ],
+      "search_keywords": [
+        "dir /b",
+        "Windows Batch/CMD",
+        "for %%F in (*.log) do @echo %%F",
+        "پیمایش فایل‌های log",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد for %%F in (*.log) do @echo %%F چیست؟",
+          "back": "برای فهرست‌کردن فایل‌های log در پوشه کاری."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_batch-for-files",
+            "prompt": "در Windows Batch/CMD، کاربرد فرمان زیر چیست؟\nfor %%F in (*.log) do @echo %%F",
+            "options": [
+              "برای فهرست‌کردن فایل‌های log در پوشه کاری.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_batch-for-files",
+            "correct_index": 0,
+            "explain_fa": "برای فهرست‌کردن فایل‌های log در پوشه کاری."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_batch:if-exist",
+      "vendor": "Microsoft Windows CMD",
+      "platform": "Windows CMD / Batch",
+      "category": "windows_batch",
+      "subcategory": "if",
+      "level": "L1",
+      "title_fa": "بررسی وجود مسیر با quoting",
+      "title_en": "if exist \"%TARGET%\" (echo FOUND) else (echo MISSING)",
+      "command": "if exist \"%TARGET%\" (echo FOUND) else (echo MISSING)",
+      "aliases": [],
+      "syntax": "if exist \"%TARGET%\" (echo FOUND) else (echo MISSING)",
+      "arguments": [],
+      "when_to_use_fa": "برای شرطی‌کردن عملیات بر اساس وجود فایل/پوشه.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "متغیر TARGET را تنظیم و مسیر را قبل از عملیات بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "مقدار خالی یا مسیر نامعتبر را کنترل کنید.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "مسیر ورودی باید از منبع قابل اعتماد باشد.",
+      "lab_hint_fa": "در محیط کنترل‌شده، if exist \"%TARGET%\" (echo FOUND) else (echo MISSING) را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "if exist",
+        "path quoting"
+      ],
+      "search_keywords": [
+        "set",
+        "Windows Batch/CMD",
+        "if exist \"%TARGET%\" (echo FOUND) else (echo MISSING)",
+        "بررسی وجود مسیر با quoting",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد if exist \"%TARGET%\" (echo FOUND) else (echo MISSING) چیست؟",
+          "back": "برای شرطی‌کردن عملیات بر اساس وجود فایل/پوشه."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_batch-if-exist",
+            "prompt": "در Windows Batch/CMD، کاربرد فرمان زیر چیست؟\nif exist \"%TARGET%\" (echo FOUND) else (echo MISSING)",
+            "options": [
+              "برای شرطی‌کردن عملیات بر اساس وجود فایل/پوشه.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_batch-if-exist",
+            "correct_index": 0,
+            "explain_fa": "برای شرطی‌کردن عملیات بر اساس وجود فایل/پوشه."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_batch:append-log",
+      "vendor": "Microsoft Windows CMD",
+      "platform": "Windows CMD / Batch",
+      "category": "windows_batch",
+      "subcategory": "append",
+      "level": "L1",
+      "title_fa": "افزودن پیام به log",
+      "title_en": ">>\"%LOG%\" echo [%DATE% %TIME%] task started",
+      "command": ">>\"%LOG%\" echo [%DATE% %TIME%] task started",
+      "aliases": [],
+      "syntax": ">>\"%LOG%\" echo [%DATE% %TIME%] task started",
+      "arguments": [],
+      "when_to_use_fa": "برای ثبت شروع یک مرحله در فایل log.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "LOG را به مسیر امن تنظیم کنید و locale تاریخ را در نظر بگیرید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "DATE/TIME به locale سیستم وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "اطلاعات حساس را در log ننویسید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، >>\"%LOG%\" echo [%DATE% %TIME%] task started را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "append log",
+        "DATE TIME"
+      ],
+      "search_keywords": [
+        "echo",
+        "Windows Batch/CMD",
+        ">>\"%LOG%\" echo [%DATE% %TIME%] task started",
+        "افزودن پیام به log",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد >>\"%LOG%\" echo [%DATE% %TIME%] task started چیست؟",
+          "back": "برای ثبت شروع یک مرحله در فایل log."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_batch-append-log",
+            "prompt": "در Windows Batch/CMD، کاربرد فرمان زیر چیست؟\n>>\"%LOG%\" echo [%DATE% %TIME%] task started",
+            "options": [
+              "برای ثبت شروع یک مرحله در فایل log.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_batch-append-log",
+            "correct_index": 0,
+            "explain_fa": "برای ثبت شروع یک مرحله در فایل log."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_batch:call-label",
+      "vendor": "Microsoft Windows CMD",
+      "platform": "Windows CMD / Batch",
+      "category": "windows_batch",
+      "subcategory": "call",
+      "level": "L1",
+      "title_fa": "فراخوانی subroutine در Batch",
+      "title_en": "call :cleanup",
+      "command": "call :cleanup",
+      "aliases": [],
+      "syntax": "call :cleanup",
+      "arguments": [],
+      "when_to_use_fa": "برای اجرای label و بازگشت به caller.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "label را تعریف کنید و از exit /b برای خروج استفاده کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "goto به تنهایی بازگشت خودکار ندارد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "cleanup باید idempotent و محدود به مسیر هدف باشد.",
+      "lab_hint_fa": "در محیط کنترل‌شده، call :cleanup را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "call label",
+        "subroutine"
+      ],
+      "search_keywords": [
+        "exit /b",
+        "Windows Batch/CMD",
+        "call :cleanup",
+        "فراخوانی subroutine در Batch",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد call :cleanup چیست؟",
+          "back": "برای اجرای label و بازگشت به caller."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_batch-call-label",
+            "prompt": "در Windows Batch/CMD، کاربرد فرمان زیر چیست؟\ncall :cleanup",
+            "options": [
+              "برای اجرای label و بازگشت به caller.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_batch-call-label",
+            "correct_index": 0,
+            "explain_fa": "برای اجرای label و بازگشت به caller."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_batch:capture-errorlevel",
+      "vendor": "Microsoft Windows CMD",
+      "platform": "Windows CMD / Batch",
+      "category": "windows_batch",
+      "subcategory": "capture",
+      "level": "L1",
+      "title_fa": "ذخیره exit code فرمان قبلی",
+      "title_en": "set \"RC=%ERRORLEVEL%\"",
+      "command": "set \"RC=%ERRORLEVEL%\"",
+      "aliases": [],
+      "syntax": "set \"RC=%ERRORLEVEL%\"",
+      "arguments": [],
+      "when_to_use_fa": "برای نگه‌داشتن exit code قبل از اجرای فرمانی که آن را تغییر می‌دهد.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "خط را بلافاصله بعد از فرمان هدف قرار دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "فرمان بعدی ممکن است ERRORLEVEL را عوض کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "نتیجه را با کنترل خطا و log ثبت کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، set \"RC=%ERRORLEVEL%\" را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "ERRORLEVEL",
+        "exit code"
+      ],
+      "search_keywords": [
+        "if errorlevel",
+        "Windows Batch/CMD",
+        "set \"RC=%ERRORLEVEL%\"",
+        "ذخیره exit code فرمان قبلی",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد set \"RC=%ERRORLEVEL%\" چیست؟",
+          "back": "برای نگه‌داشتن exit code قبل از اجرای فرمانی که آن را تغییر می‌دهد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_batch-capture-errorlevel",
+            "prompt": "در Windows Batch/CMD، کاربرد فرمان زیر چیست؟\nset \"RC=%ERRORLEVEL%\"",
+            "options": [
+              "برای نگه‌داشتن exit code قبل از اجرای فرمانی که آن را تغییر می‌دهد.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_batch-capture-errorlevel",
+            "correct_index": 0,
+            "explain_fa": "برای نگه‌داشتن exit code قبل از اجرای فرمانی که آن را تغییر می‌دهد."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_batch:timeout-safe",
+      "vendor": "Microsoft Windows CMD",
+      "platform": "Windows CMD / Batch",
+      "category": "windows_batch",
+      "subcategory": "timeout",
+      "level": "L1",
+      "title_fa": "مکث پنج‌ثانیه‌ای",
+      "title_en": "timeout /t 5 /nobreak",
+      "command": "timeout /t 5 /nobreak",
+      "aliases": [],
+      "syntax": "timeout /t 5 /nobreak",
+      "arguments": [],
+      "when_to_use_fa": "برای مکث کوتاه در اسکریپت آزمایش.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "زمان را محدود کنید و در صورت امکان انتظار شرطی بسازید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "مکث ثابت می‌تواند race condition را پنهان کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "در job تولیدی از انتظار نامحدود اجتناب کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، timeout /t 5 /nobreak را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "timeout",
+        "wait"
+      ],
+      "search_keywords": [
+        "choice",
+        "Windows Batch/CMD",
+        "timeout /t 5 /nobreak",
+        "مکث پنج‌ثانیه‌ای",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد timeout /t 5 /nobreak چیست؟",
+          "back": "برای مکث کوتاه در اسکریپت آزمایش."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_batch-timeout-safe",
+            "prompt": "در Windows Batch/CMD، کاربرد فرمان زیر چیست؟\ntimeout /t 5 /nobreak",
+            "options": [
+              "برای مکث کوتاه در اسکریپت آزمایش.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_batch-timeout-safe",
+            "correct_index": 0,
+            "explain_fa": "برای مکث کوتاه در اسکریپت آزمایش."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_batch:robocopy-preview",
+      "vendor": "Microsoft Windows CMD",
+      "platform": "Windows CMD / Batch",
+      "category": "windows_batch",
+      "subcategory": "robocopy",
+      "level": "L1",
+      "title_fa": "پیش‌نمایش Robocopy",
+      "title_en": "robocopy C:\\Lab\\Source C:\\Lab\\Dest /E /L",
+      "command": "robocopy C:\\Lab\\Source C:\\Lab\\Dest /E /L",
+      "aliases": [],
+      "syntax": "robocopy C:\\Lab\\Source C:\\Lab\\Dest /E /L",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده دامنه کپی بدون اجرای واقعی با /L.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "مبدأ و مقصد را دوباره بررسی و فهرست را مرور کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "برداشتن /L عملیات واقعی را فعال می‌کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "/MIR یا /PURGE را بدون dry-run اضافه نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، robocopy C:\\Lab\\Source C:\\Lab\\Dest /E /L را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Robocopy",
+        "dry run"
+      ],
+      "search_keywords": [
+        "robocopy /?",
+        "Windows Batch/CMD",
+        "robocopy C:\\Lab\\Source C:\\Lab\\Dest /E /L",
+        "پیش‌نمایش Robocopy",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد robocopy C:\\Lab\\Source C:\\Lab\\Dest /E /L چیست؟",
+          "back": "برای مشاهده دامنه کپی بدون اجرای واقعی با /L."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_batch-robocopy-preview",
+            "prompt": "در Windows Batch/CMD، کاربرد فرمان زیر چیست؟\nrobocopy C:\\Lab\\Source C:\\Lab\\Dest /E /L",
+            "options": [
+              "برای مشاهده دامنه کپی بدون اجرای واقعی با /L.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_batch-robocopy-preview",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده دامنه کپی بدون اجرای واقعی با /L."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_batch:sc-query-all",
+      "vendor": "Microsoft Windows CMD",
+      "platform": "Windows CMD / Batch",
+      "category": "windows_batch",
+      "subcategory": "sc",
+      "level": "L1",
+      "title_fa": "فهرست وضعیت سرویس‌های Windows",
+      "title_en": "sc query type= service state= all",
+      "command": "sc query type= service state= all",
+      "aliases": [],
+      "syntax": "sc query type= service state= all",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی وضعیت سرویس‌ها از CMD.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "خروجی STATE و SERVICE_NAME را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "فاصله پس از type= و state= مهم است.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "خروجی سرویس‌ها را پیش از اشتراک‌گذاری پالایش کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، sc query type= service state= all را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "sc query",
+        "services"
+      ],
+      "search_keywords": [
+        "tasklist",
+        "Windows Batch/CMD",
+        "sc query type= service state= all",
+        "فهرست وضعیت سرویس‌های Windows",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد sc query type= service state= all چیست؟",
+          "back": "برای بررسی وضعیت سرویس‌ها از CMD."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_batch-sc-query-all",
+            "prompt": "در Windows Batch/CMD، کاربرد فرمان زیر چیست؟\nsc query type= service state= all",
+            "options": [
+              "برای بررسی وضعیت سرویس‌ها از CMD.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_batch-sc-query-all",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی وضعیت سرویس‌ها از CMD."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:tcp-listeners",
+      "vendor": "Microsoft PowerShell",
+      "platform": "Windows PowerShell 5.1 / Windows",
+      "category": "powershell",
+      "subcategory": "tcp",
+      "level": "L1",
+      "title_fa": "فهرست TCP listenerها",
+      "title_en": "Get-NetTCPConnection -State Listen",
+      "command": "Get-NetTCPConnection -State Listen",
+      "aliases": [],
+      "syntax": "Get-NetTCPConnection -State Listen",
+      "arguments": [],
+      "when_to_use_fa": "برای دیدن پورت‌های listening و PID مالک.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "LocalPort و OwningProcess را با Get-Process تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "listener به معنی دسترسی از شبکه نیست؛ bind address و firewall مهم‌اند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "اطلاعات سرویس را پالایش کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-NetTCPConnection -State Listen را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Get-NetTCPConnection",
+        "listen ports"
+      ],
+      "search_keywords": [
+        "Get-Process",
+        "PowerShell",
+        "Get-NetTCPConnection -State Listen",
+        "فهرست TCP listenerها",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-NetTCPConnection -State Listen چیست؟",
+          "back": "برای دیدن پورت‌های listening و PID مالک."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-powershell-tcp-listeners",
+            "prompt": "در PowerShell، کاربرد فرمان زیر چیست؟\nGet-NetTCPConnection -State Listen",
+            "options": [
+              "برای دیدن پورت‌های listening و PID مالک.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-powershell-tcp-listeners",
+            "correct_index": 0,
+            "explain_fa": "برای دیدن پورت‌های listening و PID مالک."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:dns-client-address",
+      "vendor": "Microsoft PowerShell",
+      "platform": "Windows PowerShell 5.1 / 7+",
+      "category": "powershell",
+      "subcategory": "dns",
+      "level": "L1",
+      "title_fa": "نمایش DNS serverهای رابط‌ها",
+      "title_en": "Get-DnsClientServerAddress",
+      "command": "Get-DnsClientServerAddress",
+      "aliases": [],
+      "syntax": "Get-DnsClientServerAddress",
+      "arguments": [],
+      "when_to_use_fa": "برای مقایسه DNS هر interface با طراحی شبکه.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "InterfaceAlias و ServerAddresses را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "VPN یا interface غیرفعال ممکن است DNS متفاوت داشته باشد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "نام داخلی DNS را عمومی نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-DnsClientServerAddress را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "DNS client",
+        "ServerAddresses"
+      ],
+      "search_keywords": [
+        "Get-NetIPConfiguration",
+        "PowerShell",
+        "Get-DnsClientServerAddress",
+        "نمایش DNS serverهای رابط‌ها",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-DnsClientServerAddress چیست؟",
+          "back": "برای مقایسه DNS هر interface با طراحی شبکه."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-powershell-dns-client-address",
+            "prompt": "در PowerShell، کاربرد فرمان زیر چیست؟\nGet-DnsClientServerAddress",
+            "options": [
+              "برای مقایسه DNS هر interface با طراحی شبکه.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-powershell-dns-client-address",
+            "correct_index": 0,
+            "explain_fa": "برای مقایسه DNS هر interface با طراحی شبکه."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:resolve-a",
+      "vendor": "Microsoft PowerShell",
+      "platform": "Windows PowerShell 5.1 / 7+",
+      "category": "powershell",
+      "subcategory": "resolve",
+      "level": "L1",
+      "title_fa": "پرس‌وجوی رکورد A",
+      "title_en": "Resolve-DnsName intranet.example.test -Type A",
+      "command": "Resolve-DnsName intranet.example.test -Type A",
+      "aliases": [],
+      "syntax": "Resolve-DnsName intranet.example.test -Type A",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی پاسخ DNS و IPAddress.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "نام آزمایش را جایگزین و در صورت نیاز -Server را مشخص کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "resolver پیش‌فرض را با authoritative server اشتباه نگیرید.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "فقط نام‌های مجاز را query کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Resolve-DnsName intranet.example.test -Type A را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Resolve-DnsName",
+        "DNS"
+      ],
+      "search_keywords": [
+        "Get-DnsClientServerAddress",
+        "PowerShell",
+        "Resolve-DnsName intranet.example.test -Type A",
+        "پرس‌وجوی رکورد A",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Resolve-DnsName intranet.example.test -Type A چیست؟",
+          "back": "برای بررسی پاسخ DNS و IPAddress."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-powershell-resolve-a",
+            "prompt": "در PowerShell، کاربرد فرمان زیر چیست؟\nResolve-DnsName intranet.example.test -Type A",
+            "options": [
+              "برای بررسی پاسخ DNS و IPAddress.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-powershell-resolve-a",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی پاسخ DNS و IPAddress."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:tcp-test",
+      "vendor": "Microsoft PowerShell",
+      "platform": "Windows PowerShell 5.1 / 7+",
+      "category": "powershell",
+      "subcategory": "tcp",
+      "level": "L1",
+      "title_fa": "آزمون TCP به پورت مشخص",
+      "title_en": "Test-NetConnection intranet.example.test -Port 443 -InformationLevel Detailed",
+      "command": "Test-NetConnection intranet.example.test -Port 443 -InformationLevel Detailed",
+      "aliases": [],
+      "syntax": "Test-NetConnection intranet.example.test -Port 443 -InformationLevel Detailed",
+      "arguments": [],
+      "when_to_use_fa": "برای تفکیک name resolution از TCP connectivity.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "RemoteAddress و TcpTestSucceeded را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "موفقیت TCP سلامت TLS یا HTTP را تضمین نمی‌کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "آزمون را به مقصدهای مجاز محدود کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Test-NetConnection intranet.example.test -Port 443 -InformationLevel Detailed را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Test-NetConnection",
+        "TCP 443"
+      ],
+      "search_keywords": [
+        "Resolve-DnsName",
+        "PowerShell",
+        "Test-NetConnection intranet.example.test -Port 443 -InformationLevel Detailed",
+        "آزمون TCP به پورت مشخص",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Test-NetConnection intranet.example.test -Port 443 -InformationLevel Detailed چیست؟",
+          "back": "برای تفکیک name resolution از TCP connectivity."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-powershell-tcp-test",
+            "prompt": "در PowerShell، کاربرد فرمان زیر چیست؟\nTest-NetConnection intranet.example.test -Port 443 -InformationLevel Detailed",
+            "options": [
+              "برای تفکیک name resolution از TCP connectivity.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-powershell-tcp-test",
+            "correct_index": 0,
+            "explain_fa": "برای تفکیک name resolution از TCP connectivity."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:event-window",
+      "vendor": "Microsoft PowerShell",
+      "platform": "Windows PowerShell 5.1 / 7+",
+      "category": "powershell",
+      "subcategory": "event",
+      "level": "L1",
+      "title_fa": "استخراج رخدادهای System در بازه محدود",
+      "title_en": "Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddMinutes(-30)} -MaxEvents 100",
+      "command": "Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddMinutes(-30)} -MaxEvents 100",
+      "aliases": [],
+      "syntax": "Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddMinutes(-30)} -MaxEvents 100",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی رخدادهای نزدیک به زمان مشکل.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "بازه را محدود و TimeCreated/Id/Level را مقایسه کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "timezone و ساعت میزبان را با collector تطبیق دهید.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "Message ممکن است داده حساس داشته باشد.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddMinutes(-30)} -MaxEvents 100 را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Get-WinEvent",
+        "event triage"
+      ],
+      "search_keywords": [
+        "wevtutil qe",
+        "PowerShell",
+        "Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddMinutes(-30)} -MaxEvents 100",
+        "استخراج رخدادهای System در بازه محدود",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddMinutes(-30)} -MaxEvents 100 چیست؟",
+          "back": "برای بررسی رخدادهای نزدیک به زمان مشکل."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-powershell-event-window",
+            "prompt": "در PowerShell، کاربرد فرمان زیر چیست؟\nGet-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddMinutes(-30)} -MaxEvents 100",
+            "options": [
+              "برای بررسی رخدادهای نزدیک به زمان مشکل.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-powershell-event-window",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی رخدادهای نزدیک به زمان مشکل."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:file-hash",
+      "vendor": "Microsoft PowerShell",
+      "platform": "PowerShell 5.1 / 7+",
+      "category": "powershell",
+      "subcategory": "file",
+      "level": "L1",
+      "title_fa": "محاسبه SHA-256 فایل",
+      "title_en": "Get-FileHash .\\artifact.zip -Algorithm SHA256",
+      "command": "Get-FileHash .\\artifact.zip -Algorithm SHA256",
+      "aliases": [],
+      "syntax": "Get-FileHash .\\artifact.zip -Algorithm SHA256",
+      "arguments": [],
+      "when_to_use_fa": "برای مقایسه integrity فایل با checksum مورد اعتماد.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "مسیر را کنترل و hash را از منبع مستقل مقایسه کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "hash اصالت منبع را ثابت نمی‌کند اگر checksum هم نامطمئن باشد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "مسیر ورودی غیرقابل اعتماد را مستقیم اجرا نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-FileHash .\\artifact.zip -Algorithm SHA256 را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Get-FileHash",
+        "SHA256"
+      ],
+      "search_keywords": [
+        "Get-AuthenticodeSignature",
+        "PowerShell",
+        "Get-FileHash .\\artifact.zip -Algorithm SHA256",
+        "محاسبه SHA-256 فایل",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-FileHash .\\artifact.zip -Algorithm SHA256 چیست؟",
+          "back": "برای مقایسه integrity فایل با checksum مورد اعتماد."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-powershell-file-hash",
+            "prompt": "در PowerShell، کاربرد فرمان زیر چیست؟\nGet-FileHash .\\artifact.zip -Algorithm SHA256",
+            "options": [
+              "برای مقایسه integrity فایل با checksum مورد اعتماد.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-powershell-file-hash",
+            "correct_index": 0,
+            "explain_fa": "برای مقایسه integrity فایل با checksum مورد اعتماد."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:stopped-services",
+      "vendor": "Microsoft PowerShell",
+      "platform": "PowerShell 5.1 / 7+",
+      "category": "powershell",
+      "subcategory": "stopped",
+      "level": "L1",
+      "title_fa": "گزارش سرویس‌های متوقف",
+      "title_en": "Get-Service | Where-Object Status -eq 'Stopped' | Select-Object Name,StartType",
+      "command": "Get-Service | Where-Object Status -eq 'Stopped' | Select-Object Name,StartType",
+      "aliases": [],
+      "syntax": "Get-Service | Where-Object Status -eq 'Stopped' | Select-Object Name,StartType",
+      "arguments": [],
+      "when_to_use_fa": "برای گزارش اولیه سرویس‌های stopped و مقایسه با baseline.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "نام و StartType را با نقش میزبان تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "سرویس stopped را بدون بررسی نقش start نکنید.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "این فرمان مشاهده‌ای است؛ تغییر وضعیت خارج از scope است.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-Service | Where-Object Status -eq 'Stopped' | Select-Object Name,StartType را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Get-Service",
+        "service baseline"
+      ],
+      "search_keywords": [
+        "Get-WinEvent",
+        "PowerShell",
+        "Get-Service | Where-Object Status -eq 'Stopped' | Select-Object Name,StartType",
+        "گزارش سرویس‌های متوقف",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-Service | Where-Object Status -eq 'Stopped' | Select-Object Name,StartType چیست؟",
+          "back": "برای گزارش اولیه سرویس‌های stopped و مقایسه با baseline."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-powershell-stopped-services",
+            "prompt": "در PowerShell، کاربرد فرمان زیر چیست؟\nGet-Service | Where-Object Status -eq 'Stopped' | Select-Object Name,StartType",
+            "options": [
+              "برای گزارش اولیه سرویس‌های stopped و مقایسه با baseline.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-powershell-stopped-services",
+            "correct_index": 0,
+            "explain_fa": "برای گزارش اولیه سرویس‌های stopped و مقایسه با baseline."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:process-sort",
+      "vendor": "Microsoft PowerShell",
+      "platform": "Windows PowerShell 5.1 / 7+",
+      "category": "powershell",
+      "subcategory": "process",
+      "level": "L1",
+      "title_fa": "مرتب‌سازی پردازش‌ها بر اساس CPU time",
+      "title_en": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 Name,Id,CPU",
+      "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 Name,Id,CPU",
+      "aliases": [],
+      "syntax": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 Name,Id,CPU",
+      "arguments": [],
+      "when_to_use_fa": "برای یافتن پردازش‌هایی با CPU time بالاتر.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "چند نمونه در بازه بگیرید و با counterها مقایسه کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "CPU time تجمعی را با درصد لحظه‌ای اشتباه نگیرید.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "اطلاعات فرایند کاربران را پالایش کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 Name,Id,CPU را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Get-Process",
+        "CPU triage"
+      ],
+      "search_keywords": [
+        "Get-Counter",
+        "PowerShell",
+        "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 Name,Id,CPU",
+        "مرتب‌سازی پردازش‌ها بر اساس CPU time",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 Name,Id,CPU چیست؟",
+          "back": "برای یافتن پردازش‌هایی با CPU time بالاتر."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-powershell-process-sort",
+            "prompt": "در PowerShell، کاربرد فرمان زیر چیست؟\nGet-Process | Sort-Object CPU -Descending | Select-Object -First 10 Name,Id,CPU",
+            "options": [
+              "برای یافتن پردازش‌هایی با CPU time بالاتر.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-powershell-process-sort",
+            "correct_index": 0,
+            "explain_fa": "برای یافتن پردازش‌هایی با CPU time بالاتر."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:environment-list",
+      "vendor": "Microsoft PowerShell",
+      "platform": "PowerShell 5.1 / 7+",
+      "category": "powershell",
+      "subcategory": "environment",
+      "level": "L1",
+      "title_fa": "فهرست متغیرهای محیطی",
+      "title_en": "Get-ChildItem Env:",
+      "command": "Get-ChildItem Env:",
+      "aliases": [],
+      "syntax": "Get-ChildItem Env:",
+      "arguments": [],
+      "when_to_use_fa": "برای عیب‌یابی PATH و تنظیمات محیط session.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "فقط متغیرهای لازم را بررسی کنید و خروجی کامل را بی‌دلیل ذخیره نکنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "محیط ممکن است token یا مسیر خصوصی داشته باشد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "secretها را در terminal recording افشا نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-ChildItem Env: را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Env provider",
+        "environment variables"
+      ],
+      "search_keywords": [
+        "$env:PATH",
+        "PowerShell",
+        "Get-ChildItem Env:",
+        "فهرست متغیرهای محیطی",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-ChildItem Env: چیست؟",
+          "back": "برای عیب‌یابی PATH و تنظیمات محیط session."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-powershell-environment-list",
+            "prompt": "در PowerShell، کاربرد فرمان زیر چیست؟\nGet-ChildItem Env:",
+            "options": [
+              "برای عیب‌یابی PATH و تنظیمات محیط session.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-powershell-environment-list",
+            "correct_index": 0,
+            "explain_fa": "برای عیب‌یابی PATH و تنظیمات محیط session."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:powershell:signature-check",
+      "vendor": "Microsoft PowerShell",
+      "platform": "Windows PowerShell 5.1 / 7+",
+      "category": "powershell",
+      "subcategory": "signature",
+      "level": "L1",
+      "title_fa": "بررسی امضای Authenticode",
+      "title_en": "Get-AuthenticodeSignature .\\installer.exe | Select-Object Status,StatusMessage,SignerCertificate",
+      "command": "Get-AuthenticodeSignature .\\installer.exe | Select-Object Status,StatusMessage,SignerCertificate",
+      "aliases": [],
+      "syntax": "Get-AuthenticodeSignature .\\installer.exe | Select-Object Status,StatusMessage,SignerCertificate",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی وضعیت امضای فایل اجرایی قبل از اجرا.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "Status و signer را با ناشر مورد انتظار مقایسه کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "امضای معتبر به تنهایی امن بودن برنامه را تضمین نمی‌کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "فایل ناشناس را صرفاً برای بررسی امضا اجرا نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-AuthenticodeSignature .\\installer.exe | Select-Object Status,StatusMessage,SignerCertificate را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Authenticode",
+        "code signing",
+        "signature"
+      ],
+      "search_keywords": [
+        "Get-FileHash",
+        "PowerShell",
+        "Get-AuthenticodeSignature .\\installer.exe | Select-Object Status,StatusMessage,SignerCertificate",
+        "بررسی امضای Authenticode",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-AuthenticodeSignature .\\installer.exe | Select-Object Status,StatusMessage,SignerCertificate چیست؟",
+          "back": "برای بررسی وضعیت امضای فایل اجرایی قبل از اجرا."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-powershell-signature-check",
+            "prompt": "در PowerShell، کاربرد فرمان زیر چیست؟\nGet-AuthenticodeSignature .\\installer.exe | Select-Object Status,StatusMessage,SignerCertificate",
+            "options": [
+              "برای بررسی وضعیت امضای فایل اجرایی قبل از اجرا.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-powershell-signature-check",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی وضعیت امضای فایل اجرایی قبل از اجرا."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_server:ad-user-status",
+      "vendor": "Microsoft Windows Server",
+      "platform": "ActiveDirectory PowerShell module",
+      "category": "windows_server",
+      "subcategory": "ad",
+      "level": "L1",
+      "title_fa": "بررسی وضعیت یک حساب AD",
+      "title_en": "Get-ADUser -Identity jdoe -Properties Enabled,LastLogonDate | Select-Object SamAccountName,Enabled,LastLogonDate",
+      "command": "Get-ADUser -Identity jdoe -Properties Enabled,LastLogonDate | Select-Object SamAccountName,Enabled,LastLogonDate",
+      "aliases": [],
+      "syntax": "Get-ADUser -Identity jdoe -Properties Enabled,LastLogonDate | Select-Object SamAccountName,Enabled,LastLogonDate",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی یک حساب مشخص و وضعیت فعال بودن.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "Enabled و LastLogonDate را با policy تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "LastLogonDate برای زمان دقیق و بلادرنگ مناسب نیست.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "اطلاعات حساب را محرمانه نگه دارید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-ADUser -Identity jdoe -Properties Enabled,LastLogonDate | Select-Object SamAccountName,Enabled,LastLogonDate را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Get-ADUser",
+        "account audit"
+      ],
+      "search_keywords": [
+        "Search-ADAccount",
+        "Windows Server/AD",
+        "Get-ADUser -Identity jdoe -Properties Enabled,LastLogonDate | Select-Object SamAccountName,Enabled,LastLogonDate",
+        "بررسی وضعیت یک حساب AD",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-ADUser -Identity jdoe -Properties Enabled,LastLogonDate | Select-Object SamAccountName,Enabled,LastLogonDate چیست؟",
+          "back": "برای بررسی یک حساب مشخص و وضعیت فعال بودن."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_server-ad-user-status",
+            "prompt": "در Windows Server/AD، کاربرد فرمان زیر چیست؟\nGet-ADUser -Identity jdoe -Properties Enabled,LastLogonDate | Select-Object SamAccountName,Enabled,LastLogonDate",
+            "options": [
+              "برای بررسی یک حساب مشخص و وضعیت فعال بودن.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_server-ad-user-status",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی یک حساب مشخص و وضعیت فعال بودن."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_server:ad-computer-query",
+      "vendor": "Microsoft Windows Server",
+      "platform": "ActiveDirectory PowerShell module",
+      "category": "windows_server",
+      "subcategory": "ad",
+      "level": "L1",
+      "title_fa": "فهرست کامپیوترهای فعال AD",
+      "title_en": "Get-ADComputer -Filter 'Enabled -eq $true' -Properties OperatingSystem | Select-Object Name,OperatingSystem",
+      "command": "Get-ADComputer -Filter 'Enabled -eq $true' -Properties OperatingSystem | Select-Object Name,OperatingSystem",
+      "aliases": [],
+      "syntax": "Get-ADComputer -Filter 'Enabled -eq $true' -Properties OperatingSystem | Select-Object Name,OperatingSystem",
+      "arguments": [],
+      "when_to_use_fa": "برای inventory محدود کامپیوترهای فعال و سیستم‌عامل ثبت‌شده.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "نتیجه را با CMDB و زمان آخرین logon تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "ویژگی OS در AD ممکن است قدیمی باشد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "خروجی directory را عمومی نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-ADComputer -Filter 'Enabled -eq $true' -Properties OperatingSystem | Select-Object Name,OperatingSystem را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Get-ADComputer",
+        "asset inventory"
+      ],
+      "search_keywords": [
+        "Get-ADUser",
+        "Windows Server/AD",
+        "Get-ADComputer -Filter 'Enabled -eq $true' -Properties OperatingSystem | Select-Object Name,OperatingSystem",
+        "فهرست کامپیوترهای فعال AD",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-ADComputer -Filter 'Enabled -eq $true' -Properties OperatingSystem | Select-Object Name,OperatingSystem چیست؟",
+          "back": "برای inventory محدود کامپیوترهای فعال و سیستم‌عامل ثبت‌شده."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_server-ad-computer-query",
+            "prompt": "در Windows Server/AD، کاربرد فرمان زیر چیست؟\nGet-ADComputer -Filter 'Enabled -eq $true' -Properties OperatingSystem | Select-Object Name,OperatingSystem",
+            "options": [
+              "برای inventory محدود کامپیوترهای فعال و سیستم‌عامل ثبت‌شده.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_server-ad-computer-query",
+            "correct_index": 0,
+            "explain_fa": "برای inventory محدود کامپیوترهای فعال و سیستم‌عامل ثبت‌شده."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_server:gpo-list",
+      "vendor": "Microsoft Windows Server",
+      "platform": "GroupPolicy module",
+      "category": "windows_server",
+      "subcategory": "gpo",
+      "level": "L1",
+      "title_fa": "فهرست GPO و زمان تغییر",
+      "title_en": "Get-GPO -All | Select-Object DisplayName,Id,ModificationTime",
+      "command": "Get-GPO -All | Select-Object DisplayName,Id,ModificationTime",
+      "aliases": [],
+      "syntax": "Get-GPO -All | Select-Object DisplayName,Id,ModificationTime",
+      "arguments": [],
+      "when_to_use_fa": "برای inventory و بازبینی تغییرات Group Policy.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "GUID و زمان تغییر را ثبت کنید؛ link و scope را جدا بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "وجود GPO به معنی link شدن به OU هدف نیست.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "پیش از تغییر GPO backup و review انجام دهید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-GPO -All | Select-Object DisplayName,Id,ModificationTime را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Get-GPO",
+        "Group Policy"
+      ],
+      "search_keywords": [
+        "gpresult /h",
+        "Windows Server/AD",
+        "Get-GPO -All | Select-Object DisplayName,Id,ModificationTime",
+        "فهرست GPO و زمان تغییر",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-GPO -All | Select-Object DisplayName,Id,ModificationTime چیست؟",
+          "back": "برای inventory و بازبینی تغییرات Group Policy."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_server-gpo-list",
+            "prompt": "در Windows Server/AD، کاربرد فرمان زیر چیست؟\nGet-GPO -All | Select-Object DisplayName,Id,ModificationTime",
+            "options": [
+              "برای inventory و بازبینی تغییرات Group Policy.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_server-gpo-list",
+            "correct_index": 0,
+            "explain_fa": "برای inventory و بازبینی تغییرات Group Policy."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_server:gpresult-html",
+      "vendor": "Microsoft Windows Server",
+      "platform": "Windows Server / CMD",
+      "category": "windows_server",
+      "subcategory": "gpresult",
+      "level": "L1",
+      "title_fa": "تولید گزارش RSoP",
+      "title_en": "gpresult /h C:\\Temp\\gpresult.html",
+      "command": "gpresult /h C:\\Temp\\gpresult.html",
+      "aliases": [],
+      "syntax": "gpresult /h C:\\Temp\\gpresult.html",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی policyهای اعمال‌شده به کاربر/کامپیوتر.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "scope صحیح را تعیین و فایل گزارش را امن نگه دارید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "user و computer scope متفاوت‌اند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "گزارش ممکن است نام دامنه و گروه‌ها را افشا کند.",
+      "lab_hint_fa": "در محیط کنترل‌شده، gpresult /h C:\\Temp\\gpresult.html را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "gpresult",
+        "RSoP"
+      ],
+      "search_keywords": [
+        "Get-GPO -All",
+        "Windows Server/AD",
+        "gpresult /h C:\\Temp\\gpresult.html",
+        "تولید گزارش RSoP",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد gpresult /h C:\\Temp\\gpresult.html چیست؟",
+          "back": "برای بررسی policyهای اعمال‌شده به کاربر/کامپیوتر."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_server-gpresult-html",
+            "prompt": "در Windows Server/AD، کاربرد فرمان زیر چیست؟\ngpresult /h C:\\Temp\\gpresult.html",
+            "options": [
+              "برای بررسی policyهای اعمال‌شده به کاربر/کامپیوتر.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_server-gpresult-html",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی policyهای اعمال‌شده به کاربر/کامپیوتر."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_server:dcdiag-dns",
+      "vendor": "Microsoft Windows Server",
+      "platform": "Windows Server",
+      "category": "windows_server",
+      "subcategory": "dcdiag",
+      "level": "L1",
+      "title_fa": "آزمون DNS روی Domain Controller",
+      "title_en": "dcdiag /test:dns /v",
+      "command": "dcdiag /test:dns /v",
+      "aliases": [],
+      "syntax": "dcdiag /test:dns /v",
+      "arguments": [],
+      "when_to_use_fa": "برای عیب‌یابی DNS مرتبط با DC.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "خطاها را با DNS event log و zone config تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "یک آزمون موفق همه رکوردها و کلاینت‌ها را پوشش نمی‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "روی DC تولیدی فقط آزمون تشخیصی مجاز اجرا کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، dcdiag /test:dns /v را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "dcdiag",
+        "DNS diagnostics"
+      ],
+      "search_keywords": [
+        "Get-DnsServerZone",
+        "Windows Server/AD",
+        "dcdiag /test:dns /v",
+        "آزمون DNS روی Domain Controller",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد dcdiag /test:dns /v چیست؟",
+          "back": "برای عیب‌یابی DNS مرتبط با DC."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_server-dcdiag-dns",
+            "prompt": "در Windows Server/AD، کاربرد فرمان زیر چیست؟\ndcdiag /test:dns /v",
+            "options": [
+              "برای عیب‌یابی DNS مرتبط با DC.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_server-dcdiag-dns",
+            "correct_index": 0,
+            "explain_fa": "برای عیب‌یابی DNS مرتبط با DC."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_server:repadmin-summary",
+      "vendor": "Microsoft Windows Server",
+      "platform": "Windows Server",
+      "category": "windows_server",
+      "subcategory": "repadmin",
+      "level": "L1",
+      "title_fa": "خلاصه replication در AD",
+      "title_en": "repadmin /replsummary",
+      "command": "repadmin /replsummary",
+      "aliases": [],
+      "syntax": "repadmin /replsummary",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده failure count و latency replication.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "partnerهای مشکل‌دار را مشخص و با Directory Service log تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "قبل از force/sync علت را مشخص کنید.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "نام DCها را در گزارش بیرونی پالایش کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، repadmin /replsummary را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "repadmin",
+        "AD replication"
+      ],
+      "search_keywords": [
+        "Get-ADReplicationFailure",
+        "Windows Server/AD",
+        "repadmin /replsummary",
+        "خلاصه replication در AD",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد repadmin /replsummary چیست؟",
+          "back": "برای مشاهده failure count و latency replication."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_server-repadmin-summary",
+            "prompt": "در Windows Server/AD، کاربرد فرمان زیر چیست؟\nrepadmin /replsummary",
+            "options": [
+              "برای مشاهده failure count و latency replication.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_server-repadmin-summary",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده failure count و latency replication."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_server:dhcp-scopes",
+      "vendor": "Microsoft Windows Server",
+      "platform": "Windows Server DHCP module",
+      "category": "windows_server",
+      "subcategory": "dhcp",
+      "level": "L1",
+      "title_fa": "فهرست scopeهای DHCP IPv4",
+      "title_en": "Get-DhcpServerv4Scope -ComputerName dhcp01",
+      "command": "Get-DhcpServerv4Scope -ComputerName dhcp01",
+      "aliases": [],
+      "syntax": "Get-DhcpServerv4Scope -ComputerName dhcp01",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی range، mask و state روی سرور مشخص.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "scope state و range را با IPAM تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "فهرست scopeها lease utilization را به تنهایی نشان نمی‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "طرح IP داخلی را عمومی نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-DhcpServerv4Scope -ComputerName dhcp01 را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Get-DhcpServerv4Scope",
+        "scope inventory"
+      ],
+      "search_keywords": [
+        "Get-DhcpServerv4Lease",
+        "Windows Server/AD",
+        "Get-DhcpServerv4Scope -ComputerName dhcp01",
+        "فهرست scopeهای DHCP IPv4",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-DhcpServerv4Scope -ComputerName dhcp01 چیست؟",
+          "back": "برای بررسی range، mask و state روی سرور مشخص."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_server-dhcp-scopes",
+            "prompt": "در Windows Server/AD، کاربرد فرمان زیر چیست؟\nGet-DhcpServerv4Scope -ComputerName dhcp01",
+            "options": [
+              "برای بررسی range، mask و state روی سرور مشخص.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_server-dhcp-scopes",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی range، mask و state روی سرور مشخص."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_server:dns-zone-list",
+      "vendor": "Microsoft Windows Server",
+      "platform": "Windows Server DNS module",
+      "category": "windows_server",
+      "subcategory": "dns",
+      "level": "L1",
+      "title_fa": "فهرست zoneهای DNS Server",
+      "title_en": "Get-DnsServerZone -ComputerName dns01",
+      "command": "Get-DnsServerZone -ComputerName dns01",
+      "aliases": [],
+      "syntax": "Get-DnsServerZone -ComputerName dns01",
+      "arguments": [],
+      "when_to_use_fa": "برای inventory zoneهای authoritative/forward/reverse.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "zone type و replication scope را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "وجود zone صحت رکوردها را ثابت نمی‌کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "نام zone داخلی را محرمانه نگه دارید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-DnsServerZone -ComputerName dns01 را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Get-DnsServerZone",
+        "zone inventory"
+      ],
+      "search_keywords": [
+        "Get-DnsServerResourceRecord",
+        "Windows Server/AD",
+        "Get-DnsServerZone -ComputerName dns01",
+        "فهرست zoneهای DNS Server",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-DnsServerZone -ComputerName dns01 چیست؟",
+          "back": "برای inventory zoneهای authoritative/forward/reverse."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_server-dns-zone-list",
+            "prompt": "در Windows Server/AD، کاربرد فرمان زیر چیست؟\nGet-DnsServerZone -ComputerName dns01",
+            "options": [
+              "برای inventory zoneهای authoritative/forward/reverse.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_server-dns-zone-list",
+            "correct_index": 0,
+            "explain_fa": "برای inventory zoneهای authoritative/forward/reverse."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_server:ad-replication-failure",
+      "vendor": "Microsoft Windows Server",
+      "platform": "ActiveDirectory PowerShell module",
+      "category": "windows_server",
+      "subcategory": "ad",
+      "level": "L1",
+      "title_fa": "گزارش failureهای replication",
+      "title_en": "Get-ADReplicationFailure -Target *",
+      "command": "Get-ADReplicationFailure -Target *",
+      "aliases": [],
+      "syntax": "Get-ADReplicationFailure -Target *",
+      "arguments": [],
+      "when_to_use_fa": "برای جمع‌آوری failureهای replication در forest/domain مجاز.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "با repadmin و Directory Service log هم‌بسته کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "در forest بزرگ خروجی می‌تواند حجیم باشد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "دامنه هدف را طبق مجوز انتخاب کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-ADReplicationFailure -Target * را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Get-ADReplicationFailure",
+        "directory diagnostics"
+      ],
+      "search_keywords": [
+        "repadmin /replsummary",
+        "Windows Server/AD",
+        "Get-ADReplicationFailure -Target *",
+        "گزارش failureهای replication",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-ADReplicationFailure -Target * چیست؟",
+          "back": "برای جمع‌آوری failureهای replication در forest/domain مجاز."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_server-ad-replication-failure",
+            "prompt": "در Windows Server/AD، کاربرد فرمان زیر چیست؟\nGet-ADReplicationFailure -Target *",
+            "options": [
+              "برای جمع‌آوری failureهای replication در forest/domain مجاز.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_server-ad-replication-failure",
+            "correct_index": 0,
+            "explain_fa": "برای جمع‌آوری failureهای replication در forest/domain مجاز."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:windows_server:smb-sessions",
+      "vendor": "Microsoft Windows Server",
+      "platform": "Windows Server SMB module",
+      "category": "windows_server",
+      "subcategory": "smb",
+      "level": "L1",
+      "title_fa": "مرور نشست‌های SMB جاری",
+      "title_en": "Get-SmbSession | Select-Object ClientComputerName,ClientUserName,NumOpens,Dialect",
+      "command": "Get-SmbSession | Select-Object ClientComputerName,ClientUserName,NumOpens,Dialect",
+      "aliases": [],
+      "syntax": "Get-SmbSession | Select-Object ClientComputerName,ClientUserName,NumOpens,Dialect",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده نشست‌های فعال و dialect بدون قطع اتصال.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "Client/User را با نیاز عملیاتی تطبیق دهید؛ session را terminate نکنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "نشست فعال به تنهایی فعالیت مخرب نیست.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "نام کاربران و کلاینت‌ها را پالایش کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، Get-SmbSession | Select-Object ClientComputerName,ClientUserName,NumOpens,Dialect را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Get-SmbSession",
+        "SMB"
+      ],
+      "search_keywords": [
+        "Get-SmbOpenFile",
+        "Windows Server/AD",
+        "Get-SmbSession | Select-Object ClientComputerName,ClientUserName,NumOpens,Dialect",
+        "مرور نشست‌های SMB جاری",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-SmbSession | Select-Object ClientComputerName,ClientUserName,NumOpens,Dialect چیست؟",
+          "back": "برای مشاهده نشست‌های فعال و dialect بدون قطع اتصال."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_server-smb-sessions",
+            "prompt": "در Windows Server/AD، کاربرد فرمان زیر چیست؟\nGet-SmbSession | Select-Object ClientComputerName,ClientUserName,NumOpens,Dialect",
+            "options": [
+              "برای مشاهده نشست‌های فعال و dialect بدون قطع اتصال.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_server-smb-sessions",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده نشست‌های فعال و dialect بدون قطع اتصال."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:docker:compose-ps",
+      "vendor": "Docker",
+      "platform": "Docker Compose v2",
+      "category": "docker",
+      "subcategory": "compose",
+      "level": "L1",
+      "title_fa": "وضعیت سرویس‌های Compose",
+      "title_en": "docker compose ps",
+      "command": "docker compose ps",
+      "aliases": [],
+      "syntax": "docker compose ps",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده state، port و containerهای پروژه جاری.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "project name و context را تأیید کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "خروجی پروژه جاری را به کل host تعمیم ندهید.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "portهای مدیریتی را عمومی نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، docker compose ps را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "compose ps",
+        "container status"
+      ],
+      "search_keywords": [
+        "docker compose config --quiet",
+        "Docker/Compose",
+        "docker compose ps",
+        "وضعیت سرویس‌های Compose",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد docker compose ps چیست؟",
+          "back": "برای مشاهده state، port و containerهای پروژه جاری."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-docker-compose-ps",
+            "prompt": "در Docker/Compose، کاربرد فرمان زیر چیست؟\ndocker compose ps",
+            "options": [
+              "برای مشاهده state، port و containerهای پروژه جاری.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-docker-compose-ps",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده state، port و containerهای پروژه جاری."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:docker:compose-config-check",
+      "vendor": "Docker",
+      "platform": "Docker Compose v2",
+      "category": "docker",
+      "subcategory": "compose",
+      "level": "L1",
+      "title_fa": "اعتبارسنجی فایل Compose",
+      "title_en": "docker compose config --quiet",
+      "command": "docker compose config --quiet",
+      "aliases": [],
+      "syntax": "docker compose config --quiet",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی syntax و resolve شدن فایل‌ها قبل از deploy.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "متغیرهای محیطی را فراهم کنید؛ secrets را چاپ نکنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "موفقیت config سلامت image/service را تضمین نمی‌کند.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "خروجی کامل config ممکن است secret resolve شده داشته باشد.",
+      "lab_hint_fa": "در محیط کنترل‌شده، docker compose config --quiet را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Compose config",
+        "YAML validation"
+      ],
+      "search_keywords": [
+        "docker compose ps",
+        "Docker/Compose",
+        "docker compose config --quiet",
+        "اعتبارسنجی فایل Compose",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد docker compose config --quiet چیست؟",
+          "back": "برای بررسی syntax و resolve شدن فایل‌ها قبل از deploy."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-docker-compose-config-check",
+            "prompt": "در Docker/Compose، کاربرد فرمان زیر چیست؟\ndocker compose config --quiet",
+            "options": [
+              "برای بررسی syntax و resolve شدن فایل‌ها قبل از deploy.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-docker-compose-config-check",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی syntax و resolve شدن فایل‌ها قبل از deploy."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:docker:inspect-health",
+      "vendor": "Docker",
+      "platform": "Docker Engine",
+      "category": "docker",
+      "subcategory": "inspect",
+      "level": "L1",
+      "title_fa": "خواندن health status کانتینر",
+      "title_en": "docker inspect --format '{{.State.Health.Status}}' app01",
+      "command": "docker inspect --format '{{.State.Health.Status}}' app01",
+      "aliases": [],
+      "syntax": "docker inspect --format '{{.State.Health.Status}}' app01",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی HEALTHCHECK کانتینر.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "نام کانتینر را تأیید و health را با logs تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "بدون HEALTHCHECK ممکن است مقدار health وجود نداشته باشد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "جزئیات runtime را امن نگه دارید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، docker inspect --format '{{.State.Health.Status}}' app01 را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "docker inspect",
+        "healthcheck"
+      ],
+      "search_keywords": [
+        "docker logs",
+        "Docker/Compose",
+        "docker inspect --format '{{.State.Health.Status}}' app01",
+        "خواندن health status کانتینر",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد docker inspect --format '{{.State.Health.Status}}' app01 چیست؟",
+          "back": "برای بررسی HEALTHCHECK کانتینر."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-docker-inspect-health",
+            "prompt": "در Docker/Compose، کاربرد فرمان زیر چیست؟\ndocker inspect --format '{{.State.Health.Status}}' app01",
+            "options": [
+              "برای بررسی HEALTHCHECK کانتینر.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-docker-inspect-health",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی HEALTHCHECK کانتینر."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:docker:logs-window",
+      "vendor": "Docker",
+      "platform": "Docker Engine",
+      "category": "docker",
+      "subcategory": "logs",
+      "level": "L1",
+      "title_fa": "خواندن لاگ محدود کانتینر",
+      "title_en": "docker logs --since 10m --tail 100 app01",
+      "command": "docker logs --since 10m --tail 100 app01",
+      "aliases": [],
+      "syntax": "docker logs --since 10m --tail 100 app01",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی رخدادهای تازه در بازه و تعداد محدود.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "restart time و timestamp را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "لاگ کانتینر الزاماً لاگ sidecar را شامل نمی‌شود.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "secretها را قبل از اشتراک‌گذاری پالایش کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، docker logs --since 10m --tail 100 app01 را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "docker logs",
+        "container troubleshooting"
+      ],
+      "search_keywords": [
+        "docker inspect",
+        "Docker/Compose",
+        "docker logs --since 10m --tail 100 app01",
+        "خواندن لاگ محدود کانتینر",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد docker logs --since 10m --tail 100 app01 چیست؟",
+          "back": "برای بررسی رخدادهای تازه در بازه و تعداد محدود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-docker-logs-window",
+            "prompt": "در Docker/Compose، کاربرد فرمان زیر چیست؟\ndocker logs --since 10m --tail 100 app01",
+            "options": [
+              "برای بررسی رخدادهای تازه در بازه و تعداد محدود.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-docker-logs-window",
+            "correct_index": 0,
+            "explain_fa": "برای بررسی رخدادهای تازه در بازه و تعداد محدود."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:docker:stats-once",
+      "vendor": "Docker",
+      "platform": "Docker Engine",
+      "category": "docker",
+      "subcategory": "stats",
+      "level": "L1",
+      "title_fa": "snapshot منابع کانتینرها",
+      "title_en": "docker stats --no-stream",
+      "command": "docker stats --no-stream",
+      "aliases": [],
+      "syntax": "docker stats --no-stream",
+      "arguments": [],
+      "when_to_use_fa": "برای snapshot CPU، memory و network I/O بدون stream.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "نتیجه را با baseline و محدودیت container مقایسه کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "snapshot کوتاه روند تاریخی را نشان نمی‌دهد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "داده runtime را فقط به افراد مجاز بدهید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، docker stats --no-stream را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "docker stats",
+        "resource usage"
+      ],
+      "search_keywords": [
+        "docker inspect",
+        "Docker/Compose",
+        "docker stats --no-stream",
+        "snapshot منابع کانتینرها",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد docker stats --no-stream چیست؟",
+          "back": "برای snapshot CPU، memory و network I/O بدون stream."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-docker-stats-once",
+            "prompt": "در Docker/Compose، کاربرد فرمان زیر چیست؟\ndocker stats --no-stream",
+            "options": [
+              "برای snapshot CPU، memory و network I/O بدون stream.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-docker-stats-once",
+            "correct_index": 0,
+            "explain_fa": "برای snapshot CPU، memory و network I/O بدون stream."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:docker:network-inspect",
+      "vendor": "Docker",
+      "platform": "Docker Engine",
+      "category": "docker",
+      "subcategory": "network",
+      "level": "L1",
+      "title_fa": "بررسی تنظیمات شبکه bridge",
+      "title_en": "docker network inspect bridge",
+      "command": "docker network inspect bridge",
+      "aliases": [],
+      "syntax": "docker network inspect bridge",
+      "arguments": [],
+      "when_to_use_fa": "برای دیدن subnet، gateway و endpointهای network.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "IPAM و اتصال containerها را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "bridge پیش‌فرض را با user-defined bridge یکی نگیرید.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "IP داخلی را پیش از انتشار پالایش کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، docker network inspect bridge را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Docker network",
+        "IPAM"
+      ],
+      "search_keywords": [
+        "docker network ls",
+        "Docker/Compose",
+        "docker network inspect bridge",
+        "بررسی تنظیمات شبکه bridge",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد docker network inspect bridge چیست؟",
+          "back": "برای دیدن subnet، gateway و endpointهای network."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-docker-network-inspect",
+            "prompt": "در Docker/Compose، کاربرد فرمان زیر چیست؟\ndocker network inspect bridge",
+            "options": [
+              "برای دیدن subnet، gateway و endpointهای network.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-docker-network-inspect",
+            "correct_index": 0,
+            "explain_fa": "برای دیدن subnet، gateway و endpointهای network."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:docker:volume-list",
+      "vendor": "Docker",
+      "platform": "Docker Engine",
+      "category": "docker",
+      "subcategory": "volume",
+      "level": "L1",
+      "title_fa": "فهرست volumeهای Docker",
+      "title_en": "docker volume ls",
+      "command": "docker volume ls",
+      "aliases": [],
+      "syntax": "docker volume ls",
+      "arguments": [],
+      "when_to_use_fa": "برای inventory volumeها قبل از بررسی persistence یا cleanup.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "مصرف‌کننده‌های volume را قبل از حذف بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "volume نامشخص را فقط بر اساس نام حذف نکنید.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "حذف volume می‌تواند داده را از دسترس خارج کند.",
+      "lab_hint_fa": "در محیط کنترل‌شده، docker volume ls را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Docker volume",
+        "persistent data"
+      ],
+      "search_keywords": [
+        "docker volume inspect",
+        "Docker/Compose",
+        "docker volume ls",
+        "فهرست volumeهای Docker",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد docker volume ls چیست؟",
+          "back": "برای inventory volumeها قبل از بررسی persistence یا cleanup."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-docker-volume-list",
+            "prompt": "در Docker/Compose، کاربرد فرمان زیر چیست؟\ndocker volume ls",
+            "options": [
+              "برای inventory volumeها قبل از بررسی persistence یا cleanup.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-docker-volume-list",
+            "correct_index": 0,
+            "explain_fa": "برای inventory volumeها قبل از بررسی persistence یا cleanup."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:docker:image-digests",
+      "vendor": "Docker",
+      "platform": "Docker Engine",
+      "category": "docker",
+      "subcategory": "image",
+      "level": "L1",
+      "title_fa": "فهرست imageها و digestها",
+      "title_en": "docker image ls --digests",
+      "command": "docker image ls --digests",
+      "aliases": [],
+      "syntax": "docker image ls --digests",
+      "arguments": [],
+      "when_to_use_fa": "برای inventory image پیش از deployment review.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "repository/tag/digest را با registry مورد اعتماد تطبیق دهید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "tag mutable است؛ digest برای pinning دقیق‌تر است.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "image بدون provenance را در production اجرا نکنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، docker image ls --digests را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Docker images",
+        "digest",
+        "supply chain"
+      ],
+      "search_keywords": [
+        "docker image inspect",
+        "Docker/Compose",
+        "docker image ls --digests",
+        "فهرست imageها و digestها",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد docker image ls --digests چیست؟",
+          "back": "برای inventory image پیش از deployment review."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-docker-image-digests",
+            "prompt": "در Docker/Compose، کاربرد فرمان زیر چیست؟\ndocker image ls --digests",
+            "options": [
+              "برای inventory image پیش از deployment review.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-docker-image-digests",
+            "correct_index": 0,
+            "explain_fa": "برای inventory image پیش از deployment review."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:docker:container-os-release",
+      "vendor": "Docker",
+      "platform": "Docker Engine; image must include cat",
+      "category": "docker",
+      "subcategory": "container",
+      "level": "L1",
+      "title_fa": "خواندن اطلاعات OS داخل کانتینر",
+      "title_en": "docker exec app01 cat /etc/os-release",
+      "command": "docker exec app01 cat /etc/os-release",
+      "aliases": [],
+      "syntax": "docker exec app01 cat /etc/os-release",
+      "arguments": [],
+      "when_to_use_fa": "برای تشخیص base image کانتینر در حال اجرا.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "خروجی را با Dockerfile و SBOM مقایسه کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "distroless ممکن است shell یا cat نداشته باشد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "از اجرای فرمان تغییردهنده داخل کانتینر پرهیز کنید.",
+      "lab_hint_fa": "در محیط کنترل‌شده، docker exec app01 cat /etc/os-release را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "os-release",
+        "container image"
+      ],
+      "search_keywords": [
+        "docker inspect",
+        "Docker/Compose",
+        "docker exec app01 cat /etc/os-release",
+        "خواندن اطلاعات OS داخل کانتینر",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد docker exec app01 cat /etc/os-release چیست؟",
+          "back": "برای تشخیص base image کانتینر در حال اجرا."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-docker-container-os-release",
+            "prompt": "در Docker/Compose، کاربرد فرمان زیر چیست؟\ndocker exec app01 cat /etc/os-release",
+            "options": [
+              "برای تشخیص base image کانتینر در حال اجرا.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-docker-container-os-release",
+            "correct_index": 0,
+            "explain_fa": "برای تشخیص base image کانتینر در حال اجرا."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:docker:compose-up-service",
+      "vendor": "Docker",
+      "platform": "Docker Compose v2",
+      "category": "docker",
+      "subcategory": "compose",
+      "level": "L1",
+      "title_fa": "اعمال تغییر سرویس Compose مشخص",
+      "title_en": "docker compose up -d --no-deps web",
+      "command": "docker compose up -d --no-deps web",
+      "aliases": [],
+      "syntax": "docker compose up -d --no-deps web",
+      "arguments": [],
+      "when_to_use_fa": "برای update/recreate سرویس web؛ فرمان تغییردهنده است.",
+      "prerequisites_fa": [
+        "نسخه/مدل و context اجرای فرمان را تأیید کنید.",
+        "در محیط آزمایش یا با مجوز عملیاتی اجرا شود."
+      ],
+      "steps_fa": [
+        "config diff و project را تأیید؛ پس از اجرا health را بررسی کنید.",
+        "خروجی را با baseline و مستندات نسخهٔ هدف تطبیق دهید.",
+        "نتیجه و زمان اجرا را ثبت کنید."
+      ],
+      "sample_output": "--no-deps ممکن است dependency لازم را بالا نیاورد.",
+      "output_fields_fa": [
+        {
+          "field": "result",
+          "meaning": "خروجی وابسته به نسخه و پیکربندی واقعی است؛ نمونه راهنمای تفسیر است."
+        }
+      ],
+      "common_mistakes_fa": "فقط با change approval و rollback اجرا شود.",
+      "lab_hint_fa": "در محیط کنترل‌شده، docker compose up -d --no-deps web را اجرا و نتیجه را با baseline مقایسه کنید.",
+      "security_notes_fa": [
+        "Compose up",
+        "service deployment"
+      ],
+      "search_keywords": [
+        "docker compose ps",
+        "Docker/Compose",
+        "docker compose up -d --no-deps web",
+        "اعمال تغییر سرویس Compose مشخص",
+        "troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد docker compose up -d --no-deps web چیست؟",
+          "back": "برای update/recreate سرویس web؛ فرمان تغییردهنده است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-docker-compose-up-service",
+            "prompt": "در Docker/Compose، کاربرد فرمان زیر چیست؟\ndocker compose up -d --no-deps web",
+            "options": [
+              "برای update/recreate سرویس web؛ فرمان تغییردهنده است.",
+              "برای حذف خودکار تمام تنظیمات",
+              "برای خاموش‌کردن تمام کنترل‌های امنیتی",
+              "این فرمان در همه نسخه‌ها بدون پیش‌نیاز یکسان است"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-docker-compose-up-service",
+            "correct_index": 0,
+            "explain_fa": "برای update/recreate سرویس web؛ فرمان تغییردهنده است."
           }
         ]
       },
