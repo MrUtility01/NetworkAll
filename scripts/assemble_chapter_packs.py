@@ -65,7 +65,7 @@ def assemble_chapter(order: int, strict: bool = False):
     for category, filename in CATEGORIES.items():
         base_path = chapter / category / filename
         source_dir = chapter / category / "sources" / "encyclopedia"
-        source_paths = sorted(p for p in source_dir.glob("*.json") if p.name not in {"INDEX.json", "commands_additional_technologies.json"}) if source_dir.is_dir() else []
+        source_paths = (sorted(source_dir.glob("*_wave*.json")) if source_dir.is_dir() and category != "commands" else [])
         paths = ([base_path] if base_path.is_file() else []) + source_paths
         if not base_path.is_file() and strict:
             raise FileNotFoundError(f"Missing category file: {base_path.relative_to(ROOT)}")
