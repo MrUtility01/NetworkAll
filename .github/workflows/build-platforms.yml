@@ -60,10 +60,18 @@ jobs:
               "lesson:ch68:security_ops:wave1",
               "lesson:ch68:git:wave1",
               "lesson:ch68:backup_recovery:wave1",
+              "lesson:ch68:wave2:mikrotik",
+              "lesson:ch68:wave2:cisco",
+              "lesson:ch68:wave2:fortigate",
+              "lesson:ch68:wave2:windows_batch",
+              "lesson:ch68:wave2:powershell",
+              "lesson:ch68:wave2:windows_server",
+              "lesson:ch68:wave2:linux_bash",
+              "lesson:ch68:wave2:docker",
           }
           missing = sorted(expected - uids)
-          print(f"CH68 wave1 source validation: found={len(expected)-len(missing)}/{len(expected)}")
-          assert not missing, f"Chapter 68 wave-one source lessons missing from build pack: {missing}"
+          print(f"CH68 additive source validation: found={len(expected)-len(missing)}/{len(expected)}")
+          assert not missing, f"Chapter 68 additive source lessons missing from build pack: {missing}"
           PY
           python3 scripts/merge_content_packs_into_android.py
 
@@ -105,9 +113,17 @@ jobs:
               "lesson:ch68:security_ops:wave1",
               "lesson:ch68:git:wave1",
               "lesson:ch68:backup_recovery:wave1",
+              "lesson:ch68:wave2:mikrotik",
+              "lesson:ch68:wave2:cisco",
+              "lesson:ch68:wave2:fortigate",
+              "lesson:ch68:wave2:windows_batch",
+              "lesson:ch68:wave2:powershell",
+              "lesson:ch68:wave2:windows_server",
+              "lesson:ch68:wave2:linux_bash",
+              "lesson:ch68:wave2:docker",
           }
           missing_wave1 = sorted(wave1_uids - set(uids))
-          assert not missing_wave1, f"Chapter 68 wave-1 lessons missing from Android: {missing_wave1}"
+          assert not missing_wave1, f"Chapter 68 additive lessons missing from Android: {missing_wave1}"
           assert len(uids) == len(set(uids)), "duplicate lesson uid"
           assert int(d.get("lesson_count", -1)) == len(lessons), "lesson_count mismatch"
           assert all(x.get("full_content") is not None for x in lessons), "missing full_content field"
