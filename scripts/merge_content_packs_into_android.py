@@ -469,7 +469,13 @@ def append_modular_chapter(data, lessons, order, title_fa, title_en):
             meta = src.get("meta") or {}
             assessment = meta.get("assessment") if isinstance(meta, dict) else None
             if assessment and "EJ_ASSESSMENT" not in notes:
-                notes += "\\n\\n<!-- EJ_ASSESSMENT\\n" + json.dumps(assessment, ensure_ascii=False) + "\\n-->\\n"
+                notes += "\n\n<!-- EJ_ASSESSMENT\n" + json.dumps(assessment, ensure_ascii=False) + "\n-->\n"
+            questions = src.get("questions")
+            if questions and "EJ_QUESTIONS" not in notes:
+                notes += "\n\n<!-- EJ_QUESTIONS\n" + as_text(questions) + "\n-->\n"
+            answer_key = src.get("answer_key")
+            if answer_key and "EJ_ANSWER_KEY" not in notes:
+                notes += "\n\n<!-- EJ_ANSWER_KEY\n" + as_text(answer_key) + "\n-->\n"
             out.append({
                 "uid": uid,
                 "title_fa": src.get("title_fa") or "",
