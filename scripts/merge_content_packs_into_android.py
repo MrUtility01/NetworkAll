@@ -128,7 +128,7 @@ def commands_to_lessons(data: dict) -> list:
             meta["flashcards"] = flash
             notes += "\n\n<!-- EJ_FLASHCARDS\n" + json.dumps(flash, ensure_ascii=False) + "\n-->\n"
 
-        lesson_uid = f"lesson:ch{ch:02d}:cmd:{i:04d}"
+        lesson_uid = c.get("uid") or f"lesson:ch{ch:02d}:cmd:{i:04d}"
         out.append({
             "uid": lesson_uid,
             "chapter_order": ch,
@@ -622,6 +622,33 @@ def main():
             continue
         if "wireless" in name and "vpn" not in name:
             wireless.extend(lessons)
+            continue
+        if "commands_additional_technologies.json" in name:
+            # Add these new technology sections to Chapter 68 without replacing
+            # any existing chapter content. Stable UIDs make repeated builds idempotent.
+            existing_uids = {
+                lesson.get("uid")
+                for chapter in data.get("chapters", [])
+                for sub in chapter.get("subchapters", [])
+                for lesson in sub.get("lessons", [])
+                if lesson.get("uid")
+            }
+            entry = modular_chapters.setdefault(68, {
+                "title_fa": "فصل ۶۸: دانشنامه جامع دستورات",
+                "title_en": "Ch68 Commands Encyclopedia",
+                "lessons": [],
+            })
+            added_from_pack = 0
+            for idx, lesson in enumerate(lessons, 1):
+                lesson = dict(lesson)
+                lesson.setdefault("chapter_order", 68)
+                lesson.setdefault("lesson_order", idx)
+                if lesson.get("uid") in existing_uids:
+                    continue
+                entry["lessons"].append(lesson)
+                existing_uids.add(lesson.get("uid"))
+                added_from_pack += 1
+            print("ch68 additional technology lessons", added_from_pack)
             continue
         if d.get("commands") or "commands_encyclopedia" in name:
             cmd_extra.extend(lessons)
