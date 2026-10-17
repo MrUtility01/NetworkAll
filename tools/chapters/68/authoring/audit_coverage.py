@@ -57,7 +57,6 @@ COMMAND_FILES = {
     "mikrotik": "commands_mikrotik.json",
     "cisco": "commands_cisco.json",
     "fortigate": "commands_fortigate.json",
-    "windows": "commands_windows.json",
     "windows_batch": "commands_windows_batch.json",
     "windows_server": "commands_windows_server.json",
     "linux": "commands_linux.json",
@@ -85,7 +84,7 @@ def records_from(obj):
 def technology_of(record):
     if not isinstance(record, dict):
         return None
-    for key in ("technology_id", "technology", "domain", "vendor_pack", "vendor", "product"):
+    for key in ("technology_id", "technology", "domain", "vendor_pack", "category", "platform", "vendor", "product"):
         value = record.get(key)
         if isinstance(value, str) and value.strip():
             slug = value.strip().lower().replace(" ", "_").replace("/", "_").replace("-", "_")
@@ -139,6 +138,19 @@ def main():
             malformed.append(f"{ADDITIONAL_FILE}: {exc}")
     else:
         missing_files.append(str(ADDITIONAL_FILE))
+
+    # The legacy Windows pack mixes CMD and PowerShell. Attribute each record
+    # only when its own metadata explicitly identifies a technology; never count
+    # the whole mixed pack toward either quota.
+    mixed_windows = ROOT / "commands_windows.json"
+    if mixed_windows.exists():
+        try:
+            for record in records_from(load_json(mixed_windows)):
+                slug = technology_of(record)
+                if slug in ("powershell", "windows_batch", "windows_server"):
+                    counts[slug]["commands"] += 1
+        except Exception as exc:
+            malformed.append(f"{mixed_windows.relative_to(ROOT)}: {exc}")
 
     # Count only dedicated records with an explicit technology identifier.
     # Embedded flashcards/assessment/lab hints are intentionally not inferred.
