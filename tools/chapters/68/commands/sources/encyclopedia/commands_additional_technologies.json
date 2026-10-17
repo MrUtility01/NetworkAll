@@ -878,19 +878,25 @@
       "source_status": "review_required"
     },
     {
-      "uid": "cmd:ftp:troubleshoot:curl-i-https-example-com",
+      "uid": "cmd:ftp:network:curl-list-only-ftp",
       "vendor": "FTP/FTPS/SFTP",
       "platform": "curl/lftp/FTP clients",
       "category": "ftp",
       "subcategory": "ftp",
       "level": "L0",
-      "title_fa": "FTP / FTPS / SFTP — بررسی header وب با curl",
-      "title_en": "curl -I https://example.com/",
-      "command": "curl -I https://example.com/",
+      "title_fa": "FTP — فهرست فایل‌ها با curl",
+      "title_en": "curl --list-only ftp://ftp.example.net/pub/",
+      "command": "curl --list-only ftp://ftp.example.net/pub/",
       "aliases": [],
-      "syntax": "curl -I https://example.com/",
-      "arguments": [],
-      "when_to_use_fa": "برای بررسی پاسخ HTTP(S) و headerها؛ این دستور FTP نیست و برای تشخیص سرویس وب استفاده می‌شود.",
+      "syntax": "curl --list-only ftp://ftp.example.net/pub/",
+      "arguments": [
+        {
+          "name": "--list-only",
+          "meaning_fa": "فقط نام فایل‌ها را دریافت می‌کند",
+          "example": "--list-only"
+        }
+      ],
+      "when_to_use_fa": "برای بررسی فهرست فایل‌های یک مسیر FTP در محیط مجاز؛ احراز هویت را در صورت نیاز به روش امن تأمین کنید.",
       "prerequisites_fa": [
         "دسترسی مجاز به میزبان/تجهیز مربوط",
         "ثبت نسخه و محیط اجرا پیش از عیب‌یابی"
@@ -900,7 +906,7 @@
         "فرمان را در میزبان یا کنسول مناسب اجرا کنید: curl -I https://example.com/",
         "خروجی را با وضعیت مورد انتظار و نسخهٔ واقعی مقایسه کنید."
       ],
-      "sample_output": "HTTP/2 200\ncontent-type: text/html",
+      "sample_output": "README.txt\nreleases/",
       "output_fields_fa": [
         {
           "field": "status/output",
@@ -913,16 +919,14 @@
         "تعمیم خروجی نمونه به تمام نسخه‌ها و پلتفرم‌ها"
       ],
       "lab_hint_fa": "Lab: FTP / FTPS / SFTP را در محیط آزمایشی یا میزبان مجاز اجرا کنید؛ یک نتیجهٔ سالم و یک حالت خطا را مقایسه و یافته‌ها را ثبت کنید.",
-      "security_notes_fa": "گواهی TLS را با گزینه‌هایی مانند -k غیرفعال نکنید مگر در تست کنترل‌شده.",
+      "security_notes_fa": "FTP معمولی رمزنگاری ندارد؛ برای دادهٔ حساس از FTPS یا SFTP استفاده کنید و رمز را در خط فرمان ننویسید.",
       "search_keywords": [
         "ftp",
-        "FTP / FTPS / SFTP",
+        "curl",
+        "list-only",
+        "فهرست فایل",
         "FTP/FTPS/SFTP",
-        "curl -I https://example.com/",
-        "بررسی header وب با curl",
-        "عیب‌یابی",
-        "دستور",
-        "version-specific"
+        "عیب‌یابی"
       ],
       "flashcards": [
         {
@@ -937,22 +941,22 @@
       "assessment": {
         "questions": [
           {
-            "id": "q-ftp-11",
-            "prompt": "در فناوری FTP / FTPS / SFTP، کاربرد اصلی دستور زیر چیست؟\ncurl -I https://example.com/",
+            "id": "q-ftp-1",
+            "prompt": "دستور curl --list-only برای چه کاری در FTP استفاده می‌شود؟",
             "options": [
-              "این فرمان فقط نسخهٔ سیستم‌عامل کلاینت را تغییر می‌دهد",
-              "این فرمان هیچ ورودی یا خروجی ندارد",
-              "برای بررسی پاسخ HTTP(S) و headerها؛ این دستور FTP نیست و برای تشخیص سرویس وب استفاده می‌شود.",
-              "این فرمان فقط فایل را حذف می‌کند"
+              "فهرست نام فایل‌ها بدون دریافت محتوا",
+              "تغییر رمز کاربر سیستم",
+              "تغییر پورت SSH",
+              "حذف همه فایل‌ها"
             ],
             "type": "mcq_command_usage"
           }
         ],
         "answer_key": [
           {
-            "id": "q-ftp-11",
-            "correct_index": 2,
-            "explain_fa": "برای بررسی پاسخ HTTP(S) و headerها؛ این دستور FTP نیست و برای تشخیص سرویس وب استفاده می‌شود."
+            "id": "q-ftp-1",
+            "correct_index": 0,
+            "explain_fa": "--list-only فهرست نام فایل‌ها را می‌گیرد و محتوای فایل را دانلود نمی‌کند."
           }
         ]
       },
