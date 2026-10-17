@@ -110,6 +110,10 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Audit Chapter 68 technology coverage
+        run: python tools/chapters/68/authoring/audit_coverage.py
+
+
       - name: Prepare numeric chapter source layout and compile chapter packs
         run: |
           set -euo pipefail
@@ -121,9 +125,6 @@ jobs:
 
       - name: Verify Python sources
         run: python -m compileall -q server scripts tools/chapters
-
-      - name: Audit Chapter 68 technology coverage
-        run: python tools/chapters/68/authoring/audit_coverage.py
 
       - name: Package complete Windows host and all content sources
         run: |
