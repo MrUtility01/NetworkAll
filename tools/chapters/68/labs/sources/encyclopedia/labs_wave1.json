@@ -11,7 +11,8 @@
       "title_fa": "عیب‌یابی قطع مسیر در EdgeOS",
       "fields": {
         "labs": "**حوزه:** Ubiquiti EdgeOS\n**هدف:** یک VLAN آزمایش به مقصد بیرونی نمی‌رسد.\n**مراحل:** ۱) `show ip route` را ثبت کنید. ۲) gateway را با ping مجاز بررسی کنید. ۳) route مقصد و رابط خروجی را تطبیق دهید. ۴) ACL/NAT و مسیر برگشت را فقط read-only بررسی کنید.\n**قبولی:** علت محتمل با شواهد مشخص شود، بدون تغییر پیکربندی.\n**ایمنی:** تغییر واقعی خارج از scope لاب است."
-      }
+      },
+      "technology_id": "ubiquiti"
     },
     {
       "uid": "lab:ch68:snmp_syslog:wave1",
@@ -19,7 +20,8 @@
       "title_fa": "عیب‌یابی نرسیدن Syslog به collector",
       "fields": {
         "labs": "**حوزه:** SNMP / Syslog\n**هدف:** پیام محلی ثبت می‌شود اما در SIEM دیده نمی‌شود.\n**مراحل:** یک پیام آزمایشی غیرحساس با `logger` بسازید؛ دریافت محلی را بررسی کنید؛ ترافیک مقصد را با فیلتر مناسب capture کنید؛ facility/severity و parser را بررسی کنید.\n**قبولی:** مرز خرابی (agent، شبکه، collector یا parser) با شواهد مشخص شود.\n**ایمنی:** capture کوتاه باشد و payload حساس منتشر نشود."
-      }
+      },
+      "technology_id": "snmp_syslog"
     },
     {
       "uid": "lab:ch68:dns_dhcp_ntp:wave1",
@@ -27,7 +29,8 @@
       "title_fa": "تحلیل DHCP DORA در VLAN آزمایش",
       "fields": {
         "labs": "**حوزه:** DNS / DHCP / NTP\n**هدف:** کلاینت lease دریافت نمی‌کند.\n**مراحل:** capture مجاز UDP/67 و UDP/68 بگیرید؛ Discover/Offer/Request/ACK را جست‌وجو کنید؛ relay، scope و exhaustion را بررسی کنید.\n**قبولی:** مرحله‌ای که پاسخ نداده مشخص شود.\n**ایمنی:** روی رابط production بدون مجوز renew انجام ندهید."
-      }
+      },
+      "technology_id": "dns_dhcp_ntp"
     },
     {
       "uid": "lab:ch68:web_tls:wave1",
@@ -35,7 +38,8 @@
       "title_fa": "عیب‌یابی گواهی اشتباه virtual host",
       "fields": {
         "labs": "**حوزه:** Web/TLS/PKI\n**هدف:** hostname گواهی نامرتبط دریافت می‌کند.\n**مراحل:** با `openssl s_client` و `-servername` handshake بگیرید؛ SAN، issuer و تاریخ را بررسی کنید؛ DNS و binding vhost را تطبیق دهید.\n**قبولی:** علت به SNI، binding یا certificate chain نسبت داده شود.\n**ایمنی:** verification را غیرفعال نکنید و private key خارج از scope است."
-      }
+      },
+      "technology_id": "web_tls"
     },
     {
       "uid": "lab:ch68:cloud:wave1",
@@ -43,7 +47,8 @@
       "title_fa": "تشخیص context اشتباه AWS",
       "fields": {
         "labs": "**حوزه:** AWS CLI\n**هدف:** اپراتور مطمئن نیست role محیط آزمایش فعال است.\n**مراحل:** `aws sts get-caller-identity` را اجرا کنید؛ Account و Arn را با محیط هدف تطبیق دهید؛ تا زمان تأیید هویت فرمان تغییردهنده اجرا نکنید.\n**قبولی:** context درست یا علت عدم تطبیق مستند شود.\n**ایمنی:** منبع ابری ایجاد یا حذف نشود."
-      }
+      },
+      "technology_id": "cloud"
     },
     {
       "uid": "lab:ch68:fortinet_management:wave1",
@@ -51,7 +56,8 @@
       "title_fa": "جلوگیری از اعمال policy در ADOM اشتباه",
       "fields": {
         "labs": "**حوزه:** FortiManager / FortiAnalyzer\n**هدف:** پیش از install یک policy package، scope را تأیید کنید.\n**مراحل:** نسخه را ثبت کنید؛ ADOM و device mapping را بررسی کنید؛ نام package را با change request تطبیق دهید؛ مرحلهٔ install را اجرا نکنید.\n**قبولی:** تطبیق ADOM، دستگاه و package مستند شود.\n**ایمنی:** هر install واقعی نیازمند مجوز جداگانه است."
-      }
+      },
+      "technology_id": "fortinet_management"
     },
     {
       "uid": "lab:ch68:security_ops:wave1",
@@ -59,7 +65,8 @@
       "title_fa": "تشخیص شکاف telemetry در SIEM",
       "fields": {
         "labs": "**حوزه:** Security Operations / SIEM\n**هدف:** داشبورد رخداد process creation ندارد.\n**مراحل:** وجود channel را بررسی کنید؛ آخرین event را بخوانید؛ وضعیت سرویس و policy جمع‌آوری را بررسی کنید؛ ingest pipeline و parser را با event نمونه تطبیق دهید.\n**قبولی:** محل مشکل در endpoint، policy یا pipeline مشخص شود.\n**ایمنی:** کنترل امنیتی را خاموش نکنید."
-      }
+      },
+      "technology_id": "security_ops"
     },
     {
       "uid": "lab:ch68:git:wave1",
@@ -67,7 +74,8 @@
       "title_fa": "جلوگیری از commit فایل حساس",
       "fields": {
         "labs": "**حوزه:** Git / GitHub\n**هدف:** فایل `.env` در فهرست untracked ظاهر شده است.\n**مراحل:** `git status --short` را اجرا کنید؛ فایل را stage نکنید؛ `.gitignore` را اصلاح کنید؛ با `git diff --cached` مطمئن شوید فایل stage نشده است.\n**قبولی:** فایل حساس در index نباشد.\n**ایمنی:** اگر secret قبلاً commit شده، حذف فایل کافی نیست؛ credential را rotate کنید."
-      }
+      },
+      "technology_id": "git"
     },
     {
       "uid": "lab:ch68:backup_recovery:wave1",
@@ -75,7 +83,8 @@
       "title_fa": "آزمون restore فایل از snapshot",
       "fields": {
         "labs": "**حوزه:** Backup / Recovery\n**هدف:** ثابت کنید یک فایل نمونه قابل بازیابی است.\n**مراحل:** snapshot را انتخاب کنید؛ repository check را اجرا کنید؛ فایل را به مسیر موقت restore کنید؛ checksum را با نسخهٔ مرجع مقایسه کنید.\n**قبولی:** فایل در مسیر جدا بازیابی و checksum برابر باشد.\n**ایمنی:** روی مسیر اصلی restore نکنید."
-      }
+      },
+      "technology_id": "backup_recovery"
     }
   ]
 }
