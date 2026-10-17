@@ -59,7 +59,12 @@ def commands_to_lessons(data: dict) -> list:
         "ssh": 13, "telnet": 14, "ftp": 15, "voip": 16, "vmware_esxi": 17,
         "zabbix": 18, "wireshark": 19, "juniper": 20, "aruba": 21,
         "proxmox": 22, "ansible": 23, "terraform": 24, "kubernetes": 25,
-        "powershell": 26, "hyperv": 27,
+        "powershell": 26, "hyperv": 27, "ftps": 28, "sftp": 29,
+        "mikrotik": 30, "cisco": 31, "fortigate": 32,
+        "windows_batch": 33, "windows_server": 34, "linux_bash": 35, "linux": 35,
+        "docker": 36, "ubiquiti": 37, "snmp_syslog": 38, "dns_dhcp_ntp": 39,
+        "web_tls": 40, "cloud": 41, "fortinet_management": 42,
+        "security_ops": 43, "git": 44, "backup_recovery": 45,
     }
     for i, c in enumerate(data.get("commands") or [], 1):
         if not isinstance(c, dict):
@@ -69,8 +74,14 @@ def commands_to_lessons(data: dict) -> list:
         title_fa = c.get("title_fa") or cmd
         if ch != 68 and not str(title_fa).startswith("[L"):
             title_fa = f"[{level}] {title_fa}"
-        sub = (c.get("subcategory") or c.get("category") or "general").strip().lower()
-        sub_order = sub_map.get(sub, 10)
+        technology = str(c.get("technology_id") or c.get("category") or "").strip().lower()
+        if technology == "linux":
+            technology = "linux_bash"
+        if technology in sub_map:
+            sub_order = sub_map[technology]
+        else:
+            sub = (c.get("subcategory") or c.get("category") or "general").strip().lower()
+            sub_order = sub_map.get(sub, 10)
         args = c.get("arguments") or []
         arg_lines = []
         for a in args:
@@ -204,7 +215,7 @@ CH68_SECTION_TITLES = {
     12: "سایر دستورات و ابزارها",
     13: "SSH / OpenSSH",
     14: "Telnet و آزمون TCP",
-    15: "FTP / FTPS / SFTP",
+    15: "FTP",
     16: "VoIP / SIP / PBX",
     17: "VMware ESXi / vSphere",
     18: "Zabbix Monitoring",
@@ -217,6 +228,24 @@ CH68_SECTION_TITLES = {
     25: "Kubernetes / kubectl",
     26: "PowerShell",
     27: "Microsoft Hyper-V",
+    28: "FTPS / FTP over TLS",
+    29: "SFTP / SSH File Transfer",
+    30: "MikroTik RouterOS",
+    31: "Cisco IOS / IOS-XE",
+    32: "FortiGate / FortiOS",
+    33: "Windows Batch / CMD",
+    34: "Windows Server / Active Directory",
+    35: "Linux / Bash",
+    36: "Docker / Compose",
+    37: "Ubiquiti UniFi / EdgeOS",
+    38: "SNMP / Syslog / NetFlow",
+    39: "DNS / DHCP / NTP / IPAM",
+    40: "Web Servers / TLS / PKI",
+    41: "Cloud CLI / AWS / Azure",
+    42: "FortiManager / FortiAnalyzer",
+    43: "Security Operations / SIEM / SOC",
+    44: "Git / GitHub",
+    45: "Backup / Recovery / DR",
 }
 
 def _classify_ch68_command(command: str, title: str = ""):
