@@ -63,32 +63,34 @@ def assemble_chapter(order: int, strict: bool = False):
         order_uids.append(uid)
 
     for category, filename in CATEGORIES.items():
-        path = chapter / category / filename
-        if not path.is_file():
-            if strict:
-                raise FileNotFoundError(f"Missing category file: {path.relative_to(ROOT)}")
-            continue
-        category_doc = read_json(path)
-        items = category_doc.get("items")
-        if not isinstance(items, list):
-            raise ValueError(f"{path.relative_to(ROOT)} must have an items array")
-        for index, item in enumerate(items, 1):
-            if not isinstance(item, dict) or not item.get("uid"):
-                raise ValueError(f"Invalid category item {index} in {path.relative_to(ROOT)}")
-            uid = str(item["uid"])
-            if uid not in rows:
-                rows[uid] = {
-                    "uid": uid,
-                    "chapter_order": order,
-                    "title_fa": str(item.get("title_fa") or f"محتوای پیوندنشده {index}"),
-                    "title_en": str(item.get("title_en") or ""),
-                    "meta": {"orphaned_category_source": path.relative_to(ROOT).as_posix()},
-                }
-                order_uids.append(uid)
-            fields = item.get("fields")
-            if isinstance(fields, dict):
-                # The type-specific file is authoritative for its field.
-                rows[uid].update(fields)
+        base_path = chapter / category / filename
+        source_dir = chapter / category / "sources" / "encyclopedia"
+        source_paths = sorted(source_dir.glob("*.json")) if source_dir.is_dir() else []
+        paths = ([base_path] if base_path.is_file() else []) + source_paths
+        if not base_path.is_file() and strict:
+            raise FileNotFoundError(f"Missing category file: {base_path.relative_to(ROOT)}")
+        for path in paths:
+            category_doc = read_json(path)
+            items = category_doc.get("items")
+            if not isinstance(items, list):
+                raise ValueError(f"{path.relative_to(ROOT)} must have an items array")
+            for index, item in enumerate(items, 1):
+                if not isinstance(item, dict) or not item.get("uid"):
+                    raise ValueError(f"Invalid category item {index} in {path.relative_to(ROOT)}")
+                uid = str(item["uid"])
+                if uid not in rows:
+                    rows[uid] = {
+                        "uid": uid,
+                        "chapter_order": order,
+                        "title_fa": str(item.get("title_fa") or f"محتوای پیوندنشده {index}"),
+                        "title_en": str(item.get("title_en") or ""),
+                        "meta": {"orphaned_category_source": path.relative_to(ROOT).as_posix()},
+                    }
+                    order_uids.append(uid)
+                fields = item.get("fields")
+                if isinstance(fields, dict):
+                    # Canonical and additive category files use the same UID merge contract.
+                    rows[uid].update(fields)
 
     metadata = doc.get("pack_metadata")
     if not isinstance(metadata, dict):
