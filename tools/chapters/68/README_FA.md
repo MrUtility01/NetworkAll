@@ -91,3 +91,16 @@ python scripts/merge_content_packs_into_android.py
 سند الزامات رسمی محتوا: [`AUTHORING_TARGETS_FA.md`](AUTHORING_TARGETS_FA.md). برای هر فناوری اصلی (MikroTik، Cisco، Windows Batch، PowerShell، VoIP، FortiGate، VMware ESXi، SSH، Telnet، FTP/SFTP و Bash) هدف جداگانه تعریف شده است: حداقل ۵۰۰ مرجع دستور/گزینه، ۱۰۰ مثال، ۱۰۰ سناریو و ۵۰۰ واحد یادگیری. این سهمیه‌ها هدف هستند و تا وقتی validator تعداد رکوردهای واقعی و متمایز را تأیید نکند، نباید به‌عنوان تکمیل‌شده گزارش شوند.
 
 در مورد SSH/Telnet/FTP، رکوردها باید بر اساس کلاینت/سرور و پیاده‌سازی مشخص باشند؛ گزینه‌ها نباید به‌صورت صوری برای افزایش شمار ساخته شوند. SFTP باید از FTP/FTPS تفکیک شود. هر دستور باید آرگومان‌ها، محل اجرا، سطح دسترسی، نسخه/پلتفرم، مثال، خروجی/روش بررسی، ریسک و کلیدواژه‌های جستجو را داشته باشد. حجم برنامه محدودیتی برای این پروژه نیست؛ حفظ محتوای فعلی اولویت دارد.
+
+
+## افزونهٔ فناوری‌های تکمیلی (۱۷ اکتبر ۲۰۲۶)
+
+فایل افزایشی `commands/sources/encyclopedia/commands_additional_technologies.json` به مخزن اضافه شده است: **۷۵ رکورد اولیه در ۱۵ حوزه**: SSH/OpenSSH، Telnet، FTP/FTPS/SFTP، VoIP/SIP/PBX، VMware ESXi، Zabbix، Wireshark/TShark، Juniper Junos، Aruba AOS-CX، Proxmox VE، Ansible، Terraform، Kubernetes، PowerShell و Hyper-V.
+
+اسکریپت `scripts/merge_content_packs_into_android.py` اکنون این فایل را نیز می‌خواند و فناوری‌های افزوده را در بخش‌های مجزای فصل ۶۸ قرار می‌دهد. برای بازسازی خروجی تولیدی، از ریشهٔ مخزن اجرا کنید:
+
+```bash
+python scripts/merge_content_packs_into_android.py
+```
+
+**مهم:** ۵ رکورد در هر فناوری صرفاً نقطهٔ شروع است؛ هیچ‌یک از این ۱۵ فناوری هنوز به سهمیهٔ کامل قرارداد `AUTHORING_TARGETS_FA.md` نرسیده است. build و تست runtime پس از تغییر هنوز اجرا/تأیید نشده‌اند. محتوای موجود و ZIP قبلی حذف نشده‌اند.
