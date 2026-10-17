@@ -216,6 +216,50 @@ def _classify_ch68_command(command: str, title: str = ""):
             return order, label
     return 12, CH68_SECTION_TITLES[12]
 
+def _describe_ch68_command(command: str, section: str) -> str:
+    c = str(command or "").strip().lower()
+    exact = {
+        "show version": "نسخه نرم‌افزار، مدل پلتفرم و اطلاعات پایه دستگاه را نشان می‌دهد؛ برای ثبت وضعیت اولیه و تطبیق قابلیت‌ها استفاده می‌شود.",
+        "show running-config": "پیکربندی فعال فعلی را نمایش می‌دهد؛ برای بازبینی تغییرات اعمال‌شده و بررسی تنظیمات جاری به‌کار می‌رود.",
+        "show startup-config": "پیکربندی ذخیره‌شده برای راه‌اندازی بعدی را نشان می‌دهد و برای مقایسه با تنظیمات فعال مفید است.",
+        "show ip interface brief": "وضعیت و آدرس IP رابط‌ها را به‌صورت خلاصه نشان می‌دهد و برای یافتن رابط‌های down یا بدون آدرس مناسب است.",
+        "show interfaces status": "وضعیت پورت‌های سوئیچ، VLAN، سرعت و Duplex را خلاصه می‌کند.",
+        "show ip route": "جدول مسیریابی IPv4 و مسیرهای متصل، ایستا و آموخته‌شده را نمایش می‌دهد.",
+        "show ipv6 route": "جدول مسیریابی IPv6 را برای بررسی مسیرهای فعال و next-hop نمایش می‌دهد.",
+        "show logging": "پیام‌های ثبت‌شده دستگاه را برای بررسی خطاها، رخدادهای رابط و تغییرات اخیر نمایش می‌دهد.",
+        "show clock": "زمان و تاریخ فعلی دستگاه را نشان می‌دهد؛ برای تطبیق timestamp لاگ‌ها و رخدادها مهم است.",
+        "show vlan brief": "فهرست VLANها و پورت‌های عضو را به‌صورت خلاصه نمایش می‌دهد.",
+        "show mac address-table": "آدرس‌های MAC یادگرفته‌شده و پورت مربوط به آن‌ها را برای عیب‌یابی لایه ۲ نمایش می‌دهد.",
+        "show spanning-tree": "وضعیت Spanning Tree، نقش پورت‌ها و وضعیت جلوگیری از حلقه لایه ۲ را نشان می‌دهد.",
+        "show ip ospf neighbor": "همسایه‌های OSPF و وضعیت مجاورت آن‌ها را برای عیب‌یابی همگرایی بررسی می‌کند.",
+        "show ip bgp summary": "وضعیت همسایه‌های BGP، زمان اتصال و شمار پیشوندهای دریافتی را خلاصه می‌کند.",
+        "show access-lists": "ACLها و شمارنده تطبیق قوانین را نشان می‌دهد و برای بررسی ترتیب و اثر فیلترها مفید است.",
+        "show ip nat translations": "نگاشت‌های فعال NAT را نمایش می‌دهد تا ترجمه آدرس و پورت قابل بررسی باشد.",
+        "show ip nat statistics": "آمار عملکرد NAT و شمار ترجمه‌ها را نشان می‌دهد.",
+        "show inventory": "شناسه سخت‌افزار، قطعات و شماره سریال اجزای پشتیبانی‌شده را نمایش می‌دهد.",
+        "show processes cpu sorted": "فرایندها را بر اساس مصرف CPU مرتب می‌کند تا عامل بار پردازشی بالا شناسایی شود.",
+    }
+    if c in exact:
+        return exact[c]
+    if c.startswith("show ") and "route" in c:
+        return "اطلاعات جدول مسیریابی را نمایش می‌دهد؛ مسیر مقصد، next-hop و رابط خروجی را بررسی کنید."
+    if c.startswith("show ") and ("interface" in c or "interfaces" in c):
+        return "وضعیت، آمار یا جزئیات رابط‌های شبکه را نشان می‌دهد؛ خطاها، شمارنده‌ها و وضعیت عملیاتی را بررسی کنید."
+    if c.startswith("show ") and ("ospf" in c or "bgp" in c or "eigrp" in c):
+        return "وضعیت پروتکل مسیریابی و همسایه‌ها را برای تشخیص مشکل مجاورت یا تبادل مسیر بررسی می‌کند."
+    if c.startswith("show ") and ("vlan" in c or "switchport" in c or "spanning-tree" in c):
+        return "اطلاعات Switching و VLAN را برای بررسی عضویت پورت، trunk و جلوگیری از حلقه لایه ۲ نمایش می‌دهد."
+    if c.startswith("show ") and ("crypto" in c or "ike" in c or "ipsec" in c or "vpn" in c):
+        return "وضعیت مؤلفه‌های رمزنگاری یا تونل را نشان می‌دهد؛ مذاکره، همتا و وضعیت SA را بررسی کنید."
+    if c.startswith("show "):
+        return f"اطلاعات عملیاتی مرتبط با بخش «{section}» را نمایش می‌دهد؛ خروجی را با وضعیت مورد انتظار و لاگ‌های هم‌زمان تطبیق دهید."
+    if c.startswith(("configure ", "set ", "ip ", "ipv6 ", "router ", "interface ", "username ", "access-list ", "crypto ", "write ", "copy ", "no ")):
+        return f"برای پیکربندی یا تغییر وضعیت در بخش «{section}» استفاده می‌شود. پیش از اجرا، اثر تغییر و امکان بازگشت را در محیط آزمایشگاهی بررسی کنید."
+    if c.startswith(("ping ", "traceroute", "tracepath")):
+        return "برای بررسی دسترس‌پذیری مقصد یا مسیر عبور بسته‌ها استفاده می‌شود؛ شکست ICMP به‌تنهایی اثبات‌کننده قطعی سرویس نیست."
+    return f"دستور مرتبط با بخش «{section}» است. پیش‌نیازها، سطح دسترسی و اثر اجرا را بررسی کرده و نتیجه را در خروجی و لاگ‌ها اعتبارسنجی کنید."
+
+
 def command_items_to_lessons(data: dict) -> list:
     """Convert chapter-68 command records into categorized, searchable lessons."""
     out = []
@@ -228,12 +272,13 @@ def command_items_to_lessons(data: dict) -> list:
         title_fa = re.sub(r"^\[L[0-4]\]\s*", "", str(item.get("title_fa") or title_en)).strip()
         order, section = _classify_ch68_command(command, title_en)
         keywords = sorted(set([command, title_en, title_fa, section, "فصل ۶۸", "دستور شبکه", "عیب‌یابی"]))
-        summary = f"{section}: کاربرد دستور {command} و بررسی نتیجه اجرای آن."
+        description = _describe_ch68_command(command, section)
+        summary = f"{section}: {description}"
         full = (
             f"# {title_fa}\n\n"
             f"بخش: {section}\n\n"
             f"## دستور\n{command}\n\n"
-            f"## توضیح و کاربرد\nاین دستور در بخش «{section}» استفاده می‌شود. هدف اجرا را مشخص کنید، سپس دستور را در محیط و سطح دسترسی مناسب اجرا کرده و خروجی را با وضعیت مورد انتظار مقایسه کنید.\n\n"
+            f"## توضیح و کاربرد\n{description}\n\n"
             f"## روش بررسی\n1. دستگاه، سیستم‌عامل و سطح دسترسی را تأیید کنید.\n"
             f"2. دستور را اجرا کنید: {command}\n"
             f"3. خروجی، پیام خطا و زمان اجرا را ثبت کنید.\n"
