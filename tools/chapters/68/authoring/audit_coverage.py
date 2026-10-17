@@ -105,12 +105,16 @@ def strings_in(value):
             yield from strings_in(child)
 
 def ftp_subtype(record):
-    text = " ".join(strings_in(record)).lower()
-    if re.search(r"\bsftp\b|sftp://|cmd:sftp", text):
+    # Classify from the actual command/syntax, not descriptive metadata; this
+    # prevents unrelated tools in a transfer pack from being credited as FTP.
+    text = str(record.get("command") or record.get("syntax") or "").strip().lower()
+    if re.search(r"\bsftp\b|sftp://", text):
         return "sftp"
-    if "ftps://" in text or "--ssl-reqd" in text or "--ftp-ssl" in text or "ftp over tls" in text:
+    if "ftps://" in text or "--ssl-reqd" in text or "--ftp-ssl" in text:
         return "ftps"
-    return "ftp"
+    if "ftp://" in text or re.search(r"(?:^|\s)ftp(?:\s|$)", text):
+        return "ftp"
+    return None
 
 def technology_of(record, source_kind=None):
     if not isinstance(record, dict):
