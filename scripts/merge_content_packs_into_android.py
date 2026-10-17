@@ -225,7 +225,7 @@ def command_items_to_lessons(data: dict) -> list:
         fields = item.get("fields") or {}
         command = str(fields.get("commands") or item.get("title_en") or "").strip()
         title_en = str(item.get("title_en") or command).strip()
-        title_fa = re.sub(r"^\\[L[0-4]\\]\\s*", "", str(item.get("title_fa") or title_en)).strip()
+        title_fa = re.sub(r"^\[L[0-4]\]\s*", "", str(item.get("title_fa") or title_en)).strip()
         order, section = _classify_ch68_command(command, title_en)
         keywords = sorted(set([command, title_en, title_fa, section, "فصل ۶۸", "دستور شبکه", "عیب‌یابی"]))
         summary = f"{section}: کاربرد دستور {command} و بررسی نتیجه اجرای آن."
