@@ -29,6 +29,10 @@ def find_pack_files():
     canonical_ch68_commands = ROOT / "tools/chapters/68/commands/commands.json"
     if canonical_ch68_commands.is_file():
         files.append(canonical_ch68_commands)
+    # Additive technology pack; it is deliberately separate from the legacy archive.
+    extra_ch68_technologies = ROOT / "tools/chapters/68/commands/sources/encyclopedia/commands_additional_technologies.json"
+    if extra_ch68_technologies.is_file():
+        files.append(extra_ch68_technologies)
     files += list(ROOT.glob("tools/chapters/[0-9][0-9]/build/chapter.json"))
     files += list(ROOT.glob("tools/chapters/[0-9]/chapter.json"))
     files += list(ROOT.glob("tools/chapters/[0-9][0-9]/chapter.json"))
@@ -52,6 +56,10 @@ def commands_to_lessons(data: dict) -> list:
         "basics": 1, "interface": 2, "vlan": 3, "trunk": 3, "stp": 4, "spanning-tree": 4,
         "etherchannel": 5, "port-security": 6, "mac": 7, "cdp": 8, "lldp": 8,
         "troubleshoot": 9, "switching": 2, "general": 10,
+        "ssh": 13, "telnet": 14, "ftp": 15, "voip": 16, "vmware_esxi": 17,
+        "zabbix": 18, "wireshark": 19, "juniper": 20, "aruba": 21,
+        "proxmox": 22, "ansible": 23, "terraform": 24, "kubernetes": 25,
+        "powershell": 26, "hyperv": 27,
     }
     for i, c in enumerate(data.get("commands") or [], 1):
         if not isinstance(c, dict):
@@ -194,6 +202,21 @@ CH68_SECTION_TITLES = {
     10: "پیکربندی، ذخیره‌سازی و مدیریت تغییر",
     11: "امنیت و کاربران",
     12: "سایر دستورات و ابزارها",
+    13: "SSH / OpenSSH",
+    14: "Telnet و آزمون TCP",
+    15: "FTP / FTPS / SFTP",
+    16: "VoIP / SIP / PBX",
+    17: "VMware ESXi / vSphere",
+    18: "Zabbix Monitoring",
+    19: "Wireshark / TShark",
+    20: "Juniper Junos",
+    21: "Aruba AOS-CX",
+    22: "Proxmox VE",
+    23: "Ansible Automation",
+    24: "Terraform / Infrastructure as Code",
+    25: "Kubernetes / kubectl",
+    26: "PowerShell",
+    27: "Microsoft Hyper-V",
 }
 
 def _classify_ch68_command(command: str, title: str = ""):
