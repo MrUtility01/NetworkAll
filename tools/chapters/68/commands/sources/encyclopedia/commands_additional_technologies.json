@@ -4,7 +4,7 @@
   "chapter_order": 68,
   "domain": "additional_technologies",
   "domain_title_fa": "فناوری‌های تکمیلی زیرساخت",
-  "count": 275,
+  "count": 276,
   "preserve_existing_records": true,
   "source_status": "review_required",
   "note": "افزونه افزایشی؛ موج اول فناوری‌های تکمیلی و موج دوم تکمیل دستورهای منتخب خانواده‌های اصلی. تمام رکوردها نیازمند بازبینی نسخه‌ای هستند؛ سهمیه نهایی ۵۰۰/۱۰۰/۱۰۰/۵۰۰ هنوز تکمیل نشده است.",
@@ -22028,6 +22028,90 @@
       },
       "source_status": "review_required",
       "technology_id": "fortigate"
+    },
+    {
+      "uid": "cmd:linux_bash:journalctl-nginx-window",
+      "technology_id": "linux_bash",
+      "vendor": "Linux",
+      "platform": "systemd Linux; nginx unit name may vary",
+      "category": "linux_bash",
+      "subcategory": "logs",
+      "level": "L1",
+      "title_fa": "بررسی لاگ Nginx در ۱۵ دقیقهٔ اخیر",
+      "title_en": "sudo journalctl -u nginx --since '15 minutes ago' --no-pager",
+      "command": "sudo journalctl -u nginx --since '15 minutes ago' --no-pager",
+      "aliases": [],
+      "syntax": "sudo journalctl -u nginx --since '15 minutes ago' --no-pager",
+      "arguments": [],
+      "when_to_use_fa": "برای بررسی رخدادهای تازهٔ Nginx در بازهٔ محدود هنگام عیب‌یابی پاسخ HTTP یا reload.",
+      "prerequisites_fa": [
+        "نام unit را در توزیع هدف تأیید کنید.",
+        "فقط روی میزبان تحت مدیریت اجرا شود."
+      ],
+      "steps_fa": [
+        "نام unit و بازهٔ زمانی را تأیید کنید.",
+        "خروجی را با timestamp مشکل و access/error log تطبیق دهید.",
+        "در صورت نیاز یک درخواست آزمایشی مجاز انجام دهید و زمان آن را ثبت کنید."
+      ],
+      "sample_output": "خروجی شامل timestamp، unit و پیام‌های log در بازهٔ ۱۵ دقیقه است.",
+      "output_fields_fa": [
+        {
+          "field": "timestamp",
+          "meaning": "زمان رخداد در timezone سیستم؛ با collector هماهنگ شود."
+        },
+        {
+          "field": "message",
+          "meaning": "متن رخداد سرویس؛ ممکن است مسیر و نام میزبان داشته باشد."
+        }
+      ],
+      "related_commands": [
+        "systemctl status nginx",
+        "nginx -t",
+        "curl -sS -I https://www.example.test/"
+      ],
+      "common_mistakes_fa": [
+        "نام unit ممکن است nginx.service یا نام سفارشی باشد.",
+        "بازهٔ زمانی را با timezone سیستم تطبیق دهید."
+      ],
+      "lab_hint_fa": "در میزبان آزمایش یک درخواست HTTP مجاز ایجاد کنید و سپس رخداد متناظر را در بازهٔ محدود پیدا کنید.",
+      "security_notes_fa": "لاگ ممکن است URL، IP و دادهٔ درخواست را افشا کند؛ قبل از اشتراک‌گذاری پالایش کنید.",
+      "search_keywords": [
+        "Linux",
+        "Bash",
+        "journalctl",
+        "Nginx",
+        "systemd",
+        "log troubleshooting"
+      ],
+      "flashcards": [
+        {
+          "front": "چرا journalctl را به بازهٔ ۱۵ دقیقه محدود می‌کنیم؟",
+          "back": "برای کاهش نویز و تمرکز روی رخدادهای هم‌زمان با مشکل."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-linux-journalctl-nginx-window",
+            "prompt": "هدف اصلی این فرمان چیست؟",
+            "options": [
+              "خواندن لاگ Nginx در بازهٔ محدود",
+              "تغییر firewall",
+              "حذف لاگ‌های قدیمی",
+              "restart کردن Nginx"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-linux-journalctl-nginx-window",
+            "correct_index": 0,
+            "explain_fa": "این فرمان فقط لاگ unit را در بازهٔ زمانی انتخاب‌شده می‌خواند."
+          }
+        ]
+      },
+      "source_status": "review_required"
     }
   ]
 }
