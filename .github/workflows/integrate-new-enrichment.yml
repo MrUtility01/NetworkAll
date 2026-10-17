@@ -1,0 +1,40 @@
+name: Integrate New enrichment packs
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/chapters/New/**'
+      - '.github/workflows/integrate-new-enrichment.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install unzip
+        run: sudo apt-get update && sudo apt-get install -y unzip
+
+      - name: Run INTEGRATE.sh
+        run: |
+          chmod +x tools/chapters/New/INTEGRATE.sh
+          bash tools/chapters/New/INTEGRATE.sh
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tools/chapters/
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "content: integrate enrichment packs from tools/chapters/New"
+          git push origin HEAD
