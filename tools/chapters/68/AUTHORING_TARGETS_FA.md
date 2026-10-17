@@ -29,7 +29,53 @@
 | ftp | FTP / FTPS / SFTP | ftp/lftp/curl/wget و سرورهای منتخب، active/passive، ports/NAT، TLS برای FTPS، تفکیک کامل SFTP (پروتکل SSH) از FTP/FTPS، مجوزها و عیب‌یابی |
 | linux_bash | Linux Bash / GNU utilities | shell built-ins، coreutils، grep/sed/awk/find/xargs، pipes/redirection، process/service، networking، package، permissions، scripting/testing، distro notes |
 
-Docker، Linux عمومی، Windows Server/AD و هر فناوری موجود دیگر نیز حفظ می‌شوند و در فازهای بعدی همین معیار را می‌گیرند؛ در حال حاضر نباید به‌دروغ ادعا شود که هر کدام از حوزه‌های بالا به هدف رسیده‌اند.
+## ماتریس اجباری سهمیه برای تمام فناوری‌های فصل ۶۸
+
+سهمیه برای **هر فناوری به‌صورت مستقل** اعمال می‌شود؛ اعداد بین فناوری‌ها قابل تجمیع نیستند. هر ردیف باید به چهار مجموعهٔ واقعی و جداگانه برسد: **۵۰۰ مرجع دستور/گزینه + ۱۰۰ مثال + ۱۰۰ سناریو + ۵۰۰ واحد یادگیری**. فایل‌های موجود با شمار کمتر (از جمله Docker و Windows Server) هنوز ناقص‌اند و باید تکمیل شوند.
+
+| شناسه | فناوری/محصول | حداقل دستور | مثال | سناریو | واحد یادگیری |
+|---|---|---:|---:|---:|---:|
+| mikrotik | MikroTik RouterOS v6/v7 | 500 | 100 | 100 | 500 |
+| cisco | Cisco IOS/IOS-XE | 500 | 100 | 100 | 500 |
+| fortigate | FortiGate / FortiOS | 500 | 100 | 100 | 500 |
+| windows_batch | Windows Batch / CMD | 500 | 100 | 100 | 500 |
+| powershell | PowerShell 5.1 و 7+ | 500 | 100 | 100 | 500 |
+| windows_server | Windows Server / AD DS / GPO | 500 | 100 | 100 | 500 |
+| linux_bash | Linux / Bash / GNU utilities | 500 | 100 | 100 | 500 |
+| docker | Docker / Compose | 500 | 100 | 100 | 500 |
+| voip | VoIP / SIP / RTP / PBX | 500 | 100 | 100 | 500 |
+| vmware_esxi | VMware ESXi / vSphere | 500 | 100 | 100 | 500 |
+| ssh | SSH / OpenSSH | 500 | 100 | 100 | 500 |
+| telnet | Telnet / TCP diagnostic | 500 | 100 | 100 | 500 |
+| ftp | FTP / FTPS / SFTP | 500 | 100 | 100 | 500 |
+| zabbix | Zabbix monitoring/API | 500 | 100 | 100 | 500 |
+| wireshark | Wireshark / TShark / tcpdump | 500 | 100 | 100 | 500 |
+| juniper | Juniper Junos | 500 | 100 | 100 | 500 |
+| aruba | Aruba AOS-CX / HPE networking | 500 | 100 | 100 | 500 |
+| proxmox | Proxmox VE | 500 | 100 | 100 | 500 |
+| hyperv | Microsoft Hyper-V | 500 | 100 | 100 | 500 |
+| ansible | Ansible / Ansible CLI | 500 | 100 | 100 | 500 |
+| terraform | Terraform / IaC | 500 | 100 | 100 | 500 |
+| kubernetes | Kubernetes / kubectl | 500 | 100 | 100 | 500 |
+| ubiquiti | Ubiquiti UniFi / EdgeOS (تفکیک‌شده) | 500 | 100 | 100 | 500 |
+| snmp_syslog | SNMP / Syslog / NetFlow / IPFIX | 500 | 100 | 100 | 500 |
+| dns_dhcp_ntp | DNS / DHCP / NTP / IPAM | 500 | 100 | 100 | 500 |
+| web_tls | Nginx / Apache / HTTP(S) / TLS / PKI | 500 | 100 | 100 | 500 |
+| cloud | AWS / Azure (هر ارائه‌دهنده با برچسب مستقل) | 500 | 100 | 100 | 500 |
+| fortinet_management | FortiManager / FortiAnalyzer | 500 | 100 | 100 | 500 |
+| security_ops | Sysmon / SIEM / SOC / incident response | 500 | 100 | 100 | 500 |
+| git | Git / GitHub / release workflows | 500 | 100 | 100 | 500 |
+| backup_recovery | Backup / restore / disaster recovery | 500 | 100 | 100 | 500 |
+
+**مجموع هدف این ماتریس (۳۱ فناوری/خانواده):** ۱۵٬۵۰۰ مرجع دستوری، ۳٬۱۰۰ مثال، ۳٬۱۰۰ سناریو و ۱۵٬۵۰۰ واحد یادگیری. این‌ها هدف تولید هستند، نه شمار محتوای موجود. فناوری‌های دارای چند محصول یا سیستم‌عامل باید در زیرگروه‌های جداگانه طبقه‌بندی شوند؛ سهمیهٔ یک محصول را نمی‌توان با محصول دیگر پر کرد.
+
+## ترتیب اجرا و گزارش پیشرفت
+
+1. ابتدا هر بستهٔ موجود را بدون حذف داده ممیزی می‌کنیم؛ رکوردهای واقعی، مثال‌ها، سناریوها و واحدهای یادگیری جداگانه شمرده می‌شوند.
+2. فناوری‌های فعلی با کمبود، از جمله Docker و Windows Server، به هدف می‌رسند؛ PowerShell از CMD جدا می‌ماند.
+3. سپس بسته‌های مستقل جدید به ترتیب شبکه/دسترسی، مجازی‌سازی، پایش/عیب‌یابی، اتوماسیون، سرویس‌های زیرساخت و امنیت تکمیل می‌شوند.
+4. هر بسته تا گذر از JSON/schema، UID، duplicate معنایی، answer key، بررسی syntax/نسخه، جستجو و تست ادغام، وضعیت `in_progress` یا `review_required` دارد؛ فقط پس از عبور از تمام گیت‌ها `validated` می‌شود.
+5. هیچ تعداد هدفی در `INDEX.json` به‌عنوان تعداد واقعی گزارش نمی‌شود مگر از فایل‌های واقعی و خروجی validator محاسبه شده باشد.
 
 ## تعریف «مرجع/ورودی دستوری معتبر»
 
