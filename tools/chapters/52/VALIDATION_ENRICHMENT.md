@@ -1,4 +1,4 @@
-# فصل 52 — مدیریت دیتابیس 10x
+# فصل ۵۲ — بسته ۱۰× مدیریت دیتابیس
 
 review_required | preserve_existing
 
@@ -6,4 +6,9 @@ review_required | preserve_existing
 |-----|--------|
 | lessons | 254 |
 | questions | 520 |
+| answers | 520 |
 | labs | 110 |
+| examples | 295 |
+| commands | 295 |
+
+حوزه‌ها: SQL Server, AG, PostgreSQL, MySQL, MongoDB, Redis, Oracle, Backup/DR, Security, Performance

@@ -1,4 +1,4 @@
-# فصل 32 — امنیت Endpoint ویندوز
+# فصل 32 — امنیت Endpoint ویندوز — غنی‌سازی
 
 review_required | preserve_existing
 
@@ -6,3 +6,7 @@ review_required | preserve_existing
 |-----|--------|
 | lessons | 198 |
 | questions | 400 |
+| answers | 400 |
+| labs | 24 |
+| examples | 72 |
+| commands | 72 |

@@ -1,159 +1,1419 @@
 {
   "schema_version": 1,
   "chapter_order": 66,
-  "chapter_title_fa": "مسیریابی عمیق OSPF/BGP/Redistribution",
+  "chapter_title_fa": "مسیریابی OSPF BGP Redistribution",
   "source_of_truth": true,
   "pack_metadata": {
-    "schema_version": 1,
-    "chapter_order": 66,
-    "chapter_title_fa": "مسیریابی عمیق OSPF/BGP/Redistribution",
-    "chapter_title_en": "Chapter 66 — Ospf Bgp Redistribution",
-    "merge_strategy": "by_title",
+    "merge_strategy": "by_uid",
     "preserve_existing_records": true,
-    "source_of_truth_note": "Base definitions live in lessons/base_curriculum.json. Topic-specific lessons and category records are maintained in separate source-of-truth JSON files; build/chapter.json is generated and must not be edited directly."
+    "source_status": "review_required"
   },
   "items": [
     {
-      "uid": "lesson:ch66:bp:0001",
-      "title_fa": "[L2] OSPF و معماری Link-State",
+      "uid": "lesson:ch66:enr:0001",
+      "title_fa": "[L0] OSPF Areas",
       "chapter_order": 66,
-      "subchapter_order": 2,
-      "level": "L2",
-      "summary": "OSPF یک پروتکل Link-State است: روترها وضعیت لینک‌های خود را با LSAها اعلام می‌کنند، LSDB می‌سازند و با الگوریتم Dijkstra/SPF مسیرهای کم‌هزینه را محاسبه می‌کنند. چرخه اصلی شامل Hello، کشف Neighbor، همگام‌سازی LSDB، اجرای",
-      "full_content": "OSPF یک پروتکل Link-State است: روترها وضعیت لینک‌های خود را با LSAها اعلام می‌کنند، LSDB می‌سازند و با الگوریتم Dijkstra/SPF مسیرهای کم‌هزینه را محاسبه می‌کنند. چرخه اصلی شامل Hello، کشف Neighbor، همگام‌سازی LSDB، اجرای SPF و نصب مسیر منتخب در RIB/FIB است. LSDB نقشه توپولوژی است؛ RIB جدول مسیرهای منتخب و FIB ساختار فورواردینگ بسته‌هاست. وجود Prefix در LSDB تضمین نمی‌کند که در RIB نصب شود؛ سیاست، مسیر بهتر از منبع دیگر یا Next-Hop نامعتبر می‌تواند مانع شود.\n\nتشبیه: هر روتر مانند شهری است که وضعیت جاده‌های اطرافش را اعلام می‌کند؛ همه روترها نقشه منطقه را می‌سازند و مسیر را از روی نقشه محاسبه می‌کنند. برخلاف پروتکل‌های Distance-Vector، OSPF فقط فاصله اعلام‌شده از همسایه را مبنا قرار نمی‌دهد.\n\nاجزای کلیدی: Router ID شناسه منطقی روتر است؛ Neighbor روتر کشف‌شده است؛ Adjacency رابطه تبادل پایگاه داده است؛ LSA اعلان وضعیت لینک/Prefix است؛ LSDB پایگاه داده Area است؛ SPF درخت کوتاه‌ترین مسیر را می‌سازد. OSPF در هر Area اطلاعات توپولوژی مرتبط را همگام می‌کند. Area 0 ستون فقرات طراحی چندمنطقه‌ای است.\n\nمثال: R1 و R2 در Area 0 روی 10.0.12.0/30 همسایه می‌شوند. اگر R2 شبکه 192.168.20.0/24 را اعلام کند، R1 آن را محاسبه می‌کند و در صورت نبود مانع در RIB نصب می‌کند. پس از قطع لینک، LSA جدید منتشر می‌شود و روترها با به‌روزرسانی LSDB و اجرای SPF همگرا می‌شوند. همگرایی می‌تواند بازه‌ای کوتاه با تفاوت موقت جدول‌ها داشته باشد.\n\n## دستورات\n\nCisco IOS/IOS-XE (فرمان‌های مشاهده‌ای متناسب با درس):\nshow ip ospf neighbor\nshow ip ospf database\nshow ip ospf interface brief\nshow ip route ospf\nshow ip protocols",
-      "notes": "blueprint status=reviewed_content",
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "Area 0",
+      "full_content": "# [L0] OSPF Areas\n\n## خلاصه\nArea 0\n\n## اصل\nbackbone پیوسته\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 1,
       "meta": {
-        "source_uid": "lesson:ch14:bp:0001",
-        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch66:bp:0002",
-      "title_fa": "[L2] SPF و Cost",
+      "uid": "lesson:ch66:enr:0002",
+      "title_fa": "[L1] OSPF Neighbor",
       "chapter_order": 66,
-      "subchapter_order": 2,
-      "level": "L2",
-      "summary": "OSPF با الگوریتم Dijkstra روی گراف حاصل از LSDB درخت کوتاه‌ترین مسیر را می‌سازد. هر لینک دارای Cost است و مسیر با مجموع Cost کمتر ترجیح دارد؛ OSPF معمولاً سریع‌ترین لینک منفرد را انتخاب نمی‌کند. مقدار Cost پیش‌فرض در برخ",
-      "full_content": "OSPF با الگوریتم Dijkstra روی گراف حاصل از LSDB درخت کوتاه‌ترین مسیر را می‌سازد. هر لینک دارای Cost است و مسیر با مجموع Cost کمتر ترجیح دارد؛ OSPF معمولاً سریع‌ترین لینک منفرد را انتخاب نمی‌کند. مقدار Cost پیش‌فرض در برخی پیاده‌سازی‌های Cisco از پهنای‌باند مرجع و پهنای‌باند رابط محاسبه می‌شود، بنابراین باید مقدار واقعی را با CLI بررسی کرد.\n\nمثال: مسیر A دارای Costهای 10+10=20 و مسیر B دارای 5+30=35 است؛ با ثابت‌بودن سایر شرایط، مسیر A ترجیح OSPF دارد. اگر چند مسیر هم‌هزینه باشند، ممکن است ECMP نصب شود.\n\nمراحل تحلیل: ابتدا Cost رابط را ببین؛ سپس Prefix را در جدول مسیر بررسی کن؛ در نهایت FIB را کنترل کن. LSDB، نتیجه SPF، RIB و FIB یک چیز نیستند. Administrative Distance نیز با Cost فرق دارد: Cost برای مقایسه مسیرهای OSPF و AD برای مقایسه منابع مسیر در روتر استفاده می‌شود. تغییر Cost بدون بررسی مسیر برگشت می‌تواند ترافیک نامتقارن بسازد.\n\n## دستورات\n\nCisco IOS/IOS-XE (فرمان‌های مشاهده‌ای متناسب با درس):\nshow ip ospf interface\nshow ip route <prefix>\nshow ip cef <prefix>\nshow ip protocols\nshow interfaces <interface>",
-      "notes": "blueprint status=reviewed_content",
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "adjacency",
+      "full_content": "# [L1] OSPF Neighbor\n\n## خلاصه\nadjacency\n\n## دستور\nshow ip ospf neighbor\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 2,
       "meta": {
-        "source_uid": "lesson:ch14:bp:0002",
-        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch66:bp:0003",
-      "title_fa": "[L2] Neighbor و Adjacency",
+      "uid": "lesson:ch66:enr:0003",
+      "title_fa": "[L2] OSPF LSA",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "انواع LSA",
+      "full_content": "# [L2] OSPF LSA\n\n## خلاصه\nانواع LSA\n\n## نکته\nبرای عیب‌یابی ضروری\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 3,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0004",
+      "title_fa": "[L0] BGP Session",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "eBGP iBGP",
+      "full_content": "# [L0] BGP Session\n\n## خلاصه\neBGP iBGP\n\n## اصل\nTCP 179\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 4,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0005",
+      "title_fa": "[L1] BGP Path Selection",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "attributeها",
+      "full_content": "# [L1] BGP Path Selection\n\n## خلاصه\nattributeها\n\n## ترتیب\nLocal Pref AS-Path MED ...\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 5,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0006",
+      "title_fa": "[L2] Route Reflector",
       "chapter_order": 66,
       "subchapter_order": 2,
       "level": "L2",
-      "summary": "OSPF با Hello همسایه‌ها را کشف می‌کند. حالت‌های متداول شامل Down، Init، 2-Way، ExStart، Exchange، Loading و Full است. Full یعنی پایگاه داده مربوط به آن Adjacency همگام شده؛ به‌تنهایی تضمین نمی‌کند همه Prefixها در جدول مس",
-      "full_content": "OSPF با Hello همسایه‌ها را کشف می‌کند. حالت‌های متداول شامل Down، Init، 2-Way، ExStart، Exchange، Loading و Full است. Full یعنی پایگاه داده مربوط به آن Adjacency همگام شده؛ به‌تنهایی تضمین نمی‌کند همه Prefixها در جدول مسیر نصب شده‌اند. در شبکه Broadcast، روترهای غیر DR/BDR ممکن است به‌طور طبیعی در 2-Way باقی بمانند و با همه روترها Full نشوند.\n\nعیب‌یابی مرحله‌ای: ۱) IP و Mask و Reachability؛ ۲) Area ID؛ ۳) Hello/Dead Timer؛ ۴) نوع شبکه؛ ۵) احراز هویت؛ ۶) Router ID تکراری؛ ۷) Passive Interface و ACL؛ ۸) MTU، به‌ویژه گیرکردن در ExStart/Exchange؛ ۹) لاگ‌ها. اگر Neighbor Full است اما مسیر وجود ندارد، اعلان Prefix، LSDB، فیلترها و RIB را بررسی کن، نه اینکه بی‌دلیل همسایگی را از نو بسازی.\n\n## دستورات\n\nCisco IOS/IOS-XE (فرمان‌های مشاهده‌ای متناسب با درس):\nshow ip ospf neighbor detail\nshow ip ospf interface <interface>\nshow ip ospf database\nshow interfaces <interface>\nshow logging | include OSPF",
-      "notes": "blueprint status=reviewed_content",
-      "lesson_order": 3,
-      "meta": {
-        "source_uid": "lesson:ch14:bp:0003",
-        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
-      },
-      "source_status": "review_required"
-    },
-    {
-      "uid": "lesson:ch66:bp:0004",
-      "title_fa": "[L2] BGP و Autonomous System",
-      "chapter_order": 66,
-      "subchapter_order": 4,
-      "level": "L2",
-      "summary": "BGP پروتکل Path-Vector برای تبادل Reachability بین Autonomous Systemهاست و سیاست‌محور است. AS مجموعه‌ای از شبکه‌ها تحت سیاست مسیریابی مشترک است و ASN شناسه عددی آن است. BGP معمولاً روی TCP پورت 179 کار می‌کند و Prefixها",
-      "full_content": "BGP پروتکل Path-Vector برای تبادل Reachability بین Autonomous Systemهاست و سیاست‌محور است. AS مجموعه‌ای از شبکه‌ها تحت سیاست مسیریابی مشترک است و ASN شناسه عددی آن است. BGP معمولاً روی TCP پورت 179 کار می‌کند و Prefixها را همراه Path Attributeهایی مانند AS_PATH، NEXT_HOP، LOCAL_PREF، MED و Community مبادله می‌کند.\n\nOSPF برای مسیریابی داخلی از Link-State و SPF استفاده می‌کند؛ BGP برای انتخاب مسیر بین دامنه‌ها Attribute و Policy را ارزیابی می‌کند. کوتاه‌ترین مسیر فیزیکی الزاماً مسیر برنده BGP نیست.\n\nمثال: سازمانی با دو ISP می‌تواند از eBGP برای تبادل Prefixهای مجاز استفاده کند و همچنان OSPF را برای شبکه داخلی نگه دارد. ASN و Prefixهای عمومی باید طبق تخصیص و مجوزهای مربوط استفاده شوند؛ در آزمایشگاه از ASN و آدرس‌های مستندسازی‌شده استفاده کن.\n\n## دستورات\n\nCisco IOS/IOS-XE (فرمان‌های مشاهده‌ای متناسب با درس):\nshow ip bgp summary\nshow ip bgp <prefix>\nshow ip route bgp\nshow ip protocols\nshow running-config | section router bgp",
-      "notes": "blueprint status=reviewed_content",
-      "lesson_order": 4,
-      "meta": {
-        "source_uid": "lesson:ch14:bp:0004",
-        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
-      },
-      "source_status": "review_required"
-    },
-    {
-      "uid": "lesson:ch66:bp:0005",
-      "title_fa": "[L2] eBGP در برابر iBGP",
-      "chapter_order": 66,
-      "subchapter_order": 4,
-      "level": "L2",
-      "summary": "eBGP بین ASNهای متفاوت و iBGP داخل یک AS تشکیل می‌شود. در eBGP، ASN ارسال‌کننده معمولاً به AS_PATH افزوده می‌شود تا حلقه‌های بین ASها قابل تشخیص باشند. در iBGP، مسیر آموخته‌شده از یک همتای iBGP به‌طور پیش‌فرض به همتای iB",
-      "full_content": "eBGP بین ASNهای متفاوت و iBGP داخل یک AS تشکیل می‌شود. در eBGP، ASN ارسال‌کننده معمولاً به AS_PATH افزوده می‌شود تا حلقه‌های بین ASها قابل تشخیص باشند. در iBGP، مسیر آموخته‌شده از یک همتای iBGP به‌طور پیش‌فرض به همتای iBGP دیگر بازاعلام نمی‌شود؛ برای مقیاس، Full Mesh یا Route Reflector طراحی می‌شود.\n\nNext-Hop نکته مهمی است: eBGP اغلب Next-Hop را به روتر ارسال‌کننده تغییر می‌دهد؛ iBGP معمولاً آن را حفظ می‌کند، مگر تنظیمات خلاف آن را انجام دهد. بنابراین ممکن است Prefix در جدول BGP دیده شود اما به دلیل Next-Hop غیرقابل دسترس در RIB نصب نشود.\n\nدر عیب‌یابی، Session، Prefix در BGP، Next-Hop، نصب در RIB و سیاست‌های ورودی/خروجی را جداگانه بررسی کن. Established بودن نشست فقط سلامت نشست کنترلی را نشان می‌دهد.\n\n## دستورات\n\nCisco IOS/IOS-XE (فرمان‌های مشاهده‌ای متناسب با درس):\nshow ip bgp summary\nshow ip bgp <prefix>\nshow ip route <next-hop>\nshow running-config | section router bgp\nshow ip bgp neighbors",
-      "notes": "blueprint status=reviewed_content",
-      "lesson_order": 5,
-      "meta": {
-        "source_uid": "lesson:ch14:bp:0005",
-        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
-      },
-      "source_status": "review_required"
-    },
-    {
-      "uid": "lesson:ch66:bp:0006",
-      "title_fa": "[L2] BGP Peering",
-      "chapter_order": 66,
-      "subchapter_order": 4,
-      "level": "L2",
-      "summary": "BGP ابتدا TCP را برقرار می‌کند و سپس از پیام‌های OPEN، KEEPALIVE، UPDATE و NOTIFICATION برای مدیریت نشست و تبادل مسیر استفاده می‌کند. پیش‌نیازها: Reachability بین همتاها، Remote-AS صحیح، TCP/179 مجاز، آدرس مبدأ مناسب، تن",
-      "full_content": "BGP ابتدا TCP را برقرار می‌کند و سپس از پیام‌های OPEN، KEEPALIVE، UPDATE و NOTIFICATION برای مدیریت نشست و تبادل مسیر استفاده می‌کند. پیش‌نیازها: Reachability بین همتاها، Remote-AS صحیح، TCP/179 مجاز، آدرس مبدأ مناسب، تنظیمات سازگار و احراز هویت یکسان در صورت استفاده. برای همتای Loopback ممکن است update-source و eBGP multihop لازم باشد.\n\nحالت‌های رایج ماشین حالت شامل Idle، Connect، Active، OpenSent، OpenConfirm و Established هستند. گیرکردن در Active اغلب به اتصال TCP یا Reachability مربوط است، اما باید لاگ و تنظیمات را بررسی کرد. پس از Established اگر Prefix نمی‌رسد، اعلان سمت مقابل، Prefix Filter، Route Policy، Address Family و محدودیت Prefix را بررسی کن. پیش از اتصال واقعی به ISP، فیلترهای ورودی/خروجی و سیاست Default Route را طراحی کن.\n\n## دستورات\n\nCisco IOS/IOS-XE (فرمان‌های مشاهده‌ای متناسب با درس):\nshow ip bgp summary\nshow tcp brief | include :179\nshow ip bgp neighbors <peer>\nping <peer-source-address>\nshow logging | include BGP",
-      "notes": "blueprint status=reviewed_content",
+      "summary": "مقیاس iBGP",
+      "full_content": "# [L2] Route Reflector\n\n## خلاصه\nمقیاس iBGP\n\n## مشکل\nfull-mesh\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 6,
       "meta": {
-        "source_uid": "lesson:ch14:bp:0006",
-        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch66:bp:0007",
-      "title_fa": "[L2] Redistribution؛ مفاهیم",
+      "uid": "lesson:ch66:enr:0007",
+      "title_fa": "[L2] Redistribution",
       "chapter_order": 66,
-      "subchapter_order": 5,
+      "subchapter_order": 3,
       "level": "L2",
-      "summary": "Redistribution یعنی واردکردن مسیرهای یک منبع مسیریابی به منبع دیگر؛ برای نمونه OSPF به BGP یا BGP به OSPF. این کار صرفاً کپی‌کردن همه مسیرها نیست و باید با سیاست محدود انجام شود. موارد کاربرد: مهاجرت پروتکل، اتصال دامنه‌",
-      "full_content": "Redistribution یعنی واردکردن مسیرهای یک منبع مسیریابی به منبع دیگر؛ برای نمونه OSPF به BGP یا BGP به OSPF. این کار صرفاً کپی‌کردن همه مسیرها نیست و باید با سیاست محدود انجام شود. موارد کاربرد: مهاجرت پروتکل، اتصال دامنه‌های مدیریتی، انتشار Prefixهای داخلی به BGP یا تزریق Default Route به OSPF.\n\nخطرها: حلقه مسیر، Metric نامتناسب، انتشار Prefixهای ناخواسته، بزرگ‌شدن جدول‌ها و تغییر مسیر ترافیک. طراحی امن مشخص می‌کند دقیقاً چه Prefixهایی، در چه جهتی و با چه Metric/Attributeای مجازند. از Prefix-List و Route-Map/Policy استفاده کن؛ سیاست پیش‌فرض را محدودکننده نگه دار؛ مسیرهای برگشتی را با Route Tag یا BGP Community علامت‌گذاری و مهار کن؛ پیش و پس از تغییر، RIB، جدول OSPF و جدول BGP را مقایسه کن.\n\nنکته: Administrative Distance فقط انتخاب محلی مسیر را کنترل می‌کند و جایگزین فیلتر انتشار یا جلوگیری از Redistribution Loop نیست.\n\n## دستورات\n\nCisco IOS/IOS-XE (فرمان‌های مشاهده‌ای متناسب با درس):\nshow ip protocols\nshow route-map\nshow ip prefix-list\nshow ip route ospf\nshow ip bgp\nshow ip bgp neighbors <peer> advertised-routes",
-      "notes": "blueprint status=reviewed_content",
+      "summary": "بین پروتکل‌ها",
+      "full_content": "# [L2] Redistribution\n\n## خلاصه\nبین پروتکل‌ها\n\n## خطر\nحلقه؛ tag و filter\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 7,
       "meta": {
-        "source_uid": "lesson:ch14:bp:0007",
-        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch66:bp:0008",
-      "title_fa": "[L2] Seed Metric و Metric مقصد",
+      "uid": "lesson:ch66:enr:0008",
+      "title_fa": "[L3] Route Filtering",
       "chapter_order": 66,
-      "subchapter_order": 5,
-      "level": "L2",
-      "summary": "Metric پروتکل‌ها قابل جایگزینی مستقیم نیست: OSPF از Cost، برخی پروتکل‌ها از معیارهای دیگر و BGP از مجموعه Attributeها استفاده می‌کند. هنگام Redistribution باید برای پروتکل مقصد Metric و نوع مسیر مناسب تعیین شود؛ رفتار مق",
-      "full_content": "Metric پروتکل‌ها قابل جایگزینی مستقیم نیست: OSPF از Cost، برخی پروتکل‌ها از معیارهای دیگر و BGP از مجموعه Attributeها استفاده می‌کند. هنگام Redistribution باید برای پروتکل مقصد Metric و نوع مسیر مناسب تعیین شود؛ رفتار مقدار پیش‌فرض به سازنده و نسخه وابسته است.\n\nدر OSPF، مسیر خارجی می‌تواند E1 یا E2 باشد. E1 هزینه داخلی تا ASBR را همراه Metric خارجی لحاظ می‌کند؛ E2 معمولاً Metric خارجی را معیار اصلی نگه می‌دارد و هزینه داخلی در شرایط بعدی اهمیت پیدا می‌کند. در چند ASBR یا Metricهای برابر، جزئیات انتخاب باید روی نسخه مورد استفاده بررسی شود.\n\nپس از Redistribution، نوع مسیر و Metric را در جدول Route و LSDB ببین. به مقادیر پیش‌فرض ناشناخته اعتماد نکن و تغییر را در لابراتوار با مسیر رفت و برگشت آزمایش کن.\n\n## دستورات\n\nCisco IOS/IOS-XE (فرمان‌های مشاهده‌ای متناسب با درس):\nshow ip route <prefix>\nshow ip protocols\nshow route-map\nshow ip ospf database external\nshow ip bgp <prefix>",
-      "notes": "blueprint status=reviewed_content",
+      "subchapter_order": 3,
+      "level": "L3",
+      "summary": "prefix-list route-map",
+      "full_content": "# [L3] Route Filtering\n\n## خلاصه\nprefix-list route-map\n\n## اصل\nبدون فیلتر در production نه\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 8,
       "meta": {
-        "source_uid": "lesson:ch14:bp:0008",
-        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch66:bp:0009",
-      "title_fa": "[L2] Loop Prevention در Redistribution",
+      "uid": "lesson:ch66:enr:0009",
+      "title_fa": "[L0] OSPF Areas: مبانی",
       "chapter_order": 66,
-      "subchapter_order": 5,
-      "level": "L2",
-      "summary": "حلقه می‌تواند زمانی شکل بگیرد که مسیر از OSPF به BGP بازتوزیع شود و بعد دوباره از BGP به OSPF بازگردد. AS_PATH به‌تنهایی همه حلقه‌های بین پروتکل‌ها یا داخل یک AS را حل نمی‌کند. طراحی باید مسیرهای واردشده را علامت‌گذاری ک",
-      "full_content": "حلقه می‌تواند زمانی شکل بگیرد که مسیر از OSPF به BGP بازتوزیع شود و بعد دوباره از BGP به OSPF بازگردد. AS_PATH به‌تنهایی همه حلقه‌های بین پروتکل‌ها یا داخل یک AS را حل نمی‌کند. طراحی باید مسیرهای واردشده را علامت‌گذاری کند و هنگام ورود مجدد آن‌ها را رد کند.\n\nابزارها: Prefix-List برای محدودکردن Prefixها؛ Route-Map/Policy برای شروط و تغییر Attribute؛ Route Tag برای شناسایی مسیرهای بازتوزیع‌شده؛ BGP Community برای حمل برچسب سیاستی در دامنه BGP؛ و پایش تعداد Prefixها.\n\nالگوی طراحی: مسیرهای OSPF واردشده به BGP را با Tag/Community مشخص کن؛ هنگام بازتوزیع از BGP به OSPF مسیرهای دارای همان علامت را رد کن؛ اعلان به ISP را به Prefixهای مجاز محدود کن؛ قطع و بازگشت لینک را در لابراتوار آزمایش کن. استفاده از AD به‌عنوان تنها راه جلوگیری از حلقه اشتباه است؛ AD انتشار مسیر را کنترل نمی‌کند.\n\n## دستورات\n\nCisco IOS/IOS-XE (فرمان‌های مشاهده‌ای متناسب با درس):\nshow route-map\nshow ip prefix-list\nshow ip ospf database external\nshow ip bgp <prefix>\nshow ip route <prefix>\nshow running-config | section route-map",
-      "notes": "blueprint status=reviewed_content",
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "مبانی — OSPF Areas",
+      "full_content": "# [L0] OSPF Areas: مبانی\n\n## خلاصه\nمبانی — OSPF Areas\n\n## هدف\nمهارت مبانی در زمینه OSPF Areas\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 9,
       "meta": {
-        "source_uid": "lesson:ch14:bp:0009",
-        "source_file": "source_archive/ospf_bgp_redistribution_deep_v1.json"
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0010",
+      "title_fa": "[L0] OSPF Neighbor: مبانی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "مبانی — OSPF Neighbor",
+      "full_content": "# [L0] OSPF Neighbor: مبانی\n\n## خلاصه\nمبانی — OSPF Neighbor\n\n## هدف\nمهارت مبانی در زمینه OSPF Neighbor\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 10,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0011",
+      "title_fa": "[L0] OSPF LSA: مبانی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "مبانی — OSPF LSA",
+      "full_content": "# [L0] OSPF LSA: مبانی\n\n## خلاصه\nمبانی — OSPF LSA\n\n## هدف\nمهارت مبانی در زمینه OSPF LSA\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 11,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0012",
+      "title_fa": "[L0] BGP Session: مبانی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "مبانی — BGP Session",
+      "full_content": "# [L0] BGP Session: مبانی\n\n## خلاصه\nمبانی — BGP Session\n\n## هدف\nمهارت مبانی در زمینه BGP Session\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 12,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0013",
+      "title_fa": "[L0] BGP Path Selection: مبانی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "مبانی — BGP Path Selection",
+      "full_content": "# [L0] BGP Path Selection: مبانی\n\n## خلاصه\nمبانی — BGP Path Selection\n\n## هدف\nمهارت مبانی در زمینه BGP Path Selection\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 13,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0014",
+      "title_fa": "[L0] Route Reflector: مبانی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "مبانی — Route Reflector",
+      "full_content": "# [L0] Route Reflector: مبانی\n\n## خلاصه\nمبانی — Route Reflector\n\n## هدف\nمهارت مبانی در زمینه Route Reflector\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 14,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0015",
+      "title_fa": "[L0] Redistribution: مبانی",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L0",
+      "summary": "مبانی — Redistribution",
+      "full_content": "# [L0] Redistribution: مبانی\n\n## خلاصه\nمبانی — Redistribution\n\n## هدف\nمهارت مبانی در زمینه Redistribution\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 15,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0016",
+      "title_fa": "[L0] Route Filtering: مبانی",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L0",
+      "summary": "مبانی — Route Filtering",
+      "full_content": "# [L0] Route Filtering: مبانی\n\n## خلاصه\nمبانی — Route Filtering\n\n## هدف\nمهارت مبانی در زمینه Route Filtering\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 16,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0017",
+      "title_fa": "[L0] OSPF Areas: پیکربندی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "پیکربندی — OSPF Areas",
+      "full_content": "# [L0] OSPF Areas: پیکربندی\n\n## خلاصه\nپیکربندی — OSPF Areas\n\n## هدف\nمهارت پیکربندی در زمینه OSPF Areas\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 17,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0018",
+      "title_fa": "[L0] OSPF Neighbor: پیکربندی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "پیکربندی — OSPF Neighbor",
+      "full_content": "# [L0] OSPF Neighbor: پیکربندی\n\n## خلاصه\nپیکربندی — OSPF Neighbor\n\n## هدف\nمهارت پیکربندی در زمینه OSPF Neighbor\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 18,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0019",
+      "title_fa": "[L0] OSPF LSA: پیکربندی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "پیکربندی — OSPF LSA",
+      "full_content": "# [L0] OSPF LSA: پیکربندی\n\n## خلاصه\nپیکربندی — OSPF LSA\n\n## هدف\nمهارت پیکربندی در زمینه OSPF LSA\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 19,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0020",
+      "title_fa": "[L0] BGP Session: پیکربندی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "پیکربندی — BGP Session",
+      "full_content": "# [L0] BGP Session: پیکربندی\n\n## خلاصه\nپیکربندی — BGP Session\n\n## هدف\nمهارت پیکربندی در زمینه BGP Session\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 20,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0021",
+      "title_fa": "[L0] BGP Path Selection: پیکربندی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "پیکربندی — BGP Path Selection",
+      "full_content": "# [L0] BGP Path Selection: پیکربندی\n\n## خلاصه\nپیکربندی — BGP Path Selection\n\n## هدف\nمهارت پیکربندی در زمینه BGP Path Selection\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 21,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0022",
+      "title_fa": "[L0] Route Reflector: پیکربندی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "پیکربندی — Route Reflector",
+      "full_content": "# [L0] Route Reflector: پیکربندی\n\n## خلاصه\nپیکربندی — Route Reflector\n\n## هدف\nمهارت پیکربندی در زمینه Route Reflector\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 22,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0023",
+      "title_fa": "[L0] Redistribution: پیکربندی",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L0",
+      "summary": "پیکربندی — Redistribution",
+      "full_content": "# [L0] Redistribution: پیکربندی\n\n## خلاصه\nپیکربندی — Redistribution\n\n## هدف\nمهارت پیکربندی در زمینه Redistribution\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 23,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0024",
+      "title_fa": "[L0] Route Filtering: پیکربندی",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L0",
+      "summary": "پیکربندی — Route Filtering",
+      "full_content": "# [L0] Route Filtering: پیکربندی\n\n## خلاصه\nپیکربندی — Route Filtering\n\n## هدف\nمهارت پیکربندی در زمینه Route Filtering\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 24,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0025",
+      "title_fa": "[L0] OSPF Areas: عملیات روزانه",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "عملیات روزانه — OSPF Areas",
+      "full_content": "# [L0] OSPF Areas: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — OSPF Areas\n\n## هدف\nمهارت عملیات روزانه در زمینه OSPF Areas\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 25,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0026",
+      "title_fa": "[L0] OSPF Neighbor: عملیات روزانه",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "عملیات روزانه — OSPF Neighbor",
+      "full_content": "# [L0] OSPF Neighbor: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — OSPF Neighbor\n\n## هدف\nمهارت عملیات روزانه در زمینه OSPF Neighbor\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 26,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0027",
+      "title_fa": "[L0] OSPF LSA: عملیات روزانه",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "عملیات روزانه — OSPF LSA",
+      "full_content": "# [L0] OSPF LSA: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — OSPF LSA\n\n## هدف\nمهارت عملیات روزانه در زمینه OSPF LSA\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 27,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0028",
+      "title_fa": "[L0] BGP Session: عملیات روزانه",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "عملیات روزانه — BGP Session",
+      "full_content": "# [L0] BGP Session: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — BGP Session\n\n## هدف\nمهارت عملیات روزانه در زمینه BGP Session\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 28,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0029",
+      "title_fa": "[L0] BGP Path Selection: عملیات روزانه",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "عملیات روزانه — BGP Path Selection",
+      "full_content": "# [L0] BGP Path Selection: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — BGP Path Selection\n\n## هدف\nمهارت عملیات روزانه در زمینه BGP Path Selection\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 29,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0030",
+      "title_fa": "[L0] Route Reflector: عملیات روزانه",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "عملیات روزانه — Route Reflector",
+      "full_content": "# [L0] Route Reflector: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — Route Reflector\n\n## هدف\nمهارت عملیات روزانه در زمینه Route Reflector\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 30,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0031",
+      "title_fa": "[L0] Redistribution: عملیات روزانه",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L0",
+      "summary": "عملیات روزانه — Redistribution",
+      "full_content": "# [L0] Redistribution: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — Redistribution\n\n## هدف\nمهارت عملیات روزانه در زمینه Redistribution\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 31,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0032",
+      "title_fa": "[L0] Route Filtering: عملیات روزانه",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L0",
+      "summary": "عملیات روزانه — Route Filtering",
+      "full_content": "# [L0] Route Filtering: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — Route Filtering\n\n## هدف\nمهارت عملیات روزانه در زمینه Route Filtering\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 32,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0033",
+      "title_fa": "[L1] OSPF Areas: مانیتور",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "مانیتور — OSPF Areas",
+      "full_content": "# [L1] OSPF Areas: مانیتور\n\n## خلاصه\nمانیتور — OSPF Areas\n\n## هدف\nمهارت مانیتور در زمینه OSPF Areas\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 33,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0034",
+      "title_fa": "[L1] OSPF Neighbor: مانیتور",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "مانیتور — OSPF Neighbor",
+      "full_content": "# [L1] OSPF Neighbor: مانیتور\n\n## خلاصه\nمانیتور — OSPF Neighbor\n\n## هدف\nمهارت مانیتور در زمینه OSPF Neighbor\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 34,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0035",
+      "title_fa": "[L1] OSPF LSA: مانیتور",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "مانیتور — OSPF LSA",
+      "full_content": "# [L1] OSPF LSA: مانیتور\n\n## خلاصه\nمانیتور — OSPF LSA\n\n## هدف\nمهارت مانیتور در زمینه OSPF LSA\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 35,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0036",
+      "title_fa": "[L1] BGP Session: مانیتور",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "مانیتور — BGP Session",
+      "full_content": "# [L1] BGP Session: مانیتور\n\n## خلاصه\nمانیتور — BGP Session\n\n## هدف\nمهارت مانیتور در زمینه BGP Session\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 36,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0037",
+      "title_fa": "[L1] BGP Path Selection: مانیتور",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "مانیتور — BGP Path Selection",
+      "full_content": "# [L1] BGP Path Selection: مانیتور\n\n## خلاصه\nمانیتور — BGP Path Selection\n\n## هدف\nمهارت مانیتور در زمینه BGP Path Selection\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 37,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0038",
+      "title_fa": "[L1] Route Reflector: مانیتور",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "مانیتور — Route Reflector",
+      "full_content": "# [L1] Route Reflector: مانیتور\n\n## خلاصه\nمانیتور — Route Reflector\n\n## هدف\nمهارت مانیتور در زمینه Route Reflector\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 38,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0039",
+      "title_fa": "[L1] Redistribution: مانیتور",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L1",
+      "summary": "مانیتور — Redistribution",
+      "full_content": "# [L1] Redistribution: مانیتور\n\n## خلاصه\nمانیتور — Redistribution\n\n## هدف\nمهارت مانیتور در زمینه Redistribution\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 39,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0040",
+      "title_fa": "[L1] Route Filtering: مانیتور",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L1",
+      "summary": "مانیتور — Route Filtering",
+      "full_content": "# [L1] Route Filtering: مانیتور\n\n## خلاصه\nمانیتور — Route Filtering\n\n## هدف\nمهارت مانیتور در زمینه Route Filtering\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 40,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0041",
+      "title_fa": "[L1] OSPF Areas: عیب‌یابی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "عیب‌یابی — OSPF Areas",
+      "full_content": "# [L1] OSPF Areas: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — OSPF Areas\n\n## هدف\nمهارت عیب‌یابی در زمینه OSPF Areas\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 41,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0042",
+      "title_fa": "[L1] OSPF Neighbor: عیب‌یابی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "عیب‌یابی — OSPF Neighbor",
+      "full_content": "# [L1] OSPF Neighbor: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — OSPF Neighbor\n\n## هدف\nمهارت عیب‌یابی در زمینه OSPF Neighbor\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 42,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0043",
+      "title_fa": "[L1] OSPF LSA: عیب‌یابی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "عیب‌یابی — OSPF LSA",
+      "full_content": "# [L1] OSPF LSA: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — OSPF LSA\n\n## هدف\nمهارت عیب‌یابی در زمینه OSPF LSA\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 43,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0044",
+      "title_fa": "[L1] BGP Session: عیب‌یابی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "عیب‌یابی — BGP Session",
+      "full_content": "# [L1] BGP Session: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — BGP Session\n\n## هدف\nمهارت عیب‌یابی در زمینه BGP Session\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 44,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0045",
+      "title_fa": "[L1] BGP Path Selection: عیب‌یابی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "عیب‌یابی — BGP Path Selection",
+      "full_content": "# [L1] BGP Path Selection: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — BGP Path Selection\n\n## هدف\nمهارت عیب‌یابی در زمینه BGP Path Selection\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 45,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0046",
+      "title_fa": "[L1] Route Reflector: عیب‌یابی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "عیب‌یابی — Route Reflector",
+      "full_content": "# [L1] Route Reflector: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — Route Reflector\n\n## هدف\nمهارت عیب‌یابی در زمینه Route Reflector\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 46,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0047",
+      "title_fa": "[L1] Redistribution: عیب‌یابی",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L1",
+      "summary": "عیب‌یابی — Redistribution",
+      "full_content": "# [L1] Redistribution: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — Redistribution\n\n## هدف\nمهارت عیب‌یابی در زمینه Redistribution\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 47,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0048",
+      "title_fa": "[L1] Route Filtering: عیب‌یابی",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L1",
+      "summary": "عیب‌یابی — Route Filtering",
+      "full_content": "# [L1] Route Filtering: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — Route Filtering\n\n## هدف\nمهارت عیب‌یابی در زمینه Route Filtering\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 48,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0049",
+      "title_fa": "[L1] OSPF Areas: امنیت",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "امنیت — OSPF Areas",
+      "full_content": "# [L1] OSPF Areas: امنیت\n\n## خلاصه\nامنیت — OSPF Areas\n\n## هدف\nمهارت امنیت در زمینه OSPF Areas\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 49,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0050",
+      "title_fa": "[L1] OSPF Neighbor: امنیت",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "امنیت — OSPF Neighbor",
+      "full_content": "# [L1] OSPF Neighbor: امنیت\n\n## خلاصه\nامنیت — OSPF Neighbor\n\n## هدف\nمهارت امنیت در زمینه OSPF Neighbor\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 50,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0051",
+      "title_fa": "[L1] OSPF LSA: امنیت",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "امنیت — OSPF LSA",
+      "full_content": "# [L1] OSPF LSA: امنیت\n\n## خلاصه\nامنیت — OSPF LSA\n\n## هدف\nمهارت امنیت در زمینه OSPF LSA\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 51,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0052",
+      "title_fa": "[L1] BGP Session: امنیت",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "امنیت — BGP Session",
+      "full_content": "# [L1] BGP Session: امنیت\n\n## خلاصه\nامنیت — BGP Session\n\n## هدف\nمهارت امنیت در زمینه BGP Session\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 52,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0053",
+      "title_fa": "[L1] BGP Path Selection: امنیت",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "امنیت — BGP Path Selection",
+      "full_content": "# [L1] BGP Path Selection: امنیت\n\n## خلاصه\nامنیت — BGP Path Selection\n\n## هدف\nمهارت امنیت در زمینه BGP Path Selection\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 53,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0054",
+      "title_fa": "[L1] Route Reflector: امنیت",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "امنیت — Route Reflector",
+      "full_content": "# [L1] Route Reflector: امنیت\n\n## خلاصه\nامنیت — Route Reflector\n\n## هدف\nمهارت امنیت در زمینه Route Reflector\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 54,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0055",
+      "title_fa": "[L1] Redistribution: امنیت",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L1",
+      "summary": "امنیت — Redistribution",
+      "full_content": "# [L1] Redistribution: امنیت\n\n## خلاصه\nامنیت — Redistribution\n\n## هدف\nمهارت امنیت در زمینه Redistribution\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 55,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0056",
+      "title_fa": "[L1] Route Filtering: امنیت",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L1",
+      "summary": "امنیت — Route Filtering",
+      "full_content": "# [L1] Route Filtering: امنیت\n\n## خلاصه\nامنیت — Route Filtering\n\n## هدف\nمهارت امنیت در زمینه Route Filtering\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 56,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0057",
+      "title_fa": "[L2] OSPF Areas: مستندسازی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "مستندسازی — OSPF Areas",
+      "full_content": "# [L2] OSPF Areas: مستندسازی\n\n## خلاصه\nمستندسازی — OSPF Areas\n\n## هدف\nمهارت مستندسازی در زمینه OSPF Areas\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 57,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0058",
+      "title_fa": "[L2] OSPF Neighbor: مستندسازی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "مستندسازی — OSPF Neighbor",
+      "full_content": "# [L2] OSPF Neighbor: مستندسازی\n\n## خلاصه\nمستندسازی — OSPF Neighbor\n\n## هدف\nمهارت مستندسازی در زمینه OSPF Neighbor\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 58,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0059",
+      "title_fa": "[L2] OSPF LSA: مستندسازی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "مستندسازی — OSPF LSA",
+      "full_content": "# [L2] OSPF LSA: مستندسازی\n\n## خلاصه\nمستندسازی — OSPF LSA\n\n## هدف\nمهارت مستندسازی در زمینه OSPF LSA\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 59,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0060",
+      "title_fa": "[L2] BGP Session: مستندسازی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "مستندسازی — BGP Session",
+      "full_content": "# [L2] BGP Session: مستندسازی\n\n## خلاصه\nمستندسازی — BGP Session\n\n## هدف\nمهارت مستندسازی در زمینه BGP Session\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 60,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0061",
+      "title_fa": "[L2] BGP Path Selection: مستندسازی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "مستندسازی — BGP Path Selection",
+      "full_content": "# [L2] BGP Path Selection: مستندسازی\n\n## خلاصه\nمستندسازی — BGP Path Selection\n\n## هدف\nمهارت مستندسازی در زمینه BGP Path Selection\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 61,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0062",
+      "title_fa": "[L2] Route Reflector: مستندسازی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "مستندسازی — Route Reflector",
+      "full_content": "# [L2] Route Reflector: مستندسازی\n\n## خلاصه\nمستندسازی — Route Reflector\n\n## هدف\nمهارت مستندسازی در زمینه Route Reflector\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 62,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0063",
+      "title_fa": "[L2] Redistribution: مستندسازی",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L2",
+      "summary": "مستندسازی — Redistribution",
+      "full_content": "# [L2] Redistribution: مستندسازی\n\n## خلاصه\nمستندسازی — Redistribution\n\n## هدف\nمهارت مستندسازی در زمینه Redistribution\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 63,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0064",
+      "title_fa": "[L2] Route Filtering: مستندسازی",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L2",
+      "summary": "مستندسازی — Route Filtering",
+      "full_content": "# [L2] Route Filtering: مستندسازی\n\n## خلاصه\nمستندسازی — Route Filtering\n\n## هدف\nمهارت مستندسازی در زمینه Route Filtering\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 64,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0065",
+      "title_fa": "[L2] OSPF Areas: Lab عملی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "Lab عملی — OSPF Areas",
+      "full_content": "# [L2] OSPF Areas: Lab عملی\n\n## خلاصه\nLab عملی — OSPF Areas\n\n## هدف\nمهارت Lab عملی در زمینه OSPF Areas\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 65,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0066",
+      "title_fa": "[L2] OSPF Neighbor: Lab عملی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "Lab عملی — OSPF Neighbor",
+      "full_content": "# [L2] OSPF Neighbor: Lab عملی\n\n## خلاصه\nLab عملی — OSPF Neighbor\n\n## هدف\nمهارت Lab عملی در زمینه OSPF Neighbor\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 66,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0067",
+      "title_fa": "[L2] OSPF LSA: Lab عملی",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "Lab عملی — OSPF LSA",
+      "full_content": "# [L2] OSPF LSA: Lab عملی\n\n## خلاصه\nLab عملی — OSPF LSA\n\n## هدف\nمهارت Lab عملی در زمینه OSPF LSA\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 67,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0068",
+      "title_fa": "[L2] BGP Session: Lab عملی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "Lab عملی — BGP Session",
+      "full_content": "# [L2] BGP Session: Lab عملی\n\n## خلاصه\nLab عملی — BGP Session\n\n## هدف\nمهارت Lab عملی در زمینه BGP Session\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 68,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0069",
+      "title_fa": "[L2] BGP Path Selection: Lab عملی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "Lab عملی — BGP Path Selection",
+      "full_content": "# [L2] BGP Path Selection: Lab عملی\n\n## خلاصه\nLab عملی — BGP Path Selection\n\n## هدف\nمهارت Lab عملی در زمینه BGP Path Selection\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 69,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0070",
+      "title_fa": "[L2] Route Reflector: Lab عملی",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "Lab عملی — Route Reflector",
+      "full_content": "# [L2] Route Reflector: Lab عملی\n\n## خلاصه\nLab عملی — Route Reflector\n\n## هدف\nمهارت Lab عملی در زمینه Route Reflector\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 70,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0071",
+      "title_fa": "[L2] Redistribution: Lab عملی",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L2",
+      "summary": "Lab عملی — Redistribution",
+      "full_content": "# [L2] Redistribution: Lab عملی\n\n## خلاصه\nLab عملی — Redistribution\n\n## هدف\nمهارت Lab عملی در زمینه Redistribution\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 71,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0072",
+      "title_fa": "[L2] Route Filtering: Lab عملی",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L2",
+      "summary": "Lab عملی — Route Filtering",
+      "full_content": "# [L2] Route Filtering: Lab عملی\n\n## خلاصه\nLab عملی — Route Filtering\n\n## هدف\nمهارت Lab عملی در زمینه Route Filtering\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 72,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0073",
+      "title_fa": "[L2] OSPF Areas: runbook",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "runbook — OSPF Areas",
+      "full_content": "# [L2] OSPF Areas: runbook\n\n## خلاصه\nrunbook — OSPF Areas\n\n## هدف\nمهارت runbook در زمینه OSPF Areas\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 73,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0074",
+      "title_fa": "[L2] OSPF Neighbor: runbook",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "runbook — OSPF Neighbor",
+      "full_content": "# [L2] OSPF Neighbor: runbook\n\n## خلاصه\nrunbook — OSPF Neighbor\n\n## هدف\nمهارت runbook در زمینه OSPF Neighbor\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 74,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0075",
+      "title_fa": "[L2] OSPF LSA: runbook",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "runbook — OSPF LSA",
+      "full_content": "# [L2] OSPF LSA: runbook\n\n## خلاصه\nrunbook — OSPF LSA\n\n## هدف\nمهارت runbook در زمینه OSPF LSA\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 75,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0076",
+      "title_fa": "[L2] BGP Session: runbook",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "runbook — BGP Session",
+      "full_content": "# [L2] BGP Session: runbook\n\n## خلاصه\nrunbook — BGP Session\n\n## هدف\nمهارت runbook در زمینه BGP Session\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 76,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0077",
+      "title_fa": "[L2] BGP Path Selection: runbook",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "runbook — BGP Path Selection",
+      "full_content": "# [L2] BGP Path Selection: runbook\n\n## خلاصه\nrunbook — BGP Path Selection\n\n## هدف\nمهارت runbook در زمینه BGP Path Selection\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 77,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0078",
+      "title_fa": "[L2] Route Reflector: runbook",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "runbook — Route Reflector",
+      "full_content": "# [L2] Route Reflector: runbook\n\n## خلاصه\nrunbook — Route Reflector\n\n## هدف\nمهارت runbook در زمینه Route Reflector\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 78,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0079",
+      "title_fa": "[L2] Redistribution: runbook",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L2",
+      "summary": "runbook — Redistribution",
+      "full_content": "# [L2] Redistribution: runbook\n\n## خلاصه\nrunbook — Redistribution\n\n## هدف\nمهارت runbook در زمینه Redistribution\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 79,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0080",
+      "title_fa": "[L2] Route Filtering: runbook",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L2",
+      "summary": "runbook — Route Filtering",
+      "full_content": "# [L2] Route Filtering: runbook\n\n## خلاصه\nrunbook — Route Filtering\n\n## هدف\nمهارت runbook در زمینه Route Filtering\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 80,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0081",
+      "title_fa": "[L2] OSPF Areas: چک‌لیست",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "چک‌لیست — OSPF Areas",
+      "full_content": "# [L2] OSPF Areas: چک‌لیست\n\n## خلاصه\nچک‌لیست — OSPF Areas\n\n## هدف\nمهارت چک‌لیست در زمینه OSPF Areas\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 81,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0082",
+      "title_fa": "[L2] OSPF Neighbor: چک‌لیست",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "چک‌لیست — OSPF Neighbor",
+      "full_content": "# [L2] OSPF Neighbor: چک‌لیست\n\n## خلاصه\nچک‌لیست — OSPF Neighbor\n\n## هدف\nمهارت چک‌لیست در زمینه OSPF Neighbor\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 82,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0083",
+      "title_fa": "[L2] OSPF LSA: چک‌لیست",
+      "chapter_order": 66,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "چک‌لیست — OSPF LSA",
+      "full_content": "# [L2] OSPF LSA: چک‌لیست\n\n## خلاصه\nچک‌لیست — OSPF LSA\n\n## هدف\nمهارت چک‌لیست در زمینه OSPF LSA\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 83,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0084",
+      "title_fa": "[L2] BGP Session: چک‌لیست",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "چک‌لیست — BGP Session",
+      "full_content": "# [L2] BGP Session: چک‌لیست\n\n## خلاصه\nچک‌لیست — BGP Session\n\n## هدف\nمهارت چک‌لیست در زمینه BGP Session\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 84,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0085",
+      "title_fa": "[L2] BGP Path Selection: چک‌لیست",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "چک‌لیست — BGP Path Selection",
+      "full_content": "# [L2] BGP Path Selection: چک‌لیست\n\n## خلاصه\nچک‌لیست — BGP Path Selection\n\n## هدف\nمهارت چک‌لیست در زمینه BGP Path Selection\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 85,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0086",
+      "title_fa": "[L2] Route Reflector: چک‌لیست",
+      "chapter_order": 66,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "چک‌لیست — Route Reflector",
+      "full_content": "# [L2] Route Reflector: چک‌لیست\n\n## خلاصه\nچک‌لیست — Route Reflector\n\n## هدف\nمهارت چک‌لیست در زمینه Route Reflector\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 86,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0087",
+      "title_fa": "[L2] Redistribution: چک‌لیست",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L2",
+      "summary": "چک‌لیست — Redistribution",
+      "full_content": "# [L2] Redistribution: چک‌لیست\n\n## خلاصه\nچک‌لیست — Redistribution\n\n## هدف\nمهارت چک‌لیست در زمینه Redistribution\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 87,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch66:enr:0088",
+      "title_fa": "[L2] Route Filtering: چک‌لیست",
+      "chapter_order": 66,
+      "subchapter_order": 3,
+      "level": "L2",
+      "summary": "چک‌لیست — Route Filtering",
+      "full_content": "# [L2] Route Filtering: چک‌لیست\n\n## خلاصه\nچک‌لیست — Route Filtering\n\n## هدف\nمهارت چک‌لیست در زمینه Route Filtering\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 88,
+      "meta": {
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     }

@@ -1,89 +1,210 @@
 {
   "schema_version": 1,
   "chapter_order": 66,
-  "category": "labs",
-  "source_of_truth": true,
   "items": [
     {
-      "uid": "lab:ch66:001",
-      "lesson_uid": "lesson:ch66:bp:0001",
-      "title_fa": "لابراتوار 01 — OSPF Multi-Area و ABR",
-      "title_en": "Lab 01 — OSPF Multi-Area و ABR",
-      "fields": {
-        "labs": "**شناسه سناریو:** lab-ch66-001\n\n**سطح / دشواری:** L2 / متوسط\n\n**هدف:** ساخت Area 0 و Area 10 و تأیید انتشار Prefix از طریق ABR.\n\n**محیط مجاز:** فقط شبیه‌ساز GNS3/EVE-NG/CML یا روترهای مجازی ایزوله؛ نه شبکه عملیاتی یا شخص ثالث.\n\n**توپولوژی:** R1 (Area 0) — R2 (ABR: Area 0/10) — R3 (Area 10). لینک‌ها 10.66.0.0/30 و 10.66.0.4/30؛ LAN آزمایش 192.0.2.0/24.\n\n**شواهد اولیه:** روی R3 مسیر شبکه LAN سمت R1 دیده نمی‌شود؛ همسایگی محلی Full است.\n\n**مراحل اجرا:**\n۱) show ip ospf neighbor و show ip ospf interface را بگیرید. ۲) Area ID و network statements را بررسی کنید. ۳) LSDB را در هر دو Area مقایسه کنید. ۴) مسیر R3 به 192.0.2.0/24 را بررسی کنید.\n\n**فرمان‌های راستی‌آزمایی:**\n`show ip ospf neighbor` (در لاب OSPF)\n`show ip route <prefix>`\n`show ip bgp summary` (در لاب BGP)\n`show route-map`\n\n**نتیجه مورد انتظار:** Neighborهای مورد انتظار Full؛ Prefix در LSDB مناسب و مسیر O IA در RIB روتر Area 10 ظاهر شود.\n\n**بازگردانی:** از snapshot لاب برگردید؛ پیکربندی production را تغییر ندهید.\n\n**شرایط توقف:** مشاهده نشت مسیر به شبکه خارج از لاب، افت غیرمنتظره سرویس، یا هرگونه ابهام در محدوده آزمایش؛ آزمایش را متوقف و snapshot را بازیابی کنید.\n\n**معیار ارزیابی:** تحلیل شواهد ۲۰٪ | فرضیه و طراحی ۲۰٪ | اجرای تغییر کنترل‌شده ۲۵٪ | راستی‌آزمایی مسیرها ۲۵٪ | مستندسازی و Rollback ۱۰٪\n\n**نکات یادگیری:** نقش ABR و تفاوت LSDB محلی هر Area با مسیرهای بین‌منطقه‌ای."
-      }
+      "uid": "lab:ch66:0001",
+      "id": "lab-ch66-0001",
+      "chapter_order": 66,
+      "level": "L1",
+      "title_fa": "OSPF adjacency",
+      "environment_fa": "Lab",
+      "steps_fa": [
+        "network",
+        "neighbor",
+        "route",
+        "قطع"
+      ],
+      "pass_criteria_fa": "FULL",
+      "safety_fa": "فقط Lab/Staging",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch66:002",
-      "lesson_uid": "lesson:ch66:bp:0002",
-      "title_fa": "لابراتوار 02 — OSPF Cost و انتخاب مسیر",
-      "title_en": "Lab 02 — OSPF Cost و انتخاب مسیر",
-      "fields": {
-        "labs": "**شناسه سناریو:** lab-ch66-002\n\n**سطح / دشواری:** L2 / متوسط\n\n**هدف:** تأیید انتخاب مسیر با مجموع Cost و بررسی ECMP.\n\n**محیط مجاز:** فقط شبیه‌ساز GNS3/EVE-NG/CML یا روترهای مجازی ایزوله؛ نه شبکه عملیاتی یا شخص ثالث.\n\n**توپولوژی:** R1 به R4 دو مسیر آزمایشگاهی دارد: مسیر A با Cost مجموع 20 و مسیر B با Cost مجموع 35.\n\n**شواهد اولیه:** ترافیک از مسیر B عبور می‌کند، برخلاف محاسبه مورد انتظار.\n\n**مراحل اجرا:**\n۱) show ip ospf interface را در تمام hopها بگیرید. ۲) show ip route <prefix> و show ip cef <prefix> را بررسی کنید. ۳) مجموع Cost هر مسیر و وجود مسیرهای دیگر را مستند کنید. ۴) در صورت تغییر، فقط یک Cost را در لاب تنظیم کنید.\n\n**فرمان‌های راستی‌آزمایی:**\n`show ip ospf neighbor` (در لاب OSPF)\n`show ip route <prefix>`\n`show ip bgp summary` (در لاب BGP)\n`show route-map`\n\n**نتیجه مورد انتظار:** مسیر کم‌هزینه‌تر در RIB/FIB انتخاب شود؛ اگر ECMP وجود دارد، Cost و مسیرهای برابر توضیح داده شوند.\n\n**بازگردانی:** پیکربندی اولیه رابط‌ها را از snapshot بازیابی کنید.\n\n**شرایط توقف:** مشاهده نشت مسیر به شبکه خارج از لاب، افت غیرمنتظره سرویس، یا هرگونه ابهام در محدوده آزمایش؛ آزمایش را متوقف و snapshot را بازیابی کنید.\n\n**معیار ارزیابی:** تحلیل شواهد ۲۰٪ | فرضیه و طراحی ۲۰٪ | اجرای تغییر کنترل‌شده ۲۵٪ | راستی‌آزمایی مسیرها ۲۵٪ | مستندسازی و Rollback ۱۰٪\n\n**نکات یادگیری:** Cost، RIB و FIB معیارهای متفاوتی از پهنای‌باند اسمی دارند."
-      }
+      "uid": "lab:ch66:0002",
+      "id": "lab-ch66-0002",
+      "chapter_order": 66,
+      "level": "L1",
+      "title_fa": "BGP eBGP",
+      "environment_fa": "Lab",
+      "steps_fa": [
+        "session",
+        "prefix",
+        "policy",
+        "path"
+      ],
+      "pass_criteria_fa": "مسیر BGP",
+      "safety_fa": "فقط Lab/Staging",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch66:003",
-      "lesson_uid": "lesson:ch66:bp:0003",
-      "title_fa": "لابراتوار 03 — OSPF Neighbor گیرکرده در ExStart",
-      "title_en": "Lab 03 — OSPF Neighbor گیرکرده در ExStart",
-      "fields": {
-        "labs": "**شناسه سناریو:** lab-ch66-003\n\n**سطح / دشواری:** L3 / پیشرفته\n\n**هدف:** عیب‌یابی مرحله‌ای بدون reset بی‌دلیل.\n\n**محیط مجاز:** فقط شبیه‌ساز GNS3/EVE-NG/CML یا روترهای مجازی ایزوله؛ نه شبکه عملیاتی یا شخص ثالث.\n\n**توپولوژی:** دو روتر Cisco IOSv در یک لینک point-to-point آزمایشگاهی.\n\n**شواهد اولیه:** Neighbor در ExStart باقی می‌ماند و در خروجی رابط‌ها MTU متفاوت گزارش شده است.\n\n**مراحل اجرا:**\n۱) show ip ospf neighbor detail. ۲) show ip ospf interface و show interfaces را دو طرف مقایسه کنید. ۳) MTU و لاگ‌ها را ثبت کنید. ۴) در لاب اختلاف را اصلاح و adjacency را دوباره مشاهده کنید.\n\n**فرمان‌های راستی‌آزمایی:**\n`show ip ospf neighbor` (در لاب OSPF)\n`show ip route <prefix>`\n`show ip bgp summary` (در لاب BGP)\n`show route-map`\n\n**نتیجه مورد انتظار:** Neighbor به Full برسد و LSDB همگام شود؛ سپس وجود Prefix در RIB جداگانه تأیید شود.\n\n**بازگردانی:** تنظیم MTU اولیه را برگردانید و خروجی پیش/پس را ذخیره کنید.\n\n**شرایط توقف:** مشاهده نشت مسیر به شبکه خارج از لاب، افت غیرمنتظره سرویس، یا هرگونه ابهام در محدوده آزمایش؛ آزمایش را متوقف و snapshot را بازیابی کنید.\n\n**معیار ارزیابی:** تحلیل شواهد ۲۰٪ | فرضیه و طراحی ۲۰٪ | اجرای تغییر کنترل‌شده ۲۵٪ | راستی‌آزمایی مسیرها ۲۵٪ | مستندسازی و Rollback ۱۰٪\n\n**نکات یادگیری:** تشخیص علت بر اساس state و شواهد، نه پاک‌کردن مکرر همسایگی."
-      }
+      "uid": "lab:ch66:0003",
+      "id": "lab-ch66-0003",
+      "chapter_order": 66,
+      "level": "L1",
+      "title_fa": "Redistribution با tag",
+      "environment_fa": "Lab",
+      "steps_fa": [
+        "OSPF BGP",
+        "tag",
+        "filter",
+        "حلقه"
+      ],
+      "pass_criteria_fa": "بدون حلقه",
+      "safety_fa": "فقط Lab/Staging",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch66:004",
-      "lesson_uid": "lesson:ch66:bp:0004",
-      "title_fa": "لابراتوار 04 — eBGP بین دو ASN",
-      "title_en": "Lab 04 — eBGP بین دو ASN",
-      "fields": {
-        "labs": "**شناسه سناریو:** lab-ch66-004\n\n**سطح / دشواری:** L3 / پیشرفته\n\n**هدف:** برقراری نشست eBGP و انتشار Prefix مستند.\n\n**محیط مجاز:** فقط شبیه‌ساز GNS3/EVE-NG/CML یا روترهای مجازی ایزوله؛ نه شبکه عملیاتی یا شخص ثالث.\n\n**توپولوژی:** R1 AS 65010 — R2 AS 65020؛ لینک 203.0.113.0/30 و Prefix آزمایش 198.51.100.0/24.\n\n**شواهد اولیه:** نشست در Active است یا Prefix در سمت مقابل ظاهر نمی‌شود.\n\n**مراحل اجرا:**\n۱) reachability دوطرفه آدرس peer را بررسی کنید. ۲) TCP/179 و Remote-AS را کنترل کنید. ۳) show ip bgp summary را بگیرید. ۴) network statement و وجود Prefix در RIB مبدأ را تأیید کنید.\n\n**فرمان‌های راستی‌آزمایی:**\n`show ip ospf neighbor` (در لاب OSPF)\n`show ip route <prefix>`\n`show ip bgp summary` (در لاب BGP)\n`show route-map`\n\n**نتیجه مورد انتظار:** نشست Established شود و Prefix آزمایش در BGP table همتا دیده شود؛ نصب در RIB نیز جدا بررسی شود.\n\n**بازگردانی:** از پیکربندی baseline لاب استفاده کنید؛ Prefixهای واقعی را اعلان نکنید.\n\n**شرایط توقف:** مشاهده نشت مسیر به شبکه خارج از لاب، افت غیرمنتظره سرویس، یا هرگونه ابهام در محدوده آزمایش؛ آزمایش را متوقف و snapshot را بازیابی کنید.\n\n**معیار ارزیابی:** تحلیل شواهد ۲۰٪ | فرضیه و طراحی ۲۰٪ | اجرای تغییر کنترل‌شده ۲۵٪ | راستی‌آزمایی مسیرها ۲۵٪ | مستندسازی و Rollback ۱۰٪\n\n**نکات یادگیری:** نشست Established و دریافت/نصب route دو شرط جداگانه‌اند."
-      }
+      "uid": "lab:ch66:0004",
+      "id": "lab-ch66-0004",
+      "chapter_order": 66,
+      "level": "L1",
+      "title_fa": "OSPF adjacency (دور 2)",
+      "environment_fa": "Lab",
+      "steps_fa": [
+        "network",
+        "neighbor",
+        "route",
+        "قطع"
+      ],
+      "pass_criteria_fa": "FULL",
+      "safety_fa": "فقط Lab/Staging",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch66:005",
-      "lesson_uid": "lesson:ch66:bp:0005",
-      "title_fa": "لابراتوار 05 — iBGP و Route Reflector",
-      "title_en": "Lab 05 — iBGP و Route Reflector",
-      "fields": {
-        "labs": "**شناسه سناریو:** lab-ch66-005\n\n**سطح / دشواری:** L3 / پیشرفته\n\n**هدف:** درک قانون عدم بازاعلان iBGP و نقش RR.\n\n**محیط مجاز:** فقط شبیه‌ساز GNS3/EVE-NG/CML یا روترهای مجازی ایزوله؛ نه شبکه عملیاتی یا شخص ثالث.\n\n**توپولوژی:** سه روتر در AS 65030: RR1 و دو Client با Loopbackهای آزمایشگاهی.\n\n**شواهد اولیه:** Client2 مسیر آموخته‌شده از Client1 را نمی‌بیند.\n\n**مراحل اجرا:**\n۱) show ip bgp summary و show ip bgp <prefix> روی هر روتر. ۲) بررسی کنید که Clientها واقعاً به RR متصل‌اند. ۳) تنظیمات cluster/client را در لاب کنترل کنید. ۴) انتشار مسیر و Originator/Cluster attributes را بررسی کنید.\n\n**فرمان‌های راستی‌آزمایی:**\n`show ip ospf neighbor` (در لاب OSPF)\n`show ip route <prefix>`\n`show ip bgp summary` (در لاب BGP)\n`show route-map`\n\n**نتیجه مورد انتظار:** مسیر Client1 از طریق RR به Client2 منتشر شود و loop-prevention attributes قابل مشاهده باشند.\n\n**بازگردانی:** به snapshot قبل از پیکربندی RR برگردید.\n\n**شرایط توقف:** مشاهده نشت مسیر به شبکه خارج از لاب، افت غیرمنتظره سرویس، یا هرگونه ابهام در محدوده آزمایش؛ آزمایش را متوقف و snapshot را بازیابی کنید.\n\n**معیار ارزیابی:** تحلیل شواهد ۲۰٪ | فرضیه و طراحی ۲۰٪ | اجرای تغییر کنترل‌شده ۲۵٪ | راستی‌آزمایی مسیرها ۲۵٪ | مستندسازی و Rollback ۱۰٪\n\n**نکات یادگیری:** طراحی iBGP full-mesh در برابر Route Reflector و نقش Attributeها."
-      }
+      "uid": "lab:ch66:0005",
+      "id": "lab-ch66-0005",
+      "chapter_order": 66,
+      "level": "L1",
+      "title_fa": "BGP eBGP (دور 2)",
+      "environment_fa": "Lab",
+      "steps_fa": [
+        "session",
+        "prefix",
+        "policy",
+        "path"
+      ],
+      "pass_criteria_fa": "مسیر BGP",
+      "safety_fa": "فقط Lab/Staging",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch66:006",
-      "lesson_uid": "lesson:ch66:bp:0006",
-      "title_fa": "لابراتوار 06 — BGP peer در Active",
-      "title_en": "Lab 06 — BGP peer در Active",
-      "fields": {
-        "labs": "**شناسه سناریو:** lab-ch66-006\n\n**سطح / دشواری:** L3 / پیشرفته\n\n**هدف:** تشخیص مشکل نشست از مشکل تبادل مسیر.\n\n**محیط مجاز:** فقط شبیه‌ساز GNS3/EVE-NG/CML یا روترهای مجازی ایزوله؛ نه شبکه عملیاتی یا شخص ثالث.\n\n**توپولوژی:** دو روتر آزمایشگاهی با ASN متفاوت و یک ACL قابل کنترل روی لینک transit.\n\n**شواهد اولیه:** show ip bgp summary وضعیت Active نشان می‌دهد.\n\n**مراحل اجرا:**\n۱) ping با source مناسب. ۲) بررسی مسیر برگشت و TCP/179. ۳) Remote-AS، update-source و ACL را بررسی کنید. ۴) یک عامل را در هر نوبت تغییر دهید و لاگ‌ها را مقایسه کنید.\n\n**فرمان‌های راستی‌آزمایی:**\n`show ip ospf neighbor` (در لاب OSPF)\n`show ip route <prefix>`\n`show ip bgp summary` (در لاب BGP)\n`show route-map`\n\n**نتیجه مورد انتظار:** TCP و BGP به Established برسند؛ سپس با Prefix آزمایش، دریافت مسیر تأیید شود.\n\n**بازگردانی:** ACL و تنظیمات baseline را بازگردانید.\n\n**شرایط توقف:** مشاهده نشت مسیر به شبکه خارج از لاب، افت غیرمنتظره سرویس، یا هرگونه ابهام در محدوده آزمایش؛ آزمایش را متوقف و snapshot را بازیابی کنید.\n\n**معیار ارزیابی:** تحلیل شواهد ۲۰٪ | فرضیه و طراحی ۲۰٪ | اجرای تغییر کنترل‌شده ۲۵٪ | راستی‌آزمایی مسیرها ۲۵٪ | مستندسازی و Rollback ۱۰٪\n\n**نکات یادگیری:** Active معمولاً به برقراری‌نشدن نشست اشاره دارد؛ از تغییر تصادفی policy خودداری کنید."
-      }
+      "uid": "lab:ch66:0006",
+      "id": "lab-ch66-0006",
+      "chapter_order": 66,
+      "level": "L1",
+      "title_fa": "Redistribution با tag (دور 2)",
+      "environment_fa": "Lab",
+      "steps_fa": [
+        "OSPF BGP",
+        "tag",
+        "filter",
+        "حلقه"
+      ],
+      "pass_criteria_fa": "بدون حلقه",
+      "safety_fa": "فقط Lab/Staging",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch66:007",
-      "lesson_uid": "lesson:ch66:bp:0007",
-      "title_fa": "لابراتوار 07 — Redistribution OSPF به BGP با Prefix Filter",
-      "title_en": "Lab 07 — Redistribution OSPF به BGP با Prefix Filter",
-      "fields": {
-        "labs": "**شناسه سناریو:** lab-ch66-007\n\n**سطح / دشواری:** L3 / پیشرفته\n\n**هدف:** انتشار یک Prefix مجاز و جلوگیری از انتشار سایر Prefixها.\n\n**محیط مجاز:** فقط شبیه‌ساز GNS3/EVE-NG/CML یا روترهای مجازی ایزوله؛ نه شبکه عملیاتی یا شخص ثالث.\n\n**توپولوژی:** AS آزمایشگاهی شامل OSPF داخلی و یک BGP peer مجزا؛ Prefix مجاز 192.0.2.0/24 و Prefix غیرمجاز 198.51.100.0/24.\n\n**شواهد اولیه:** پس از redistribution هر دو Prefix به BGP صادر می‌شوند.\n\n**مراحل اجرا:**\n۱) baseline مسیرها را ذخیره کنید. ۲) prefix-list برای Prefix مجاز بسازید. ۳) route-map را به redistribution وصل کنید. ۴) advertised-routes و جدول peer را بررسی کنید.\n\n**فرمان‌های راستی‌آزمایی:**\n`show ip ospf neighbor` (در لاب OSPF)\n`show ip route <prefix>`\n`show ip bgp summary` (در لاب BGP)\n`show route-map`\n\n**نتیجه مورد انتظار:** فقط 192.0.2.0/24 منتشر شود و Prefix غیرمجاز در advertised-routes نباشد.\n\n**بازگردانی:** route-map و تنظیمات قبل از لاب را از snapshot بازگردانید.\n\n**شرایط توقف:** مشاهده نشت مسیر به شبکه خارج از لاب، افت غیرمنتظره سرویس، یا هرگونه ابهام در محدوده آزمایش؛ آزمایش را متوقف و snapshot را بازیابی کنید.\n\n**معیار ارزیابی:** تحلیل شواهد ۲۰٪ | فرضیه و طراحی ۲۰٪ | اجرای تغییر کنترل‌شده ۲۵٪ | راستی‌آزمایی مسیرها ۲۵٪ | مستندسازی و Rollback ۱۰٪\n\n**نکات یادگیری:** Redistribution باید allow-list و verification صریح داشته باشد."
-      }
+      "uid": "lab:ch66:0007",
+      "id": "lab-ch66-0007",
+      "chapter_order": 66,
+      "level": "L2",
+      "title_fa": "OSPF adjacency (دور 3)",
+      "environment_fa": "Lab",
+      "steps_fa": [
+        "network",
+        "neighbor",
+        "route",
+        "قطع"
+      ],
+      "pass_criteria_fa": "FULL",
+      "safety_fa": "فقط Lab/Staging",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch66:008",
-      "lesson_uid": "lesson:ch66:bp:0008",
-      "title_fa": "لابراتوار 08 — Seed Metric و E1/E2",
-      "title_en": "Lab 08 — Seed Metric و E1/E2",
-      "fields": {
-        "labs": "**شناسه سناریو:** lab-ch66-008\n\n**سطح / دشواری:** L3 / پیشرفته\n\n**هدف:** مقایسه رفتار External Type 1 و Type 2 در OSPF.\n\n**محیط مجاز:** فقط شبیه‌ساز GNS3/EVE-NG/CML یا روترهای مجازی ایزوله؛ نه شبکه عملیاتی یا شخص ثالث.\n\n**توپولوژی:** دو مسیر به ASBR در OSPF؛ یک Prefix خارجی از یک ASBR آزمایشگاهی وارد می‌شود.\n\n**شواهد اولیه:** تغییر مسیر داخلی تا ASBR رفتار انتخاب مسیر را مطابق انتظار تغییر نمی‌دهد.\n\n**مراحل اجرا:**\n۱) show ip route <prefix>. ۲) show ip ospf database external را بررسی کنید. ۳) متریک خارجی و هزینه داخلی را ثبت کنید. ۴) در لاب E1 و E2 را جداگانه اعمال و خروجی را مقایسه کنید.\n\n**فرمان‌های راستی‌آزمایی:**\n`show ip ospf neighbor` (در لاب OSPF)\n`show ip route <prefix>`\n`show ip bgp summary` (در لاب BGP)\n`show route-map`\n\n**نتیجه مورد انتظار:** در E1 هزینه داخلی تا ASBR در معیار نهایی دخیل باشد؛ در E2 متریک خارجی غالب باشد.\n\n**بازگردانی:** نوع متریک و مقدار اولیه را بازیابی کنید.\n\n**شرایط توقف:** مشاهده نشت مسیر به شبکه خارج از لاب، افت غیرمنتظره سرویس، یا هرگونه ابهام در محدوده آزمایش؛ آزمایش را متوقف و snapshot را بازیابی کنید.\n\n**معیار ارزیابی:** تحلیل شواهد ۲۰٪ | فرضیه و طراحی ۲۰٪ | اجرای تغییر کنترل‌شده ۲۵٪ | راستی‌آزمایی مسیرها ۲۵٪ | مستندسازی و Rollback ۱۰٪\n\n**نکات یادگیری:** متریک‌ها بین پروتکل‌ها هم‌معنا نیستند؛ انتخاب E1/E2 باید طراحی‌شده باشد."
-      }
+      "uid": "lab:ch66:0008",
+      "id": "lab-ch66-0008",
+      "chapter_order": 66,
+      "level": "L2",
+      "title_fa": "BGP eBGP (دور 3)",
+      "environment_fa": "Lab",
+      "steps_fa": [
+        "session",
+        "prefix",
+        "policy",
+        "path"
+      ],
+      "pass_criteria_fa": "مسیر BGP",
+      "safety_fa": "فقط Lab/Staging",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch66:009",
-      "lesson_uid": "lesson:ch66:bp:0009",
-      "title_fa": "لابراتوار 09 — جلوگیری از حلقه OSPF↔BGP",
-      "title_en": "Lab 09 — جلوگیری از حلقه OSPF↔BGP",
-      "fields": {
-        "labs": "**شناسه سناریو:** lab-ch66-009\n\n**سطح / دشواری:** L3 / پیشرفته\n\n**هدف:** اعمال route tag و فیلتر جهت‌دار برای جلوگیری از بازگشت مسیر.\n\n**محیط مجاز:** فقط شبیه‌ساز GNS3/EVE-NG/CML یا روترهای مجازی ایزوله؛ نه شبکه عملیاتی یا شخص ثالث.\n\n**توپولوژی:** یک ASBR آزمایشگاهی با OSPF داخلی و BGP آزمایشگاهی؛ مسیرهای مستند 192.0.2.0/24 و 198.51.100.0/24.\n\n**شواهد اولیه:** Prefix بازتوزیع‌شده در مسیر برگشت دوباره وارد پروتکل مبدأ می‌شود.\n\n**مراحل اجرا:**\n۱) جدول‌های BGP و OSPF را baseline کنید. ۲) route-map خروجی را برای مسیرهای بازتوزیع‌شده Tag کنید. ۳) route-map جهت برگشت، Tag را رد کند. ۴) پس از تغییر، LSDB، RIB و BGP table را بررسی کنید.\n\n**فرمان‌های راستی‌آزمایی:**\n`show ip ospf neighbor` (در لاب OSPF)\n`show ip route <prefix>`\n`show ip bgp summary` (در لاب BGP)\n`show route-map`\n\n**نتیجه مورد انتظار:** مسیرهای مجاز باقی بمانند و Prefix علامت‌گذاری‌شده از بازتوزیع برگشتی عبور نکند.\n\n**بازگردانی:** سیاست قبل از آزمایش را برگردانید؛ در صورت ناپایداری، لاب را از snapshot بازیابی کنید.\n\n**شرایط توقف:** مشاهده نشت مسیر به شبکه خارج از لاب، افت غیرمنتظره سرویس، یا هرگونه ابهام در محدوده آزمایش؛ آزمایش را متوقف و snapshot را بازیابی کنید.\n\n**معیار ارزیابی:** تحلیل شواهد ۲۰٪ | فرضیه و طراحی ۲۰٪ | اجرای تغییر کنترل‌شده ۲۵٪ | راستی‌آزمایی مسیرها ۲۵٪ | مستندسازی و Rollback ۱۰٪\n\n**نکات یادگیری:** AS_PATH برای همه حلقه‌های Redistribution کافی نیست؛ Tag و policy مکمل لازم‌اند."
-      }
+      "uid": "lab:ch66:0009",
+      "id": "lab-ch66-0009",
+      "chapter_order": 66,
+      "level": "L2",
+      "title_fa": "Redistribution با tag (دور 3)",
+      "environment_fa": "Lab",
+      "steps_fa": [
+        "OSPF BGP",
+        "tag",
+        "filter",
+        "حلقه"
+      ],
+      "pass_criteria_fa": "بدون حلقه",
+      "safety_fa": "فقط Lab/Staging",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch66:0010",
+      "id": "lab-ch66-0010",
+      "chapter_order": 66,
+      "level": "L2",
+      "title_fa": "OSPF adjacency (دور 4)",
+      "environment_fa": "Lab",
+      "steps_fa": [
+        "network",
+        "neighbor",
+        "route",
+        "قطع"
+      ],
+      "pass_criteria_fa": "FULL",
+      "safety_fa": "فقط Lab/Staging",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch66:0011",
+      "id": "lab-ch66-0011",
+      "chapter_order": 66,
+      "level": "L2",
+      "title_fa": "BGP eBGP (دور 4)",
+      "environment_fa": "Lab",
+      "steps_fa": [
+        "session",
+        "prefix",
+        "policy",
+        "path"
+      ],
+      "pass_criteria_fa": "مسیر BGP",
+      "safety_fa": "فقط Lab/Staging",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch66:0012",
+      "id": "lab-ch66-0012",
+      "chapter_order": 66,
+      "level": "L2",
+      "title_fa": "Redistribution با tag (دور 4)",
+      "environment_fa": "Lab",
+      "steps_fa": [
+        "OSPF BGP",
+        "tag",
+        "filter",
+        "حلقه"
+      ],
+      "pass_criteria_fa": "بدون حلقه",
+      "safety_fa": "فقط Lab/Staging",
+      "source_status": "review_required"
     }
   ]
 }

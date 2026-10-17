@@ -1,255 +1,1067 @@
 {
   "schema_version": 1,
   "chapter_order": 67,
-  "chapter_title_fa": "VPN سازمانی IPsec/SSL و عیب‌یابی",
+  "chapter_title_fa": "VPN سازمانی",
   "source_of_truth": true,
   "pack_metadata": {
-    "schema_version": 1,
-    "chapter_order": 67,
-    "chapter_title_fa": "VPN سازمانی IPsec/SSL و عیب‌یابی",
-    "chapter_title_en": "Chapter 67 — Enterprise Vpn Ipsec Ssl",
-    "merge_strategy": "by_title",
+    "merge_strategy": "by_uid",
     "preserve_existing_records": true,
-    "source_of_truth_note": "Base definitions live in lessons/base_curriculum.json. Source-of-truth fields are separated into lessons, questions, answers, examples, commands and labs; chapter.json is a generated compatibility pack."
+    "source_status": "review_required"
   },
   "items": [
     {
-      "uid": "lesson:ch67:bp:0001",
-      "title_fa": "[L2] Policy",
+      "uid": "lesson:ch67:enr:0001",
+      "title_fa": "[L0] IPsec مفاهیم",
       "chapter_order": 67,
-      "subchapter_order": 5,
-      "level": "L2",
-      "summary": "Policy تعیین می‌کند چه ترافیکی باید با IPsec محافظت شود؛ آن را با route و firewall filter اشتباه نگیر.",
-      "full_content": "# MikroTik IPsec Policy\n\nPolicy شبکه مبدأ/مقصد و action محافظت را تعریف می‌کند؛ peer هویت/نشانی طرف مقابل و proposal الگوریتم‌های رمزنگاری را تعیین می‌کند. در RouterOS، policy، peer/identity، profile/proposal، route و firewall باید به‌عنوان اجزای جدا بررسی شوند.\n\n## چک‌لیست\n- selector محلی/دور درست و بدون overlap.\n- ترتیب policyها و dynamic policyهای وابسته به mode-config.\n- NAT bypass برای ترافیک VPN در جای درست نسبت به masquerade.\n- firewall input برای مذاکره و firewall forward برای عبور داده.\n- route برگشت و installed SA.\n\n## عیب‌یابی\nاگر peer فعال است اما policy ترافیک را match نمی‌کند، شبکه‌های selector و ruleهای NAT را بررسی کن. اگر SA نصب شده اما ترافیک یک‌طرفه است، شمارنده‌ها و مسیر برگشت را ببین.\n\n## دستورات\n\n`/ip ipsec policy print detail`, `/ip ipsec installed-sa print`, `/ip firewall nat print detail`",
-      "notes": "blueprint status=developed",
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "IKE SA ESP",
+      "full_content": "# [L0] IPsec مفاهیم\n\n## خلاصه\nIKE SA ESP\n\n## فاز\nPhase1 و Phase2\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 1,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0001",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0002",
-      "title_fa": "[L2] Peer",
+      "uid": "lesson:ch67:enr:0002",
+      "title_fa": "[L1] Site-to-Site",
       "chapter_order": 67,
-      "subchapter_order": 5,
-      "level": "L2",
-      "summary": "تنظیم peer، address، exchange mode/IKE version و هویت مذاکره‌کننده.",
-      "full_content": "# MikroTik IPsec Peer\n\nPeer مشخص می‌کند مذاکره با چه gatewayای انجام می‌شود و از چه پروفایل/نسخه IKE استفاده می‌کند. در سناریوی road-warrior، آدرس peer ممکن است متغیر باشد؛ در آن صورت identity و روش احراز هویت اهمیت بیشتری دارند.\n\n## بررسی\n- remote address یا wildcard مطابق سناریو.\n- IKEv2 ترجیحاً برای طراحی‌های جدید، در صورت پشتیبانی دو سمت.\n- local/remote identity مطابق peer مقابل.\n- NAT-T و reachability UDP/500 و UDP/4500.\n- PSK/گواهی و اعتبار زمانی آن.\n- لاگ با timestamp برای دیدن مرحله شکست.\n\n## دستورات\n\n`/ip ipsec peer print detail`, `/ip ipsec identity print detail`, `/log print where topics~\"ipsec\"`",
-      "notes": "blueprint status=developed",
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "تونل سایت",
+      "full_content": "# [L1] Site-to-Site\n\n## خلاصه\nتونل سایت\n\n## چک\nproposal selector NAT-T پورت 500/4500\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 2,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0002",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0003",
-      "title_fa": "[L2] Proposal",
+      "uid": "lesson:ch67:enr:0003",
+      "title_fa": "[L1] Remote Access VPN",
       "chapter_order": 67,
-      "subchapter_order": 5,
-      "level": "L2",
-      "summary": "هماهنگی رمزنگاری ESP، integrity، PFS و lifetime.",
-      "full_content": "# MikroTik IPsec Proposal\n\nProposal مربوط به پارامترهای محافظت داده در ESP است و با تنظیمات IKE profile یکسان نیست. هر دو سمت باید مجموعه سازگار داشته باشند. در AEAD مانند AES-GCM، تنظیمات integrity جداگانه ممکن است معنا/رفتار متفاوتی داشته باشد؛ مدل و نسخه را بررسی کن.\n\n## عیب‌یابی mismatch\n- مشخص کن شکست هنگام IKE است یا هنگام نصب Child SA.\n- encryption/auth algorithms را دو سمت مقایسه کن.\n- PFS و DH group را بررسی کن.\n- lifetime و رفتار rekey را بررسی کن.\n- از پایین آوردن امنیت برای حل سریع مشکل خودداری کن؛ الگوریتم قوی مشترک انتخاب کن.\n\n## دستورات\n\n`/ip ipsec profile print detail`, `/ip ipsec proposal print detail`, `/ip ipsec installed-sa print`",
-      "notes": "blueprint status=developed",
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "کاربر سیار",
+      "full_content": "# [L1] Remote Access VPN\n\n## خلاصه\nکاربر سیار\n\n## انواع\nSSL VPN و IPsec RA\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 3,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0003",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0004",
-      "title_fa": "[L2] Mode Config",
+      "uid": "lesson:ch67:enr:0004",
+      "title_fa": "[L2] عیب‌یابی تونل",
       "chapter_order": 67,
-      "subchapter_order": 5,
+      "subchapter_order": 2,
       "level": "L2",
-      "summary": "تخصیص آدرس و پارامترهای کلاینت در Remote Access.",
-      "full_content": "# Mode Config و Remote Access\n\nMode Config در سناریوهای پشتیبانی‌شده، تنظیماتی مانند آدرس مجازی و DNS را به کلاینت می‌دهد. دریافت آدرس به معنی دسترسی خودکار به LAN نیست؛ route، policy، pool و مسیر برگشت لازم‌اند.\n\n## کنترل‌ها\n- pool آدرس با LAN و poolهای دیگر overlap نداشته باشد.\n- DNS و routeهای مورد نیاز مشخص باشند.\n- identity/group به policy مناسب نگاشت شود.\n- firewall اجازه عبور کنترل‌شده از VPN به مقصد را بدهد.\n- دسترسی بین کلاینت‌ها به‌صورت پیش‌فرض مجاز فرض نشود.\n\n## دستورات\n\n`/ip ipsec mode-config print detail`, `/ip pool print`, `/ip route print detail`, `/ip firewall filter print detail`",
-      "notes": "blueprint status=developed",
+      "summary": "فاز1/2",
+      "full_content": "# [L2] عیب‌یابی تونل\n\n## خلاصه\nفاز1/2\n\n## ابزار\nلاگ IKE و capture\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 4,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0004",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0005",
-      "title_fa": "[L2] Site-to-Site",
+      "uid": "lesson:ch67:enr:0005",
+      "title_fa": "[L2] Overlapping subnets",
       "chapter_order": 67,
-      "subchapter_order": 4,
+      "subchapter_order": 2,
       "level": "L2",
-      "summary": "طراحی تونل شعبه‌به‌شعبه، phase selectors، routing و policy.",
-      "full_content": "# FortiGate IPsec Site-to-Site\n\nدر تونل policy-based، ترافیک با selectorهای تعریف‌شده match می‌شود؛ در route-based، رابط تونل در جدول مسیریابی قرار می‌گیرد و route/policy مسیر عبور را تعیین می‌کنند. مدل انتخابی باید در هر دو سمت با معماری سازگار باشد.\n\n## پیش‌نیازها\n- IP عمومی یا DDNS معتبر، دسترسی UDP/500 و UDP/4500، NAT-T در صورت نیاز.\n- subnetهای غیرهم‌پوشان، توافق درباره شبکه‌های محلی/دور، route برگشت.\n- تنظیمات IKE/ESP، احراز هویت، lifetime و PFS هم‌خوان.\n- policy از LAN به تونل و از تونل به LAN، به‌علاوه NAT exemption در صورت نیاز.\n\n## عیب‌یابی\n1. وضعیت gateway/IKE را ببین.\n2. وضعیت tunnel/Child SA و selectorها را ببین.\n3. route مقصد را بررسی کن؛ route به رابط درست باید انتخاب شود.\n4. policy hit count و log را بررسی کن.\n5. capture روی WAN و رابط داخلی بگیر.\n6. با ترافیک واقعی، شمارنده‌های دو جهت را مقایسه کن.\n\nبالا بودن تونل به معنی اجازه policy نیست؛ تونل، routing و firewall policy سه بخش جدا هستند.\n\n## دستورات\n\nنمونه‌ها: `get vpn ipsec tunnel summary` و `diagnose vpn tunnel list`؛ برای flow debug در FortiOS دستورهای دقیق را با نسخه تطبیق بده.",
-      "notes": "blueprint status=developed",
+      "summary": "تداخل آدرس",
+      "full_content": "# [L2] Overlapping subnets\n\n## خلاصه\nتداخل آدرس\n\n## راه‌حل\nNAT یا redesign\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 5,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0005",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0006",
-      "title_fa": "[L2] Dial-up",
+      "uid": "lesson:ch67:enr:0006",
+      "title_fa": "[L3] HA برای VPN",
       "chapter_order": 67,
-      "subchapter_order": 4,
-      "level": "L2",
-      "summary": "دسترسی راه‌دور/peerهای با IP متغیر و تخصیص هویت و آدرس.",
-      "full_content": "# Dial-up IPsec\n\nDial-up IPsec برای کلاینت یا شعبه‌ای مناسب است که IP عمومی ثابت ندارد. سرور VPN باید peerهای ورودی را با روش هویت/گواهی یا PSK و سیاست مناسب شناسایی کند؛ صرف دانستن PSK نباید مجوز دسترسی گسترده ایجاد کند.\n\n## طراحی\n- ترجیح گواهی دستگاه و MFA در معماری‌های پشتیبانی‌شده.\n- محدودکردن user/group و آدرس‌های مجاز.\n- address pool بدون هم‌پوشانی با LAN یا شبکه‌های رایج کلاینت.\n- routeها، split tunnel، DNS و policy دسترسی دقیق.\n- مدیریت revoke برای دستگاه گم‌شده یا کارمند خارج‌شده.\n\n## عیب‌یابی\nبررسی کن کلاینت به gateway می‌رسد، هویت peer پذیرفته می‌شود، آدرس می‌گیرد، SA نصب می‌شود و route/policy صحیح است. اگر اتصال در شبکه‌ای کار می‌کند و در شبکه دیگر نه، captive portal، UDP/500/4500 و NAT مسیر را بررسی کن.\n\n## دستورات\n\nاز CLI و لاگ‌های VPN/Auth متناسب با نسخه استفاده کن؛ اطلاعات credential را در debug یا تیکت منتشر نکن.",
-      "notes": "blueprint status=developed",
+      "subchapter_order": 2,
+      "level": "L3",
+      "summary": "peer افزونه",
+      "full_content": "# [L3] HA برای VPN\n\n## خلاصه\npeer افزونه\n\n## طراحی\nDPD و routing\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 6,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0006",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0007",
-      "title_fa": "[L2] Phase 1/2",
+      "uid": "lesson:ch67:enr:0007",
+      "title_fa": "[L0] IPsec مفاهیم: مبانی",
       "chapter_order": 67,
-      "subchapter_order": 4,
-      "level": "L2",
-      "summary": "تشخیص دقیق شکست مذاکره IKE در برابر Child SA و تفاوت پارامترهایشان.",
-      "full_content": "# Phase 1 و Phase 2 در FortiGate\n\nدر اصطلاح رابط FortiGate، Phase 1 عمدتاً پارامترهای IKE SA، peer و احراز هویت را تعریف می‌کند؛ Phase 2 پارامترهای ESP/Child SA، selectorها، PFS و lifetime را کنترل می‌کند.\n\n## پارامترهای Phase 1\nروش IKE، نسخه IKE، interface/local-gateway، remote gateway، authentication، proposal، DH group و NAT-T. هویت محلی/دور در سناریوهای dynamic مهم است.\n\n## پارامترهای Phase 2\nencryption/integrity یا AEAD، selectorهای local/remote، PFS/DH در صورت استفاده، lifetime و تعداد selectorها.\n\n## نگاشت خطا\n- عدم پاسخ: reachability، ACL، NAT یا peer اشتباه.\n- proposal mismatch: الگوریتم/گروه DH.\n- auth failure: PSK، certificate یا identity.\n- IKE بالا، Phase 2 پایین: ESP proposal، PFS، selector و policy دو سمت.\n- هر دو بالا، data failure: route، policy، NAT و MTU.\n\nبرای عیب‌یابی، پیام دقیق و مرحله مذاکره را به تغییرات اخیر وصل کن؛ چند پارامتر را هم‌زمان تغییر نده.\n\n## دستورات\n\nنمونه: `diagnose vpn ike gateway list`, `diagnose vpn tunnel list`, `get vpn ipsec tunnel summary`.",
-      "notes": "blueprint status=developed",
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "مبانی — IPsec مفاهیم",
+      "full_content": "# [L0] IPsec مفاهیم: مبانی\n\n## خلاصه\nمبانی — IPsec مفاهیم\n\n## هدف\nمهارت مبانی در زمینه IPsec مفاهیم\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 7,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0007",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0008",
-      "title_fa": "[L2] Routing",
+      "uid": "lesson:ch67:enr:0008",
+      "title_fa": "[L0] Site-to-Site: مبانی",
       "chapter_order": 67,
-      "subchapter_order": 4,
-      "level": "L2",
-      "summary": "تفکیک routing از negotiation و firewall policy در تونل‌های route-based.",
-      "full_content": "# Routing روی VPN\n\nدر route-based VPN، رابط تونل مانند مسیر منطقی در شبکه عمل می‌کند. برای رسیدن به شبکه دور، route استاتیک یا پروتکل مسیریابی باید next-hop/interface صحیح را انتخاب کند. برای برگشت نیز سمت دور باید شبکه مبدأ را بشناسد.\n\n## چک‌لیست\n- route دقیق مقصد و administrative distance/priority.\n- route برگشت در peer و شبکه مقصد.\n- policy از LAN به IPsec و از IPsec به LAN.\n- NAT: آیا مبدأ به‌اشتباه ترجمه می‌شود؟\n- overlap یا route خلاصه‌ای که مسیر را منحرف کند.\n- اگر dynamic routing روی تونل است، adjacency و advertised prefixes را بررسی کن.\n\n## تفکیک عیب\nاگر IKE/Child SA بالا است اما route مقصد به WAN دیگری می‌رود، تونل سالم است و routing اشتباه است. اگر route درست است ولی policy deny می‌کند، تغییر IKE راه‌حل نیست.\n\n## دستورات\n\nاز جدول route و packet capture استفاده کن؛ دستورات route بسته به FortiOS تغییر می‌کنند.",
-      "notes": "blueprint status=developed",
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "مبانی — Site-to-Site",
+      "full_content": "# [L0] Site-to-Site: مبانی\n\n## خلاصه\nمبانی — Site-to-Site\n\n## هدف\nمهارت مبانی در زمینه Site-to-Site\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 8,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0008",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0009",
-      "title_fa": "[L2] Portal",
+      "uid": "lesson:ch67:enr:0009",
+      "title_fa": "[L0] Remote Access VPN: مبانی",
       "chapter_order": 67,
-      "subchapter_order": 4,
-      "level": "L2",
-      "summary": "نگاشت گروه کاربر به portal و کنترل برنامه‌های منتشرشده.",
-      "full_content": "# SSL VPN Portal\n\nPortal تعیین می‌کند کاربر چه نوع تجربه‌ای ببیند: bookmarkهای برنامه، web access یا قابلیت‌های مجاز دیگر. نام portal به معنی مجوز شبکه کامل نیست؛ دسترسی واقعی باید با authentication، group mapping و firewall policy محدود شود.\n\n## طراحی امن\n- portalهای جدا برای نقش‌های متفاوت.\n- اصل حداقل دسترسی؛ از گروه عمومی با دسترسی گسترده پرهیز کن.\n- TLS certificate معتبر و مدیریت‌شده.\n- MFA و لاگ مرکزی.\n- بررسی نسخه و مدل پشتیبانی‌شده توسط سازنده؛ ویژگی‌ها بین نسخه‌ها تغییر می‌کنند.\n\n## عیب‌یابی\nورود موفق ولی برنامه در portal باز نمی‌شود: دسترسی backend از فایروال، DNS، policy، bookmark URL، certificate داخلی و دسترسی سرویس را بررسی کن. اگر صفحه ورود هم باز نمی‌شود، listener، مسیر، DNS و TLS را بررسی کن.\n\n## دستورات\n\nگواهی و نسخه TLS را با ابزارهای استاندارد بررسی کن؛ مسیر دقیق CLI/GUI به FortiOS بستگی دارد.",
-      "notes": "blueprint status=developed",
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "مبانی — Remote Access VPN",
+      "full_content": "# [L0] Remote Access VPN: مبانی\n\n## خلاصه\nمبانی — Remote Access VPN\n\n## هدف\nمهارت مبانی در زمینه Remote Access VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 9,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0009",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0010",
-      "title_fa": "[L2] Tunnel",
+      "uid": "lesson:ch67:enr:0010",
+      "title_fa": "[L0] عیب‌یابی تونل: مبانی",
       "chapter_order": 67,
-      "subchapter_order": 4,
-      "level": "L2",
-      "summary": "تحلیل address pool، route injection، split tunnel و policy برای کلاینت.",
-      "full_content": "# SSL VPN Tunnel Mode\n\nدر tunnel mode، کلاینت رابط مجازی و آدرس دریافت می‌کند و معمولاً مسیرهای شبکه سازمانی نصب می‌شوند. ارتباط فقط زمانی کامل است که route، policy، DNS و مسیر برگشت هم درست باشند.\n\n## مواردی که بررسی می‌شوند\n1. کلاینت آدرس مناسب از pool گرفته؟\n2. مسیر subnet سازمانی نصب شده؟ full یا split tunnel طبق طراحی است؟\n3. DNS سازمانی و suffix تخصیص یافته؟\n4. policy از SSL VPN به مقصد اجازه می‌دهد؟\n5. مسیر برگشت شبکه داخلی به pool کلاینت وجود دارد؟\n6. NAT ناخواسته یا overlap وجود دارد؟\n7. MTU/MSS برای برنامه‌های حساس مناسب است؟\n\n## Split vs Full\nدر split tunnel فقط prefixهای سازمانی به VPN می‌روند؛ در full tunnel مسیر پیش‌فرض هم از VPN عبور می‌کند و ظرفیت/خروجی اینترنت سازمان باید طراحی شود.\n\n## دستورات\n\nWindows: `ipconfig /all`, `route print`, `nslookup`; `Test-NetConnection <host> -Port <port>` برای تست پورت مقصد.",
-      "notes": "blueprint status=developed",
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "مبانی — عیب‌یابی تونل",
+      "full_content": "# [L0] عیب‌یابی تونل: مبانی\n\n## خلاصه\nمبانی — عیب‌یابی تونل\n\n## هدف\nمهارت مبانی در زمینه عیب‌یابی تونل\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 10,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0010",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0011",
-      "title_fa": "[L2] Authentication",
+      "uid": "lesson:ch67:enr:0011",
+      "title_fa": "[L0] Overlapping subnets: مبانی",
       "chapter_order": 67,
-      "subchapter_order": 4,
-      "level": "L2",
-      "summary": "بررسی زنجیره احراز هویت، MFA، LDAP/RADIUS و مجوز گروهی.",
-      "full_content": "# احراز هویت SSL VPN\n\nاحراز هویت می‌گوید «کاربر کیست؟»؛ مجوزدهی می‌گوید «به چه چیزی دسترسی دارد؟» موفقیت login به معنی مجاز بودن همه شبکه‌ها نیست.\n\n## زنجیره کنترل\n- زمان/NTP صحیح روی gateway و سامانه هویت.\n- کاربر فعال و مجاز، رمز صحیح و MFA.\n- ارتباط LDAP/RADIUS و گواهی TLS/CA در صورت نیاز.\n- نگاشت گروه directory به گروه/portal/policy درست.\n- سیاست lockout و ثبت رخداد؛ دسترسی اضطراری باید محدود و ممیزی‌شده باشد.\n\n## عیب‌یابی\nخطای همه کاربران: سرویس هویت، اتصال، گواهی یا تغییر پیکربندی مشترک را بررسی کن. خطای یک کاربر: وضعیت حساب، MFA، گروه و مجوز را بررسی کن. Login موفق با دسترسی ناقص: authorization/policy را جدا بررسی کن.\n\n## دستورات\n\nاز لاگ Authentication و VPN با timestamp یکسان استفاده کن؛ credential یا کد MFA را در تیکت ننویس.",
-      "notes": "blueprint status=developed",
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "مبانی — Overlapping subnets",
+      "full_content": "# [L0] Overlapping subnets: مبانی\n\n## خلاصه\nمبانی — Overlapping subnets\n\n## هدف\nمهارت مبانی در زمینه Overlapping subnets\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 11,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0011",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0012",
-      "title_fa": "[L2] IPsec IKEv2",
+      "uid": "lesson:ch67:enr:0012",
+      "title_fa": "[L0] HA برای VPN: مبانی",
       "chapter_order": 67,
       "subchapter_order": 2,
-      "level": "L2",
-      "summary": "درک معماری Site-to-Site با IKEv2، تفاوت مذاکره امنیتی با عبور ترافیک و مراحل عیب‌یابی از شبکه زیرساخت تا Child SA.",
-      "full_content": "# IPsec IKEv2 سازمانی؛ از صفر تا عیب‌یابی\n\n## ۱) تصویر ذهنی\nVPN را تونلی رمزگذاری‌شده بین دو نقطه تصور کن. IPsec خودِ یک پروتکل واحد نیست؛ مجموعه‌ای از سازوکارهاست که بسته‌های IP را احراز هویت، محافظت و در صورت نیاز رمزگذاری می‌کند. IKEv2 کانال مدیریتی را ایجاد می‌کند و درباره الگوریتم‌ها، کلیدها و سیاست‌ها توافق می‌کند؛ ESP از ترافیک واقعی محافظت می‌کند.\n\n## ۲) دو مرحله مهم\n- **IKE_SA_INIT**: توافق الگوریتم‌های IKE، تبادل Diffie–Hellman و nonce؛ معمولاً UDP/500.\n- **IKE_AUTH**: احراز هویت طرفین با PSK یا گواهی، بررسی هویت و ایجاد اولین Child SA.\n- **CREATE_CHILD_SA**: ساخت SAهای بعدی، rekey و در برخی حالت‌ها تبادل اطلاعات اضافی.\n- **ESP data plane**: بسته‌های داده با ESP محافظت می‌شوند. در NAT-T، ESP داخل UDP/4500 کپسوله می‌شود.\n\nعبارت «Phase 1/Phase 2» در رابط بسیاری از سازندگان باقی مانده است؛ در IKEv2 بهتر است دقیقاً از IKE SA و Child SA صحبت کنیم.\n\n## ۳) SA چیست؟\nSecurity Association یک‌طرفه است و پارامترهای محافظت را تعریف می‌کند؛ بنابراین برای ارتباط دوطرفه معمولاً SAهای جدا برای هر جهت داریم. IKE SA کانال کنترل را محافظت می‌کند؛ Child SA ترافیک کاربر را حمل می‌کند. بالا بودن IKE SA به‌تنهایی ثابت نمی‌کند که داده عبور می‌کند.\n\n## ۴) طراحی شبکه\nمثال:\n- دفتر A: `10.10.0.0/16`، IP عمومی `198.51.100.10`\n- دفتر B: `10.20.0.0/16`، IP عمومی `203.0.113.20`\n- هدف: میزبان `10.10.1.10` با `10.20.1.20` ارتباط داشته باشد.\n\nپیش از ساخت VPN بررسی کن: زیرشبکه‌ها هم‌پوشانی نداشته باشند، مسیر برگشت وجود داشته باشد، ACL/Firewall ترافیک را مجاز کند، NAT ناخواسته قبل از IPsec انجام نشود و MTU برای سربار تونل کافی باشد. آدرس‌های مثال مستندسازی هستند و برای اینترنت واقعی قابل استفاده نیستند.\n\n## ۵) انتخاب رمزنگاری\nاز تنظیمات مدرن و مورد پشتیبانی هر دو سمت استفاده کن: AES-GCM در صورت سازگاری، گروه DH قوی و مورد تأیید سازمان، PRF مناسب و عمر SA معقول. الگوریتم‌ها باید روی دو طرف دقیقاً هم‌خوان باشند. از DES/3DES، گروه‌های ضعیف و تنظیمات قدیمی صرفاً برای «بالا آمدن تونل» استفاده نکن. PSK باید تصادفی و بلند باشد؛ برای تعداد زیاد شعب، گواهی و مدیریت چرخه عمر کلید معمولاً عملیاتی‌تر است.\n\n## ۶) روش عیب‌یابی لایه‌به‌لایه\n1. دسترسی IP به peer و صحت Default Route را بررسی کن.\n2. UDP/500 و UDP/4500 و فایروال‌های بین راه را بررسی کن.\n3. لاگ IKE را پیدا کن: timeout معمولاً مشکل reachability/NAT/فیلتر است؛ `NO_PROPOSAL_CHOSEN` معمولاً mismatch الگوریتم/پالیسی است؛ خطای authentication معمولاً PSK، certificate یا identity را مطرح می‌کند.\n4. وضعیت IKE SA را جدا از Child SA بررسی کن.\n5. Selectorها/Proxy-ID یا Traffic Selector دو طرف را مقایسه کن.\n6. مسیر مقصد و مسیر برگشت را روی هر دو روتر بررسی کن.\n7. شمارنده‌های ESP، packet capture، NAT exemption و policy را بررسی کن.\n8. در پایان MTU/MSS و fragmentation را تست کن.\n\n## ۷) خطاهای پرتکرار\n- **Tunnel up, traffic down**: Route، Selector، policy، NAT، مسیر برگشت یا overlap را بررسی کن.\n- **Only one subnet works**: Selectorهای چندشبکه‌ای یا policyهای ناقص.\n- **Works until rekey**: lifetime، PFS/DH برای Child SA، ناسازگاری پیاده‌سازی یا packet loss.\n- **Works without NAT, fails behind NAT**: NAT-T و UDP/4500 و تغییر آدرس peer را بررسی کن.\n- **Intermittent large transfers**: MTU/PMTUD/MSS و ICMPهای لازم را بررسی کن.\n\n## ۸) چک‌لیست عملیاتی\nثبت کن: نام peer، IPهای بیرونی، شبکه‌های محلی/دور، روش احراز هویت، الگوریتم‌ها، عمر SA، NAT-T، routeها، policyها، مسئول گواهی/PSK، پنجره تغییر و روش rollback. اسرار را در گزارش یا ticket به‌صورت متن آشکار ننویس.\n\n## دستورات\n\nنمونه مفهومی برای بررسی (دستور دقیق به سازنده/نسخه بستگی دارد):\n- Cisco IOS-XE: `show crypto ikev2 sa`, `show crypto ipsec sa`, `show crypto session detail`\n- FortiGate: `get vpn ipsec tunnel summary`, `diagnose vpn ike gateway list`, `diagnose vpn tunnel list`\n- MikroTik RouterOS: `/ip ipsec active-peers print`, `/ip ipsec installed-sa print`, `/log print where topics~\"ipsec\"`\n- Linux strongSwan: `swanctl --list-sas`, `swanctl --log`, `ip xfrm state`, `ip xfrm policy`\n- Packet capture: فیلتر `udp port 500 or udp port 4500 or esp`؛ ESP ممکن است به‌صورت پروتکل IP 50 دیده شود.",
-      "notes": "blueprint status=developed",
+      "level": "L0",
+      "summary": "مبانی — HA برای VPN",
+      "full_content": "# [L0] HA برای VPN: مبانی\n\n## خلاصه\nمبانی — HA برای VPN\n\n## هدف\nمهارت مبانی در زمینه HA برای VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 12,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0012",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0013",
-      "title_fa": "[L2] SSL VPN",
+      "uid": "lesson:ch67:enr:0013",
+      "title_fa": "[L0] IPsec مفاهیم: پیکربندی",
       "chapter_order": 67,
-      "subchapter_order": 2,
-      "level": "L2",
-      "summary": "مقایسه SSL VPN مبتنی بر TLS با IPsec، معماری دسترسی راه‌دور، احراز هویت، مجوزدهی، تونل کامل/تقسیمی و ملاحظات چرخه عمر محصول.",
-      "full_content": "# SSL VPN سازمانی و Remote Access\n\n## ۱) SSL VPN یعنی چه؟\nاین اصطلاح معمولاً به دسترسی راه‌دور از طریق TLS اشاره دارد، اما محصول‌ها ممکن است دو روش متفاوت ارائه کنند: **Portal/Web mode** برای انتشار برنامه‌های مشخص و **Tunnel mode** برای ایجاد رابط شبکه مجازی روی دستگاه کاربر. این‌ها یکی نیستند؛ Portal ممکن است فقط چند برنامه را منتشر کند، در حالی که Tunnel مسیرهای IP را به کلاینت اضافه می‌کند.\n\n## ۲) جریان اتصال\n1. کاربر نام DNS درگاه را resolve می‌کند و به سرویس TLS وصل می‌شود.\n2. گواهی سرور بررسی می‌شود؛ نام میزبان، زنجیره اعتماد و تاریخ اعتبار باید درست باشند.\n3. کاربر با رمز، MFA، گواهی دستگاه یا ترکیبی از آن‌ها احراز هویت می‌شود.\n4. گروه/نقش کاربر به portal، address pool و policy مشخص نگاشت می‌شود.\n5. کلاینت مسیرها و DNSهای مجاز را نصب می‌کند.\n6. ترافیک طبق route، split/full tunnel و policy فایروال عبور می‌کند.\n\n## ۳) Split Tunnel در برابر Full Tunnel\n- **Split tunnel**: فقط شبکه‌های سازمانی از VPN می‌گذرند؛ مصرف پهنای‌باند کمتر، اما باید مسیرها و DNS دقیق طراحی شوند.\n- **Full tunnel**: معمولاً تمام ترافیک IPv4/IPv6 به سازمان هدایت می‌شود؛ کنترل و ثبت متمرکز بهتر، اما نیازمند ظرفیت اینترنت و طراحی NAT/خروجی است.\nهیچ‌کدام همیشه بهترین نیست؛ تصمیم باید بر اساس حساسیت داده، مدل تهدید، ظرفیت و سیاست سازمان باشد.\n\n## ۴) امنیت هویت و دستگاه\nMFA را فعال کن؛ دسترسی را بر اساس گروه و حداقل مجوز بده؛ حساب‌های غیرفعال و نشست‌های طولانی را مدیریت کن؛ برای دستگاه‌های سازمانی از گواهی/وضعیت سلامت دستگاه استفاده کن؛ لاگ احراز هویت، IP مبدأ، کاربر و نتیجه policy را به سامانه مرکزی بفرست. گواهی TLS سرور باید معتبر و تمدید آن مانیتور شود.\n\n## ۵) عیب‌یابی SSL VPN\n- اتصال اصلاً برقرار نمی‌شود: DNS، مسیر اینترنت، پورت/سرویس listener، فایروال، گواهی و نسخه TLS را بررسی کن.\n- صفحه ورود باز می‌شود ولی login رد می‌شود: NTP، زنجیره گواهی کاربر، RADIUS/LDAP، MFA و لاگ auth.\n- Login موفق است ولی منابع داخلی باز نمی‌شوند: pool، route، policy، split-tunnel include routes، DNS و مسیر برگشت.\n- فقط نام‌ها resolve نمی‌شوند: DNS تخصیص‌یافته، suffix، split DNS و دسترسی به DNS داخلی.\n- فقط بعضی برنامه‌ها کار نمی‌کنند: policy، پورت مقصد، MTU/MSS، proxy و تفاوت IPv4/IPv6.\n- بعد از به‌روزرسانی کلاینت مشکل شروع شده: نسخه کلاینت/سیستم‌عامل، تغییرات پشتیبانی محصول و release notes را بررسی کن.\n\n## ۶) SSL VPN یا IPsec؟\nIPsec IKEv2 اغلب انتخاب قوی برای site-to-site و نیز بسیاری از کلاینت‌های مدرن است. SSL VPN برای تجربه کاربری/سازگاری یا انتشار برنامه‌ها مفید است؛ اما نام «SSL» به معنی امنیت خودکار نیست. پشتیبانی و معماری برخی محصولات تغییر می‌کند؛ انتخاب را بر اساس نسخه پشتیبانی‌شده، توصیه امنیتی سازنده و نیاز واقعی انجام بده، نه صرفاً عادت قدیمی.\n\n## ۷) الگوی عیب‌یابی درست\nزمان رخداد و نام کاربر را ثبت کن، خطا را دقیق بازتولید کن، لاگ سمت کلاینت و درگاه را هم‌زمان مقایسه کن، سپس فقط یک متغیر را تغییر بده. رمز، token، cookie نشست و private key را در گزارش قرار نده.\n\n## دستورات\n\nدستورها و مسیر منوها بین سازندگان و نسخه‌ها متفاوت‌اند. نمونه‌های عمومی:\n- Windows: `ipconfig /all`, `route print`, `nslookup intranet.example.local`, `Test-NetConnection intranet.example.local -Port 443`\n- Linux: `ip addr`, `ip route`, `resolvectl status`, `curl -Iv https://vpn.example.com`\n- FortiGate: بررسی وضعیت کاربران SSL VPN و لاگ‌های VPN/Authentication از CLI/GUI مطابق نسخه نصب‌شده.\n- برای TLS از ابزارهای مورد تأیید سازمان جهت مشاهده زنجیره گواهی و تاریخ انقضا استفاده کن؛ از نادیده‌گرفتن هشدار گواهی به‌عنوان راه‌حل دائمی پرهیز کن.",
-      "notes": "blueprint status=developed",
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "پیکربندی — IPsec مفاهیم",
+      "full_content": "# [L0] IPsec مفاهیم: پیکربندی\n\n## خلاصه\nپیکربندی — IPsec مفاهیم\n\n## هدف\nمهارت پیکربندی در زمینه IPsec مفاهیم\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 13,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0013",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0014",
-      "title_fa": "[L2] IPsec SA",
+      "uid": "lesson:ch67:enr:0014",
+      "title_fa": "[L0] Site-to-Site: پیکربندی",
       "chapter_order": 67,
-      "subchapter_order": 2,
-      "level": "L2",
-      "summary": "خواندن IKE SA، Child/IPsec SA و شمارنده‌های encapsulation/decapsulation برای جداکردن مشکل کنترل‌پلین از عبور داده.",
-      "full_content": "# خواندن IPsec SA و شمارنده‌ها\n\n## سه سؤال جدا\n1. آیا peer شناخته و IKE SA برقرار است؟\n2. آیا Child SA برای شبکه مورد نظر نصب شده؟\n3. آیا بسته‌های واقعی با selector همان SA match می‌شوند و در جهت مقابل پاسخ دارند؟\n\n## شمارنده‌ها\n- **encaps/encrypted**: بسته‌های خروجی که در این SA محافظت شده‌اند.\n- **decaps/decrypted**: بسته‌های ورودی که با موفقیت پردازش شده‌اند.\nنام دقیق شمارنده‌ها به پلتفرم وابسته است. شمارنده صفر به‌تنهایی حکم قطعی نیست؛ ممکن است تست از مسیر دیگری رفته یا selector آن بسته را پوشش ندهد.\n\n## ماتریس تشخیص\n- IKE پایین: زیرساخت، پورت، peer، proposal یا auth.\n- IKE بالا، Child پایین: selector، proposal ESP، PFS، policy یا lifetime.\n- هر دو بالا، encaps صفر: route/policy/selector سمت مبدأ یا ترافیک آزمایشی نامناسب.\n- encaps بالا، decaps سمت محلی صفر: بررسی peer مقابل، مسیر اینترنت، NAT-T، ACL و selector سمت مقابل.\n- دو جهت شمارنده دارند اما برنامه شکست می‌خورد: فایروال میزبان، DNS، TCP handshake، MTU/MSS یا خود برنامه.\n\n## تست صحیح\nاز یک مبدأ داخل subnet محلی به یک مقصد واقعی داخل subnet دور تست کن؛ ping از خود روتر ممکن است source address متفاوتی انتخاب کند و نتیجه گمراه‌کننده باشد. قبل و بعد از یک تست کوتاه، شمارنده‌ها را مقایسه کن.\n\n## دستورات\n\n- FortiGate: `get vpn ipsec tunnel summary`, `diagnose vpn tunnel list`\n- RouterOS: `/ip ipsec active-peers print`, `/ip ipsec installed-sa print`, `/ip ipsec policy print detail`\n- Linux: `swanctl --list-sas`, `ip -s xfrm state`, `ip xfrm policy`\n- Cisco: `show crypto ipsec sa`, `show crypto ikev2 sa`\nدستورها را برای نسخه هدف اعتبارسنجی کن.",
-      "notes": "blueprint status=developed",
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "پیکربندی — Site-to-Site",
+      "full_content": "# [L0] Site-to-Site: پیکربندی\n\n## خلاصه\nپیکربندی — Site-to-Site\n\n## هدف\nمهارت پیکربندی در زمینه Site-to-Site\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
       "lesson_order": 14,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0014",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     },
     {
-      "uid": "lesson:ch67:bp:0015",
-      "title_fa": "[L2] Performance",
+      "uid": "lesson:ch67:enr:0015",
+      "title_fa": "[L0] Remote Access VPN: پیکربندی",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "پیکربندی — Remote Access VPN",
+      "full_content": "# [L0] Remote Access VPN: پیکربندی\n\n## خلاصه\nپیکربندی — Remote Access VPN\n\n## هدف\nمهارت پیکربندی در زمینه Remote Access VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 15,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0016",
+      "title_fa": "[L0] عیب‌یابی تونل: پیکربندی",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "پیکربندی — عیب‌یابی تونل",
+      "full_content": "# [L0] عیب‌یابی تونل: پیکربندی\n\n## خلاصه\nپیکربندی — عیب‌یابی تونل\n\n## هدف\nمهارت پیکربندی در زمینه عیب‌یابی تونل\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 16,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0017",
+      "title_fa": "[L0] Overlapping subnets: پیکربندی",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "پیکربندی — Overlapping subnets",
+      "full_content": "# [L0] Overlapping subnets: پیکربندی\n\n## خلاصه\nپیکربندی — Overlapping subnets\n\n## هدف\nمهارت پیکربندی در زمینه Overlapping subnets\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 17,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0018",
+      "title_fa": "[L0] HA برای VPN: پیکربندی",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "پیکربندی — HA برای VPN",
+      "full_content": "# [L0] HA برای VPN: پیکربندی\n\n## خلاصه\nپیکربندی — HA برای VPN\n\n## هدف\nمهارت پیکربندی در زمینه HA برای VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 18,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0019",
+      "title_fa": "[L0] IPsec مفاهیم: عملیات روزانه",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "عملیات روزانه — IPsec مفاهیم",
+      "full_content": "# [L0] IPsec مفاهیم: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — IPsec مفاهیم\n\n## هدف\nمهارت عملیات روزانه در زمینه IPsec مفاهیم\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 19,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0020",
+      "title_fa": "[L0] Site-to-Site: عملیات روزانه",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "عملیات روزانه — Site-to-Site",
+      "full_content": "# [L0] Site-to-Site: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — Site-to-Site\n\n## هدف\nمهارت عملیات روزانه در زمینه Site-to-Site\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 20,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0021",
+      "title_fa": "[L0] Remote Access VPN: عملیات روزانه",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L0",
+      "summary": "عملیات روزانه — Remote Access VPN",
+      "full_content": "# [L0] Remote Access VPN: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — Remote Access VPN\n\n## هدف\nمهارت عملیات روزانه در زمینه Remote Access VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 21,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0022",
+      "title_fa": "[L0] عیب‌یابی تونل: عملیات روزانه",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "عملیات روزانه — عیب‌یابی تونل",
+      "full_content": "# [L0] عیب‌یابی تونل: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — عیب‌یابی تونل\n\n## هدف\nمهارت عملیات روزانه در زمینه عیب‌یابی تونل\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 22,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0023",
+      "title_fa": "[L0] Overlapping subnets: عملیات روزانه",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "عملیات روزانه — Overlapping subnets",
+      "full_content": "# [L0] Overlapping subnets: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — Overlapping subnets\n\n## هدف\nمهارت عملیات روزانه در زمینه Overlapping subnets\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 23,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0024",
+      "title_fa": "[L0] HA برای VPN: عملیات روزانه",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L0",
+      "summary": "عملیات روزانه — HA برای VPN",
+      "full_content": "# [L0] HA برای VPN: عملیات روزانه\n\n## خلاصه\nعملیات روزانه — HA برای VPN\n\n## هدف\nمهارت عملیات روزانه در زمینه HA برای VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 24,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0025",
+      "title_fa": "[L1] IPsec مفاهیم: مانیتور",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "مانیتور — IPsec مفاهیم",
+      "full_content": "# [L1] IPsec مفاهیم: مانیتور\n\n## خلاصه\nمانیتور — IPsec مفاهیم\n\n## هدف\nمهارت مانیتور در زمینه IPsec مفاهیم\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 25,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0026",
+      "title_fa": "[L1] Site-to-Site: مانیتور",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "مانیتور — Site-to-Site",
+      "full_content": "# [L1] Site-to-Site: مانیتور\n\n## خلاصه\nمانیتور — Site-to-Site\n\n## هدف\nمهارت مانیتور در زمینه Site-to-Site\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 26,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0027",
+      "title_fa": "[L1] Remote Access VPN: مانیتور",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "مانیتور — Remote Access VPN",
+      "full_content": "# [L1] Remote Access VPN: مانیتور\n\n## خلاصه\nمانیتور — Remote Access VPN\n\n## هدف\nمهارت مانیتور در زمینه Remote Access VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 27,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0028",
+      "title_fa": "[L1] عیب‌یابی تونل: مانیتور",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "مانیتور — عیب‌یابی تونل",
+      "full_content": "# [L1] عیب‌یابی تونل: مانیتور\n\n## خلاصه\nمانیتور — عیب‌یابی تونل\n\n## هدف\nمهارت مانیتور در زمینه عیب‌یابی تونل\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 28,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0029",
+      "title_fa": "[L1] Overlapping subnets: مانیتور",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "مانیتور — Overlapping subnets",
+      "full_content": "# [L1] Overlapping subnets: مانیتور\n\n## خلاصه\nمانیتور — Overlapping subnets\n\n## هدف\nمهارت مانیتور در زمینه Overlapping subnets\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 29,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0030",
+      "title_fa": "[L1] HA برای VPN: مانیتور",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "مانیتور — HA برای VPN",
+      "full_content": "# [L1] HA برای VPN: مانیتور\n\n## خلاصه\nمانیتور — HA برای VPN\n\n## هدف\nمهارت مانیتور در زمینه HA برای VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 30,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0031",
+      "title_fa": "[L1] IPsec مفاهیم: عیب‌یابی",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "عیب‌یابی — IPsec مفاهیم",
+      "full_content": "# [L1] IPsec مفاهیم: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — IPsec مفاهیم\n\n## هدف\nمهارت عیب‌یابی در زمینه IPsec مفاهیم\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 31,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0032",
+      "title_fa": "[L1] Site-to-Site: عیب‌یابی",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "عیب‌یابی — Site-to-Site",
+      "full_content": "# [L1] Site-to-Site: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — Site-to-Site\n\n## هدف\nمهارت عیب‌یابی در زمینه Site-to-Site\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 32,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0033",
+      "title_fa": "[L1] Remote Access VPN: عیب‌یابی",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "عیب‌یابی — Remote Access VPN",
+      "full_content": "# [L1] Remote Access VPN: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — Remote Access VPN\n\n## هدف\nمهارت عیب‌یابی در زمینه Remote Access VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 33,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0034",
+      "title_fa": "[L1] عیب‌یابی تونل: عیب‌یابی",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "عیب‌یابی — عیب‌یابی تونل",
+      "full_content": "# [L1] عیب‌یابی تونل: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — عیب‌یابی تونل\n\n## هدف\nمهارت عیب‌یابی در زمینه عیب‌یابی تونل\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 34,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0035",
+      "title_fa": "[L1] Overlapping subnets: عیب‌یابی",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "عیب‌یابی — Overlapping subnets",
+      "full_content": "# [L1] Overlapping subnets: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — Overlapping subnets\n\n## هدف\nمهارت عیب‌یابی در زمینه Overlapping subnets\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 35,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0036",
+      "title_fa": "[L1] HA برای VPN: عیب‌یابی",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "عیب‌یابی — HA برای VPN",
+      "full_content": "# [L1] HA برای VPN: عیب‌یابی\n\n## خلاصه\nعیب‌یابی — HA برای VPN\n\n## هدف\nمهارت عیب‌یابی در زمینه HA برای VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 36,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0037",
+      "title_fa": "[L1] IPsec مفاهیم: امنیت",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "امنیت — IPsec مفاهیم",
+      "full_content": "# [L1] IPsec مفاهیم: امنیت\n\n## خلاصه\nامنیت — IPsec مفاهیم\n\n## هدف\nمهارت امنیت در زمینه IPsec مفاهیم\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 37,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0038",
+      "title_fa": "[L1] Site-to-Site: امنیت",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "امنیت — Site-to-Site",
+      "full_content": "# [L1] Site-to-Site: امنیت\n\n## خلاصه\nامنیت — Site-to-Site\n\n## هدف\nمهارت امنیت در زمینه Site-to-Site\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 38,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0039",
+      "title_fa": "[L1] Remote Access VPN: امنیت",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L1",
+      "summary": "امنیت — Remote Access VPN",
+      "full_content": "# [L1] Remote Access VPN: امنیت\n\n## خلاصه\nامنیت — Remote Access VPN\n\n## هدف\nمهارت امنیت در زمینه Remote Access VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 39,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0040",
+      "title_fa": "[L1] عیب‌یابی تونل: امنیت",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "امنیت — عیب‌یابی تونل",
+      "full_content": "# [L1] عیب‌یابی تونل: امنیت\n\n## خلاصه\nامنیت — عیب‌یابی تونل\n\n## هدف\nمهارت امنیت در زمینه عیب‌یابی تونل\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 40,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0041",
+      "title_fa": "[L1] Overlapping subnets: امنیت",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "امنیت — Overlapping subnets",
+      "full_content": "# [L1] Overlapping subnets: امنیت\n\n## خلاصه\nامنیت — Overlapping subnets\n\n## هدف\nمهارت امنیت در زمینه Overlapping subnets\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 41,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0042",
+      "title_fa": "[L1] HA برای VPN: امنیت",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L1",
+      "summary": "امنیت — HA برای VPN",
+      "full_content": "# [L1] HA برای VPN: امنیت\n\n## خلاصه\nامنیت — HA برای VPN\n\n## هدف\nمهارت امنیت در زمینه HA برای VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 42,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0043",
+      "title_fa": "[L2] IPsec مفاهیم: مستندسازی",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "مستندسازی — IPsec مفاهیم",
+      "full_content": "# [L2] IPsec مفاهیم: مستندسازی\n\n## خلاصه\nمستندسازی — IPsec مفاهیم\n\n## هدف\nمهارت مستندسازی در زمینه IPsec مفاهیم\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 43,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0044",
+      "title_fa": "[L2] Site-to-Site: مستندسازی",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "مستندسازی — Site-to-Site",
+      "full_content": "# [L2] Site-to-Site: مستندسازی\n\n## خلاصه\nمستندسازی — Site-to-Site\n\n## هدف\nمهارت مستندسازی در زمینه Site-to-Site\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 44,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0045",
+      "title_fa": "[L2] Remote Access VPN: مستندسازی",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "مستندسازی — Remote Access VPN",
+      "full_content": "# [L2] Remote Access VPN: مستندسازی\n\n## خلاصه\nمستندسازی — Remote Access VPN\n\n## هدف\nمهارت مستندسازی در زمینه Remote Access VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 45,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0046",
+      "title_fa": "[L2] عیب‌یابی تونل: مستندسازی",
       "chapter_order": 67,
       "subchapter_order": 2,
       "level": "L2",
-      "summary": "اندازه‌گیری تأخیر، throughput، loss و اثر سربار رمزنگاری، MTU و rekey بر کیفیت VPN. شامل لابراتوار یکپارچه و ارزیابی پایان بسته.",
-      "full_content": "# کارایی و پایداری VPN\n\n## عوامل اصلی\n- ظرفیت و کیفیت مسیر اینترنت، latency، jitter و packet loss.\n- توان CPU/crypto acceleration دو peer.\n- سربار ESP و NAT-T و اندازه MTU واقعی مسیر.\n- انتخاب الگوریتم، تعداد تونل‌ها، تعداد SAها و حجم نشست‌ها.\n- سیاست inspection، logging و shaping در مسیر.\n- rekey و تغییر مسیر که ممکن است وقفه کوتاه ایجاد کند.\n\n## روش اندازه‌گیری\n1. خط مبنای اینترنت را بدون عبور از تونل اندازه بگیر.\n2. تأخیر و loss را به peer و سپس به مقصد داخل شبکه دور مقایسه کن.\n3. throughput را با ابزار مجاز و endpointهای کنترل‌شده تست کن؛ از یک تست کوتاه به‌عنوان ظرفیت قطعی نتیجه نگیر.\n4. هم‌زمان CPU، interface errors، drops و شمارنده SA را ثبت کن.\n5. تست کوچک در برابر انتقال بزرگ را مقایسه کن تا مشکل MTU/MSS آشکار شود.\n6. زمان rekey و رخدادهای قطع‌و‌وصل را با لاگ هم‌بسته کن.\n\n## MTU/MSS\nکپسوله‌سازی IPsec اندازه بسته را افزایش می‌دهد؛ بسته‌ای که روی LAN جا می‌شود ممکن است پس از encapsulation از MTU مسیر بزرگ‌تر شود. نتیجه می‌تواند fragmentation یا black-hole در صورت مسدود بودن پیام‌های لازم ICMP باشد. TCP MSS clamping می‌تواند در برخی طراحی‌ها کمک کند، اما عدد ثابت را کورکورانه اعمال نکن؛ اندازه واقعی مسیر و IPv4/IPv6 را در نظر بگیر.\n\n## معیار پذیرش\nمعیارهای SLA باید پیشاپیش تعریف شوند: availability، latency، loss، throughput و زمان بازیابی. قبل و بعد از تغییر الگوریتم/MTU، نتیجه قابل مقایسه ثبت کن.\n\n## دستورات\n\nنمونه ابزارهای تشخیصی:\n- `ping` با اندازه بسته کنترل‌شده و گزینه DF در سیستم‌های پشتیبان\n- `traceroute` / `tracert`\n- `iperf3` بین دو endpoint تحت کنترل، با مجوز و در زمان تست\n- آمار CPU، interface drops و IPsec SA از CLI سازنده\nاز تست حجیم روی لینک عملیاتی بدون تأیید و محدودیت نرخ استفاده نکن.",
-      "notes": "blueprint status=developed",
-      "lesson_order": 15,
+      "summary": "مستندسازی — عیب‌یابی تونل",
+      "full_content": "# [L2] عیب‌یابی تونل: مستندسازی\n\n## خلاصه\nمستندسازی — عیب‌یابی تونل\n\n## هدف\nمهارت مستندسازی در زمینه عیب‌یابی تونل\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 46,
       "meta": {
-        "source_uid": "lesson:ch57:bp:0015",
-        "source_file": "source_archive/vpn_enterprise_ipsec_ssl_deep_v1.json"
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0047",
+      "title_fa": "[L2] Overlapping subnets: مستندسازی",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "مستندسازی — Overlapping subnets",
+      "full_content": "# [L2] Overlapping subnets: مستندسازی\n\n## خلاصه\nمستندسازی — Overlapping subnets\n\n## هدف\nمهارت مستندسازی در زمینه Overlapping subnets\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 47,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0048",
+      "title_fa": "[L2] HA برای VPN: مستندسازی",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "مستندسازی — HA برای VPN",
+      "full_content": "# [L2] HA برای VPN: مستندسازی\n\n## خلاصه\nمستندسازی — HA برای VPN\n\n## هدف\nمهارت مستندسازی در زمینه HA برای VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 48,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0049",
+      "title_fa": "[L2] IPsec مفاهیم: Lab عملی",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "Lab عملی — IPsec مفاهیم",
+      "full_content": "# [L2] IPsec مفاهیم: Lab عملی\n\n## خلاصه\nLab عملی — IPsec مفاهیم\n\n## هدف\nمهارت Lab عملی در زمینه IPsec مفاهیم\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 49,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0050",
+      "title_fa": "[L2] Site-to-Site: Lab عملی",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "Lab عملی — Site-to-Site",
+      "full_content": "# [L2] Site-to-Site: Lab عملی\n\n## خلاصه\nLab عملی — Site-to-Site\n\n## هدف\nمهارت Lab عملی در زمینه Site-to-Site\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 50,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0051",
+      "title_fa": "[L2] Remote Access VPN: Lab عملی",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "Lab عملی — Remote Access VPN",
+      "full_content": "# [L2] Remote Access VPN: Lab عملی\n\n## خلاصه\nLab عملی — Remote Access VPN\n\n## هدف\nمهارت Lab عملی در زمینه Remote Access VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 51,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0052",
+      "title_fa": "[L2] عیب‌یابی تونل: Lab عملی",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "Lab عملی — عیب‌یابی تونل",
+      "full_content": "# [L2] عیب‌یابی تونل: Lab عملی\n\n## خلاصه\nLab عملی — عیب‌یابی تونل\n\n## هدف\nمهارت Lab عملی در زمینه عیب‌یابی تونل\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 52,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0053",
+      "title_fa": "[L2] Overlapping subnets: Lab عملی",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "Lab عملی — Overlapping subnets",
+      "full_content": "# [L2] Overlapping subnets: Lab عملی\n\n## خلاصه\nLab عملی — Overlapping subnets\n\n## هدف\nمهارت Lab عملی در زمینه Overlapping subnets\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 53,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0054",
+      "title_fa": "[L2] HA برای VPN: Lab عملی",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "Lab عملی — HA برای VPN",
+      "full_content": "# [L2] HA برای VPN: Lab عملی\n\n## خلاصه\nLab عملی — HA برای VPN\n\n## هدف\nمهارت Lab عملی در زمینه HA برای VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 54,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0055",
+      "title_fa": "[L2] IPsec مفاهیم: runbook",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "runbook — IPsec مفاهیم",
+      "full_content": "# [L2] IPsec مفاهیم: runbook\n\n## خلاصه\nrunbook — IPsec مفاهیم\n\n## هدف\nمهارت runbook در زمینه IPsec مفاهیم\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 55,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0056",
+      "title_fa": "[L2] Site-to-Site: runbook",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "runbook — Site-to-Site",
+      "full_content": "# [L2] Site-to-Site: runbook\n\n## خلاصه\nrunbook — Site-to-Site\n\n## هدف\nمهارت runbook در زمینه Site-to-Site\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 56,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0057",
+      "title_fa": "[L2] Remote Access VPN: runbook",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "runbook — Remote Access VPN",
+      "full_content": "# [L2] Remote Access VPN: runbook\n\n## خلاصه\nrunbook — Remote Access VPN\n\n## هدف\nمهارت runbook در زمینه Remote Access VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 57,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0058",
+      "title_fa": "[L2] عیب‌یابی تونل: runbook",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "runbook — عیب‌یابی تونل",
+      "full_content": "# [L2] عیب‌یابی تونل: runbook\n\n## خلاصه\nrunbook — عیب‌یابی تونل\n\n## هدف\nمهارت runbook در زمینه عیب‌یابی تونل\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 58,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0059",
+      "title_fa": "[L2] Overlapping subnets: runbook",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "runbook — Overlapping subnets",
+      "full_content": "# [L2] Overlapping subnets: runbook\n\n## خلاصه\nrunbook — Overlapping subnets\n\n## هدف\nمهارت runbook در زمینه Overlapping subnets\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 59,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0060",
+      "title_fa": "[L2] HA برای VPN: runbook",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "runbook — HA برای VPN",
+      "full_content": "# [L2] HA برای VPN: runbook\n\n## خلاصه\nrunbook — HA برای VPN\n\n## هدف\nمهارت runbook در زمینه HA برای VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 60,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0061",
+      "title_fa": "[L2] IPsec مفاهیم: چک‌لیست",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "چک‌لیست — IPsec مفاهیم",
+      "full_content": "# [L2] IPsec مفاهیم: چک‌لیست\n\n## خلاصه\nچک‌لیست — IPsec مفاهیم\n\n## هدف\nمهارت چک‌لیست در زمینه IPsec مفاهیم\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 61,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0062",
+      "title_fa": "[L2] Site-to-Site: چک‌لیست",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "چک‌لیست — Site-to-Site",
+      "full_content": "# [L2] Site-to-Site: چک‌لیست\n\n## خلاصه\nچک‌لیست — Site-to-Site\n\n## هدف\nمهارت چک‌لیست در زمینه Site-to-Site\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 62,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0063",
+      "title_fa": "[L2] Remote Access VPN: چک‌لیست",
+      "chapter_order": 67,
+      "subchapter_order": 1,
+      "level": "L2",
+      "summary": "چک‌لیست — Remote Access VPN",
+      "full_content": "# [L2] Remote Access VPN: چک‌لیست\n\n## خلاصه\nچک‌لیست — Remote Access VPN\n\n## هدف\nمهارت چک‌لیست در زمینه Remote Access VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 63,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0064",
+      "title_fa": "[L2] عیب‌یابی تونل: چک‌لیست",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "چک‌لیست — عیب‌یابی تونل",
+      "full_content": "# [L2] عیب‌یابی تونل: چک‌لیست\n\n## خلاصه\nچک‌لیست — عیب‌یابی تونل\n\n## هدف\nمهارت چک‌لیست در زمینه عیب‌یابی تونل\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 64,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0065",
+      "title_fa": "[L2] Overlapping subnets: چک‌لیست",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "چک‌لیست — Overlapping subnets",
+      "full_content": "# [L2] Overlapping subnets: چک‌لیست\n\n## خلاصه\nچک‌لیست — Overlapping subnets\n\n## هدف\nمهارت چک‌لیست در زمینه Overlapping subnets\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 65,
+      "meta": {
+        "practical": true,
+        "enrichment": true
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lesson:ch67:enr:0066",
+      "title_fa": "[L2] HA برای VPN: چک‌لیست",
+      "chapter_order": 67,
+      "subchapter_order": 2,
+      "level": "L2",
+      "summary": "چک‌لیست — HA برای VPN",
+      "full_content": "# [L2] HA برای VPN: چک‌لیست\n\n## خلاصه\nچک‌لیست — HA برای VPN\n\n## هدف\nمهارت چک‌لیست در زمینه HA برای VPN\n\n## گام‌ها\n1) Lab 2) وضعیت قبل 3) اعمال 4) اعتبارسنجی 5) ثبت در runbook\n\n## اشتباه رایج\nاجرا روی production بدون change window\n\n## ایمنی\nفقط Lab/Staging مگر مجوز رسمی\n\n## چک‌لیست\n- [ ] Lab\n- [ ] مستند\n- [ ] مرور اشتباهات\n",
+      "notes": "",
+      "lesson_order": 66,
+      "meta": {
+        "practical": true,
+        "enrichment": true
       },
       "source_status": "review_required"
     }

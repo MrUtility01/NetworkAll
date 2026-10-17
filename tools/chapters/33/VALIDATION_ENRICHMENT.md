@@ -1,4 +1,4 @@
-# فصل 33 — Entra ID Hybrid
+# فصل 33 — Entra ID Hybrid — غنی‌سازی
 
 review_required | preserve_existing
 
@@ -6,3 +6,7 @@ review_required | preserve_existing
 |-----|--------|
 | lessons | 242 |
 | questions | 400 |
+| answers | 400 |
+| labs | 28 |
+| examples | 60 |
+| commands | 60 |

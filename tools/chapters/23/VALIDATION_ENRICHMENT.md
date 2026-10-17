@@ -6,4 +6,7 @@ review_required | preserve_existing
 |-----|--------|
 | lessons | 231 |
 | questions | 450 |
+| answers | 450 |
 | labs | 16 |
+| examples | 32 |
+| commands | 32 |
