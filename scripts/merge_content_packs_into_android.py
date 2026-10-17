@@ -26,6 +26,9 @@ def find_pack_files():
     """Use only canonical per-chapter packs; archived/original JSON files are not imported twice."""
     # Prefer the compiled numeric layout; retain a fallback while the migration runs.
     files = list(ROOT.glob("tools/chapters/[0-9]/build/chapter.json"))
+    canonical_ch68_commands = ROOT / "tools/chapters/68/commands/commands.json"
+    if canonical_ch68_commands.is_file():
+        files.append(canonical_ch68_commands)
     files += list(ROOT.glob("tools/chapters/[0-9][0-9]/build/chapter.json"))
     files += list(ROOT.glob("tools/chapters/[0-9]/chapter.json"))
     files += list(ROOT.glob("tools/chapters/[0-9][0-9]/chapter.json"))
@@ -56,7 +59,7 @@ def commands_to_lessons(data: dict) -> list:
         cmd = c.get("command") or c.get("title_en") or ""
         level = c.get("level") or "L1"
         title_fa = c.get("title_fa") or cmd
-        if not str(title_fa).startswith("[L"):
+        if ch != 68 and not str(title_fa).startswith("[L"):
             title_fa = f"[{level}] {title_fa}"
         sub = (c.get("subcategory") or c.get("category") or "general").strip().lower()
         sub_order = sub_map.get(sub, 10)
@@ -178,7 +181,89 @@ def blueprint_to_lessons(d, focus_keywords, default_ch):
     return out
 
 
+CH68_SECTION_TITLES = {
+    1: "مبانی و اطلاعات دستگاه",
+    2: "رابط‌ها و وضعیت پورت‌ها",
+    3: "VLAN و Switching",
+    4: "Routing و جدول مسیریابی",
+    5: "ACL و کنترل دسترسی",
+    6: "NAT و ترجمه آدرس",
+    7: "DHCP و DNS",
+    8: "VPN و تونل‌ها",
+    9: "لاگ، مانیتورینگ و عیب‌یابی",
+    10: "پیکربندی، ذخیره‌سازی و مدیریت تغییر",
+    11: "امنیت و کاربران",
+    12: "سایر دستورات و ابزارها",
+}
+
+def _classify_ch68_command(command: str, title: str = ""):
+    text = (str(command or "") + " " + str(title or "")).strip().lower()
+    rules = [
+        (["show version", "show inventory", "show platform", "show clock", "show license", "show environment", "show module"], 1, "مبانی و اطلاعات دستگاه"),
+        (["interface", "interfaces", "show ip interface", "show interfaces", "show controllers", "show line"], 2, "رابط‌ها و وضعیت پورت‌ها"),
+        (["vlan", "switchport", "spanning-tree", "etherchannel", "port-channel", "mac address-table", "show mac"], 3, "VLAN و Switching"),
+        (["ip route", "ipv6 route", "router ospf", "router bgp", "show ip ospf", "show ip bgp", "show ip route", "neighbor", "redistribute"], 4, "Routing و جدول مسیریابی"),
+        (["access-list", "access-class", "ip access-group", "ipv6 traffic-filter", "prefix-list", "route-map", "aaa ", "tacacs", "radius"], 5, "ACL و کنترل دسترسی"),
+        (["ip nat", "nat ", "overload", "inside source", "inside destination", "show ip nat"], 6, "NAT و ترجمه آدرس"),
+        (["dhcp", "dns", "ip helper-address", "domain-name", "name-server"], 7, "DHCP و DNS"),
+        (["crypto ike", "crypto ipsec", "tunnel", "vpn", "wireguard", "ipsec"], 8, "VPN و تونل‌ها"),
+        (["logging", "syslog", "snmp", "netflow", "show processes", "debug ", "ping ", "traceroute", "show logging", "show tech"], 9, "لاگ، مانیتورینگ و عیب‌یابی"),
+        (["copy ", "write memory", "startup-config", "running-config", "archive", "configure terminal", "reload", "boot system", "install "], 10, "پیکربندی، ذخیره‌سازی و مدیریت تغییر"),
+        (["username", "enable secret", "password", "crypto key", "ssh", "line vty", "login", "port-security", "storm-control"], 11, "امنیت و کاربران"),
+    ]
+    for needles, order, label in rules:
+        if any(n in text for n in needles):
+            return order, label
+    return 12, CH68_SECTION_TITLES[12]
+
+def command_items_to_lessons(data: dict) -> list:
+    """Convert chapter-68 command records into categorized, searchable lessons."""
+    out = []
+    for i, item in enumerate(data.get("items") or [], 1):
+        if not isinstance(item, dict):
+            continue
+        fields = item.get("fields") or {}
+        command = str(fields.get("commands") or item.get("title_en") or "").strip()
+        title_en = str(item.get("title_en") or command).strip()
+        title_fa = re.sub(r"^\\[L[0-4]\\]\\s*", "", str(item.get("title_fa") or title_en)).strip()
+        order, section = _classify_ch68_command(command, title_en)
+        keywords = sorted(set([command, title_en, title_fa, section, "فصل ۶۸", "دستور شبکه", "عیب‌یابی"]))
+        summary = f"{section}: کاربرد دستور {command} و بررسی نتیجه اجرای آن."
+        full = (
+            f"# {title_fa}\n\n"
+            f"بخش: {section}\n\n"
+            f"## دستور\n{command}\n\n"
+            f"## توضیح و کاربرد\nاین دستور در بخش «{section}» استفاده می‌شود. هدف اجرا را مشخص کنید، سپس دستور را در محیط و سطح دسترسی مناسب اجرا کرده و خروجی را با وضعیت مورد انتظار مقایسه کنید.\n\n"
+            f"## روش بررسی\n1. دستگاه، سیستم‌عامل و سطح دسترسی را تأیید کنید.\n"
+            f"2. دستور را اجرا کنید: {command}\n"
+            f"3. خروجی، پیام خطا و زمان اجرا را ثبت کنید.\n"
+            f"4. در صورت تغییر پیکربندی، قبل از ذخیره‌سازی اثر آن را بررسی کنید.\n\n"
+            f"## کلیدواژه‌های جستجو\n{', '.join(keywords)}\n\n"
+            "## نکته ایمنی\nدستورات تغییردهنده یا مخرب را فقط در محیط مجاز و پس از تهیه نسخه پشتیبان اجرا کنید."
+        )
+        out.append({
+            "uid": item.get("uid") or f"lesson:ch68:cmdsrc:{i:05d}",
+            "chapter_order": 68,
+            "subchapter_order": order,
+            "subchapter_title_fa": section,
+            "lesson_order": i,
+            "level": "L1",
+            "title_fa": title_fa,
+            "title_en": title_en,
+            "summary": summary,
+            "full_content": full,
+            "commands": command,
+            "examples": "",
+            "notes": f"بخش: {section}\nکلیدواژه‌ها: {', '.join(keywords)}",
+            "meta": {"category_fa": section, "search_keywords": keywords, "source_uid": item.get("uid")},
+            "source_status": "review_required",
+        })
+    return out
+
+
 def normalize_pack(path: Path, data: dict):
+    if data.get("category") == "commands" and data.get("items"):
+        return command_items_to_lessons(data)
     if data.get("commands"):
         return commands_to_lessons(data)
     if data.get("lessons"):
@@ -268,7 +353,8 @@ def append_unmatched_as_extra(data, lessons, order, title_fa, title_en):
                 "examples": as_text(src.get("examples")),
                 "notes": notes,
             })
-        out_subs.append({"title_fa": f"زیرفصل {si}", "lessons": les_out})
+        section_title = CH68_SECTION_TITLES.get(int(si), f"بخش {si}") if int(order) == 68 else f"زیرفصل {si}"
+        out_subs.append({"title_fa": section_title, "lessons": les_out})
     data["chapters"].append({
         "order": order,
         "title_fa": title_fa,
