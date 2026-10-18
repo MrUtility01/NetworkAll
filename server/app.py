@@ -165,6 +165,63 @@ def health():
     })
 
 
+@app.get("/api/stats")
+def api_stats():
+    """آمار کلی برای نوار وضعیت رابط ویندوز."""
+    denied = require_token()
+    if denied:
+        return denied
+    try:
+        return jsonify(db().stats())
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.get("/api/chapters/<int:chapter_id>/levels")
+def chapter_levels(chapter_id: int):
+    """سازگاری با کلاینت‌های قدیمی؛ ترجیح با جریان پیوستهٔ /lessons است."""
+    denied = require_token()
+    if denied:
+        return denied
+    levels = db().list_levels(chapter_id)
+    return jsonify({"levels": levels})
+
+
+@app.get("/api/levels/<int:level_id>/lessons")
+def level_lessons(level_id: int):
+    denied = require_token()
+    if denied:
+        return denied
+    return jsonify({"lessons": db().list_lessons(level_id)})
+
+
+@app.get("/api/chapters/<int:chapter_id>/lessons")
+def chapter_lessons_continuous(chapter_id: int):
+    """فهرست پیوستهٔ همه درس‌های یک فصل — بدون درخت L0 تا L4."""
+    denied = require_token()
+    if denied:
+        return denied
+    levels = db().list_levels(chapter_id)
+    out = []
+    for lv in levels:
+        lv_id = lv["id"] if isinstance(lv, dict) else lv[0]
+        lv_title = (lv.get("title_fa") if isinstance(lv, dict) else "") or ""
+        for les in db().list_lessons(lv_id):
+            if isinstance(les, dict):
+                item = dict(les)
+            else:
+                item = {k: les[k] for k in les.keys()}
+            item["level_id"] = lv_id
+            item["level_title_fa"] = lv_title
+            out.append(item)
+    return jsonify({
+        "lessons": out,
+        "continuous": True,
+        "level_count": len(levels),
+        "lesson_count": len(out),
+    })
+
+
 @app.get("/api/chapters")
 def chapters():
     denied = require_token()
