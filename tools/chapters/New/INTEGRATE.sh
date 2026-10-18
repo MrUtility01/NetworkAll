@@ -58,6 +58,7 @@ unzip_one "$NEW/ch24_fortigate_enrichment.zip"
 unzip_one "$NEW/ch32_endpoint_sec_enrichment.zip"
 unzip_one "$NEW/ch33_entra_hybrid_enrichment.zip"
 unzip_one "$NEW/ch52_dba_10x.zip"
+for z in "$NEW"/ch01_10_40x*.zip "$NEW"/ch1_10_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
 for z in "$NEW"/ch10_20_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
 for z in "$NEW"/ch20_30_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
 for z in "$NEW"/ch30_40_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
@@ -75,6 +76,18 @@ copy_pack 24 "$WORKDIR/ch24_fortigate_enrichment"
 copy_pack 32 "$WORKDIR/ch32_endpoint_sec_enrichment"
 copy_pack 33 "$WORKDIR/ch33_entra_hybrid_enrichment"
 copy_pack 52 "$WORKDIR/ch52_dba_10x"
+
+# ch01-10 deep 40x
+copy_pack 1 "$WORKDIR/ch1_it_architecture"
+copy_pack 2 "$WORKDIR/ch2_assembly_troubleshoot_servers"
+copy_pack 3 "$WORKDIR/ch3_bios_uefi_boot"
+copy_pack 4 "$WORKDIR/ch4_os_fundamentals"
+copy_pack 5 "$WORKDIR/ch5_filesystem_storage_basic"
+copy_pack 6 "$WORKDIR/ch6_network_fundamentals"
+copy_pack 7 "$WORKDIR/ch7_ethernet_switching_basic"
+copy_pack 8 "$WORKDIR/ch8_ipv4_ipv6_subnetting"
+copy_pack 9 "$WORKDIR/ch9_arp_icmp_tcp_udp"
+copy_pack 10 "$WORKDIR/ch10_dns_addon"
 
 # ch10-20 deep 40x
 copy_pack 10 "$WORKDIR/ch10_dns"
@@ -141,7 +154,8 @@ copy_pack 58 "$WORKDIR/ch58_endpoint_appsec_devsecops"
 copy_pack 59 "$WORKDIR/ch59_soc_ir_hunting"
 copy_pack 60 "$WORKDIR/ch60_ethical_lab_20x_addon"
 
-# prefer deepest for overlapping chapters last
+# prefer deepest last
+copy_pack 10 "$WORKDIR/ch10_dns"
 copy_pack 20 "$WORKDIR/ch20_mikrotik_routing_fw_nat"
 copy_pack 22 "$WORKDIR/ch22_wifi_enterprise_deep"
 copy_pack 23 "$WORKDIR/ch23_ptp_ptmp_deep"
