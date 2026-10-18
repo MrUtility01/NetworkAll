@@ -58,6 +58,7 @@ unzip_one "$NEW/ch24_fortigate_enrichment.zip"
 unzip_one "$NEW/ch32_endpoint_sec_enrichment.zip"
 unzip_one "$NEW/ch33_entra_hybrid_enrichment.zip"
 unzip_one "$NEW/ch52_dba_10x.zip"
+for z in "$NEW"/ch10_20_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
 for z in "$NEW"/ch20_30_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
 for z in "$NEW"/ch30_40_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
 for z in "$NEW"/ch40_50_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
@@ -74,6 +75,19 @@ copy_pack 24 "$WORKDIR/ch24_fortigate_enrichment"
 copy_pack 32 "$WORKDIR/ch32_endpoint_sec_enrichment"
 copy_pack 33 "$WORKDIR/ch33_entra_hybrid_enrichment"
 copy_pack 52 "$WORKDIR/ch52_dba_10x"
+
+# ch10-20 deep 40x
+copy_pack 10 "$WORKDIR/ch10_dns"
+copy_pack 11 "$WORKDIR/ch11_dhcp_ipam"
+copy_pack 12 "$WORKDIR/ch12_cabling_fiber_rack"
+copy_pack 13 "$WORKDIR/ch13_cisco_switching_deep"
+copy_pack 14 "$WORKDIR/ch14_advanced_routing_deep"
+copy_pack 15 "$WORKDIR/ch15_mpls_vrf_l3vpn"
+copy_pack 16 "$WORKDIR/ch16_multicast"
+copy_pack 17 "$WORKDIR/ch17_evpn_vxlan"
+copy_pack 18 "$WORKDIR/ch18_sdn_sdwan_sase"
+copy_pack 19 "$WORKDIR/ch19_mikrotik_basics"
+copy_pack 20 "$WORKDIR/ch20_mikrotik_rfn_addon"
 
 # ch20-30 deep 40x
 copy_pack 20 "$WORKDIR/ch20_mikrotik_routing_fw_nat"
@@ -128,6 +142,7 @@ copy_pack 59 "$WORKDIR/ch59_soc_ir_hunting"
 copy_pack 60 "$WORKDIR/ch60_ethical_lab_20x_addon"
 
 # prefer deepest for overlapping chapters last
+copy_pack 20 "$WORKDIR/ch20_mikrotik_routing_fw_nat"
 copy_pack 22 "$WORKDIR/ch22_wifi_enterprise_deep"
 copy_pack 23 "$WORKDIR/ch23_ptp_ptmp_deep"
 copy_pack 24 "$WORKDIR/ch24_fortigate_deep"
