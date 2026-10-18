@@ -358,23 +358,24 @@
       ]
     },
     {
-      "uid": "cmd:ch68:telnet:wave10:03",
-      "technology_id": "telnet",
-      "vendor": "Telnet / TCP diagnostics",
-      "platform": "TCP client utilities",
+      "uid": "cmd:ch68:web_tls:wave10:01",
+      "technology_id": "web_tls",
+      "vendor": "Web / HTTP(S) / TLS",
+      "platform": "curl",
       "category": "diagnostics",
-      "subcategory": "سنجش پاسخ HTTP و زمان اتصال",
+      "subcategory": "سنجش زمان اتصال و پاسخ HTTPS",
       "level": "L2",
       "command": "curl -sS -o /dev/null -w '%{http_code} %{time_connect} %{time_total}\\n' https://example.com/",
-      "title_fa": "Telnet / TCP diagnostics — سنجش پاسخ HTTP و زمان اتصال",
-      "when_to_use_fa": "برای تفکیک زمان اتصال و زمان کل درخواست؛ کد HTTP به‌تنهایی سلامت کسب‌وکار را اثبات نمی‌کند.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "title_fa": "Web/TLS — سنجش زمان اتصال و پاسخ HTTPS با curl",
+      "when_to_use_fa": "برای تفکیک زمان اتصال TCP از زمان کل درخواست HTTPS و ثبت کد وضعیت HTTP؛ از دامنهٔ آزمایشگاهی یا مقصد مجاز استفاده کنید و در نظر بگیرید که این آزمون به‌تنهایی اعتبار گواهی یا سلامت برنامه را اثبات نمی‌کند.",
+      "validation_notes_fa": "انتساب اصلاح شد: این فرمان آزمون HTTP(S) است و به حوزهٔ Telnet نسبت داده نمی‌شود. نحو عمومی curl است؛ اجرای زنده ادعا نشده و باید با نسخهٔ نصب‌شده تطبیق داده شود.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
-        "telnet",
+        "web_tls",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "attribution_corrected"
       ]
     },
     {
@@ -913,18 +914,19 @@
       "vendor": "Wireshark / TShark / tcpdump",
       "platform": "TShark / tcpdump",
       "category": "packet_analysis",
-      "subcategory": "خلاصهٔ نرخ بسته در بازه‌های یک‌ثانیه‌ای",
+      "subcategory": "خلاصهٔ endpointهای TCP در capture",
       "level": "L2",
-      "command": "tshark -r /tmp/capture.pcapng -q -z io,stat,1",
-      "title_fa": "Wireshark / TShark / tcpdump — خلاصهٔ نرخ بسته در بازه‌های یک‌ثانیه‌ای",
-      "when_to_use_fa": "برای دیدن الگوی ترافیک در capture موجود؛ آمار به نقطهٔ capture و packet loss وابسته است.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "tshark -r /tmp/capture.pcapng -q -z endpoints,tcp",
+      "title_fa": "Wireshark / TShark — خلاصهٔ endpointهای TCP",
+      "when_to_use_fa": "برای استخراج فهرست endpointهای TCP و شمارش حجم/بسته‌ها از فایل capture؛ این گزارش را با فیلترهای جریان و بازهٔ زمانی موردنظر مقایسه کنید.",
+      "validation_notes_fa": "فرمان تغییر یافت تا از تکرار محتوایی موج‌های قبلی جلوگیری شود؛ گزینهٔ -z endpoints,tcp باید با نسخهٔ TShark هدف تطبیق داده شود و اجرای زنده ادعا نشده است.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "wireshark",
         "wave10",
-        "packet_analysis",
-        "review_required"
+        "diagnostics",
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -1099,12 +1101,12 @@
       "vendor": "Aruba AOS-CX",
       "platform": "AOS-CX CLI",
       "category": "diagnostics",
-      "subcategory": "بررسی جدول ARP",
+      "subcategory": "بررسی جدول ARP در VRF پیش‌فرض",
       "level": "L2",
-      "command": "show arp",
-      "title_fa": "Aruba AOS-CX — بررسی جدول ARP",
-      "when_to_use_fa": "برای یافتن نگاشت IPv4 به MAC و بررسی آموخته‌شدن همسایه‌های لایهٔ سوم هنگام عیب‌یابی دسترسی؛ نبودن یک ورودی به‌تنهایی اثبات خرابی نیست و به VLAN، VRF و ترافیک اخیر بستگی دارد.",
-      "validation_notes_fa": "فرمان جایگزین پس از ممیزی تکرار در منابع اصلی فصل؛ در اجرای فعلی فقط یکتایی متنی و انتساب حوزه اعتبارسنجی شده است و اجرای زنده ادعا نمی‌شود. پیش از استفاده، syntax را با نسخهٔ محصول و مستندات رسمی همان نسخه تطبیق دهید.",
+      "command": "show arp vrf default",
+      "title_fa": "Aruba AOS-CX — بررسی جدول ARP در VRF پیش‌فرض",
+      "when_to_use_fa": "برای مشاهدهٔ نگاشت IPv4 به MAC در VRF پیش‌فرض؛ نبودن یک ورودی به‌تنهایی اثبات خرابی نیست و به VLAN، VRF و ترافیک اخیر بستگی دارد.",
+      "validation_notes_fa": "فرمان دقیق‌تر و scoped جایگزین show arp عمومی شد تا هم زمینهٔ VRF مشخص باشد و هم تکرار متنی بین بسته‌های فناوری حذف شود. نحو را با نسخهٔ AOS-CX هدف تأیید کنید؛ اجرای زنده ادعا نشده است.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. نسخه و سطح دسترسی را بررسی کنید و هنگام عیب‌یابی سطح لاگ یا جمع‌آوری اطلاعات، داده‌های حساس را پیش از اشتراک‌گذاری خروجی حذف کنید.",
       "tags": [
         "aruba",
