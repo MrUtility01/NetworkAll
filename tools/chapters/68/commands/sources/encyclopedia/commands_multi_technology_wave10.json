@@ -32,18 +32,19 @@
       "vendor": "VoIP / SIP / PBX",
       "platform": "Asterisk CLI",
       "category": "service",
-      "subcategory": "بررسی وضعیت endpointهای PJSIP",
+      "subcategory": "بررسی Registrationهای خروجی PJSIP",
       "level": "L2",
-      "command": "asterisk -rx 'pjsip show endpoints'",
-      "title_fa": "VoIP / SIP / PBX — بررسی وضعیت endpointهای PJSIP",
-      "when_to_use_fa": "برای تشخیص endpointهای Unavailable و ثبت تماس‌های ناموفق؛ نام کاربری و شماره‌ها را در گزارش عمومی ماسک کنید.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "asterisk -rx 'pjsip show registrations'",
+      "title_fa": "VoIP / SIP / PBX — بررسی ثبت‌های خروجی PJSIP",
+      "when_to_use_fa": "برای تشخیص وضعیت ثبت trunkها یا endpointهای خروجی PJSIP؛ وضعیت Registered، خطاهای احراز هویت و دسترس‌پذیری SIP provider را با لاگ‌های Asterisk تطبیق دهید.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "voip",
         "wave10",
         "service",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -112,18 +113,19 @@
       "vendor": "VMware ESXi / vSphere",
       "platform": "ESXi Shell / esxcli",
       "category": "diagnostics",
-      "subcategory": "خواندن نسخهٔ ESXi",
+      "subcategory": "مشاهدهٔ مشخصات پلتفرم سخت‌افزاری",
       "level": "L2",
-      "command": "esxcli system version get",
-      "title_fa": "VMware ESXi / vSphere — خواندن نسخهٔ ESXi",
-      "when_to_use_fa": "برای ثبت دقیق نسخه و build پیش از تطبیق رفتار دستورها با مستندات همان انتشار.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "esxcli hardware platform get",
+      "title_fa": "VMware ESXi / vSphere — مشاهدهٔ مشخصات پلتفرم سخت‌افزاری",
+      "when_to_use_fa": "برای بررسی سازنده، مدل و مشخصات پلتفرم میزبان ESXi در مستندسازی، سازگاری سخت‌افزار و عیب‌یابی میزبان.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "vmware_esxi",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -132,18 +134,19 @@
       "vendor": "VMware ESXi / vSphere",
       "platform": "ESXi Shell / esxcli",
       "category": "diagnostics",
-      "subcategory": "فهرست NICهای فیزیکی",
+      "subcategory": "بررسی جزئیات NIC فیزیکی مشخص",
       "level": "L2",
-      "command": "esxcli network nic list",
-      "title_fa": "VMware ESXi / vSphere — فهرست NICهای فیزیکی",
-      "when_to_use_fa": "برای بررسی نام، درایور و Link Status کارت‌های شبکه؛ نتیجه را با وضعیت سوئیچ بالادست تطبیق دهید.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "esxcli network nic get -n vmnic0",
+      "title_fa": "VMware ESXi / vSphere — بررسی جزئیات NIC فیزیکی",
+      "when_to_use_fa": "برای بررسی driver، MAC و مشخصات آداپتور مشخص؛ نام vmnic0 را با نام NIC واقعی میزبان جایگزین کنید.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "vmware_esxi",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -152,18 +155,19 @@
       "vendor": "VMware ESXi / vSphere",
       "platform": "ESXi Shell / esxcli",
       "category": "diagnostics",
-      "subcategory": "فهرست رابط‌های شبکهٔ VMkernel",
+      "subcategory": "بررسی تنظیمات IPv4 رابط VMkernel",
       "level": "L2",
-      "command": "esxcli network ip interface list",
-      "title_fa": "VMware ESXi / vSphere — فهرست رابط‌های شبکهٔ VMkernel",
-      "when_to_use_fa": "برای شناسایی رابط مدیریت، vMotion یا Storage و بررسی MTU و وضعیت رابط.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "esxcli network ip interface ipv4 get -i vmk0",
+      "title_fa": "VMware ESXi / vSphere — بررسی IPv4 رابط VMkernel",
+      "when_to_use_fa": "برای بررسی آدرس و روش تخصیص IPv4 یک رابط VMkernel؛ نام vmk0 را با رابط هدف جایگزین و خروجی را با شبکهٔ مدیریت یا vMotion تطبیق دهید.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "vmware_esxi",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -192,18 +196,19 @@
       "vendor": "VMware ESXi / vSphere",
       "platform": "ESXi Shell / esxcli",
       "category": "diagnostics",
-      "subcategory": "فهرست فرایندهای ماشین مجازی",
+      "subcategory": "بررسی اطلاعات حافظهٔ میزبان",
       "level": "L2",
-      "command": "esxcli vm process list",
-      "title_fa": "VMware ESXi / vSphere — فهرست فرایندهای ماشین مجازی",
-      "when_to_use_fa": "برای تطبیق VMها با World ID هنگام عیب‌یابی؛ از kill کردن فرایند بدون بررسی و تأیید اثر خودداری کنید.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "esxcli hardware memory get",
+      "title_fa": "VMware ESXi / vSphere — بررسی اطلاعات حافظهٔ میزبان",
+      "when_to_use_fa": "برای مشاهدهٔ اطلاعات حافظهٔ فیزیکی میزبان در بررسی ظرفیت و عیب‌یابی منابع؛ برای مصرف حافظهٔ هر VM از ابزارهای مانیتورینگ مربوط به VM استفاده کنید.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "vmware_esxi",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -252,18 +257,19 @@
       "vendor": "SSH / OpenSSH",
       "platform": "OpenSSH client/server",
       "category": "diagnostics",
-      "subcategory": "نمایش fingerprintهای known_hosts",
+      "subcategory": "جست‌وجوی کلید شناخته‌شده برای میزبان مشخص",
       "level": "L2",
-      "command": "ssh-keygen -lf ~/.ssh/known_hosts",
-      "title_fa": "SSH / OpenSSH — نمایش fingerprintهای known_hosts",
-      "when_to_use_fa": "برای بررسی fingerprintهای ثبت‌شده؛ این دستور به‌تنهایی هویت سرور فعلی را تأیید نمی‌کند.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "ssh-keygen -F 192.0.2.10 -f ~/.ssh/known_hosts",
+      "title_fa": "SSH / OpenSSH — جست‌وجوی host key در known_hosts",
+      "when_to_use_fa": "برای یافتن ورودی ذخیره‌شدهٔ میزبان در known_hosts هنگام بررسی هشدار تغییر host key؛ پیش از حذف یا جایگزینی ورودی، اثر احتمالی حملهٔ MITM را بررسی کنید.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "ssh",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -272,18 +278,19 @@
       "vendor": "SSH / OpenSSH",
       "platform": "OpenSSH client/server",
       "category": "diagnostics",
-      "subcategory": "اعتبارسنجی syntax پیکربندی sshd",
+      "subcategory": "نمایش پیکربندی مؤثر sshd برای یک اتصال",
       "level": "L2",
-      "command": "sshd -t",
-      "title_fa": "SSH / OpenSSH — اعتبارسنجی syntax پیکربندی sshd",
-      "when_to_use_fa": "پیش از reload/restart سرویس اجرا شود؛ مسیر فایل پیکربندی را در صورت استفاده از مسیر سفارشی مشخص کنید.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "sshd -T -C user=admin,host=server.example,addr=192.0.2.10",
+      "title_fa": "SSH / OpenSSH — نمایش تنظیمات مؤثر sshd بر اساس Match",
+      "when_to_use_fa": "برای بررسی تنظیماتی که پس از اعمال گزینه‌های Match برای کاربر، میزبان و آدرس مبدأ مشخص مؤثر می‌شوند؛ پیش از استفاده، مقادیر نمونه را با اتصال واقعی جایگزین کنید.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "ssh",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -292,18 +299,19 @@
       "vendor": "SSH / OpenSSH",
       "platform": "OpenSSH client/server",
       "category": "diagnostics",
-      "subcategory": "فهرست کلیدهای بارگذاری‌شده در agent",
+      "subcategory": "نمایش کلیدهای عمومی بارگذاری‌شده در agent",
       "level": "L2",
-      "command": "ssh-add -l",
-      "title_fa": "SSH / OpenSSH — فهرست کلیدهای بارگذاری‌شده در agent",
-      "when_to_use_fa": "برای تشخیص اینکه کلید مورد انتظار در agent وجود دارد؛ از چاپ محتوای کلید خصوصی خودداری کنید.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "ssh-add -L",
+      "title_fa": "SSH / OpenSSH — نمایش کلیدهای عمومی ssh-agent",
+      "when_to_use_fa": "برای بررسی کلیدهای عمومی در دسترس ssh-agent و تطبیق آن‌ها با کلیدهای مجاز مقصد؛ این فرمان کلید خصوصی را نمایش نمی‌دهد.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "ssh",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -372,18 +380,19 @@
       "vendor": "Telnet / TCP diagnostics",
       "platform": "TCP client utilities",
       "category": "diagnostics",
-      "subcategory": "مشاهدهٔ اتصال‌های TCP برقرار",
+      "subcategory": "مشاهدهٔ جزئیات TCP برای مقصد مشخص",
       "level": "L2",
-      "command": "ss -tn state established",
-      "title_fa": "Telnet / TCP diagnostics — مشاهدهٔ اتصال‌های TCP برقرار",
-      "when_to_use_fa": "برای بررسی اتصال‌های محلی برقرار؛ دسترسی و گزینه‌ها ممکن است بین توزیع‌ها متفاوت باشند.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "ss -tin dst 192.0.2.10",
+      "title_fa": "TCP Diagnostics — بررسی پارامترهای اتصال TCP به مقصد",
+      "when_to_use_fa": "برای مشاهدهٔ اطلاعات TCP مانند RTT، retransmission و پارامترهای اتصال‌های منطبق با مقصد؛ دسترسی و امکانات دقیق خروجی به سیستم‌عامل و سطح دسترسی بستگی دارد.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "telnet",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -552,18 +561,19 @@
       "vendor": "FTPS (FTP over TLS)",
       "platform": "curl / OpenSSL",
       "category": "security",
-      "subcategory": "بررسی مذاکرهٔ STARTTLS در FTP",
+      "subcategory": "دریافت فایل از FTPS با TLS اجباری",
       "level": "L2",
-      "command": "openssl s_client -connect ftp.example.test:21 -starttls ftp -servername ftp.example.test",
-      "title_fa": "FTPS (FTP over TLS) — بررسی مذاکرهٔ STARTTLS در FTP",
-      "when_to_use_fa": "برای مشاهدهٔ زنجیرهٔ گواهی و پارامترهای TLS؛ نتیجه باید با نوع FTPS سرور تطبیق داده شود.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "curl --ssl-reqd --fail --show-error --output /tmp/release.tar.gz ftp://ftp.example.test/pub/release.tar.gz",
+      "title_fa": "FTPS — دریافت فایل با الزام TLS و کنترل خطا",
+      "when_to_use_fa": "برای دریافت فایل از سرور FTPS با الزام TLS و خطایابی شفاف؛ نشانی و مسیر نمونه را با سرور مجاز جایگزین کنید و گواهی سرور را اعتبارسنجی کنید.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "ftps",
         "wave10",
         "security",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -752,18 +762,19 @@
       "vendor": "Zabbix",
       "platform": "Zabbix server/proxy/agent",
       "category": "monitoring",
-      "subcategory": "درخواست بازخوانی configuration cache",
+      "subcategory": "درخواست خروجی تشخیصی از Zabbix Server",
       "level": "L2",
-      "command": "zabbix_server -R config_cache_reload",
-      "title_fa": "Zabbix — درخواست بازخوانی configuration cache",
-      "when_to_use_fa": "پشتیبانی و اثر دستور به نسخه وابسته است؛ پیش از اجرا نسخه و لاگ server را بررسی کنید.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "zabbix_server -R diaginfo",
+      "title_fa": "Zabbix — تولید اطلاعات تشخیصی runtime",
+      "when_to_use_fa": "برای درخواست اطلاعات تشخیصی از فرایند Zabbix Server هنگام بررسی مشکل؛ لاگ مقصد و حجم خروجی را کنترل کنید و فقط در بازهٔ عیب‌یابی مجاز اجرا کنید.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "zabbix",
         "wave10",
         "monitoring",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -812,18 +823,19 @@
       "vendor": "Wireshark / TShark / tcpdump",
       "platform": "TShark / tcpdump",
       "category": "packet_analysis",
-      "subcategory": "فهرست رابط‌های capture",
+      "subcategory": "خلاصه‌سازی conversationهای TCP از capture",
       "level": "L2",
-      "command": "tshark -D",
-      "title_fa": "Wireshark / TShark / tcpdump — فهرست رابط‌های capture",
-      "when_to_use_fa": "برای انتخاب رابط درست؛ دسترسی capture و نام رابط‌ها به سیستم‌عامل بستگی دارد.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "tshark -r /tmp/capture.pcapng -q -z conv,tcp",
+      "title_fa": "Wireshark / TShark — خلاصهٔ conversationهای TCP",
+      "when_to_use_fa": "برای استخراج آمار ارتباط‌های TCP از فایل capture و یافتن جفت‌های میزبان پرترافیک؛ فایل ورودی باید موجود و مجاز برای تحلیل باشد.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "wireshark",
         "wave10",
         "packet_analysis",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -932,18 +944,19 @@
       "vendor": "Juniper Junos",
       "platform": "Junos CLI",
       "category": "diagnostics",
-      "subcategory": "نمایش خلاصهٔ وضعیت رابط‌ها",
+      "subcategory": "بررسی جزئیات عملیاتی رابط مشخص",
       "level": "L2",
-      "command": "show interfaces terse",
-      "title_fa": "Juniper Junos — نمایش خلاصهٔ وضعیت رابط‌ها",
-      "when_to_use_fa": "برای بررسی admin/link state و آدرس‌ها؛ وضعیت فیزیکی و پیکربندی لایهٔ ۳ را جداگانه بررسی کنید.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "show interfaces extensive ge-0/0/0",
+      "title_fa": "Juniper Junos — بررسی تفصیلی رابط شبکه",
+      "when_to_use_fa": "برای بررسی خطاها، شمارنده‌ها، وضعیت فیزیکی و جزئیات رابط مشخص؛ نام ge-0/0/0 نمونه است و در برخی مدل‌ها خروجی extensive می‌تواند حجیم باشد.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "juniper",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -972,18 +985,19 @@
       "vendor": "Juniper Junos",
       "platform": "Junos CLI",
       "category": "diagnostics",
-      "subcategory": "بررسی همسایه‌های OSPF",
+      "subcategory": "بررسی وضعیت و پارامترهای رابط‌های OSPF",
       "level": "L2",
-      "command": "show ospf neighbor",
-      "title_fa": "Juniper Junos — بررسی همسایه‌های OSPF",
-      "when_to_use_fa": "برای تشخیص همسایگی‌های برقرار؛ نبود همسایه می‌تواند ناشی از area، authentication، MTU یا reachability باشد.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "show ospf interface detail",
+      "title_fa": "Juniper Junos — بررسی جزئیات رابط‌های OSPF",
+      "when_to_use_fa": "برای عیب‌یابی OSPF با مشاهدهٔ state، area، MTU، cost، timers و تعداد adjacencyها؛ خروجی را با تنظیمات پروتکل و همسایه‌ها تطبیق دهید.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "juniper",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -1032,18 +1046,19 @@
       "vendor": "Aruba AOS-CX",
       "platform": "AOS-CX CLI",
       "category": "diagnostics",
-      "subcategory": "خلاصهٔ وضعیت رابط‌ها",
+      "subcategory": "بررسی جزئیات یک پورت مشخص",
       "level": "L2",
-      "command": "show interface brief",
-      "title_fa": "Aruba AOS-CX — خلاصهٔ وضعیت رابط‌ها",
-      "when_to_use_fa": "برای تشخیص پورت‌های down و تطبیق با وضعیت endpoint و کابل‌کشی.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "show interface 1/1/1",
+      "title_fa": "Aruba AOS-CX — مشاهدهٔ وضعیت تفصیلی پورت",
+      "when_to_use_fa": "برای بررسی وضعیت عملیاتی، سرعت، duplex و شمارنده‌های رابط مشخص؛ شمارهٔ 1/1/1 را با پورت واقعی جایگزین کنید.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "aruba",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -1052,18 +1067,19 @@
       "vendor": "Aruba AOS-CX",
       "platform": "AOS-CX CLI",
       "category": "diagnostics",
-      "subcategory": "نمایش VLANهای پیکربندی‌شده",
+      "subcategory": "بررسی جدول MAC آموخته‌شده",
       "level": "L2",
-      "command": "show vlan",
-      "title_fa": "Aruba AOS-CX — نمایش VLANهای پیکربندی‌شده",
-      "when_to_use_fa": "برای تأیید وجود VLAN و عضویت پورت‌ها؛ وضعیت trunk را جداگانه بررسی کنید.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "show mac-address-table",
+      "title_fa": "Aruba AOS-CX — مشاهدهٔ جدول MAC",
+      "when_to_use_fa": "برای یافتن پورت و VLAN آموخته‌شدن MACها هنگام عیب‌یابی اتصال لایهٔ دوم، جابه‌جایی کلاینت یا loop احتمالی.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "aruba",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -1092,18 +1108,19 @@
       "vendor": "Aruba AOS-CX",
       "platform": "AOS-CX CLI",
       "category": "diagnostics",
-      "subcategory": "بررسی وضعیت Spanning Tree",
+      "subcategory": "بررسی Spanning Tree در VLAN مشخص",
       "level": "L2",
-      "command": "show spanning-tree",
-      "title_fa": "Aruba AOS-CX — بررسی وضعیت Spanning Tree",
-      "when_to_use_fa": "برای شناسایی root و پورت‌های مسدودشده؛ تغییر STP می‌تواند موجب loop و اختلال گسترده شود.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "show spanning-tree vlan 10",
+      "title_fa": "Aruba AOS-CX — بررسی STP برای VLAN مشخص",
+      "when_to_use_fa": "برای بررسی نقش پورت‌ها و وضعیت STP در VLAN مشخص؛ VLAN 10 نمونه است و باید با VLAN تحت بررسی تطبیق داده شود.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "aruba",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -1132,18 +1149,19 @@
       "vendor": "Proxmox VE",
       "platform": "pvesh / qm / pvesm",
       "category": "diagnostics",
-      "subcategory": "فهرست nodeهای شناخته‌شده",
+      "subcategory": "بررسی وضعیت یک node از API",
       "level": "L2",
-      "command": "pvesh get /nodes",
-      "title_fa": "Proxmox VE — فهرست nodeهای شناخته‌شده",
-      "when_to_use_fa": "برای بررسی دید مدیریتی API؛ مجوزها و وضعیت cluster روی نتیجه اثر می‌گذارند.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "pvesh get /nodes/pve1/status",
+      "title_fa": "Proxmox VE — دریافت وضعیت node از API",
+      "when_to_use_fa": "برای خواندن وضعیت runtime یک node با API shell؛ نام pve1 را با node واقعی جایگزین کنید و خروجی را با سلامت cluster تطبیق دهید.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "proxmox",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -1152,18 +1170,19 @@
       "vendor": "Proxmox VE",
       "platform": "pvesh / qm / pvesm",
       "category": "diagnostics",
-      "subcategory": "فهرست ماشین‌های مجازی QEMU/KVM",
+      "subcategory": "بررسی پیکربندی یک ماشین مجازی",
       "level": "L2",
-      "command": "qm list",
-      "title_fa": "Proxmox VE — فهرست ماشین‌های مجازی QEMU/KVM",
-      "when_to_use_fa": "روی node اجرا شود؛ وضعیت VM را با task log و storage بررسی کنید.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "qm config 101",
+      "title_fa": "Proxmox VE — مشاهدهٔ پیکربندی VM",
+      "when_to_use_fa": "برای بررسی CPU، حافظه، دیسک‌ها، bridgeهای شبکه و گزینه‌های بوت یک VM؛ شناسهٔ 101 نمونه است.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "proxmox",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -1172,18 +1191,19 @@
       "vendor": "Proxmox VE",
       "platform": "pvesh / qm / pvesm",
       "category": "diagnostics",
-      "subcategory": "نمایش وضعیت storageها",
+      "subcategory": "فهرست محتوا و volumeهای یک storage",
       "level": "L2",
-      "command": "pvesm status",
-      "title_fa": "Proxmox VE — نمایش وضعیت storageها",
-      "when_to_use_fa": "برای تشخیص storage غیرفعال یا کمبود ظرفیت؛ قبل از هر عملیات حذف یا جابه‌جایی از داده‌ها محافظت کنید.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "pvesm list local",
+      "title_fa": "Proxmox VE — فهرست volumeهای storage مشخص",
+      "when_to_use_fa": "برای فهرست‌کردن volumeهای یک storage و یافتن دیسک یا template موردنظر؛ نام local باید با شناسهٔ واقعی storage جایگزین شود.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "proxmox",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     },
     {
@@ -1192,18 +1212,19 @@
       "vendor": "Proxmox VE",
       "platform": "pvesh / qm / pvesm",
       "category": "diagnostics",
-      "subcategory": "وضعیت cluster و quorum",
+      "subcategory": "مشاهدهٔ اعضای cluster",
       "level": "L2",
-      "command": "pvecm status",
-      "title_fa": "Proxmox VE — وضعیت cluster و quorum",
-      "when_to_use_fa": "برای تشخیص quorum و وضعیت اعضا؛ در محیط production از تغییر رأی یا تنظیمات quorum بدون طرح بازیابی خودداری کنید.",
-      "validation_notes_fa": "محتوای افزایشی موج دهم؛ syntax و گزینه‌ها باید با مستندات نسخهٔ هدف بازبینی شوند. اجرای زنده ادعا نشده است.",
+      "command": "pvecm nodes",
+      "title_fa": "Proxmox VE — فهرست اعضای cluster",
+      "when_to_use_fa": "برای بررسی اعضای شناخته‌شدهٔ cluster و تطبیق با خروجی quorum و وضعیت Corosync؛ این فرمان به‌تنهایی سلامت کامل cluster را اثبات نمی‌کند.",
+      "validation_notes_fa": "فرمان جایگزین برای رفع تکرار در موج دهم؛ syntax بر اساس الگوی CLI ابزار بررسی شده است، اما روی تجهیز زنده اجرا نشده است. نسخهٔ محصول و دسترسی لازم را پیش از اجرا تطبیق دهید.",
       "safety_notes": "فقط در سامانهٔ تحت اختیار یا محیط آزمایشگاهی اجرا شود. پیش از هر فرمان تغییردهنده، اثر جانبی، مجوز و روش بازگشت را مشخص کنید.",
       "tags": [
         "proxmox",
         "wave10",
         "diagnostics",
-        "review_required"
+        "review_required",
+        "deduplicated_replacement"
       ]
     }
   ]
