@@ -87,6 +87,7 @@ jobs:
           lessons = [x for c in chapters for s in c.get("subchapters", []) for x in s.get("lessons", [])]
           orders = [int(c["order"]) for c in chapters]
           uids = [x.get("uid") for x in lessons]
+          uid_set = set(uids)
           expected_orders = set(range(1, 69))
           missing_orders = sorted(expected_orders - set(orders))
           extra_orders = sorted(set(orders) - expected_orders)
@@ -100,9 +101,19 @@ jobs:
           assert len(lessons) > base_total, (
               f"chapter add-ons were not merged: total={len(lessons)}, base={base_total}"
           )
-          assert "lesson:ch68:pack:mikrotik:00001" in set(uids), (
-              "Chapter 68 command add-on was not merged into Android curriculum"
-          )
+          # Current Chapter 68 MikroTik markers (legacy pack:mikrotik:00001 retired)
+          mikrotik_markers = {
+              "lesson:ch68:wave2:mikrotik",
+              "lesson:ch68:mikrotik:wave2",
+              "lesson:ch68:mikrotik:wave3:022",
+              "lesson:ch68:mikrotik:wave4:001",
+          }
+          if not (mikrotik_markers & uid_set):
+              sample = sorted(u for u in uid_set if "mikrotik" in (u or "").lower())[:8]
+              raise AssertionError(
+                  "Chapter 68 MikroTik content was not merged into Android curriculum; "
+                  f"sample_mikrotik_uids={sample}"
+              )
           wave1_uids = {
               "lesson:ch68:ubiquiti:wave1",
               "lesson:ch68:snmp_syslog:wave1",
@@ -122,7 +133,7 @@ jobs:
               "lesson:ch68:wave2:linux_bash",
               "lesson:ch68:wave2:docker",
           }
-          missing_wave1 = sorted(wave1_uids - set(uids))
+          missing_wave1 = sorted(wave1_uids - uid_set)
           assert not missing_wave1, f"Chapter 68 additive lessons missing from Android: {missing_wave1}"
           chapter68 = next(ch for ch in chapters if int(ch.get("order") or 0) == 68)
           section_titles = {sub.get("title_fa") for sub in chapter68.get("subchapters", [])}
