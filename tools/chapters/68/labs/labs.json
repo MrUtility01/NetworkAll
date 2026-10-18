@@ -1,170 +1,1806 @@
 {
   "schema_version": 1,
   "chapter_order": 68,
-  "category": "labs",
-  "source_of_truth": true,
   "items": [
     {
-      "uid": "lab:ch68:os:001",
-      "lesson_uid": "lesson:ch68:ps:network",
-      "title_fa": "لابراتوار 01 — عیب‌یابی اتصال HTTPS",
-      "title_en": "Lab 01 — عیب‌یابی اتصال HTTPS",
-      "fields": {
-        "labs": "**حوزه:** PowerShell\n**عنوان:** عیب‌یابی اتصال HTTPS\n**هدف:** روی یک Windows lab اتصال به `intranet.example.test:443` ناموفق است. بدون تغییر پیکربندی، ابتدا IP/DNS و سپس دسترسی TCP را ارزیابی کنید.\n**ابزارها/فرمان‌ها:** Get-NetIPConfiguration؛ Resolve-DnsName intranet.example.test؛ Test-NetConnection intranet.example.test -Port 443\n**ملاحظات ایمنی:** تفکیک خطای name resolution از مسیر/port؛ ثبت TcpTestSucceeded و RemoteAddress؛ هیچ rule یا firewall بدون مجوز تغییر نکند.\n**معیار قبولی:** ثبت خروجی اولیه و گزارش علت محتمل با شواهد\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0001",
+      "id": "lab-ch68-cont-0001",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ls و ناوبری فایل — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:002",
-      "lesson_uid": "lesson:ch68:ps:services",
-      "title_fa": "لابراتوار 02 — تحلیل رخدادهای یک سرویس",
-      "title_en": "Lab 02 — تحلیل رخدادهای یک سرویس",
-      "fields": {
-        "labs": "**حوزه:** PowerShell\n**عنوان:** تحلیل رخدادهای یک سرویس\n**هدف:** یک سرویس آزمایشی پس از restart ناموفق شده است. وضعیت سرویس و رخدادهای System/Application در بازه ۳۰ دقیقه را استخراج کنید.\n**ابزارها/فرمان‌ها:** Get-Service؛ Get-WinEvent با FilterHashtable شامل LogName و StartTime؛ در صورت نیاز Select-Object TimeCreated,Id,LevelDisplayName,Message\n**ملاحظات ایمنی:** فقط رخدادهای مرتبط را نگه دارید؛ پیام‌ها ممکن است داده حساس داشته باشند و قبل از اشتراک‌گذاری باید پالایش شوند.\n**معیار قبولی:** جدول رخداد زمان‌دار و فرضیه قابل‌آزمون\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0002",
+      "id": "lab-ch68-cont-0002",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ls و ناوبری فایل — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:003",
-      "lesson_uid": "lesson:ch68:ps:foundations",
-      "title_fa": "لابراتوار 03 — اسکریپت گزارش فقط‌خواندنی",
-      "title_en": "Lab 03 — اسکریپت گزارش فقط‌خواندنی",
-      "fields": {
-        "labs": "**حوزه:** PowerShell\n**عنوان:** اسکریپت گزارش فقط‌خواندنی\n**هدف:** اسکریپتی بسازید که نام میزبان، زمان، فضای دیسک و سرویس‌های متوقف‌شده را گزارش کند، بدون تغییر وضعیت سیستم.\n**ابزارها/فرمان‌ها:** Get-ComputerInfo یا hostname؛ Get-Volume؛ Get-Service | Where-Object Status -eq 'Stopped'; Export-Csv\n**ملاحظات ایمنی:** اجرای script با داده ساختگی یا میزبان آزمایش؛ مدیریت خطا و encoding؛ عدم درج secret.\n**معیار قبولی:** CSV قابل‌خواندن، زمان اجرا و exit status\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0003",
+      "id": "lab-ch68-cont-0003",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ls و ناوبری فایل — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:004",
-      "lesson_uid": "lesson:ch68:ps:services",
-      "title_fa": "لابراتوار 04 — بررسی قانون فایروال",
-      "title_en": "Lab 04 — بررسی قانون فایروال",
-      "fields": {
-        "labs": "**حوزه:** PowerShell\n**عنوان:** بررسی قانون فایروال\n**هدف:** در میزبان آزمایش، قوانین فعال مرتبط با TCP/443 را گزارش کنید و قبل/بعد از تغییر را مقایسه کنید؛ هیچ قانون سراسری را خاموش نکنید.\n**ابزارها/فرمان‌ها:** Get-NetFirewallProfile؛ Get-NetFirewallRule -PolicyStore ActiveStore؛ فیلتر جداگانه برای پورت/فیلترهای مرتبط\n**ملاحظات ایمنی:** قانون، profile، action، direction و scope را ثبت کنید؛ فقط در صورت مجوز و با rollback تغییر دهید.\n**معیار قبولی:** گزارش ruleهای مرتبط و ارزیابی کمترین دامنه لازم\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0004",
+      "id": "lab-ch68-cont-0004",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ls و ناوبری فایل — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:005",
-      "lesson_uid": "lesson:ch68:linux:network",
-      "title_fa": "لابراتوار 05 — ردیابی شکست DNS",
-      "title_en": "Lab 05 — ردیابی شکست DNS",
-      "fields": {
-        "labs": "**حوزه:** Linux\n**عنوان:** ردیابی شکست DNS\n**هدف:** در VM آزمایشگاهی، مشخص کنید مشکل نام از resolver است یا اتصال IP. ابتدا وضعیت resolver و سپس query مستقیم را ثبت کنید.\n**ابزارها/فرمان‌ها:** resolvectl status؛ getent hosts example.test؛ dig example.test؛ ip route\n**ملاحظات ایمنی:** از نام دامنه آزمایشگاهی استفاده کنید؛ فایل resolver را بدون ثبت baseline و مجوز تغییر ندهید.\n**معیار قبولی:** نتیجه query، resolver استفاده‌شده و مسیر بعدی عیب‌یابی\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0005",
+      "id": "lab-ch68-cont-0005",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ls و ناوبری فایل — عیب‌یابی رایج",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:006",
-      "lesson_uid": "lesson:ch68:linux:network",
-      "title_fa": "لابراتوار 06 — پورت در حال listening",
-      "title_en": "Lab 06 — پورت در حال listening",
-      "fields": {
-        "labs": "**حوزه:** Linux\n**عنوان:** پورت در حال listening\n**هدف:** سرویس آزمایشی روی پورت 8080 از راه دور قابل‌دسترسی نیست. تشخیص دهید برنامه listen می‌کند یا مشکل در firewall/route است.\n**ابزارها/فرمان‌ها:** ss -ltnp؛ ip addr; ip route; curl -v http://127.0.0.1:8080\n**ملاحظات ایمنی:** آزمون localhost را با آزمون از میزبان دیگر تفکیک کنید؛ از بازکردن گسترده firewall خودداری کنید.\n**معیار قبولی:** درخت تصمیم مبتنی بر شواهد و خروجی فرمان‌ها\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0006",
+      "id": "lab-ch68-cont-0006",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ls و ناوبری فایل — اشتباهات میدانی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:007",
-      "lesson_uid": "lesson:ch68:linux:services",
-      "title_fa": "لابراتوار 07 — تحلیل systemd و journal",
-      "title_en": "Lab 07 — تحلیل systemd و journal",
-      "fields": {
-        "labs": "**حوزه:** Linux\n**عنوان:** تحلیل systemd و journal\n**هدف:** سرویس آزمایشی api.service پس از deploy شکست می‌خورد. وضعیت واحد و لاگ بوت جاری را استخراج کنید.\n**ابزارها/فرمان‌ها:** systemctl status api.service؛ journalctl -u api.service -b --no-pager؛ systemctl show api.service\n**ملاحظات ایمنی:** خروجی را قبل از ارسال پاک‌سازی کنید؛ در صورت وجود secret یا token منتشر نکنید.\n**معیار قبولی:** علت محتمل همراه با timestamp و گام تأیید\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0007",
+      "id": "lab-ch68-cont-0007",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ls و ناوبری فایل — چک‌لیست عملیاتی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:008",
-      "lesson_uid": "lesson:ch68:linux:foundations",
-      "title_fa": "لابراتوار 08 — ممیزی مجوزها",
-      "title_en": "Lab 08 — ممیزی مجوزها",
-      "fields": {
-        "labs": "**حوزه:** Linux\n**عنوان:** ممیزی مجوزها\n**هدف:** در یک پوشه آزمایش، فایل‌های world-writable را پیدا کنید و پیشنهاد اصلاح کمترین دسترسی را بدهید؛ فعلاً تغییر ندهید.\n**ابزارها/فرمان‌ها:** find /srv/lab -xdev -type f -perm -0002 -print؛ stat؛ namei -l\n**ملاحظات ایمنی:** از اجرای chmod بازگشتی کورکورانه پرهیز کنید؛ مالکیت و کاربرد هر فایل را ارزیابی کنید.\n**معیار قبولی:** فهرست یافته‌ها و پیشنهاد مجوز با توجیه\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0008",
+      "id": "lab-ch68-cont-0008",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ls و ناوبری فایل — معیار پذیرش",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:009",
-      "lesson_uid": "lesson:ch68:linux:services",
-      "title_fa": "لابراتوار 09 — ظرفیت دیسک و inode",
-      "title_en": "Lab 09 — ظرفیت دیسک و inode",
-      "fields": {
-        "labs": "**حوزه:** Linux\n**عنوان:** ظرفیت دیسک و inode\n**هدف:** قبل از پاک‌سازی، فضای filesystem و inode را بررسی و بزرگ‌ترین مسیرها را در محیط آزمایش شناسایی کنید.\n**ابزارها/فرمان‌ها:** df -hT؛ df -i؛ du -xhd1 /var 2>/dev/null | sort -h\n**ملاحظات ایمنی:** فایل‌های log را دستی حذف نکنید؛ rotation و مالک فایل را بررسی کنید.\n**معیار قبولی:** تشخیص disk-full در برابر inode exhaustion و طرح پاک‌سازی امن\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0009",
+      "id": "lab-ch68-cont-0009",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: find و locate — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:010",
-      "lesson_uid": "lesson:ch68:windows:admin",
-      "title_fa": "لابراتوار 10 — بررسی وضعیت شبکه",
-      "title_en": "Lab 10 — بررسی وضعیت شبکه",
-      "fields": {
-        "labs": "**حوزه:** Windows\n**عنوان:** بررسی وضعیت شبکه\n**هدف:** روی VM Windows، IP، route و DNS را ثبت و دسترسی به gateway و مقصد TCP را جداگانه بررسی کنید.\n**ابزارها/فرمان‌ها:** ipconfig /all؛ route print؛ Resolve-DnsName؛ Test-NetConnection\n**ملاحظات ایمنی:** پیش از renew یا reset، baseline و اثر روی اتصال راه‌دور را بررسی کنید.\n**معیار قبولی:** جدول لایه‌ای DNS/IP/route/TCP و شواهد هر مرحله\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0010",
+      "id": "lab-ch68-cont-0010",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: find و locate — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:011",
-      "lesson_uid": "lesson:ch68:windows:security",
-      "title_fa": "لابراتوار 11 — بررسی حساب و عضویت محلی",
-      "title_en": "Lab 11 — بررسی حساب و عضویت محلی",
-      "fields": {
-        "labs": "**حوزه:** Windows\n**عنوان:** بررسی حساب و عضویت محلی\n**هدف:** حساب‌ها و اعضای گروه Administrators محلی را در یک ماشین آزمایش بررسی کنید؛ هیچ حسابی را حذف نکنید.\n**ابزارها/فرمان‌ها:** Get-LocalUser؛ Get-LocalGroupMember -Group Administrators\n**ملاحظات ایمنی:** هویت‌های سازمانی و break-glass را با مالک سرویس تأیید کنید؛ خروجی را امن نگه دارید.\n**معیار قبولی:** فهرست یافته‌ها و اقدام پیشنهادی مبتنی بر least privilege\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0011",
+      "id": "lab-ch68-cont-0011",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: find و locate — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:012",
-      "lesson_uid": "lesson:ch68:windows:admin",
-      "title_fa": "لابراتوار 12 — عیب‌یابی فایل سیستمی",
-      "title_en": "Lab 12 — عیب‌یابی فایل سیستمی",
-      "fields": {
-        "labs": "**حوزه:** Windows\n**عنوان:** عیب‌یابی فایل سیستمی\n**هدف:** در VM آزمایش، وضعیت image و فایل‌های سیستم را بررسی کنید و ترتیب مناسب DISM/SFC را مستند کنید.\n**ابزارها/فرمان‌ها:** DISM /Online /Cleanup-Image /CheckHealth؛ سپس با مجوز RestoreHealth؛ sfc /scannow\n**ملاحظات ایمنی:** این فرمان‌ها می‌توانند تغییر ایجاد کنند؛ snapshot/backup و پنجره نگهداری را پیش از تعمیر تأیید کنید.\n**معیار قبولی:** ثبت خروجی، exit code و آزمون پس از تعمیر\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0012",
+      "id": "lab-ch68-cont-0012",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: find و locate — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:013",
-      "lesson_uid": "lesson:ch68:patch:planning",
-      "title_fa": "لابراتوار 13 — ساخت ماتریس patch",
-      "title_en": "Lab 13 — ساخت ماتریس patch",
-      "fields": {
-        "labs": "**حوزه:** Patch Management\n**عنوان:** ساخت ماتریس patch\n**هدف:** برای ۱۰ دارایی ساختگی، نسخه، نقش، شدت آسیب‌پذیری، exposure، مالک و پنجره نگهداری را در یک ماتریس ثبت کنید.\n**ابزارها/فرمان‌ها:** CSV/Spreadsheet؛ امتیازدهی ریسک بر اساس شدت، exploit، exposure و criticality\n**ملاحظات ایمنی:** اولویت را صرفاً بر اساس CVSS مرتب نکنید؛ exploit فعال و ارزش دارایی را هم لحاظ کنید.\n**معیار قبولی:** ماتریس اولویت و توضیح قابل‌ممیزی برای ۳ دارایی اول\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0013",
+      "id": "lab-ch68-cont-0013",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: find و locate — عیب‌یابی رایج",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:014",
-      "lesson_uid": "lesson:ch68:patch:windows",
-      "title_fa": "لابراتوار 14 — پایلوت Windows Update",
-      "title_en": "Lab 14 — پایلوت Windows Update",
-      "fields": {
-        "labs": "**حوزه:** Patch Management\n**عنوان:** پایلوت Windows Update\n**هدف:** یک VM غیرتولیدی را با baseline مشخص به‌روزرسانی و نصب/reboot/service health را ثبت کنید.\n**ابزارها/فرمان‌ها:** ثبت build و update history؛ نصب از مسیر مصوب سازمان؛ Get-HotFix به‌عنوان یکی از شواهد؛ بررسی Event Viewer\n**ملاحظات ایمنی:** به هیچ‌وجه روی دستگاه تولیدی بدون change approval اجرا نشود؛ recovery media/backup و دسترسی کنسول آماده باشد.\n**معیار قبولی:** گزارش قبل/بعد، reboot status، تست سرویس و تصمیم rollout\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0014",
+      "id": "lab-ch68-cont-0014",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: find و locate — اشتباهات میدانی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:015",
-      "lesson_uid": "lesson:ch68:patch:linux",
-      "title_fa": "لابراتوار 15 — پایلوت بسته‌های Linux",
-      "title_en": "Lab 15 — پایلوت بسته‌های Linux",
-      "fields": {
-        "labs": "**حوزه:** Patch Management\n**عنوان:** پایلوت بسته‌های Linux\n**هدف:** روی VM غیرتولیدی، فهرست به‌روزرسانی‌ها را بررسی و تفاوت update metadata با نصب بسته را ثبت کنید.\n**ابزارها/فرمان‌ها:** Debian/Ubuntu: apt update سپس apt list --upgradable؛ RHEL-family: dnf check-update؛ نصب فقط پس از approval\n**ملاحظات ایمنی:** از توزیع و نسخه واقعی آگاه شوید؛ اجرای upgrade خودکار در محیط تولید ممنوع بدون برنامه تغییر.\n**معیار قبولی:** لیست بسته‌ها، نسخه‌های قبل/بعد و نیاز احتمالی به reboot\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0015",
+      "id": "lab-ch68-cont-0015",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: find و locate — چک‌لیست عملیاتی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:016",
-      "lesson_uid": "lesson:ch68:patch:rollback",
-      "title_fa": "لابراتوار 16 — تمرین rollback و معیار قبولی",
-      "title_en": "Lab 16 — تمرین rollback و معیار قبولی",
-      "fields": {
-        "labs": "**حوزه:** Patch Management\n**عنوان:** تمرین rollback و معیار قبولی\n**هدف:** یک سرویس demo را با نسخه قبلی قابل‌بازیابی آماده کنید. معیار rollback، مالک تصمیم و روش بازیابی را قبل از تغییر تعریف کنید.\n**ابزارها/فرمان‌ها:** Snapshot/backup آزمایشی؛ health check؛ ثبت زمان؛ restore در VM مجزا؛ تست صحت داده\n**ملاحظات ایمنی:** snapshot جایگزین backup مستقل و آزمون restore نیست؛ داده‌های واقعی استفاده نشود.\n**معیار قبولی:** بازیابی موفق در RTO هدف و تطبیق صحت سرویس/داده\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0016",
+      "id": "lab-ch68-cont-0016",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: find و locate — معیار پذیرش",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:017",
-      "lesson_uid": "lesson:ch68:ops:automation",
-      "title_fa": "لابراتوار 17 — اجرای قابل‌ممیزی تغییر",
-      "title_en": "Lab 17 — اجرای قابل‌ممیزی تغییر",
-      "fields": {
-        "labs": "**حوزه:** عملیات امن\n**عنوان:** اجرای قابل‌ممیزی تغییر\n**هدف:** یک تغییر غیرمخرب در lab را با شناسه change، pre-check، فرمان، post-check و rollback مستند کنید.\n**ابزارها/فرمان‌ها:** ثبت timestamp/host/operator/change ID؛ ضبط exit code؛ نوشتن گزارش بدون secret\n**ملاحظات ایمنی:** token/password در log یا transcript ذخیره نشود؛ لاگ با دسترسی محدود نگهداری شود.\n**معیار قبولی:** گزارش قابل بازبینی و مسیر بازگشت آزمایش‌شده\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0017",
+      "id": "lab-ch68-cont-0017",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: grep و regex عملی — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch68:os:018",
-      "lesson_uid": "lesson:ch68:ops:incident",
-      "title_fa": "لابراتوار 18 — تحلیل اختلال پس از patch",
-      "title_en": "Lab 18 — تحلیل اختلال پس از patch",
-      "fields": {
-        "labs": "**حوزه:** عملیات امن\n**عنوان:** تحلیل اختلال پس از patch\n**هدف:** پس از شبیه‌سازی افت سلامت سرویس، داده‌های قبل/بعد را با timeline واحد ترکیب کنید و فرضیه علت را آزمایش کنید.\n**ابزارها/فرمان‌ها:** systemctl/journalctl یا Get-WinEvent؛ health endpoint؛ version/build؛ monitoring baseline\n**ملاحظات ایمنی:** چند متغیر را هم‌زمان تغییر ندهید؛ نتیجه همبستگی را علت قطعی معرفی نکنید.\n**معیار قبولی:** timeline، شواهد، فرضیه، آزمون تفکیک‌کننده و تصمیم rollback/continue\n**تحویل‌دادنی:** گزارش خروجی، نتیجه و فرضیه‌های قابل‌آزمون.\n**بازگردانی:** اگر تنظیمی تغییر داده شد، فقط با دستورالعمل ثبت‌شده به baseline آزمایشگاه برگردانید."
-      }
+      "uid": "lab:ch68:cont:0018",
+      "id": "lab-ch68-cont-0018",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: grep و regex عملی — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0019",
+      "id": "lab-ch68-cont-0019",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: grep و regex عملی — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0020",
+      "id": "lab-ch68-cont-0020",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: grep و regex عملی — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0021",
+      "id": "lab-ch68-cont-0021",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: grep و regex عملی — عیب‌یابی رایج",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0022",
+      "id": "lab-ch68-cont-0022",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: grep و regex عملی — اشتباهات میدانی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0023",
+      "id": "lab-ch68-cont-0023",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: grep و regex عملی — چک‌لیست عملیاتی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0024",
+      "id": "lab-ch68-cont-0024",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: grep و regex عملی — معیار پذیرش",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0025",
+      "id": "lab-ch68-cont-0025",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: systemd سرویس — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0026",
+      "id": "lab-ch68-cont-0026",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: systemd سرویس — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0027",
+      "id": "lab-ch68-cont-0027",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: systemd سرویس — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0028",
+      "id": "lab-ch68-cont-0028",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: systemd سرویس — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0029",
+      "id": "lab-ch68-cont-0029",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: systemd سرویس — عیب‌یابی رایج",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0030",
+      "id": "lab-ch68-cont-0030",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: systemd سرویس — اشتباهات میدانی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0031",
+      "id": "lab-ch68-cont-0031",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: systemd سرویس — چک‌لیست عملیاتی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0032",
+      "id": "lab-ch68-cont-0032",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: systemd سرویس — معیار پذیرش",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0033",
+      "id": "lab-ch68-cont-0033",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: journalctl لاگ — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0034",
+      "id": "lab-ch68-cont-0034",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: journalctl لاگ — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0035",
+      "id": "lab-ch68-cont-0035",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: journalctl لاگ — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0036",
+      "id": "lab-ch68-cont-0036",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: journalctl لاگ — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0037",
+      "id": "lab-ch68-cont-0037",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: journalctl لاگ — عیب‌یابی رایج",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0038",
+      "id": "lab-ch68-cont-0038",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: journalctl لاگ — اشتباهات میدانی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0039",
+      "id": "lab-ch68-cont-0039",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: journalctl لاگ — چک‌لیست عملیاتی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0040",
+      "id": "lab-ch68-cont-0040",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: journalctl لاگ — معیار پذیرش",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0041",
+      "id": "lab-ch68-cont-0041",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: iptables/nftables پایه — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0042",
+      "id": "lab-ch68-cont-0042",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: iptables/nftables پایه — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0043",
+      "id": "lab-ch68-cont-0043",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: iptables/nftables پایه — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0044",
+      "id": "lab-ch68-cont-0044",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: iptables/nftables پایه — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0045",
+      "id": "lab-ch68-cont-0045",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: iptables/nftables پایه — عیب‌یابی رایج",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0046",
+      "id": "lab-ch68-cont-0046",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: iptables/nftables پایه — اشتباهات میدانی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0047",
+      "id": "lab-ch68-cont-0047",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: iptables/nftables پایه — چک‌لیست عملیاتی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0048",
+      "id": "lab-ch68-cont-0048",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: iptables/nftables پایه — معیار پذیرش",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0049",
+      "id": "lab-ch68-cont-0049",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ss و netstat — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0050",
+      "id": "lab-ch68-cont-0050",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ss و netstat — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0051",
+      "id": "lab-ch68-cont-0051",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ss و netstat — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0052",
+      "id": "lab-ch68-cont-0052",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ss و netstat — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0053",
+      "id": "lab-ch68-cont-0053",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ss و netstat — عیب‌یابی رایج",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0054",
+      "id": "lab-ch68-cont-0054",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ss و netstat — اشتباهات میدانی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0055",
+      "id": "lab-ch68-cont-0055",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ss و netstat — چک‌لیست عملیاتی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0056",
+      "id": "lab-ch68-cont-0056",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ss و netstat — معیار پذیرش",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0057",
+      "id": "lab-ch68-cont-0057",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ip route و address — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0058",
+      "id": "lab-ch68-cont-0058",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ip route و address — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0059",
+      "id": "lab-ch68-cont-0059",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ip route و address — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0060",
+      "id": "lab-ch68-cont-0060",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ip route و address — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0061",
+      "id": "lab-ch68-cont-0061",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ip route و address — عیب‌یابی رایج",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0062",
+      "id": "lab-ch68-cont-0062",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ip route و address — اشتباهات میدانی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0063",
+      "id": "lab-ch68-cont-0063",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ip route و address — چک‌لیست عملیاتی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0064",
+      "id": "lab-ch68-cont-0064",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ip route و address — معیار پذیرش",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0065",
+      "id": "lab-ch68-cont-0065",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: tmux و screen — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0066",
+      "id": "lab-ch68-cont-0066",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: tmux و screen — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0067",
+      "id": "lab-ch68-cont-0067",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: tmux و screen — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0068",
+      "id": "lab-ch68-cont-0068",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: tmux و screen — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0069",
+      "id": "lab-ch68-cont-0069",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: tmux و screen — عیب‌یابی رایج",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0070",
+      "id": "lab-ch68-cont-0070",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: tmux و screen — اشتباهات میدانی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0071",
+      "id": "lab-ch68-cont-0071",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: tmux و screen — چک‌لیست عملیاتی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0072",
+      "id": "lab-ch68-cont-0072",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: tmux و screen — معیار پذیرش",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0073",
+      "id": "lab-ch68-cont-0073",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: cron و timer — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0074",
+      "id": "lab-ch68-cont-0074",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: cron و timer — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0075",
+      "id": "lab-ch68-cont-0075",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: cron و timer — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0076",
+      "id": "lab-ch68-cont-0076",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: cron و timer — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0077",
+      "id": "lab-ch68-cont-0077",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: cron و timer — عیب‌یابی رایج",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0078",
+      "id": "lab-ch68-cont-0078",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: cron و timer — اشتباهات میدانی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0079",
+      "id": "lab-ch68-cont-0079",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: cron و timer — چک‌لیست عملیاتی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0080",
+      "id": "lab-ch68-cont-0080",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: cron و timer — معیار پذیرش",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0081",
+      "id": "lab-ch68-cont-0081",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: rsync بکاپ — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0082",
+      "id": "lab-ch68-cont-0082",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: rsync بکاپ — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0083",
+      "id": "lab-ch68-cont-0083",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: rsync بکاپ — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0084",
+      "id": "lab-ch68-cont-0084",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: rsync بکاپ — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0085",
+      "id": "lab-ch68-cont-0085",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: rsync بکاپ — عیب‌یابی رایج",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0086",
+      "id": "lab-ch68-cont-0086",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: rsync بکاپ — اشتباهات میدانی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0087",
+      "id": "lab-ch68-cont-0087",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: rsync بکاپ — چک‌لیست عملیاتی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0088",
+      "id": "lab-ch68-cont-0088",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: rsync بکاپ — معیار پذیرش",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0089",
+      "id": "lab-ch68-cont-0089",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ssh سخت‌سازی — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0090",
+      "id": "lab-ch68-cont-0090",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ssh سخت‌سازی — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0091",
+      "id": "lab-ch68-cont-0091",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ssh سخت‌سازی — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0092",
+      "id": "lab-ch68-cont-0092",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ssh سخت‌سازی — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0093",
+      "id": "lab-ch68-cont-0093",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ssh سخت‌سازی — عیب‌یابی رایج",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0094",
+      "id": "lab-ch68-cont-0094",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ssh سخت‌سازی — اشتباهات میدانی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0095",
+      "id": "lab-ch68-cont-0095",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ssh سخت‌سازی — چک‌لیست عملیاتی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0096",
+      "id": "lab-ch68-cont-0096",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: ssh سخت‌سازی — معیار پذیرش",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0097",
+      "id": "lab-ch68-cont-0097",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: sudo و privileges — مفهوم و کاربرد",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0098",
+      "id": "lab-ch68-cont-0098",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: sudo و privileges — پیش‌نیاز",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0099",
+      "id": "lab-ch68-cont-0099",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: sudo و privileges — پیکربندی امن گام‌به‌گام",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch68:cont:0100",
+      "id": "lab-ch68-cont-0100",
+      "chapter_order": 68,
+      "level": "continuous",
+      "title_fa": "لاب پیوسته: Linux: sudo و privileges — اعتبارسنجی خروجی",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "ثبت خروجی",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "خروجی مطابق معیار پذیرش",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     }
   ]
 }
