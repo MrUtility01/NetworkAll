@@ -48,6 +48,12 @@ interface LessonDao {
               ORDER BY lessonOrder, titleFa""")
     suspend fun lessonRowsByChapter(co: Int): List<LessonListRow>
 
+    /** Lightweight rows for ALL chapters — used by tree catalog. Never includes fullContent. */
+    @Query("""SELECT uid, titleFa, chapterOrder, chapterTitle, subTitle, lessonOrder
+              FROM lessons WHERE deleted = 0
+              ORDER BY chapterOrder, lessonOrder, titleFa""")
+    suspend fun allLessonRows(): List<LessonListRow>
+
     @Query("SELECT value FROM sync_meta WHERE key = :key LIMIT 1")
     suspend fun getMeta(key: String): String?
 
