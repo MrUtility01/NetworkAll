@@ -238,3 +238,11 @@ python tools/chapters/68/authoring/audit_coverage.py --strict
 - این فایل‌ها به‌صورت افزایشی هستند؛ محتوای قبلی حذف یا جایگزین نشده است. وضعیت همهٔ رکوردهای جدید `review_required` باقی می‌ماند تا syntax، تفاوت نسخه‌ها، صحت فنی و رفتار نمایش در برنامه تأیید شود.
 - برای بازتولید پوشش واقعی اجرا کنید: `python tools/chapters/68/authoring/audit_coverage.py`. سپس `--strict` را اجرا کنید؛ تا پیش از اجرای ممیز، گزارش پوشش موجود را به‌عنوان شمارش به‌روز موج ۹ تلقی نکنید.
 - برای ساخت Android، CI باید ادغام موج ۹ و آزمون‌های موجود را اجرا کند. **ساخت و تست Windows/Android پس از این تغییر هنوز تأیید نشده است.**
+
+
+## موج دهم — تکمیل هدفمند ۱۲ حوزهٔ کم‌پوشش (۱۸ اکتبر ۲۰۲۶)
+
+- فایل افزایشی `commands/sources/encyclopedia/commands_multi_technology_wave10.json` اضافه شد: **۶۰ مرجع** برای VoIP، VMware ESXi، SSH، TCP diagnostics، FTP، FTPS، SFTP، Zabbix، Wireshark/TShark، Juniper Junos، Aruba AOS-CX و Proxmox VE.
+- ممیز پوشش اکنون موج دهم را نیز می‌خواند؛ این تغییر به معنی رسیدن به سهمیه‌های هدف نیست.
+- رکوردها `review_required` هستند؛ دستورهای وابسته به نسخه و محیط باید با مستندات فروشنده بررسی شوند. فرمان‌های capture، اسکن و مدیریت فقط در محدودهٔ مجاز اجرا شوند.
+- گزارش `coverage_report.json` تا اجرای واقعی ممیز پس از این تغییر، گزارش نهایی محسوب نمی‌شود. اجرای ممیز و تأیید Build باید از CI بررسی شود.
