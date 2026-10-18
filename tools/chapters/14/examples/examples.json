@@ -1,1128 +1,906 @@
 {
   "schema_version": 1,
   "chapter_order": 14,
-  "category": "examples",
-  "source_of_truth": true,
   "items": [
     {
-      "uid": "lesson:ch14:lv001:l0001",
-      "title_fa": "[L0] Static Route — آشنایی",
-      "title_en": "[L0] Static Route — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Static Route» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nStatic route مسیر صریح مدیر است؛ next-hop باید resolve شود و route برگشت هم لازم است. RIB و FIB یکی نیستند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0002",
-      "title_fa": "[L1] Static Route — مقدماتی",
-      "title_en": "[L1] Static Route — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Static Route» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nStatic route مسیر صریح مدیر است؛ next-hop باید resolve شود و route برگشت هم لازم است. RIB و FIB یکی نیستند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0003",
-      "title_fa": "[L2] Static Route — ادمین",
-      "title_en": "[L2] Static Route — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Static Route» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nStatic route مسیر صریح مدیر است؛ next-hop باید resolve شود و route برگشت هم لازم است. RIB و FIB یکی نیستند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0004",
-      "title_fa": "[L3] Static Route — مهندس",
-      "title_en": "[L3] Static Route — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Static Route» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nStatic route مسیر صریح مدیر است؛ next-hop باید resolve شود و route برگشت هم لازم است. RIB و FIB یکی نیستند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0005",
-      "title_fa": "[L4] Static Route — خبره",
-      "title_en": "[L4] Static Route — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Static Route» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nStatic route مسیر صریح مدیر است؛ next-hop باید resolve شود و route برگشت هم لازم است. RIB و FIB یکی نیستند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0006",
-      "title_fa": "[L0] Default Route — آشنایی",
-      "title_en": "[L0] Default Route — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Default Route» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nDefault route برای مقصدهای بدون مسیر خاص‌تر fallback است؛ longest-prefix match بر route پیش‌فرض تقدم دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0007",
-      "title_fa": "[L1] Default Route — مقدماتی",
-      "title_en": "[L1] Default Route — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Default Route» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nDefault route برای مقصدهای بدون مسیر خاص‌تر fallback است؛ longest-prefix match بر route پیش‌فرض تقدم دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0008",
-      "title_fa": "[L2] Default Route — ادمین",
-      "title_en": "[L2] Default Route — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Default Route» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nDefault route برای مقصدهای بدون مسیر خاص‌تر fallback است؛ longest-prefix match بر route پیش‌فرض تقدم دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0009",
-      "title_fa": "[L3] Default Route — مهندس",
-      "title_en": "[L3] Default Route — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Default Route» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nDefault route برای مقصدهای بدون مسیر خاص‌تر fallback است؛ longest-prefix match بر route پیش‌فرض تقدم دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0010",
-      "title_fa": "[L4] Default Route — خبره",
-      "title_en": "[L4] Default Route — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Default Route» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nDefault route برای مقصدهای بدون مسیر خاص‌تر fallback است؛ longest-prefix match بر route پیش‌فرض تقدم دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0011",
-      "title_fa": "[L0] Floating Static — آشنایی",
-      "title_en": "[L0] Floating Static — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Floating Static» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nFloating static route مسیر پشتیبان با distance/preference ضعیف‌تر است؛ failure upstream ممکن است به tracking نیاز داشته باشد حتی اگر interface up بماند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0012",
-      "title_fa": "[L1] Floating Static — مقدماتی",
-      "title_en": "[L1] Floating Static — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Floating Static» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nFloating static route مسیر پشتیبان با distance/preference ضعیف‌تر است؛ failure upstream ممکن است به tracking نیاز داشته باشد حتی اگر interface up بماند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0013",
-      "title_fa": "[L2] Floating Static — ادمین",
-      "title_en": "[L2] Floating Static — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Floating Static» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nFloating static route مسیر پشتیبان با distance/preference ضعیف‌تر است؛ failure upstream ممکن است به tracking نیاز داشته باشد حتی اگر interface up بماند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0014",
-      "title_fa": "[L3] Floating Static — مهندس",
-      "title_en": "[L3] Floating Static — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Floating Static» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nFloating static route مسیر پشتیبان با distance/preference ضعیف‌تر است؛ failure upstream ممکن است به tracking نیاز داشته باشد حتی اگر interface up بماند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0015",
-      "title_fa": "[L4] Floating Static — خبره",
-      "title_en": "[L4] Floating Static — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Floating Static» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nFloating static route مسیر پشتیبان با distance/preference ضعیف‌تر است؛ failure upstream ممکن است به tracking نیاز داشته باشد حتی اگر interface up بماند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0016",
-      "title_fa": "[L0] Administrative Distance — آشنایی",
-      "title_en": "[L0] Administrative Distance — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Administrative Distance» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر Cisco، administrative distance ترجیح محلی بین منابع route است و با metric داخلی OSPF/EIGRP/BGP یکی نیست؛ سازندگان دیگر ممکن است اصطلاح/رفتار متفاوت داشته باشند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0017",
-      "title_fa": "[L1] Administrative Distance — مقدماتی",
-      "title_en": "[L1] Administrative Distance — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Administrative Distance» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر Cisco، administrative distance ترجیح محلی بین منابع route است و با metric داخلی OSPF/EIGRP/BGP یکی نیست؛ سازندگان دیگر ممکن است اصطلاح/رفتار متفاوت داشته باشند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0018",
-      "title_fa": "[L2] Administrative Distance — ادمین",
-      "title_en": "[L2] Administrative Distance — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Administrative Distance» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر Cisco، administrative distance ترجیح محلی بین منابع route است و با metric داخلی OSPF/EIGRP/BGP یکی نیست؛ سازندگان دیگر ممکن است اصطلاح/رفتار متفاوت داشته باشند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0019",
-      "title_fa": "[L3] Administrative Distance — مهندس",
-      "title_en": "[L3] Administrative Distance — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Administrative Distance» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر Cisco، administrative distance ترجیح محلی بین منابع route است و با metric داخلی OSPF/EIGRP/BGP یکی نیست؛ سازندگان دیگر ممکن است اصطلاح/رفتار متفاوت داشته باشند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv001:l0020",
-      "title_fa": "[L4] Administrative Distance — خبره",
-      "title_en": "[L4] Administrative Distance — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Administrative Distance» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر Cisco، administrative distance ترجیح محلی بین منابع route است و با metric داخلی OSPF/EIGRP/BGP یکی نیست؛ سازندگان دیگر ممکن است اصطلاح/رفتار متفاوت داشته باشند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0001",
-      "title_fa": "[L0] Link-State مفهوم — آشنایی",
-      "title_en": "[L0] Link-State مفهوم — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Link-State مفهوم» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF یک IGP link-state است: LSAها در LSDB همگام می‌شوند و SPF مسیرها را محاسبه می‌کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0002",
-      "title_fa": "[L1] Link-State مفهوم — مقدماتی",
-      "title_en": "[L1] Link-State مفهوم — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Link-State مفهوم» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF یک IGP link-state است: LSAها در LSDB همگام می‌شوند و SPF مسیرها را محاسبه می‌کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0003",
-      "title_fa": "[L2] Link-State مفهوم — ادمین",
-      "title_en": "[L2] Link-State مفهوم — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Link-State مفهوم» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF یک IGP link-state است: LSAها در LSDB همگام می‌شوند و SPF مسیرها را محاسبه می‌کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0004",
-      "title_fa": "[L3] Link-State مفهوم — مهندس",
-      "title_en": "[L3] Link-State مفهوم — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Link-State مفهوم» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF یک IGP link-state است: LSAها در LSDB همگام می‌شوند و SPF مسیرها را محاسبه می‌کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0005",
-      "title_fa": "[L4] Link-State مفهوم — خبره",
-      "title_en": "[L4] Link-State مفهوم — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Link-State مفهوم» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF یک IGP link-state است: LSAها در LSDB همگام می‌شوند و SPF مسیرها را محاسبه می‌کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0006",
-      "title_fa": "[L0] Area — آشنایی",
-      "title_en": "[L0] Area — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Area» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF area محدودهٔ توپولوژی و flooding را تقسیم می‌کند؛ در طراحی چندناحیه‌ای Area 0 backbone است و ABR اطلاعات بین areaها را منتقل می‌کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0007",
-      "title_fa": "[L1] Area — مقدماتی",
-      "title_en": "[L1] Area — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Area» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF area محدودهٔ توپولوژی و flooding را تقسیم می‌کند؛ در طراحی چندناحیه‌ای Area 0 backbone است و ABR اطلاعات بین areaها را منتقل می‌کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0008",
-      "title_fa": "[L2] Area — ادمین",
-      "title_en": "[L2] Area — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Area» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF area محدودهٔ توپولوژی و flooding را تقسیم می‌کند؛ در طراحی چندناحیه‌ای Area 0 backbone است و ABR اطلاعات بین areaها را منتقل می‌کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0009",
-      "title_fa": "[L3] Area — مهندس",
-      "title_en": "[L3] Area — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Area» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF area محدودهٔ توپولوژی و flooding را تقسیم می‌کند؛ در طراحی چندناحیه‌ای Area 0 backbone است و ABR اطلاعات بین areaها را منتقل می‌کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0010",
-      "title_fa": "[L4] Area — خبره",
-      "title_en": "[L4] Area — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Area» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF area محدودهٔ توپولوژی و flooding را تقسیم می‌کند؛ در طراحی چندناحیه‌ای Area 0 backbone است و ABR اطلاعات بین areaها را منتقل می‌کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0011",
-      "title_fa": "[L0] Router ID — آشنایی",
-      "title_en": "[L0] Router ID — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Router ID» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF Router ID شناسهٔ ۳۲ بیتی یکتای روتر است؛ duplicate ID می‌تواند adjacency/LSA را مختل کند و تغییر آن ممکن است reset لازم داشته باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0012",
-      "title_fa": "[L1] Router ID — مقدماتی",
-      "title_en": "[L1] Router ID — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Router ID» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF Router ID شناسهٔ ۳۲ بیتی یکتای روتر است؛ duplicate ID می‌تواند adjacency/LSA را مختل کند و تغییر آن ممکن است reset لازم داشته باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0013",
-      "title_fa": "[L2] Router ID — ادمین",
-      "title_en": "[L2] Router ID — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Router ID» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF Router ID شناسهٔ ۳۲ بیتی یکتای روتر است؛ duplicate ID می‌تواند adjacency/LSA را مختل کند و تغییر آن ممکن است reset لازم داشته باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0014",
-      "title_fa": "[L3] Router ID — مهندس",
-      "title_en": "[L3] Router ID — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Router ID» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF Router ID شناسهٔ ۳۲ بیتی یکتای روتر است؛ duplicate ID می‌تواند adjacency/LSA را مختل کند و تغییر آن ممکن است reset لازم داشته باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0015",
-      "title_fa": "[L4] Router ID — خبره",
-      "title_en": "[L4] Router ID — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Router ID» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF Router ID شناسهٔ ۳۲ بیتی یکتای روتر است؛ duplicate ID می‌تواند adjacency/LSA را مختل کند و تغییر آن ممکن است reset لازم داشته باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0016",
-      "title_fa": "[L0] LSA Types — آشنایی",
-      "title_en": "[L0] LSA Types — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «LSA Types» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر OSPFv2، Type 1 Router، Type 2 Network، Type 3 Summary، Type 4 ASBR Summary، Type 5 External و Type 7 NSSA رایج‌اند؛ scope و معنی‌شان متفاوت است."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0017",
-      "title_fa": "[L1] LSA Types — مقدماتی",
-      "title_en": "[L1] LSA Types — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «LSA Types» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر OSPFv2، Type 1 Router، Type 2 Network، Type 3 Summary، Type 4 ASBR Summary، Type 5 External و Type 7 NSSA رایج‌اند؛ scope و معنی‌شان متفاوت است."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0018",
-      "title_fa": "[L2] LSA Types — ادمین",
-      "title_en": "[L2] LSA Types — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «LSA Types» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر OSPFv2، Type 1 Router، Type 2 Network، Type 3 Summary، Type 4 ASBR Summary، Type 5 External و Type 7 NSSA رایج‌اند؛ scope و معنی‌شان متفاوت است."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0019",
-      "title_fa": "[L3] LSA Types — مهندس",
-      "title_en": "[L3] LSA Types — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «LSA Types» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر OSPFv2، Type 1 Router، Type 2 Network، Type 3 Summary، Type 4 ASBR Summary، Type 5 External و Type 7 NSSA رایج‌اند؛ scope و معنی‌شان متفاوت است."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0020",
-      "title_fa": "[L4] LSA Types — خبره",
-      "title_en": "[L4] LSA Types — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «LSA Types» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر OSPFv2، Type 1 Router، Type 2 Network، Type 3 Summary، Type 4 ASBR Summary، Type 5 External و Type 7 NSSA رایج‌اند؛ scope و معنی‌شان متفاوت است."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0021",
-      "title_fa": "[L0] DR BDR — آشنایی",
-      "title_en": "[L0] DR BDR — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «DR BDR» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر شبکهٔ multi-access، DR/BDR تعداد adjacencyها را کاهش می‌دهد؛ در point-to-point معمولاً election انجام نمی‌شود."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0022",
-      "title_fa": "[L1] DR BDR — مقدماتی",
-      "title_en": "[L1] DR BDR — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «DR BDR» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر شبکهٔ multi-access، DR/BDR تعداد adjacencyها را کاهش می‌دهد؛ در point-to-point معمولاً election انجام نمی‌شود."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0023",
-      "title_fa": "[L2] DR BDR — ادمین",
-      "title_en": "[L2] DR BDR — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «DR BDR» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر شبکهٔ multi-access، DR/BDR تعداد adjacencyها را کاهش می‌دهد؛ در point-to-point معمولاً election انجام نمی‌شود."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0024",
-      "title_fa": "[L3] DR BDR — مهندس",
-      "title_en": "[L3] DR BDR — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «DR BDR» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر شبکهٔ multi-access، DR/BDR تعداد adjacencyها را کاهش می‌دهد؛ در point-to-point معمولاً election انجام نمی‌شود."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0025",
-      "title_fa": "[L4] DR BDR — خبره",
-      "title_en": "[L4] DR BDR — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «DR BDR» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nدر شبکهٔ multi-access، DR/BDR تعداد adjacencyها را کاهش می‌دهد؛ در point-to-point معمولاً election انجام نمی‌شود."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0026",
-      "title_fa": "[L0] Network Types — آشنایی",
-      "title_en": "[L0] Network Types — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Network Types» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF network type رفتار neighbor discovery، DR election و timerها را تعیین می‌کند؛ باید با توپولوژی واقعی و تنظیمات peerها هم‌خوان باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0027",
-      "title_fa": "[L1] Network Types — مقدماتی",
-      "title_en": "[L1] Network Types — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Network Types» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF network type رفتار neighbor discovery، DR election و timerها را تعیین می‌کند؛ باید با توپولوژی واقعی و تنظیمات peerها هم‌خوان باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0028",
-      "title_fa": "[L2] Network Types — ادمین",
-      "title_en": "[L2] Network Types — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Network Types» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF network type رفتار neighbor discovery، DR election و timerها را تعیین می‌کند؛ باید با توپولوژی واقعی و تنظیمات peerها هم‌خوان باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0029",
-      "title_fa": "[L3] Network Types — مهندس",
-      "title_en": "[L3] Network Types — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Network Types» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF network type رفتار neighbor discovery، DR election و timerها را تعیین می‌کند؛ باید با توپولوژی واقعی و تنظیمات peerها هم‌خوان باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0030",
-      "title_fa": "[L4] Network Types — خبره",
-      "title_en": "[L4] Network Types — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Network Types» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nOSPF network type رفتار neighbor discovery، DR election و timerها را تعیین می‌کند؛ باید با توپولوژی واقعی و تنظیمات peerها هم‌خوان باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0031",
-      "title_fa": "[L0] Multi-Area — آشنایی",
-      "title_en": "[L0] Multi-Area — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Multi-Area» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nMulti-area OSPF LSDB و دامنهٔ SPF را کنترل می‌کند؛ ABR و summarization باید طوری طراحی شوند که قطع area/مسیرها blackhole نسازد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0032",
-      "title_fa": "[L1] Multi-Area — مقدماتی",
-      "title_en": "[L1] Multi-Area — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Multi-Area» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nMulti-area OSPF LSDB و دامنهٔ SPF را کنترل می‌کند؛ ABR و summarization باید طوری طراحی شوند که قطع area/مسیرها blackhole نسازد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0033",
-      "title_fa": "[L2] Multi-Area — ادمین",
-      "title_en": "[L2] Multi-Area — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Multi-Area» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nMulti-area OSPF LSDB و دامنهٔ SPF را کنترل می‌کند؛ ABR و summarization باید طوری طراحی شوند که قطع area/مسیرها blackhole نسازد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0034",
-      "title_fa": "[L3] Multi-Area — مهندس",
-      "title_en": "[L3] Multi-Area — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Multi-Area» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nMulti-area OSPF LSDB و دامنهٔ SPF را کنترل می‌کند؛ ABR و summarization باید طوری طراحی شوند که قطع area/مسیرها blackhole نسازد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0035",
-      "title_fa": "[L4] Multi-Area — خبره",
-      "title_en": "[L4] Multi-Area — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Multi-Area» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nMulti-area OSPF LSDB و دامنهٔ SPF را کنترل می‌کند؛ ABR و summarization باید طوری طراحی شوند که قطع area/مسیرها blackhole نسازد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0036",
-      "title_fa": "[L0] Stub NSSA — آشنایی",
-      "title_en": "[L0] Stub NSSA — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Stub NSSA» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nStub بخشی از LSAهای خارجی را محدود می‌کند؛ NSSA اجازهٔ external LSA نوع 7 می‌دهد و ABR ممکن است آن را به Type 5 ترجمه کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0037",
-      "title_fa": "[L1] Stub NSSA — مقدماتی",
-      "title_en": "[L1] Stub NSSA — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Stub NSSA» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nStub بخشی از LSAهای خارجی را محدود می‌کند؛ NSSA اجازهٔ external LSA نوع 7 می‌دهد و ABR ممکن است آن را به Type 5 ترجمه کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0038",
-      "title_fa": "[L2] Stub NSSA — ادمین",
-      "title_en": "[L2] Stub NSSA — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Stub NSSA» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nStub بخشی از LSAهای خارجی را محدود می‌کند؛ NSSA اجازهٔ external LSA نوع 7 می‌دهد و ABR ممکن است آن را به Type 5 ترجمه کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0039",
-      "title_fa": "[L3] Stub NSSA — مهندس",
-      "title_en": "[L3] Stub NSSA — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Stub NSSA» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nStub بخشی از LSAهای خارجی را محدود می‌کند؛ NSSA اجازهٔ external LSA نوع 7 می‌دهد و ABR ممکن است آن را به Type 5 ترجمه کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0040",
-      "title_fa": "[L4] Stub NSSA — خبره",
-      "title_en": "[L4] Stub NSSA — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Stub NSSA» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nStub بخشی از LSAهای خارجی را محدود می‌کند؛ NSSA اجازهٔ external LSA نوع 7 می‌دهد و ABR ممکن است آن را به Type 5 ترجمه کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0041",
-      "title_fa": "[L0] Summarization OSPF — آشنایی",
-      "title_en": "[L0] Summarization OSPF — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Summarization OSPF» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nSummarization prefixهای پیوسته را جمع می‌کند و جدول/تغییرات را کم می‌کند؛ aggregation بیش از حد می‌تواند blackhole بسازد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0042",
-      "title_fa": "[L1] Summarization OSPF — مقدماتی",
-      "title_en": "[L1] Summarization OSPF — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Summarization OSPF» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nSummarization prefixهای پیوسته را جمع می‌کند و جدول/تغییرات را کم می‌کند؛ aggregation بیش از حد می‌تواند blackhole بسازد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0043",
-      "title_fa": "[L2] Summarization OSPF — ادمین",
-      "title_en": "[L2] Summarization OSPF — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Summarization OSPF» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nSummarization prefixهای پیوسته را جمع می‌کند و جدول/تغییرات را کم می‌کند؛ aggregation بیش از حد می‌تواند blackhole بسازد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0044",
-      "title_fa": "[L3] Summarization OSPF — مهندس",
-      "title_en": "[L3] Summarization OSPF — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Summarization OSPF» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nSummarization prefixهای پیوسته را جمع می‌کند و جدول/تغییرات را کم می‌کند؛ aggregation بیش از حد می‌تواند blackhole بسازد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv002:l0045",
-      "title_fa": "[L4] Summarization OSPF — خبره",
-      "title_en": "[L4] Summarization OSPF — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Summarization OSPF» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nSummarization prefixهای پیوسته را جمع می‌کند و جدول/تغییرات را کم می‌کند؛ aggregation بیش از حد می‌تواند blackhole بسازد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0001",
-      "title_fa": "[L0] Metric مرکب — آشنایی",
-      "title_en": "[L0] Metric مرکب — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Metric مرکب» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nEIGRP metric کلاسیک بر minimum bandwidth و مجموع delay متکی است؛ K-values باید سازگار باشند و wide metrics نسخه‌های جدید تفاوت دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0002",
-      "title_fa": "[L1] Metric مرکب — مقدماتی",
-      "title_en": "[L1] Metric مرکب — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Metric مرکب» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nEIGRP metric کلاسیک بر minimum bandwidth و مجموع delay متکی است؛ K-values باید سازگار باشند و wide metrics نسخه‌های جدید تفاوت دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0003",
-      "title_fa": "[L2] Metric مرکب — ادمین",
-      "title_en": "[L2] Metric مرکب — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Metric مرکب» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nEIGRP metric کلاسیک بر minimum bandwidth و مجموع delay متکی است؛ K-values باید سازگار باشند و wide metrics نسخه‌های جدید تفاوت دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0004",
-      "title_fa": "[L3] Metric مرکب — مهندس",
-      "title_en": "[L3] Metric مرکب — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Metric مرکب» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nEIGRP metric کلاسیک بر minimum bandwidth و مجموع delay متکی است؛ K-values باید سازگار باشند و wide metrics نسخه‌های جدید تفاوت دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0005",
-      "title_fa": "[L4] Metric مرکب — خبره",
-      "title_en": "[L4] Metric مرکب — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Metric مرکب» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nEIGRP metric کلاسیک بر minimum bandwidth و مجموع delay متکی است؛ K-values باید سازگار باشند و wide metrics نسخه‌های جدید تفاوت دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0006",
-      "title_fa": "[L0] DUAL — آشنایی",
-      "title_en": "[L0] DUAL — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «DUAL» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nDUAL مسیر loop-free را انتخاب می‌کند؛ feasible successor ممکن است failover سریع دهد و Active به معنی محاسبهٔ مجدد است نه حالت عبور بسته."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0007",
-      "title_fa": "[L1] DUAL — مقدماتی",
-      "title_en": "[L1] DUAL — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «DUAL» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nDUAL مسیر loop-free را انتخاب می‌کند؛ feasible successor ممکن است failover سریع دهد و Active به معنی محاسبهٔ مجدد است نه حالت عبور بسته."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0008",
-      "title_fa": "[L2] DUAL — ادمین",
-      "title_en": "[L2] DUAL — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «DUAL» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nDUAL مسیر loop-free را انتخاب می‌کند؛ feasible successor ممکن است failover سریع دهد و Active به معنی محاسبهٔ مجدد است نه حالت عبور بسته."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0009",
-      "title_fa": "[L3] DUAL — مهندس",
-      "title_en": "[L3] DUAL — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «DUAL» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nDUAL مسیر loop-free را انتخاب می‌کند؛ feasible successor ممکن است failover سریع دهد و Active به معنی محاسبهٔ مجدد است نه حالت عبور بسته."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0010",
-      "title_fa": "[L4] DUAL — خبره",
-      "title_en": "[L4] DUAL — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «DUAL» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nDUAL مسیر loop-free را انتخاب می‌کند؛ feasible successor ممکن است failover سریع دهد و Active به معنی محاسبهٔ مجدد است نه حالت عبور بسته."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0011",
-      "title_fa": "[L0] Successor Feasible — آشنایی",
-      "title_en": "[L0] Successor Feasible — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Successor Feasible» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nSuccessor مسیر منتخب است؛ feasible successor شرط feasibility را پاس می‌کند و می‌تواند جایگزین آمادهٔ loop-free باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0012",
-      "title_fa": "[L1] Successor Feasible — مقدماتی",
-      "title_en": "[L1] Successor Feasible — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Successor Feasible» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nSuccessor مسیر منتخب است؛ feasible successor شرط feasibility را پاس می‌کند و می‌تواند جایگزین آمادهٔ loop-free باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0013",
-      "title_fa": "[L2] Successor Feasible — ادمین",
-      "title_en": "[L2] Successor Feasible — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Successor Feasible» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nSuccessor مسیر منتخب است؛ feasible successor شرط feasibility را پاس می‌کند و می‌تواند جایگزین آمادهٔ loop-free باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0014",
-      "title_fa": "[L3] Successor Feasible — مهندس",
-      "title_en": "[L3] Successor Feasible — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Successor Feasible» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nSuccessor مسیر منتخب است؛ feasible successor شرط feasibility را پاس می‌کند و می‌تواند جایگزین آمادهٔ loop-free باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0015",
-      "title_fa": "[L4] Successor Feasible — خبره",
-      "title_en": "[L4] Successor Feasible — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Successor Feasible» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nSuccessor مسیر منتخب است؛ feasible successor شرط feasibility را پاس می‌کند و می‌تواند جایگزین آمادهٔ loop-free باشد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0016",
-      "title_fa": "[L0] Query SIA — آشنایی",
-      "title_en": "[L0] Query SIA — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Query SIA» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nوقتی EIGRP مسیر جایگزین قابل‌قبول ندارد query منتشر می‌شود؛ پاسخ دیرهنگام می‌تواند Stuck-in-Active ایجاد کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0017",
-      "title_fa": "[L1] Query SIA — مقدماتی",
-      "title_en": "[L1] Query SIA — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Query SIA» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nوقتی EIGRP مسیر جایگزین قابل‌قبول ندارد query منتشر می‌شود؛ پاسخ دیرهنگام می‌تواند Stuck-in-Active ایجاد کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0018",
-      "title_fa": "[L2] Query SIA — ادمین",
-      "title_en": "[L2] Query SIA — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Query SIA» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nوقتی EIGRP مسیر جایگزین قابل‌قبول ندارد query منتشر می‌شود؛ پاسخ دیرهنگام می‌تواند Stuck-in-Active ایجاد کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0019",
-      "title_fa": "[L3] Query SIA — مهندس",
-      "title_en": "[L3] Query SIA — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Query SIA» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nوقتی EIGRP مسیر جایگزین قابل‌قبول ندارد query منتشر می‌شود؛ پاسخ دیرهنگام می‌تواند Stuck-in-Active ایجاد کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv003:l0020",
-      "title_fa": "[L4] Query SIA — خبره",
-      "title_en": "[L4] Query SIA — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Query SIA» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nوقتی EIGRP مسیر جایگزین قابل‌قبول ندارد query منتشر می‌شود؛ پاسخ دیرهنگام می‌تواند Stuck-in-Active ایجاد کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0001",
-      "title_fa": "[L0] AS Number — آشنایی",
-      "title_en": "[L0] AS Number — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «AS Number» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nASN شناسهٔ AS در BGP است؛ AS_PATH در جلوگیری از loop و اعمال policy نقش دارد. ASN عمومی/خصوصی را طبق سیاست مقصد به‌کار ببرید."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0002",
-      "title_fa": "[L1] AS Number — مقدماتی",
-      "title_en": "[L1] AS Number — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «AS Number» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nASN شناسهٔ AS در BGP است؛ AS_PATH در جلوگیری از loop و اعمال policy نقش دارد. ASN عمومی/خصوصی را طبق سیاست مقصد به‌کار ببرید."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0003",
-      "title_fa": "[L2] AS Number — ادمین",
-      "title_en": "[L2] AS Number — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «AS Number» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nASN شناسهٔ AS در BGP است؛ AS_PATH در جلوگیری از loop و اعمال policy نقش دارد. ASN عمومی/خصوصی را طبق سیاست مقصد به‌کار ببرید."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0004",
-      "title_fa": "[L3] AS Number — مهندس",
-      "title_en": "[L3] AS Number — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «AS Number» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nASN شناسهٔ AS در BGP است؛ AS_PATH در جلوگیری از loop و اعمال policy نقش دارد. ASN عمومی/خصوصی را طبق سیاست مقصد به‌کار ببرید."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0005",
-      "title_fa": "[L4] AS Number — خبره",
-      "title_en": "[L4] AS Number — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «AS Number» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nASN شناسهٔ AS در BGP است؛ AS_PATH در جلوگیری از loop و اعمال policy نقش دارد. ASN عمومی/خصوصی را طبق سیاست مقصد به‌کار ببرید."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0006",
-      "title_fa": "[L0] eBGP iBGP — آشنایی",
-      "title_en": "[L0] eBGP iBGP — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «eBGP iBGP» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\neBGP بین ASها و iBGP درون AS است؛ رفتار next-hop، تبلیغ route و full-mesh/route reflector متفاوت است."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0007",
-      "title_fa": "[L1] eBGP iBGP — مقدماتی",
-      "title_en": "[L1] eBGP iBGP — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «eBGP iBGP» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\neBGP بین ASها و iBGP درون AS است؛ رفتار next-hop، تبلیغ route و full-mesh/route reflector متفاوت است."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0008",
-      "title_fa": "[L2] eBGP iBGP — ادمین",
-      "title_en": "[L2] eBGP iBGP — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «eBGP iBGP» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\neBGP بین ASها و iBGP درون AS است؛ رفتار next-hop، تبلیغ route و full-mesh/route reflector متفاوت است."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0009",
-      "title_fa": "[L3] eBGP iBGP — مهندس",
-      "title_en": "[L3] eBGP iBGP — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «eBGP iBGP» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\neBGP بین ASها و iBGP درون AS است؛ رفتار next-hop، تبلیغ route و full-mesh/route reflector متفاوت است."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0010",
-      "title_fa": "[L4] eBGP iBGP — خبره",
-      "title_en": "[L4] eBGP iBGP — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «eBGP iBGP» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\neBGP بین ASها و iBGP درون AS است؛ رفتار next-hop، تبلیغ route و full-mesh/route reflector متفاوت است."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0011",
-      "title_fa": "[L0] Path Attributes — آشنایی",
-      "title_en": "[L0] Path Attributes — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Path Attributes» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP route attributes شامل AS_PATH، NEXT_HOP، LOCAL_PREF، MED و Communities است؛ ترتیب best-path به نسخه و vendor بستگی دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0012",
-      "title_fa": "[L1] Path Attributes — مقدماتی",
-      "title_en": "[L1] Path Attributes — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Path Attributes» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP route attributes شامل AS_PATH، NEXT_HOP، LOCAL_PREF، MED و Communities است؛ ترتیب best-path به نسخه و vendor بستگی دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0013",
-      "title_fa": "[L2] Path Attributes — ادمین",
-      "title_en": "[L2] Path Attributes — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Path Attributes» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP route attributes شامل AS_PATH، NEXT_HOP، LOCAL_PREF، MED و Communities است؛ ترتیب best-path به نسخه و vendor بستگی دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0014",
-      "title_fa": "[L3] Path Attributes — مهندس",
-      "title_en": "[L3] Path Attributes — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Path Attributes» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP route attributes شامل AS_PATH، NEXT_HOP، LOCAL_PREF، MED و Communities است؛ ترتیب best-path به نسخه و vendor بستگی دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0015",
-      "title_fa": "[L4] Path Attributes — خبره",
-      "title_en": "[L4] Path Attributes — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Path Attributes» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP route attributes شامل AS_PATH، NEXT_HOP، LOCAL_PREF، MED و Communities است؛ ترتیب best-path به نسخه و vendor بستگی دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0016",
-      "title_fa": "[L0] Best Path — آشنایی",
-      "title_en": "[L0] Best Path — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Best Path» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP ممکن است چند مسیر را نگه دارد اما یکی را best انتخاب کند؛ فقط کوتاه‌ترین AS_PATH کافی نیست و policy و next-hop نیز اثر دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0017",
-      "title_fa": "[L1] Best Path — مقدماتی",
-      "title_en": "[L1] Best Path — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Best Path» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP ممکن است چند مسیر را نگه دارد اما یکی را best انتخاب کند؛ فقط کوتاه‌ترین AS_PATH کافی نیست و policy و next-hop نیز اثر دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0018",
-      "title_fa": "[L2] Best Path — ادمین",
-      "title_en": "[L2] Best Path — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Best Path» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP ممکن است چند مسیر را نگه دارد اما یکی را best انتخاب کند؛ فقط کوتاه‌ترین AS_PATH کافی نیست و policy و next-hop نیز اثر دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0019",
-      "title_fa": "[L3] Best Path — مهندس",
-      "title_en": "[L3] Best Path — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Best Path» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP ممکن است چند مسیر را نگه دارد اما یکی را best انتخاب کند؛ فقط کوتاه‌ترین AS_PATH کافی نیست و policy و next-hop نیز اثر دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0020",
-      "title_fa": "[L4] Best Path — خبره",
-      "title_en": "[L4] Best Path — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Best Path» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP ممکن است چند مسیر را نگه دارد اما یکی را best انتخاب کند؛ فقط کوتاه‌ترین AS_PATH کافی نیست و policy و next-hop نیز اثر دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0021",
-      "title_fa": "[L0] Communities — آشنایی",
-      "title_en": "[L0] Communities — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Communities» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP communities برچسب‌های policy هستند؛ تنها زمانی اثر دارند که قرارداد و route policy مشخصی آن‌ها را مصرف کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0022",
-      "title_fa": "[L1] Communities — مقدماتی",
-      "title_en": "[L1] Communities — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Communities» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP communities برچسب‌های policy هستند؛ تنها زمانی اثر دارند که قرارداد و route policy مشخصی آن‌ها را مصرف کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0023",
-      "title_fa": "[L2] Communities — ادمین",
-      "title_en": "[L2] Communities — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Communities» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP communities برچسب‌های policy هستند؛ تنها زمانی اثر دارند که قرارداد و route policy مشخصی آن‌ها را مصرف کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0024",
-      "title_fa": "[L3] Communities — مهندس",
-      "title_en": "[L3] Communities — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Communities» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP communities برچسب‌های policy هستند؛ تنها زمانی اثر دارند که قرارداد و route policy مشخصی آن‌ها را مصرف کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0025",
-      "title_fa": "[L4] Communities — خبره",
-      "title_en": "[L4] Communities — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Communities» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nBGP communities برچسب‌های policy هستند؛ تنها زمانی اثر دارند که قرارداد و route policy مشخصی آن‌ها را مصرف کند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0026",
-      "title_fa": "[L0] Route Reflector — آشنایی",
-      "title_en": "[L0] Route Reflector — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Route Reflector» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRoute Reflector نیاز به iBGP full-mesh را کاهش می‌دهد؛ ORIGINATOR_ID و CLUSTER_LIST در کنترل loop بازتاب نقش دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0027",
-      "title_fa": "[L1] Route Reflector — مقدماتی",
-      "title_en": "[L1] Route Reflector — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Route Reflector» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRoute Reflector نیاز به iBGP full-mesh را کاهش می‌دهد؛ ORIGINATOR_ID و CLUSTER_LIST در کنترل loop بازتاب نقش دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0028",
-      "title_fa": "[L2] Route Reflector — ادمین",
-      "title_en": "[L2] Route Reflector — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Route Reflector» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRoute Reflector نیاز به iBGP full-mesh را کاهش می‌دهد؛ ORIGINATOR_ID و CLUSTER_LIST در کنترل loop بازتاب نقش دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0029",
-      "title_fa": "[L3] Route Reflector — مهندس",
-      "title_en": "[L3] Route Reflector — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Route Reflector» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRoute Reflector نیاز به iBGP full-mesh را کاهش می‌دهد؛ ORIGINATOR_ID و CLUSTER_LIST در کنترل loop بازتاب نقش دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv004:l0030",
-      "title_fa": "[L4] Route Reflector — خبره",
-      "title_en": "[L4] Route Reflector — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Route Reflector» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRoute Reflector نیاز به iBGP full-mesh را کاهش می‌دهد؛ ORIGINATOR_ID و CLUSTER_LIST در کنترل loop بازتاب نقش دارند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0001",
-      "title_fa": "[L0] Prefix-list — آشنایی",
-      "title_en": "[L0] Prefix-list — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Prefix-list» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nPrefix-list route را بر اساس prefix و prefix length فیلتر می‌کند؛ ge/le و implicit deny از خطاهای رایج‌اند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0002",
-      "title_fa": "[L1] Prefix-list — مقدماتی",
-      "title_en": "[L1] Prefix-list — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Prefix-list» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nPrefix-list route را بر اساس prefix و prefix length فیلتر می‌کند؛ ge/le و implicit deny از خطاهای رایج‌اند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0003",
-      "title_fa": "[L2] Prefix-list — ادمین",
-      "title_en": "[L2] Prefix-list — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Prefix-list» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nPrefix-list route را بر اساس prefix و prefix length فیلتر می‌کند؛ ge/le و implicit deny از خطاهای رایج‌اند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0004",
-      "title_fa": "[L3] Prefix-list — مهندس",
-      "title_en": "[L3] Prefix-list — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Prefix-list» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nPrefix-list route را بر اساس prefix و prefix length فیلتر می‌کند؛ ge/le و implicit deny از خطاهای رایج‌اند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0005",
-      "title_fa": "[L4] Prefix-list — خبره",
-      "title_en": "[L4] Prefix-list — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Prefix-list» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nPrefix-list route را بر اساس prefix و prefix length فیلتر می‌کند؛ ge/le و implicit deny از خطاهای رایج‌اند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0006",
-      "title_fa": "[L0] Route-map — آشنایی",
-      "title_en": "[L0] Route-map — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Route-map» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRoute-map sequenceهای match/set برای routing policy است؛ ترتیب و محل اتصال policy اهمیت دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0007",
-      "title_fa": "[L1] Route-map — مقدماتی",
-      "title_en": "[L1] Route-map — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Route-map» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRoute-map sequenceهای match/set برای routing policy است؛ ترتیب و محل اتصال policy اهمیت دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0008",
-      "title_fa": "[L2] Route-map — ادمین",
-      "title_en": "[L2] Route-map — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Route-map» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRoute-map sequenceهای match/set برای routing policy است؛ ترتیب و محل اتصال policy اهمیت دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0009",
-      "title_fa": "[L3] Route-map — مهندس",
-      "title_en": "[L3] Route-map — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Route-map» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRoute-map sequenceهای match/set برای routing policy است؛ ترتیب و محل اتصال policy اهمیت دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0010",
-      "title_fa": "[L4] Route-map — خبره",
-      "title_en": "[L4] Route-map — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Route-map» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRoute-map sequenceهای match/set برای routing policy است؛ ترتیب و محل اتصال policy اهمیت دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0011",
-      "title_fa": "[L0] Redistribution — آشنایی",
-      "title_en": "[L0] Redistribution — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Redistribution» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRedistribution routeهای یک منبع را وارد پروتکل دیگر می‌کند؛ filter، seed metric و route tag برای جلوگیری از feedback loop حیاتی‌اند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0012",
-      "title_fa": "[L1] Redistribution — مقدماتی",
-      "title_en": "[L1] Redistribution — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Redistribution» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRedistribution routeهای یک منبع را وارد پروتکل دیگر می‌کند؛ filter، seed metric و route tag برای جلوگیری از feedback loop حیاتی‌اند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0013",
-      "title_fa": "[L2] Redistribution — ادمین",
-      "title_en": "[L2] Redistribution — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Redistribution» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRedistribution routeهای یک منبع را وارد پروتکل دیگر می‌کند؛ filter، seed metric و route tag برای جلوگیری از feedback loop حیاتی‌اند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0014",
-      "title_fa": "[L3] Redistribution — مهندس",
-      "title_en": "[L3] Redistribution — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Redistribution» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRedistribution routeهای یک منبع را وارد پروتکل دیگر می‌کند؛ filter، seed metric و route tag برای جلوگیری از feedback loop حیاتی‌اند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0015",
-      "title_fa": "[L4] Redistribution — خبره",
-      "title_en": "[L4] Redistribution — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Redistribution» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nRedistribution routeهای یک منبع را وارد پروتکل دیگر می‌کند؛ filter، seed metric و route tag برای جلوگیری از feedback loop حیاتی‌اند."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0016",
-      "title_fa": "[L0] PBR — آشنایی",
-      "title_en": "[L0] PBR — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «PBR» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nPolicy-Based Routing مسیر را با شرط‌هایی مانند source انتخاب می‌کند، نه فقط longest-prefix; مسیر برگشت و stateful firewall باید بررسی شود."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0017",
-      "title_fa": "[L1] PBR — مقدماتی",
-      "title_en": "[L1] PBR — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «PBR» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nPolicy-Based Routing مسیر را با شرط‌هایی مانند source انتخاب می‌کند، نه فقط longest-prefix; مسیر برگشت و stateful firewall باید بررسی شود."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0018",
-      "title_fa": "[L2] PBR — ادمین",
-      "title_en": "[L2] PBR — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «PBR» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nPolicy-Based Routing مسیر را با شرط‌هایی مانند source انتخاب می‌کند، نه فقط longest-prefix; مسیر برگشت و stateful firewall باید بررسی شود."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0019",
-      "title_fa": "[L3] PBR — مهندس",
-      "title_en": "[L3] PBR — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «PBR» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nPolicy-Based Routing مسیر را با شرط‌هایی مانند source انتخاب می‌کند، نه فقط longest-prefix; مسیر برگشت و stateful firewall باید بررسی شود."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0020",
-      "title_fa": "[L4] PBR — خبره",
-      "title_en": "[L4] PBR — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «PBR» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nPolicy-Based Routing مسیر را با شرط‌هایی مانند source انتخاب می‌کند، نه فقط longest-prefix; مسیر برگشت و stateful firewall باید بررسی شود."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0021",
-      "title_fa": "[L0] Local Pref MED — آشنایی",
-      "title_en": "[L0] Local Pref MED — Intro",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Local Pref MED» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nLOCAL_PREF معمولاً ترجیح خروجی درون AS را کنترل می‌کند؛ MED سیگنالی به همسایه دربارهٔ ورودی است و scope مقایسه به policy/vendor بستگی دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0022",
-      "title_fa": "[L1] Local Pref MED — مقدماتی",
-      "title_en": "[L1] Local Pref MED — Junior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Local Pref MED» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nLOCAL_PREF معمولاً ترجیح خروجی درون AS را کنترل می‌کند؛ MED سیگنالی به همسایه دربارهٔ ورودی است و scope مقایسه به policy/vendor بستگی دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0023",
-      "title_fa": "[L2] Local Pref MED — ادمین",
-      "title_en": "[L2] Local Pref MED — Admin",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Local Pref MED» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nLOCAL_PREF معمولاً ترجیح خروجی درون AS را کنترل می‌کند؛ MED سیگنالی به همسایه دربارهٔ ورودی است و scope مقایسه به policy/vendor بستگی دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0024",
-      "title_fa": "[L3] Local Pref MED — مهندس",
-      "title_en": "[L3] Local Pref MED — Senior",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Local Pref MED» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nLOCAL_PREF معمولاً ترجیح خروجی درون AS را کنترل می‌کند؛ MED سیگنالی به همسایه دربارهٔ ورودی است و scope مقایسه به policy/vendor بستگی دارد."
-      }
-    },
-    {
-      "uid": "lesson:ch14:lv005:l0025",
-      "title_fa": "[L4] Local Pref MED — خبره",
-      "title_en": "[L4] Local Pref MED — Architect",
-      "fields": {
-        "examples": "چند مسیر یا policy برای دسترسی به مقصد وجود دارد. برای «Local Pref MED» RIB، FIB، next-hop، route advertisement و مسیر برگشت را جدا بررسی کنید و از انتشار route خارج از lab جلوگیری کنید.\n\nLOCAL_PREF معمولاً ترجیح خروجی درون AS را کنترل می‌کند؛ MED سیگنالی به همسایه دربارهٔ ورودی است و scope مقایسه به policy/vendor بستگی دارد."
-      }
+      "uid": "example:ch14:d40:0001",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Routing decision longest match",
+      "body_fa": "چک‌لیست Routing decision longest match: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Routing decision longest match: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0002",
+      "chapter_order": 14,
+      "title_fa": "نمونه: AD metric",
+      "body_fa": "چک‌لیست AD metric: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست AD metric: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0003",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Floating static",
+      "body_fa": "چک‌لیست Floating static: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Floating static: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0004",
+      "chapter_order": 14,
+      "title_fa": "نمونه: OSPF LSA types",
+      "body_fa": "چک‌لیست OSPF LSA types: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست OSPF LSA types: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0005",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Area design",
+      "body_fa": "چک‌لیست Area design: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Area design: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0006",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Virtual link risk",
+      "body_fa": "چک‌لیست Virtual link risk: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Virtual link risk: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0007",
+      "chapter_order": 14,
+      "title_fa": "نمونه: OSPF network types",
+      "body_fa": "چک‌لیست OSPF network types: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست OSPF network types: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0008",
+      "chapter_order": 14,
+      "title_fa": "نمونه: DR BDR",
+      "body_fa": "چک‌لیست DR BDR: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست DR BDR: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0009",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Stub totally stub NSSA",
+      "body_fa": "چک‌لیست Stub totally stub NSSA: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Stub totally stub NSSA: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0010",
+      "chapter_order": 14,
+      "title_fa": "نمونه: IS-IS levels",
+      "body_fa": "چک‌لیست IS-IS levels: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست IS-IS levels: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0011",
+      "chapter_order": 14,
+      "title_fa": "نمونه: IS-IS vs OSPF",
+      "body_fa": "چک‌لیست IS-IS vs OSPF: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست IS-IS vs OSPF: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0012",
+      "chapter_order": 14,
+      "title_fa": "نمونه: NET addressing",
+      "body_fa": "چک‌لیست NET addressing: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست NET addressing: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0013",
+      "chapter_order": 14,
+      "title_fa": "نمونه: BGP path selection",
+      "body_fa": "چک‌لیست BGP path selection: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست BGP path selection: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0014",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Attributes local pref AS path",
+      "body_fa": "چک‌لیست Attributes local pref AS path: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Attributes local pref AS path: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0015",
+      "chapter_order": 14,
+      "title_fa": "نمونه: MED",
+      "body_fa": "چک‌لیست MED: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست MED: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0016",
+      "chapter_order": 14,
+      "title_fa": "نمونه: iBGP full mesh RR",
+      "body_fa": "چک‌لیست iBGP full mesh RR: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست iBGP full mesh RR: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0017",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Confederation",
+      "body_fa": "چک‌لیست Confederation: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Confederation: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0018",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Route reflector design",
+      "body_fa": "چک‌لیست Route reflector design: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Route reflector design: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0019",
+      "chapter_order": 14,
+      "title_fa": "نمونه: BGP communities",
+      "body_fa": "چک‌لیست BGP communities: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست BGP communities: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0020",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Prefix lists",
+      "body_fa": "چک‌لیست Prefix lists: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Prefix lists: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0021",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Route maps",
+      "body_fa": "چک‌لیست Route maps: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Route maps: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0022",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Redistribution loops",
+      "body_fa": "چک‌لیست Redistribution loops: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Redistribution loops: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0023",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Seed metrics",
+      "body_fa": "چک‌لیست Seed metrics: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Seed metrics: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0024",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Administrative distance traps",
+      "body_fa": "چک‌لیست Administrative distance traps: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Administrative distance traps: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0025",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Policy-based routing",
+      "body_fa": "چک‌لیست Policy-based routing: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Policy-based routing: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0026",
+      "chapter_order": 14,
+      "title_fa": "نمونه: VRF lite",
+      "body_fa": "چک‌لیست VRF lite: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست VRF lite: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0027",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Route leaking",
+      "body_fa": "چک‌لیست Route leaking: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Route leaking: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0028",
+      "chapter_order": 14,
+      "title_fa": "نمونه: BFD",
+      "body_fa": "چک‌لیست BFD: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست BFD: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0029",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Graceful restart",
+      "body_fa": "چک‌لیست Graceful restart: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Graceful restart: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0030",
+      "chapter_order": 14,
+      "title_fa": "نمونه: NSF",
+      "body_fa": "چک‌لیست NSF: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست NSF: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0031",
+      "chapter_order": 14,
+      "title_fa": "نمونه: IPv6 routing OSPFv3",
+      "body_fa": "چک‌لیست IPv6 routing OSPFv3: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست IPv6 routing OSPFv3: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0032",
+      "chapter_order": 14,
+      "title_fa": "نمونه: MP-BGP IPv6",
+      "body_fa": "چک‌لیست MP-BGP IPv6: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست MP-BGP IPv6: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0033",
+      "chapter_order": 14,
+      "title_fa": "نمونه: IPv6 redistribution",
+      "body_fa": "چک‌لیست IPv6 redistribution: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست IPv6 redistribution: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0034",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Convergence tuning",
+      "body_fa": "چک‌لیست Convergence tuning: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Convergence tuning: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0035",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Timers",
+      "body_fa": "چک‌لیست Timers: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Timers: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0036",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Summarization",
+      "body_fa": "چک‌لیست Summarization: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Summarization: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0037",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Blackhole routes",
+      "body_fa": "چک‌لیست Blackhole routes: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Blackhole routes: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0038",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Discard routes",
+      "body_fa": "چک‌لیست Discard routes: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Discard routes: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0039",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Null0",
+      "body_fa": "چک‌لیست Null0: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Null0: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0040",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Troubleshooting traceroute",
+      "body_fa": "چک‌لیست Troubleshooting traceroute: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Troubleshooting traceroute: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0041",
+      "chapter_order": 14,
+      "title_fa": "نمونه: CEF RIB FIB",
+      "body_fa": "چک‌لیست CEF RIB FIB: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست CEF RIB FIB: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0042",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Control plane police",
+      "body_fa": "چک‌لیست Control plane police: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Control plane police: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0043",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Routing decision longest match",
+      "body_fa": "چک‌لیست Routing decision longest match: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Routing decision longest match: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0044",
+      "chapter_order": 14,
+      "title_fa": "نمونه: AD metric",
+      "body_fa": "چک‌لیست AD metric: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست AD metric: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0045",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Floating static",
+      "body_fa": "چک‌لیست Floating static: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Floating static: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0046",
+      "chapter_order": 14,
+      "title_fa": "نمونه: OSPF LSA types",
+      "body_fa": "چک‌لیست OSPF LSA types: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست OSPF LSA types: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0047",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Area design",
+      "body_fa": "چک‌لیست Area design: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Area design: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0048",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Virtual link risk",
+      "body_fa": "چک‌لیست Virtual link risk: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Virtual link risk: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0049",
+      "chapter_order": 14,
+      "title_fa": "نمونه: OSPF network types",
+      "body_fa": "چک‌لیست OSPF network types: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست OSPF network types: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0050",
+      "chapter_order": 14,
+      "title_fa": "نمونه: DR BDR",
+      "body_fa": "چک‌لیست DR BDR: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست DR BDR: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0051",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Stub totally stub NSSA",
+      "body_fa": "چک‌لیست Stub totally stub NSSA: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Stub totally stub NSSA: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0052",
+      "chapter_order": 14,
+      "title_fa": "نمونه: IS-IS levels",
+      "body_fa": "چک‌لیست IS-IS levels: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست IS-IS levels: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0053",
+      "chapter_order": 14,
+      "title_fa": "نمونه: IS-IS vs OSPF",
+      "body_fa": "چک‌لیست IS-IS vs OSPF: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست IS-IS vs OSPF: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0054",
+      "chapter_order": 14,
+      "title_fa": "نمونه: NET addressing",
+      "body_fa": "چک‌لیست NET addressing: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست NET addressing: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0055",
+      "chapter_order": 14,
+      "title_fa": "نمونه: BGP path selection",
+      "body_fa": "چک‌لیست BGP path selection: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست BGP path selection: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0056",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Attributes local pref AS path",
+      "body_fa": "چک‌لیست Attributes local pref AS path: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Attributes local pref AS path: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0057",
+      "chapter_order": 14,
+      "title_fa": "نمونه: MED",
+      "body_fa": "چک‌لیست MED: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست MED: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0058",
+      "chapter_order": 14,
+      "title_fa": "نمونه: iBGP full mesh RR",
+      "body_fa": "چک‌لیست iBGP full mesh RR: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست iBGP full mesh RR: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0059",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Confederation",
+      "body_fa": "چک‌لیست Confederation: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Confederation: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0060",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Route reflector design",
+      "body_fa": "چک‌لیست Route reflector design: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Route reflector design: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0061",
+      "chapter_order": 14,
+      "title_fa": "نمونه: BGP communities",
+      "body_fa": "چک‌لیست BGP communities: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست BGP communities: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0062",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Prefix lists",
+      "body_fa": "چک‌لیست Prefix lists: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Prefix lists: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0063",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Route maps",
+      "body_fa": "چک‌لیست Route maps: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Route maps: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0064",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Redistribution loops",
+      "body_fa": "چک‌لیست Redistribution loops: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Redistribution loops: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0065",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Seed metrics",
+      "body_fa": "چک‌لیست Seed metrics: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Seed metrics: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0066",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Administrative distance traps",
+      "body_fa": "چک‌لیست Administrative distance traps: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Administrative distance traps: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0067",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Policy-based routing",
+      "body_fa": "چک‌لیست Policy-based routing: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Policy-based routing: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0068",
+      "chapter_order": 14,
+      "title_fa": "نمونه: VRF lite",
+      "body_fa": "چک‌لیست VRF lite: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست VRF lite: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0069",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Route leaking",
+      "body_fa": "چک‌لیست Route leaking: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Route leaking: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0070",
+      "chapter_order": 14,
+      "title_fa": "نمونه: BFD",
+      "body_fa": "چک‌لیست BFD: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست BFD: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0071",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Graceful restart",
+      "body_fa": "چک‌لیست Graceful restart: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Graceful restart: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0072",
+      "chapter_order": 14,
+      "title_fa": "نمونه: NSF",
+      "body_fa": "چک‌لیست NSF: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست NSF: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0073",
+      "chapter_order": 14,
+      "title_fa": "نمونه: IPv6 routing OSPFv3",
+      "body_fa": "چک‌لیست IPv6 routing OSPFv3: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست IPv6 routing OSPFv3: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0074",
+      "chapter_order": 14,
+      "title_fa": "نمونه: MP-BGP IPv6",
+      "body_fa": "چک‌لیست MP-BGP IPv6: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست MP-BGP IPv6: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0075",
+      "chapter_order": 14,
+      "title_fa": "نمونه: IPv6 redistribution",
+      "body_fa": "چک‌لیست IPv6 redistribution: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست IPv6 redistribution: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0076",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Convergence tuning",
+      "body_fa": "چک‌لیست Convergence tuning: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Convergence tuning: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0077",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Timers",
+      "body_fa": "چک‌لیست Timers: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Timers: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0078",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Summarization",
+      "body_fa": "چک‌لیست Summarization: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Summarization: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0079",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Blackhole routes",
+      "body_fa": "چک‌لیست Blackhole routes: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Blackhole routes: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0080",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Discard routes",
+      "body_fa": "چک‌لیست Discard routes: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Discard routes: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0081",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Null0",
+      "body_fa": "چک‌لیست Null0: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Null0: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0082",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Troubleshooting traceroute",
+      "body_fa": "چک‌لیست Troubleshooting traceroute: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Troubleshooting traceroute: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0083",
+      "chapter_order": 14,
+      "title_fa": "نمونه: CEF RIB FIB",
+      "body_fa": "چک‌لیست CEF RIB FIB: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست CEF RIB FIB: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0084",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Control plane police",
+      "body_fa": "چک‌لیست Control plane police: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Control plane police: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0085",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Routing decision longest match",
+      "body_fa": "چک‌لیست Routing decision longest match: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Routing decision longest match: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0086",
+      "chapter_order": 14,
+      "title_fa": "نمونه: AD metric",
+      "body_fa": "چک‌لیست AD metric: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست AD metric: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0087",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Floating static",
+      "body_fa": "چک‌لیست Floating static: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Floating static: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0088",
+      "chapter_order": 14,
+      "title_fa": "نمونه: OSPF LSA types",
+      "body_fa": "چک‌لیست OSPF LSA types: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست OSPF LSA types: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0089",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Area design",
+      "body_fa": "چک‌لیست Area design: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Area design: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0090",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Virtual link risk",
+      "body_fa": "چک‌لیست Virtual link risk: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Virtual link risk: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0091",
+      "chapter_order": 14,
+      "title_fa": "نمونه: OSPF network types",
+      "body_fa": "چک‌لیست OSPF network types: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست OSPF network types: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0092",
+      "chapter_order": 14,
+      "title_fa": "نمونه: DR BDR",
+      "body_fa": "چک‌لیست DR BDR: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست DR BDR: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0093",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Stub totally stub NSSA",
+      "body_fa": "چک‌لیست Stub totally stub NSSA: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Stub totally stub NSSA: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0094",
+      "chapter_order": 14,
+      "title_fa": "نمونه: IS-IS levels",
+      "body_fa": "چک‌لیست IS-IS levels: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست IS-IS levels: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0095",
+      "chapter_order": 14,
+      "title_fa": "نمونه: IS-IS vs OSPF",
+      "body_fa": "چک‌لیست IS-IS vs OSPF: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست IS-IS vs OSPF: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0096",
+      "chapter_order": 14,
+      "title_fa": "نمونه: NET addressing",
+      "body_fa": "چک‌لیست NET addressing: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست NET addressing: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0097",
+      "chapter_order": 14,
+      "title_fa": "نمونه: BGP path selection",
+      "body_fa": "چک‌لیست BGP path selection: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست BGP path selection: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0098",
+      "chapter_order": 14,
+      "title_fa": "نمونه: Attributes local pref AS path",
+      "body_fa": "چک‌لیست Attributes local pref AS path: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست Attributes local pref AS path: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0099",
+      "chapter_order": 14,
+      "title_fa": "نمونه: MED",
+      "body_fa": "چک‌لیست MED: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست MED: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "example:ch14:d40:0100",
+      "chapter_order": 14,
+      "title_fa": "نمونه: iBGP full mesh RR",
+      "body_fa": "چک‌لیست iBGP full mesh RR: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "command": "چک‌لیست iBGP full mesh RR: هدف | پیش‌نیاز | پیکربندی | اعتبارسنجی | rollback | مستند",
+      "vendor": "advanced_routing_deep",
+      "source_status": "review_required"
     }
   ]
 }
