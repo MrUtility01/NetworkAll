@@ -1,8 +1,11 @@
-# فصل 50 — SIEM و ELK Stack — ~20x
+# فصل 50 — SIEM و ELK عمیق افزایشی — عمق 40x
 
-| lessons | 350 |
-| questions | 400 |
-| labs | 36 |
+| سهمیه | تعداد |
+|-------|--------|
+| lessons | 500 |
+| questions | 500 |
+| answers | 500 |
+| labs (scenarios) | 100 |
 | examples | 100 |
 
-preserve_existing | review_required
+بدون تکرار عنوان؛ UID یکتا `d40`؛ preserve_existing؛ review_required
