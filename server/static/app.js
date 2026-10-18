@@ -1,4 +1,4 @@
-/* بارگذاری تنبل: فصل‌ها یک‌جا؛ سطح و درس فقط با کلیک */
+/* بارگذاری تنبل: فصل → درس‌های پیوسته (بدون درخت L0–L4) */
 const $ = (s) => document.querySelector(s);
 const chaptersEl = $("#chapters");
 const viewer = $("#viewer");
@@ -9,8 +9,8 @@ const state = {
   chapters: [],
   openCh: null,
   openLv: null,
-  levelsCache: {}, // chapterId -> levels[]
-  lessonsCache: {}, // levelId -> lessons[]
+  levelsCache: {}, // chapterId -> levels[] (legacy)
+  lessonsCache: {}, // chapterId or levelId -> lessons[]
 };
 
 async function api(path, opts) {
@@ -22,7 +22,7 @@ async function api(path, opts) {
 async function loadStats() {
   try {
     const s = await api("/api/stats");
-    statsEl.textContent = `${s.chapters} فصل · ${s.levels} زیر‌فصل · ${s.lessons} درس · ${s.scenarios} سناریو · دارای محتوا: ${s.with_content}`;
+    statsEl.textContent = `${s.chapters} فصل · ${s.lessons} درس · ${s.scenarios || 0} سناریو · دارای محتوا: ${s.with_content || "—"}`;
   } catch (e) {
     statsEl.textContent = "خطا در آمار";
   }
@@ -54,10 +54,10 @@ async function loadChapters() {
 
 function escapeHtml(s) {
   return String(s || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replace(/&/g, "&")
+    .replace(/</g, "<")
+    .replace(/>/g, ">")
+    .replace(/"/g, """);
 }
 
 chaptersEl.addEventListener("click", async (e) => {
@@ -75,7 +75,6 @@ async function onChapterClick(btn) {
   const caret = btn.querySelector(".caret");
   const isOpen = nest.classList.contains("open");
 
-  // بستن بقیه اختیاری — فقط همین را toggle
   if (isOpen) {
     nest.classList.remove("open");
     caret.textContent = "▶";
@@ -87,29 +86,29 @@ async function onChapterClick(btn) {
   btn.classList.add("active");
   caret.textContent = "▼";
   nest.classList.add("open");
-  nest.innerHTML = `<div class="loading">بارگذاری زیر‌فصل‌ها…</div>`;
-  breadcrumb.textContent = btn.querySelector(".ch-title").textContent;
+  nest.innerHTML = `<div class="loading">بارگذاری درس‌های پیوسته…</div>`;
+  breadcrumb.textContent = btn.querySelector(".ch-title")?.textContent || "";
 
   try {
-    let levels = state.levelsCache[id];
-    if (!levels) {
-      const data = await api(`/api/chapters/${id}/levels`);
-      levels = data.levels;
-      state.levelsCache[id] = levels;
+    // جریان پیوسته: فصل → درس‌ها (بدون درخت L0–L4)
+    let lessons = state.lessonsCache["ch:" + id];
+    if (!lessons) {
+      const data = await api(`/api/chapters/${id}/lessons`);
+      lessons = data.lessons || [];
+      state.lessonsCache["ch:" + id] = lessons;
     }
-    if (!levels.length) {
-      nest.innerHTML = `<div class="loading">زیر‌فصلی نیست</div>`;
+    if (!lessons.length) {
+      nest.innerHTML = `<div class="loading">درسی برای این فصل ثبت نشده</div>`;
       return;
     }
-    nest.innerHTML = levels
+    nest.innerHTML = lessons
       .map(
-        (lv) => `
-      <div class="lv-item" data-lid="${lv.id}">
-        <button type="button" class="lv-btn" data-id="${lv.id}" data-cid="${id}">
-          <span class="caret">▶</span>
-          <span class="ch-title">${escapeHtml(lv.title_fa)}</span>
+        (les, idx) => `
+      <div class="les-item">
+        <button type="button" class="les-btn" data-id="${les.id}">
+          <span class="dot ${les.has_content ? "ok" : ""}"></span>
+          <span class="ch-title"><span class="badge">${idx + 1}</span> ${escapeHtml(les.title_fa)}</span>
         </button>
-        <div class="nested" id="lv-nest-${lv.id}"></div>
       </div>`
       )
       .join("");
@@ -119,18 +118,20 @@ async function onChapterClick(btn) {
 }
 
 async function onLevelClick(btn) {
+  /* نگه داشته شده برای سازگاری؛ رابط اصلی دیگر سطح نشان نمی‌دهد */
   const id = +btn.dataset.id;
   const nest = document.getElementById(`lv-nest-${id}`);
   const caret = btn.querySelector(".caret");
+  if (!nest) return;
   if (nest.classList.contains("open")) {
     nest.classList.remove("open");
-    caret.textContent = "▶";
+    if (caret) caret.textContent = "▶";
     btn.classList.remove("active");
     return;
   }
   document.querySelectorAll(".lv-btn.active").forEach((b) => b.classList.remove("active"));
   btn.classList.add("active");
-  caret.textContent = "▼";
+  if (caret) caret.textContent = "▼";
   nest.classList.add("open");
   nest.innerHTML = `<div class="loading">بارگذاری درس‌ها…</div>`;
 
@@ -172,12 +173,19 @@ async function onLessonClick(btn) {
     breadcrumb.textContent = les.title_fa;
     renderLesson(les);
   } catch (err) {
-    viewer.innerHTML = `<div class="loading">خطا: ${escapeHtml(err.message)}</div>`;
+    // fallback: some builds use /api/lesson/<id>
+    try {
+      const les = await api(`/api/lesson/${id}`);
+      breadcrumb.textContent = les.title_fa || "";
+      renderLesson(les);
+    } catch (err2) {
+      viewer.innerHTML = `<div class="loading">خطا: ${escapeHtml(err.message)}</div>`;
+    }
   }
 }
 
 function renderLesson(les) {
-  const tag = (les.tags || "L0").toLowerCase();
+  const tag = (les.tags || "").toLowerCase();
   const tabs = [
     { id: "summary", label: "خلاصه", body: les.summary },
     { id: "content", label: "درس کامل", body: les.full_content },
@@ -205,7 +213,7 @@ function renderLesson(les) {
             `<div class="panel ${i === 0 ? "active" : ""}" id="panel-${t.id}">${
               t.body && String(t.body).trim()
                 ? escapeHtml(t.body)
-                : `<span class="empty-hint">محتوا هنوز پر نشده — از AI یا ویرایش بعدی پر می‌شود. عنوان و Meta آماده است.</span>`
+                : `<span class="empty-hint">محتوا هنوز پر نشده — از AI یا ویرایش بعدی پر می‌شود.</span>`
             }</div>`
         )
         .join("")}
@@ -309,7 +317,7 @@ async function doSearch() {
     .map(
       (r) => `<li data-id="${r.id}">
       <div>${escapeHtml(r.title_fa)}</div>
-      <div class="path">${escapeHtml(r.chapter_title)} / ${escapeHtml(r.level_title)} · ${escapeHtml(r.tags || "")}</div>
+      <div class="path">${escapeHtml(r.chapter_title)} · ${escapeHtml(r.tags || "")}</div>
     </li>`
     )
     .join("")}</ul>`;
