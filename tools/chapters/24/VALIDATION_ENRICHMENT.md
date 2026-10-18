@@ -1,12 +1,11 @@
-# فصل 24 — FortiGate
+# فصل 24 — FortiGate عمیق — عمق 40x
 
-review_required | preserve_existing
+| سهمیه | تعداد |
+|-------|--------|
+| lessons | 500 |
+| questions | 500 |
+| answers | 500 |
+| labs | 100 |
+| examples | 100 |
 
-| نوع | تعداد |
-|-----|--------|
-| lessons | 138 |
-| questions | 450 |
-| answers | 450 |
-| labs | 24 |
-| examples | 60 |
-| commands | 60 |
+UID d40 | preserve_existing | review_required
