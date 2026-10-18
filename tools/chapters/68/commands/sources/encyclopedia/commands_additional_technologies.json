@@ -4,7 +4,7 @@
   "chapter_order": 68,
   "domain": "additional_technologies",
   "domain_title_fa": "فناوری‌های تکمیلی زیرساخت",
-  "count": 517,
+  "count": 521,
   "preserve_existing_records": true,
   "source_status": "review_required",
   "note": "افزونه افزایشی؛ موج اول فناوری‌های تکمیلی و موج دوم تکمیل دستورهای منتخب خانواده‌های اصلی. تمام رکوردها نیازمند بازبینی نسخه‌ای هستند؛ سهمیه نهایی ۵۰۰/۱۰۰/۱۰۰/۵۰۰ هنوز تکمیل نشده است. موج دوم: رکوردهای منتخب و افزایشی برای Git، DNS/DHCP/NTP، SNMP/Syslog، Web/TLS، Backup/Recovery، Security Ops، Fortinet Management، Cloud، Zabbix، Wireshark، Proxmox، Hyper-V، Ansible، Terraform، Kubernetes، VoIP، VMware، Juniper، Aruba، Ubiquiti، SSH، Telnet، FTP، FTPS و SFTP افزوده شدند. وضعیت همهٔ رکوردهای موج دوم review_required است تا اعتبارسنجی نسخه‌ای و آزمایش محیطی انجام شود. موج سوم: فرمان‌های عملیاتی افزایشی برای تمام فناوری‌های شناسایی‌شده اضافه شد. این رکوردها برای تکمیل تدریجی پوشش‌اند و تا بازبینی نسخه‌ای/محیطی در وضعیت review_required باقی می‌مانند؛ شمارش به معنی تأیید آزمایشگاهی نیست. موج چهارم: فرمان‌های افزایشی منتخب برای پوشش مشاهده وضعیت، بررسی اتصال، اعتبارسنجی و عیب‌یابی به‌صورت افزایشی ثبت شدند. هر رکورد تا تأیید نسخه‌ای/محیطی review_required باقی می‌ماند. موج پنجم: چند فرمان مشاهده‌ای FortiGate برای تکمیل پوشش دستورها افزوده شد؛ همچنان نیازمند تطبیق نسخه و بازبینی تخصصی است. موج ششم: فرمان‌های تکمیلی FortiGate برای تکمیل سقف مرجع‌های فرمان افزوده شد؛ پیش از اعلام تکمیل، ممیزی dedup و تطبیق نسخه لازم است.",
@@ -40719,6 +40719,322 @@
             "id": "q-fortigate-wave6-2",
             "correct_index": 0,
             "explain_fa": "پاک‌کردن فیلتر تشخیصی session در context جاری در FortiOS؛ خروجی و پشتیبانی دقیق باید با نسخهٔ واقعی دستگاه تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "fortigate"
+    },
+    {
+      "uid": "cmd:fortigate:wave7:diagnose-sys-process-pidof-httpsd",
+      "vendor": "Fortinet",
+      "platform": "FortiGate / FortiOS",
+      "category": "fortigate",
+      "subcategory": "diagnostics",
+      "level": "L1",
+      "title_fa": "FortiGate — شناسه پردازش مدیریتی HTTPS",
+      "title_en": "diagnose sys process pidof httpsd",
+      "command": "diagnose sys process pidof httpsd",
+      "aliases": [],
+      "syntax": "diagnose sys process pidof httpsd",
+      "arguments": [],
+      "when_to_use_fa": "شناسه پردازش مدیریتی HTTPS در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است.",
+      "prerequisites_fa": [
+        "دسترسی مجاز مدیریتی",
+        "ثبت مدل و نسخه FortiOS"
+      ],
+      "steps_fa": [
+        "نسخه را با get system status ثبت کنید.",
+        "فرمان را اجرا کنید: diagnose sys process pidof httpsd",
+        "در صورت نبودن process، تفاوت نسخه/مدل را بررسی کنید؛ عدم وجود الزاماً به معنی خرابی نیست."
+      ],
+      "sample_output": "PID و جزئیات به مدل و نسخه وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "PID",
+          "meaning_fa": "شناسه پردازش در دستگاه فعلی، در صورت پشتیبانی"
+        }
+      ],
+      "related_commands": [
+        "get system status",
+        "diagnose sys top"
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن وجود همان process در تمام مدل‌ها",
+        "توقف پردازش بدون بررسی اثر سرویس"
+      ],
+      "lab_hint_fa": "در لاب، diagnose sys process pidof httpsd را اجرا و وجود/عدم وجود پردازش را با نسخه ثبت کنید.",
+      "security_notes_fa": "از kill کردن پردازش یا اجرای تغییرات خارج از runbook اجتناب کنید.",
+      "search_keywords": [
+        "fortigate",
+        "fortios",
+        "diagnose sys process pidof httpsd",
+        "شناسه پردازش مدیریتی HTTPS",
+        "process",
+        "diagnostics"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد diagnose sys process pidof httpsd چیست؟",
+          "back": "شناسه پردازش مدیریتی HTTPS در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortigate-wave7-1",
+            "prompt": "هدف diagnose sys process pidof httpsd چیست؟",
+            "options": [
+              "شناسه پردازش مدیریتی HTTPS در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است.",
+              "حذف همه policyها",
+              "خاموش کردن فایروال",
+              "پاک کردن تمام لاگ‌ها"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortigate-wave7-1",
+            "correct_index": 0,
+            "explain_fa": "شناسه پردازش مدیریتی HTTPS در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "fortigate"
+    },
+    {
+      "uid": "cmd:fortigate:wave7:diagnose-sys-process-pidof-wad",
+      "vendor": "Fortinet",
+      "platform": "FortiGate / FortiOS",
+      "category": "fortigate",
+      "subcategory": "diagnostics",
+      "level": "L1",
+      "title_fa": "FortiGate — شناسه پردازش Web Application Daemon",
+      "title_en": "diagnose sys process pidof wad",
+      "command": "diagnose sys process pidof wad",
+      "aliases": [],
+      "syntax": "diagnose sys process pidof wad",
+      "arguments": [],
+      "when_to_use_fa": "شناسه پردازش Web Application Daemon در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است.",
+      "prerequisites_fa": [
+        "دسترسی مجاز مدیریتی",
+        "ثبت مدل و نسخه FortiOS"
+      ],
+      "steps_fa": [
+        "نسخه را با get system status ثبت کنید.",
+        "فرمان را اجرا کنید: diagnose sys process pidof wad",
+        "در صورت نبودن process، تفاوت نسخه/مدل را بررسی کنید؛ عدم وجود الزاماً به معنی خرابی نیست."
+      ],
+      "sample_output": "PID و جزئیات به مدل و نسخه وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "PID",
+          "meaning_fa": "شناسه پردازش در دستگاه فعلی، در صورت پشتیبانی"
+        }
+      ],
+      "related_commands": [
+        "get system status",
+        "diagnose sys top"
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن وجود همان process در تمام مدل‌ها",
+        "توقف پردازش بدون بررسی اثر سرویس"
+      ],
+      "lab_hint_fa": "در لاب، diagnose sys process pidof wad را اجرا و وجود/عدم وجود پردازش را با نسخه ثبت کنید.",
+      "security_notes_fa": "از kill کردن پردازش یا اجرای تغییرات خارج از runbook اجتناب کنید.",
+      "search_keywords": [
+        "fortigate",
+        "fortios",
+        "diagnose sys process pidof wad",
+        "شناسه پردازش Web Application Daemon",
+        "process",
+        "diagnostics"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد diagnose sys process pidof wad چیست؟",
+          "back": "شناسه پردازش Web Application Daemon در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortigate-wave7-2",
+            "prompt": "هدف diagnose sys process pidof wad چیست؟",
+            "options": [
+              "شناسه پردازش Web Application Daemon در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است.",
+              "حذف همه policyها",
+              "خاموش کردن فایروال",
+              "پاک کردن تمام لاگ‌ها"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortigate-wave7-2",
+            "correct_index": 0,
+            "explain_fa": "شناسه پردازش Web Application Daemon در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "fortigate"
+    },
+    {
+      "uid": "cmd:fortigate:wave7:diagnose-sys-process-pidof-ipsengine",
+      "vendor": "Fortinet",
+      "platform": "FortiGate / FortiOS",
+      "category": "fortigate",
+      "subcategory": "diagnostics",
+      "level": "L1",
+      "title_fa": "FortiGate — شناسه پردازش IPS",
+      "title_en": "diagnose sys process pidof ipsengine",
+      "command": "diagnose sys process pidof ipsengine",
+      "aliases": [],
+      "syntax": "diagnose sys process pidof ipsengine",
+      "arguments": [],
+      "when_to_use_fa": "شناسه پردازش IPS در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است.",
+      "prerequisites_fa": [
+        "دسترسی مجاز مدیریتی",
+        "ثبت مدل و نسخه FortiOS"
+      ],
+      "steps_fa": [
+        "نسخه را با get system status ثبت کنید.",
+        "فرمان را اجرا کنید: diagnose sys process pidof ipsengine",
+        "در صورت نبودن process، تفاوت نسخه/مدل را بررسی کنید؛ عدم وجود الزاماً به معنی خرابی نیست."
+      ],
+      "sample_output": "PID و جزئیات به مدل و نسخه وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "PID",
+          "meaning_fa": "شناسه پردازش در دستگاه فعلی، در صورت پشتیبانی"
+        }
+      ],
+      "related_commands": [
+        "get system status",
+        "diagnose sys top"
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن وجود همان process در تمام مدل‌ها",
+        "توقف پردازش بدون بررسی اثر سرویس"
+      ],
+      "lab_hint_fa": "در لاب، diagnose sys process pidof ipsengine را اجرا و وجود/عدم وجود پردازش را با نسخه ثبت کنید.",
+      "security_notes_fa": "از kill کردن پردازش یا اجرای تغییرات خارج از runbook اجتناب کنید.",
+      "search_keywords": [
+        "fortigate",
+        "fortios",
+        "diagnose sys process pidof ipsengine",
+        "شناسه پردازش IPS",
+        "process",
+        "diagnostics"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد diagnose sys process pidof ipsengine چیست؟",
+          "back": "شناسه پردازش IPS در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortigate-wave7-3",
+            "prompt": "هدف diagnose sys process pidof ipsengine چیست؟",
+            "options": [
+              "شناسه پردازش IPS در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است.",
+              "حذف همه policyها",
+              "خاموش کردن فایروال",
+              "پاک کردن تمام لاگ‌ها"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortigate-wave7-3",
+            "correct_index": 0,
+            "explain_fa": "شناسه پردازش IPS در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "fortigate"
+    },
+    {
+      "uid": "cmd:fortigate:wave7:diagnose-sys-process-pidof-miglogd",
+      "vendor": "Fortinet",
+      "platform": "FortiGate / FortiOS",
+      "category": "fortigate",
+      "subcategory": "diagnostics",
+      "level": "L1",
+      "title_fa": "FortiGate — شناسه پردازش ثبت رخداد",
+      "title_en": "diagnose sys process pidof miglogd",
+      "command": "diagnose sys process pidof miglogd",
+      "aliases": [],
+      "syntax": "diagnose sys process pidof miglogd",
+      "arguments": [],
+      "when_to_use_fa": "شناسه پردازش ثبت رخداد در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است.",
+      "prerequisites_fa": [
+        "دسترسی مجاز مدیریتی",
+        "ثبت مدل و نسخه FortiOS"
+      ],
+      "steps_fa": [
+        "نسخه را با get system status ثبت کنید.",
+        "فرمان را اجرا کنید: diagnose sys process pidof miglogd",
+        "در صورت نبودن process، تفاوت نسخه/مدل را بررسی کنید؛ عدم وجود الزاماً به معنی خرابی نیست."
+      ],
+      "sample_output": "PID و جزئیات به مدل و نسخه وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "PID",
+          "meaning_fa": "شناسه پردازش در دستگاه فعلی، در صورت پشتیبانی"
+        }
+      ],
+      "related_commands": [
+        "get system status",
+        "diagnose sys top"
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن وجود همان process در تمام مدل‌ها",
+        "توقف پردازش بدون بررسی اثر سرویس"
+      ],
+      "lab_hint_fa": "در لاب، diagnose sys process pidof miglogd را اجرا و وجود/عدم وجود پردازش را با نسخه ثبت کنید.",
+      "security_notes_fa": "از kill کردن پردازش یا اجرای تغییرات خارج از runbook اجتناب کنید.",
+      "search_keywords": [
+        "fortigate",
+        "fortios",
+        "diagnose sys process pidof miglogd",
+        "شناسه پردازش ثبت رخداد",
+        "process",
+        "diagnostics"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد diagnose sys process pidof miglogd چیست؟",
+          "back": "شناسه پردازش ثبت رخداد در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortigate-wave7-4",
+            "prompt": "هدف diagnose sys process pidof miglogd چیست؟",
+            "options": [
+              "شناسه پردازش ثبت رخداد در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است.",
+              "حذف همه policyها",
+              "خاموش کردن فایروال",
+              "پاک کردن تمام لاگ‌ها"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortigate-wave7-4",
+            "correct_index": 0,
+            "explain_fa": "شناسه پردازش ثبت رخداد در FortiOS برای عیب‌یابی فرایندها؛ وجود و نام فرایند به مدل و نسخه وابسته است."
           }
         ]
       },
