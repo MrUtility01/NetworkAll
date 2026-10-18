@@ -58,6 +58,7 @@ unzip_one "$NEW/ch24_fortigate_enrichment.zip"
 unzip_one "$NEW/ch32_endpoint_sec_enrichment.zip"
 unzip_one "$NEW/ch33_entra_hybrid_enrichment.zip"
 unzip_one "$NEW/ch52_dba_10x.zip"
+for z in "$NEW"/ch30_40_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
 for z in "$NEW"/ch40_50_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
 for z in "$NEW"/ch50_60_20x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
 for z in "$NEW"/ch60_67_enrichment_all*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
@@ -73,7 +74,20 @@ copy_pack 32 "$WORKDIR/ch32_endpoint_sec_enrichment"
 copy_pack 33 "$WORKDIR/ch33_entra_hybrid_enrichment"
 copy_pack 52 "$WORKDIR/ch52_dba_10x"
 
-# ch40-50 deep 40x (500/100/100/500)
+# ch30-40 deep 40x
+copy_pack 30 "$WORKDIR/ch30_win_dns_dhcp_nps"
+copy_pack 31 "$WORKDIR/ch31_file_print_dfs"
+copy_pack 32 "$WORKDIR/ch32_endpoint_sec_deep"
+copy_pack 33 "$WORKDIR/ch33_entra_hybrid_deep"
+copy_pack 34 "$WORKDIR/ch34_m365_intune_mail"
+copy_pack 35 "$WORKDIR/ch35_powershell_cmd"
+copy_pack 36 "$WORKDIR/ch36_linux_admin"
+copy_pack 37 "$WORKDIR/ch37_linux_networking"
+copy_pack 38 "$WORKDIR/ch38_linux_web_services"
+copy_pack 39 "$WORKDIR/ch39_linux_security"
+copy_pack 40 "$WORKDIR/ch40_vmware_hyperv_addon"
+
+# ch40-50 deep 40x
 copy_pack 40 "$WORKDIR/ch40_vmware_hyperv"
 copy_pack 41 "$WORKDIR/ch41_proxmox_docker"
 copy_pack 42 "$WORKDIR/ch42_kubernetes"
@@ -86,7 +100,7 @@ copy_pack 48 "$WORKDIR/ch48_ha_loadbalancing"
 copy_pack 49 "$WORKDIR/ch49_monitoring"
 copy_pack 50 "$WORKDIR/ch50_siem_elk_deep"
 
-# ch50-60 20x wave
+# ch50-60 20x
 copy_pack 50 "$WORKDIR/ch50_siem_elk"
 copy_pack 51 "$WORKDIR/ch51_automation_ai_it"
 copy_pack 52 "$WORKDIR/ch52_dba_20x_addon"
@@ -99,7 +113,10 @@ copy_pack 58 "$WORKDIR/ch58_endpoint_appsec_devsecops"
 copy_pack 59 "$WORKDIR/ch59_soc_ir_hunting"
 copy_pack 60 "$WORKDIR/ch60_ethical_lab_20x_addon"
 
-# prefer deep 40x for ch50 last
+# prefer deepest for overlapping chapters last
+copy_pack 32 "$WORKDIR/ch32_endpoint_sec_deep"
+copy_pack 33 "$WORKDIR/ch33_entra_hybrid_deep"
+copy_pack 40 "$WORKDIR/ch40_vmware_hyperv"
 copy_pack 50 "$WORKDIR/ch50_siem_elk_deep"
 
 copy_pack 60 "$WORKDIR/ch60_ethical_lab_enrichment"
