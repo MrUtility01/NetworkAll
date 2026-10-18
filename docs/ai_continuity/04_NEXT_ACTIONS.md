@@ -1,39 +1,31 @@
 # 04 — NEXT ACTIONS
 
-**Last updated:** 2026-10-15 — richness targets registered; full audit still pending.
+**Last updated:** 2026-10-18
 
-## Priority 0 — Required before claiming any chapter is complete
+## Priority 0 — Curriculum restructure (user request)
 
-1. Build the 68-row audit inventory from canonical curriculum/source data. Record exact title and source path for every chapter.
-2. For each chapter, measure text/structured source size, compressed and uncompressed Android asset contribution, Windows runtime/database contribution, and media size separately.
-3. Count unique lessons, independent examples, independent scenarios and exam questions; check separate answer-key coverage.
-4. Run exact/near-duplicate detection and scientific-coverage gap review.
-5. Validate schema and stable unique IDs; verify Android and Windows both ingest/display the intended content.
-6. Publish findings and gaps in `CHAPTER_RICHNESS_AUDIT.md` before doing broad enrichment. Mark completion only after evidence-backed validation.
+User asked for mega-chapters:
+- Network = one complete chapter
+- Cisco = one complete chapter
+- MikroTik = one complete chapter
+- Same pattern for the rest
 
-## Canonical target policy
+**Action:** Review and approve `docs/ai_continuity/MEGA_CHAPTER_MAP.md`
 
-- Chapters 1–67: **خبره**, 5 MiB text/structured content, media cap 8 MiB separately, 100 independent examples, 150 independent scenarios, 100 exam questions, explanations required.
-- Chapter 68: **خبره**, 8 MiB text/structured content, media cap 5 MiB separately, 100 examples, 150 scenarios, 100 exam questions, explanations not required.
-- The 68-row register is in `CHAPTER_TARGET_SELECTION.md`; evidence ledger is `CHAPTER_RICHNESS_AUDIT.md`.
-- Policy is registered; all chapters remain **ممیزی‌نشده** until per-chapter measurements, duplicate checks, coverage review, schema checks and Android/Windows integration evidence are recorded.
-- Do not ask the user to choose defaults again. Ask only if a specific chapter-level exception is needed.
+After approval:
+1. Create `tools/packs/M0x_*/` folders with templates
+2. Map existing deep packs into the new mega-chapters
+3. Update progress and start content production under the new map
 
-## Priority 1 — Known high-risk content gaps (reconfirm against the new audit)
+## Previous priorities (paused until map is approved)
 
-1. Chapter 40 — migrate/expand old VMware/Hyper-V content into canonical structure.
-2. Chapter 60 — continue the labs pack; validate real scenario/question counts.
-3. Chapter 51 — expand automation content and verify its canonical integration.
-4. Thin/partial chapters identified by the 68-row evidence audit, not by approximate titles alone.
+- Chapter 40 / 51 / 60 enrichment under old numbering
+- Chapter 68 command waves (continue in parallel if needed under M19)
 
 ## Agent instruction
 
 ```
-1. Read docs/ai_continuity/00_START_HERE.md, 01_PROJECT_RULES.md, 02_CONTENT_SCHEMA.md,
-   03_PROGRESS.md, 04_NEXT_ACTIONS.md, 05_CHANGELOG_AI.md, and CHAPTER_RICHNESS_AUDIT.md.
-2. Verify canonical titles and content locations for all 68 chapters.
-3. Run measurable audit checks before proposing enrichment.
-4. Enrich in bounded batches under the correct canonical tools/packs/chXX_* structure.
-5. Update manifest + 03_PROGRESS.md + this file + 05_CHANGELOG_AI.md.
-6. Never claim completion without evidence and Android/Windows checks.
+1. Read docs/ai_continuity/MEGA_CHAPTER_MAP.md
+2. Wait for user confirmation on the mega-chapter list
+3. Do not rewrite full_curriculum.py until user confirms
 ```
