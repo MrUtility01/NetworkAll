@@ -1,12 +1,11 @@
-# فصل 32 — امنیت Endpoint ویندوز — غنی‌سازی
+# فصل 32 — امنیت Endpoint ویندوز افزایشی عمیق — عمق 40x
 
-review_required | preserve_existing
+| سهمیه | تعداد |
+|-------|--------|
+| lessons | 500 |
+| questions | 500 |
+| answers | 500 |
+| labs | 100 |
+| examples | 100 |
 
-| نوع | تعداد |
-|-----|--------|
-| lessons | 198 |
-| questions | 400 |
-| answers | 400 |
-| labs | 24 |
-| examples | 72 |
-| commands | 72 |
+UID یکتا d40 | preserve_existing | review_required

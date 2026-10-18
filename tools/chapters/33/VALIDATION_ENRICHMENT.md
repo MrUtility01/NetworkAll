@@ -1,12 +1,11 @@
-# فصل 33 — Entra ID Hybrid — غنی‌سازی
+# فصل 33 — Entra ID Hybrid عمیق افزایشی — عمق 40x
 
-review_required | preserve_existing
+| سهمیه | تعداد |
+|-------|--------|
+| lessons | 500 |
+| questions | 500 |
+| answers | 500 |
+| labs | 100 |
+| examples | 100 |
 
-| نوع | تعداد |
-|-----|--------|
-| lessons | 242 |
-| questions | 400 |
-| answers | 400 |
-| labs | 28 |
-| examples | 60 |
-| commands | 60 |
+UID یکتا d40 | preserve_existing | review_required
