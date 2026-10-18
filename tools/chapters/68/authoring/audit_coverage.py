@@ -311,6 +311,8 @@ def main():
     count_command_file(ROOT / "commands" / "sources" / "encyclopedia" / "commands_multi_technology_wave6.json")
     # Additive wave 7 command pack adds three operational references per tracked domain.
     count_command_file(ROOT / "commands" / "sources" / "encyclopedia" / "commands_multi_technology_wave7.json")
+    # Additive wave 8 command pack adds two additional operational references per tracked domain.
+    count_command_file(ROOT / "commands" / "sources" / "encyclopedia" / "commands_multi_technology_wave8.json")
 
     # Legacy mixed Windows pack: classify per record, never credit the full pack
     # to both technologies. Exact command duplication is excluded.
