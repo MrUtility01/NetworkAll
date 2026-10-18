@@ -26,10 +26,6 @@ copy_pack() {
       echo "  + $f"
     fi
   done
-  if [[ -f "$src/lessons/base_curriculum.json" ]]; then
-    cp -f "$src/lessons/base_curriculum.json" "$CHROOT/$ch/lessons/base_curriculum.json"
-    echo "  + base_curriculum.json"
-  fi
   if [[ -f "$src/VALIDATION.md" ]]; then
     cp -f "$src/VALIDATION.md" "$CHROOT/$ch/VALIDATION_ENRICHMENT.md"
   fi
@@ -52,32 +48,15 @@ unzip_one() {
 }
 
 cd "$WORKDIR"
-unzip_one "$NEW/ch22_wifi_enrichment.zip"
-unzip_one "$NEW/ch23_ptp_ptmp_enrichment.zip"
-unzip_one "$NEW/ch24_fortigate_enrichment.zip"
-unzip_one "$NEW/ch32_endpoint_sec_enrichment.zip"
-unzip_one "$NEW/ch33_entra_hybrid_enrichment.zip"
-unzip_one "$NEW/ch52_dba_10x.zip"
-for z in "$NEW"/ch01_10_40x*.zip "$NEW"/ch1_10_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
-for z in "$NEW"/ch10_20_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
-for z in "$NEW"/ch20_30_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
-for z in "$NEW"/ch30_40_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
-for z in "$NEW"/ch40_50_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
-for z in "$NEW"/ch50_60_20x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
-for z in "$NEW"/ch60_67_enrichment_all*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
-unzip_one "$NEW/ch69_70_all.zip"
-for z in "$NEW"/ch69_web_coding*.zip "$NEW"/ch70_ai_web_coding*.zip "$NEW"/ch71*.zip; do
+for z in "$NEW"/ch01_10_40x*.zip "$NEW"/ch10_20_40x*.zip "$NEW"/ch20_30_40x*.zip \
+         "$NEW"/ch30_40_40x*.zip "$NEW"/ch40_50_40x*.zip "$NEW"/ch50_60_20x*.zip \
+         "$NEW"/ch60_67_enrichment_all*.zip "$NEW"/ch68_continuous*.zip \
+         "$NEW"/ch69_70_all.zip "$NEW"/ch69_web_coding*.zip "$NEW"/ch70_ai_web_coding*.zip \
+         "$NEW"/ch71*.zip "$NEW"/ch22_*.zip "$NEW"/ch23_*.zip "$NEW"/ch24_*.zip \
+         "$NEW"/ch32_*.zip "$NEW"/ch33_*.zip "$NEW"/ch52_*.zip; do
   [[ -f "$z" ]] && unzip_one "$z"
 done
 
-copy_pack 22 "$WORKDIR/ch22_wifi_enrichment"
-copy_pack 23 "$WORKDIR/ch23_ptp_ptmp_enrichment"
-copy_pack 24 "$WORKDIR/ch24_fortigate_enrichment"
-copy_pack 32 "$WORKDIR/ch32_endpoint_sec_enrichment"
-copy_pack 33 "$WORKDIR/ch33_entra_hybrid_enrichment"
-copy_pack 52 "$WORKDIR/ch52_dba_10x"
-
-# ch01-10 deep 40x
 copy_pack 1 "$WORKDIR/ch1_it_architecture"
 copy_pack 2 "$WORKDIR/ch2_assembly_troubleshoot_servers"
 copy_pack 3 "$WORKDIR/ch3_bios_uefi_boot"
@@ -87,10 +66,8 @@ copy_pack 6 "$WORKDIR/ch6_network_fundamentals"
 copy_pack 7 "$WORKDIR/ch7_ethernet_switching_basic"
 copy_pack 8 "$WORKDIR/ch8_ipv4_ipv6_subnetting"
 copy_pack 9 "$WORKDIR/ch9_arp_icmp_tcp_udp"
-copy_pack 10 "$WORKDIR/ch10_dns_addon"
-
-# ch10-20 deep 40x
 copy_pack 10 "$WORKDIR/ch10_dns"
+copy_pack 10 "$WORKDIR/ch10_dns_addon"
 copy_pack 11 "$WORKDIR/ch11_dhcp_ipam"
 copy_pack 12 "$WORKDIR/ch12_cabling_fiber_rack"
 copy_pack 13 "$WORKDIR/ch13_cisco_switching_deep"
@@ -100,9 +77,6 @@ copy_pack 16 "$WORKDIR/ch16_multicast"
 copy_pack 17 "$WORKDIR/ch17_evpn_vxlan"
 copy_pack 18 "$WORKDIR/ch18_sdn_sdwan_sase"
 copy_pack 19 "$WORKDIR/ch19_mikrotik_basics"
-copy_pack 20 "$WORKDIR/ch20_mikrotik_rfn_addon"
-
-# ch20-30 deep 40x
 copy_pack 20 "$WORKDIR/ch20_mikrotik_routing_fw_nat"
 copy_pack 21 "$WORKDIR/ch21_mikrotik_qos_vpn_ha"
 copy_pack 22 "$WORKDIR/ch22_wifi_enterprise_deep"
@@ -113,9 +87,6 @@ copy_pack 26 "$WORKDIR/ch26_pki_tls"
 copy_pack 27 "$WORKDIR/ch27_aaa_nac"
 copy_pack 28 "$WORKDIR/ch28_windows_server_core"
 copy_pack 29 "$WORKDIR/ch29_active_directory"
-copy_pack 30 "$WORKDIR/ch30_win_dns_dhcp_nps_addon"
-
-# ch30-40 deep 40x
 copy_pack 30 "$WORKDIR/ch30_win_dns_dhcp_nps"
 copy_pack 31 "$WORKDIR/ch31_file_print_dfs"
 copy_pack 32 "$WORKDIR/ch32_endpoint_sec_deep"
@@ -126,9 +97,6 @@ copy_pack 36 "$WORKDIR/ch36_linux_admin"
 copy_pack 37 "$WORKDIR/ch37_linux_networking"
 copy_pack 38 "$WORKDIR/ch38_linux_web_services"
 copy_pack 39 "$WORKDIR/ch39_linux_security"
-copy_pack 40 "$WORKDIR/ch40_vmware_hyperv_addon"
-
-# ch40-50 deep 40x
 copy_pack 40 "$WORKDIR/ch40_vmware_hyperv"
 copy_pack 41 "$WORKDIR/ch41_proxmox_docker"
 copy_pack 42 "$WORKDIR/ch42_kubernetes"
@@ -140,9 +108,6 @@ copy_pack 47 "$WORKDIR/ch47_datacenter"
 copy_pack 48 "$WORKDIR/ch48_ha_loadbalancing"
 copy_pack 49 "$WORKDIR/ch49_monitoring"
 copy_pack 50 "$WORKDIR/ch50_siem_elk_deep"
-
-# ch50-60 20x
-copy_pack 50 "$WORKDIR/ch50_siem_elk"
 copy_pack 51 "$WORKDIR/ch51_automation_ai_it"
 copy_pack 52 "$WORKDIR/ch52_dba_20x_addon"
 copy_pack 53 "$WORKDIR/ch53_db_security"
@@ -152,20 +117,6 @@ copy_pack 56 "$WORKDIR/ch56_zero_trust_itil"
 copy_pack 57 "$WORKDIR/ch57_network_security_20x"
 copy_pack 58 "$WORKDIR/ch58_endpoint_appsec_devsecops"
 copy_pack 59 "$WORKDIR/ch59_soc_ir_hunting"
-copy_pack 60 "$WORKDIR/ch60_ethical_lab_20x_addon"
-
-# prefer deepest last
-copy_pack 10 "$WORKDIR/ch10_dns"
-copy_pack 20 "$WORKDIR/ch20_mikrotik_routing_fw_nat"
-copy_pack 22 "$WORKDIR/ch22_wifi_enterprise_deep"
-copy_pack 23 "$WORKDIR/ch23_ptp_ptmp_deep"
-copy_pack 24 "$WORKDIR/ch24_fortigate_deep"
-copy_pack 30 "$WORKDIR/ch30_win_dns_dhcp_nps"
-copy_pack 32 "$WORKDIR/ch32_endpoint_sec_deep"
-copy_pack 33 "$WORKDIR/ch33_entra_hybrid_deep"
-copy_pack 40 "$WORKDIR/ch40_vmware_hyperv"
-copy_pack 50 "$WORKDIR/ch50_siem_elk_deep"
-
 copy_pack 60 "$WORKDIR/ch60_ethical_lab_enrichment"
 copy_pack 61 "$WORKDIR/ch61_ent_arch_enrichment"
 copy_pack 62 "$WORKDIR/ch62_it_noc_enrichment"
@@ -174,8 +125,7 @@ copy_pack 64 "$WORKDIR/ch64_git_enrichment"
 copy_pack 65 "$WORKDIR/ch65_cyber_def_enrichment"
 copy_pack 66 "$WORKDIR/ch66_ospf_bgp_enrichment"
 copy_pack 67 "$WORKDIR/ch67_vpn_enrichment"
-copy_pack 60 "$WORKDIR/ch60_ethical_lab_20x_addon"
-
+copy_pack 68 "$WORKDIR/ch68_commands_encyclopedia_continuous"
 copy_pack 69 "$WORKDIR/ch69_web_coding"
 copy_pack 70 "$WORKDIR/ch70_ai_web_coding"
 copy_pack 71 "$WORKDIR/ch71_ai_leadership_it"
