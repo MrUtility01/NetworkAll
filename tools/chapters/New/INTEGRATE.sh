@@ -58,6 +58,7 @@ unzip_one "$NEW/ch24_fortigate_enrichment.zip"
 unzip_one "$NEW/ch32_endpoint_sec_enrichment.zip"
 unzip_one "$NEW/ch33_entra_hybrid_enrichment.zip"
 unzip_one "$NEW/ch52_dba_10x.zip"
+for z in "$NEW"/ch20_30_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
 for z in "$NEW"/ch30_40_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
 for z in "$NEW"/ch40_50_40x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
 for z in "$NEW"/ch50_60_20x*.zip; do [[ -f "$z" ]] && unzip_one "$z"; done
@@ -73,6 +74,19 @@ copy_pack 24 "$WORKDIR/ch24_fortigate_enrichment"
 copy_pack 32 "$WORKDIR/ch32_endpoint_sec_enrichment"
 copy_pack 33 "$WORKDIR/ch33_entra_hybrid_enrichment"
 copy_pack 52 "$WORKDIR/ch52_dba_10x"
+
+# ch20-30 deep 40x
+copy_pack 20 "$WORKDIR/ch20_mikrotik_routing_fw_nat"
+copy_pack 21 "$WORKDIR/ch21_mikrotik_qos_vpn_ha"
+copy_pack 22 "$WORKDIR/ch22_wifi_enterprise_deep"
+copy_pack 23 "$WORKDIR/ch23_ptp_ptmp_deep"
+copy_pack 24 "$WORKDIR/ch24_fortigate_deep"
+copy_pack 25 "$WORKDIR/ch25_pfsense_opnsense_sophos"
+copy_pack 26 "$WORKDIR/ch26_pki_tls"
+copy_pack 27 "$WORKDIR/ch27_aaa_nac"
+copy_pack 28 "$WORKDIR/ch28_windows_server_core"
+copy_pack 29 "$WORKDIR/ch29_active_directory"
+copy_pack 30 "$WORKDIR/ch30_win_dns_dhcp_nps_addon"
 
 # ch30-40 deep 40x
 copy_pack 30 "$WORKDIR/ch30_win_dns_dhcp_nps"
@@ -114,6 +128,10 @@ copy_pack 59 "$WORKDIR/ch59_soc_ir_hunting"
 copy_pack 60 "$WORKDIR/ch60_ethical_lab_20x_addon"
 
 # prefer deepest for overlapping chapters last
+copy_pack 22 "$WORKDIR/ch22_wifi_enterprise_deep"
+copy_pack 23 "$WORKDIR/ch23_ptp_ptmp_deep"
+copy_pack 24 "$WORKDIR/ch24_fortigate_deep"
+copy_pack 30 "$WORKDIR/ch30_win_dns_dhcp_nps"
 copy_pack 32 "$WORKDIR/ch32_endpoint_sec_deep"
 copy_pack 33 "$WORKDIR/ch33_entra_hybrid_deep"
 copy_pack 40 "$WORKDIR/ch40_vmware_hyperv"
