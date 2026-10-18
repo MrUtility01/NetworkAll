@@ -4,10 +4,10 @@
   "chapter_order": 68,
   "domain": "additional_technologies",
   "domain_title_fa": "فناوری‌های تکمیلی زیرساخت",
-  "count": 510,
+  "count": 515,
   "preserve_existing_records": true,
   "source_status": "review_required",
-  "note": "افزونه افزایشی؛ موج اول فناوری‌های تکمیلی و موج دوم تکمیل دستورهای منتخب خانواده‌های اصلی. تمام رکوردها نیازمند بازبینی نسخه‌ای هستند؛ سهمیه نهایی ۵۰۰/۱۰۰/۱۰۰/۵۰۰ هنوز تکمیل نشده است. موج دوم: رکوردهای منتخب و افزایشی برای Git، DNS/DHCP/NTP، SNMP/Syslog، Web/TLS، Backup/Recovery، Security Ops، Fortinet Management، Cloud، Zabbix، Wireshark، Proxmox، Hyper-V، Ansible، Terraform، Kubernetes، VoIP، VMware، Juniper، Aruba، Ubiquiti، SSH، Telnet، FTP، FTPS و SFTP افزوده شدند. وضعیت همهٔ رکوردهای موج دوم review_required است تا اعتبارسنجی نسخه‌ای و آزمایش محیطی انجام شود. موج سوم: فرمان‌های عملیاتی افزایشی برای تمام فناوری‌های شناسایی‌شده اضافه شد. این رکوردها برای تکمیل تدریجی پوشش‌اند و تا بازبینی نسخه‌ای/محیطی در وضعیت review_required باقی می‌مانند؛ شمارش به معنی تأیید آزمایشگاهی نیست. موج چهارم: فرمان‌های افزایشی منتخب برای پوشش مشاهده وضعیت، بررسی اتصال، اعتبارسنجی و عیب‌یابی به‌صورت افزایشی ثبت شدند. هر رکورد تا تأیید نسخه‌ای/محیطی review_required باقی می‌ماند.",
+  "note": "افزونه افزایشی؛ موج اول فناوری‌های تکمیلی و موج دوم تکمیل دستورهای منتخب خانواده‌های اصلی. تمام رکوردها نیازمند بازبینی نسخه‌ای هستند؛ سهمیه نهایی ۵۰۰/۱۰۰/۱۰۰/۵۰۰ هنوز تکمیل نشده است. موج دوم: رکوردهای منتخب و افزایشی برای Git، DNS/DHCP/NTP، SNMP/Syslog، Web/TLS، Backup/Recovery، Security Ops، Fortinet Management، Cloud، Zabbix، Wireshark، Proxmox، Hyper-V، Ansible، Terraform، Kubernetes، VoIP، VMware، Juniper، Aruba، Ubiquiti، SSH، Telnet، FTP، FTPS و SFTP افزوده شدند. وضعیت همهٔ رکوردهای موج دوم review_required است تا اعتبارسنجی نسخه‌ای و آزمایش محیطی انجام شود. موج سوم: فرمان‌های عملیاتی افزایشی برای تمام فناوری‌های شناسایی‌شده اضافه شد. این رکوردها برای تکمیل تدریجی پوشش‌اند و تا بازبینی نسخه‌ای/محیطی در وضعیت review_required باقی می‌مانند؛ شمارش به معنی تأیید آزمایشگاهی نیست. موج چهارم: فرمان‌های افزایشی منتخب برای پوشش مشاهده وضعیت، بررسی اتصال، اعتبارسنجی و عیب‌یابی به‌صورت افزایشی ثبت شدند. هر رکورد تا تأیید نسخه‌ای/محیطی review_required باقی می‌ماند. موج پنجم: چند فرمان مشاهده‌ای FortiGate برای تکمیل پوشش دستورها افزوده شد؛ همچنان نیازمند تطبیق نسخه و بازبینی تخصصی است.",
   "commands": [
     {
       "uid": "cmd:ssh:system:ssh-v",
@@ -40180,6 +40180,396 @@
         ]
       },
       "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:fortigate:wave5:get-system-performance-status",
+      "vendor": "Fortinet",
+      "platform": "FortiGate / FortiOS",
+      "category": "fortigate",
+      "subcategory": "diagnostics",
+      "level": "L1",
+      "title_fa": "FortiGate — نمایش وضعیت مصرف منابع FortiGate",
+      "title_en": "get system performance status",
+      "command": "get system performance status",
+      "aliases": [],
+      "syntax": "get system performance status",
+      "arguments": [],
+      "when_to_use_fa": "نمایش وضعیت مصرف منابع FortiGate؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مدیریتی مجاز به FortiGate",
+        "ثبت نسخه FortiOS و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "نسخه را با get system status ثبت کنید.",
+        "فرمان مشاهده‌ای را اجرا کنید: get system performance status",
+        "خروجی را همراه زمان و context ثبت و با مستندات نسخه تطبیق دهید."
+      ],
+      "sample_output": "خروجی به نسخه، مدل و وضعیت دستگاه وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "status",
+          "meaning_fa": "وضعیت واقعی دستگاه؛ خروجی نمونه تضمین‌شده نیست."
+        }
+      ],
+      "related_commands": [
+        "get system status"
+      ],
+      "common_mistakes_fa": [
+        "تعمیم syntax بین نسخه‌های FortiOS",
+        "انتشار خروجی حاوی شناسه‌ها یا اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در لاب FortiGate، get system performance status را اجرا و خروجی را با نسخه ثبت کنید.",
+      "security_notes_fa": "این فرمان برای مشاهده وضعیت است؛ پیش از اجرای هر دستور تغییردهنده، change window و rollback را مشخص کنید.",
+      "search_keywords": [
+        "fortigate",
+        "fortios",
+        "get system performance status",
+        "نمایش وضعیت مصرف منابع FortiGate",
+        "diagnose",
+        "read-only"
+      ],
+      "flashcards": [
+        {
+          "front": "get system performance status چه کمکی می‌کند؟",
+          "back": "نمایش وضعیت مصرف منابع FortiGate؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortigate-wave5-1",
+            "prompt": "کاربرد get system performance status چیست؟",
+            "options": [
+              "نمایش وضعیت مصرف منابع FortiGate؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود.",
+              "حذف همه policyها",
+              "خاموش کردن فایروال",
+              "بازنشانی دستگاه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortigate-wave5-1",
+            "correct_index": 0,
+            "explain_fa": "نمایش وضعیت مصرف منابع FortiGate؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "fortigate"
+    },
+    {
+      "uid": "cmd:fortigate:wave5:diagnose-sys-top-summary",
+      "vendor": "Fortinet",
+      "platform": "FortiGate / FortiOS",
+      "category": "fortigate",
+      "subcategory": "diagnostics",
+      "level": "L1",
+      "title_fa": "FortiGate — خلاصه پردازش‌های فعال و مصرف منابع",
+      "title_en": "diagnose sys top-summary",
+      "command": "diagnose sys top-summary",
+      "aliases": [],
+      "syntax": "diagnose sys top-summary",
+      "arguments": [],
+      "when_to_use_fa": "خلاصه پردازش‌های فعال و مصرف منابع؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مدیریتی مجاز به FortiGate",
+        "ثبت نسخه FortiOS و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "نسخه را با get system status ثبت کنید.",
+        "فرمان مشاهده‌ای را اجرا کنید: diagnose sys top-summary",
+        "خروجی را همراه زمان و context ثبت و با مستندات نسخه تطبیق دهید."
+      ],
+      "sample_output": "خروجی به نسخه، مدل و وضعیت دستگاه وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "status",
+          "meaning_fa": "وضعیت واقعی دستگاه؛ خروجی نمونه تضمین‌شده نیست."
+        }
+      ],
+      "related_commands": [
+        "get system status"
+      ],
+      "common_mistakes_fa": [
+        "تعمیم syntax بین نسخه‌های FortiOS",
+        "انتشار خروجی حاوی شناسه‌ها یا اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در لاب FortiGate، diagnose sys top-summary را اجرا و خروجی را با نسخه ثبت کنید.",
+      "security_notes_fa": "این فرمان برای مشاهده وضعیت است؛ پیش از اجرای هر دستور تغییردهنده، change window و rollback را مشخص کنید.",
+      "search_keywords": [
+        "fortigate",
+        "fortios",
+        "diagnose sys top-summary",
+        "خلاصه پردازش‌های فعال و مصرف منابع",
+        "diagnose",
+        "read-only"
+      ],
+      "flashcards": [
+        {
+          "front": "diagnose sys top-summary چه کمکی می‌کند؟",
+          "back": "خلاصه پردازش‌های فعال و مصرف منابع؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortigate-wave5-2",
+            "prompt": "کاربرد diagnose sys top-summary چیست؟",
+            "options": [
+              "خلاصه پردازش‌های فعال و مصرف منابع؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود.",
+              "حذف همه policyها",
+              "خاموش کردن فایروال",
+              "بازنشانی دستگاه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortigate-wave5-2",
+            "correct_index": 0,
+            "explain_fa": "خلاصه پردازش‌های فعال و مصرف منابع؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "fortigate"
+    },
+    {
+      "uid": "cmd:fortigate:wave5:diagnose-sys-ha-status",
+      "vendor": "Fortinet",
+      "platform": "FortiGate / FortiOS",
+      "category": "fortigate",
+      "subcategory": "diagnostics",
+      "level": "L1",
+      "title_fa": "FortiGate — بررسی وضعیت HA و همگام‌سازی اعضا",
+      "title_en": "diagnose sys ha status",
+      "command": "diagnose sys ha status",
+      "aliases": [],
+      "syntax": "diagnose sys ha status",
+      "arguments": [],
+      "when_to_use_fa": "بررسی وضعیت HA و همگام‌سازی اعضا؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مدیریتی مجاز به FortiGate",
+        "ثبت نسخه FortiOS و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "نسخه را با get system status ثبت کنید.",
+        "فرمان مشاهده‌ای را اجرا کنید: diagnose sys ha status",
+        "خروجی را همراه زمان و context ثبت و با مستندات نسخه تطبیق دهید."
+      ],
+      "sample_output": "خروجی به نسخه، مدل و وضعیت دستگاه وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "status",
+          "meaning_fa": "وضعیت واقعی دستگاه؛ خروجی نمونه تضمین‌شده نیست."
+        }
+      ],
+      "related_commands": [
+        "get system status"
+      ],
+      "common_mistakes_fa": [
+        "تعمیم syntax بین نسخه‌های FortiOS",
+        "انتشار خروجی حاوی شناسه‌ها یا اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در لاب FortiGate، diagnose sys ha status را اجرا و خروجی را با نسخه ثبت کنید.",
+      "security_notes_fa": "این فرمان برای مشاهده وضعیت است؛ پیش از اجرای هر دستور تغییردهنده، change window و rollback را مشخص کنید.",
+      "search_keywords": [
+        "fortigate",
+        "fortios",
+        "diagnose sys ha status",
+        "بررسی وضعیت HA و همگام‌سازی اعضا",
+        "diagnose",
+        "read-only"
+      ],
+      "flashcards": [
+        {
+          "front": "diagnose sys ha status چه کمکی می‌کند؟",
+          "back": "بررسی وضعیت HA و همگام‌سازی اعضا؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortigate-wave5-3",
+            "prompt": "کاربرد diagnose sys ha status چیست؟",
+            "options": [
+              "بررسی وضعیت HA و همگام‌سازی اعضا؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود.",
+              "حذف همه policyها",
+              "خاموش کردن فایروال",
+              "بازنشانی دستگاه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortigate-wave5-3",
+            "correct_index": 0,
+            "explain_fa": "بررسی وضعیت HA و همگام‌سازی اعضا؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "fortigate"
+    },
+    {
+      "uid": "cmd:fortigate:wave5:diagnose-sys-vd-list",
+      "vendor": "Fortinet",
+      "platform": "FortiGate / FortiOS",
+      "category": "fortigate",
+      "subcategory": "diagnostics",
+      "level": "L1",
+      "title_fa": "FortiGate — فهرست VDOMها و وضعیت آن‌ها",
+      "title_en": "diagnose sys vd list",
+      "command": "diagnose sys vd list",
+      "aliases": [],
+      "syntax": "diagnose sys vd list",
+      "arguments": [],
+      "when_to_use_fa": "فهرست VDOMها و وضعیت آن‌ها؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مدیریتی مجاز به FortiGate",
+        "ثبت نسخه FortiOS و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "نسخه را با get system status ثبت کنید.",
+        "فرمان مشاهده‌ای را اجرا کنید: diagnose sys vd list",
+        "خروجی را همراه زمان و context ثبت و با مستندات نسخه تطبیق دهید."
+      ],
+      "sample_output": "خروجی به نسخه، مدل و وضعیت دستگاه وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "status",
+          "meaning_fa": "وضعیت واقعی دستگاه؛ خروجی نمونه تضمین‌شده نیست."
+        }
+      ],
+      "related_commands": [
+        "get system status"
+      ],
+      "common_mistakes_fa": [
+        "تعمیم syntax بین نسخه‌های FortiOS",
+        "انتشار خروجی حاوی شناسه‌ها یا اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در لاب FortiGate، diagnose sys vd list را اجرا و خروجی را با نسخه ثبت کنید.",
+      "security_notes_fa": "این فرمان برای مشاهده وضعیت است؛ پیش از اجرای هر دستور تغییردهنده، change window و rollback را مشخص کنید.",
+      "search_keywords": [
+        "fortigate",
+        "fortios",
+        "diagnose sys vd list",
+        "فهرست VDOMها و وضعیت آن‌ها",
+        "diagnose",
+        "read-only"
+      ],
+      "flashcards": [
+        {
+          "front": "diagnose sys vd list چه کمکی می‌کند؟",
+          "back": "فهرست VDOMها و وضعیت آن‌ها؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortigate-wave5-4",
+            "prompt": "کاربرد diagnose sys vd list چیست؟",
+            "options": [
+              "فهرست VDOMها و وضعیت آن‌ها؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود.",
+              "حذف همه policyها",
+              "خاموش کردن فایروال",
+              "بازنشانی دستگاه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortigate-wave5-4",
+            "correct_index": 0,
+            "explain_fa": "فهرست VDOMها و وضعیت آن‌ها؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "fortigate"
+    },
+    {
+      "uid": "cmd:fortigate:wave5:diagnose-hardware-sysinfo-memory",
+      "vendor": "Fortinet",
+      "platform": "FortiGate / FortiOS",
+      "category": "fortigate",
+      "subcategory": "diagnostics",
+      "level": "L1",
+      "title_fa": "FortiGate — بررسی اطلاعات حافظه سخت‌افزاری",
+      "title_en": "diagnose hardware sysinfo memory",
+      "command": "diagnose hardware sysinfo memory",
+      "aliases": [],
+      "syntax": "diagnose hardware sysinfo memory",
+      "arguments": [],
+      "when_to_use_fa": "بررسی اطلاعات حافظه سخت‌افزاری؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مدیریتی مجاز به FortiGate",
+        "ثبت نسخه FortiOS و وضعیت اولیه"
+      ],
+      "steps_fa": [
+        "نسخه را با get system status ثبت کنید.",
+        "فرمان مشاهده‌ای را اجرا کنید: diagnose hardware sysinfo memory",
+        "خروجی را همراه زمان و context ثبت و با مستندات نسخه تطبیق دهید."
+      ],
+      "sample_output": "خروجی به نسخه، مدل و وضعیت دستگاه وابسته است.",
+      "output_fields_fa": [
+        {
+          "field": "status",
+          "meaning_fa": "وضعیت واقعی دستگاه؛ خروجی نمونه تضمین‌شده نیست."
+        }
+      ],
+      "related_commands": [
+        "get system status"
+      ],
+      "common_mistakes_fa": [
+        "تعمیم syntax بین نسخه‌های FortiOS",
+        "انتشار خروجی حاوی شناسه‌ها یا اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در لاب FortiGate، diagnose hardware sysinfo memory را اجرا و خروجی را با نسخه ثبت کنید.",
+      "security_notes_fa": "این فرمان برای مشاهده وضعیت است؛ پیش از اجرای هر دستور تغییردهنده، change window و rollback را مشخص کنید.",
+      "search_keywords": [
+        "fortigate",
+        "fortios",
+        "diagnose hardware sysinfo memory",
+        "بررسی اطلاعات حافظه سخت‌افزاری",
+        "diagnose",
+        "read-only"
+      ],
+      "flashcards": [
+        {
+          "front": "diagnose hardware sysinfo memory چه کمکی می‌کند؟",
+          "back": "بررسی اطلاعات حافظه سخت‌افزاری؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortigate-wave5-5",
+            "prompt": "کاربرد diagnose hardware sysinfo memory چیست؟",
+            "options": [
+              "بررسی اطلاعات حافظه سخت‌افزاری؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود.",
+              "حذف همه policyها",
+              "خاموش کردن فایروال",
+              "بازنشانی دستگاه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortigate-wave5-5",
+            "correct_index": 0,
+            "explain_fa": "بررسی اطلاعات حافظه سخت‌افزاری؛ برای بررسی read-only در FortiOS. رفتار جزئی و قالب خروجی باید با نسخهٔ واقعی تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "fortigate"
     }
   ]
 }
