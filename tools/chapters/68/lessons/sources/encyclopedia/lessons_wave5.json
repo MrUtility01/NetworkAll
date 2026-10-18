@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "chapter_order": 68,
+  "category": "lessons",
+  "source_of_truth": true,
+  "source_status": "review_required",
+  "wave": 11,
+  "items": [
+    {
+      "uid": "lesson:ch68:voip:wave11:01",
+      "title_fa": "VoIP / SIP / PBX: ثبت‌نام trunk",
+      "title_en": "VoIP / SIP / PBX — ثبت‌نام trunk",
+      "chapter_order": 68,
+      "technology_id": "voip",
+      "fields": {
+        "lessons": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** ثبت‌نام trunk\n**سناریو:** تلفن‌های داخلی کار می‌کنند اما تماس خروجی trunk رد می‌شود.\n**فرمان مرجع:** `asterisk -rx 'pjsip show registrations'`\n\n**اصل فنی:** registration، endpoint و RTP شاخص‌های جدا هستند؛ وضعیت و SIP response را در زمان واحد با provider تطبیق دهید.\n\n**روش تشخیص:** خروجی registration را ثبت کنید؛ trunk و response را تعیین کنید؛ endpoint/AOR را جدا بررسی کنید؛ logger را فقط کوتاه‌مدت و با مجوز فعال کنید.\n\n**معیار پذیرش:** علت در مرحلهٔ registration از مراحل بعدی تماس تفکیک شده است.\n\n**ریسک:** debug می‌تواند شماره و metadata تماس را ثبت کند؛ بعد از آزمایش خاموش و خروجی redacted شود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** ثبت‌نام trunk\n**سناریو:** تلفن‌های داخلی کار می‌کنند اما تماس خروجی trunk رد می‌شود.\n**فرمان مرجع:** `asterisk -rx 'pjsip show registrations'`\n\n**اصل فنی:** registration، endpoint و RTP شاخص‌های جدا هستند؛ وضعیت و SIP response را در زمان واحد با provider تطبیق دهید.\n\n**روش تشخیص:** خروجی registration را ثبت کنید؛ trunk و response را تعیین کنید؛ endpoint/AOR را جدا بررسی کنید؛ logger را فقط کوتاه‌مدت و با مجوز فعال کنید.\n\n**معیار پذیرش:** علت در مرحلهٔ registration از مراحل بعدی تماس تفکیک شده است.\n\n**ریسک:** debug می‌تواند شماره و metadata تماس را ثبت کند؛ بعد از آزمایش خاموش و خروجی redacted شود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "ثبت‌نام trunk: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:voip:wave11:02",
+      "title_fa": "VoIP / SIP / PBX: تماس یک‌طرفه و RTP",
+      "title_en": "VoIP / SIP / PBX — تماس یک‌طرفه و RTP",
+      "chapter_order": 68,
+      "technology_id": "voip",
+      "fields": {
+        "lessons": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** تماس یک‌طرفه و RTP\n**سناریو:** تماس برقرار می‌شود اما صدا فقط در یک جهت شنیده می‌شود.\n**فرمان مرجع:** `asterisk -rx 'pjsip show channelstats'`\n\n**اصل فنی:** SIP سیگنال‌دهی و RTP رسانه را حمل می‌کند؛ 200 OK سلامت RTP را اثبات نمی‌کند.\n\n**روش تشخیص:** آمار کانال را بگیرید؛ SDP/RTP address را ثبت کنید؛ capture محدود در دو سوی مسیر بگیرید؛ ACL/NAT و بازه UDP را تطبیق دهید.\n\n**معیار پذیرش:** جهت و نقطهٔ فقدان RTP با شاهد شبکه مشخص است.\n\n**ریسک:** capture صوتی حساس است؛ فقط IP/port و مدت لازم جمع‌آوری شود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** تماس یک‌طرفه و RTP\n**سناریو:** تماس برقرار می‌شود اما صدا فقط در یک جهت شنیده می‌شود.\n**فرمان مرجع:** `asterisk -rx 'pjsip show channelstats'`\n\n**اصل فنی:** SIP سیگنال‌دهی و RTP رسانه را حمل می‌کند؛ 200 OK سلامت RTP را اثبات نمی‌کند.\n\n**روش تشخیص:** آمار کانال را بگیرید؛ SDP/RTP address را ثبت کنید؛ capture محدود در دو سوی مسیر بگیرید؛ ACL/NAT و بازه UDP را تطبیق دهید.\n\n**معیار پذیرش:** جهت و نقطهٔ فقدان RTP با شاهد شبکه مشخص است.\n\n**ریسک:** capture صوتی حساس است؛ فقط IP/port و مدت لازم جمع‌آوری شود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "تماس یک‌طرفه و RTP: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:voip:wave11:03",
+      "title_fa": "VoIP / SIP / PBX: الگوی Dialplan",
+      "title_en": "VoIP / SIP / PBX — الگوی Dialplan",
+      "chapter_order": 68,
+      "technology_id": "voip",
+      "fields": {
+        "lessons": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** الگوی Dialplan\n**سناریو:** پیش‌شماره یا بعضی شماره‌ها match نمی‌شوند ولی تماس داخلی ساده کار می‌کند.\n**فرمان مرجع:** `asterisk -rx 'dialplan show from-internal'`\n\n**اصل فنی:** Dialplan بر پایهٔ context و pattern است؛ وجود extension در فایل کافی نیست.\n\n**روش تشخیص:** context endpoint را ثبت کنید؛ include/pattern را بررسی کنید؛ مقصد Dial() را دنبال کنید؛ تغییر را اول در لاب و با rollback بیازمایید.\n\n**معیار پذیرش:** pattern و مقصد شمارهٔ آزمون پیش از تغییر مشخص است.\n\n**ریسک:** تغییر dialplan می‌تواند تماس جدید را مختل کند؛ backup و پنجرهٔ تغییر لازم است.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** الگوی Dialplan\n**سناریو:** پیش‌شماره یا بعضی شماره‌ها match نمی‌شوند ولی تماس داخلی ساده کار می‌کند.\n**فرمان مرجع:** `asterisk -rx 'dialplan show from-internal'`\n\n**اصل فنی:** Dialplan بر پایهٔ context و pattern است؛ وجود extension در فایل کافی نیست.\n\n**روش تشخیص:** context endpoint را ثبت کنید؛ include/pattern را بررسی کنید؛ مقصد Dial() را دنبال کنید؛ تغییر را اول در لاب و با rollback بیازمایید.\n\n**معیار پذیرش:** pattern و مقصد شمارهٔ آزمون پیش از تغییر مشخص است.\n\n**ریسک:** تغییر dialplan می‌تواند تماس جدید را مختل کند؛ backup و پنجرهٔ تغییر لازم است.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "الگوی Dialplan: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:vmware_esxi:wave11:01",
+      "title_fa": "VMware ESXi / vSphere: کمبود فضای datastore",
+      "title_en": "VMware ESXi / vSphere — کمبود فضای datastore",
+      "chapter_order": 68,
+      "technology_id": "vmware_esxi",
+      "fields": {
+        "lessons": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** کمبود فضای datastore\n**سناریو:** ساخت VM یا snapshot به کمبود فضا می‌خورد ولی dashboard ظرفیت کافی نشان می‌دهد.\n**فرمان مرجع:** `esxcli storage filesystem list`\n\n**اصل فنی:** free space، provisioned و رشد snapshot متفاوت‌اند؛ datastore و path فایل VMX را تطبیق دهید.\n\n**روش تشخیص:** فضای host مالک را ثبت کنید؛ VM/datastore و snapshot chain را بررسی کنید؛ فضا را از ابزار مدیریتی پشتیبانی‌شده آزاد کنید.\n\n**معیار پذیرش:** مصرف‌کنندهٔ فضا مشخص و فایل VMFS دستی حذف نشده است.\n\n**ریسک:** فایل‌های delta را دستی حذف نکنید؛ chain ممکن است خراب شود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** کمبود فضای datastore\n**سناریو:** ساخت VM یا snapshot به کمبود فضا می‌خورد ولی dashboard ظرفیت کافی نشان می‌دهد.\n**فرمان مرجع:** `esxcli storage filesystem list`\n\n**اصل فنی:** free space، provisioned و رشد snapshot متفاوت‌اند؛ datastore و path فایل VMX را تطبیق دهید.\n\n**روش تشخیص:** فضای host مالک را ثبت کنید؛ VM/datastore و snapshot chain را بررسی کنید؛ فضا را از ابزار مدیریتی پشتیبانی‌شده آزاد کنید.\n\n**معیار پذیرش:** مصرف‌کنندهٔ فضا مشخص و فایل VMFS دستی حذف نشده است.\n\n**ریسک:** فایل‌های delta را دستی حذف نکنید؛ chain ممکن است خراب شود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "کمبود فضای datastore: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:vmware_esxi:wave11:02",
+      "title_fa": "VMware ESXi / vSphere: شبکهٔ VMkernel",
+      "title_en": "VMware ESXi / vSphere — شبکهٔ VMkernel",
+      "chapter_order": 68,
+      "technology_id": "vmware_esxi",
+      "fields": {
+        "lessons": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** شبکهٔ VMkernel\n**سناریو:** vCenter پاسخ می‌دهد اما vMotion یا storage timeout است.\n**فرمان مرجع:** `esxcli network ip route ipv4 list`\n\n**اصل فنی:** Management، vMotion و storage می‌توانند VLAN/MTU/route جدا داشته باشند.\n\n**روش تشخیص:** VMkernel و service را ثبت کنید؛ route/gateway را ببینید؛ VLAN/MTU و return path را تطبیق دهید؛ فقط از interface هدف تست کنید.\n\n**معیار پذیرش:** VMkernel و مسیر سرویس مشکل‌دار مشخص شده‌اند.\n\n**ریسک:** تغییر VLAN/MTU/gateway می‌تواند management را قطع کند؛ console و rollback آماده باشد.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** شبکهٔ VMkernel\n**سناریو:** vCenter پاسخ می‌دهد اما vMotion یا storage timeout است.\n**فرمان مرجع:** `esxcli network ip route ipv4 list`\n\n**اصل فنی:** Management، vMotion و storage می‌توانند VLAN/MTU/route جدا داشته باشند.\n\n**روش تشخیص:** VMkernel و service را ثبت کنید؛ route/gateway را ببینید؛ VLAN/MTU و return path را تطبیق دهید؛ فقط از interface هدف تست کنید.\n\n**معیار پذیرش:** VMkernel و مسیر سرویس مشکل‌دار مشخص شده‌اند.\n\n**ریسک:** تغییر VLAN/MTU/gateway می‌تواند management را قطع کند؛ console و rollback آماده باشد.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "شبکهٔ VMkernel: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:vmware_esxi:wave11:03",
+      "title_fa": "VMware ESXi / vSphere: VMFS extent و LUN path",
+      "title_en": "VMware ESXi / vSphere — VMFS extent و LUN path",
+      "chapter_order": 68,
+      "technology_id": "vmware_esxi",
+      "fields": {
+        "lessons": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** VMFS extent و LUN path\n**سناریو:** datastore ناپایدار است و قطع LUN/path مطرح می‌شود.\n**فرمان مرجع:** `esxcli storage vmfs extent list`\n\n**اصل فنی:** نام نمایشی کافی نیست؛ extent/device و path را با SAN تطبیق دهید.\n\n**روش تشخیص:** extent list را ثبت کنید؛ device/path را مقایسه کنید؛ APD/PDL و SAN log را هم‌بسته کنید؛ پیش از detach تأیید بگیرید.\n\n**معیار پذیرش:** شناسهٔ LUN/extent و نشانه‌های path failure روشن هستند.\n\n**ریسک:** detach/unmount تغییرساز است و بدون شناسایی device نباید اجرا شود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** VMFS extent و LUN path\n**سناریو:** datastore ناپایدار است و قطع LUN/path مطرح می‌شود.\n**فرمان مرجع:** `esxcli storage vmfs extent list`\n\n**اصل فنی:** نام نمایشی کافی نیست؛ extent/device و path را با SAN تطبیق دهید.\n\n**روش تشخیص:** extent list را ثبت کنید؛ device/path را مقایسه کنید؛ APD/PDL و SAN log را هم‌بسته کنید؛ پیش از detach تأیید بگیرید.\n\n**معیار پذیرش:** شناسهٔ LUN/extent و نشانه‌های path failure روشن هستند.\n\n**ریسک:** detach/unmount تغییرساز است و بدون شناسایی device نباید اجرا شود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "VMFS extent و LUN path: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:ssh:wave11:01",
+      "title_fa": "SSH / OpenSSH: Host-key mismatch",
+      "title_en": "SSH / OpenSSH — Host-key mismatch",
+      "chapter_order": 68,
+      "technology_id": "ssh",
+      "fields": {
+        "lessons": "**حوزه:** SSH / OpenSSH\n**موضوع:** Host-key mismatch\n**سناریو:** پس از rebuild سرور هشدار host identification changed ظاهر می‌شود.\n**فرمان مرجع:** `ssh-keygen -lf ~/.ssh/known_hosts`\n\n**اصل فنی:** ممکن است rebuild مجاز یا MITM باشد؛ حذف خودکار known_hosts کنترل اصالت را دور می‌زند.\n\n**روش تشخیص:** مالک سرویس را تأیید کنید؛ fingerprint جدید را out-of-band بگیرید؛ رکورد را بررسی و پس از تأیید فقط همان ورودی را به‌روز کنید.\n\n**معیار پذیرش:** fingerprint مستقل تأیید و تغییر مستند شده است.\n\n**ریسک:** StrictHostKeyChecking را کورکورانه خاموش نکنید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** SSH / OpenSSH\n**موضوع:** Host-key mismatch\n**سناریو:** پس از rebuild سرور هشدار host identification changed ظاهر می‌شود.\n**فرمان مرجع:** `ssh-keygen -lf ~/.ssh/known_hosts`\n\n**اصل فنی:** ممکن است rebuild مجاز یا MITM باشد؛ حذف خودکار known_hosts کنترل اصالت را دور می‌زند.\n\n**روش تشخیص:** مالک سرویس را تأیید کنید؛ fingerprint جدید را out-of-band بگیرید؛ رکورد را بررسی و پس از تأیید فقط همان ورودی را به‌روز کنید.\n\n**معیار پذیرش:** fingerprint مستقل تأیید و تغییر مستند شده است.\n\n**ریسک:** StrictHostKeyChecking را کورکورانه خاموش نکنید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "Host-key mismatch: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:ssh:wave11:02",
+      "title_fa": "SSH / OpenSSH: کلید در automation",
+      "title_en": "SSH / OpenSSH — کلید در automation",
+      "chapter_order": 68,
+      "technology_id": "ssh",
+      "fields": {
+        "lessons": "**حوزه:** SSH / OpenSSH\n**موضوع:** کلید در automation\n**سناریو:** SSH دستی موفق است ولی scheduled task fail می‌شود.\n**فرمان مرجع:** `ssh -o IdentitiesOnly=yes -o BatchMode=yes -o PreferredAuthentications=publickey admin@192.0.2.10 true`\n\n**اصل فنی:** HOME، agent، config و prompt کاربر سرویس ممکن است متفاوت باشد.\n\n**روش تشخیص:** user/HOME و key را بررسی کنید؛ ssh -G بگیرید؛ مجوز key و log سرور را تطبیق دهید؛ کلید automation را محدود و قابل‌چرخش کنید.\n\n**معیار پذیرش:** identity و علت شکست در environment سرویس معلوم است.\n\n**ریسک:** secret در command line/log/repository قرار نگیرد.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** SSH / OpenSSH\n**موضوع:** کلید در automation\n**سناریو:** SSH دستی موفق است ولی scheduled task fail می‌شود.\n**فرمان مرجع:** `ssh -o IdentitiesOnly=yes -o BatchMode=yes -o PreferredAuthentications=publickey admin@192.0.2.10 true`\n\n**اصل فنی:** HOME، agent، config و prompt کاربر سرویس ممکن است متفاوت باشد.\n\n**روش تشخیص:** user/HOME و key را بررسی کنید؛ ssh -G بگیرید؛ مجوز key و log سرور را تطبیق دهید؛ کلید automation را محدود و قابل‌چرخش کنید.\n\n**معیار پذیرش:** identity و علت شکست در environment سرویس معلوم است.\n\n**ریسک:** secret در command line/log/repository قرار نگیرد.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "کلید در automation: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:ssh:wave11:03",
+      "title_fa": "SSH / OpenSSH: Match block در sshd",
+      "title_en": "SSH / OpenSSH — Match block در sshd",
+      "chapter_order": 68,
+      "technology_id": "ssh",
+      "fields": {
+        "lessons": "**حوزه:** SSH / OpenSSH\n**موضوع:** Match block در sshd\n**سناریو:** کاربر از یک subnet login دارد اما از subnet دیگر رد می‌شود.\n**فرمان مرجع:** `sudo sshd -T -C user=admin,host=server.example,addr=192.0.2.10`\n\n**اصل فنی:** Match Address/User و includeها تنظیم مؤثر را تغییر می‌دهند.\n\n**روش تشخیص:** config/include را بررسی کنید؛ sshd -t و sshd -T -C را برای دو context مقایسه و log را هم‌بسته کنید.\n\n**معیار پذیرش:** پارامتر مؤثر متفاوت میان contextها مشخص شده است.\n\n**ریسک:** نشست مدیریتی جایگزین و rollback را پیش از reload حفظ کنید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** SSH / OpenSSH\n**موضوع:** Match block در sshd\n**سناریو:** کاربر از یک subnet login دارد اما از subnet دیگر رد می‌شود.\n**فرمان مرجع:** `sudo sshd -T -C user=admin,host=server.example,addr=192.0.2.10`\n\n**اصل فنی:** Match Address/User و includeها تنظیم مؤثر را تغییر می‌دهند.\n\n**روش تشخیص:** config/include را بررسی کنید؛ sshd -t و sshd -T -C را برای دو context مقایسه و log را هم‌بسته کنید.\n\n**معیار پذیرش:** پارامتر مؤثر متفاوت میان contextها مشخص شده است.\n\n**ریسک:** نشست مدیریتی جایگزین و rollback را پیش از reload حفظ کنید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "Match block در sshd: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:telnet:wave11:01",
+      "title_fa": "Telnet / TCP diagnostics: تفکیک HTTPS layers",
+      "title_en": "Telnet / TCP diagnostics — تفکیک HTTPS layers",
+      "chapter_order": 68,
+      "technology_id": "telnet",
+      "fields": {
+        "lessons": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تفکیک HTTPS layers\n**سناریو:** مرورگر خطا می‌دهد و لایهٔ DNS/TCP/TLS/HTTP معلوم نیست.\n**فرمان مرجع:** `Test-NetConnection 192.0.2.10 -Port 443 -InformationLevel Detailed`\n\n**اصل فنی:** probeها را از resolve تا TCP، TLS/SNI و HTTP مرحله‌بندی کنید.\n\n**روش تشخیص:** IP/DNS را ثبت کنید؛ TCP را بسنجید؛ TLS chain را بررسی کنید؛ curl code و زمان را بگیرید؛ یک مقصد سالم را مقایسه کنید.\n\n**معیار پذیرش:** لایهٔ شکست با شاهد قابل بازتولید مشخص است.\n\n**ریسک:** Telnet رمزنگاری ندارد و برای credentials مناسب نیست.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تفکیک HTTPS layers\n**سناریو:** مرورگر خطا می‌دهد و لایهٔ DNS/TCP/TLS/HTTP معلوم نیست.\n**فرمان مرجع:** `Test-NetConnection 192.0.2.10 -Port 443 -InformationLevel Detailed`\n\n**اصل فنی:** probeها را از resolve تا TCP، TLS/SNI و HTTP مرحله‌بندی کنید.\n\n**روش تشخیص:** IP/DNS را ثبت کنید؛ TCP را بسنجید؛ TLS chain را بررسی کنید؛ curl code و زمان را بگیرید؛ یک مقصد سالم را مقایسه کنید.\n\n**معیار پذیرش:** لایهٔ شکست با شاهد قابل بازتولید مشخص است.\n\n**ریسک:** Telnet رمزنگاری ندارد و برای credentials مناسب نیست.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "تفکیک HTTPS layers: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:telnet:wave11:02",
+      "title_fa": "Telnet / TCP diagnostics: تفسیر MTR",
+      "title_en": "Telnet / TCP diagnostics — تفسیر MTR",
+      "chapter_order": 68,
+      "technology_id": "telnet",
+      "fields": {
+        "lessons": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تفسیر MTR\n**سناریو:** hop میانی loss نشان می‌دهد اما مقصد پایدار پاسخ می‌دهد.\n**فرمان مرجع:** `mtr -T -P 443 -r -c 10 192.0.2.10`\n\n**اصل فنی:** روتر ممکن است به probe خودش rate-limit دهد؛ loss میانی بدون تداوم در مقصد کافی نیست.\n\n**روش تشخیص:** نوع probe/count را ثبت کنید؛ loss تا مقصد را دنبال کنید؛ از مبدأ دوم و timestamp متفاوت نمونه بگیرید.\n\n**معیار پذیرش:** loss کنترلی از افت واقعی forwarding تفکیک شده است.\n\n**ریسک:** probe را محدود و به مقصد مجاز محدود کنید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تفسیر MTR\n**سناریو:** hop میانی loss نشان می‌دهد اما مقصد پایدار پاسخ می‌دهد.\n**فرمان مرجع:** `mtr -T -P 443 -r -c 10 192.0.2.10`\n\n**اصل فنی:** روتر ممکن است به probe خودش rate-limit دهد؛ loss میانی بدون تداوم در مقصد کافی نیست.\n\n**روش تشخیص:** نوع probe/count را ثبت کنید؛ loss تا مقصد را دنبال کنید؛ از مبدأ دوم و timestamp متفاوت نمونه بگیرید.\n\n**معیار پذیرش:** loss کنترلی از افت واقعی forwarding تفکیک شده است.\n\n**ریسک:** probe را محدود و به مقصد مجاز محدود کنید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "تفسیر MTR: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:telnet:wave11:03",
+      "title_fa": "Telnet / TCP diagnostics: تست backend با curl --resolve",
+      "title_en": "Telnet / TCP diagnostics — تست backend با curl --resolve",
+      "chapter_order": 68,
+      "technology_id": "telnet",
+      "fields": {
+        "lessons": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تست backend با curl --resolve\n**سناریو:** باید یک backend تست شود بدون تغییر DNS سراسری.\n**فرمان مرجع:** `curl --resolve example.com:443:192.0.2.10 -sS -o /dev/null -w 'code=%{http_code} connect=%{time_connect} total=%{time_total}\\n' https://example.com/`\n\n**اصل فنی:** --resolve IP مقصد را برای همان درخواست pin می‌کند و hostname/SNI را حفظ می‌کند.\n\n**روش تشخیص:** IP معتبر را بگیرید؛ body را ذخیره نکنید؛ code و زمان‌ها را ثبت؛ backend دیگر را با همان Host/SNI مقایسه کنید.\n\n**معیار پذیرش:** backend مشخص با Host/SNI درست اندازه‌گیری شده است.\n\n**ریسک:** از endpointهای write یا تغییردهنده استفاده نکنید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تست backend با curl --resolve\n**سناریو:** باید یک backend تست شود بدون تغییر DNS سراسری.\n**فرمان مرجع:** `curl --resolve example.com:443:192.0.2.10 -sS -o /dev/null -w 'code=%{http_code} connect=%{time_connect} total=%{time_total}\\n' https://example.com/`\n\n**اصل فنی:** --resolve IP مقصد را برای همان درخواست pin می‌کند و hostname/SNI را حفظ می‌کند.\n\n**روش تشخیص:** IP معتبر را بگیرید؛ body را ذخیره نکنید؛ code و زمان‌ها را ثبت؛ backend دیگر را با همان Host/SNI مقایسه کنید.\n\n**معیار پذیرش:** backend مشخص با Host/SNI درست اندازه‌گیری شده است.\n\n**ریسک:** از endpointهای write یا تغییردهنده استفاده نکنید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "تست backend با curl --resolve: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:ftp:wave11:01",
+      "title_fa": "FTP: Passive data channel",
+      "title_en": "FTP — Passive data channel",
+      "chapter_order": 68,
+      "technology_id": "ftp",
+      "fields": {
+        "lessons": "**حوزه:** FTP\n**موضوع:** Passive data channel\n**سناریو:** login موفق است اما LIST یا RETR timeout می‌شود.\n**فرمان مرجع:** `lftp -e 'set ftp:passive-mode true; cls -l /incoming; bye' ftp://ftp.example.test`\n\n**اصل فنی:** FTP control و data channel جدا دارد؛ در passive mode پورت داده باید از client قابل‌دسترسی باشد.\n\n**روش تشخیص:** مرحلهٔ timeout را ثبت کنید؛ PASV/EPSV و data port را ببینید؛ NAT/firewall و بازهٔ passive را تطبیق دهید.\n\n**معیار پذیرش:** شکست به data channel و پورت محدود شده است.\n\n**ریسک:** FTP ساده credentials و محتوا را رمزنگاری نمی‌کند.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** FTP\n**موضوع:** Passive data channel\n**سناریو:** login موفق است اما LIST یا RETR timeout می‌شود.\n**فرمان مرجع:** `lftp -e 'set ftp:passive-mode true; cls -l /incoming; bye' ftp://ftp.example.test`\n\n**اصل فنی:** FTP control و data channel جدا دارد؛ در passive mode پورت داده باید از client قابل‌دسترسی باشد.\n\n**روش تشخیص:** مرحلهٔ timeout را ثبت کنید؛ PASV/EPSV و data port را ببینید؛ NAT/firewall و بازهٔ passive را تطبیق دهید.\n\n**معیار پذیرش:** شکست به data channel و پورت محدود شده است.\n\n**ریسک:** FTP ساده credentials و محتوا را رمزنگاری نمی‌کند.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "Passive data channel: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:ftp:wave11:02",
+      "title_fa": "FTP: فایل ناقص و range",
+      "title_en": "FTP — فایل ناقص و range",
+      "chapter_order": 68,
+      "technology_id": "ftp",
+      "fields": {
+        "lessons": "**حوزه:** FTP\n**موضوع:** فایل ناقص و range\n**سناریو:** باید رفتار range را برای فایل بزرگ کنترل کرد.\n**فرمان مرجع:** `curl --range 0-1023 --output /tmp/sample.part ftp://ftp.example.test/pub/sample.bin`\n\n**اصل فنی:** range فقط بخش محدودی را می‌گیرد؛ خروجی partial فایل نهایی نیست.\n\n**روش تشخیص:** در staging دریافت محدود کنید؛ exit code و size را ثبت؛ فایل ناقص را منتشر نکنید؛ انتقال کامل را با checksum تأیید کنید.\n\n**معیار پذیرش:** فایل جزئی از artifact نهایی جدا شده است.\n\n**ریسک:** credentials در URL/history قرار نگیرد.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** FTP\n**موضوع:** فایل ناقص و range\n**سناریو:** باید رفتار range را برای فایل بزرگ کنترل کرد.\n**فرمان مرجع:** `curl --range 0-1023 --output /tmp/sample.part ftp://ftp.example.test/pub/sample.bin`\n\n**اصل فنی:** range فقط بخش محدودی را می‌گیرد؛ خروجی partial فایل نهایی نیست.\n\n**روش تشخیص:** در staging دریافت محدود کنید؛ exit code و size را ثبت؛ فایل ناقص را منتشر نکنید؛ انتقال کامل را با checksum تأیید کنید.\n\n**معیار پذیرش:** فایل جزئی از artifact نهایی جدا شده است.\n\n**ریسک:** credentials در URL/history قرار نگیرد.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "فایل ناقص و range: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:ftp:wave11:03",
+      "title_fa": "FTP: active/passive behind NAT",
+      "title_en": "FTP — active/passive behind NAT",
+      "chapter_order": 68,
+      "technology_id": "ftp",
+      "fields": {
+        "lessons": "**حوزه:** FTP\n**موضوع:** active/passive behind NAT\n**سناریو:** انتقال در یک subnet کار می‌کند و پشت NAT fail می‌شود.\n**فرمان مرجع:** `curl --ftp-port - --list-only ftp://ftp.example.test/pub/`\n\n**اصل فنی:** active FTP اتصال data برگشتی از server نیاز دارد و firewall/NAT ممکن است آن را drop کند.\n\n**روش تشخیص:** mode پایه را ثبت؛ active/passive را در لاب مقایسه؛ 5-tuple را در log ببینید؛ فقط rule محدود با rollback تغییر کند.\n\n**معیار پذیرش:** data path به پورت/مسیر مشخص نسبت داده شده است.\n\n**ریسک:** rule گسترده یا ALG بدون scope اضافه نشود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** FTP\n**موضوع:** active/passive behind NAT\n**سناریو:** انتقال در یک subnet کار می‌کند و پشت NAT fail می‌شود.\n**فرمان مرجع:** `curl --ftp-port - --list-only ftp://ftp.example.test/pub/`\n\n**اصل فنی:** active FTP اتصال data برگشتی از server نیاز دارد و firewall/NAT ممکن است آن را drop کند.\n\n**روش تشخیص:** mode پایه را ثبت؛ active/passive را در لاب مقایسه؛ 5-tuple را در log ببینید؛ فقط rule محدود با rollback تغییر کند.\n\n**معیار پذیرش:** data path به پورت/مسیر مشخص نسبت داده شده است.\n\n**ریسک:** rule گسترده یا ALG بدون scope اضافه نشود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "active/passive behind NAT: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:ftps:wave11:01",
+      "title_fa": "FTPS: TLS و certificate trust",
+      "title_en": "FTPS — TLS و certificate trust",
+      "chapter_order": 68,
+      "technology_id": "ftps",
+      "fields": {
+        "lessons": "**حوزه:** FTPS\n**موضوع:** TLS و certificate trust\n**سناریو:** FTPS در یک host کار می‌کند اما در دیگری certificate error می‌دهد.\n**فرمان مرجع:** `curl --ssl-reqd --tlsv1.2 --list-only ftp://ftp.example.test/pub/`\n\n**اصل فنی:** ssl-reqd fallback plain را رد می‌کند؛ chain، hostname و trust store باید درست باشند.\n\n**روش تشخیص:** نسخه/trust store را ثبت؛ خطا را به chain/hostname/time تفکیک؛ CA معتبر را نصب؛ از insecure flag استفاده نکنید.\n\n**معیار پذیرش:** TLS اجباری و هویت سرور بررسی شده است.\n\n**ریسک:** خاموش‌کردن validation ریسک MITM دارد.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** FTPS\n**موضوع:** TLS و certificate trust\n**سناریو:** FTPS در یک host کار می‌کند اما در دیگری certificate error می‌دهد.\n**فرمان مرجع:** `curl --ssl-reqd --tlsv1.2 --list-only ftp://ftp.example.test/pub/`\n\n**اصل فنی:** ssl-reqd fallback plain را رد می‌کند؛ chain، hostname و trust store باید درست باشند.\n\n**روش تشخیص:** نسخه/trust store را ثبت؛ خطا را به chain/hostname/time تفکیک؛ CA معتبر را نصب؛ از insecure flag استفاده نکنید.\n\n**معیار پذیرش:** TLS اجباری و هویت سرور بررسی شده است.\n\n**ریسک:** خاموش‌کردن validation ریسک MITM دارد.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "TLS و certificate trust: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:ftps:wave11:02",
+      "title_fa": "FTPS: Control/data channel",
+      "title_en": "FTPS — Control/data channel",
+      "chapter_order": 68,
+      "technology_id": "ftps",
+      "fields": {
+        "lessons": "**حوزه:** FTPS\n**موضوع:** Control/data channel\n**سناریو:** control TLS برقرار است اما LIST timeout دارد.\n**فرمان مرجع:** `curl --ssl-reqd --quote 'FEAT' --list-only ftp://ftp.example.test/pub/`\n\n**اصل فنی:** TLS روی control channel، data channel/passive ports را تضمین نمی‌کند.\n\n**روش تشخیص:** مرحلهٔ شکست را تعیین؛ PASV/EPSV را بررسی؛ بازهٔ data port و firewall را تطبیق؛ نسخه‌ها را مستند کنید.\n\n**معیار پذیرش:** شکست به control یا data محدود شده است.\n\n**ریسک:** از transcript حاوی username/path حساس پرهیز کنید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** FTPS\n**موضوع:** Control/data channel\n**سناریو:** control TLS برقرار است اما LIST timeout دارد.\n**فرمان مرجع:** `curl --ssl-reqd --quote 'FEAT' --list-only ftp://ftp.example.test/pub/`\n\n**اصل فنی:** TLS روی control channel، data channel/passive ports را تضمین نمی‌کند.\n\n**روش تشخیص:** مرحلهٔ شکست را تعیین؛ PASV/EPSV را بررسی؛ بازهٔ data port و firewall را تطبیق؛ نسخه‌ها را مستند کنید.\n\n**معیار پذیرش:** شکست به control یا data محدود شده است.\n\n**ریسک:** از transcript حاوی username/path حساس پرهیز کنید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "Control/data channel: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:ftps:wave11:03",
+      "title_fa": "FTPS: تأیید upload و checksum",
+      "title_en": "FTPS — تأیید upload و checksum",
+      "chapter_order": 68,
+      "technology_id": "ftps",
+      "fields": {
+        "lessons": "**حوزه:** FTPS\n**موضوع:** تأیید upload و checksum\n**سناریو:** job فایل را می‌فرستد اما باید success کاذب و overwrite کنترل شود.\n**فرمان مرجع:** `curl --ssl-reqd --fail --show-error --upload-file ./report.csv ftp://ftp.example.test/drop/report.csv`\n\n**اصل فنی:** TLS کانال را امن می‌کند نه درستی فایل را؛ exit code و checksum/size لازم‌اند.\n\n**روش تشخیص:** checksum محلی را ثبت؛ مقصد و overwrite policy را تأیید؛ exit code و فایل سمت server را verify کنید.\n\n**معیار پذیرش:** مقصد و صحت محتوا با شاهد مستقلی بررسی شده است.\n\n**ریسک:** در production ابتدا staging/versioned name را ترجیح دهید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** FTPS\n**موضوع:** تأیید upload و checksum\n**سناریو:** job فایل را می‌فرستد اما باید success کاذب و overwrite کنترل شود.\n**فرمان مرجع:** `curl --ssl-reqd --fail --show-error --upload-file ./report.csv ftp://ftp.example.test/drop/report.csv`\n\n**اصل فنی:** TLS کانال را امن می‌کند نه درستی فایل را؛ exit code و checksum/size لازم‌اند.\n\n**روش تشخیص:** checksum محلی را ثبت؛ مقصد و overwrite policy را تأیید؛ exit code و فایل سمت server را verify کنید.\n\n**معیار پذیرش:** مقصد و صحت محتوا با شاهد مستقلی بررسی شده است.\n\n**ریسک:** در production ابتدا staging/versioned name را ترجیح دهید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "تأیید upload و checksum: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:sftp:wave11:01",
+      "title_fa": "SFTP: Batch automation",
+      "title_en": "SFTP — Batch automation",
+      "chapter_order": 68,
+      "technology_id": "sftp",
+      "fields": {
+        "lessons": "**حوزه:** SFTP\n**موضوع:** Batch automation\n**سناریو:** job شبانه در prompt گیر می‌کند یا انتقال را اشتباه موفق گزارش می‌دهد.\n**فرمان مرجع:** `sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nput -p ./report.csv /incoming/report.csv\nbye\nEOF`\n\n**اصل فنی:** BatchMode prompt را حذف می‌کند؛ exit code و فایل مقصد باید بررسی شوند.\n\n**روش تشخیص:** host key را تأیید؛ account محدود بساز؛ batch بدون secret نگه‌دار؛ exit code/checksum را ثبت کن.\n\n**معیار پذیرش:** job noninteractive و انتقال قابل verify است.\n\n**ریسک:** کلید/secret را در log یا repo قرار نده.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** SFTP\n**موضوع:** Batch automation\n**سناریو:** job شبانه در prompt گیر می‌کند یا انتقال را اشتباه موفق گزارش می‌دهد.\n**فرمان مرجع:** `sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nput -p ./report.csv /incoming/report.csv\nbye\nEOF`\n\n**اصل فنی:** BatchMode prompt را حذف می‌کند؛ exit code و فایل مقصد باید بررسی شوند.\n\n**روش تشخیص:** host key را تأیید؛ account محدود بساز؛ batch بدون secret نگه‌دار؛ exit code/checksum را ثبت کن.\n\n**معیار پذیرش:** job noninteractive و انتقال قابل verify است.\n\n**ریسک:** کلید/secret را در log یا repo قرار نده.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "Batch automation: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:sftp:wave11:02",
+      "title_fa": "SFTP: host key vs user key",
+      "title_en": "SFTP — host key vs user key",
+      "chapter_order": 68,
+      "technology_id": "sftp",
+      "fields": {
+        "lessons": "**حوزه:** SFTP\n**موضوع:** host key vs user key\n**سناریو:** پس از rebuild سرور انتقال متوقف می‌شود.\n**فرمان مرجع:** `sftp -oStrictHostKeyChecking=yes -oBatchMode=yes deploy@192.0.2.10`\n\n**اصل فنی:** host key هویت سرور و user key هویت client را اثبات می‌کند.\n\n**روش تشخیص:** fingerprint را out-of-band بگیر؛ known_hosts و authorized_keys را جدا بررسی؛ تغییر تأییدشده را مستند کن.\n\n**معیار پذیرش:** host-key mismatch از شکست احراز هویت تفکیک شده است.\n\n**ریسک:** برای رفع سریع خطا host-key checking را خاموش نکن.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** SFTP\n**موضوع:** host key vs user key\n**سناریو:** پس از rebuild سرور انتقال متوقف می‌شود.\n**فرمان مرجع:** `sftp -oStrictHostKeyChecking=yes -oBatchMode=yes deploy@192.0.2.10`\n\n**اصل فنی:** host key هویت سرور و user key هویت client را اثبات می‌کند.\n\n**روش تشخیص:** fingerprint را out-of-band بگیر؛ known_hosts و authorized_keys را جدا بررسی؛ تغییر تأییدشده را مستند کن.\n\n**معیار پذیرش:** host-key mismatch از شکست احراز هویت تفکیک شده است.\n\n**ریسک:** برای رفع سریع خطا host-key checking را خاموش نکن.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "host key vs user key: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:sftp:wave11:03",
+      "title_fa": "SFTP: resume و checksum",
+      "title_en": "SFTP — resume و checksum",
+      "chapter_order": 68,
+      "technology_id": "sftp",
+      "fields": {
+        "lessons": "**حوزه:** SFTP\n**موضوع:** resume و checksum\n**سناریو:** فایل بزرگ قطع شده و نباید نسخهٔ ناقص مصرف شود.\n**فرمان مرجع:** `sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nreget /outgoing/large.bin ./large.bin\nbye\nEOF`\n\n**اصل فنی:** reget از offset محلی ادامه می‌دهد اما فرض می‌کند منبع ثابت مانده است.\n\n**روش تشخیص:** source checksum را ثبت؛ فایل staging؛ reget؛ size/checksum را مقایسه؛ سپس atomic publish.\n\n**معیار پذیرش:** فایل کامل و یکپارچه منتشر شده است.\n\n**ریسک:** فایل staging قبل از verify مصرف نشود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** SFTP\n**موضوع:** resume و checksum\n**سناریو:** فایل بزرگ قطع شده و نباید نسخهٔ ناقص مصرف شود.\n**فرمان مرجع:** `sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nreget /outgoing/large.bin ./large.bin\nbye\nEOF`\n\n**اصل فنی:** reget از offset محلی ادامه می‌دهد اما فرض می‌کند منبع ثابت مانده است.\n\n**روش تشخیص:** source checksum را ثبت؛ فایل staging؛ reget؛ size/checksum را مقایسه؛ سپس atomic publish.\n\n**معیار پذیرش:** فایل کامل و یکپارچه منتشر شده است.\n\n**ریسک:** فایل staging قبل از verify مصرف نشود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "resume و checksum: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:zabbix:wave11:01",
+      "title_fa": "Zabbix: پاسخ agent و item mode",
+      "title_en": "Zabbix — پاسخ agent و item mode",
+      "chapter_order": 68,
+      "technology_id": "zabbix",
+      "fields": {
+        "lessons": "**حوزه:** Zabbix\n**موضوع:** پاسخ agent و item mode\n**سناریو:** host unavailable است اما agent اجرا می‌شود.\n**فرمان مرجع:** `zabbix_get -s 192.0.2.10 -p 10050 -k agent.ping`\n\n**اصل فنی:** direct probe مسیر active/proxy را ثابت نمی‌کند؛ TLS/PSK، AllowKey، item type و log مسیر واقعی را بررسی کنید.\n\n**روش تشخیص:** از server/proxy واقعی probe کنید؛ TLS و mode را تطبیق؛ آخرین timestamp و log را بررسی کنید.\n\n**معیار پذیرش:** علت به reachability، TLS، policy یا proxy محدود شده است.\n\n**ریسک:** PSK در ticket/log عمومی ذخیره نشود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** Zabbix\n**موضوع:** پاسخ agent و item mode\n**سناریو:** host unavailable است اما agent اجرا می‌شود.\n**فرمان مرجع:** `zabbix_get -s 192.0.2.10 -p 10050 -k agent.ping`\n\n**اصل فنی:** direct probe مسیر active/proxy را ثابت نمی‌کند؛ TLS/PSK، AllowKey، item type و log مسیر واقعی را بررسی کنید.\n\n**روش تشخیص:** از server/proxy واقعی probe کنید؛ TLS و mode را تطبیق؛ آخرین timestamp و log را بررسی کنید.\n\n**معیار پذیرش:** علت به reachability، TLS، policy یا proxy محدود شده است.\n\n**ریسک:** PSK در ticket/log عمومی ذخیره نشود.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "پاسخ agent و item mode: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:powershell:wave11:01",
+      "title_fa": "PowerShell: listener و process owner",
+      "title_en": "PowerShell — listener و process owner",
+      "chapter_order": 68,
+      "technology_id": "powershell",
+      "fields": {
+        "lessons": "**حوزه:** PowerShell\n**موضوع:** listener و process owner\n**سناریو:** پورت ناشناخته روی Windows Server listen می‌کند.\n**فرمان مرجع:** `Get-NetTCPConnection -State Listen | Sort-Object LocalPort`\n\n**اصل فنی:** پورت را با PID/process/service و firewall binding تطبیق دهید؛ listener به‌تنهایی اثبات آسیب‌پذیری نیست.\n\n**روش تشخیص:** LocalAddress/Port را بگیرید؛ PID را به process/service وصل؛ مالک و نیاز business را تأیید کنید.\n\n**معیار پذیرش:** پورت و سرویس مالک آن مشخص شده است.\n\n**ریسک:** process را بدون بررسی مالک terminate نکنید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** PowerShell\n**موضوع:** listener و process owner\n**سناریو:** پورت ناشناخته روی Windows Server listen می‌کند.\n**فرمان مرجع:** `Get-NetTCPConnection -State Listen | Sort-Object LocalPort`\n\n**اصل فنی:** پورت را با PID/process/service و firewall binding تطبیق دهید؛ listener به‌تنهایی اثبات آسیب‌پذیری نیست.\n\n**روش تشخیص:** LocalAddress/Port را بگیرید؛ PID را به process/service وصل؛ مالک و نیاز business را تأیید کنید.\n\n**معیار پذیرش:** پورت و سرویس مالک آن مشخص شده است.\n\n**ریسک:** process را بدون بررسی مالک terminate نکنید.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "listener و process owner: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:windows_server:wave11:01",
+      "title_fa": "Windows Server / Active Directory: DNS و discovery AD",
+      "title_en": "Windows Server / Active Directory — DNS و discovery AD",
+      "chapter_order": 68,
+      "technology_id": "windows_server",
+      "fields": {
+        "lessons": "**حوزه:** Windows Server / Active Directory\n**موضوع:** DNS و discovery AD\n**سناریو:** domain login در بعضی subnetها تاخیر دارد.\n**فرمان مرجع:** `dcdiag /test:dns /v`\n\n**اصل فنی:** AD به SRV، dynamic registration و DNS درست وابسته است؛ A record کافی نیست.\n\n**روش تشخیص:** resolver را ثبت؛ SRVهای LDAP/Kerberos را query؛ replication را تطبیق؛ از client آزمایشی تأیید کن.\n\n**معیار پذیرش:** رکورد/resolver یا replication مسئله مشخص است.\n\n**ریسک:** رکورد را بدون تأیید مالک/عمر حذف نکن.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** Windows Server / Active Directory\n**موضوع:** DNS و discovery AD\n**سناریو:** domain login در بعضی subnetها تاخیر دارد.\n**فرمان مرجع:** `dcdiag /test:dns /v`\n\n**اصل فنی:** AD به SRV، dynamic registration و DNS درست وابسته است؛ A record کافی نیست.\n\n**روش تشخیص:** resolver را ثبت؛ SRVهای LDAP/Kerberos را query؛ replication را تطبیق؛ از client آزمایشی تأیید کن.\n\n**معیار پذیرش:** رکورد/resolver یا replication مسئله مشخص است.\n\n**ریسک:** رکورد را بدون تأیید مالک/عمر حذف نکن.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "DNS و discovery AD: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:cisco:wave11:01",
+      "title_fa": "Cisco IOS / IOS-XE: OSPF adjacency و RIB",
+      "title_en": "Cisco IOS / IOS-XE — OSPF adjacency و RIB",
+      "chapter_order": 68,
+      "technology_id": "cisco",
+      "fields": {
+        "lessons": "**حوزه:** Cisco IOS / IOS-XE\n**موضوع:** OSPF adjacency و RIB\n**سناریو:** neighbor FULL است اما route مورد انتظار نیست.\n**فرمان مرجع:** `show ip ospf neighbor detail`\n\n**اصل فنی:** adjacency، LSA، policy و RIB selection مراحل جدا هستند.\n\n**روش تشخیص:** neighbor/area را ثبت؛ route و LSDB را بررسی؛ prefix filters/redistribution را تطبیق بده.\n\n**معیار پذیرش:** مرحلهٔ فقدان prefix مشخص شده است.\n\n**ریسک:** route policy ممکن است reachability گسترده را عوض کند؛ rollback لازم است.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** Cisco IOS / IOS-XE\n**موضوع:** OSPF adjacency و RIB\n**سناریو:** neighbor FULL است اما route مورد انتظار نیست.\n**فرمان مرجع:** `show ip ospf neighbor detail`\n\n**اصل فنی:** adjacency، LSA، policy و RIB selection مراحل جدا هستند.\n\n**روش تشخیص:** neighbor/area را ثبت؛ route و LSDB را بررسی؛ prefix filters/redistribution را تطبیق بده.\n\n**معیار پذیرش:** مرحلهٔ فقدان prefix مشخص شده است.\n\n**ریسک:** route policy ممکن است reachability گسترده را عوض کند؛ rollback لازم است.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "OSPF adjacency و RIB: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:mikrotik:wave11:01",
+      "title_fa": "MikroTik RouterOS: OSPF neighbor flapping",
+      "title_en": "MikroTik RouterOS — OSPF neighbor flapping",
+      "chapter_order": 68,
+      "technology_id": "mikrotik",
+      "fields": {
+        "lessons": "**حوزه:** MikroTik RouterOS\n**موضوع:** OSPF neighbor flapping\n**سناریو:** neighbor از FULL خارج می‌شود و subnet ناپایدار است.\n**فرمان مرجع:** `/routing/ospf/neighbor/print detail`\n\n**اصل فنی:** state/uptime را با hello/dead، MTU، auth و وضعیت interface تطبیق دهید.\n\n**روش تشخیص:** خروجی و log timestamp بگیر؛ دو سمت را مقایسه؛ قبل از تغییر backup تهیه کن.\n\n**معیار پذیرش:** عامل flapping به timer/MTU/auth/link محدود شده است.\n\n**ریسک:** تغییر template می‌تواند چند adjacency را قطع کند.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** MikroTik RouterOS\n**موضوع:** OSPF neighbor flapping\n**سناریو:** neighbor از FULL خارج می‌شود و subnet ناپایدار است.\n**فرمان مرجع:** `/routing/ospf/neighbor/print detail`\n\n**اصل فنی:** state/uptime را با hello/dead، MTU، auth و وضعیت interface تطبیق دهید.\n\n**روش تشخیص:** خروجی و log timestamp بگیر؛ دو سمت را مقایسه؛ قبل از تغییر backup تهیه کن.\n\n**معیار پذیرش:** عامل flapping به timer/MTU/auth/link محدود شده است.\n\n**ریسک:** تغییر template می‌تواند چند adjacency را قطع کند.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "OSPF neighbor flapping: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:aruba:wave11:01",
+      "title_fa": "Aruba AOS-CX: VLAN membership",
+      "title_en": "Aruba AOS-CX — VLAN membership",
+      "chapter_order": 68,
+      "technology_id": "aruba",
+      "fields": {
+        "lessons": "**حوزه:** Aruba AOS-CX\n**موضوع:** VLAN membership\n**سناریو:** پورت up است اما client به gateway نمی‌رسد.\n**فرمان مرجع:** `show vlan`\n\n**اصل فنی:** oper up فقط لایهٔ فیزیکی را تأیید می‌کند؛ access VLAN و trunk tagging مهم‌اند.\n\n**روش تشخیص:** VLAN را تأیید؛ پورت/uplink را بخوان؛ MAC و ARP را دنبال؛ تغییر را با rollback انجام بده.\n\n**معیار پذیرش:** محل ناهماهنگی access/uplink مشخص شده است.\n\n**ریسک:** تغییر VLAN uplink/management می‌تواند دسترسی را قطع کند.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** Aruba AOS-CX\n**موضوع:** VLAN membership\n**سناریو:** پورت up است اما client به gateway نمی‌رسد.\n**فرمان مرجع:** `show vlan`\n\n**اصل فنی:** oper up فقط لایهٔ فیزیکی را تأیید می‌کند؛ access VLAN و trunk tagging مهم‌اند.\n\n**روش تشخیص:** VLAN را تأیید؛ پورت/uplink را بخوان؛ MAC و ARP را دنبال؛ تغییر را با rollback انجام بده.\n\n**معیار پذیرش:** محل ناهماهنگی access/uplink مشخص شده است.\n\n**ریسک:** تغییر VLAN uplink/management می‌تواند دسترسی را قطع کند.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "VLAN membership: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    },
+    {
+      "uid": "lesson:ch68:terraform:wave11:01",
+      "title_fa": "Terraform: validate در برابر plan",
+      "title_en": "Terraform — validate در برابر plan",
+      "chapter_order": 68,
+      "technology_id": "terraform",
+      "fields": {
+        "lessons": "**حوزه:** Terraform\n**موضوع:** validate در برابر plan\n**سناریو:** config از validate می‌گذرد اما احتمال destroy ناخواسته وجود دارد.\n**فرمان مرجع:** `terraform validate`\n\n**اصل فنی:** validate ساختار را بررسی می‌کند؛ plan اثر تغییر روی resource/state را نشان می‌دهد.\n\n**روش تشخیص:** workspace/backend را تأیید؛ validate و plan بگیر؛ create/update/destroy/replace را review کن.\n\n**معیار پذیرش:** هیچ destroy ناخواسته بدون review باقی نمانده است.\n\n**ریسک:** state/plan ممکن است secret/topology افشا کند؛ apply فقط پس از review.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند."
+      },
+      "full_content": "**حوزه:** Terraform\n**موضوع:** validate در برابر plan\n**سناریو:** config از validate می‌گذرد اما احتمال destroy ناخواسته وجود دارد.\n**فرمان مرجع:** `terraform validate`\n\n**اصل فنی:** validate ساختار را بررسی می‌کند؛ plan اثر تغییر روی resource/state را نشان می‌دهد.\n\n**روش تشخیص:** workspace/backend را تأیید؛ validate و plan بگیر؛ create/update/destroy/replace را review کن.\n\n**معیار پذیرش:** هیچ destroy ناخواسته بدون review باقی نمانده است.\n\n**ریسک:** state/plan ممکن است secret/topology افشا کند؛ apply فقط پس از review.\n\nشواهد مورد نیاز: نسخه، timestamp، context اجرا، خروجی redacted و دست‌کم یک شاهد مستقل. یک probe موفق سلامت همهٔ لایه‌ها را ثابت نمی‌کند.",
+      "summary": "validate در برابر plan: اصل فنی، شواهد و معیار پذیرش",
+      "level": "L2"
+    }
+  ]
+}

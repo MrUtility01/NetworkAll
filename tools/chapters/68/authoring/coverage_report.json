@@ -678,7 +678,7 @@
     "git",
     "backup_recovery"
   ],
-  "audit_status": "stale_after_wave2_and_wave7",
+  "audit_status": "stale_after_wave11_pending_rerun",
   "last_audit_note_fa": "این گزارش پیش از افزودن موج دوم محتوا و موج هفتم مراجع دستوری تولید شده است. شمارش نهایی باید با اجرای audit_coverage.py پس از ادغام تغییرات انجام شود.",
   "latest_enrichment_wave": {
     "date": "2026-10-18",
@@ -712,9 +712,9 @@
     "build_verified": false
   },
   "report_is_stale": true,
-  "report_stale_reason": "This snapshot predates command waves 3–8 and must not be used as current coverage. Regenerate with python3 tools/chapters/68/authoring/audit_coverage.py after the latest source changes.",
+  "report_stale_reason": "Historical snapshot: wave 11 adds commands and standalone learning records after the recorded audit run. Re-run tools/chapters/68/authoring/audit_coverage.py in CI and use its generated output before citing current coverage.",
   "latest_command_wave_included": 2,
-  "latest_command_wave_present_in_source": 8,
+  "latest_command_wave_present_in_source": 11,
   "report_generated_at": "2026-10-18",
   "audit_execution": {
     "status": "success",
@@ -723,5 +723,17 @@
     "audited_commit": "611de3fa0494463e0cd8177fd860f4af3c152ce3",
     "artifact": "NetworkAll-Windows-Full-Package",
     "note_fa": "شمارش‌ها از coverage_report.json تولیدشده در مرحلهٔ Audit Chapter 68 technology coverage در CI استخراج شده‌اند. فایل گزارش خلاصه شده است؛ اجرای بعدی audit_coverage.py گزارش تفصیلی source_files را دوباره تولید می‌کند."
+  },
+  "pending_reaudit": {
+    "command": "python tools/chapters/68/authoring/audit_coverage.py",
+    "strict_command": "python tools/chapters/68/authoring/audit_coverage.py --strict",
+    "command_file": "tools/chapters/68/commands/sources/encyclopedia/commands_multi_technology_wave11.json",
+    "command_source_records": 53,
+    "new_learning_units": 28,
+    "new_examples": 28,
+    "new_scenarios": 28,
+    "new_questions": 28,
+    "new_answer_keys": 28,
+    "note_fa": "شمارش قبلی تغییر داده نشده؛ این فایل تا اجرای ممیز واقعی گزارش جاری نیست."
   }
 }

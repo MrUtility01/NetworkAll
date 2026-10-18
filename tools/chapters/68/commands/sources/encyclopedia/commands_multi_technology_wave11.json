@@ -1,0 +1,1070 @@
+{
+  "schema_version": 1,
+  "chapter_order": 68,
+  "category": "commands",
+  "source_of_truth": true,
+  "source_status": "review_required",
+  "wave": 11,
+  "items": [
+    {
+      "uid": "cmd:ch68:voip:wave11:001",
+      "technology_id": "voip",
+      "vendor": "VoIP / SIP / PBX",
+      "platform": "Asterisk CLI",
+      "category": "service",
+      "subcategory": "Registration trunk",
+      "level": "L2",
+      "command": "asterisk -rx 'pjsip show registrations'",
+      "title_fa": "VoIP — وضعیت SIP Registration",
+      "when_to_use_fa": "وضعیت Registered/Rejected و SIP response را با زمان و Call-ID از provider تطبیق دهید؛ registration، تماس داخلی و RTP شاخص‌های جدا هستند.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "voip",
+        "wave11",
+        "service",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:voip:wave11:002",
+      "technology_id": "voip",
+      "vendor": "VoIP / SIP / PBX",
+      "platform": "Asterisk CLI",
+      "category": "routing",
+      "subcategory": "Dialplan داخلی",
+      "level": "L2",
+      "command": "asterisk -rx 'dialplan show from-internal'",
+      "title_fa": "VoIP — بررسی Dialplan",
+      "when_to_use_fa": "context مؤثر، includeها و pattern شماره‌گیری را پیش از هر تغییر بررسی کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "voip",
+        "wave11",
+        "routing",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:voip:wave11:003",
+      "technology_id": "voip",
+      "vendor": "VoIP / SIP / PBX",
+      "platform": "Asterisk CLI",
+      "category": "diagnostics",
+      "subcategory": "آمار کانال‌های PJSIP",
+      "level": "L2",
+      "command": "asterisk -rx 'pjsip show channelstats'",
+      "title_fa": "VoIP — آمار کانال‌ها",
+      "when_to_use_fa": "آمار رسانه را با SDP و capture محدود RTP تطبیق دهید؛ از یک شاخص منفرد نتیجه‌گیری نکنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "voip",
+        "wave11",
+        "diagnostics",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:voip:wave11:004",
+      "technology_id": "voip",
+      "vendor": "VoIP / SIP / PBX",
+      "platform": "Asterisk CLI",
+      "category": "service",
+      "subcategory": "ماژول PJSIP",
+      "level": "L2",
+      "command": "asterisk -rx 'module show like res_pjsip'",
+      "title_fa": "VoIP — وضعیت ماژول",
+      "when_to_use_fa": "برای بررسی ماژول‌های بارگذاری‌شده پس از restart/upgrade.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "voip",
+        "wave11",
+        "service",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:voip:wave11:005",
+      "technology_id": "voip",
+      "vendor": "VoIP / SIP / PBX",
+      "platform": "Asterisk CLI",
+      "category": "diagnostics",
+      "subcategory": "تنظیمات runtime",
+      "level": "L2",
+      "command": "asterisk -rx 'core show settings'",
+      "title_fa": "VoIP — تنظیمات پایه",
+      "when_to_use_fa": "نسخه و مسیر فایل‌ها را برای incident ثبت کنید و خروجی را پیش از اشتراک‌گذاری redacted کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "voip",
+        "wave11",
+        "diagnostics",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:voip:wave11:006",
+      "technology_id": "voip",
+      "vendor": "VoIP / SIP / PBX",
+      "platform": "Asterisk CLI",
+      "category": "diagnostics",
+      "subcategory": "ماتریس تبدیل codec",
+      "level": "L2",
+      "command": "asterisk -rx 'core show translation'",
+      "title_fa": "VoIP — مسیر تبدیل codec",
+      "when_to_use_fa": "نیاز به transcoding را با codecهای مذاکره‌شده و مصرف CPU تطبیق دهید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "voip",
+        "wave11",
+        "diagnostics",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:vmware_esxi:wave11:007",
+      "technology_id": "vmware_esxi",
+      "vendor": "VMware ESXi / vSphere",
+      "platform": "ESXi Shell / ESXCLI",
+      "category": "inventory",
+      "subcategory": "نسخه میزبان",
+      "level": "L2",
+      "command": "esxcli system version get",
+      "title_fa": "VMware — نسخه ESXi",
+      "when_to_use_fa": "نسخه/build را با نسخه vCenter و Compatibility Guide تطبیق دهید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "vmware_esxi",
+        "wave11",
+        "inventory",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:vmware_esxi:wave11:008",
+      "technology_id": "vmware_esxi",
+      "vendor": "VMware ESXi / vSphere",
+      "platform": "ESXi Shell / ESXCLI",
+      "category": "network",
+      "subcategory": "جدول route میزبان",
+      "level": "L2",
+      "command": "esxcli network ip route ipv4 list",
+      "title_fa": "VMware — route IPv4",
+      "when_to_use_fa": "مسیر Management VMkernel را از مسیر vMotion/storage جدا بررسی کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "vmware_esxi",
+        "wave11",
+        "network",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:vmware_esxi:wave11:009",
+      "technology_id": "vmware_esxi",
+      "vendor": "VMware ESXi / vSphere",
+      "platform": "ESXi Shell / ESXCLI",
+      "category": "storage",
+      "subcategory": "datastore filesystem",
+      "level": "L2",
+      "command": "esxcli storage filesystem list",
+      "title_fa": "VMware — ظرفیت datastore",
+      "when_to_use_fa": "فضای آزاد، provisioned و رشد snapshot متفاوت‌اند؛ mount point را با مسیر VMX تطبیق دهید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "vmware_esxi",
+        "wave11",
+        "storage",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:vmware_esxi:wave11:010",
+      "technology_id": "vmware_esxi",
+      "vendor": "VMware ESXi / vSphere",
+      "platform": "ESXi Shell / ESXCLI",
+      "category": "storage",
+      "subcategory": "VMFS extent mapping",
+      "level": "L2",
+      "command": "esxcli storage vmfs extent list",
+      "title_fa": "VMware — VMFS extent",
+      "when_to_use_fa": "شناسهٔ device/extent را با LUN و pathهای SAN تطبیق دهید؛ detach بدون تأیید هویت پرریسک است.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "vmware_esxi",
+        "wave11",
+        "storage",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:vmware_esxi:wave11:011",
+      "technology_id": "vmware_esxi",
+      "vendor": "VMware ESXi / vSphere",
+      "platform": "ESXi Shell / vim-cmd",
+      "category": "inventory",
+      "subcategory": "فهرست VM و VMID",
+      "level": "L2",
+      "command": "vim-cmd vmsvc/getallvms",
+      "title_fa": "VMware — فهرست VMها",
+      "when_to_use_fa": "نام، VMID و مسیر VMX را کنار هم ثبت کنید؛ نام مشابه به‌تنهایی کافی نیست.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "vmware_esxi",
+        "wave11",
+        "inventory",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:vmware_esxi:wave11:012",
+      "technology_id": "vmware_esxi",
+      "vendor": "VMware ESXi / vSphere",
+      "platform": "ESXi Shell / vim-cmd",
+      "category": "power",
+      "subcategory": "وضعیت برق VMID 123",
+      "level": "L2",
+      "command": "vim-cmd vmsvc/power.getstate 123",
+      "title_fa": "VMware — power state",
+      "when_to_use_fa": "پس از تأیید VMID، وضعیت برق را بخوانید؛ این فرمان مشاهده‌ای است.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "vmware_esxi",
+        "wave11",
+        "power",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ssh:wave11:013",
+      "technology_id": "ssh",
+      "vendor": "SSH / OpenSSH",
+      "platform": "OpenSSH client",
+      "category": "configuration",
+      "subcategory": "config مؤثر client",
+      "level": "L2",
+      "command": "ssh -G -o ConnectTimeout=5 admin@192.0.2.10",
+      "title_fa": "SSH — تنظیمات مؤثر",
+      "when_to_use_fa": "اثر فایل config و گزینه‌های CLI را بدون بازکردن نشست ببینید؛ خروجی ممکن است اطلاعات محیط را افشا کند.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ssh",
+        "wave11",
+        "configuration",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ssh:wave11:014",
+      "technology_id": "ssh",
+      "vendor": "SSH / OpenSSH",
+      "platform": "OpenSSH client",
+      "category": "authentication",
+      "subcategory": "آزمون کلید غیرتعاملی",
+      "level": "L2",
+      "command": "ssh -o IdentitiesOnly=yes -o BatchMode=yes -o PreferredAuthentications=publickey admin@192.0.2.10 true",
+      "title_fa": "SSH — آزمون public key",
+      "when_to_use_fa": "شکست را با HOME، agent، مجوز کلید، authorized_keys و لاگ سرور تفکیک کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ssh",
+        "wave11",
+        "authentication",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ssh:wave11:015",
+      "technology_id": "ssh",
+      "vendor": "SSH / OpenSSH",
+      "platform": "OpenSSH tools",
+      "category": "security",
+      "subcategory": "fingerprint known_hosts",
+      "level": "L2",
+      "command": "ssh-keygen -lf ~/.ssh/known_hosts",
+      "title_fa": "SSH — fingerprint",
+      "when_to_use_fa": "در host-key mismatch، fingerprint را از کانال مستقل تأیید کنید؛ هشدار را کورکورانه دور نزنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ssh",
+        "wave11",
+        "security",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ssh:wave11:016",
+      "technology_id": "ssh",
+      "vendor": "SSH / OpenSSH",
+      "platform": "OpenSSH server",
+      "category": "configuration",
+      "subcategory": "sshd مؤثر برای user/address",
+      "level": "L2",
+      "command": "sudo sshd -T -C user=admin,host=server.example,addr=192.0.2.10",
+      "title_fa": "SSH — بررسی Match block",
+      "when_to_use_fa": "برای context مشخص تنظیم مؤثر را بسنجید؛ پیش از reload، syntax و نشست جایگزین مدیریت لازم است.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ssh",
+        "wave11",
+        "configuration",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ssh:wave11:017",
+      "technology_id": "ssh",
+      "vendor": "SSH / OpenSSH",
+      "platform": "systemd journal",
+      "category": "logging",
+      "subcategory": "لاگ sshd در ۱۵ دقیقه اخیر",
+      "level": "L2",
+      "command": "sudo journalctl -u sshd --since '15 minutes ago' --no-pager",
+      "title_fa": "SSH — مرور لاگ",
+      "when_to_use_fa": "timestamp را با تلاش client هم‌بسته کنید؛ نام unit ممکن است ssh باشد.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ssh",
+        "wave11",
+        "logging",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ssh:wave11:018",
+      "technology_id": "ssh",
+      "vendor": "SSH / OpenSSH",
+      "platform": "OpenSSH client",
+      "category": "tunneling",
+      "subcategory": "تونل محلی loopback",
+      "level": "L2",
+      "command": "ssh -N -L 127.0.0.1:15432:db.internal:5432 admin@192.0.2.10",
+      "title_fa": "SSH — تونل امن محلی",
+      "when_to_use_fa": "تونل فقط برای مقصد مجاز؛ bind روی loopback جلوی دسترسی ناخواستهٔ LAN را می‌گیرد.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ssh",
+        "wave11",
+        "tunneling",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:telnet:wave11:019",
+      "technology_id": "telnet",
+      "vendor": "Telnet / TCP diagnostics",
+      "platform": "PowerShell",
+      "category": "connectivity",
+      "subcategory": "آزمون TCP در Windows",
+      "level": "L2",
+      "command": "Test-NetConnection 192.0.2.10 -Port 443 -InformationLevel Detailed",
+      "title_fa": "TCP diagnostics — اتصال Windows",
+      "when_to_use_fa": "اتصال TCP سلامت TLS/HTTP را اثبات نمی‌کند؛ name resolution و source address را هم ثبت کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "telnet",
+        "wave11",
+        "connectivity",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:telnet:wave11:020",
+      "technology_id": "telnet",
+      "vendor": "Telnet / TCP diagnostics",
+      "platform": "OpenSSL",
+      "category": "tls",
+      "subcategory": "TLS handshake با SNI",
+      "level": "L2",
+      "command": "openssl s_client -connect example.com:443 -servername example.com -brief </dev/null",
+      "title_fa": "TCP/TLS — handshake",
+      "when_to_use_fa": "TCP، SNI، certificate chain و زمان سیستم را تفکیک کنید؛ Telnet برای credentials مناسب نیست.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "telnet",
+        "wave11",
+        "tls",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:telnet:wave11:021",
+      "technology_id": "telnet",
+      "vendor": "Telnet / TCP diagnostics",
+      "platform": "curl",
+      "category": "http",
+      "subcategory": "تست backend با hostname ثابت",
+      "level": "L2",
+      "command": "curl --resolve example.com:443:192.0.2.10 -sS -o /dev/null -w 'code=%{http_code} connect=%{time_connect} total=%{time_total}\\n' https://example.com/",
+      "title_fa": "TCP diagnostics — endpoint مشخص",
+      "when_to_use_fa": "IP را فقط برای همان درخواست pin کنید و Host/SNI را نگه دارید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "telnet",
+        "wave11",
+        "http",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:telnet:wave11:022",
+      "technology_id": "telnet",
+      "vendor": "Telnet / TCP diagnostics",
+      "platform": "traceroute",
+      "category": "routing",
+      "subcategory": "ردیابی مسیر TCP",
+      "level": "L2",
+      "command": "traceroute -T -p 443 192.0.2.10",
+      "title_fa": "TCP diagnostics — trace",
+      "when_to_use_fa": "عدم پاسخ یک hop الزاماً به معنی قطع forwarding نیست.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "telnet",
+        "wave11",
+        "routing",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:telnet:wave11:023",
+      "technology_id": "telnet",
+      "vendor": "Telnet / TCP diagnostics",
+      "platform": "mtr",
+      "category": "routing",
+      "subcategory": "نمونه‌برداری loss مسیر TCP",
+      "level": "L2",
+      "command": "mtr -T -P 443 -r -c 10 192.0.2.10",
+      "title_fa": "TCP diagnostics — loss/latency",
+      "when_to_use_fa": "loss میانی را وقتی واقعی بدانید که در مقصد یا hopهای بعدی هم ادامه یابد.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "telnet",
+        "wave11",
+        "routing",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:telnet:wave11:024",
+      "technology_id": "telnet",
+      "vendor": "Telnet / TCP diagnostics",
+      "platform": "netcat",
+      "category": "connectivity",
+      "subcategory": "تست پورت SSH",
+      "level": "L2",
+      "command": "nc -vz -w 3 192.0.2.10 22",
+      "title_fa": "TCP diagnostics — port probe",
+      "when_to_use_fa": "refused، timeout و success را جدا ثبت کنید و فقط پورت مجاز را probe کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "telnet",
+        "wave11",
+        "connectivity",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ftp:wave11:025",
+      "technology_id": "ftp",
+      "vendor": "FTP (plain FTP)",
+      "platform": "curl",
+      "category": "transfer",
+      "subcategory": "listing با single-cwd",
+      "level": "L2",
+      "command": "curl --ftp-method singlecwd --list-only ftp://ftp.example.test/pub/",
+      "title_fa": "FTP — listing",
+      "when_to_use_fa": "برای سرورهای حساس به CWD؛ FTP ساده داده/credentials را رمزنگاری نمی‌کند.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ftp",
+        "wave11",
+        "transfer",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ftp:wave11:026",
+      "technology_id": "ftp",
+      "vendor": "FTP (plain FTP)",
+      "platform": "wget",
+      "category": "transfer",
+      "subcategory": "وجود فایل بدون download",
+      "level": "L2",
+      "command": "wget --spider --timeout=5 ftp://ftp.example.test/pub/release.tar.gz",
+      "title_fa": "FTP — بررسی منبع",
+      "when_to_use_fa": "نتیجه را با permission و log سرور تطبیق دهید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ftp",
+        "wave11",
+        "transfer",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ftp:wave11:027",
+      "technology_id": "ftp",
+      "vendor": "FTP (plain FTP)",
+      "platform": "lftp",
+      "category": "transfer",
+      "subcategory": "listing passive mode",
+      "level": "L2",
+      "command": "lftp -e 'set ftp:passive-mode true; cls -l /incoming; bye' ftp://ftp.example.test",
+      "title_fa": "FTP — data channel",
+      "when_to_use_fa": "اگر login موفق و LIST ناموفق است، passive range و NAT/firewall را بررسی کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ftp",
+        "wave11",
+        "transfer",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ftp:wave11:028",
+      "technology_id": "ftp",
+      "vendor": "FTP (plain FTP)",
+      "platform": "curl",
+      "category": "transfer",
+      "subcategory": "دریافت 1KiB برای آزمون range",
+      "level": "L2",
+      "command": "curl --range 0-1023 --output /tmp/sample.part ftp://ftp.example.test/pub/sample.bin",
+      "title_fa": "FTP — range probe",
+      "when_to_use_fa": "فایل جزئی artifact تشخیصی است؛ بدون انتقال کامل و checksum منتشر نشود.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ftp",
+        "wave11",
+        "transfer",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ftp:wave11:029",
+      "technology_id": "ftp",
+      "vendor": "FTP (plain FTP)",
+      "platform": "curl",
+      "category": "diagnostics",
+      "subcategory": "تست active FTP",
+      "level": "L2",
+      "command": "curl --ftp-port - --list-only ftp://ftp.example.test/pub/",
+      "title_fa": "FTP — active/passive",
+      "when_to_use_fa": "active mode اتصال data برگشتی لازم دارد و ممکن است با NAT سازگار نباشد.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ftp",
+        "wave11",
+        "diagnostics",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ftps:wave11:030",
+      "technology_id": "ftps",
+      "vendor": "FTPS (FTP over TLS)",
+      "platform": "curl",
+      "category": "security",
+      "subcategory": "اجبار TLS 1.2",
+      "level": "L2",
+      "command": "curl --ssl-reqd --tlsv1.2 --list-only ftp://ftp.example.test/pub/",
+      "title_fa": "FTPS — الزام TLS",
+      "when_to_use_fa": "fallback به FTP ساده را نپذیرید و hostname/chain را اعتبارسنجی کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ftps",
+        "wave11",
+        "security",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ftps:wave11:031",
+      "technology_id": "ftps",
+      "vendor": "FTPS (FTP over TLS)",
+      "platform": "curl",
+      "category": "transfer",
+      "subcategory": "دانلود با CA مشخص",
+      "level": "L2",
+      "command": "curl --ssl-reqd --cacert /etc/ssl/certs/ca-certificates.crt --fail --show-error --output /tmp/manual.pdf ftp://ftp.example.test/pub/manual.pdf",
+      "title_fa": "FTPS — trust store",
+      "when_to_use_fa": "مسیر CA وابسته به OS است؛ `--insecure` جایگزین trust صحیح نیست.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ftps",
+        "wave11",
+        "transfer",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ftps:wave11:032",
+      "technology_id": "ftps",
+      "vendor": "FTPS (FTP over TLS)",
+      "platform": "curl",
+      "category": "transfer",
+      "subcategory": "آپلود فایل گزارش",
+      "level": "L2",
+      "command": "curl --ssl-reqd --fail --show-error --upload-file ./report.csv ftp://ftp.example.test/drop/report.csv",
+      "title_fa": "FTPS — upload امن",
+      "when_to_use_fa": "مقصد و overwrite policy را تأیید و exit code/checksum را ثبت کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ftps",
+        "wave11",
+        "transfer",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ftps:wave11:033",
+      "technology_id": "ftps",
+      "vendor": "FTPS (FTP over TLS)",
+      "platform": "curl",
+      "category": "diagnostics",
+      "subcategory": "فرمان FEAT در نشست TLS",
+      "level": "L2",
+      "command": "curl --ssl-reqd --quote 'FEAT' --list-only ftp://ftp.example.test/pub/",
+      "title_fa": "FTPS — capabilities",
+      "when_to_use_fa": "FEAT قابلیت‌های اعلامی را نشان می‌دهد، نه لزوماً مجوز اجرای همهٔ قابلیت‌ها.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ftps",
+        "wave11",
+        "diagnostics",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:ftps:wave11:034",
+      "technology_id": "ftps",
+      "vendor": "FTPS (FTP over TLS)",
+      "platform": "curl",
+      "category": "security",
+      "subcategory": "آزمون CA فقط در لاب",
+      "level": "L2",
+      "command": "curl --ssl-reqd --cacert ./lab-test-ca.pem --connect-timeout 5 --list-only ftp://ftp.example.test/pub/",
+      "title_fa": "FTPS — trust anchor آزمایشی",
+      "when_to_use_fa": "فقط در لاب کنترل‌شده اجرا شود؛ validation در production غیرفعال نشود.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "ftps",
+        "wave11",
+        "security",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:sftp:wave11:035",
+      "technology_id": "sftp",
+      "vendor": "SFTP (SSH File Transfer Protocol)",
+      "platform": "OpenSSH sftp",
+      "category": "transfer",
+      "subcategory": "آپلود batch با preserve",
+      "level": "L2",
+      "command": "sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nput -p ./report.csv /incoming/report.csv\nbye\nEOF",
+      "title_fa": "SFTP — upload batch",
+      "when_to_use_fa": "host key را از قبل تأیید کنید و exit code و مقصد را بررسی کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "sftp",
+        "wave11",
+        "transfer",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:sftp:wave11:036",
+      "technology_id": "sftp",
+      "vendor": "SFTP (SSH File Transfer Protocol)",
+      "platform": "OpenSSH sftp",
+      "category": "transfer",
+      "subcategory": "دانلود batch فایل وضعیت",
+      "level": "L2",
+      "command": "sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nget /outgoing/status.json ./status.json\nbye\nEOF",
+      "title_fa": "SFTP — download batch",
+      "when_to_use_fa": "پس از دریافت size/checksum را با مرجع معتبر تطبیق دهید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "sftp",
+        "wave11",
+        "transfer",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:sftp:wave11:037",
+      "technology_id": "sftp",
+      "vendor": "SFTP (SSH File Transfer Protocol)",
+      "platform": "OpenSSH sftp",
+      "category": "transfer",
+      "subcategory": "ادامهٔ فایل بزرگ",
+      "level": "L2",
+      "command": "sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nreget /outgoing/large.bin ./large.bin\nbye\nEOF",
+      "title_fa": "SFTP — reget",
+      "when_to_use_fa": "reget فرض می‌کند منبع ثابت است؛ فقط پس از checksum فایل را منتشر کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "sftp",
+        "wave11",
+        "transfer",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:sftp:wave11:038",
+      "technology_id": "sftp",
+      "vendor": "SFTP (SSH File Transfer Protocol)",
+      "platform": "OpenSSH sftp",
+      "category": "security",
+      "subcategory": "الزام host key",
+      "level": "L2",
+      "command": "sftp -oStrictHostKeyChecking=yes -oBatchMode=yes deploy@192.0.2.10",
+      "title_fa": "SFTP — host-key validation",
+      "when_to_use_fa": "host key هویت سرور را تأیید می‌کند و با user key متفاوت است.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "sftp",
+        "wave11",
+        "security",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:sftp:wave11:039",
+      "technology_id": "sftp",
+      "vendor": "SFTP (SSH File Transfer Protocol)",
+      "platform": "OpenSSH sftp",
+      "category": "transfer",
+      "subcategory": "keepalive session",
+      "level": "L2",
+      "command": "sftp -oServerAliveInterval=15 -oServerAliveCountMax=3 deploy@192.0.2.10",
+      "title_fa": "SFTP — نشست طولانی",
+      "when_to_use_fa": "keepalive مشکل packet loss یا firewall timeout را به‌تنهایی برطرف نمی‌کند.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "sftp",
+        "wave11",
+        "transfer",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:zabbix:wave11:040",
+      "technology_id": "zabbix",
+      "vendor": "Zabbix",
+      "platform": "Zabbix agent",
+      "category": "agent",
+      "subcategory": "آزمون agent.ping",
+      "level": "L2",
+      "command": "zabbix_get -s 192.0.2.10 -p 10050 -k agent.ping",
+      "title_fa": "Zabbix — probe agent",
+      "when_to_use_fa": "در شکست key، TLS/PSK، AllowKey، active/passive mode و مسیر proxy را بررسی کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "zabbix",
+        "wave11",
+        "agent",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:zabbix:wave11:041",
+      "technology_id": "zabbix",
+      "vendor": "Zabbix",
+      "platform": "Zabbix agent 2",
+      "category": "filesystem",
+      "subcategory": "آزمون key فضای آزاد",
+      "level": "L2",
+      "command": "zabbix_agent2 -t 'vfs.fs.size[/,pfree]'",
+      "title_fa": "Zabbix — item key",
+      "when_to_use_fa": "تست محلی را با item type و preprocessing سمت server یکی فرض نکنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "zabbix",
+        "wave11",
+        "filesystem",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:aruba:wave11:042",
+      "technology_id": "aruba",
+      "vendor": "Aruba AOS-CX",
+      "platform": "AOS-CX CLI",
+      "category": "vlan",
+      "subcategory": "جدول VLAN",
+      "level": "L2",
+      "command": "show vlan",
+      "title_fa": "Aruba — VLAN inventory",
+      "when_to_use_fa": "وجود VLAN در جدول به معنی مجازبودن آن روی trunk نیست.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "aruba",
+        "wave11",
+        "vlan",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:aruba:wave11:043",
+      "technology_id": "aruba",
+      "vendor": "Aruba AOS-CX",
+      "platform": "AOS-CX CLI",
+      "category": "interface",
+      "subcategory": "وضعیت پورت",
+      "level": "L2",
+      "command": "show interface 1/1/1",
+      "title_fa": "Aruba — interface status",
+      "when_to_use_fa": "admin/oper state، speed و error counter را با نقشهٔ پورت و LLDP تطبیق دهید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "aruba",
+        "wave11",
+        "interface",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:terraform:wave11:044",
+      "technology_id": "terraform",
+      "vendor": "Terraform",
+      "platform": "Terraform CLI",
+      "category": "validation",
+      "subcategory": "اعتبارسنجی config",
+      "level": "L2",
+      "command": "terraform validate",
+      "title_fa": "Terraform — validate",
+      "when_to_use_fa": "validate ساختار را می‌سنجد؛ برای اثر روی منابع remote باید plan را بررسی کرد.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "terraform",
+        "wave11",
+        "validation",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:terraform:wave11:045",
+      "technology_id": "terraform",
+      "vendor": "Terraform",
+      "platform": "Terraform CLI",
+      "category": "state",
+      "subcategory": "فهرست addressهای state",
+      "level": "L2",
+      "command": "terraform state list",
+      "title_fa": "Terraform — state inventory",
+      "when_to_use_fa": "state ممکن است ساختار زیرساخت/شناسه‌ها را افشا کند و باید محافظت شود.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "terraform",
+        "wave11",
+        "state",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:powershell:wave11:046",
+      "technology_id": "powershell",
+      "vendor": "PowerShell 5.1 / 7+",
+      "platform": "Windows PowerShell",
+      "category": "network",
+      "subcategory": "TCP listenerها",
+      "level": "L2",
+      "command": "Get-NetTCPConnection -State Listen | Sort-Object LocalPort",
+      "title_fa": "PowerShell — listener inventory",
+      "when_to_use_fa": "OwningProcess را با process/service تطبیق دهید؛ listener به‌تنهایی اثبات آسیب‌پذیری نیست.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "powershell",
+        "wave11",
+        "network",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:powershell:wave11:047",
+      "technology_id": "powershell",
+      "vendor": "PowerShell 5.1 / 7+",
+      "platform": "Windows PowerShell",
+      "category": "logging",
+      "subcategory": "رویدادهای System اخیر",
+      "level": "L2",
+      "command": "Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddMinutes(-30)} -MaxEvents 100",
+      "title_fa": "PowerShell — query Event Log",
+      "when_to_use_fa": "timestamp و provider را هم‌بسته و دادهٔ حساس را redacted کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "powershell",
+        "wave11",
+        "logging",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:windows_server:wave11:048",
+      "technology_id": "windows_server",
+      "vendor": "Windows Server / Active Directory",
+      "platform": "Windows Server DNS",
+      "category": "diagnostics",
+      "subcategory": "آزمون DNS روی DC",
+      "level": "L2",
+      "command": "dcdiag /test:dns /v",
+      "title_fa": "Windows Server — DNS",
+      "when_to_use_fa": "SRV، dynamic update و replication را بررسی کنید؛ وجود A record به‌تنهایی کافی نیست.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "windows_server",
+        "wave11",
+        "diagnostics",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:windows_server:wave11:049",
+      "technology_id": "windows_server",
+      "vendor": "Windows Server / Active Directory",
+      "platform": "AD Replication",
+      "category": "replication",
+      "subcategory": "خلاصهٔ replication",
+      "level": "L2",
+      "command": "repadmin /replsummary",
+      "title_fa": "AD — replication summary",
+      "when_to_use_fa": "failure و delta را مشخص کنید و قبل از تغییر topology دامنهٔ اثر را تعیین کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "windows_server",
+        "wave11",
+        "replication",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:cisco:wave11:050",
+      "technology_id": "cisco",
+      "vendor": "Cisco IOS / IOS-XE",
+      "platform": "Cisco IOS-XE CLI",
+      "category": "routing",
+      "subcategory": "جزئیات neighbor OSPF",
+      "level": "L2",
+      "command": "show ip ospf neighbor detail",
+      "title_fa": "Cisco — OSPF adjacency",
+      "when_to_use_fa": "state/area/timers/MTU/auth را بررسی کنید؛ FULL بودن همهٔ routeها را تضمین نمی‌کند.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "cisco",
+        "wave11",
+        "routing",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:cisco:wave11:051",
+      "technology_id": "cisco",
+      "vendor": "Cisco IOS / IOS-XE",
+      "platform": "Cisco IOS-XE CLI",
+      "category": "routing",
+      "subcategory": "مسیرهای OSPF در RIB",
+      "level": "L2",
+      "command": "show ip route ospf",
+      "title_fa": "Cisco — OSPF routes",
+      "when_to_use_fa": "در نبود prefix، LSDB/advertisement، policy و انتخاب RIB را بررسی کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "cisco",
+        "wave11",
+        "routing",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:mikrotik:wave11:052",
+      "technology_id": "mikrotik",
+      "vendor": "MikroTik RouterOS",
+      "platform": "RouterOS v7 CLI",
+      "category": "routing",
+      "subcategory": "جزئیات neighbor OSPF",
+      "level": "L2",
+      "command": "/routing/ospf/neighbor/print detail",
+      "title_fa": "MikroTik — OSPF state",
+      "when_to_use_fa": "uptime/state را با timer، MTU، authentication و log تطبیق دهید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "mikrotik",
+        "wave11",
+        "routing",
+        "review_required"
+      ]
+    },
+    {
+      "uid": "cmd:ch68:mikrotik:wave11:053",
+      "technology_id": "mikrotik",
+      "vendor": "MikroTik RouterOS",
+      "platform": "RouterOS v7 CLI",
+      "category": "bridge",
+      "subcategory": "جدول MAC bridge1",
+      "level": "L2",
+      "command": "/interface/bridge/host/print where on-interface=bridge1",
+      "title_fa": "MikroTik — bridge host table",
+      "when_to_use_fa": "جابجایی پی‌درپی MAC را با loop، roaming یا پایداری مسیر فیزیکی مقایسه کنید.",
+      "validation_notes_fa": "موج یازدهم؛ syntax و نسخه باید با مستندات رسمی همان محصول تطبیق داده شود. اجرای زنده در production ادعا نشده است.",
+      "safety_notes": "فقط روی سیستم یا شبکهٔ مجاز اجرا شود؛ خروجی‌های حساس را redacted کنید و برای تغییرات برنامهٔ بازگشت داشته باشید.",
+      "tags": [
+        "mikrotik",
+        "wave11",
+        "bridge",
+        "review_required"
+      ]
+    }
+  ]
+}

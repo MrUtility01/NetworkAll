@@ -317,6 +317,8 @@ def main():
     count_command_file(ROOT / "commands" / "sources" / "encyclopedia" / "commands_multi_technology_wave9.json")
     # Additive wave 10 adds five targeted references to twelve underfilled technology domains.
     count_command_file(ROOT / "commands" / "sources" / "encyclopedia" / "commands_multi_technology_wave10.json")
+    # Additive wave 11: focused vendor-specific operational references.
+    count_command_file(ROOT / "commands" / "sources" / "encyclopedia" / "commands_multi_technology_wave11.json")
 
     # Legacy mixed Windows pack: classify per record, never credit the full pack
     # to both technologies. Exact command duplication is excluded.

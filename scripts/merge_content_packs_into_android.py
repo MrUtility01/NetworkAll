@@ -54,6 +54,12 @@ def find_pack_files():
     multi_technology_wave9 = ROOT / "tools/chapters/68/commands/sources/encyclopedia/commands_multi_technology_wave9.json"
     if multi_technology_wave9.is_file():
         files.append(multi_technology_wave9)
+    multi_technology_wave10 = ROOT / "tools/chapters/68/commands/sources/encyclopedia/commands_multi_technology_wave10.json"
+    if multi_technology_wave10.is_file():
+        files.append(multi_technology_wave10)
+    multi_technology_wave11 = ROOT / "tools/chapters/68/commands/sources/encyclopedia/commands_multi_technology_wave11.json"
+    if multi_technology_wave11.is_file():
+        files.append(multi_technology_wave11)
     files += list(ROOT.glob("tools/chapters/[0-9][0-9]/build/chapter.json"))
     files += list(ROOT.glob("tools/chapters/[0-9]/chapter.json"))
     files += list(ROOT.glob("tools/chapters/[0-9][0-9]/chapter.json"))

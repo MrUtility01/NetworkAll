@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "chapter_order": 68,
+  "category": "labs",
+  "source_of_truth": true,
+  "source_status": "review_required",
+  "wave": 11,
+  "items": [
+    {
+      "uid": "lab:ch68:voip:wave11:01",
+      "lesson_uid": "lesson:ch68:voip:wave11:01",
+      "technology_id": "voip",
+      "title_fa": "لاب عیب‌یابی: ثبت‌نام trunk",
+      "fields": {
+        "labs": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** ثبت‌نام trunk\n**سناریو:** تلفن‌های داخلی کار می‌کنند اما تماس خروجی trunk رد می‌شود.\n**فرمان مرجع:** `asterisk -rx 'pjsip show registrations'`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** خروجی registration را ثبت کنید؛ trunk و response را تعیین کنید؛ endpoint/AOR را جدا بررسی کنید؛ logger را فقط کوتاه‌مدت و با مجوز فعال کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** علت در مرحلهٔ registration از مراحل بعدی تماس تفکیک شده است.\n\n**بازگشت:** debug می‌تواند شماره و metadata تماس را ثبت کند؛ بعد از آزمایش خاموش و خروجی redacted شود. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** ثبت‌نام trunk\n**سناریو:** تلفن‌های داخلی کار می‌کنند اما تماس خروجی trunk رد می‌شود.\n**فرمان مرجع:** `asterisk -rx 'pjsip show registrations'`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** خروجی registration را ثبت کنید؛ trunk و response را تعیین کنید؛ endpoint/AOR را جدا بررسی کنید؛ logger را فقط کوتاه‌مدت و با مجوز فعال کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** علت در مرحلهٔ registration از مراحل بعدی تماس تفکیک شده است.\n\n**بازگشت:** debug می‌تواند شماره و metadata تماس را ثبت کند؛ بعد از آزمایش خاموش و خروجی redacted شود. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در ثبت‌نام trunk",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:voip:wave11:02",
+      "lesson_uid": "lesson:ch68:voip:wave11:02",
+      "technology_id": "voip",
+      "title_fa": "لاب عیب‌یابی: تماس یک‌طرفه و RTP",
+      "fields": {
+        "labs": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** تماس یک‌طرفه و RTP\n**سناریو:** تماس برقرار می‌شود اما صدا فقط در یک جهت شنیده می‌شود.\n**فرمان مرجع:** `asterisk -rx 'pjsip show channelstats'`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** آمار کانال را بگیرید؛ SDP/RTP address را ثبت کنید؛ capture محدود در دو سوی مسیر بگیرید؛ ACL/NAT و بازه UDP را تطبیق دهید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** جهت و نقطهٔ فقدان RTP با شاهد شبکه مشخص است.\n\n**بازگشت:** capture صوتی حساس است؛ فقط IP/port و مدت لازم جمع‌آوری شود. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** تماس یک‌طرفه و RTP\n**سناریو:** تماس برقرار می‌شود اما صدا فقط در یک جهت شنیده می‌شود.\n**فرمان مرجع:** `asterisk -rx 'pjsip show channelstats'`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** آمار کانال را بگیرید؛ SDP/RTP address را ثبت کنید؛ capture محدود در دو سوی مسیر بگیرید؛ ACL/NAT و بازه UDP را تطبیق دهید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** جهت و نقطهٔ فقدان RTP با شاهد شبکه مشخص است.\n\n**بازگشت:** capture صوتی حساس است؛ فقط IP/port و مدت لازم جمع‌آوری شود. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در تماس یک‌طرفه و RTP",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:voip:wave11:03",
+      "lesson_uid": "lesson:ch68:voip:wave11:03",
+      "technology_id": "voip",
+      "title_fa": "لاب عیب‌یابی: الگوی Dialplan",
+      "fields": {
+        "labs": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** الگوی Dialplan\n**سناریو:** پیش‌شماره یا بعضی شماره‌ها match نمی‌شوند ولی تماس داخلی ساده کار می‌کند.\n**فرمان مرجع:** `asterisk -rx 'dialplan show from-internal'`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** context endpoint را ثبت کنید؛ include/pattern را بررسی کنید؛ مقصد Dial() را دنبال کنید؛ تغییر را اول در لاب و با rollback بیازمایید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** pattern و مقصد شمارهٔ آزمون پیش از تغییر مشخص است.\n\n**بازگشت:** تغییر dialplan می‌تواند تماس جدید را مختل کند؛ backup و پنجرهٔ تغییر لازم است. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** الگوی Dialplan\n**سناریو:** پیش‌شماره یا بعضی شماره‌ها match نمی‌شوند ولی تماس داخلی ساده کار می‌کند.\n**فرمان مرجع:** `asterisk -rx 'dialplan show from-internal'`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** context endpoint را ثبت کنید؛ include/pattern را بررسی کنید؛ مقصد Dial() را دنبال کنید؛ تغییر را اول در لاب و با rollback بیازمایید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** pattern و مقصد شمارهٔ آزمون پیش از تغییر مشخص است.\n\n**بازگشت:** تغییر dialplan می‌تواند تماس جدید را مختل کند؛ backup و پنجرهٔ تغییر لازم است. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در الگوی Dialplan",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:vmware_esxi:wave11:01",
+      "lesson_uid": "lesson:ch68:vmware_esxi:wave11:01",
+      "technology_id": "vmware_esxi",
+      "title_fa": "لاب عیب‌یابی: کمبود فضای datastore",
+      "fields": {
+        "labs": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** کمبود فضای datastore\n**سناریو:** ساخت VM یا snapshot به کمبود فضا می‌خورد ولی dashboard ظرفیت کافی نشان می‌دهد.\n**فرمان مرجع:** `esxcli storage filesystem list`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** فضای host مالک را ثبت کنید؛ VM/datastore و snapshot chain را بررسی کنید؛ فضا را از ابزار مدیریتی پشتیبانی‌شده آزاد کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** مصرف‌کنندهٔ فضا مشخص و فایل VMFS دستی حذف نشده است.\n\n**بازگشت:** فایل‌های delta را دستی حذف نکنید؛ chain ممکن است خراب شود. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** کمبود فضای datastore\n**سناریو:** ساخت VM یا snapshot به کمبود فضا می‌خورد ولی dashboard ظرفیت کافی نشان می‌دهد.\n**فرمان مرجع:** `esxcli storage filesystem list`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** فضای host مالک را ثبت کنید؛ VM/datastore و snapshot chain را بررسی کنید؛ فضا را از ابزار مدیریتی پشتیبانی‌شده آزاد کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** مصرف‌کنندهٔ فضا مشخص و فایل VMFS دستی حذف نشده است.\n\n**بازگشت:** فایل‌های delta را دستی حذف نکنید؛ chain ممکن است خراب شود. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در کمبود فضای datastore",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:vmware_esxi:wave11:02",
+      "lesson_uid": "lesson:ch68:vmware_esxi:wave11:02",
+      "technology_id": "vmware_esxi",
+      "title_fa": "لاب عیب‌یابی: شبکهٔ VMkernel",
+      "fields": {
+        "labs": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** شبکهٔ VMkernel\n**سناریو:** vCenter پاسخ می‌دهد اما vMotion یا storage timeout است.\n**فرمان مرجع:** `esxcli network ip route ipv4 list`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** VMkernel و service را ثبت کنید؛ route/gateway را ببینید؛ VLAN/MTU و return path را تطبیق دهید؛ فقط از interface هدف تست کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** VMkernel و مسیر سرویس مشکل‌دار مشخص شده‌اند.\n\n**بازگشت:** تغییر VLAN/MTU/gateway می‌تواند management را قطع کند؛ console و rollback آماده باشد. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** شبکهٔ VMkernel\n**سناریو:** vCenter پاسخ می‌دهد اما vMotion یا storage timeout است.\n**فرمان مرجع:** `esxcli network ip route ipv4 list`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** VMkernel و service را ثبت کنید؛ route/gateway را ببینید؛ VLAN/MTU و return path را تطبیق دهید؛ فقط از interface هدف تست کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** VMkernel و مسیر سرویس مشکل‌دار مشخص شده‌اند.\n\n**بازگشت:** تغییر VLAN/MTU/gateway می‌تواند management را قطع کند؛ console و rollback آماده باشد. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در شبکهٔ VMkernel",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:vmware_esxi:wave11:03",
+      "lesson_uid": "lesson:ch68:vmware_esxi:wave11:03",
+      "technology_id": "vmware_esxi",
+      "title_fa": "لاب عیب‌یابی: VMFS extent و LUN path",
+      "fields": {
+        "labs": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** VMFS extent و LUN path\n**سناریو:** datastore ناپایدار است و قطع LUN/path مطرح می‌شود.\n**فرمان مرجع:** `esxcli storage vmfs extent list`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** extent list را ثبت کنید؛ device/path را مقایسه کنید؛ APD/PDL و SAN log را هم‌بسته کنید؛ پیش از detach تأیید بگیرید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** شناسهٔ LUN/extent و نشانه‌های path failure روشن هستند.\n\n**بازگشت:** detach/unmount تغییرساز است و بدون شناسایی device نباید اجرا شود. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** VMFS extent و LUN path\n**سناریو:** datastore ناپایدار است و قطع LUN/path مطرح می‌شود.\n**فرمان مرجع:** `esxcli storage vmfs extent list`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** extent list را ثبت کنید؛ device/path را مقایسه کنید؛ APD/PDL و SAN log را هم‌بسته کنید؛ پیش از detach تأیید بگیرید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** شناسهٔ LUN/extent و نشانه‌های path failure روشن هستند.\n\n**بازگشت:** detach/unmount تغییرساز است و بدون شناسایی device نباید اجرا شود. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در VMFS extent و LUN path",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:ssh:wave11:01",
+      "lesson_uid": "lesson:ch68:ssh:wave11:01",
+      "technology_id": "ssh",
+      "title_fa": "لاب عیب‌یابی: Host-key mismatch",
+      "fields": {
+        "labs": "**حوزه:** SSH / OpenSSH\n**موضوع:** Host-key mismatch\n**سناریو:** پس از rebuild سرور هشدار host identification changed ظاهر می‌شود.\n**فرمان مرجع:** `ssh-keygen -lf ~/.ssh/known_hosts`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** مالک سرویس را تأیید کنید؛ fingerprint جدید را out-of-band بگیرید؛ رکورد را بررسی و پس از تأیید فقط همان ورودی را به‌روز کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** fingerprint مستقل تأیید و تغییر مستند شده است.\n\n**بازگشت:** StrictHostKeyChecking را کورکورانه خاموش نکنید. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** SSH / OpenSSH\n**موضوع:** Host-key mismatch\n**سناریو:** پس از rebuild سرور هشدار host identification changed ظاهر می‌شود.\n**فرمان مرجع:** `ssh-keygen -lf ~/.ssh/known_hosts`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** مالک سرویس را تأیید کنید؛ fingerprint جدید را out-of-band بگیرید؛ رکورد را بررسی و پس از تأیید فقط همان ورودی را به‌روز کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** fingerprint مستقل تأیید و تغییر مستند شده است.\n\n**بازگشت:** StrictHostKeyChecking را کورکورانه خاموش نکنید. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در Host-key mismatch",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:ssh:wave11:02",
+      "lesson_uid": "lesson:ch68:ssh:wave11:02",
+      "technology_id": "ssh",
+      "title_fa": "لاب عیب‌یابی: کلید در automation",
+      "fields": {
+        "labs": "**حوزه:** SSH / OpenSSH\n**موضوع:** کلید در automation\n**سناریو:** SSH دستی موفق است ولی scheduled task fail می‌شود.\n**فرمان مرجع:** `ssh -o IdentitiesOnly=yes -o BatchMode=yes -o PreferredAuthentications=publickey admin@192.0.2.10 true`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** user/HOME و key را بررسی کنید؛ ssh -G بگیرید؛ مجوز key و log سرور را تطبیق دهید؛ کلید automation را محدود و قابل‌چرخش کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** identity و علت شکست در environment سرویس معلوم است.\n\n**بازگشت:** secret در command line/log/repository قرار نگیرد. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** SSH / OpenSSH\n**موضوع:** کلید در automation\n**سناریو:** SSH دستی موفق است ولی scheduled task fail می‌شود.\n**فرمان مرجع:** `ssh -o IdentitiesOnly=yes -o BatchMode=yes -o PreferredAuthentications=publickey admin@192.0.2.10 true`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** user/HOME و key را بررسی کنید؛ ssh -G بگیرید؛ مجوز key و log سرور را تطبیق دهید؛ کلید automation را محدود و قابل‌چرخش کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** identity و علت شکست در environment سرویس معلوم است.\n\n**بازگشت:** secret در command line/log/repository قرار نگیرد. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در کلید در automation",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:ssh:wave11:03",
+      "lesson_uid": "lesson:ch68:ssh:wave11:03",
+      "technology_id": "ssh",
+      "title_fa": "لاب عیب‌یابی: Match block در sshd",
+      "fields": {
+        "labs": "**حوزه:** SSH / OpenSSH\n**موضوع:** Match block در sshd\n**سناریو:** کاربر از یک subnet login دارد اما از subnet دیگر رد می‌شود.\n**فرمان مرجع:** `sudo sshd -T -C user=admin,host=server.example,addr=192.0.2.10`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** config/include را بررسی کنید؛ sshd -t و sshd -T -C را برای دو context مقایسه و log را هم‌بسته کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** پارامتر مؤثر متفاوت میان contextها مشخص شده است.\n\n**بازگشت:** نشست مدیریتی جایگزین و rollback را پیش از reload حفظ کنید. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** SSH / OpenSSH\n**موضوع:** Match block در sshd\n**سناریو:** کاربر از یک subnet login دارد اما از subnet دیگر رد می‌شود.\n**فرمان مرجع:** `sudo sshd -T -C user=admin,host=server.example,addr=192.0.2.10`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** config/include را بررسی کنید؛ sshd -t و sshd -T -C را برای دو context مقایسه و log را هم‌بسته کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** پارامتر مؤثر متفاوت میان contextها مشخص شده است.\n\n**بازگشت:** نشست مدیریتی جایگزین و rollback را پیش از reload حفظ کنید. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در Match block در sshd",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:telnet:wave11:01",
+      "lesson_uid": "lesson:ch68:telnet:wave11:01",
+      "technology_id": "telnet",
+      "title_fa": "لاب عیب‌یابی: تفکیک HTTPS layers",
+      "fields": {
+        "labs": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تفکیک HTTPS layers\n**سناریو:** مرورگر خطا می‌دهد و لایهٔ DNS/TCP/TLS/HTTP معلوم نیست.\n**فرمان مرجع:** `Test-NetConnection 192.0.2.10 -Port 443 -InformationLevel Detailed`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** IP/DNS را ثبت کنید؛ TCP را بسنجید؛ TLS chain را بررسی کنید؛ curl code و زمان را بگیرید؛ یک مقصد سالم را مقایسه کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** لایهٔ شکست با شاهد قابل بازتولید مشخص است.\n\n**بازگشت:** Telnet رمزنگاری ندارد و برای credentials مناسب نیست. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تفکیک HTTPS layers\n**سناریو:** مرورگر خطا می‌دهد و لایهٔ DNS/TCP/TLS/HTTP معلوم نیست.\n**فرمان مرجع:** `Test-NetConnection 192.0.2.10 -Port 443 -InformationLevel Detailed`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** IP/DNS را ثبت کنید؛ TCP را بسنجید؛ TLS chain را بررسی کنید؛ curl code و زمان را بگیرید؛ یک مقصد سالم را مقایسه کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** لایهٔ شکست با شاهد قابل بازتولید مشخص است.\n\n**بازگشت:** Telnet رمزنگاری ندارد و برای credentials مناسب نیست. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در تفکیک HTTPS layers",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:telnet:wave11:02",
+      "lesson_uid": "lesson:ch68:telnet:wave11:02",
+      "technology_id": "telnet",
+      "title_fa": "لاب عیب‌یابی: تفسیر MTR",
+      "fields": {
+        "labs": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تفسیر MTR\n**سناریو:** hop میانی loss نشان می‌دهد اما مقصد پایدار پاسخ می‌دهد.\n**فرمان مرجع:** `mtr -T -P 443 -r -c 10 192.0.2.10`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** نوع probe/count را ثبت کنید؛ loss تا مقصد را دنبال کنید؛ از مبدأ دوم و timestamp متفاوت نمونه بگیرید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** loss کنترلی از افت واقعی forwarding تفکیک شده است.\n\n**بازگشت:** probe را محدود و به مقصد مجاز محدود کنید. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تفسیر MTR\n**سناریو:** hop میانی loss نشان می‌دهد اما مقصد پایدار پاسخ می‌دهد.\n**فرمان مرجع:** `mtr -T -P 443 -r -c 10 192.0.2.10`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** نوع probe/count را ثبت کنید؛ loss تا مقصد را دنبال کنید؛ از مبدأ دوم و timestamp متفاوت نمونه بگیرید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** loss کنترلی از افت واقعی forwarding تفکیک شده است.\n\n**بازگشت:** probe را محدود و به مقصد مجاز محدود کنید. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در تفسیر MTR",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:telnet:wave11:03",
+      "lesson_uid": "lesson:ch68:telnet:wave11:03",
+      "technology_id": "telnet",
+      "title_fa": "لاب عیب‌یابی: تست backend با curl --resolve",
+      "fields": {
+        "labs": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تست backend با curl --resolve\n**سناریو:** باید یک backend تست شود بدون تغییر DNS سراسری.\n**فرمان مرجع:** `curl --resolve example.com:443:192.0.2.10 -sS -o /dev/null -w 'code=%{http_code} connect=%{time_connect} total=%{time_total}\\n' https://example.com/`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** IP معتبر را بگیرید؛ body را ذخیره نکنید؛ code و زمان‌ها را ثبت؛ backend دیگر را با همان Host/SNI مقایسه کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** backend مشخص با Host/SNI درست اندازه‌گیری شده است.\n\n**بازگشت:** از endpointهای write یا تغییردهنده استفاده نکنید. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تست backend با curl --resolve\n**سناریو:** باید یک backend تست شود بدون تغییر DNS سراسری.\n**فرمان مرجع:** `curl --resolve example.com:443:192.0.2.10 -sS -o /dev/null -w 'code=%{http_code} connect=%{time_connect} total=%{time_total}\\n' https://example.com/`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** IP معتبر را بگیرید؛ body را ذخیره نکنید؛ code و زمان‌ها را ثبت؛ backend دیگر را با همان Host/SNI مقایسه کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** backend مشخص با Host/SNI درست اندازه‌گیری شده است.\n\n**بازگشت:** از endpointهای write یا تغییردهنده استفاده نکنید. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در تست backend با curl --resolve",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:ftp:wave11:01",
+      "lesson_uid": "lesson:ch68:ftp:wave11:01",
+      "technology_id": "ftp",
+      "title_fa": "لاب عیب‌یابی: Passive data channel",
+      "fields": {
+        "labs": "**حوزه:** FTP\n**موضوع:** Passive data channel\n**سناریو:** login موفق است اما LIST یا RETR timeout می‌شود.\n**فرمان مرجع:** `lftp -e 'set ftp:passive-mode true; cls -l /incoming; bye' ftp://ftp.example.test`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** مرحلهٔ timeout را ثبت کنید؛ PASV/EPSV و data port را ببینید؛ NAT/firewall و بازهٔ passive را تطبیق دهید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** شکست به data channel و پورت محدود شده است.\n\n**بازگشت:** FTP ساده credentials و محتوا را رمزنگاری نمی‌کند. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** FTP\n**موضوع:** Passive data channel\n**سناریو:** login موفق است اما LIST یا RETR timeout می‌شود.\n**فرمان مرجع:** `lftp -e 'set ftp:passive-mode true; cls -l /incoming; bye' ftp://ftp.example.test`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** مرحلهٔ timeout را ثبت کنید؛ PASV/EPSV و data port را ببینید؛ NAT/firewall و بازهٔ passive را تطبیق دهید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** شکست به data channel و پورت محدود شده است.\n\n**بازگشت:** FTP ساده credentials و محتوا را رمزنگاری نمی‌کند. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در Passive data channel",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:ftp:wave11:02",
+      "lesson_uid": "lesson:ch68:ftp:wave11:02",
+      "technology_id": "ftp",
+      "title_fa": "لاب عیب‌یابی: فایل ناقص و range",
+      "fields": {
+        "labs": "**حوزه:** FTP\n**موضوع:** فایل ناقص و range\n**سناریو:** باید رفتار range را برای فایل بزرگ کنترل کرد.\n**فرمان مرجع:** `curl --range 0-1023 --output /tmp/sample.part ftp://ftp.example.test/pub/sample.bin`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** در staging دریافت محدود کنید؛ exit code و size را ثبت؛ فایل ناقص را منتشر نکنید؛ انتقال کامل را با checksum تأیید کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** فایل جزئی از artifact نهایی جدا شده است.\n\n**بازگشت:** credentials در URL/history قرار نگیرد. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** FTP\n**موضوع:** فایل ناقص و range\n**سناریو:** باید رفتار range را برای فایل بزرگ کنترل کرد.\n**فرمان مرجع:** `curl --range 0-1023 --output /tmp/sample.part ftp://ftp.example.test/pub/sample.bin`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** در staging دریافت محدود کنید؛ exit code و size را ثبت؛ فایل ناقص را منتشر نکنید؛ انتقال کامل را با checksum تأیید کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** فایل جزئی از artifact نهایی جدا شده است.\n\n**بازگشت:** credentials در URL/history قرار نگیرد. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در فایل ناقص و range",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:ftp:wave11:03",
+      "lesson_uid": "lesson:ch68:ftp:wave11:03",
+      "technology_id": "ftp",
+      "title_fa": "لاب عیب‌یابی: active/passive behind NAT",
+      "fields": {
+        "labs": "**حوزه:** FTP\n**موضوع:** active/passive behind NAT\n**سناریو:** انتقال در یک subnet کار می‌کند و پشت NAT fail می‌شود.\n**فرمان مرجع:** `curl --ftp-port - --list-only ftp://ftp.example.test/pub/`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** mode پایه را ثبت؛ active/passive را در لاب مقایسه؛ 5-tuple را در log ببینید؛ فقط rule محدود با rollback تغییر کند.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** data path به پورت/مسیر مشخص نسبت داده شده است.\n\n**بازگشت:** rule گسترده یا ALG بدون scope اضافه نشود. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** FTP\n**موضوع:** active/passive behind NAT\n**سناریو:** انتقال در یک subnet کار می‌کند و پشت NAT fail می‌شود.\n**فرمان مرجع:** `curl --ftp-port - --list-only ftp://ftp.example.test/pub/`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** mode پایه را ثبت؛ active/passive را در لاب مقایسه؛ 5-tuple را در log ببینید؛ فقط rule محدود با rollback تغییر کند.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** data path به پورت/مسیر مشخص نسبت داده شده است.\n\n**بازگشت:** rule گسترده یا ALG بدون scope اضافه نشود. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در active/passive behind NAT",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:ftps:wave11:01",
+      "lesson_uid": "lesson:ch68:ftps:wave11:01",
+      "technology_id": "ftps",
+      "title_fa": "لاب عیب‌یابی: TLS و certificate trust",
+      "fields": {
+        "labs": "**حوزه:** FTPS\n**موضوع:** TLS و certificate trust\n**سناریو:** FTPS در یک host کار می‌کند اما در دیگری certificate error می‌دهد.\n**فرمان مرجع:** `curl --ssl-reqd --tlsv1.2 --list-only ftp://ftp.example.test/pub/`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** نسخه/trust store را ثبت؛ خطا را به chain/hostname/time تفکیک؛ CA معتبر را نصب؛ از insecure flag استفاده نکنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** TLS اجباری و هویت سرور بررسی شده است.\n\n**بازگشت:** خاموش‌کردن validation ریسک MITM دارد. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** FTPS\n**موضوع:** TLS و certificate trust\n**سناریو:** FTPS در یک host کار می‌کند اما در دیگری certificate error می‌دهد.\n**فرمان مرجع:** `curl --ssl-reqd --tlsv1.2 --list-only ftp://ftp.example.test/pub/`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** نسخه/trust store را ثبت؛ خطا را به chain/hostname/time تفکیک؛ CA معتبر را نصب؛ از insecure flag استفاده نکنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** TLS اجباری و هویت سرور بررسی شده است.\n\n**بازگشت:** خاموش‌کردن validation ریسک MITM دارد. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در TLS و certificate trust",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:ftps:wave11:02",
+      "lesson_uid": "lesson:ch68:ftps:wave11:02",
+      "technology_id": "ftps",
+      "title_fa": "لاب عیب‌یابی: Control/data channel",
+      "fields": {
+        "labs": "**حوزه:** FTPS\n**موضوع:** Control/data channel\n**سناریو:** control TLS برقرار است اما LIST timeout دارد.\n**فرمان مرجع:** `curl --ssl-reqd --quote 'FEAT' --list-only ftp://ftp.example.test/pub/`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** مرحلهٔ شکست را تعیین؛ PASV/EPSV را بررسی؛ بازهٔ data port و firewall را تطبیق؛ نسخه‌ها را مستند کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** شکست به control یا data محدود شده است.\n\n**بازگشت:** از transcript حاوی username/path حساس پرهیز کنید. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** FTPS\n**موضوع:** Control/data channel\n**سناریو:** control TLS برقرار است اما LIST timeout دارد.\n**فرمان مرجع:** `curl --ssl-reqd --quote 'FEAT' --list-only ftp://ftp.example.test/pub/`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** مرحلهٔ شکست را تعیین؛ PASV/EPSV را بررسی؛ بازهٔ data port و firewall را تطبیق؛ نسخه‌ها را مستند کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** شکست به control یا data محدود شده است.\n\n**بازگشت:** از transcript حاوی username/path حساس پرهیز کنید. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در Control/data channel",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:ftps:wave11:03",
+      "lesson_uid": "lesson:ch68:ftps:wave11:03",
+      "technology_id": "ftps",
+      "title_fa": "لاب عیب‌یابی: تأیید upload و checksum",
+      "fields": {
+        "labs": "**حوزه:** FTPS\n**موضوع:** تأیید upload و checksum\n**سناریو:** job فایل را می‌فرستد اما باید success کاذب و overwrite کنترل شود.\n**فرمان مرجع:** `curl --ssl-reqd --fail --show-error --upload-file ./report.csv ftp://ftp.example.test/drop/report.csv`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** checksum محلی را ثبت؛ مقصد و overwrite policy را تأیید؛ exit code و فایل سمت server را verify کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** مقصد و صحت محتوا با شاهد مستقلی بررسی شده است.\n\n**بازگشت:** در production ابتدا staging/versioned name را ترجیح دهید. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** FTPS\n**موضوع:** تأیید upload و checksum\n**سناریو:** job فایل را می‌فرستد اما باید success کاذب و overwrite کنترل شود.\n**فرمان مرجع:** `curl --ssl-reqd --fail --show-error --upload-file ./report.csv ftp://ftp.example.test/drop/report.csv`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** checksum محلی را ثبت؛ مقصد و overwrite policy را تأیید؛ exit code و فایل سمت server را verify کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** مقصد و صحت محتوا با شاهد مستقلی بررسی شده است.\n\n**بازگشت:** در production ابتدا staging/versioned name را ترجیح دهید. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در تأیید upload و checksum",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:sftp:wave11:01",
+      "lesson_uid": "lesson:ch68:sftp:wave11:01",
+      "technology_id": "sftp",
+      "title_fa": "لاب عیب‌یابی: Batch automation",
+      "fields": {
+        "labs": "**حوزه:** SFTP\n**موضوع:** Batch automation\n**سناریو:** job شبانه در prompt گیر می‌کند یا انتقال را اشتباه موفق گزارش می‌دهد.\n**فرمان مرجع:** `sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nput -p ./report.csv /incoming/report.csv\nbye\nEOF`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** host key را تأیید؛ account محدود بساز؛ batch بدون secret نگه‌دار؛ exit code/checksum را ثبت کن.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** job noninteractive و انتقال قابل verify است.\n\n**بازگشت:** کلید/secret را در log یا repo قرار نده. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** SFTP\n**موضوع:** Batch automation\n**سناریو:** job شبانه در prompt گیر می‌کند یا انتقال را اشتباه موفق گزارش می‌دهد.\n**فرمان مرجع:** `sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nput -p ./report.csv /incoming/report.csv\nbye\nEOF`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** host key را تأیید؛ account محدود بساز؛ batch بدون secret نگه‌دار؛ exit code/checksum را ثبت کن.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** job noninteractive و انتقال قابل verify است.\n\n**بازگشت:** کلید/secret را در log یا repo قرار نده. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در Batch automation",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:sftp:wave11:02",
+      "lesson_uid": "lesson:ch68:sftp:wave11:02",
+      "technology_id": "sftp",
+      "title_fa": "لاب عیب‌یابی: host key vs user key",
+      "fields": {
+        "labs": "**حوزه:** SFTP\n**موضوع:** host key vs user key\n**سناریو:** پس از rebuild سرور انتقال متوقف می‌شود.\n**فرمان مرجع:** `sftp -oStrictHostKeyChecking=yes -oBatchMode=yes deploy@192.0.2.10`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** fingerprint را out-of-band بگیر؛ known_hosts و authorized_keys را جدا بررسی؛ تغییر تأییدشده را مستند کن.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** host-key mismatch از شکست احراز هویت تفکیک شده است.\n\n**بازگشت:** برای رفع سریع خطا host-key checking را خاموش نکن. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** SFTP\n**موضوع:** host key vs user key\n**سناریو:** پس از rebuild سرور انتقال متوقف می‌شود.\n**فرمان مرجع:** `sftp -oStrictHostKeyChecking=yes -oBatchMode=yes deploy@192.0.2.10`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** fingerprint را out-of-band بگیر؛ known_hosts و authorized_keys را جدا بررسی؛ تغییر تأییدشده را مستند کن.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** host-key mismatch از شکست احراز هویت تفکیک شده است.\n\n**بازگشت:** برای رفع سریع خطا host-key checking را خاموش نکن. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در host key vs user key",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:sftp:wave11:03",
+      "lesson_uid": "lesson:ch68:sftp:wave11:03",
+      "technology_id": "sftp",
+      "title_fa": "لاب عیب‌یابی: resume و checksum",
+      "fields": {
+        "labs": "**حوزه:** SFTP\n**موضوع:** resume و checksum\n**سناریو:** فایل بزرگ قطع شده و نباید نسخهٔ ناقص مصرف شود.\n**فرمان مرجع:** `sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nreget /outgoing/large.bin ./large.bin\nbye\nEOF`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** source checksum را ثبت؛ فایل staging؛ reget؛ size/checksum را مقایسه؛ سپس atomic publish.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** فایل کامل و یکپارچه منتشر شده است.\n\n**بازگشت:** فایل staging قبل از verify مصرف نشود. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** SFTP\n**موضوع:** resume و checksum\n**سناریو:** فایل بزرگ قطع شده و نباید نسخهٔ ناقص مصرف شود.\n**فرمان مرجع:** `sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nreget /outgoing/large.bin ./large.bin\nbye\nEOF`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** source checksum را ثبت؛ فایل staging؛ reget؛ size/checksum را مقایسه؛ سپس atomic publish.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** فایل کامل و یکپارچه منتشر شده است.\n\n**بازگشت:** فایل staging قبل از verify مصرف نشود. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در resume و checksum",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:zabbix:wave11:01",
+      "lesson_uid": "lesson:ch68:zabbix:wave11:01",
+      "technology_id": "zabbix",
+      "title_fa": "لاب عیب‌یابی: پاسخ agent و item mode",
+      "fields": {
+        "labs": "**حوزه:** Zabbix\n**موضوع:** پاسخ agent و item mode\n**سناریو:** host unavailable است اما agent اجرا می‌شود.\n**فرمان مرجع:** `zabbix_get -s 192.0.2.10 -p 10050 -k agent.ping`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** از server/proxy واقعی probe کنید؛ TLS و mode را تطبیق؛ آخرین timestamp و log را بررسی کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** علت به reachability، TLS، policy یا proxy محدود شده است.\n\n**بازگشت:** PSK در ticket/log عمومی ذخیره نشود. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** Zabbix\n**موضوع:** پاسخ agent و item mode\n**سناریو:** host unavailable است اما agent اجرا می‌شود.\n**فرمان مرجع:** `zabbix_get -s 192.0.2.10 -p 10050 -k agent.ping`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** از server/proxy واقعی probe کنید؛ TLS و mode را تطبیق؛ آخرین timestamp و log را بررسی کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** علت به reachability، TLS، policy یا proxy محدود شده است.\n\n**بازگشت:** PSK در ticket/log عمومی ذخیره نشود. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در پاسخ agent و item mode",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:powershell:wave11:01",
+      "lesson_uid": "lesson:ch68:powershell:wave11:01",
+      "technology_id": "powershell",
+      "title_fa": "لاب عیب‌یابی: listener و process owner",
+      "fields": {
+        "labs": "**حوزه:** PowerShell\n**موضوع:** listener و process owner\n**سناریو:** پورت ناشناخته روی Windows Server listen می‌کند.\n**فرمان مرجع:** `Get-NetTCPConnection -State Listen | Sort-Object LocalPort`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** LocalAddress/Port را بگیرید؛ PID را به process/service وصل؛ مالک و نیاز business را تأیید کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** پورت و سرویس مالک آن مشخص شده است.\n\n**بازگشت:** process را بدون بررسی مالک terminate نکنید. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** PowerShell\n**موضوع:** listener و process owner\n**سناریو:** پورت ناشناخته روی Windows Server listen می‌کند.\n**فرمان مرجع:** `Get-NetTCPConnection -State Listen | Sort-Object LocalPort`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** LocalAddress/Port را بگیرید؛ PID را به process/service وصل؛ مالک و نیاز business را تأیید کنید.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** پورت و سرویس مالک آن مشخص شده است.\n\n**بازگشت:** process را بدون بررسی مالک terminate نکنید. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در listener و process owner",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:windows_server:wave11:01",
+      "lesson_uid": "lesson:ch68:windows_server:wave11:01",
+      "technology_id": "windows_server",
+      "title_fa": "لاب عیب‌یابی: DNS و discovery AD",
+      "fields": {
+        "labs": "**حوزه:** Windows Server / Active Directory\n**موضوع:** DNS و discovery AD\n**سناریو:** domain login در بعضی subnetها تاخیر دارد.\n**فرمان مرجع:** `dcdiag /test:dns /v`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** resolver را ثبت؛ SRVهای LDAP/Kerberos را query؛ replication را تطبیق؛ از client آزمایشی تأیید کن.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** رکورد/resolver یا replication مسئله مشخص است.\n\n**بازگشت:** رکورد را بدون تأیید مالک/عمر حذف نکن. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** Windows Server / Active Directory\n**موضوع:** DNS و discovery AD\n**سناریو:** domain login در بعضی subnetها تاخیر دارد.\n**فرمان مرجع:** `dcdiag /test:dns /v`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** resolver را ثبت؛ SRVهای LDAP/Kerberos را query؛ replication را تطبیق؛ از client آزمایشی تأیید کن.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** رکورد/resolver یا replication مسئله مشخص است.\n\n**بازگشت:** رکورد را بدون تأیید مالک/عمر حذف نکن. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در DNS و discovery AD",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:cisco:wave11:01",
+      "lesson_uid": "lesson:ch68:cisco:wave11:01",
+      "technology_id": "cisco",
+      "title_fa": "لاب عیب‌یابی: OSPF adjacency و RIB",
+      "fields": {
+        "labs": "**حوزه:** Cisco IOS / IOS-XE\n**موضوع:** OSPF adjacency و RIB\n**سناریو:** neighbor FULL است اما route مورد انتظار نیست.\n**فرمان مرجع:** `show ip ospf neighbor detail`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** neighbor/area را ثبت؛ route و LSDB را بررسی؛ prefix filters/redistribution را تطبیق بده.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** مرحلهٔ فقدان prefix مشخص شده است.\n\n**بازگشت:** route policy ممکن است reachability گسترده را عوض کند؛ rollback لازم است. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** Cisco IOS / IOS-XE\n**موضوع:** OSPF adjacency و RIB\n**سناریو:** neighbor FULL است اما route مورد انتظار نیست.\n**فرمان مرجع:** `show ip ospf neighbor detail`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** neighbor/area را ثبت؛ route و LSDB را بررسی؛ prefix filters/redistribution را تطبیق بده.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** مرحلهٔ فقدان prefix مشخص شده است.\n\n**بازگشت:** route policy ممکن است reachability گسترده را عوض کند؛ rollback لازم است. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در OSPF adjacency و RIB",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:mikrotik:wave11:01",
+      "lesson_uid": "lesson:ch68:mikrotik:wave11:01",
+      "technology_id": "mikrotik",
+      "title_fa": "لاب عیب‌یابی: OSPF neighbor flapping",
+      "fields": {
+        "labs": "**حوزه:** MikroTik RouterOS\n**موضوع:** OSPF neighbor flapping\n**سناریو:** neighbor از FULL خارج می‌شود و subnet ناپایدار است.\n**فرمان مرجع:** `/routing/ospf/neighbor/print detail`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** خروجی و log timestamp بگیر؛ دو سمت را مقایسه؛ قبل از تغییر backup تهیه کن.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** عامل flapping به timer/MTU/auth/link محدود شده است.\n\n**بازگشت:** تغییر template می‌تواند چند adjacency را قطع کند. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** MikroTik RouterOS\n**موضوع:** OSPF neighbor flapping\n**سناریو:** neighbor از FULL خارج می‌شود و subnet ناپایدار است.\n**فرمان مرجع:** `/routing/ospf/neighbor/print detail`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** خروجی و log timestamp بگیر؛ دو سمت را مقایسه؛ قبل از تغییر backup تهیه کن.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** عامل flapping به timer/MTU/auth/link محدود شده است.\n\n**بازگشت:** تغییر template می‌تواند چند adjacency را قطع کند. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در OSPF neighbor flapping",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:aruba:wave11:01",
+      "lesson_uid": "lesson:ch68:aruba:wave11:01",
+      "technology_id": "aruba",
+      "title_fa": "لاب عیب‌یابی: VLAN membership",
+      "fields": {
+        "labs": "**حوزه:** Aruba AOS-CX\n**موضوع:** VLAN membership\n**سناریو:** پورت up است اما client به gateway نمی‌رسد.\n**فرمان مرجع:** `show vlan`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** VLAN را تأیید؛ پورت/uplink را بخوان؛ MAC و ARP را دنبال؛ تغییر را با rollback انجام بده.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** محل ناهماهنگی access/uplink مشخص شده است.\n\n**بازگشت:** تغییر VLAN uplink/management می‌تواند دسترسی را قطع کند. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** Aruba AOS-CX\n**موضوع:** VLAN membership\n**سناریو:** پورت up است اما client به gateway نمی‌رسد.\n**فرمان مرجع:** `show vlan`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** VLAN را تأیید؛ پورت/uplink را بخوان؛ MAC و ARP را دنبال؛ تغییر را با rollback انجام بده.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** محل ناهماهنگی access/uplink مشخص شده است.\n\n**بازگشت:** تغییر VLAN uplink/management می‌تواند دسترسی را قطع کند. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در VLAN membership",
+      "level": "L2"
+    },
+    {
+      "uid": "lab:ch68:terraform:wave11:01",
+      "lesson_uid": "lesson:ch68:terraform:wave11:01",
+      "technology_id": "terraform",
+      "title_fa": "لاب عیب‌یابی: validate در برابر plan",
+      "fields": {
+        "labs": "**حوزه:** Terraform\n**موضوع:** validate در برابر plan\n**سناریو:** config از validate می‌گذرد اما احتمال destroy ناخواسته وجود دارد.\n**فرمان مرجع:** `terraform validate`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** workspace/backend را تأیید؛ validate و plan بگیر؛ create/update/destroy/replace را review کن.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** هیچ destroy ناخواسته بدون review باقی نمانده است.\n\n**بازگشت:** state/plan ممکن است secret/topology افشا کند؛ apply فقط پس از review. پس از تمرین baseline را دوباره تأیید کنید."
+      },
+      "full_content": "**حوزه:** Terraform\n**موضوع:** validate در برابر plan\n**سناریو:** config از validate می‌گذرد اما احتمال destroy ناخواسته وجود دارد.\n**فرمان مرجع:** `terraform validate`\n\n**محیط:** مبدأ مجاز، مقصد آزمایشگاهی و دسترسی به log.\n\n**۱ — baseline:** خروجی فرمان را با timestamp ذخیره کنید.\n\n**۲ — تشخیص:** workspace/backend را تأیید؛ validate و plan بگیر؛ create/update/destroy/replace را review کن.\n\n**۳ — خطای کنترل‌شده:** فقط در لاب، حالت خطای متناسب با موضوع ایجاد کنید؛ در production fault injection انجام ندهید.\n\n**قبولی:** هیچ destroy ناخواسته بدون review باقی نمانده است.\n\n**بازگشت:** state/plan ممکن است secret/topology افشا کند؛ apply فقط پس از review. پس از تمرین baseline را دوباره تأیید کنید.",
+      "summary": "baseline و validation در validate در برابر plan",
+      "level": "L2"
+    }
+  ]
+}

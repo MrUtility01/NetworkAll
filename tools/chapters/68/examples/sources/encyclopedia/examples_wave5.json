@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "chapter_order": 68,
+  "category": "examples",
+  "source_of_truth": true,
+  "source_status": "review_required",
+  "wave": 11,
+  "items": [
+    {
+      "uid": "example:ch68:voip:wave11:01",
+      "lesson_uid": "lesson:ch68:voip:wave11:01",
+      "technology_id": "voip",
+      "title_fa": "مثال عملی: ثبت‌نام trunk",
+      "fields": {
+        "examples": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** ثبت‌نام trunk\n**سناریو:** تلفن‌های داخلی کار می‌کنند اما تماس خروجی trunk رد می‌شود.\n**فرمان مرجع:** `asterisk -rx 'pjsip show registrations'`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** خروجی registration را ثبت کنید؛ trunk و response را تعیین کنید؛ endpoint/AOR را جدا بررسی کنید؛ logger را فقط کوتاه‌مدت و با مجوز فعال کنید.\n\n**انتظار:** علت در مرحلهٔ registration از مراحل بعدی تماس تفکیک شده است.\n\n**دام تشخیصی:** registration، endpoint و RTP شاخص‌های جدا هستند؛ وضعیت و SIP response را در زمان واحد با provider تطبیق دهید.\n\n**ایمنی:** debug می‌تواند شماره و metadata تماس را ثبت کند؛ بعد از آزمایش خاموش و خروجی redacted شود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** ثبت‌نام trunk\n**سناریو:** تلفن‌های داخلی کار می‌کنند اما تماس خروجی trunk رد می‌شود.\n**فرمان مرجع:** `asterisk -rx 'pjsip show registrations'`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** خروجی registration را ثبت کنید؛ trunk و response را تعیین کنید؛ endpoint/AOR را جدا بررسی کنید؛ logger را فقط کوتاه‌مدت و با مجوز فعال کنید.\n\n**انتظار:** علت در مرحلهٔ registration از مراحل بعدی تماس تفکیک شده است.\n\n**دام تشخیصی:** registration، endpoint و RTP شاخص‌های جدا هستند؛ وضعیت و SIP response را در زمان واحد با provider تطبیق دهید.\n\n**ایمنی:** debug می‌تواند شماره و metadata تماس را ثبت کند؛ بعد از آزمایش خاموش و خروجی redacted شود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی ثبت‌نام trunk",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:voip:wave11:02",
+      "lesson_uid": "lesson:ch68:voip:wave11:02",
+      "technology_id": "voip",
+      "title_fa": "مثال عملی: تماس یک‌طرفه و RTP",
+      "fields": {
+        "examples": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** تماس یک‌طرفه و RTP\n**سناریو:** تماس برقرار می‌شود اما صدا فقط در یک جهت شنیده می‌شود.\n**فرمان مرجع:** `asterisk -rx 'pjsip show channelstats'`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** آمار کانال را بگیرید؛ SDP/RTP address را ثبت کنید؛ capture محدود در دو سوی مسیر بگیرید؛ ACL/NAT و بازه UDP را تطبیق دهید.\n\n**انتظار:** جهت و نقطهٔ فقدان RTP با شاهد شبکه مشخص است.\n\n**دام تشخیصی:** SIP سیگنال‌دهی و RTP رسانه را حمل می‌کند؛ 200 OK سلامت RTP را اثبات نمی‌کند.\n\n**ایمنی:** capture صوتی حساس است؛ فقط IP/port و مدت لازم جمع‌آوری شود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** تماس یک‌طرفه و RTP\n**سناریو:** تماس برقرار می‌شود اما صدا فقط در یک جهت شنیده می‌شود.\n**فرمان مرجع:** `asterisk -rx 'pjsip show channelstats'`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** آمار کانال را بگیرید؛ SDP/RTP address را ثبت کنید؛ capture محدود در دو سوی مسیر بگیرید؛ ACL/NAT و بازه UDP را تطبیق دهید.\n\n**انتظار:** جهت و نقطهٔ فقدان RTP با شاهد شبکه مشخص است.\n\n**دام تشخیصی:** SIP سیگنال‌دهی و RTP رسانه را حمل می‌کند؛ 200 OK سلامت RTP را اثبات نمی‌کند.\n\n**ایمنی:** capture صوتی حساس است؛ فقط IP/port و مدت لازم جمع‌آوری شود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی تماس یک‌طرفه و RTP",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:voip:wave11:03",
+      "lesson_uid": "lesson:ch68:voip:wave11:03",
+      "technology_id": "voip",
+      "title_fa": "مثال عملی: الگوی Dialplan",
+      "fields": {
+        "examples": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** الگوی Dialplan\n**سناریو:** پیش‌شماره یا بعضی شماره‌ها match نمی‌شوند ولی تماس داخلی ساده کار می‌کند.\n**فرمان مرجع:** `asterisk -rx 'dialplan show from-internal'`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** context endpoint را ثبت کنید؛ include/pattern را بررسی کنید؛ مقصد Dial() را دنبال کنید؛ تغییر را اول در لاب و با rollback بیازمایید.\n\n**انتظار:** pattern و مقصد شمارهٔ آزمون پیش از تغییر مشخص است.\n\n**دام تشخیصی:** Dialplan بر پایهٔ context و pattern است؛ وجود extension در فایل کافی نیست.\n\n**ایمنی:** تغییر dialplan می‌تواند تماس جدید را مختل کند؛ backup و پنجرهٔ تغییر لازم است.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** VoIP / SIP / PBX\n**موضوع:** الگوی Dialplan\n**سناریو:** پیش‌شماره یا بعضی شماره‌ها match نمی‌شوند ولی تماس داخلی ساده کار می‌کند.\n**فرمان مرجع:** `asterisk -rx 'dialplan show from-internal'`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** context endpoint را ثبت کنید؛ include/pattern را بررسی کنید؛ مقصد Dial() را دنبال کنید؛ تغییر را اول در لاب و با rollback بیازمایید.\n\n**انتظار:** pattern و مقصد شمارهٔ آزمون پیش از تغییر مشخص است.\n\n**دام تشخیصی:** Dialplan بر پایهٔ context و pattern است؛ وجود extension در فایل کافی نیست.\n\n**ایمنی:** تغییر dialplan می‌تواند تماس جدید را مختل کند؛ backup و پنجرهٔ تغییر لازم است.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی الگوی Dialplan",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:vmware_esxi:wave11:01",
+      "lesson_uid": "lesson:ch68:vmware_esxi:wave11:01",
+      "technology_id": "vmware_esxi",
+      "title_fa": "مثال عملی: کمبود فضای datastore",
+      "fields": {
+        "examples": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** کمبود فضای datastore\n**سناریو:** ساخت VM یا snapshot به کمبود فضا می‌خورد ولی dashboard ظرفیت کافی نشان می‌دهد.\n**فرمان مرجع:** `esxcli storage filesystem list`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** فضای host مالک را ثبت کنید؛ VM/datastore و snapshot chain را بررسی کنید؛ فضا را از ابزار مدیریتی پشتیبانی‌شده آزاد کنید.\n\n**انتظار:** مصرف‌کنندهٔ فضا مشخص و فایل VMFS دستی حذف نشده است.\n\n**دام تشخیصی:** free space، provisioned و رشد snapshot متفاوت‌اند؛ datastore و path فایل VMX را تطبیق دهید.\n\n**ایمنی:** فایل‌های delta را دستی حذف نکنید؛ chain ممکن است خراب شود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** کمبود فضای datastore\n**سناریو:** ساخت VM یا snapshot به کمبود فضا می‌خورد ولی dashboard ظرفیت کافی نشان می‌دهد.\n**فرمان مرجع:** `esxcli storage filesystem list`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** فضای host مالک را ثبت کنید؛ VM/datastore و snapshot chain را بررسی کنید؛ فضا را از ابزار مدیریتی پشتیبانی‌شده آزاد کنید.\n\n**انتظار:** مصرف‌کنندهٔ فضا مشخص و فایل VMFS دستی حذف نشده است.\n\n**دام تشخیصی:** free space، provisioned و رشد snapshot متفاوت‌اند؛ datastore و path فایل VMX را تطبیق دهید.\n\n**ایمنی:** فایل‌های delta را دستی حذف نکنید؛ chain ممکن است خراب شود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی کمبود فضای datastore",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:vmware_esxi:wave11:02",
+      "lesson_uid": "lesson:ch68:vmware_esxi:wave11:02",
+      "technology_id": "vmware_esxi",
+      "title_fa": "مثال عملی: شبکهٔ VMkernel",
+      "fields": {
+        "examples": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** شبکهٔ VMkernel\n**سناریو:** vCenter پاسخ می‌دهد اما vMotion یا storage timeout است.\n**فرمان مرجع:** `esxcli network ip route ipv4 list`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** VMkernel و service را ثبت کنید؛ route/gateway را ببینید؛ VLAN/MTU و return path را تطبیق دهید؛ فقط از interface هدف تست کنید.\n\n**انتظار:** VMkernel و مسیر سرویس مشکل‌دار مشخص شده‌اند.\n\n**دام تشخیصی:** Management، vMotion و storage می‌توانند VLAN/MTU/route جدا داشته باشند.\n\n**ایمنی:** تغییر VLAN/MTU/gateway می‌تواند management را قطع کند؛ console و rollback آماده باشد.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** شبکهٔ VMkernel\n**سناریو:** vCenter پاسخ می‌دهد اما vMotion یا storage timeout است.\n**فرمان مرجع:** `esxcli network ip route ipv4 list`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** VMkernel و service را ثبت کنید؛ route/gateway را ببینید؛ VLAN/MTU و return path را تطبیق دهید؛ فقط از interface هدف تست کنید.\n\n**انتظار:** VMkernel و مسیر سرویس مشکل‌دار مشخص شده‌اند.\n\n**دام تشخیصی:** Management، vMotion و storage می‌توانند VLAN/MTU/route جدا داشته باشند.\n\n**ایمنی:** تغییر VLAN/MTU/gateway می‌تواند management را قطع کند؛ console و rollback آماده باشد.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی شبکهٔ VMkernel",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:vmware_esxi:wave11:03",
+      "lesson_uid": "lesson:ch68:vmware_esxi:wave11:03",
+      "technology_id": "vmware_esxi",
+      "title_fa": "مثال عملی: VMFS extent و LUN path",
+      "fields": {
+        "examples": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** VMFS extent و LUN path\n**سناریو:** datastore ناپایدار است و قطع LUN/path مطرح می‌شود.\n**فرمان مرجع:** `esxcli storage vmfs extent list`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** extent list را ثبت کنید؛ device/path را مقایسه کنید؛ APD/PDL و SAN log را هم‌بسته کنید؛ پیش از detach تأیید بگیرید.\n\n**انتظار:** شناسهٔ LUN/extent و نشانه‌های path failure روشن هستند.\n\n**دام تشخیصی:** نام نمایشی کافی نیست؛ extent/device و path را با SAN تطبیق دهید.\n\n**ایمنی:** detach/unmount تغییرساز است و بدون شناسایی device نباید اجرا شود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** VMware ESXi / vSphere\n**موضوع:** VMFS extent و LUN path\n**سناریو:** datastore ناپایدار است و قطع LUN/path مطرح می‌شود.\n**فرمان مرجع:** `esxcli storage vmfs extent list`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** extent list را ثبت کنید؛ device/path را مقایسه کنید؛ APD/PDL و SAN log را هم‌بسته کنید؛ پیش از detach تأیید بگیرید.\n\n**انتظار:** شناسهٔ LUN/extent و نشانه‌های path failure روشن هستند.\n\n**دام تشخیصی:** نام نمایشی کافی نیست؛ extent/device و path را با SAN تطبیق دهید.\n\n**ایمنی:** detach/unmount تغییرساز است و بدون شناسایی device نباید اجرا شود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی VMFS extent و LUN path",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:ssh:wave11:01",
+      "lesson_uid": "lesson:ch68:ssh:wave11:01",
+      "technology_id": "ssh",
+      "title_fa": "مثال عملی: Host-key mismatch",
+      "fields": {
+        "examples": "**حوزه:** SSH / OpenSSH\n**موضوع:** Host-key mismatch\n**سناریو:** پس از rebuild سرور هشدار host identification changed ظاهر می‌شود.\n**فرمان مرجع:** `ssh-keygen -lf ~/.ssh/known_hosts`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** مالک سرویس را تأیید کنید؛ fingerprint جدید را out-of-band بگیرید؛ رکورد را بررسی و پس از تأیید فقط همان ورودی را به‌روز کنید.\n\n**انتظار:** fingerprint مستقل تأیید و تغییر مستند شده است.\n\n**دام تشخیصی:** ممکن است rebuild مجاز یا MITM باشد؛ حذف خودکار known_hosts کنترل اصالت را دور می‌زند.\n\n**ایمنی:** StrictHostKeyChecking را کورکورانه خاموش نکنید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** SSH / OpenSSH\n**موضوع:** Host-key mismatch\n**سناریو:** پس از rebuild سرور هشدار host identification changed ظاهر می‌شود.\n**فرمان مرجع:** `ssh-keygen -lf ~/.ssh/known_hosts`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** مالک سرویس را تأیید کنید؛ fingerprint جدید را out-of-band بگیرید؛ رکورد را بررسی و پس از تأیید فقط همان ورودی را به‌روز کنید.\n\n**انتظار:** fingerprint مستقل تأیید و تغییر مستند شده است.\n\n**دام تشخیصی:** ممکن است rebuild مجاز یا MITM باشد؛ حذف خودکار known_hosts کنترل اصالت را دور می‌زند.\n\n**ایمنی:** StrictHostKeyChecking را کورکورانه خاموش نکنید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی Host-key mismatch",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:ssh:wave11:02",
+      "lesson_uid": "lesson:ch68:ssh:wave11:02",
+      "technology_id": "ssh",
+      "title_fa": "مثال عملی: کلید در automation",
+      "fields": {
+        "examples": "**حوزه:** SSH / OpenSSH\n**موضوع:** کلید در automation\n**سناریو:** SSH دستی موفق است ولی scheduled task fail می‌شود.\n**فرمان مرجع:** `ssh -o IdentitiesOnly=yes -o BatchMode=yes -o PreferredAuthentications=publickey admin@192.0.2.10 true`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** user/HOME و key را بررسی کنید؛ ssh -G بگیرید؛ مجوز key و log سرور را تطبیق دهید؛ کلید automation را محدود و قابل‌چرخش کنید.\n\n**انتظار:** identity و علت شکست در environment سرویس معلوم است.\n\n**دام تشخیصی:** HOME، agent، config و prompt کاربر سرویس ممکن است متفاوت باشد.\n\n**ایمنی:** secret در command line/log/repository قرار نگیرد.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** SSH / OpenSSH\n**موضوع:** کلید در automation\n**سناریو:** SSH دستی موفق است ولی scheduled task fail می‌شود.\n**فرمان مرجع:** `ssh -o IdentitiesOnly=yes -o BatchMode=yes -o PreferredAuthentications=publickey admin@192.0.2.10 true`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** user/HOME و key را بررسی کنید؛ ssh -G بگیرید؛ مجوز key و log سرور را تطبیق دهید؛ کلید automation را محدود و قابل‌چرخش کنید.\n\n**انتظار:** identity و علت شکست در environment سرویس معلوم است.\n\n**دام تشخیصی:** HOME، agent، config و prompt کاربر سرویس ممکن است متفاوت باشد.\n\n**ایمنی:** secret در command line/log/repository قرار نگیرد.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی کلید در automation",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:ssh:wave11:03",
+      "lesson_uid": "lesson:ch68:ssh:wave11:03",
+      "technology_id": "ssh",
+      "title_fa": "مثال عملی: Match block در sshd",
+      "fields": {
+        "examples": "**حوزه:** SSH / OpenSSH\n**موضوع:** Match block در sshd\n**سناریو:** کاربر از یک subnet login دارد اما از subnet دیگر رد می‌شود.\n**فرمان مرجع:** `sudo sshd -T -C user=admin,host=server.example,addr=192.0.2.10`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** config/include را بررسی کنید؛ sshd -t و sshd -T -C را برای دو context مقایسه و log را هم‌بسته کنید.\n\n**انتظار:** پارامتر مؤثر متفاوت میان contextها مشخص شده است.\n\n**دام تشخیصی:** Match Address/User و includeها تنظیم مؤثر را تغییر می‌دهند.\n\n**ایمنی:** نشست مدیریتی جایگزین و rollback را پیش از reload حفظ کنید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** SSH / OpenSSH\n**موضوع:** Match block در sshd\n**سناریو:** کاربر از یک subnet login دارد اما از subnet دیگر رد می‌شود.\n**فرمان مرجع:** `sudo sshd -T -C user=admin,host=server.example,addr=192.0.2.10`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** config/include را بررسی کنید؛ sshd -t و sshd -T -C را برای دو context مقایسه و log را هم‌بسته کنید.\n\n**انتظار:** پارامتر مؤثر متفاوت میان contextها مشخص شده است.\n\n**دام تشخیصی:** Match Address/User و includeها تنظیم مؤثر را تغییر می‌دهند.\n\n**ایمنی:** نشست مدیریتی جایگزین و rollback را پیش از reload حفظ کنید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی Match block در sshd",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:telnet:wave11:01",
+      "lesson_uid": "lesson:ch68:telnet:wave11:01",
+      "technology_id": "telnet",
+      "title_fa": "مثال عملی: تفکیک HTTPS layers",
+      "fields": {
+        "examples": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تفکیک HTTPS layers\n**سناریو:** مرورگر خطا می‌دهد و لایهٔ DNS/TCP/TLS/HTTP معلوم نیست.\n**فرمان مرجع:** `Test-NetConnection 192.0.2.10 -Port 443 -InformationLevel Detailed`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** IP/DNS را ثبت کنید؛ TCP را بسنجید؛ TLS chain را بررسی کنید؛ curl code و زمان را بگیرید؛ یک مقصد سالم را مقایسه کنید.\n\n**انتظار:** لایهٔ شکست با شاهد قابل بازتولید مشخص است.\n\n**دام تشخیصی:** probeها را از resolve تا TCP، TLS/SNI و HTTP مرحله‌بندی کنید.\n\n**ایمنی:** Telnet رمزنگاری ندارد و برای credentials مناسب نیست.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تفکیک HTTPS layers\n**سناریو:** مرورگر خطا می‌دهد و لایهٔ DNS/TCP/TLS/HTTP معلوم نیست.\n**فرمان مرجع:** `Test-NetConnection 192.0.2.10 -Port 443 -InformationLevel Detailed`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** IP/DNS را ثبت کنید؛ TCP را بسنجید؛ TLS chain را بررسی کنید؛ curl code و زمان را بگیرید؛ یک مقصد سالم را مقایسه کنید.\n\n**انتظار:** لایهٔ شکست با شاهد قابل بازتولید مشخص است.\n\n**دام تشخیصی:** probeها را از resolve تا TCP، TLS/SNI و HTTP مرحله‌بندی کنید.\n\n**ایمنی:** Telnet رمزنگاری ندارد و برای credentials مناسب نیست.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی تفکیک HTTPS layers",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:telnet:wave11:02",
+      "lesson_uid": "lesson:ch68:telnet:wave11:02",
+      "technology_id": "telnet",
+      "title_fa": "مثال عملی: تفسیر MTR",
+      "fields": {
+        "examples": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تفسیر MTR\n**سناریو:** hop میانی loss نشان می‌دهد اما مقصد پایدار پاسخ می‌دهد.\n**فرمان مرجع:** `mtr -T -P 443 -r -c 10 192.0.2.10`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** نوع probe/count را ثبت کنید؛ loss تا مقصد را دنبال کنید؛ از مبدأ دوم و timestamp متفاوت نمونه بگیرید.\n\n**انتظار:** loss کنترلی از افت واقعی forwarding تفکیک شده است.\n\n**دام تشخیصی:** روتر ممکن است به probe خودش rate-limit دهد؛ loss میانی بدون تداوم در مقصد کافی نیست.\n\n**ایمنی:** probe را محدود و به مقصد مجاز محدود کنید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تفسیر MTR\n**سناریو:** hop میانی loss نشان می‌دهد اما مقصد پایدار پاسخ می‌دهد.\n**فرمان مرجع:** `mtr -T -P 443 -r -c 10 192.0.2.10`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** نوع probe/count را ثبت کنید؛ loss تا مقصد را دنبال کنید؛ از مبدأ دوم و timestamp متفاوت نمونه بگیرید.\n\n**انتظار:** loss کنترلی از افت واقعی forwarding تفکیک شده است.\n\n**دام تشخیصی:** روتر ممکن است به probe خودش rate-limit دهد؛ loss میانی بدون تداوم در مقصد کافی نیست.\n\n**ایمنی:** probe را محدود و به مقصد مجاز محدود کنید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی تفسیر MTR",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:telnet:wave11:03",
+      "lesson_uid": "lesson:ch68:telnet:wave11:03",
+      "technology_id": "telnet",
+      "title_fa": "مثال عملی: تست backend با curl --resolve",
+      "fields": {
+        "examples": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تست backend با curl --resolve\n**سناریو:** باید یک backend تست شود بدون تغییر DNS سراسری.\n**فرمان مرجع:** `curl --resolve example.com:443:192.0.2.10 -sS -o /dev/null -w 'code=%{http_code} connect=%{time_connect} total=%{time_total}\\n' https://example.com/`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** IP معتبر را بگیرید؛ body را ذخیره نکنید؛ code و زمان‌ها را ثبت؛ backend دیگر را با همان Host/SNI مقایسه کنید.\n\n**انتظار:** backend مشخص با Host/SNI درست اندازه‌گیری شده است.\n\n**دام تشخیصی:** --resolve IP مقصد را برای همان درخواست pin می‌کند و hostname/SNI را حفظ می‌کند.\n\n**ایمنی:** از endpointهای write یا تغییردهنده استفاده نکنید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** Telnet / TCP diagnostics\n**موضوع:** تست backend با curl --resolve\n**سناریو:** باید یک backend تست شود بدون تغییر DNS سراسری.\n**فرمان مرجع:** `curl --resolve example.com:443:192.0.2.10 -sS -o /dev/null -w 'code=%{http_code} connect=%{time_connect} total=%{time_total}\\n' https://example.com/`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** IP معتبر را بگیرید؛ body را ذخیره نکنید؛ code و زمان‌ها را ثبت؛ backend دیگر را با همان Host/SNI مقایسه کنید.\n\n**انتظار:** backend مشخص با Host/SNI درست اندازه‌گیری شده است.\n\n**دام تشخیصی:** --resolve IP مقصد را برای همان درخواست pin می‌کند و hostname/SNI را حفظ می‌کند.\n\n**ایمنی:** از endpointهای write یا تغییردهنده استفاده نکنید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی تست backend با curl --resolve",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:ftp:wave11:01",
+      "lesson_uid": "lesson:ch68:ftp:wave11:01",
+      "technology_id": "ftp",
+      "title_fa": "مثال عملی: Passive data channel",
+      "fields": {
+        "examples": "**حوزه:** FTP\n**موضوع:** Passive data channel\n**سناریو:** login موفق است اما LIST یا RETR timeout می‌شود.\n**فرمان مرجع:** `lftp -e 'set ftp:passive-mode true; cls -l /incoming; bye' ftp://ftp.example.test`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** مرحلهٔ timeout را ثبت کنید؛ PASV/EPSV و data port را ببینید؛ NAT/firewall و بازهٔ passive را تطبیق دهید.\n\n**انتظار:** شکست به data channel و پورت محدود شده است.\n\n**دام تشخیصی:** FTP control و data channel جدا دارد؛ در passive mode پورت داده باید از client قابل‌دسترسی باشد.\n\n**ایمنی:** FTP ساده credentials و محتوا را رمزنگاری نمی‌کند.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** FTP\n**موضوع:** Passive data channel\n**سناریو:** login موفق است اما LIST یا RETR timeout می‌شود.\n**فرمان مرجع:** `lftp -e 'set ftp:passive-mode true; cls -l /incoming; bye' ftp://ftp.example.test`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** مرحلهٔ timeout را ثبت کنید؛ PASV/EPSV و data port را ببینید؛ NAT/firewall و بازهٔ passive را تطبیق دهید.\n\n**انتظار:** شکست به data channel و پورت محدود شده است.\n\n**دام تشخیصی:** FTP control و data channel جدا دارد؛ در passive mode پورت داده باید از client قابل‌دسترسی باشد.\n\n**ایمنی:** FTP ساده credentials و محتوا را رمزنگاری نمی‌کند.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی Passive data channel",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:ftp:wave11:02",
+      "lesson_uid": "lesson:ch68:ftp:wave11:02",
+      "technology_id": "ftp",
+      "title_fa": "مثال عملی: فایل ناقص و range",
+      "fields": {
+        "examples": "**حوزه:** FTP\n**موضوع:** فایل ناقص و range\n**سناریو:** باید رفتار range را برای فایل بزرگ کنترل کرد.\n**فرمان مرجع:** `curl --range 0-1023 --output /tmp/sample.part ftp://ftp.example.test/pub/sample.bin`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** در staging دریافت محدود کنید؛ exit code و size را ثبت؛ فایل ناقص را منتشر نکنید؛ انتقال کامل را با checksum تأیید کنید.\n\n**انتظار:** فایل جزئی از artifact نهایی جدا شده است.\n\n**دام تشخیصی:** range فقط بخش محدودی را می‌گیرد؛ خروجی partial فایل نهایی نیست.\n\n**ایمنی:** credentials در URL/history قرار نگیرد.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** FTP\n**موضوع:** فایل ناقص و range\n**سناریو:** باید رفتار range را برای فایل بزرگ کنترل کرد.\n**فرمان مرجع:** `curl --range 0-1023 --output /tmp/sample.part ftp://ftp.example.test/pub/sample.bin`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** در staging دریافت محدود کنید؛ exit code و size را ثبت؛ فایل ناقص را منتشر نکنید؛ انتقال کامل را با checksum تأیید کنید.\n\n**انتظار:** فایل جزئی از artifact نهایی جدا شده است.\n\n**دام تشخیصی:** range فقط بخش محدودی را می‌گیرد؛ خروجی partial فایل نهایی نیست.\n\n**ایمنی:** credentials در URL/history قرار نگیرد.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی فایل ناقص و range",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:ftp:wave11:03",
+      "lesson_uid": "lesson:ch68:ftp:wave11:03",
+      "technology_id": "ftp",
+      "title_fa": "مثال عملی: active/passive behind NAT",
+      "fields": {
+        "examples": "**حوزه:** FTP\n**موضوع:** active/passive behind NAT\n**سناریو:** انتقال در یک subnet کار می‌کند و پشت NAT fail می‌شود.\n**فرمان مرجع:** `curl --ftp-port - --list-only ftp://ftp.example.test/pub/`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** mode پایه را ثبت؛ active/passive را در لاب مقایسه؛ 5-tuple را در log ببینید؛ فقط rule محدود با rollback تغییر کند.\n\n**انتظار:** data path به پورت/مسیر مشخص نسبت داده شده است.\n\n**دام تشخیصی:** active FTP اتصال data برگشتی از server نیاز دارد و firewall/NAT ممکن است آن را drop کند.\n\n**ایمنی:** rule گسترده یا ALG بدون scope اضافه نشود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** FTP\n**موضوع:** active/passive behind NAT\n**سناریو:** انتقال در یک subnet کار می‌کند و پشت NAT fail می‌شود.\n**فرمان مرجع:** `curl --ftp-port - --list-only ftp://ftp.example.test/pub/`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** mode پایه را ثبت؛ active/passive را در لاب مقایسه؛ 5-tuple را در log ببینید؛ فقط rule محدود با rollback تغییر کند.\n\n**انتظار:** data path به پورت/مسیر مشخص نسبت داده شده است.\n\n**دام تشخیصی:** active FTP اتصال data برگشتی از server نیاز دارد و firewall/NAT ممکن است آن را drop کند.\n\n**ایمنی:** rule گسترده یا ALG بدون scope اضافه نشود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی active/passive behind NAT",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:ftps:wave11:01",
+      "lesson_uid": "lesson:ch68:ftps:wave11:01",
+      "technology_id": "ftps",
+      "title_fa": "مثال عملی: TLS و certificate trust",
+      "fields": {
+        "examples": "**حوزه:** FTPS\n**موضوع:** TLS و certificate trust\n**سناریو:** FTPS در یک host کار می‌کند اما در دیگری certificate error می‌دهد.\n**فرمان مرجع:** `curl --ssl-reqd --tlsv1.2 --list-only ftp://ftp.example.test/pub/`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** نسخه/trust store را ثبت؛ خطا را به chain/hostname/time تفکیک؛ CA معتبر را نصب؛ از insecure flag استفاده نکنید.\n\n**انتظار:** TLS اجباری و هویت سرور بررسی شده است.\n\n**دام تشخیصی:** ssl-reqd fallback plain را رد می‌کند؛ chain، hostname و trust store باید درست باشند.\n\n**ایمنی:** خاموش‌کردن validation ریسک MITM دارد.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** FTPS\n**موضوع:** TLS و certificate trust\n**سناریو:** FTPS در یک host کار می‌کند اما در دیگری certificate error می‌دهد.\n**فرمان مرجع:** `curl --ssl-reqd --tlsv1.2 --list-only ftp://ftp.example.test/pub/`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** نسخه/trust store را ثبت؛ خطا را به chain/hostname/time تفکیک؛ CA معتبر را نصب؛ از insecure flag استفاده نکنید.\n\n**انتظار:** TLS اجباری و هویت سرور بررسی شده است.\n\n**دام تشخیصی:** ssl-reqd fallback plain را رد می‌کند؛ chain، hostname و trust store باید درست باشند.\n\n**ایمنی:** خاموش‌کردن validation ریسک MITM دارد.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی TLS و certificate trust",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:ftps:wave11:02",
+      "lesson_uid": "lesson:ch68:ftps:wave11:02",
+      "technology_id": "ftps",
+      "title_fa": "مثال عملی: Control/data channel",
+      "fields": {
+        "examples": "**حوزه:** FTPS\n**موضوع:** Control/data channel\n**سناریو:** control TLS برقرار است اما LIST timeout دارد.\n**فرمان مرجع:** `curl --ssl-reqd --quote 'FEAT' --list-only ftp://ftp.example.test/pub/`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** مرحلهٔ شکست را تعیین؛ PASV/EPSV را بررسی؛ بازهٔ data port و firewall را تطبیق؛ نسخه‌ها را مستند کنید.\n\n**انتظار:** شکست به control یا data محدود شده است.\n\n**دام تشخیصی:** TLS روی control channel، data channel/passive ports را تضمین نمی‌کند.\n\n**ایمنی:** از transcript حاوی username/path حساس پرهیز کنید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** FTPS\n**موضوع:** Control/data channel\n**سناریو:** control TLS برقرار است اما LIST timeout دارد.\n**فرمان مرجع:** `curl --ssl-reqd --quote 'FEAT' --list-only ftp://ftp.example.test/pub/`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** مرحلهٔ شکست را تعیین؛ PASV/EPSV را بررسی؛ بازهٔ data port و firewall را تطبیق؛ نسخه‌ها را مستند کنید.\n\n**انتظار:** شکست به control یا data محدود شده است.\n\n**دام تشخیصی:** TLS روی control channel، data channel/passive ports را تضمین نمی‌کند.\n\n**ایمنی:** از transcript حاوی username/path حساس پرهیز کنید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی Control/data channel",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:ftps:wave11:03",
+      "lesson_uid": "lesson:ch68:ftps:wave11:03",
+      "technology_id": "ftps",
+      "title_fa": "مثال عملی: تأیید upload و checksum",
+      "fields": {
+        "examples": "**حوزه:** FTPS\n**موضوع:** تأیید upload و checksum\n**سناریو:** job فایل را می‌فرستد اما باید success کاذب و overwrite کنترل شود.\n**فرمان مرجع:** `curl --ssl-reqd --fail --show-error --upload-file ./report.csv ftp://ftp.example.test/drop/report.csv`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** checksum محلی را ثبت؛ مقصد و overwrite policy را تأیید؛ exit code و فایل سمت server را verify کنید.\n\n**انتظار:** مقصد و صحت محتوا با شاهد مستقلی بررسی شده است.\n\n**دام تشخیصی:** TLS کانال را امن می‌کند نه درستی فایل را؛ exit code و checksum/size لازم‌اند.\n\n**ایمنی:** در production ابتدا staging/versioned name را ترجیح دهید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** FTPS\n**موضوع:** تأیید upload و checksum\n**سناریو:** job فایل را می‌فرستد اما باید success کاذب و overwrite کنترل شود.\n**فرمان مرجع:** `curl --ssl-reqd --fail --show-error --upload-file ./report.csv ftp://ftp.example.test/drop/report.csv`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** checksum محلی را ثبت؛ مقصد و overwrite policy را تأیید؛ exit code و فایل سمت server را verify کنید.\n\n**انتظار:** مقصد و صحت محتوا با شاهد مستقلی بررسی شده است.\n\n**دام تشخیصی:** TLS کانال را امن می‌کند نه درستی فایل را؛ exit code و checksum/size لازم‌اند.\n\n**ایمنی:** در production ابتدا staging/versioned name را ترجیح دهید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی تأیید upload و checksum",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:sftp:wave11:01",
+      "lesson_uid": "lesson:ch68:sftp:wave11:01",
+      "technology_id": "sftp",
+      "title_fa": "مثال عملی: Batch automation",
+      "fields": {
+        "examples": "**حوزه:** SFTP\n**موضوع:** Batch automation\n**سناریو:** job شبانه در prompt گیر می‌کند یا انتقال را اشتباه موفق گزارش می‌دهد.\n**فرمان مرجع:** `sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nput -p ./report.csv /incoming/report.csv\nbye\nEOF`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** host key را تأیید؛ account محدود بساز؛ batch بدون secret نگه‌دار؛ exit code/checksum را ثبت کن.\n\n**انتظار:** job noninteractive و انتقال قابل verify است.\n\n**دام تشخیصی:** BatchMode prompt را حذف می‌کند؛ exit code و فایل مقصد باید بررسی شوند.\n\n**ایمنی:** کلید/secret را در log یا repo قرار نده.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** SFTP\n**موضوع:** Batch automation\n**سناریو:** job شبانه در prompt گیر می‌کند یا انتقال را اشتباه موفق گزارش می‌دهد.\n**فرمان مرجع:** `sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nput -p ./report.csv /incoming/report.csv\nbye\nEOF`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** host key را تأیید؛ account محدود بساز؛ batch بدون secret نگه‌دار؛ exit code/checksum را ثبت کن.\n\n**انتظار:** job noninteractive و انتقال قابل verify است.\n\n**دام تشخیصی:** BatchMode prompt را حذف می‌کند؛ exit code و فایل مقصد باید بررسی شوند.\n\n**ایمنی:** کلید/secret را در log یا repo قرار نده.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی Batch automation",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:sftp:wave11:02",
+      "lesson_uid": "lesson:ch68:sftp:wave11:02",
+      "technology_id": "sftp",
+      "title_fa": "مثال عملی: host key vs user key",
+      "fields": {
+        "examples": "**حوزه:** SFTP\n**موضوع:** host key vs user key\n**سناریو:** پس از rebuild سرور انتقال متوقف می‌شود.\n**فرمان مرجع:** `sftp -oStrictHostKeyChecking=yes -oBatchMode=yes deploy@192.0.2.10`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** fingerprint را out-of-band بگیر؛ known_hosts و authorized_keys را جدا بررسی؛ تغییر تأییدشده را مستند کن.\n\n**انتظار:** host-key mismatch از شکست احراز هویت تفکیک شده است.\n\n**دام تشخیصی:** host key هویت سرور و user key هویت client را اثبات می‌کند.\n\n**ایمنی:** برای رفع سریع خطا host-key checking را خاموش نکن.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** SFTP\n**موضوع:** host key vs user key\n**سناریو:** پس از rebuild سرور انتقال متوقف می‌شود.\n**فرمان مرجع:** `sftp -oStrictHostKeyChecking=yes -oBatchMode=yes deploy@192.0.2.10`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** fingerprint را out-of-band بگیر؛ known_hosts و authorized_keys را جدا بررسی؛ تغییر تأییدشده را مستند کن.\n\n**انتظار:** host-key mismatch از شکست احراز هویت تفکیک شده است.\n\n**دام تشخیصی:** host key هویت سرور و user key هویت client را اثبات می‌کند.\n\n**ایمنی:** برای رفع سریع خطا host-key checking را خاموش نکن.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی host key vs user key",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:sftp:wave11:03",
+      "lesson_uid": "lesson:ch68:sftp:wave11:03",
+      "technology_id": "sftp",
+      "title_fa": "مثال عملی: resume و checksum",
+      "fields": {
+        "examples": "**حوزه:** SFTP\n**موضوع:** resume و checksum\n**سناریو:** فایل بزرگ قطع شده و نباید نسخهٔ ناقص مصرف شود.\n**فرمان مرجع:** `sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nreget /outgoing/large.bin ./large.bin\nbye\nEOF`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** source checksum را ثبت؛ فایل staging؛ reget؛ size/checksum را مقایسه؛ سپس atomic publish.\n\n**انتظار:** فایل کامل و یکپارچه منتشر شده است.\n\n**دام تشخیصی:** reget از offset محلی ادامه می‌دهد اما فرض می‌کند منبع ثابت مانده است.\n\n**ایمنی:** فایل staging قبل از verify مصرف نشود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** SFTP\n**موضوع:** resume و checksum\n**سناریو:** فایل بزرگ قطع شده و نباید نسخهٔ ناقص مصرف شود.\n**فرمان مرجع:** `sftp -oBatchMode=yes -b - deploy@192.0.2.10 <<'EOF'\nreget /outgoing/large.bin ./large.bin\nbye\nEOF`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** source checksum را ثبت؛ فایل staging؛ reget؛ size/checksum را مقایسه؛ سپس atomic publish.\n\n**انتظار:** فایل کامل و یکپارچه منتشر شده است.\n\n**دام تشخیصی:** reget از offset محلی ادامه می‌دهد اما فرض می‌کند منبع ثابت مانده است.\n\n**ایمنی:** فایل staging قبل از verify مصرف نشود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی resume و checksum",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:zabbix:wave11:01",
+      "lesson_uid": "lesson:ch68:zabbix:wave11:01",
+      "technology_id": "zabbix",
+      "title_fa": "مثال عملی: پاسخ agent و item mode",
+      "fields": {
+        "examples": "**حوزه:** Zabbix\n**موضوع:** پاسخ agent و item mode\n**سناریو:** host unavailable است اما agent اجرا می‌شود.\n**فرمان مرجع:** `zabbix_get -s 192.0.2.10 -p 10050 -k agent.ping`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** از server/proxy واقعی probe کنید؛ TLS و mode را تطبیق؛ آخرین timestamp و log را بررسی کنید.\n\n**انتظار:** علت به reachability، TLS، policy یا proxy محدود شده است.\n\n**دام تشخیصی:** direct probe مسیر active/proxy را ثابت نمی‌کند؛ TLS/PSK، AllowKey، item type و log مسیر واقعی را بررسی کنید.\n\n**ایمنی:** PSK در ticket/log عمومی ذخیره نشود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** Zabbix\n**موضوع:** پاسخ agent و item mode\n**سناریو:** host unavailable است اما agent اجرا می‌شود.\n**فرمان مرجع:** `zabbix_get -s 192.0.2.10 -p 10050 -k agent.ping`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** از server/proxy واقعی probe کنید؛ TLS و mode را تطبیق؛ آخرین timestamp و log را بررسی کنید.\n\n**انتظار:** علت به reachability، TLS، policy یا proxy محدود شده است.\n\n**دام تشخیصی:** direct probe مسیر active/proxy را ثابت نمی‌کند؛ TLS/PSK، AllowKey، item type و log مسیر واقعی را بررسی کنید.\n\n**ایمنی:** PSK در ticket/log عمومی ذخیره نشود.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی پاسخ agent و item mode",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:powershell:wave11:01",
+      "lesson_uid": "lesson:ch68:powershell:wave11:01",
+      "technology_id": "powershell",
+      "title_fa": "مثال عملی: listener و process owner",
+      "fields": {
+        "examples": "**حوزه:** PowerShell\n**موضوع:** listener و process owner\n**سناریو:** پورت ناشناخته روی Windows Server listen می‌کند.\n**فرمان مرجع:** `Get-NetTCPConnection -State Listen | Sort-Object LocalPort`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** LocalAddress/Port را بگیرید؛ PID را به process/service وصل؛ مالک و نیاز business را تأیید کنید.\n\n**انتظار:** پورت و سرویس مالک آن مشخص شده است.\n\n**دام تشخیصی:** پورت را با PID/process/service و firewall binding تطبیق دهید؛ listener به‌تنهایی اثبات آسیب‌پذیری نیست.\n\n**ایمنی:** process را بدون بررسی مالک terminate نکنید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** PowerShell\n**موضوع:** listener و process owner\n**سناریو:** پورت ناشناخته روی Windows Server listen می‌کند.\n**فرمان مرجع:** `Get-NetTCPConnection -State Listen | Sort-Object LocalPort`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** LocalAddress/Port را بگیرید؛ PID را به process/service وصل؛ مالک و نیاز business را تأیید کنید.\n\n**انتظار:** پورت و سرویس مالک آن مشخص شده است.\n\n**دام تشخیصی:** پورت را با PID/process/service و firewall binding تطبیق دهید؛ listener به‌تنهایی اثبات آسیب‌پذیری نیست.\n\n**ایمنی:** process را بدون بررسی مالک terminate نکنید.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی listener و process owner",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:windows_server:wave11:01",
+      "lesson_uid": "lesson:ch68:windows_server:wave11:01",
+      "technology_id": "windows_server",
+      "title_fa": "مثال عملی: DNS و discovery AD",
+      "fields": {
+        "examples": "**حوزه:** Windows Server / Active Directory\n**موضوع:** DNS و discovery AD\n**سناریو:** domain login در بعضی subnetها تاخیر دارد.\n**فرمان مرجع:** `dcdiag /test:dns /v`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** resolver را ثبت؛ SRVهای LDAP/Kerberos را query؛ replication را تطبیق؛ از client آزمایشی تأیید کن.\n\n**انتظار:** رکورد/resolver یا replication مسئله مشخص است.\n\n**دام تشخیصی:** AD به SRV، dynamic registration و DNS درست وابسته است؛ A record کافی نیست.\n\n**ایمنی:** رکورد را بدون تأیید مالک/عمر حذف نکن.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** Windows Server / Active Directory\n**موضوع:** DNS و discovery AD\n**سناریو:** domain login در بعضی subnetها تاخیر دارد.\n**فرمان مرجع:** `dcdiag /test:dns /v`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** resolver را ثبت؛ SRVهای LDAP/Kerberos را query؛ replication را تطبیق؛ از client آزمایشی تأیید کن.\n\n**انتظار:** رکورد/resolver یا replication مسئله مشخص است.\n\n**دام تشخیصی:** AD به SRV، dynamic registration و DNS درست وابسته است؛ A record کافی نیست.\n\n**ایمنی:** رکورد را بدون تأیید مالک/عمر حذف نکن.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی DNS و discovery AD",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:cisco:wave11:01",
+      "lesson_uid": "lesson:ch68:cisco:wave11:01",
+      "technology_id": "cisco",
+      "title_fa": "مثال عملی: OSPF adjacency و RIB",
+      "fields": {
+        "examples": "**حوزه:** Cisco IOS / IOS-XE\n**موضوع:** OSPF adjacency و RIB\n**سناریو:** neighbor FULL است اما route مورد انتظار نیست.\n**فرمان مرجع:** `show ip ospf neighbor detail`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** neighbor/area را ثبت؛ route و LSDB را بررسی؛ prefix filters/redistribution را تطبیق بده.\n\n**انتظار:** مرحلهٔ فقدان prefix مشخص شده است.\n\n**دام تشخیصی:** adjacency، LSA، policy و RIB selection مراحل جدا هستند.\n\n**ایمنی:** route policy ممکن است reachability گسترده را عوض کند؛ rollback لازم است.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** Cisco IOS / IOS-XE\n**موضوع:** OSPF adjacency و RIB\n**سناریو:** neighbor FULL است اما route مورد انتظار نیست.\n**فرمان مرجع:** `show ip ospf neighbor detail`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** neighbor/area را ثبت؛ route و LSDB را بررسی؛ prefix filters/redistribution را تطبیق بده.\n\n**انتظار:** مرحلهٔ فقدان prefix مشخص شده است.\n\n**دام تشخیصی:** adjacency، LSA، policy و RIB selection مراحل جدا هستند.\n\n**ایمنی:** route policy ممکن است reachability گسترده را عوض کند؛ rollback لازم است.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی OSPF adjacency و RIB",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:mikrotik:wave11:01",
+      "lesson_uid": "lesson:ch68:mikrotik:wave11:01",
+      "technology_id": "mikrotik",
+      "title_fa": "مثال عملی: OSPF neighbor flapping",
+      "fields": {
+        "examples": "**حوزه:** MikroTik RouterOS\n**موضوع:** OSPF neighbor flapping\n**سناریو:** neighbor از FULL خارج می‌شود و subnet ناپایدار است.\n**فرمان مرجع:** `/routing/ospf/neighbor/print detail`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** خروجی و log timestamp بگیر؛ دو سمت را مقایسه؛ قبل از تغییر backup تهیه کن.\n\n**انتظار:** عامل flapping به timer/MTU/auth/link محدود شده است.\n\n**دام تشخیصی:** state/uptime را با hello/dead، MTU، auth و وضعیت interface تطبیق دهید.\n\n**ایمنی:** تغییر template می‌تواند چند adjacency را قطع کند.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** MikroTik RouterOS\n**موضوع:** OSPF neighbor flapping\n**سناریو:** neighbor از FULL خارج می‌شود و subnet ناپایدار است.\n**فرمان مرجع:** `/routing/ospf/neighbor/print detail`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** خروجی و log timestamp بگیر؛ دو سمت را مقایسه؛ قبل از تغییر backup تهیه کن.\n\n**انتظار:** عامل flapping به timer/MTU/auth/link محدود شده است.\n\n**دام تشخیصی:** state/uptime را با hello/dead، MTU، auth و وضعیت interface تطبیق دهید.\n\n**ایمنی:** تغییر template می‌تواند چند adjacency را قطع کند.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی OSPF neighbor flapping",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:aruba:wave11:01",
+      "lesson_uid": "lesson:ch68:aruba:wave11:01",
+      "technology_id": "aruba",
+      "title_fa": "مثال عملی: VLAN membership",
+      "fields": {
+        "examples": "**حوزه:** Aruba AOS-CX\n**موضوع:** VLAN membership\n**سناریو:** پورت up است اما client به gateway نمی‌رسد.\n**فرمان مرجع:** `show vlan`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** VLAN را تأیید؛ پورت/uplink را بخوان؛ MAC و ARP را دنبال؛ تغییر را با rollback انجام بده.\n\n**انتظار:** محل ناهماهنگی access/uplink مشخص شده است.\n\n**دام تشخیصی:** oper up فقط لایهٔ فیزیکی را تأیید می‌کند؛ access VLAN و trunk tagging مهم‌اند.\n\n**ایمنی:** تغییر VLAN uplink/management می‌تواند دسترسی را قطع کند.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** Aruba AOS-CX\n**موضوع:** VLAN membership\n**سناریو:** پورت up است اما client به gateway نمی‌رسد.\n**فرمان مرجع:** `show vlan`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** VLAN را تأیید؛ پورت/uplink را بخوان؛ MAC و ARP را دنبال؛ تغییر را با rollback انجام بده.\n\n**انتظار:** محل ناهماهنگی access/uplink مشخص شده است.\n\n**دام تشخیصی:** oper up فقط لایهٔ فیزیکی را تأیید می‌کند؛ access VLAN و trunk tagging مهم‌اند.\n\n**ایمنی:** تغییر VLAN uplink/management می‌تواند دسترسی را قطع کند.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی VLAN membership",
+      "level": "L2"
+    },
+    {
+      "uid": "example:ch68:terraform:wave11:01",
+      "lesson_uid": "lesson:ch68:terraform:wave11:01",
+      "technology_id": "terraform",
+      "title_fa": "مثال عملی: validate در برابر plan",
+      "fields": {
+        "examples": "**حوزه:** Terraform\n**موضوع:** validate در برابر plan\n**سناریو:** config از validate می‌گذرد اما احتمال destroy ناخواسته وجود دارد.\n**فرمان مرجع:** `terraform validate`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** workspace/backend را تأیید؛ validate و plan بگیر؛ create/update/destroy/replace را review کن.\n\n**انتظار:** هیچ destroy ناخواسته بدون review باقی نمانده است.\n\n**دام تشخیصی:** validate ساختار را بررسی می‌کند؛ plan اثر تغییر روی resource/state را نشان می‌دهد.\n\n**ایمنی:** state/plan ممکن است secret/topology افشا کند؛ apply فقط پس از review.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید."
+      },
+      "full_content": "**حوزه:** Terraform\n**موضوع:** validate در برابر plan\n**سناریو:** config از validate می‌گذرد اما احتمال destroy ناخواسته وجود دارد.\n**فرمان مرجع:** `terraform validate`\n\n**پیش‌شرط:** دسترسی مجاز، مقصد تأییدشده و baseline زمان‌دار.\n\n**گام‌ها:** workspace/backend را تأیید؛ validate و plan بگیر؛ create/update/destroy/replace را review کن.\n\n**انتظار:** هیچ destroy ناخواسته بدون review باقی نمانده است.\n\n**دام تشخیصی:** validate ساختار را بررسی می‌کند؛ plan اثر تغییر روی resource/state را نشان می‌دهد.\n\n**ایمنی:** state/plan ممکن است secret/topology افشا کند؛ apply فقط پس از review.\n\nخروجی ساختگی جایگزین خروجی واقعی نیست؛ نتیجه را با log یا ابزار دوم تطبیق دهید.",
+      "summary": "مثال کاربردی validate در برابر plan",
+      "level": "L2"
+    }
+  ]
+}

@@ -246,3 +246,12 @@ python tools/chapters/68/authoring/audit_coverage.py --strict
 - ممیز پوشش اکنون موج دهم را نیز می‌خواند؛ این تغییر به معنی رسیدن به سهمیه‌های هدف نیست.
 - رکوردها `review_required` هستند؛ دستورهای وابسته به نسخه و محیط باید با مستندات فروشنده بررسی شوند. فرمان‌های capture، اسکن و مدیریت فقط در محدودهٔ مجاز اجرا شوند.
 - گزارش `coverage_report.json` تا اجرای واقعی ممیز پس از این تغییر، گزارش نهایی محسوب نمی‌شود. اجرای ممیز و تأیید Build باید از CI بررسی شود.
+
+
+## موج یازدهم — غنی‌سازی فنی هدفمند (۱۸ اکتبر ۲۰۲۶)
+
+- `commands/sources/encyclopedia/commands_multi_technology_wave11.json` دارای **53 مرجع دستوری** در ۱۴ فناوری است؛ اولویت با VoIP/Asterisk، VMware ESXi، SSH، TCP diagnostics، FTP/FTPS/SFTP و تکمیل منتخب Zabbix، Aruba، Terraform، PowerShell، Windows Server، Cisco و MikroTik است.
+- پنج بستهٔ `lessons_wave5.json`، `examples_wave5.json`، `labs_wave5.json`، `questions_wave5.json` و `answer_key_wave5.json` هرکدام **28 رکورد مستقل** دارند. سؤال و پاسخ‌نامه UID مشترک دارند و مثال/لاب/آزمون به درس پیوند خورده است.
+- محتوای تازه شامل سناریو، روال تشخیصی، معیار پایان، مرز تفسیر و ریسک است؛ همه با وضعیت `review_required` باقی می‌مانند و اجرای زنده ادعا نشده است.
+- ممیز به موج یازدهم متصل شد؛ اسکریپت ادغام Android نیز موج‌های دهم و یازدهم را وارد می‌کند.
+- `coverage_report.json` عمداً به‌عنوان snapshot قدیمی علامت‌گذاری شده است. بعد از اجرای واقعی ممیز در CI باید گزارش بازتولید شود؛ شمار ثابت manifest، ممیزی محسوب نمی‌شود.
