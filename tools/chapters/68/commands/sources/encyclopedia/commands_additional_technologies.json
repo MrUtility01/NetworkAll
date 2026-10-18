@@ -4,10 +4,10 @@
   "chapter_order": 68,
   "domain": "additional_technologies",
   "domain_title_fa": "فناوری‌های تکمیلی زیرساخت",
-  "count": 470,
+  "count": 510,
   "preserve_existing_records": true,
   "source_status": "review_required",
-  "note": "افزونه افزایشی؛ موج اول فناوری‌های تکمیلی و موج دوم تکمیل دستورهای منتخب خانواده‌های اصلی. تمام رکوردها نیازمند بازبینی نسخه‌ای هستند؛ سهمیه نهایی ۵۰۰/۱۰۰/۱۰۰/۵۰۰ هنوز تکمیل نشده است. موج دوم: رکوردهای منتخب و افزایشی برای Git، DNS/DHCP/NTP، SNMP/Syslog، Web/TLS، Backup/Recovery، Security Ops، Fortinet Management، Cloud، Zabbix، Wireshark، Proxmox، Hyper-V، Ansible، Terraform، Kubernetes، VoIP، VMware، Juniper، Aruba، Ubiquiti، SSH، Telnet، FTP، FTPS و SFTP افزوده شدند. وضعیت همهٔ رکوردهای موج دوم review_required است تا اعتبارسنجی نسخه‌ای و آزمایش محیطی انجام شود. موج سوم: فرمان‌های عملیاتی افزایشی برای تمام فناوری‌های شناسایی‌شده اضافه شد. این رکوردها برای تکمیل تدریجی پوشش‌اند و تا بازبینی نسخه‌ای/محیطی در وضعیت review_required باقی می‌مانند؛ شمارش به معنی تأیید آزمایشگاهی نیست.",
+  "note": "افزونه افزایشی؛ موج اول فناوری‌های تکمیلی و موج دوم تکمیل دستورهای منتخب خانواده‌های اصلی. تمام رکوردها نیازمند بازبینی نسخه‌ای هستند؛ سهمیه نهایی ۵۰۰/۱۰۰/۱۰۰/۵۰۰ هنوز تکمیل نشده است. موج دوم: رکوردهای منتخب و افزایشی برای Git، DNS/DHCP/NTP، SNMP/Syslog، Web/TLS، Backup/Recovery، Security Ops، Fortinet Management، Cloud، Zabbix، Wireshark، Proxmox، Hyper-V، Ansible، Terraform، Kubernetes، VoIP، VMware، Juniper، Aruba، Ubiquiti، SSH، Telnet، FTP، FTPS و SFTP افزوده شدند. وضعیت همهٔ رکوردهای موج دوم review_required است تا اعتبارسنجی نسخه‌ای و آزمایش محیطی انجام شود. موج سوم: فرمان‌های عملیاتی افزایشی برای تمام فناوری‌های شناسایی‌شده اضافه شد. این رکوردها برای تکمیل تدریجی پوشش‌اند و تا بازبینی نسخه‌ای/محیطی در وضعیت review_required باقی می‌مانند؛ شمارش به معنی تأیید آزمایشگاهی نیست. موج چهارم: فرمان‌های افزایشی منتخب برای پوشش مشاهده وضعیت، بررسی اتصال، اعتبارسنجی و عیب‌یابی به‌صورت افزایشی ثبت شدند. هر رکورد تا تأیید نسخه‌ای/محیطی review_required باقی می‌ماند.",
   "commands": [
     {
       "uid": "cmd:ssh:system:ssh-v",
@@ -37176,6 +37176,3006 @@
             "id": "q-linux_bash-wave3-journalctl-p-err-b",
             "correct_index": 0,
             "explain_fa": "برای مشاهده socketهای در حال listen یا خطاهای boot جاری در Linux."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:ssh:wave4:ssh-oconnecttimeout-5-admin-192-0-2-10",
+      "vendor": "OpenSSH",
+      "platform": "OpenSSH client/server",
+      "category": "ssh",
+      "subcategory": "ssh",
+      "level": "L1",
+      "title_fa": "SSH / OpenSSH — ssh -oConnectTimeout=5 admin@192.0.2.10",
+      "title_en": "ssh -oConnectTimeout=5 admin@192.0.2.10",
+      "command": "ssh -oConnectTimeout=5 admin@192.0.2.10",
+      "aliases": [],
+      "syntax": "ssh -oConnectTimeout=5 admin@192.0.2.10",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در SSH / OpenSSH؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (SSH / OpenSSH).",
+        "فرمان را اجرا کنید: ssh -oConnectTimeout=5 admin@192.0.2.10",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، ssh -oConnectTimeout=5 admin@192.0.2.10 را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "ssh",
+        "SSH / OpenSSH",
+        "ssh -oConnectTimeout=5 admin@192.0.2.10",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد ssh -oConnectTimeout=5 admin@192.0.2.10 چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در SSH / OpenSSH؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ssh-wave4-ssh-oconnecttimeout-5-admin-192-0-2-10",
+            "prompt": "کاربرد فرمان ssh -oConnectTimeout=5 admin@192.0.2.10 در SSH / OpenSSH چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در SSH / OpenSSH؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ssh-wave4-ssh-oconnecttimeout-5-admin-192-0-2-10",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در SSH / OpenSSH؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "ssh"
+    },
+    {
+      "uid": "cmd:ssh:wave4:ssh-keygen-y-f-ssh-id-ed25519",
+      "vendor": "OpenSSH",
+      "platform": "OpenSSH client/server",
+      "category": "ssh",
+      "subcategory": "ssh",
+      "level": "L1",
+      "title_fa": "SSH / OpenSSH — ssh-keygen -y -f ~/.ssh/id_ed25519",
+      "title_en": "ssh-keygen -y -f ~/.ssh/id_ed25519",
+      "command": "ssh-keygen -y -f ~/.ssh/id_ed25519",
+      "aliases": [],
+      "syntax": "ssh-keygen -y -f ~/.ssh/id_ed25519",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در SSH / OpenSSH؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (SSH / OpenSSH).",
+        "فرمان را اجرا کنید: ssh-keygen -y -f ~/.ssh/id_ed25519",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، ssh-keygen -y -f ~/.ssh/id_ed25519 را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "ssh",
+        "SSH / OpenSSH",
+        "ssh-keygen -y -f ~/.ssh/id_ed25519",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد ssh-keygen -y -f ~/.ssh/id_ed25519 چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در SSH / OpenSSH؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ssh-wave4-ssh-keygen-y-f-ssh-id-ed25519",
+            "prompt": "کاربرد فرمان ssh-keygen -y -f ~/.ssh/id_ed25519 در SSH / OpenSSH چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در SSH / OpenSSH؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ssh-wave4-ssh-keygen-y-f-ssh-id-ed25519",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در SSH / OpenSSH؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "ssh"
+    },
+    {
+      "uid": "cmd:telnet:wave4:nc-vz-w-3-192-0-2-10-443",
+      "vendor": "IETF / OS clients",
+      "platform": "Telnet clients; TCP",
+      "category": "telnet",
+      "subcategory": "telnet",
+      "level": "L1",
+      "title_fa": "Telnet / TCP diagnostics — nc -vz -w 3 192.0.2.10 443",
+      "title_en": "nc -vz -w 3 192.0.2.10 443",
+      "command": "nc -vz -w 3 192.0.2.10 443",
+      "aliases": [],
+      "syntax": "nc -vz -w 3 192.0.2.10 443",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Telnet / TCP diagnostics؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Telnet / TCP diagnostics).",
+        "فرمان را اجرا کنید: nc -vz -w 3 192.0.2.10 443",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، nc -vz -w 3 192.0.2.10 443 را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "telnet",
+        "Telnet / TCP diagnostics",
+        "nc -vz -w 3 192.0.2.10 443",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد nc -vz -w 3 192.0.2.10 443 چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Telnet / TCP diagnostics؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-telnet-wave4-nc-vz-w-3-192-0-2-10-443",
+            "prompt": "کاربرد فرمان nc -vz -w 3 192.0.2.10 443 در Telnet / TCP diagnostics چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Telnet / TCP diagnostics؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-telnet-wave4-nc-vz-w-3-192-0-2-10-443",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Telnet / TCP diagnostics؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "telnet"
+    },
+    {
+      "uid": "cmd:telnet:wave4:timeout-3-bash-c-dev-tcp-192-0-2-10-443",
+      "vendor": "IETF / OS clients",
+      "platform": "Telnet clients; TCP",
+      "category": "telnet",
+      "subcategory": "telnet",
+      "level": "L1",
+      "title_fa": "Telnet / TCP diagnostics — timeout 3 bash -c '</dev/tcp/192.0.2.10/443'",
+      "title_en": "timeout 3 bash -c '</dev/tcp/192.0.2.10/443'",
+      "command": "timeout 3 bash -c '</dev/tcp/192.0.2.10/443'",
+      "aliases": [],
+      "syntax": "timeout 3 bash -c '</dev/tcp/192.0.2.10/443'",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Telnet / TCP diagnostics؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Telnet / TCP diagnostics).",
+        "فرمان را اجرا کنید: timeout 3 bash -c '</dev/tcp/192.0.2.10/443'",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، timeout 3 bash -c '</dev/tcp/192.0.2.10/443' را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "telnet",
+        "Telnet / TCP diagnostics",
+        "timeout 3 bash -c '</dev/tcp/192.0.2.10/443'",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد timeout 3 bash -c '</dev/tcp/192.0.2.10/443' چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Telnet / TCP diagnostics؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-telnet-wave4-timeout-3-bash-c-dev-tcp-192-0-2-10-443",
+            "prompt": "کاربرد فرمان timeout 3 bash -c '</dev/tcp/192.0.2.10/443' در Telnet / TCP diagnostics چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Telnet / TCP diagnostics؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-telnet-wave4-timeout-3-bash-c-dev-tcp-192-0-2-10-443",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Telnet / TCP diagnostics؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "telnet"
+    },
+    {
+      "uid": "cmd:ftp:wave4:curl-list-only-ftp-ftp-example-test-pub",
+      "vendor": "FTP/FTPS/SFTP",
+      "platform": "curl/lftp/FTP clients",
+      "category": "ftp",
+      "subcategory": "ftp",
+      "level": "L1",
+      "title_fa": "FTP — curl --list-only ftp://ftp.example.test/pub/",
+      "title_en": "curl --list-only ftp://ftp.example.test/pub/",
+      "command": "curl --list-only ftp://ftp.example.test/pub/",
+      "aliases": [],
+      "syntax": "curl --list-only ftp://ftp.example.test/pub/",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در FTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (FTP).",
+        "فرمان را اجرا کنید: curl --list-only ftp://ftp.example.test/pub/",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، curl --list-only ftp://ftp.example.test/pub/ را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "ftp",
+        "FTP",
+        "curl --list-only ftp://ftp.example.test/pub/",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد curl --list-only ftp://ftp.example.test/pub/ چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در FTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ftp-wave4-curl-list-only-ftp-ftp-example-test-pub",
+            "prompt": "کاربرد فرمان curl --list-only ftp://ftp.example.test/pub/ در FTP چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در FTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ftp-wave4-curl-list-only-ftp-ftp-example-test-pub",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در FTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "ftp"
+    },
+    {
+      "uid": "cmd:ftp:wave4:lftp-e-pwd-cls-bye-ftp-ftp-example-test",
+      "vendor": "FTP/FTPS/SFTP",
+      "platform": "curl/lftp/FTP clients",
+      "category": "ftp",
+      "subcategory": "ftp",
+      "level": "L1",
+      "title_fa": "FTP — lftp -e 'pwd; cls; bye' ftp://ftp.example.test",
+      "title_en": "lftp -e 'pwd; cls; bye' ftp://ftp.example.test",
+      "command": "lftp -e 'pwd; cls; bye' ftp://ftp.example.test",
+      "aliases": [],
+      "syntax": "lftp -e 'pwd; cls; bye' ftp://ftp.example.test",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در FTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (FTP).",
+        "فرمان را اجرا کنید: lftp -e 'pwd; cls; bye' ftp://ftp.example.test",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، lftp -e 'pwd; cls; bye' ftp://ftp.example.test را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "ftp",
+        "FTP",
+        "lftp -e 'pwd; cls; bye' ftp://ftp.example.test",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد lftp -e 'pwd; cls; bye' ftp://ftp.example.test چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در FTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ftp-wave4-lftp-e-pwd-cls-bye-ftp-ftp-example-test",
+            "prompt": "کاربرد فرمان lftp -e 'pwd; cls; bye' ftp://ftp.example.test در FTP چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در FTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ftp-wave4-lftp-e-pwd-cls-bye-ftp-ftp-example-test",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در FTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "ftp"
+    },
+    {
+      "uid": "cmd:ftps:wave4:curl-verbose-ssl-reqd-ftps-ftp-example-test",
+      "vendor": "FTP/FTPS/SFTP",
+      "platform": "curl/lftp/FTP clients",
+      "category": "ftps",
+      "subcategory": "ftps",
+      "level": "L1",
+      "title_fa": "FTPS — curl --verbose --ssl-reqd ftps://ftp.example.test/",
+      "title_en": "curl --verbose --ssl-reqd ftps://ftp.example.test/",
+      "command": "curl --verbose --ssl-reqd ftps://ftp.example.test/",
+      "aliases": [],
+      "syntax": "curl --verbose --ssl-reqd ftps://ftp.example.test/",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در FTPS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (FTPS).",
+        "فرمان را اجرا کنید: curl --verbose --ssl-reqd ftps://ftp.example.test/",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، curl --verbose --ssl-reqd ftps://ftp.example.test/ را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "ftps",
+        "FTPS",
+        "curl --verbose --ssl-reqd ftps://ftp.example.test/",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد curl --verbose --ssl-reqd ftps://ftp.example.test/ چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در FTPS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ftps-wave4-curl-verbose-ssl-reqd-ftps-ftp-example-test",
+            "prompt": "کاربرد فرمان curl --verbose --ssl-reqd ftps://ftp.example.test/ در FTPS چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در FTPS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ftps-wave4-curl-verbose-ssl-reqd-ftps-ftp-example-test",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در FTPS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "ftps"
+    },
+    {
+      "uid": "cmd:ftps:wave4:openssl-s-client-connect-ftp-example-test-21-starttls-f",
+      "vendor": "FTP/FTPS/SFTP",
+      "platform": "curl/lftp/FTP clients",
+      "category": "ftps",
+      "subcategory": "ftps",
+      "level": "L1",
+      "title_fa": "FTPS — openssl s_client -connect ftp.example.test:21 -starttls ftp",
+      "title_en": "openssl s_client -connect ftp.example.test:21 -starttls ftp",
+      "command": "openssl s_client -connect ftp.example.test:21 -starttls ftp",
+      "aliases": [],
+      "syntax": "openssl s_client -connect ftp.example.test:21 -starttls ftp",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در FTPS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (FTPS).",
+        "فرمان را اجرا کنید: openssl s_client -connect ftp.example.test:21 -starttls ftp",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، openssl s_client -connect ftp.example.test:21 -starttls ftp را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "ftps",
+        "FTPS",
+        "openssl s_client -connect ftp.example.test:21 -starttls ftp",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد openssl s_client -connect ftp.example.test:21 -starttls ftp چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در FTPS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ftps-wave4-openssl-s-client-connect-ftp-example-test-21-starttls-f",
+            "prompt": "کاربرد فرمان openssl s_client -connect ftp.example.test:21 -starttls ftp در FTPS چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در FTPS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ftps-wave4-openssl-s-client-connect-ftp-example-test-21-starttls-f",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در FTPS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "ftps"
+    },
+    {
+      "uid": "cmd:sftp:wave4:ssh-keygen-f-192-0-2-10-2222",
+      "vendor": "FTP/FTPS/SFTP",
+      "platform": "curl/lftp/FTP clients",
+      "category": "sftp",
+      "subcategory": "sftp",
+      "level": "L1",
+      "title_fa": "SFTP — ssh-keygen -F '[192.0.2.10]:2222'",
+      "title_en": "ssh-keygen -F '[192.0.2.10]:2222'",
+      "command": "ssh-keygen -F '[192.0.2.10]:2222'",
+      "aliases": [],
+      "syntax": "ssh-keygen -F '[192.0.2.10]:2222'",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در SFTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (SFTP).",
+        "فرمان را اجرا کنید: ssh-keygen -F '[192.0.2.10]:2222'",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، ssh-keygen -F '[192.0.2.10]:2222' را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "sftp",
+        "SFTP",
+        "ssh-keygen -F '[192.0.2.10]:2222'",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد ssh-keygen -F '[192.0.2.10]:2222' چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در SFTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-sftp-wave4-ssh-keygen-f-192-0-2-10-2222",
+            "prompt": "کاربرد فرمان ssh-keygen -F '[192.0.2.10]:2222' در SFTP چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در SFTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-sftp-wave4-ssh-keygen-f-192-0-2-10-2222",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در SFTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "sftp"
+    },
+    {
+      "uid": "cmd:vmware_esxi:wave4:esxcli-system-services-list",
+      "vendor": "VMware",
+      "platform": "ESXi / vSphere; ESXCLI version-dependent",
+      "category": "vmware_esxi",
+      "subcategory": "vmware_esxi",
+      "level": "L1",
+      "title_fa": "VMware ESXi / vSphere — esxcli system services list",
+      "title_en": "esxcli system services list",
+      "command": "esxcli system services list",
+      "aliases": [],
+      "syntax": "esxcli system services list",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در VMware ESXi / vSphere؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (VMware ESXi / vSphere).",
+        "فرمان را اجرا کنید: esxcli system services list",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، esxcli system services list را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "vmware_esxi",
+        "VMware ESXi / vSphere",
+        "esxcli system services list",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد esxcli system services list چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در VMware ESXi / vSphere؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-vmware_esxi-wave4-esxcli-system-services-list",
+            "prompt": "کاربرد فرمان esxcli system services list در VMware ESXi / vSphere چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در VMware ESXi / vSphere؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-vmware_esxi-wave4-esxcli-system-services-list",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در VMware ESXi / vSphere؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "vmware_esxi"
+    },
+    {
+      "uid": "cmd:zabbix:wave4:zabbix-get-s-192-0-2-20-k-system-hostname",
+      "vendor": "Zabbix",
+      "platform": "Zabbix server/proxy/agent; version-dependent",
+      "category": "zabbix",
+      "subcategory": "zabbix",
+      "level": "L1",
+      "title_fa": "Zabbix — zabbix_get -s 192.0.2.20 -k system.hostname",
+      "title_en": "zabbix_get -s 192.0.2.20 -k system.hostname",
+      "command": "zabbix_get -s 192.0.2.20 -k system.hostname",
+      "aliases": [],
+      "syntax": "zabbix_get -s 192.0.2.20 -k system.hostname",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Zabbix؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Zabbix).",
+        "فرمان را اجرا کنید: zabbix_get -s 192.0.2.20 -k system.hostname",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، zabbix_get -s 192.0.2.20 -k system.hostname را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "zabbix",
+        "Zabbix",
+        "zabbix_get -s 192.0.2.20 -k system.hostname",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد zabbix_get -s 192.0.2.20 -k system.hostname چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Zabbix؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-zabbix-wave4-zabbix-get-s-192-0-2-20-k-system-hostname",
+            "prompt": "کاربرد فرمان zabbix_get -s 192.0.2.20 -k system.hostname در Zabbix چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Zabbix؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-zabbix-wave4-zabbix-get-s-192-0-2-20-k-system-hostname",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Zabbix؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "zabbix"
+    },
+    {
+      "uid": "cmd:wireshark:wave4:tshark-r-capture-pcap-q-z-io-stat-1",
+      "vendor": "Wireshark/tshark",
+      "platform": "Wireshark CLI; version-dependent",
+      "category": "wireshark",
+      "subcategory": "wireshark",
+      "level": "L1",
+      "title_fa": "Wireshark / TShark — tshark -r capture.pcap -q -z io,stat,1",
+      "title_en": "tshark -r capture.pcap -q -z io,stat,1",
+      "command": "tshark -r capture.pcap -q -z io,stat,1",
+      "aliases": [],
+      "syntax": "tshark -r capture.pcap -q -z io,stat,1",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Wireshark / TShark؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Wireshark / TShark).",
+        "فرمان را اجرا کنید: tshark -r capture.pcap -q -z io,stat,1",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، tshark -r capture.pcap -q -z io,stat,1 را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "wireshark",
+        "Wireshark / TShark",
+        "tshark -r capture.pcap -q -z io,stat,1",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد tshark -r capture.pcap -q -z io,stat,1 چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Wireshark / TShark؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-wireshark-wave4-tshark-r-capture-pcap-q-z-io-stat-1",
+            "prompt": "کاربرد فرمان tshark -r capture.pcap -q -z io,stat,1 در Wireshark / TShark چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Wireshark / TShark؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-wireshark-wave4-tshark-r-capture-pcap-q-z-io-stat-1",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Wireshark / TShark؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "wireshark"
+    },
+    {
+      "uid": "cmd:proxmox:wave4:pvesm-list-local",
+      "vendor": "Proxmox Server Solutions",
+      "platform": "Proxmox VE; release-dependent",
+      "category": "proxmox",
+      "subcategory": "proxmox",
+      "level": "L1",
+      "title_fa": "Proxmox VE — pvesm list local",
+      "title_en": "pvesm list local",
+      "command": "pvesm list local",
+      "aliases": [],
+      "syntax": "pvesm list local",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Proxmox VE؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Proxmox VE).",
+        "فرمان را اجرا کنید: pvesm list local",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، pvesm list local را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "proxmox",
+        "Proxmox VE",
+        "pvesm list local",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد pvesm list local چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Proxmox VE؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-proxmox-wave4-pvesm-list-local",
+            "prompt": "کاربرد فرمان pvesm list local در Proxmox VE چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Proxmox VE؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-proxmox-wave4-pvesm-list-local",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Proxmox VE؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "proxmox"
+    },
+    {
+      "uid": "cmd:ansible:wave4:ansible-inventory-i-inventory-ini-graph",
+      "vendor": "Red Hat Ansible",
+      "platform": "Ansible Core; collection-dependent",
+      "category": "ansible",
+      "subcategory": "ansible",
+      "level": "L1",
+      "title_fa": "Ansible — ansible-inventory -i inventory.ini --graph",
+      "title_en": "ansible-inventory -i inventory.ini --graph",
+      "command": "ansible-inventory -i inventory.ini --graph",
+      "aliases": [],
+      "syntax": "ansible-inventory -i inventory.ini --graph",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Ansible؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Ansible).",
+        "فرمان را اجرا کنید: ansible-inventory -i inventory.ini --graph",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، ansible-inventory -i inventory.ini --graph را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "ansible",
+        "Ansible",
+        "ansible-inventory -i inventory.ini --graph",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد ansible-inventory -i inventory.ini --graph چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Ansible؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ansible-wave4-ansible-inventory-i-inventory-ini-graph",
+            "prompt": "کاربرد فرمان ansible-inventory -i inventory.ini --graph در Ansible چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Ansible؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ansible-wave4-ansible-inventory-i-inventory-ini-graph",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Ansible؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "ansible"
+    },
+    {
+      "uid": "cmd:ansible:wave4:ansible-playbook-i-inventory-ini-site-yml-list-tasks",
+      "vendor": "Red Hat Ansible",
+      "platform": "Ansible Core; collection-dependent",
+      "category": "ansible",
+      "subcategory": "ansible",
+      "level": "L1",
+      "title_fa": "Ansible — ansible-playbook -i inventory.ini site.yml --list-tasks",
+      "title_en": "ansible-playbook -i inventory.ini site.yml --list-tasks",
+      "command": "ansible-playbook -i inventory.ini site.yml --list-tasks",
+      "aliases": [],
+      "syntax": "ansible-playbook -i inventory.ini site.yml --list-tasks",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Ansible؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Ansible).",
+        "فرمان را اجرا کنید: ansible-playbook -i inventory.ini site.yml --list-tasks",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، ansible-playbook -i inventory.ini site.yml --list-tasks را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "ansible",
+        "Ansible",
+        "ansible-playbook -i inventory.ini site.yml --list-tasks",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد ansible-playbook -i inventory.ini site.yml --list-tasks چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Ansible؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ansible-wave4-ansible-playbook-i-inventory-ini-site-yml-list-tasks",
+            "prompt": "کاربرد فرمان ansible-playbook -i inventory.ini site.yml --list-tasks در Ansible چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Ansible؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ansible-wave4-ansible-playbook-i-inventory-ini-site-yml-list-tasks",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Ansible؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "ansible"
+    },
+    {
+      "uid": "cmd:kubernetes:wave4:kubectl-rollout-status-deployment-deployment-n-namespac",
+      "vendor": "Kubernetes",
+      "platform": "kubectl; API-version-dependent",
+      "category": "kubernetes",
+      "subcategory": "kubernetes",
+      "level": "L1",
+      "title_fa": "Kubernetes — kubectl rollout status deployment/DEPLOYMENT -n NAMESPACE",
+      "title_en": "kubectl rollout status deployment/DEPLOYMENT -n NAMESPACE",
+      "command": "kubectl rollout status deployment/DEPLOYMENT -n NAMESPACE",
+      "aliases": [],
+      "syntax": "kubectl rollout status deployment/DEPLOYMENT -n NAMESPACE",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Kubernetes؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Kubernetes).",
+        "فرمان را اجرا کنید: kubectl rollout status deployment/DEPLOYMENT -n NAMESPACE",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، kubectl rollout status deployment/DEPLOYMENT -n NAMESPACE را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "kubernetes",
+        "Kubernetes",
+        "kubectl rollout status deployment/DEPLOYMENT -n NAMESPACE",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد kubectl rollout status deployment/DEPLOYMENT -n NAMESPACE چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Kubernetes؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-kubernetes-wave4-kubectl-rollout-status-deployment-deployment-n-namespac",
+            "prompt": "کاربرد فرمان kubectl rollout status deployment/DEPLOYMENT -n NAMESPACE در Kubernetes چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Kubernetes؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-kubernetes-wave4-kubectl-rollout-status-deployment-deployment-n-namespac",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Kubernetes؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "kubernetes"
+    },
+    {
+      "uid": "cmd:powershell:wave4:test-netconnection-computername-192-0-2-10-port-443",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+",
+      "category": "powershell",
+      "subcategory": "powershell",
+      "level": "L1",
+      "title_fa": "PowerShell — Test-NetConnection -ComputerName 192.0.2.10 -Port 443",
+      "title_en": "Test-NetConnection -ComputerName 192.0.2.10 -Port 443",
+      "command": "Test-NetConnection -ComputerName 192.0.2.10 -Port 443",
+      "aliases": [],
+      "syntax": "Test-NetConnection -ComputerName 192.0.2.10 -Port 443",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در PowerShell؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (PowerShell).",
+        "فرمان را اجرا کنید: Test-NetConnection -ComputerName 192.0.2.10 -Port 443",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، Test-NetConnection -ComputerName 192.0.2.10 -Port 443 را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "powershell",
+        "PowerShell",
+        "Test-NetConnection -ComputerName 192.0.2.10 -Port 443",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Test-NetConnection -ComputerName 192.0.2.10 -Port 443 چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در PowerShell؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-powershell-wave4-test-netconnection-computername-192-0-2-10-port-443",
+            "prompt": "کاربرد فرمان Test-NetConnection -ComputerName 192.0.2.10 -Port 443 در PowerShell چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در PowerShell؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-powershell-wave4-test-netconnection-computername-192-0-2-10-port-443",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در PowerShell؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "powershell"
+    },
+    {
+      "uid": "cmd:powershell:wave4:get-service-where-object-status-eq-stopped",
+      "vendor": "Microsoft",
+      "platform": "Windows PowerShell 5.1 / PowerShell 7+",
+      "category": "powershell",
+      "subcategory": "powershell",
+      "level": "L1",
+      "title_fa": "PowerShell — Get-Service | Where-Object Status -eq 'Stopped'",
+      "title_en": "Get-Service | Where-Object Status -eq 'Stopped'",
+      "command": "Get-Service | Where-Object Status -eq 'Stopped'",
+      "aliases": [],
+      "syntax": "Get-Service | Where-Object Status -eq 'Stopped'",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در PowerShell؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (PowerShell).",
+        "فرمان را اجرا کنید: Get-Service | Where-Object Status -eq 'Stopped'",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، Get-Service | Where-Object Status -eq 'Stopped' را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "powershell",
+        "PowerShell",
+        "Get-Service | Where-Object Status -eq 'Stopped'",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-Service | Where-Object Status -eq 'Stopped' چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در PowerShell؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-powershell-wave4-get-service-where-object-status-eq-stopped",
+            "prompt": "کاربرد فرمان Get-Service | Where-Object Status -eq 'Stopped' در PowerShell چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در PowerShell؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-powershell-wave4-get-service-where-object-status-eq-stopped",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در PowerShell؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "powershell"
+    },
+    {
+      "uid": "cmd:hyperv:wave4:get-vmnetworkadapter-vmname-vm-name",
+      "vendor": "Microsoft",
+      "platform": "Hyper-V PowerShell module; Windows Server/client editions",
+      "category": "hyperv",
+      "subcategory": "hyperv",
+      "level": "L1",
+      "title_fa": "Hyper-V — Get-VMNetworkAdapter -VMName 'VM-NAME'",
+      "title_en": "Get-VMNetworkAdapter -VMName 'VM-NAME'",
+      "command": "Get-VMNetworkAdapter -VMName 'VM-NAME'",
+      "aliases": [],
+      "syntax": "Get-VMNetworkAdapter -VMName 'VM-NAME'",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Hyper-V؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Hyper-V).",
+        "فرمان را اجرا کنید: Get-VMNetworkAdapter -VMName 'VM-NAME'",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، Get-VMNetworkAdapter -VMName 'VM-NAME' را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "hyperv",
+        "Hyper-V",
+        "Get-VMNetworkAdapter -VMName 'VM-NAME'",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-VMNetworkAdapter -VMName 'VM-NAME' چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Hyper-V؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-hyperv-wave4-get-vmnetworkadapter-vmname-vm-name",
+            "prompt": "کاربرد فرمان Get-VMNetworkAdapter -VMName 'VM-NAME' در Hyper-V چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Hyper-V؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-hyperv-wave4-get-vmnetworkadapter-vmname-vm-name",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Hyper-V؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "hyperv"
+    },
+    {
+      "uid": "cmd:backup_recovery:wave4:borg-check-repository",
+      "vendor": "FTP/FTPS/SFTP",
+      "platform": "curl/lftp/FTP clients",
+      "category": "backup_recovery",
+      "subcategory": "backup_recovery",
+      "level": "L1",
+      "title_fa": "Backup / Recovery — borg check REPOSITORY",
+      "title_en": "borg check REPOSITORY",
+      "command": "borg check REPOSITORY",
+      "aliases": [],
+      "syntax": "borg check REPOSITORY",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Backup / Recovery؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Backup / Recovery).",
+        "فرمان را اجرا کنید: borg check REPOSITORY",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، borg check REPOSITORY را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "backup_recovery",
+        "Backup / Recovery",
+        "borg check REPOSITORY",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد borg check REPOSITORY چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Backup / Recovery؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-backup_recovery-wave4-borg-check-repository",
+            "prompt": "کاربرد فرمان borg check REPOSITORY در Backup / Recovery چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Backup / Recovery؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-backup_recovery-wave4-borg-check-repository",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Backup / Recovery؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "backup_recovery"
+    },
+    {
+      "uid": "cmd:ubiquiti:wave4:show-ip-route-summary",
+      "vendor": "Ubiquiti",
+      "platform": "Ubiquiti EdgeOS",
+      "category": "ubiquiti",
+      "subcategory": "ubiquiti",
+      "level": "L1",
+      "title_fa": "Ubiquiti EdgeOS / UniFi — show ip route summary",
+      "title_en": "show ip route summary",
+      "command": "show ip route summary",
+      "aliases": [],
+      "syntax": "show ip route summary",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Ubiquiti EdgeOS / UniFi؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Ubiquiti EdgeOS / UniFi).",
+        "فرمان را اجرا کنید: show ip route summary",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، show ip route summary را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "ubiquiti",
+        "Ubiquiti EdgeOS / UniFi",
+        "show ip route summary",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show ip route summary چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Ubiquiti EdgeOS / UniFi؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ubiquiti-wave4-show-ip-route-summary",
+            "prompt": "کاربرد فرمان show ip route summary در Ubiquiti EdgeOS / UniFi چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Ubiquiti EdgeOS / UniFi؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ubiquiti-wave4-show-ip-route-summary",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Ubiquiti EdgeOS / UniFi؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "ubiquiti"
+    },
+    {
+      "uid": "cmd:ubiquiti:wave4:show-system-uptime",
+      "vendor": "Ubiquiti",
+      "platform": "Ubiquiti EdgeOS",
+      "category": "ubiquiti",
+      "subcategory": "ubiquiti",
+      "level": "L1",
+      "title_fa": "Ubiquiti EdgeOS / UniFi — show system uptime",
+      "title_en": "show system uptime",
+      "command": "show system uptime",
+      "aliases": [],
+      "syntax": "show system uptime",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Ubiquiti EdgeOS / UniFi؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Ubiquiti EdgeOS / UniFi).",
+        "فرمان را اجرا کنید: show system uptime",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، show system uptime را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "ubiquiti",
+        "Ubiquiti EdgeOS / UniFi",
+        "show system uptime",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show system uptime چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Ubiquiti EdgeOS / UniFi؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-ubiquiti-wave4-show-system-uptime",
+            "prompt": "کاربرد فرمان show system uptime در Ubiquiti EdgeOS / UniFi چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Ubiquiti EdgeOS / UniFi؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-ubiquiti-wave4-show-system-uptime",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Ubiquiti EdgeOS / UniFi؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "ubiquiti"
+    },
+    {
+      "uid": "cmd:snmp_syslog:wave4:snmpget-v3-l-authpriv-u-monitor-host-1-3-6-1-2-1-1-3-0",
+      "vendor": "Net-SNMP / Syslog tools",
+      "platform": "Net-SNMP client",
+      "category": "snmp_syslog",
+      "subcategory": "snmp_syslog",
+      "level": "L1",
+      "title_fa": "SNMP / Syslog — snmpget -v3 -l authPriv -u monitor HOST 1.3.6.1.2.1.1.3.0",
+      "title_en": "snmpget -v3 -l authPriv -u monitor HOST 1.3.6.1.2.1.1.3.0",
+      "command": "snmpget -v3 -l authPriv -u monitor HOST 1.3.6.1.2.1.1.3.0",
+      "aliases": [],
+      "syntax": "snmpget -v3 -l authPriv -u monitor HOST 1.3.6.1.2.1.1.3.0",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در SNMP / Syslog؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (SNMP / Syslog).",
+        "فرمان را اجرا کنید: snmpget -v3 -l authPriv -u monitor HOST 1.3.6.1.2.1.1.3.0",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، snmpget -v3 -l authPriv -u monitor HOST 1.3.6.1.2.1.1.3.0 را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "snmp_syslog",
+        "SNMP / Syslog",
+        "snmpget -v3 -l authPriv -u monitor HOST 1.3.6.1.2.1.1.3.0",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد snmpget -v3 -l authPriv -u monitor HOST 1.3.6.1.2.1.1.3.0 چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در SNMP / Syslog؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-snmp_syslog-wave4-snmpget-v3-l-authpriv-u-monitor-host-1-3-6-1-2-1-1-3-0",
+            "prompt": "کاربرد فرمان snmpget -v3 -l authPriv -u monitor HOST 1.3.6.1.2.1.1.3.0 در SNMP / Syslog چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در SNMP / Syslog؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-snmp_syslog-wave4-snmpget-v3-l-authpriv-u-monitor-host-1-3-6-1-2-1-1-3-0",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در SNMP / Syslog؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "snmp_syslog"
+    },
+    {
+      "uid": "cmd:snmp_syslog:wave4:logger-p-user-notice-chapter68-test-message",
+      "vendor": "Net-SNMP / Syslog tools",
+      "platform": "Net-SNMP client",
+      "category": "snmp_syslog",
+      "subcategory": "snmp_syslog",
+      "level": "L1",
+      "title_fa": "SNMP / Syslog — logger -p user.notice 'chapter68-test-message'",
+      "title_en": "logger -p user.notice 'chapter68-test-message'",
+      "command": "logger -p user.notice 'chapter68-test-message'",
+      "aliases": [],
+      "syntax": "logger -p user.notice 'chapter68-test-message'",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در SNMP / Syslog؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (SNMP / Syslog).",
+        "فرمان را اجرا کنید: logger -p user.notice 'chapter68-test-message'",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، logger -p user.notice 'chapter68-test-message' را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "snmp_syslog",
+        "SNMP / Syslog",
+        "logger -p user.notice 'chapter68-test-message'",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد logger -p user.notice 'chapter68-test-message' چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در SNMP / Syslog؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-snmp_syslog-wave4-logger-p-user-notice-chapter68-test-message",
+            "prompt": "کاربرد فرمان logger -p user.notice 'chapter68-test-message' در SNMP / Syslog چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در SNMP / Syslog؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-snmp_syslog-wave4-logger-p-user-notice-chapter68-test-message",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در SNMP / Syslog؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "snmp_syslog"
+    },
+    {
+      "uid": "cmd:dns_dhcp_ntp:wave4:dig-192-0-2-53-example-com-a-noall-answer",
+      "vendor": "BIND / ISC / chrony",
+      "platform": "BIND utilities",
+      "category": "dns_dhcp_ntp",
+      "subcategory": "dns_dhcp_ntp",
+      "level": "L1",
+      "title_fa": "DNS / DHCP / NTP — dig @192.0.2.53 example.com A +noall +answer",
+      "title_en": "dig @192.0.2.53 example.com A +noall +answer",
+      "command": "dig @192.0.2.53 example.com A +noall +answer",
+      "aliases": [],
+      "syntax": "dig @192.0.2.53 example.com A +noall +answer",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در DNS / DHCP / NTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (DNS / DHCP / NTP).",
+        "فرمان را اجرا کنید: dig @192.0.2.53 example.com A +noall +answer",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، dig @192.0.2.53 example.com A +noall +answer را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "dns_dhcp_ntp",
+        "DNS / DHCP / NTP",
+        "dig @192.0.2.53 example.com A +noall +answer",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد dig @192.0.2.53 example.com A +noall +answer چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در DNS / DHCP / NTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-dns_dhcp_ntp-wave4-dig-192-0-2-53-example-com-a-noall-answer",
+            "prompt": "کاربرد فرمان dig @192.0.2.53 example.com A +noall +answer در DNS / DHCP / NTP چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در DNS / DHCP / NTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-dns_dhcp_ntp-wave4-dig-192-0-2-53-example-com-a-noall-answer",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در DNS / DHCP / NTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "dns_dhcp_ntp"
+    },
+    {
+      "uid": "cmd:dns_dhcp_ntp:wave4:ntpq-pn",
+      "vendor": "BIND / ISC / chrony",
+      "platform": "BIND utilities",
+      "category": "dns_dhcp_ntp",
+      "subcategory": "dns_dhcp_ntp",
+      "level": "L1",
+      "title_fa": "DNS / DHCP / NTP — ntpq -pn",
+      "title_en": "ntpq -pn",
+      "command": "ntpq -pn",
+      "aliases": [],
+      "syntax": "ntpq -pn",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در DNS / DHCP / NTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (DNS / DHCP / NTP).",
+        "فرمان را اجرا کنید: ntpq -pn",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، ntpq -pn را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "dns_dhcp_ntp",
+        "DNS / DHCP / NTP",
+        "ntpq -pn",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد ntpq -pn چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در DNS / DHCP / NTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-dns_dhcp_ntp-wave4-ntpq-pn",
+            "prompt": "کاربرد فرمان ntpq -pn در DNS / DHCP / NTP چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در DNS / DHCP / NTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-dns_dhcp_ntp-wave4-ntpq-pn",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در DNS / DHCP / NTP؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "dns_dhcp_ntp"
+    },
+    {
+      "uid": "cmd:web_tls:wave4:curl-ss-o-dev-null-w-http-code-time-total-n-https-examp",
+      "vendor": "Nginx / Apache / OpenSSL",
+      "platform": "Nginx",
+      "category": "web_tls",
+      "subcategory": "web_tls",
+      "level": "L1",
+      "title_fa": "Web / TLS / PKI — curl -sS -o /dev/null -w '%{http_code} %{time_total}\\n' https://example.com/",
+      "title_en": "curl -sS -o /dev/null -w '%{http_code} %{time_total}\\n' https://example.com/",
+      "command": "curl -sS -o /dev/null -w '%{http_code} %{time_total}\\n' https://example.com/",
+      "aliases": [],
+      "syntax": "curl -sS -o /dev/null -w '%{http_code} %{time_total}\\n' https://example.com/",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Web / TLS / PKI؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Web / TLS / PKI).",
+        "فرمان را اجرا کنید: curl -sS -o /dev/null -w '%{http_code} %{time_total}\\n' https://example.com/",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، curl -sS -o /dev/null -w '%{http_code} %{time_total}\\n' https://example.com/ را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "web_tls",
+        "Web / TLS / PKI",
+        "curl -sS -o /dev/null -w '%{http_code} %{time_total}\\n' https://example.com/",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد curl -sS -o /dev/null -w '%{http_code} %{time_total}\\n' https://example.com/ چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Web / TLS / PKI؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-web_tls-wave4-curl-ss-o-dev-null-w-http-code-time-total-n-https-examp",
+            "prompt": "کاربرد فرمان curl -sS -o /dev/null -w '%{http_code} %{time_total}\\n' https://example.com/ در Web / TLS / PKI چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Web / TLS / PKI؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-web_tls-wave4-curl-ss-o-dev-null-w-http-code-time-total-n-https-examp",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Web / TLS / PKI؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "web_tls"
+    },
+    {
+      "uid": "cmd:cloud:wave4:az-account-list-output-table",
+      "vendor": "AWS / Microsoft Azure",
+      "platform": "AWS CLI v2",
+      "category": "cloud",
+      "subcategory": "cloud",
+      "level": "L1",
+      "title_fa": "AWS / Azure — az account list --output table",
+      "title_en": "az account list --output table",
+      "command": "az account list --output table",
+      "aliases": [],
+      "syntax": "az account list --output table",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در AWS / Azure؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (AWS / Azure).",
+        "فرمان را اجرا کنید: az account list --output table",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، az account list --output table را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "cloud",
+        "AWS / Azure",
+        "az account list --output table",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد az account list --output table چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در AWS / Azure؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cloud-wave4-az-account-list-output-table",
+            "prompt": "کاربرد فرمان az account list --output table در AWS / Azure چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در AWS / Azure؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cloud-wave4-az-account-list-output-table",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در AWS / Azure؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "cloud"
+    },
+    {
+      "uid": "cmd:security_ops:wave4:get-winevent-filterhashtable-logname-security-id-4625-m",
+      "vendor": "Microsoft / Linux / osquery",
+      "platform": "Windows wevtutil",
+      "category": "security_ops",
+      "subcategory": "security_ops",
+      "level": "L1",
+      "title_fa": "Security Operations — Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 20",
+      "title_en": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 20",
+      "command": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 20",
+      "aliases": [],
+      "syntax": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 20",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Security Operations؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Security Operations).",
+        "فرمان را اجرا کنید: Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 20",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 20 را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "security_ops",
+        "Security Operations",
+        "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 20",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 20 چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Security Operations؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-security_ops-wave4-get-winevent-filterhashtable-logname-security-id-4625-m",
+            "prompt": "کاربرد فرمان Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 20 در Security Operations چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Security Operations؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-security_ops-wave4-get-winevent-filterhashtable-logname-security-id-4625-m",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Security Operations؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "security_ops"
+    },
+    {
+      "uid": "cmd:security_ops:wave4:journalctl-since-1-hour-ago-p-err",
+      "vendor": "Microsoft / Linux / osquery",
+      "platform": "Windows wevtutil",
+      "category": "security_ops",
+      "subcategory": "security_ops",
+      "level": "L1",
+      "title_fa": "Security Operations — journalctl --since '1 hour ago' -p err",
+      "title_en": "journalctl --since '1 hour ago' -p err",
+      "command": "journalctl --since '1 hour ago' -p err",
+      "aliases": [],
+      "syntax": "journalctl --since '1 hour ago' -p err",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Security Operations؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Security Operations).",
+        "فرمان را اجرا کنید: journalctl --since '1 hour ago' -p err",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، journalctl --since '1 hour ago' -p err را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "security_ops",
+        "Security Operations",
+        "journalctl --since '1 hour ago' -p err",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد journalctl --since '1 hour ago' -p err چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Security Operations؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-security_ops-wave4-journalctl-since-1-hour-ago-p-err",
+            "prompt": "کاربرد فرمان journalctl --since '1 hour ago' -p err در Security Operations چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Security Operations؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-security_ops-wave4-journalctl-since-1-hour-ago-p-err",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Security Operations؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "security_ops"
+    },
+    {
+      "uid": "cmd:cisco:wave4:show-vlan-brief",
+      "vendor": "Cisco",
+      "platform": "Cisco IOS/IOS-XE",
+      "category": "cisco",
+      "subcategory": "cisco",
+      "level": "L1",
+      "title_fa": "Cisco IOS / IOS-XE — show vlan brief",
+      "title_en": "show vlan brief",
+      "command": "show vlan brief",
+      "aliases": [],
+      "syntax": "show vlan brief",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Cisco IOS / IOS-XE؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Cisco IOS / IOS-XE).",
+        "فرمان را اجرا کنید: show vlan brief",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، show vlan brief را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "cisco",
+        "Cisco IOS / IOS-XE",
+        "show vlan brief",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show vlan brief چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Cisco IOS / IOS-XE؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cisco-wave4-show-vlan-brief",
+            "prompt": "کاربرد فرمان show vlan brief در Cisco IOS / IOS-XE چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Cisco IOS / IOS-XE؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cisco-wave4-show-vlan-brief",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Cisco IOS / IOS-XE؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "cisco",
+      "related_commands": []
+    },
+    {
+      "uid": "cmd:cisco:wave4:show-spanning-tree-summary",
+      "vendor": "Cisco",
+      "platform": "Cisco IOS/IOS-XE",
+      "category": "cisco",
+      "subcategory": "cisco",
+      "level": "L1",
+      "title_fa": "Cisco IOS / IOS-XE — show spanning-tree summary",
+      "title_en": "show spanning-tree summary",
+      "command": "show spanning-tree summary",
+      "aliases": [],
+      "syntax": "show spanning-tree summary",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Cisco IOS / IOS-XE؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Cisco IOS / IOS-XE).",
+        "فرمان را اجرا کنید: show spanning-tree summary",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، show spanning-tree summary را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "cisco",
+        "Cisco IOS / IOS-XE",
+        "show spanning-tree summary",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد show spanning-tree summary چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Cisco IOS / IOS-XE؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-cisco-wave4-show-spanning-tree-summary",
+            "prompt": "کاربرد فرمان show spanning-tree summary در Cisco IOS / IOS-XE چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Cisco IOS / IOS-XE؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-cisco-wave4-show-spanning-tree-summary",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Cisco IOS / IOS-XE؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "cisco",
+      "related_commands": []
+    },
+    {
+      "uid": "cmd:windows_batch:wave4:where-exe-ping",
+      "vendor": "Microsoft Windows CMD",
+      "platform": "Windows CMD / Batch",
+      "category": "windows_batch",
+      "subcategory": "windows_batch",
+      "level": "L1",
+      "title_fa": "Windows Batch / CMD — where.exe ping",
+      "title_en": "where.exe ping",
+      "command": "where.exe ping",
+      "aliases": [],
+      "syntax": "where.exe ping",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Batch / CMD؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Windows Batch / CMD).",
+        "فرمان را اجرا کنید: where.exe ping",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، where.exe ping را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "windows_batch",
+        "Windows Batch / CMD",
+        "where.exe ping",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد where.exe ping چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Batch / CMD؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_batch-wave4-where-exe-ping",
+            "prompt": "کاربرد فرمان where.exe ping در Windows Batch / CMD چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Batch / CMD؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_batch-wave4-where-exe-ping",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Batch / CMD؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "windows_batch",
+      "related_commands": []
+    },
+    {
+      "uid": "cmd:windows_batch:wave4:tasklist-svc",
+      "vendor": "Microsoft Windows CMD",
+      "platform": "Windows CMD / Batch",
+      "category": "windows_batch",
+      "subcategory": "windows_batch",
+      "level": "L1",
+      "title_fa": "Windows Batch / CMD — tasklist /svc",
+      "title_en": "tasklist /svc",
+      "command": "tasklist /svc",
+      "aliases": [],
+      "syntax": "tasklist /svc",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Batch / CMD؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Windows Batch / CMD).",
+        "فرمان را اجرا کنید: tasklist /svc",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، tasklist /svc را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "windows_batch",
+        "Windows Batch / CMD",
+        "tasklist /svc",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد tasklist /svc چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Batch / CMD؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_batch-wave4-tasklist-svc",
+            "prompt": "کاربرد فرمان tasklist /svc در Windows Batch / CMD چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Batch / CMD؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_batch-wave4-tasklist-svc",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Batch / CMD؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "windows_batch",
+      "related_commands": []
+    },
+    {
+      "uid": "cmd:windows_server:wave4:get-addomain",
+      "vendor": "Microsoft Windows Server",
+      "platform": "ActiveDirectory PowerShell module",
+      "category": "windows_server",
+      "subcategory": "windows_server",
+      "level": "L1",
+      "title_fa": "Windows Server / Active Directory — Get-ADDomain",
+      "title_en": "Get-ADDomain",
+      "command": "Get-ADDomain",
+      "aliases": [],
+      "syntax": "Get-ADDomain",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Server / Active Directory؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Windows Server / Active Directory).",
+        "فرمان را اجرا کنید: Get-ADDomain",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، Get-ADDomain را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "windows_server",
+        "Windows Server / Active Directory",
+        "Get-ADDomain",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-ADDomain چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Server / Active Directory؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_server-wave4-get-addomain",
+            "prompt": "کاربرد فرمان Get-ADDomain در Windows Server / Active Directory چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Server / Active Directory؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_server-wave4-get-addomain",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Server / Active Directory؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "windows_server",
+      "related_commands": []
+    },
+    {
+      "uid": "cmd:windows_server:wave4:get-dnsserverstatistics",
+      "vendor": "Microsoft Windows Server",
+      "platform": "ActiveDirectory PowerShell module",
+      "category": "windows_server",
+      "subcategory": "windows_server",
+      "level": "L1",
+      "title_fa": "Windows Server / Active Directory — Get-DnsServerStatistics",
+      "title_en": "Get-DnsServerStatistics",
+      "command": "Get-DnsServerStatistics",
+      "aliases": [],
+      "syntax": "Get-DnsServerStatistics",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Server / Active Directory؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Windows Server / Active Directory).",
+        "فرمان را اجرا کنید: Get-DnsServerStatistics",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، Get-DnsServerStatistics را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "windows_server",
+        "Windows Server / Active Directory",
+        "Get-DnsServerStatistics",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد Get-DnsServerStatistics چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Server / Active Directory؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-windows_server-wave4-get-dnsserverstatistics",
+            "prompt": "کاربرد فرمان Get-DnsServerStatistics در Windows Server / Active Directory چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Server / Active Directory؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-windows_server-wave4-get-dnsserverstatistics",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Windows Server / Active Directory؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "windows_server",
+      "related_commands": []
+    },
+    {
+      "uid": "cmd:fortigate:wave4:diagnose-sys-top-1-10",
+      "vendor": "Fortinet",
+      "platform": "FortiGate / FortiOS; verify exact release syntax",
+      "category": "fortigate",
+      "subcategory": "fortigate",
+      "level": "L1",
+      "title_fa": "FortiGate / FortiOS — diagnose sys top 1 10",
+      "title_en": "diagnose sys top 1 10",
+      "command": "diagnose sys top 1 10",
+      "aliases": [],
+      "syntax": "diagnose sys top 1 10",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در FortiGate / FortiOS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (FortiGate / FortiOS).",
+        "فرمان را اجرا کنید: diagnose sys top 1 10",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، diagnose sys top 1 10 را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "fortigate",
+        "FortiGate / FortiOS",
+        "diagnose sys top 1 10",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد diagnose sys top 1 10 چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در FortiGate / FortiOS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortigate-wave4-diagnose-sys-top-1-10",
+            "prompt": "کاربرد فرمان diagnose sys top 1 10 در FortiGate / FortiOS چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در FortiGate / FortiOS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortigate-wave4-diagnose-sys-top-1-10",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در FortiGate / FortiOS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "fortigate"
+    },
+    {
+      "uid": "cmd:fortigate:wave4:diagnose-hardware-deviceinfo-nic",
+      "vendor": "Fortinet",
+      "platform": "FortiGate / FortiOS; verify exact release syntax",
+      "category": "fortigate",
+      "subcategory": "fortigate",
+      "level": "L1",
+      "title_fa": "FortiGate / FortiOS — diagnose hardware deviceinfo nic",
+      "title_en": "diagnose hardware deviceinfo nic",
+      "command": "diagnose hardware deviceinfo nic",
+      "aliases": [],
+      "syntax": "diagnose hardware deviceinfo nic",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در FortiGate / FortiOS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (FortiGate / FortiOS).",
+        "فرمان را اجرا کنید: diagnose hardware deviceinfo nic",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، diagnose hardware deviceinfo nic را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "fortigate",
+        "FortiGate / FortiOS",
+        "diagnose hardware deviceinfo nic",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد diagnose hardware deviceinfo nic چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در FortiGate / FortiOS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-fortigate-wave4-diagnose-hardware-deviceinfo-nic",
+            "prompt": "کاربرد فرمان diagnose hardware deviceinfo nic در FortiGate / FortiOS چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در FortiGate / FortiOS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-fortigate-wave4-diagnose-hardware-deviceinfo-nic",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در FortiGate / FortiOS؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required",
+      "technology_id": "fortigate"
+    },
+    {
+      "uid": "cmd:linux_bash:wave4:ip-br-address",
+      "technology_id": "linux_bash",
+      "vendor": "Linux",
+      "platform": "systemd Linux; nginx unit name may vary",
+      "category": "linux_bash",
+      "subcategory": "linux_bash",
+      "level": "L1",
+      "title_fa": "Linux / Bash — ip -br address",
+      "title_en": "ip -br address",
+      "command": "ip -br address",
+      "aliases": [],
+      "syntax": "ip -br address",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Linux / Bash؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Linux / Bash).",
+        "فرمان را اجرا کنید: ip -br address",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، ip -br address را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "linux_bash",
+        "Linux / Bash",
+        "ip -br address",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد ip -br address چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Linux / Bash؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-linux_bash-wave4-ip-br-address",
+            "prompt": "کاربرد فرمان ip -br address در Linux / Bash چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Linux / Bash؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-linux_bash-wave4-ip-br-address",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Linux / Bash؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+          }
+        ]
+      },
+      "source_status": "review_required"
+    },
+    {
+      "uid": "cmd:linux_bash:wave4:findmnt-t",
+      "technology_id": "linux_bash",
+      "vendor": "Linux",
+      "platform": "systemd Linux; nginx unit name may vary",
+      "category": "linux_bash",
+      "subcategory": "linux_bash",
+      "level": "L1",
+      "title_fa": "Linux / Bash — findmnt -T /",
+      "title_en": "findmnt -T /",
+      "command": "findmnt -T /",
+      "aliases": [],
+      "syntax": "findmnt -T /",
+      "arguments": [],
+      "when_to_use_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Linux / Bash؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+      "prerequisites_fa": [
+        "دسترسی مجاز به محیط هدف",
+        "ثبت نسخه و وضعیت اولیه؛ استفاده از دادهٔ آزمایشی در لاب"
+      ],
+      "steps_fa": [
+        "نسخه و context اجرا را مشخص کنید (Linux / Bash).",
+        "فرمان را اجرا کنید: findmnt -T /",
+        "خروجی و زمان اجرا را ثبت و با مستندات همان نسخه مقایسه کنید."
+      ],
+      "sample_output": "خروجی به نسخه و محیط وابسته است؛ مقدار واقعی ثبت شود.",
+      "output_fields_fa": [
+        {
+          "field": "output",
+          "meaning_fa": "خروجی را در بافت نسخه و وضعیت دستگاه تفسیر کنید؛ خروجی موفق تضمین سلامت کل سرویس نیست."
+        }
+      ],
+      "related_commands": [],
+      "common_mistakes_fa": [
+        "فرض کردن سازگاری syntax در تمام نسخه‌ها",
+        "انتشار خروجی بدون حذف اطلاعات حساس"
+      ],
+      "lab_hint_fa": "در محیط مجاز، findmnt -T / را اجرا و نتیجه را همراه نسخه، زمان و شرایط آزمایش ثبت کنید.",
+      "security_notes_fa": "از اجرای تغییرات مخرب در محیط عملیاتی اجتناب کنید؛ خروجی را از credential و داده حساس پاک‌سازی کنید.",
+      "search_keywords": [
+        "linux_bash",
+        "Linux / Bash",
+        "findmnt -T /",
+        "عیب‌یابی",
+        "version-specific"
+      ],
+      "flashcards": [
+        {
+          "front": "کاربرد findmnt -T / چیست؟",
+          "back": "برای مشاهده و عیب‌یابی کنترل‌شده در Linux / Bash؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
+        }
+      ],
+      "assessment": {
+        "questions": [
+          {
+            "id": "q-linux_bash-wave4-findmnt-t",
+            "prompt": "کاربرد فرمان findmnt -T / در Linux / Bash چیست؟",
+            "options": [
+              "برای مشاهده و عیب‌یابی کنترل‌شده در Linux / Bash؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود.",
+              "پاک کردن خودکار همه داده‌ها",
+              "غیرفعال کردن تمام کنترل‌های امنیتی",
+              "تضمین سلامت تمام اجزای شبکه"
+            ],
+            "type": "mcq_command_usage"
+          }
+        ],
+        "answer_key": [
+          {
+            "id": "q-linux_bash-wave4-findmnt-t",
+            "correct_index": 0,
+            "explain_fa": "برای مشاهده و عیب‌یابی کنترل‌شده در Linux / Bash؛ خروجی باید با نسخه و وضعیت واقعی محیط تطبیق داده شود."
           }
         ]
       },
