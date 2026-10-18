@@ -10,6 +10,7 @@ from datetime import datetime
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CHAPTERS_DIR = REPO_ROOT / "tools" / "chapters"
+CONTINUOUS_LEVEL_TITLE = "درس‌های پیوسته"
 
 
 def _slug(value: str) -> str:
@@ -48,7 +49,7 @@ def discover_chapter_packs():
     if not CHAPTERS_DIR.exists():
         return
     candidates = []
-    for order in range(1, 69):
+    for order in range(1, 72):
         numeric = CHAPTERS_DIR / str(order)
         options = [numeric / "build" / "chapter.json", numeric / "chapter.json"]
         options.extend(directory / "chapter.json" for directory in sorted(CHAPTERS_DIR.glob(f"ch{order:02d}_*")))
@@ -68,11 +69,16 @@ def discover_chapter_packs():
 
 
 def import_chapter_packs(database):
-    """Idempotently import packs. Existing chapter and lesson content is never replaced."""
+    """Idempotently import packs. Existing chapter and lesson content is never replaced.
+
+    سیاست خوانایی: همه درس‌های modular زیر یک سطح واحد «درس‌های پیوسته»
+    قرار می‌گیرند تا UI بدون درخت L0–L4 نمایش داده شود.
+    """
     database.ensure_sync_columns()
     conn = database.conn
     now = datetime.now().isoformat(timespec="seconds")
     added = 0
+    merged = 0
 
     for path, payload in discover_chapter_packs() or ():
         order = int(payload["chapter_order"])
@@ -92,11 +98,6 @@ def import_chapter_packs(database):
             )
             chapter_id = int(cur.lastrowid)
 
-        level_order = conn.execute(
-            "SELECT COALESCE(MAX(order_index),0)+1 AS n FROM levels WHERE chapter_id=?",
-            (chapter_id,),
-        ).fetchone()["n"]
-        # Do not create an empty level or re-import a pack whose UIDs already exist.
         source_lessons = payload.get("lessons") or []
         chapter_rows = conn.execute(
             """SELECT l.id,l.uid,l.title_fa,l.title_en,l.summary,l.full_content,l.commands,
@@ -110,7 +111,6 @@ def import_chapter_packs(database):
         for row in chapter_rows:
             existing_by_title.setdefault(_title_key(row["title_fa"]), dict(row))
         pending = []
-        merged = 0
         for index, item in enumerate(source_lessons, 1):
             if not isinstance(item, dict):
                 print(f"[chapters] SKIP non-object lesson {index} in {path.name}")
@@ -168,8 +168,6 @@ def import_chapter_packs(database):
                 "SELECT content_hash,title_fa FROM lessons WHERE uid=? LIMIT 1", (uid,)
             ).fetchone()
             if existing:
-                # A matching UID is only a no-op when the title also matches this chapter.
-                # Otherwise keep the new record under a collision-safe UID.
                 base_uid = uid
                 uid = f"{base_uid}:collision:{pack_slug}:{index:05d}"
                 suffix = 2
@@ -184,18 +182,31 @@ def import_chapter_packs(database):
         if not pending:
             continue
 
-        level_title = str(payload.get("subchapter_title_fa") or f"محتوای افزوده: {path.stem}")
-        cur = conn.execute(
-            "INSERT INTO levels(chapter_id,order_index,title_fa,title_en) VALUES (?,?,?,?)",
-            (chapter_id, int(level_order), level_title, str(payload.get("subchapter_title_en") or "")),
-        )
-        level_id = int(cur.lastrowid)
+        # یک سطح پیوسته برای خوانایی
+        existing_lv = conn.execute(
+            "SELECT id FROM levels WHERE chapter_id=? AND title_fa=? ORDER BY id LIMIT 1",
+            (chapter_id, CONTINUOUS_LEVEL_TITLE),
+        ).fetchone()
+        if existing_lv:
+            level_id = int(existing_lv["id"])
+        else:
+            cur = conn.execute(
+                "INSERT INTO levels(chapter_id,order_index,title_fa,title_en) VALUES (?,?,?,?)",
+                (chapter_id, 1, CONTINUOUS_LEVEL_TITLE, "Continuous lessons"),
+            )
+            level_id = int(cur.lastrowid)
 
-        for lesson_order, (uid, index, title, item, fingerprint, keywords) in enumerate(pending, 1):
+        start_order = conn.execute(
+            "SELECT COALESCE(MAX(order_index),0) AS n FROM lessons WHERE level_id=?",
+            (level_id,),
+        ).fetchone()["n"]
+
+        for offset, (uid, index, title, item, fingerprint, keywords) in enumerate(pending, 1):
             meta = item.get("meta") if isinstance(item.get("meta"), dict) else {}
             keywords = item.get("search_keywords") or item.get("tags") or []
             if not isinstance(keywords, list):
                 keywords = [str(keywords)]
+            lesson_order = int(start_order) + offset
             conn.execute(
                 """INSERT INTO lessons(
                     level_id,order_index,title_fa,title_en,tags,summary,full_content,
@@ -219,5 +230,5 @@ def import_chapter_packs(database):
 
     if added or merged:
         conn.commit()
-        print(f"[chapters] added {added} new lessons; merged {merged} same-title lessons; existing records preserved")
+        print(f"[chapters] added {added} new lessons; merged {merged} same-title lessons; continuous level used")
     return {"ok": True, "added": added, "merged": merged}
