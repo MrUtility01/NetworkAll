@@ -1,116 +1,1806 @@
 {
   "schema_version": 1,
   "chapter_order": 3,
-  "category": "labs",
-  "source_of_truth": true,
   "items": [
     {
-      "uid": "lab:ch03:001",
-      "lesson_uid": "lesson:ch03:boot:0003",
-      "title_fa": "لابراتوار 01 — BIOS سنتی",
-      "title_en": "",
-      "fields": {
-        "labs": "هدف: تشخیص ایمن BIOS سنتی. محیط: VM یا دستگاه آزمایشی؛ سیستم تولیدی را تغییر ندهید.\n۱) وضعیت اولیه و خطای دقیق را ثبت کنید.\n۲) شواهد را جمع کنید: BIOS کلاسیک POST را اجرا می‌کند، سخت‌افزار را مقداردهی اولیه می‌کند و کنترل را به دستگاه بوت می‌دهد.\n۳) فرمان‌های مشاهده‌ای را اجرا کنید: msinfo32; Get-CimInstance Win32_BIOS | Select SMBIOSBIOSVersion,Manufacturer / sudo dmidecode -t bios; [ -d /sys/firmware/efi ] && echo UEFI || echo Legacy\n۴) سه فرضیه، شاهد تأیید/رد و معیار توقف بنویسید.\n۵) اگر تغییر لازم است، مجوز، بکاپ و rollback را پیش از اجرا ثبت کنید؛ فقط یک متغیر را تغییر دهید.\n۶) بوت کامل و لاگ‌ها را بررسی و گزارش قبل/بعد تهیه کنید.\nریسک: تغییر Legacy/UEFI بدون تطبیق روش نصب سیستم‌عامل ممکن است بوت را مختل کند.\nمعیار ارزیابی: ایمنی 25٪، شواهد 25٪، تشخیص 25٪، rollback 15٪، گزارش 10٪."
-      }
+      "uid": "lab:ch3:d40:0001",
+      "id": "lab-ch3-d40-0001",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "طراحی ADR: Legacy BIOS محدودیت",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "طراحی ADR برای Legacy BIOS محدودیت OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch03:002",
-      "lesson_uid": "lesson:ch03:boot:0008",
-      "title_fa": "لابراتوار 02 — UEFI ساختار",
-      "title_en": "",
-      "fields": {
-        "labs": "هدف: تشخیص ایمن UEFI ساختار. محیط: VM یا دستگاه آزمایشی؛ سیستم تولیدی را تغییر ندهید.\n۱) وضعیت اولیه و خطای دقیق را ثبت کنید.\n۲) شواهد را جمع کنید: UEFI ورودی‌های بوت را در NVRAM نگه می‌دارد و فایل EFI را از ESP اجرا می‌کند؛ ESP معمولاً FAT32 است.\n۳) فرمان‌های مشاهده‌ای را اجرا کنید: msinfo32; bcdedit /enum firmware / sudo efibootmgr -v; lsblk -f\n۴) سه فرضیه، شاهد تأیید/رد و معیار توقف بنویسید.\n۵) اگر تغییر لازم است، مجوز، بکاپ و rollback را پیش از اجرا ثبت کنید؛ فقط یک متغیر را تغییر دهید.\n۶) بوت کامل و لاگ‌ها را بررسی و گزارش قبل/بعد تهیه کنید.\nریسک: حذف یا فرمت ESP می‌تواند چند سیستم‌عامل را غیرقابل بوت کند.\nمعیار ارزیابی: ایمنی 25٪، شواهد 25٪، تشخیص 25٪، rollback 15٪، گزارش 10٪."
-      }
+      "uid": "lab:ch3:d40:0002",
+      "id": "lab-ch3-d40-0002",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "Lab حداقل: UEFI architecture",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "Lab حداقل برای UEFI architecture OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch03:003",
-      "lesson_uid": "lesson:ch03:boot:0013",
-      "title_fa": "لابراتوار 03 — Secure Boot",
-      "title_en": "",
-      "fields": {
-        "labs": "هدف: تشخیص ایمن Secure Boot. محیط: VM یا دستگاه آزمایشی؛ سیستم تولیدی را تغییر ندهید.\n۱) وضعیت اولیه و خطای دقیق را ثبت کنید.\n۲) شواهد را جمع کنید: Secure Boot امضای اجزای بوت را با زنجیره کلیدهای اعتماد بررسی می‌کند؛ خاموش‌کردن آن راهکار عمومی هر خطای بوت نیست.\n۳) فرمان‌های مشاهده‌ای را اجرا کنید: Confirm-SecureBootUEFI; msinfo32 / mokutil --sb-state; bootctl status\n۴) سه فرضیه، شاهد تأیید/رد و معیار توقف بنویسید.\n۵) اگر تغییر لازم است، مجوز، بکاپ و rollback را پیش از اجرا ثبت کنید؛ فقط یک متغیر را تغییر دهید.\n۶) بوت کامل و لاگ‌ها را بررسی و گزارش قبل/بعد تهیه کنید.\nریسک: تغییر یا پاک‌کردن کلیدهای PK/KEK/db می‌تواند دستگاه را وارد Setup Mode کند.\nمعیار ارزیابی: ایمنی 25٪، شواهد 25٪، تشخیص 25٪، rollback 15٪، گزارش 10٪."
-      }
+      "uid": "lab:ch3:d40:0003",
+      "id": "lab-ch3-d40-0003",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "شکست عمدی: GPT vs MBR",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "شکست عمدی برای GPT vs MBR OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch03:004",
-      "lesson_uid": "lesson:ch03:boot:0018",
-      "title_fa": "لابراتوار 04 — CSM",
-      "title_en": "",
-      "fields": {
-        "labs": "هدف: تشخیص ایمن CSM. محیط: VM یا دستگاه آزمایشی؛ سیستم تولیدی را تغییر ندهید.\n۱) وضعیت اولیه و خطای دقیق را ثبت کنید.\n۲) شواهد را جمع کنید: CSM امکان بوت Legacy را در بعضی firmwareهای UEFI فراهم می‌کند و با تبدیل جدول پارتیشن تفاوت دارد.\n۳) فرمان‌های مشاهده‌ای را اجرا کنید: msinfo32; Get-Disk | Select Number,PartitionStyle / [ -d /sys/firmware/efi ] && echo UEFI || echo Legacy; sudo efibootmgr -v\n۴) سه فرضیه، شاهد تأیید/رد و معیار توقف بنویسید.\n۵) اگر تغییر لازم است، مجوز، بکاپ و rollback را پیش از اجرا ثبت کنید؛ فقط یک متغیر را تغییر دهید.\n۶) بوت کامل و لاگ‌ها را بررسی و گزارش قبل/بعد تهیه کنید.\nریسک: فعال‌سازی CSM به‌تنهایی MBR/GPT را تبدیل نمی‌کند و ممکن است نصب فعلی را از بوت بیندازد.\nمعیار ارزیابی: ایمنی 25٪، شواهد 25٪، تشخیص 25٪، rollback 15٪، گزارش 10٪."
-      }
+      "uid": "lab:ch3:d40:0004",
+      "id": "lab-ch3-d40-0004",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "بازیابی: Secure Boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازیابی برای Secure Boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch03:005",
-      "lesson_uid": "lesson:ch03:boot:0023",
-      "title_fa": "لابراتوار 05 — TPM در فریمور",
-      "title_en": "",
-      "fields": {
-        "labs": "هدف: تشخیص ایمن TPM در فریمور. محیط: VM یا دستگاه آزمایشی؛ سیستم تولیدی را تغییر ندهید.\n۱) وضعیت اولیه و خطای دقیق را ثبت کنید.\n۲) شواهد را جمع کنید: TPM 2.0 عملیات رمزنگاری و حفاظت کلید را فراهم می‌کند و در BitLocker و measured boot نقش دارد.\n۳) فرمان‌های مشاهده‌ای را اجرا کنید: tpm.msc; Get-Tpm / ls -l /dev/tpm*; systemd-analyze has-tpm2\n۴) سه فرضیه، شاهد تأیید/رد و معیار توقف بنویسید.\n۵) اگر تغییر لازم است، مجوز، بکاپ و rollback را پیش از اجرا ثبت کنید؛ فقط یک متغیر را تغییر دهید.\n۶) بوت کامل و لاگ‌ها را بررسی و گزارش قبل/بعد تهیه کنید.\nریسک: پیش از پاک‌کردن TPM، کلید بازیابی BitLocker و اثر سازمانی را تأیید کنید.\nمعیار ارزیابی: ایمنی 25٪، شواهد 25٪، تشخیص 25٪، rollback 15٪، گزارش 10٪."
-      }
+      "uid": "lab:ch3:d40:0005",
+      "id": "lab-ch3-d40-0005",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "اندازه‌گیری: Measured boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "اندازه‌گیری برای Measured boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch03:006",
-      "lesson_uid": "lesson:ch03:boot:0028",
-      "title_fa": "لابراتوار 06 — Virtualization VT-x AMD-V",
-      "title_en": "",
-      "fields": {
-        "labs": "هدف: تشخیص ایمن Virtualization VT-x AMD-V. محیط: VM یا دستگاه آزمایشی؛ سیستم تولیدی را تغییر ندهید.\n۱) وضعیت اولیه و خطای دقیق را ثبت کنید.\n۲) شواهد را جمع کنید: VT-x و AMD-V/SVM قابلیت مجازی‌سازی CPU هستند؛ firmware و تنظیمات hypervisor روی اجرای VM اثر می‌گذارند.\n۳) فرمان‌های مشاهده‌ای را اجرا کنید: systeminfo; Get-ComputerInfo | Select HyperVRequirement* / lscpu | grep -E 'Virtualization|vmx|svm'; grep -E -m1 'vmx|svm' /proc/cpuinfo\n۴) سه فرضیه، شاهد تأیید/رد و معیار توقف بنویسید.\n۵) اگر تغییر لازم است، مجوز، بکاپ و rollback را پیش از اجرا ثبت کنید؛ فقط یک متغیر را تغییر دهید.\n۶) بوت کامل و لاگ‌ها را بررسی و گزارش قبل/بعد تهیه کنید.\nریسک: خاموش‌کردن مجازی‌سازی ممکن است VMها و قابلیت‌های امنیتی مبتنی بر hypervisor را مختل کند.\nمعیار ارزیابی: ایمنی 25٪، شواهد 25٪، تشخیص 25٪، rollback 15٪، گزارش 10٪."
-      }
+      "uid": "lab:ch3:d40:0006",
+      "id": "lab-ch3-d40-0006",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "بازبینی امنیتی: TPM PCR",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازبینی امنیتی برای TPM PCR OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch03:007",
-      "lesson_uid": "lesson:ch03:boot:0033",
-      "title_fa": "لابراتوار 07 — SATA Mode AHCI RAID",
-      "title_en": "",
-      "fields": {
-        "labs": "هدف: تشخیص ایمن SATA Mode AHCI RAID. محیط: VM یا دستگاه آزمایشی؛ سیستم تولیدی را تغییر ندهید.\n۱) وضعیت اولیه و خطای دقیق را ثبت کنید.\n۲) شواهد را جمع کنید: AHCI و RAID نحوه ارائه کنترلر ذخیره‌سازی به OS را تعیین می‌کنند؛ درایور بوت باید با حالت انتخاب‌شده سازگار باشد.\n۳) فرمان‌های مشاهده‌ای را اجرا کنید: Get-CimInstance Win32_DiskDrive; Get-PnpDevice -Class SCSIAdapter / lsblk -o NAME,TYPE,FSTYPE,MOUNTPOINT; lspci -nn | grep -i -E 'sata|raid|ahci'\n۴) سه فرضیه، شاهد تأیید/رد و معیار توقف بنویسید.\n۵) اگر تغییر لازم است، مجوز، بکاپ و rollback را پیش از اجرا ثبت کنید؛ فقط یک متغیر را تغییر دهید.\n۶) بوت کامل و لاگ‌ها را بررسی و گزارش قبل/بعد تهیه کنید.\nریسک: تغییر حالت کنترلر پس از نصب ممکن است INACCESSIBLE_BOOT_DEVICE ایجاد کند؛ بدون بکاپ و rollback تغییر ندهید.\nمعیار ارزیابی: ایمنی 25٪، شواهد 25٪، تشخیص 25٪، rollback 15٪، گزارش 10٪."
-      }
+      "uid": "lab:ch3:d40:0007",
+      "id": "lab-ch3-d40-0007",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "چک‌لیست تغییر: Boot order",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "چک‌لیست تغییر برای Boot order OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch03:008",
-      "lesson_uid": "lesson:ch03:boot:0038",
-      "title_fa": "لابراتوار 08 — زنجیره POST تا OS",
-      "title_en": "",
-      "fields": {
-        "labs": "هدف: تشخیص ایمن زنجیره POST تا OS. محیط: VM یا دستگاه آزمایشی؛ سیستم تولیدی را تغییر ندهید.\n۱) وضعیت اولیه و خطای دقیق را ثبت کنید.\n۲) شواهد را جمع کنید: بوت زنجیره‌ای از Power-on و POST تا firmware، bootloader، kernel و سرویس‌های اولیه است.\n۳) فرمان‌های مشاهده‌ای را اجرا کنید: Get-WinEvent -LogName System -MaxEvents 50 / journalctl -b -p warning; systemd-analyze time; systemctl --failed\n۴) سه فرضیه، شاهد تأیید/رد و معیار توقف بنویسید.\n۵) اگر تغییر لازم است، مجوز، بکاپ و rollback را پیش از اجرا ثبت کنید؛ فقط یک متغیر را تغییر دهید.\n۶) بوت کامل و لاگ‌ها را بررسی و گزارش قبل/بعد تهیه کنید.\nریسک: علت را بر اساس آخرین مرحله موفق پیدا کنید؛ علامت ظاهری به‌تنهایی تشخیص قطعی نیست.\nمعیار ارزیابی: ایمنی 25٪، شواهد 25٪، تشخیص 25٪، rollback 15٪، گزارش 10٪."
-      }
+      "uid": "lab:ch3:d40:0008",
+      "id": "lab-ch3-d40-0008",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "failover: PXE boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "failover برای PXE boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch03:009",
-      "lesson_uid": "lesson:ch03:boot:0043",
-      "title_fa": "لابراتوار 09 — Boot Order",
-      "title_en": "",
-      "fields": {
-        "labs": "هدف: تشخیص ایمن Boot Order. محیط: VM یا دستگاه آزمایشی؛ سیستم تولیدی را تغییر ندهید.\n۱) وضعیت اولیه و خطای دقیق را ثبت کنید.\n۲) شواهد را جمع کنید: Boot Order ترتیب ورودی‌ها یا دستگاه‌های بوت را مشخص می‌کند؛ در UEFI ورودی‌ها معمولاً به فایل EFI روی ESP اشاره می‌کنند.\n۳) فرمان‌های مشاهده‌ای را اجرا کنید: bcdedit /enum firmware; Get-Disk / sudo efibootmgr -v; lsblk -f\n۴) سه فرضیه، شاهد تأیید/رد و معیار توقف بنویسید.\n۵) اگر تغییر لازم است، مجوز، بکاپ و rollback را پیش از اجرا ثبت کنید؛ فقط یک متغیر را تغییر دهید.\n۶) بوت کامل و لاگ‌ها را بررسی و گزارش قبل/بعد تهیه کنید.\nریسک: پس از تعمیر، ترتیب قبلی را ثبت و USB/PXE ناخواسته را از اولویت بوت خارج کنید.\nمعیار ارزیابی: ایمنی 25٪، شواهد 25٪، تشخیص 25٪، rollback 15٪، گزارش 10٪."
-      }
+      "uid": "lab:ch3:d40:0009",
+      "id": "lab-ch3-d40-0009",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "runbook: HTTP boot لمس",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "runbook برای HTTP boot لمس OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch03:010",
-      "lesson_uid": "lesson:ch03:boot:0048",
-      "title_fa": "لابراتوار 10 — PXE Boot",
-      "title_en": "",
-      "fields": {
-        "labs": "هدف: تشخیص ایمن PXE Boot. محیط: VM یا دستگاه آزمایشی؛ سیستم تولیدی را تغییر ندهید.\n۱) وضعیت اولیه و خطای دقیق را ثبت کنید.\n۲) شواهد را جمع کنید: PXE از DHCP برای تنظیمات شبکه و از TFTP/HTTP برای ارائه فایل بوت استفاده می‌کند؛ UEFI و Legacy ممکن است فایل متفاوت بخواهند.\n۳) فرمان‌های مشاهده‌ای را اجرا کنید: ipconfig /all; Get-NetIPConfiguration / ip -br link; ip route; sudo tcpdump -ni any 'port 67 or port 68 or port 69'\n۴) سه فرضیه، شاهد تأیید/رد و معیار توقف بنویسید.\n۵) اگر تغییر لازم است، مجوز، بکاپ و rollback را پیش از اجرا ثبت کنید؛ فقط یک متغیر را تغییر دهید.\n۶) بوت کامل و لاگ‌ها را بررسی و گزارش قبل/بعد تهیه کنید.\nریسک: PXE و DHCP اشتباه می‌توانند کلاینت‌ها را به سرور نصب نامعتبر هدایت کنند.\nمعیار ارزیابی: ایمنی 25٪، شواهد 25٪، تشخیص 25٪، rollback 15٪، گزارش 10٪."
-      }
+      "uid": "lab:ch3:d40:0010",
+      "id": "lab-ch3-d40-0010",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "ارائه: CSM compatibility",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "ارائه برای CSM compatibility OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch03:011",
-      "lesson_uid": "lesson:ch03:boot:0053",
-      "title_fa": "لابراتوار 11 — MBR محدودیت",
-      "title_en": "",
-      "fields": {
-        "labs": "هدف: تشخیص ایمن MBR محدودیت. محیط: VM یا دستگاه آزمایشی؛ سیستم تولیدی را تغییر ندهید.\n۱) وضعیت اولیه و خطای دقیق را ثبت کنید.\n۲) شواهد را جمع کنید: MBR طرح پارتیشن قدیمی با محدودیت معمول چهار ورودی primary و حدود ۲ TiB برای سکتور 512 بایتی است؛ GPT برای سامانه‌های جدید مناسب‌تر است.\n۳) فرمان‌های مشاهده‌ای را اجرا کنید: Get-Disk | Select Number,PartitionStyle,Size; diskpart سپس list disk / sudo fdisk -l; sudo parted -l\n۴) سه فرضیه، شاهد تأیید/رد و معیار توقف بنویسید.\n۵) اگر تغییر لازم است، مجوز، بکاپ و rollback را پیش از اجرا ثبت کنید؛ فقط یک متغیر را تغییر دهید.\n۶) بوت کامل و لاگ‌ها را بررسی و گزارش قبل/بعد تهیه کنید.\nریسک: تبدیل جدول پارتیشن بدون بکاپ کامل و بررسی سازگاری می‌تواند داده را از بین ببرد.\nمعیار ارزیابی: ایمنی 25٪، شواهد 25٪، تشخیص 25٪، rollback 15٪، گزارش 10٪."
-      }
+      "uid": "lab:ch3:d40:0011",
+      "id": "lab-ch3-d40-0011",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "طراحی ADR: Fast boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "طراحی ADR برای Fast boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     },
     {
-      "uid": "lab:ch03:012",
-      "lesson_uid": "lesson:ch03:boot:0058",
-      "title_fa": "لابراتوار 12 — GPT و ESP",
-      "title_en": "",
-      "fields": {
-        "labs": "هدف: تشخیص ایمن GPT و ESP. محیط: VM یا دستگاه آزمایشی؛ سیستم تولیدی را تغییر ندهید.\n۱) وضعیت اولیه و خطای دقیق را ثبت کنید.\n۲) شواهد را جمع کنید: GPT طرح جدول پارتیشن با GUID و ساختارهای پشتیبان است؛ ESP پارتیشن FAT حاوی فایل‌های بوت UEFI است.\n۳) فرمان‌های مشاهده‌ای را اجرا کنید: Get-Disk; Get-Partition; mountvol S: /S (فقط مشاهده) / lsblk -f; sudo parted -l; findmnt /boot/efi\n۴) سه فرضیه، شاهد تأیید/رد و معیار توقف بنویسید.\n۵) اگر تغییر لازم است، مجوز، بکاپ و rollback را پیش از اجرا ثبت کنید؛ فقط یک متغیر را تغییر دهید.\n۶) بوت کامل و لاگ‌ها را بررسی و گزارش قبل/بعد تهیه کنید.\nریسک: ESP را فرمت یا حذف نکنید؛ ممکن است فایل بوت چند OS روی آن باشد.\nمعیار ارزیابی: ایمنی 25٪، شواهد 25٪، تشخیص 25٪، rollback 15٪، گزارش 10٪."
-      }
+      "uid": "lab:ch3:d40:0012",
+      "id": "lab-ch3-d40-0012",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "Lab حداقل: POST phases",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "Lab حداقل برای POST phases OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0013",
+      "id": "lab-ch3-d40-0013",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "شکست عمدی: NVRAM variables",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "شکست عمدی برای NVRAM variables OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0014",
+      "id": "lab-ch3-d40-0014",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "بازیابی: efibootmgr",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازیابی برای efibootmgr OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0015",
+      "id": "lab-ch3-d40-0015",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "اندازه‌گیری: bcdedit",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "اندازه‌گیری برای bcdedit OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0016",
+      "id": "lab-ch3-d40-0016",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "بازبینی امنیتی: Shim و GRUB",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازبینی امنیتی برای Shim و GRUB OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0017",
+      "id": "lab-ch3-d40-0017",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "چک‌لیست تغییر: Windows Boot Manager",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "چک‌لیست تغییر برای Windows Boot Manager OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0018",
+      "id": "lab-ch3-d40-0018",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "failover: Recovery boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "failover برای Recovery boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0019",
+      "id": "lab-ch3-d40-0019",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "runbook: BitLocker و TPM PCR",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "runbook برای BitLocker و TPM PCR OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0020",
+      "id": "lab-ch3-d40-0020",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "ارائه: Suspend-to-RAM",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "ارائه برای Suspend-to-RAM OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0021",
+      "id": "lab-ch3-d40-0021",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "طراحی ADR: Hibernate",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "طراحی ADR برای Hibernate OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0022",
+      "id": "lab-ch3-d40-0022",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "Lab حداقل: Firmware update UEFI",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "Lab حداقل برای Firmware update UEFI OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0023",
+      "id": "lab-ch3-d40-0023",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "شکست عمدی: Capsule update",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "شکست عمدی برای Capsule update OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0024",
+      "id": "lab-ch3-d40-0024",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "بازیابی: Rollback firmware risk",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازیابی برای Rollback firmware risk OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0025",
+      "id": "lab-ch3-d40-0025",
+      "chapter_order": 3,
+      "level": "L0",
+      "title_fa": "اندازه‌گیری: Password BIOS",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "اندازه‌گیری برای Password BIOS OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0026",
+      "id": "lab-ch3-d40-0026",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "بازبینی امنیتی: Chassis intrusion",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازبینی امنیتی برای Chassis intrusion OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0027",
+      "id": "lab-ch3-d40-0027",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "چک‌لیست تغییر: Boot password ethics",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "چک‌لیست تغییر برای Boot password ethics OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0028",
+      "id": "lab-ch3-d40-0028",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "failover: Dual boot issues",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "failover برای Dual boot issues OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0029",
+      "id": "lab-ch3-d40-0029",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "runbook: Time skew UTC",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "runbook برای Time skew UTC OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0030",
+      "id": "lab-ch3-d40-0030",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "ارائه: ACPI",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "ارائه برای ACPI OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0031",
+      "id": "lab-ch3-d40-0031",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "طراحی ADR: Virtualization UEFI OVMF",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "طراحی ADR برای Virtualization UEFI OVMF OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0032",
+      "id": "lab-ch3-d40-0032",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "Lab حداقل: Secure Boot in VM",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "Lab حداقل برای Secure Boot in VM OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0033",
+      "id": "lab-ch3-d40-0033",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "شکست عمدی: Boot diagnostics",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "شکست عمدی برای Boot diagnostics OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0034",
+      "id": "lab-ch3-d40-0034",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "بازیابی: Legacy BIOS محدودیت",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازیابی برای Legacy BIOS محدودیت OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0035",
+      "id": "lab-ch3-d40-0035",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "اندازه‌گیری: UEFI architecture",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "اندازه‌گیری برای UEFI architecture OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0036",
+      "id": "lab-ch3-d40-0036",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "بازبینی امنیتی: GPT vs MBR",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازبینی امنیتی برای GPT vs MBR OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0037",
+      "id": "lab-ch3-d40-0037",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "چک‌لیست تغییر: Secure Boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "چک‌لیست تغییر برای Secure Boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0038",
+      "id": "lab-ch3-d40-0038",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "failover: Measured boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "failover برای Measured boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0039",
+      "id": "lab-ch3-d40-0039",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "runbook: TPM PCR",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "runbook برای TPM PCR OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0040",
+      "id": "lab-ch3-d40-0040",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "ارائه: Boot order",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "ارائه برای Boot order OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0041",
+      "id": "lab-ch3-d40-0041",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "طراحی ADR: PXE boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "طراحی ADR برای PXE boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0042",
+      "id": "lab-ch3-d40-0042",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "Lab حداقل: HTTP boot لمس",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "Lab حداقل برای HTTP boot لمس OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0043",
+      "id": "lab-ch3-d40-0043",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "شکست عمدی: CSM compatibility",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "شکست عمدی برای CSM compatibility OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0044",
+      "id": "lab-ch3-d40-0044",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "بازیابی: Fast boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازیابی برای Fast boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0045",
+      "id": "lab-ch3-d40-0045",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "اندازه‌گیری: POST phases",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "اندازه‌گیری برای POST phases OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0046",
+      "id": "lab-ch3-d40-0046",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "بازبینی امنیتی: NVRAM variables",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازبینی امنیتی برای NVRAM variables OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0047",
+      "id": "lab-ch3-d40-0047",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "چک‌لیست تغییر: efibootmgr",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "چک‌لیست تغییر برای efibootmgr OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0048",
+      "id": "lab-ch3-d40-0048",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "failover: bcdedit",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "failover برای bcdedit OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0049",
+      "id": "lab-ch3-d40-0049",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "runbook: Shim و GRUB",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "runbook برای Shim و GRUB OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0050",
+      "id": "lab-ch3-d40-0050",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "ارائه: Windows Boot Manager",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "ارائه برای Windows Boot Manager OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0051",
+      "id": "lab-ch3-d40-0051",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "طراحی ADR: Recovery boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "طراحی ADR برای Recovery boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0052",
+      "id": "lab-ch3-d40-0052",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "Lab حداقل: BitLocker و TPM PCR",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "Lab حداقل برای BitLocker و TPM PCR OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0053",
+      "id": "lab-ch3-d40-0053",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "شکست عمدی: Suspend-to-RAM",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "شکست عمدی برای Suspend-to-RAM OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0054",
+      "id": "lab-ch3-d40-0054",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "بازیابی: Hibernate",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازیابی برای Hibernate OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0055",
+      "id": "lab-ch3-d40-0055",
+      "chapter_order": 3,
+      "level": "L1",
+      "title_fa": "اندازه‌گیری: Firmware update UEFI",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "اندازه‌گیری برای Firmware update UEFI OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0056",
+      "id": "lab-ch3-d40-0056",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "بازبینی امنیتی: Capsule update",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازبینی امنیتی برای Capsule update OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0057",
+      "id": "lab-ch3-d40-0057",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "چک‌لیست تغییر: Rollback firmware risk",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "چک‌لیست تغییر برای Rollback firmware risk OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0058",
+      "id": "lab-ch3-d40-0058",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "failover: Password BIOS",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "failover برای Password BIOS OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0059",
+      "id": "lab-ch3-d40-0059",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "runbook: Chassis intrusion",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "runbook برای Chassis intrusion OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0060",
+      "id": "lab-ch3-d40-0060",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "ارائه: Boot password ethics",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "ارائه برای Boot password ethics OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0061",
+      "id": "lab-ch3-d40-0061",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "طراحی ADR: Dual boot issues",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "طراحی ADR برای Dual boot issues OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0062",
+      "id": "lab-ch3-d40-0062",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "Lab حداقل: Time skew UTC",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "Lab حداقل برای Time skew UTC OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0063",
+      "id": "lab-ch3-d40-0063",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "شکست عمدی: ACPI",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "شکست عمدی برای ACPI OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0064",
+      "id": "lab-ch3-d40-0064",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "بازیابی: Virtualization UEFI OVMF",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازیابی برای Virtualization UEFI OVMF OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0065",
+      "id": "lab-ch3-d40-0065",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "اندازه‌گیری: Secure Boot in VM",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "اندازه‌گیری برای Secure Boot in VM OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0066",
+      "id": "lab-ch3-d40-0066",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "بازبینی امنیتی: Boot diagnostics",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازبینی امنیتی برای Boot diagnostics OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0067",
+      "id": "lab-ch3-d40-0067",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "چک‌لیست تغییر: Legacy BIOS محدودیت",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "چک‌لیست تغییر برای Legacy BIOS محدودیت OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0068",
+      "id": "lab-ch3-d40-0068",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "failover: UEFI architecture",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "failover برای UEFI architecture OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0069",
+      "id": "lab-ch3-d40-0069",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "runbook: GPT vs MBR",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "runbook برای GPT vs MBR OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0070",
+      "id": "lab-ch3-d40-0070",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "ارائه: Secure Boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "ارائه برای Secure Boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0071",
+      "id": "lab-ch3-d40-0071",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "طراحی ADR: Measured boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "طراحی ADR برای Measured boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0072",
+      "id": "lab-ch3-d40-0072",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "Lab حداقل: TPM PCR",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "Lab حداقل برای TPM PCR OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0073",
+      "id": "lab-ch3-d40-0073",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "شکست عمدی: Boot order",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "شکست عمدی برای Boot order OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0074",
+      "id": "lab-ch3-d40-0074",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "بازیابی: PXE boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازیابی برای PXE boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0075",
+      "id": "lab-ch3-d40-0075",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "اندازه‌گیری: HTTP boot لمس",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "اندازه‌گیری برای HTTP boot لمس OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0076",
+      "id": "lab-ch3-d40-0076",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "بازبینی امنیتی: CSM compatibility",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازبینی امنیتی برای CSM compatibility OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0077",
+      "id": "lab-ch3-d40-0077",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "چک‌لیست تغییر: Fast boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "چک‌لیست تغییر برای Fast boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0078",
+      "id": "lab-ch3-d40-0078",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "failover: POST phases",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "failover برای POST phases OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0079",
+      "id": "lab-ch3-d40-0079",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "runbook: NVRAM variables",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "runbook برای NVRAM variables OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0080",
+      "id": "lab-ch3-d40-0080",
+      "chapter_order": 3,
+      "level": "L2",
+      "title_fa": "ارائه: efibootmgr",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "ارائه برای efibootmgr OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0081",
+      "id": "lab-ch3-d40-0081",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "طراحی ADR: bcdedit",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "طراحی ADR برای bcdedit OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0082",
+      "id": "lab-ch3-d40-0082",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "Lab حداقل: Shim و GRUB",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "Lab حداقل برای Shim و GRUB OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0083",
+      "id": "lab-ch3-d40-0083",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "شکست عمدی: Windows Boot Manager",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "شکست عمدی برای Windows Boot Manager OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0084",
+      "id": "lab-ch3-d40-0084",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "بازیابی: Recovery boot",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازیابی برای Recovery boot OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0085",
+      "id": "lab-ch3-d40-0085",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "اندازه‌گیری: BitLocker و TPM PCR",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "اندازه‌گیری برای BitLocker و TPM PCR OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0086",
+      "id": "lab-ch3-d40-0086",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "بازبینی امنیتی: Suspend-to-RAM",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازبینی امنیتی برای Suspend-to-RAM OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0087",
+      "id": "lab-ch3-d40-0087",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "چک‌لیست تغییر: Hibernate",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "چک‌لیست تغییر برای Hibernate OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0088",
+      "id": "lab-ch3-d40-0088",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "failover: Firmware update UEFI",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "failover برای Firmware update UEFI OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0089",
+      "id": "lab-ch3-d40-0089",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "runbook: Capsule update",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "runbook برای Capsule update OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0090",
+      "id": "lab-ch3-d40-0090",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "ارائه: Rollback firmware risk",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "ارائه برای Rollback firmware risk OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0091",
+      "id": "lab-ch3-d40-0091",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "طراحی ADR: Password BIOS",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "طراحی ADR برای Password BIOS OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0092",
+      "id": "lab-ch3-d40-0092",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "Lab حداقل: Chassis intrusion",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "Lab حداقل برای Chassis intrusion OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0093",
+      "id": "lab-ch3-d40-0093",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "شکست عمدی: Boot password ethics",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "شکست عمدی برای Boot password ethics OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0094",
+      "id": "lab-ch3-d40-0094",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "بازیابی: Dual boot issues",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازیابی برای Dual boot issues OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0095",
+      "id": "lab-ch3-d40-0095",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "اندازه‌گیری: Time skew UTC",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "اندازه‌گیری برای Time skew UTC OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0096",
+      "id": "lab-ch3-d40-0096",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "بازبینی امنیتی: ACPI",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "بازبینی امنیتی برای ACPI OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0097",
+      "id": "lab-ch3-d40-0097",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "چک‌لیست تغییر: Virtualization UEFI OVMF",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "چک‌لیست تغییر برای Virtualization UEFI OVMF OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0098",
+      "id": "lab-ch3-d40-0098",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "failover: Secure Boot in VM",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "failover برای Secure Boot in VM OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0099",
+      "id": "lab-ch3-d40-0099",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "runbook: Boot diagnostics",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "runbook برای Boot diagnostics OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "lab:ch3:d40:0100",
+      "id": "lab-ch3-d40-0100",
+      "chapter_order": 3,
+      "level": "L3",
+      "title_fa": "ارائه: Legacy BIOS محدودیت",
+      "environment_fa": "Lab/Staging",
+      "steps_fa": [
+        "هدف",
+        "آماده‌سازی",
+        "اجرا",
+        "شواهد",
+        "بازبینی"
+      ],
+      "pass_criteria_fa": "ارائه برای Legacy BIOS محدودیت OK",
+      "safety_fa": "بدون production بدون مجوز",
+      "source_status": "review_required"
     }
   ]
 }
