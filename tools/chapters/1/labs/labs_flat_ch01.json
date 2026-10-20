@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "chapter_order": 1,
+  "content_type": "labs",
+  "items": [
+    {
+      "uid": "lab:ch01:cpu:001",
+      "title_fa": "بررسی و مقایسه اطلاعات CPU در محیط آزمایشگاهی",
+      "difficulty": "مبتدی",
+      "objective": "با استفاده از دستورات استاندارد، اطلاعات معماری، تعداد Core و Thread و اندازه کش را استخراج و تفسیر کنید.",
+      "initial_state": "یک ماشین مجازی لینوکس یا ویندوز با دسترسی عادی کاربر (ترجیحاً لینوکس).",
+      "required_commands": ["lscpu", "cat /proc/cpuinfo"],
+      "steps": [
+        "دستور lscpu را اجرا کنید و خروجی را ذخیره کنید.",
+        "تعداد Core(s) per socket و Thread(s) per core را یادداشت کنید.",
+        "اندازه L1d، L2 و L3 را پیدا کنید.",
+        "با دستور cat /proc/cpuinfo مدل دقیق پردازنده را تأیید کنید.",
+        "محاسبه کنید که آیا Hyper-Threading فعال است یا خیر (اگر Thread per core = 2 باشد معمولاً فعال است)."
+      ],
+      "expected_result": "کاربر بتواند تعداد Core فیزیکی، Thread منطقی، وضعیت Hyper-Threading و اندازه کش‌ها را به درستی گزارش دهد.",
+      "verification_steps": [
+        "خروجی lscpu شامل فیلدهای Architecture، CPU(s)، Core(s) و cache باشد",
+        "تعداد Core فیزیکی × Thread per core تقریباً برابر CPU(s) باشد"
+      ],
+      "common_errors": [
+        {
+          "error": "اشتباه گرفتن CPU(s) با Core فیزیکی",
+          "cause": "توجه نکردن به Thread(s) per core",
+          "fix": "همیشه Core(s) per socket و Thread(s) per core را جداگانه بخوانید"
+        }
+      ],
+      "safety_note": "فقط در محیط آزمایشگاهی یا ماشین مجازی انجام شود. هیچ تغییری در BIOS یا production اعمال نکنید.",
+      "related_lesson": "lesson:ch01:cpu:001",
+      "estimated_minutes": 15
+    }
+  ]
+}
