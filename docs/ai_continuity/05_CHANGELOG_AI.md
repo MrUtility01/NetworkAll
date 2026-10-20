@@ -2,6 +2,25 @@
 
 ---
 
+## [2026-10-20 evening] — Grok
+
+### Done (دقت روی کارت یادگیری)
+- Updated `02_CONTENT_SCHEMA.md`:
+  - Lesson جدید = تک‌سطحی (level: flat)
+  - تعریف سخت‌گیرانه و کامل **Learning Card** (concept / tip / gotcha / checklist / command_card)
+  - قوانین کیفیت عنوان، body، related_lessons، difficulty
+- Created first high-quality flat lesson for Chapter 1:
+  - `tools/chapters/1/lessons/flat_lessons_ch01.json` → درس «پردازنده (CPU) — از صفر تا انتخاب سازمانی»
+- Created 5 high-quality Learning Cards:
+  - `tools/chapters/1/notes/learning_cards_ch01.json`
+  - concept, tip, gotcha, checklist, command_card
+- Updated `03_PROGRESS.md`
+
+### Quality focus
+کارت‌های یادگیری مستقل، عملی، بدون تکرار متن درس، با عنوان خودکفا و لینک به درس اصلی ساخته شدند.
+
+---
+
 ## [2026-10-20] — Grok
 
 ### Done
