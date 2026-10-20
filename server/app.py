@@ -55,7 +55,14 @@ BASE = Path(__file__).resolve().parent
 app = Flask(__name__, template_folder=str(BASE / "templates"), static_folder=str(BASE / "static"))
 app.config["JSON_AS_ASCII"] = False
 
-_MODULE_STATUS = {"workspace": False, "study": False, "workspace_error": "", "study_error": ""}
+_MODULE_STATUS = {
+    "workspace": False,
+    "study": False,
+    "import_pack": False,
+    "workspace_error": "",
+    "study_error": "",
+    "import_error": "",
+}
 
 try:
     from workspace_routes import bp as workspace_bp, set_auth_checker
@@ -70,6 +77,13 @@ try:
 except Exception as _e:
     register_study_routes = None
     _MODULE_STATUS["study_error"] = str(_e)
+
+try:
+    from import_routes import init_import_routes
+except Exception as _e:
+    init_import_routes = None
+    _MODULE_STATUS["import_error"] = str(_e)
+    print("import routes skipped", _e)
 
 SYNC_TOKEN = (os.environ.get("NETENC_TOKEN") or "").strip()
 TOKEN_GENERATED_FOR_PROCESS = not bool(SYNC_TOKEN)
@@ -158,8 +172,10 @@ def health():
         "modules": {
             "workspace": _MODULE_STATUS["workspace"],
             "study": bool(register_study_routes),
+            "import_pack": _MODULE_STATUS["import_pack"],
             "workspace_error": _MODULE_STATUS.get("workspace_error") or None,
             "study_error": _MODULE_STATUS.get("study_error") or None,
+            "import_error": _MODULE_STATUS.get("import_error") or None,
         },
         "stats": st,
     })
@@ -289,6 +305,7 @@ def sync_hello():
             "pull": "POST /api/sync/pull {uids:[]}",
             "push": "POST /api/sync/push {records:[]}",
             "auth": "Authorization: Bearer <token> or X-NetEnc-Token",
+            "import": "POST /api/import/pack (multipart file)",
         },
     })
 
@@ -371,8 +388,16 @@ def main():
         except Exception as e:
             _MODULE_STATUS["study_error"] = str(e)
             print("study routes", e)
+    if init_import_routes:
+        try:
+            init_import_routes(app, db, require_token)
+            _MODULE_STATUS["import_pack"] = True
+        except Exception as e:
+            _MODULE_STATUS["import_error"] = str(e)
+            print("import routes", e)
     print(f"NetEnc listening on http://{host}:{port}")
     print("  sync: /api/sync/hello | manifest | pull | push")
+    print("  import: POST /api/import/pack | GET /api/import/packs | DELETE /api/import/packs/<id>")
     print(f"  token_required={bool(SYNC_TOKEN)} token_generated_for_process={TOKEN_GENERATED_FOR_PROCESS}")
     app.run(host=host, port=port, debug=False)
 
