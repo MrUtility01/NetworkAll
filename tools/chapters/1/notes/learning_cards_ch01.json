@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "chapter_order": 1,
+  "content_type": "notes",
+  "pack_metadata": {
+    "structure": "flat",
+    "purpose": "Learning Cards / کارت یادگیری برای مرور سریع و فلش‌کارت",
+    "quality_rule": "هر کارت مستقل، عملی و بدون تکرار عین متن درس"
+  },
+  "items": [
+    {
+      "uid": "note:ch01:cpu:concept:001",
+      "type": "concept",
+      "title_fa": "Core در برابر Thread — تفاوت واقعی",
+      "body_fa": "Core واحد فیزیکی اجرای دستور است. Thread واحد منطقی است. تکنولوژی Hyper-Threading یا SMT اجازه می‌دهد یک Core دو Thread را مدیریت کند، اما این به معنای دو برابر شدن قدرت واقعی نیست. در انتخاب سرور همیشه به تعداد Core فیزیکی بیشتر از تعداد Thread منطقی توجه کنید.",
+      "related_lessons": ["lesson:ch01:cpu:001"],
+      "tags": ["cpu", "core", "thread", "hyperthreading"],
+      "chapter_order": 1,
+      "difficulty": "مبتدی",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "note:ch01:cpu:tip:001",
+      "type": "tip",
+      "title_fa": "قبل از خرید CPU سرور این سه عدد را چک کنید",
+      "body_fa": "۱) تعداد Core فیزیکی واقعی ۲) اندازه کش L3 ۳) پشتیبانی از حافظه ECC. این سه مورد بیشتر از فرکانس بالا روی پایداری و عملکرد سازمانی تأثیر می‌گذارند.",
+      "related_lessons": ["lesson:ch01:cpu:001"],
+      "tags": ["cpu", "server", "selection", "ecc"],
+      "chapter_order": 1,
+      "difficulty": "متوسط",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "note:ch01:cpu:gotcha:001",
+      "type": "gotcha",
+      "title_fa": "تله رایج: تعداد Thread را با قدرت اشتباه نگیرید",
+      "body_fa": "بسیاری از افراد با دیدن «۳۲ Thread» فکر می‌کنند قدرت دو برابر ۳۲ Core است. در عمل Hyper-Threading معمولاً ۱۵ تا ۳۰ درصد بهبود می‌دهد، نه ۱۰۰ درصد. همیشه مشخصات Core فیزیکی را مبنا قرار دهید.",
+      "related_lessons": ["lesson:ch01:cpu:001"],
+      "tags": ["cpu", "gotcha", "hyperthreading"],
+      "chapter_order": 1,
+      "difficulty": "متوسط",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "note:ch01:cpu:checklist:001",
+      "type": "checklist",
+      "title_fa": "چک‌لیست انتخاب CPU برای سرور سازمانی",
+      "body_fa": "- [ ] تعداد Core فیزیکی مشخص شده\n- [ ] پشتیبانی از ECC تأیید شده\n- [ ] اندازه کش L3 مناسب workload\n- [ ] TDP با ظرفیت پاور و خنک‌کننده سازگار است\n- [ ] پشتیبانی از نسل حافظه مورد نیاز (DDR4/DDR5)\n- [ ] microcode و firmware قابل به‌روزرسانی است\n- [ ] سازگاری با مادربرد و چیپست بررسی شده",
+      "related_lessons": ["lesson:ch01:cpu:001"],
+      "tags": ["cpu", "checklist", "server", "selection"],
+      "chapter_order": 1,
+      "difficulty": "متوسط",
+      "source_status": "review_required"
+    },
+    {
+      "uid": "note:ch01:cpu:command_card:001",
+      "type": "command_card",
+      "title_fa": "مشاهده اطلاعات CPU در لینوکس",
+      "body_fa": "دستور: `lscpu`\n\nخروجی مهم: Architecture، CPU(s)، Thread(s) per core، Core(s) per socket، Model name، L1d/L1i/L2/L3 cache.\n\nبرای جزئیات بیشتر: `cat /proc/cpuinfo`",
+      "related_lessons": ["lesson:ch01:cpu:001"],
+      "tags": ["cpu", "linux", "command"],
+      "chapter_order": 1,
+      "difficulty": "مبتدی",
+      "source_status": "review_required"
+    }
+  ]
+}
