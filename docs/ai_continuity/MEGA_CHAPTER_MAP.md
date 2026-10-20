@@ -1,106 +1,111 @@
-# MEGA-CHAPTER MAP — ساختار جدید هدف
+# MEGA-CHAPTER MAP — ساختار نهایی ۳۰ فصلی (Flat / یک‌سطحی)
 
-**تاریخ ثبت:** 2026-10-18  
-**درخواست کاربر:** شبکه یک فصل کامل، سیسکو یک فصل کامل، میکروتیک یک فصل کامل، و بقیه به همین شکل.
+**تاریخ به‌روزرسانی:** ۲۰۲۶-۱۰-۲۰  
+**تأیید کاربر:**  
+- فصل سخت‌افزاری اضافه شود (بله)  
+- فقط سطح مبتدی + متوسط (هیچ سطح پیشرفته جداگانه‌ای نباشد)  
+- هر مبحث فقط **یک سطح** داشته باشد و تمام مطالب داخل همان فصل/درس قرار گیرد  
+- از ابتدا شروع شود
 
-این سند **نقشه هدف** است. هنوز full_curriculum.py و DB را عوض نکرده‌ایم؛ اول نقشه را قفل می‌کنیم، بعد مهاجرت محتوا را مرحله‌به‌مرحله انجام می‌دهیم.
-
----
-
-## اصول طراحی
-
-1. **یک موضوع بزرگ = یک فصل اصلی** (نه ده‌ها فصل ریز).
-2. داخل هر فصل اصلی، **زیر‌فصل (Level / Section)** و درس‌ها (L0–L4) می‌آید.
-3. محتوا می‌تواند خیلی حجیم باشد (چند مگابایت در هر فصل). کیفیت و عدم هنگ مهم‌تر از تعداد فصل است.
-4. پک‌های موجود (Cisco switching, MikroTik, FortiGate, Windows Server, VPN, Routing deep و ...) بدون دور ریختن، به فصل اصلی مربوطه منتقل می‌شوند.
-5. uid درس‌ها تا حد ممکن حفظ می‌شود (compatibility).
+این سند **نقشهٔ قطعی هدف** است. ساختار قدیمی ۶۸ فصلی به تدریج به این ۳۰ فصل منتقل می‌شود.
 
 ---
 
-## فهرست فصل‌های اصلی پیشنهادی (Mega Chapters)
+## اصول طراحی نهایی
 
-| کد | عنوان فارسی | عنوان انگلیسی | پوشش اصلی |
-|----|-------------|---------------|----------|
-| **M01** | مبانی IT و سخت‌افزار | IT Fundamentals & Hardware | CPU, Motherboard, RAM, Storage, PSU, Assembly, Server HW, BIOS/UEFI |
-| **M02** | سیستم‌عامل و فایل‌سیستم | Operating Systems & Filesystems | Windows/Linux basics, Process, FS, RAID, LVM, Boot |
-| **M03** | مبانی شبکه (همه مطالب شبکه) | Network Fundamentals | OSI, TCP/IP, Ethernet, Switching basics, IPv4/IPv6, Subnetting, ARP, ICMP, TCP/UDP, DNS, DHCP, Cabling, Fiber, Packet Journey |
-| **M04** | سیسکو (فصل کامل) | Cisco Complete | Switching (VLAN, STP, EtherChannel, ...), Routing (OSPF, EIGRP, BGP), MPLS, VXLAN/EVPN, Security, Automation, Troubleshooting |
-| **M05** | میکروتیک (فصل کامل) | MikroTik Complete | RouterOS basics, Routing, Firewall, NAT, QoS, VPN, HA, Wireless, Scripting, Troubleshooting |
-| **M06** | فایروال و امنیت لبه | Firewall & Edge Security | FortiGate, pfSense, OPNsense, Sophos, Policy design, IPS/IDS, VPN gateway |
-| **M07** | وایرلس سازمانی | Enterprise Wireless | Wi-Fi design, Controller, PtP/PtMP, Security, Capacity, Troubleshooting |
-| **M08** | ویندوز سرور و اکتیو دایرکتوری | Windows Server & AD | Server Core, AD DS, DNS/DHCP/NPS, File/Print/DFS, GPO, Endpoint security, Entra ID, M365, PowerShell |
-| **M09** | لینوکس سازمانی | Linux Enterprise | Admin, Networking, Services (Web/DB), Security, Hardening, Automation |
-| **M10** | مجازی‌سازی و کانتینر | Virtualization & Containers | VMware, Hyper-V, Proxmox, Docker, Kubernetes |
-| **M11** | کلود و شبکه ابری | Cloud & Cloud Networking | AWS VPC, Azure VNet, Hybrid, IAM, CSPM, FinOps |
-| **M12** | ذخیره‌سازی، Backup و DR | Storage, Backup & DR | SAN/NAS, iSCSI, Ceph, Backup strategies, Veeam, RPO/RTO |
-| **M13** | دیتاسنتر، HA و مانیتورینگ | Data Center, HA & Monitoring | Leaf-Spine, HA/LB, SNMP, Zabbix, Prometheus, ELK, SIEM |
-| **M14** | اتوماسیون و AI در IT | Automation & AI for IT | Python (Netmiko/NAPALM), Ansible, Terraform, CI, ChatOps, RAG, Ollama |
-| **M15** | دیتابیس و امنیت آن | Database & DB Security | SQL Server, PostgreSQL, MySQL, MongoDB, Redis, TDE, Hardening |
-| **M16** | VoIP، CCTV و IoT | VoIP, CCTV & IoT | SIP, Asterisk/Issabel, Panasonic, IP Camera, Access Control, IoT segmentation |
-| **M17** | امنیت جامع (Zero Trust تا SOC) | Comprehensive Security | Zero Trust, ITIL, Network Sec, Endpoint/AppSec, DevSecOps, SOC, IR, Hunting, Forensics |
-| **M18** | عیب‌یابی و لاب‌های سازمانی | Troubleshooting & Org Labs | Methodology, Tools, Ethical Lab (authorized only), 20+ Capstone Labs |
-| **M19** | دانشنامه دستورات | Commands Encyclopedia | Chapter 68 style — multi-vendor command reference |
-| **M20** | Git و ابزارهای مهندسی | Git & Engineering Tools | Git workflows, CI basics, documentation |
+1. **۳۰ فصل اصلی** (شماره‌گذاری ۱ تا ۳۰).
+2. **هیچ سطح‌بندی L0–L4 یا مبتدی/متوسط/پیشرفته جداگانه وجود ندارد**.  
+   هر درس/موضوع فقط یک سطح دارد و محتوای آن از صفر تا سطح متوسط کامل است.
+3. تمام مطالب مرتبط (درس، مثال، دستور، لاب، سوال، پاسخ) داخل همان فصل قرار می‌گیرد.
+4. فصل ۳۰ فقط مرجع دستورات است (جست‌وجوی سریع).
+5. محتوا می‌تواند حجیم باشد؛ UI با بارگذاری درخواستی (on-demand) کار می‌کند.
+6. uid درس‌های قدیمی تا حد ممکن حفظ می‌شود تا سازگاری sync و پیشرفت کاربر از بین نرود.
 
 ---
 
-## نگاشت فصل‌های قدیمی → فصل‌های جدید
+## فهرست نهایی فصل‌ها (۱ تا ۳۰)
 
-| فصل‌های قدیمی | فصل جدید |
-|---------------|----------|
-| 01, 02, 03 | **M01** مبانی IT و سخت‌افزار |
-| 04, 05 | **M02** سیستم‌عامل و فایل‌سیستم |
-| 06, 07, 08, 09, 10, 11, 12 | **M03** مبانی شبکه (همه مطالب شبکه) |
-| 13, 14, 15, 16, 17 + بخش سیسکو routing deep | **M04** سیسکو کامل |
-| 19, 20, 21 | **M05** میکروتیک کامل |
-| 24, 25 | **M06** فایروال و امنیت لبه |
-| 22, 23 | **M07** وایرلس |
-| 28, 29, 30, 31, 32, 33, 34, 35 | **M08** ویندوز سرور و AD |
-| 36, 37, 38, 39 | **M09** لینوکس |
-| 40, 41, 42 | **M10** مجازی‌سازی و کانتینر |
-| 43, 44 | **M11** کلود |
-| 45, 46 | **M12** Storage / Backup / DR |
-| 47, 48, 49, 50 | **M13** DC / HA / Monitoring |
-| 51 | **M14** اتوماسیون و AI |
-| 52, 53 | **M15** دیتابیس |
-| 54, 55 | **M16** VoIP / CCTV / IoT |
-| 26, 27, 56, 57, 58, 59 | **M17** امنیت جامع |
-| 60 | **M18** عیب‌یابی و لاب |
-| 68 | **M19** دانشنامه دستورات |
-| 64 | **M20** Git |
+| شماره | عنوان فارسی | پوشش اصلی از فصل‌های قدیمی | اولویت مهاجرت |
+|------|-------------|---------------------------|---------------|
+| **۱** | مبانی IT و سخت‌افزار | ۱، ۲، ۳، ۴، ۵ | شروع از اینجا |
+| **۲** | مبانی شبکه، OSI/TCP-IP و جریان بسته | ۶ + بخشی از ۹ | بالا |
+| **۳** | لایه فیزیکی، Data Link، Ethernet، ARP و کابل‌کشی | ۷ + ۱۲ | بالا |
+| **۴** | آدرس‌دهی IPv4، Subnetting، VLSM و IPv6 | ۸ | حیاتی |
+| **۵** | لایه انتقال (TCP، UDP، QUIC) و کنترل جریان/ازدحام | ۹ | بالا |
+| **۶** | سرویس‌های شبکه (DNS، DHCP، NTP، SNMP، Syslog، AAA) | ۱۰، ۱۱، ۲۷ + بخشی از ۲۶ | بالا |
+| **۷** | سوئیچینگ سیسکو (VLAN، STP، EtherChannel، امنیت لایه ۲) | ۱۳ | حیاتی |
+| **۸** | مسیریابی (Static، OSPF، BGP، Route-map، Redistribution) | ۱۴ + ۶۶ | حیاتی |
+| **۹** | فناوری‌های پیشرفته (MPLS، VRF، EVPN/VXLAN، Multicast، SD-WAN) | ۱۵، ۱۶، ۱۷، ۱۸ | متوسط |
+| **۱۰** | مفاهیم NAT، ACL و Firewall عمومی | بخشی از ۲۴/۲۵ | متوسط |
+| **۱۱** | FortiGate (جامع – از مبانی تا سطح متوسط عملیاتی) | ۲۴ | حیاتی |
+| **۱۲** | سایر فایروال‌ها (pfSense، OPNsense، Sophos) | ۲۵ | متوسط |
+| **۱۳** | VPN سازمانی (IPsec، SSL-VPN، WireGuard) | ۶۷ + بخشی از ۲۰/۲۱ | بالا |
+| **۱۴** | MikroTik (از مبانی تا Routing، Firewall، QoS، VPN و HA) | ۱۹، ۲۰، ۲۱ | حیاتی |
+| **۱۵** | وایرلس سازمانی و PtP/PtMP | ۲۲، ۲۳ | متوسط |
+| **۱۶** | Windows Server و Active Directory | ۲۸–۳۵ | بالا |
+| **۱۷** | لینوکس (مدیریت سیستم، شبکه، سرویس‌ها و امنیت) | ۳۶–۳۹ | متوسط |
+| **۱۸** | امنیت Endpoint و Zero Trust | ۳۲، ۵۶، ۵۸ | متوسط |
+| **۱۹** | مجازی‌سازی (VMware، Hyper-V، Proxmox، Docker، Kubernetes) | ۴۰–۴۲ | متوسط |
+| **۲۰** | Storage سازمانی، Backup و Disaster Recovery | ۴۵، ۴۶ | متوسط |
+| **۲۱** | معماری دیتاسنتر، HA و Load Balancing | ۴۷، ۴۸ | متوسط |
+| **۲۲** | شبکه و امنیت ابری (AWS، Azure، Governance) | ۴۳، ۴۴ | متوسط |
+| **۲۳** | مانیتورینگ، SIEM و تحلیل پکت (Wireshark) | ۴۹، ۵۰ | متوسط |
+| **۲۴** | امنیت شبکه پیشرفته، SOC، IR و Ethical Hacking دفاعی | ۵۷، ۵۹، ۶۰، ۶۵ | بالا |
+| **۲۵** | اتوماسیون شبکه (Ansible، Nornir، NAPALM، NETCONF، AI در IT) | ۵۱ | بالا |
+| **۲۶** | پایتون برای شبکه و اسکریپت‌نویسی (Python + Bash + PowerShell) | بخشی از ۳۵ + ۵۱ | متوسط |
+| **۲۷** | پایگاه داده و امنیت دیتابیس | ۵۲، ۵۳ | پایین |
+| **۲۸** | عملیات IT، NOC، مستندسازی، Runbook و CMDB | ۶۱، ۶۲، ۶۳ | متوسط |
+| **۲۹** | Git و GitHub در محیط سازمانی | ۶۴ | متوسط |
+| **۳۰** | **مرجع کامل دستورات** | ۶۸ | حیاتی (جدا و قابل جست‌وجو) |
 
----
-
-## ساختار پوشه پیشنهادی (tools/packs)
-
-```
-tools/packs/
-├── M03_network_fundamentals/
-│   ├── README.md
-│   ├── manifest.json
-│   ├── lessons/
-│   ├── scenarios/
-│   ├── packet_journeys/
-│   ├── diagrams/
-│   ├── scripts/
-│   └── notes/
-├── M04_cisco_complete/
-├── M05_mikrotik_complete/
-├── M06_firewall_edge/
-├── ...
-└── M19_commands_encyclopedia/
-```
-
-هر فصل اصلی می‌تواند ده‌ها زیر‌بخش و صدها درس داشته باشد بدون اینکه UI هنگ کند (بارگذاری سطح‌به‌سطح).
+**نکته:** فصل‌های ۵۴ (VoIP) و ۵۵ (CCTV/IoT) موقتاً داخل فصل ۲۴ ادغام می‌شوند یا در نسخهٔ بعدی به عنوان زیر‌بخش اضافه خواهند شد.
 
 ---
 
-## مزایای این مدل
+## نگاشت خلاصه قدیمی → جدید
 
-- کاربر دقیقاً می‌داند کجا برود: «سیسکو» یک جا، «میکروتیک» یک جا، «شبکه» یک جا.
-- تولید محتوا با AI خیلی تمیزتر می‌شود (یک پرامپت بزرگ برای یک فصل کامل).
-- پک‌های حجیم موجود (۵–۱۰ مگابایتی) بدون شکستن، داخل فصل مربوطه جا می‌گیرند.
-- تعداد فصل‌های سطح بالا کم می‌شود → مدیریت و ممیزی آسان‌تر.
+| قدیمی | جدید |
+|-------|------|
+| ۱–۵ | ۱ (سخت‌افزار) |
+| ۶ | ۲ |
+| ۷+۱۲ | ۳ |
+| ۸ | ۴ |
+| ۹ | ۵ |
+| ۱۰+۱۱+۲۷ | ۶ |
+| ۱۳ | ۷ |
+| ۱۴+۶۶ | ۸ |
+| ۱۵–۱۸ | ۹ |
+| ۲۴/۲۵ (عمومی) | ۱۰ |
+| ۲۴ | ۱۱ |
+| ۲۵ | ۱۲ |
+| ۶۷ | ۱۳ |
+| ۱۹–۲۱ | ۱۴ |
+| ۲۲–۲۳ | ۱۵ |
+| ۲۸–۳۵ | ۱۶ |
+| ۳۶–۳۹ | ۱۷ |
+| ۳۲+۵۶+۵۸ | ۱۸ |
+| ۴۰–۴۲ | ۱۹ |
+| ۴۵–۴۶ | ۲۰ |
+| ۴۷–۴۸ | ۲۱ |
+| ۴۳–۴۴ | ۲۲ |
+| ۴۹–۵۰ | ۲۳ |
+| ۵۷+۵۹+۶۰+۶۵ | ۲۴ |
+| ۵۱ | ۲۵ |
+| بخشی از ۳۵+۵۱ | ۲۶ |
+| ۵۲–۵۳ | ۲۷ |
+| ۶۱–۶۳ | ۲۸ |
+| ۶۴ | ۲۹ |
+| ۶۸ | ۳۰ |
+
+---
+
+## قوانین محتوا (اجباری)
+
+- هر درس فقط **یک سطح** دارد.
+- محتوای درس باید از صفر (مبتدی) شروع شود و تا سطح متوسط عملیاتی کامل باشد.
+- هیچ درسی با عنوان «پیشرفته» یا سطح L3/L4 جداگانه ساخته نمی‌شود.
+- دستورات، مثال‌ها، لاب‌ها و سوال‌ها داخل همان درس یا پوشهٔ فصل قرار می‌گیرند.
+- فصل ۳۰ فقط دستورات است (بدون درس توضیحی طولانی).
 
 ---
 
@@ -108,18 +113,16 @@ tools/packs/
 
 | مرحله | وضعیت |
 |-------|--------|
-| ثبت نقشه | انجام شد (همین فایل) |
-| تأیید کاربر | در انتظار |
-| به‌روزرسانی full_curriculum / seed | بعد از تأیید |
-| مهاجرت پک‌های موجود | بعد از تأیید |
-| ساخت پوشه‌های M0x | بعد از تأیید |
+| ثبت نقشه نهایی | انجام شد (همین فایل) |
+| ایجاد شاخه feature/29-chapter-flat-structure | انجام شد |
+| به‌روزرسانی INDEX_FA.md و index.json | در حال انجام |
+| شروع مهاجرت فصل ۱ (سخت‌افزار) | بعدی |
+| به‌روزرسانی full_curriculum.py و loaderها | بعدی |
+| به‌روزرسانی Android/Windows | بعدی |
 
 ---
 
-## درخواست از کاربر
+## درخواست بعدی از کاربر
 
-لطفاً این نقشه را بررسی کن و بگو:
-
-1. آیا تعداد و نام فصل‌های اصلی (M01–M20) مورد تأیید است؟
-2. چیزی باید جدا یا ادغام شود؟ (مثلاً آیا وایرلس داخل شبکه برود یا جدا بماند؟)
-3. آیا می‌خواهی از **M03 شبکه** یا **M04 سیسکو** یا **M05 میکروتیک** اول شروع کنیم؟
+مهاجرت از فصل ۱ شروع می‌شود.  
+اگر نام فصل‌ها یا ترتیب نیاز به تغییر کوچک دارد، همین حالا بگویید.
