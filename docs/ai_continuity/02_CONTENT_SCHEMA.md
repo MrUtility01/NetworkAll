@@ -1,146 +1,180 @@
-# 02 — CONTENT SCHEMA (نسخه Flat / ۳۰ فصلی)
+# 02 — CONTENT SCHEMA (بیس قطعی دانشنامه + برنامه یادگیری)
 
 **آخرین به‌روزرسانی:** ۲۰۲۶-۱۰-۲۰  
-**تغییر کلیدی:** برای محتوای جدید، سطح‌بندی L0–L4 حذف شد. هر درس فقط یک سطح دارد و از صفر تا متوسط را پوشش می‌دهد.
+**منبع حقیقت:** تأیید کاربر — قالب ۹ بخشی + فلش‌کارت با مرور فاصله‌دار + آزمون + تمرین عملی
 
-Canonical schemas for all content types. Every agent must follow these exactly.
+این فایل قانون مطلق تولید محتوا است. هر درس/مبحث جدید باید دقیقاً از این قالب پیروی کند.
 
 ---
 
-## Package envelope
+## اصول کلی (غیرقابل مذاکره)
+
+1. **یک مبحث = یک درس مستقل** با پیش‌نیاز و اهداف یادگیری مشخص.
+2. **فقط مبتدی + متوسط** (هیچ سطح پیشرفته جداگانه).
+3. **تکرار متنی حذف می‌شود**، اما ارزش آموزشی حفظ می‌شود (مثال‌های متفاوت، دستورات vendor-specific، سوالات مستقل، سناریوهای عیب‌یابی مختلف).
+4. سوال و پاسخ همیشه در فایل‌های جدا نگهداری می‌شوند.
+5. uid پایدار و یکتا برای حفظ پیشرفت کاربر و Sync.
+6. محتوا برای نمایش به صورت جلسه مستقل در برنامه مناسب باشد.
+
+---
+
+## قالب استاندارد هر مبحث / درس (۹ بخش اجباری)
+
+هر درس در `full_content` (Markdown) و فیلدهای ساختاریافته باید این بخش‌ها را پوشش دهد:
+
+| بخش | محتوای موردنیاز |
+|-----|-----------------|
+| **۱. آموزش نظری** | توضیح کامل، اصول کار، معماری و مفاهیم پایه |
+| **۲. نکات کلیدی** | نکات مهم، استثناها، محدودیت‌ها و اشتباهات رایج |
+| **۳. مثال‌های تشریحی** | مثال‌های واقعی با توضیح مرحله‌به‌مرحله |
+| **۴. جداول مرجع** | مقایسه فناوری‌ها، پروتکل‌ها، گزینه‌ها و کاربردها |
+| **۵. دستورات عملی** | دستورهای کامل CLI، پارامترها، خروجی نمونه و کاربرد |
+| **۶. سناریوهای عملی** | پیاده‌سازی، طراحی شبکه و آزمایشگاه |
+| **۷. عیب‌یابی** | نشانه مشکل، علت‌های احتمالی، روش بررسی و راه‌حل |
+| **۸. پرسش‌وپاسخ** | ارجاع به سوالات مفهومی و عملی (پاسخ در answer_key جدا) |
+| **۹. محتوای یادگیری** | فلش‌کارت، آزمون، مرور نکات دشوار و تمرین |
+
+---
+
+## Lesson Schema (درس)
 
 ```json
 {
-  "package_schema_version": 2,
-  "project": "ENGINEER JOKAR / NetworkAll",
-  "generated_on": "YYYY-MM-DD",
-  "purpose": "...",
-  "compatibility": {
-    "preserve_existing_records": true,
-    "preserve_existing_uids": true,
-    "questions_and_answers_separate": true
-  },
-  "content_type": "lessons|scenarios|packet_journeys|diagrams|scripts|notes",
-  "items": []
-}
-```
-
----
-
-## Lesson (درس — تک‌سطحی)
-
-برای محتوای جدید (از فصل ۱ به بعد در ساختار ۳۰تایی):
-
-**فیلدهای الزامی:**
-- `uid` (پایدار و یکتا، مثال: `lesson:ch01:cpu:001`)
-- `chapter_order` (۱ تا ۳۰)
-- `lesson_order` (ترتیب داخل فصل)
-- `title_fa`, `title_en`
-- `summary` (۱–۲ جمله)
-- `full_content` (Markdown کامل، حداقل ۱۸۰۰–۲۵۰۰ کاراکتر، ترجیحاً بیشتر)
-- `learning_objectives` (لیست ۳–۷ هدف)
-- `source_status`: `"review_required"` یا `"approved"`
-
-**فیلدهای توصیه‌شده قوی:**
-- `topic`, `subchapter_order`
-- `commands[]`, `examples[]`, `notes[]` (یا ارجاع به learning cards)
-- `diagrams[]` (mermaid + ascii)
-- `related_scenarios[]`, `scripts[]`
-- `meta.assessment` (سوالات مرتبط بدون پاسخ)
-
-**قوانین سطح:**
-- `level` را برای محتوای جدید روی `"flat"` بگذارید یا حذف کنید.
-- **هیچ** درسی با عنوان یا سطح «پیشرفته / L3 / L4 / خبره» ساخته نمی‌شود.
-- محتوای درس باید از صفر (مبتدی) شروع شود و تا سطح متوسط عملیاتی کامل باشد.
-- ۱۰ بخش پیشنهادی داخل `full_content`:
-  1. معرفی و پیش‌نیاز
-  2. آموزش از صفر + تشبیه سازمانی
-  3. معماری / سازوکار فنی
-  4. مثال مرحله‌ای
-  5. دستورات با خروجی مورد انتظار
-  6. لابراتوار ایمن (Lab)
-  7. عیب‌یابی (Symptom → Verify → Fix)
-  8. نکات امنیتی
-  9. خلاصه + واژه‌نامه
-  10. چک‌لیست تسلط
-
-**سازگاری با محتوای قدیمی:** درس‌های قبلی که هنوز L0–L4 دارند حفظ می‌شوند تا مهاجرت کامل شود.
-
----
-
-## Learning Card / Note / کارت یادگیری (دقت بسیار بالا)
-
-کارت‌های یادگیری برای مرور سریع، فلش‌کارت، نکات کلیدی و چک‌لیست استفاده می‌شوند. UI اندروید و ویندوز روی این‌ها حساب می‌کند.
-
-```json
-{
-  "uid": "note:ch01:cpu:cache:001",
-  "type": "concept|tip|gotcha|checklist|command_card",
-  "title_fa": "عنوان کوتاه و دقیق (حداکثر ۶۰ کاراکتر)",
-  "body_fa": "متن کامل کارت. واضح، عملی، بدون آب. برای concept حداقل ۱۵۰ کاراکتر، برای tip/gotcha حداقل ۸۰ کاراکتر.",
-  "related_lessons": ["lesson:ch01:cpu:001"],
-  "tags": ["cpu", "cache", "hardware"],
+  "uid": "lesson:ch01:cpu:001",
   "chapter_order": 1,
+  "lesson_order": 1,
+  "level": "flat",
+  "title_fa": "...",
+  "title_en": "...",
+  "topic": "CPU",
+  "prerequisites": ["lesson:ch01:intro:001"],
+  "learning_objectives": ["...", "..."],
+  "summary": "۱–۲ جمله",
+  "full_content": "Markdown با ۹ بخش بالا",
+  "key_points": ["نکته ۱", "نکته ۲"],
+  "examples": [ { "title": "...", "steps": [], "explanation": "..." } ],
+  "reference_tables": [ { "title": "...", "headers": [], "rows": [] } ],
+  "commands": [ { "os": "linux|windows|cisco|...", "cmd": "...", "params": "...", "sample_output": "...", "use_case": "..." } ],
+  "labs": ["lab:ch01:cpu:001"],
+  "troubleshooting": [ { "symptom": "...", "possible_causes": [], "verification": [], "fix": "..." } ],
+  "related_questions": ["q:ch01:cpu:001", "q:ch01:cpu:002"],
+  "learning_cards": ["note:ch01:cpu:concept:001", "..."],
+  "estimated_minutes": 25,
   "difficulty": "مبتدی|متوسط",
   "source_status": "review_required"
 }
 ```
 
-### انواع کارت و قوانین کیفیت
-
-| type | کاربرد | حداقل کیفیت |
-|------|--------|-------------|
-| **concept** | تعریف مفهوم کلیدی + چرا مهم است | توضیح واضح + یک مثال کوتاه سازمانی |
-| **tip** | نکته عملی میدانی | مستقیم و قابل اجرا |
-| **gotcha** | تله رایج / اشتباه متداول | «چیزی که اغلب اشتباه می‌شود + راه درست» |
-| **checklist** | چک‌لیست قبل/حین/بعد کار | لیست شماره‌دار یا بولت، قابل تیک زدن |
-| **command_card** | دستور + توضیح کوتاه + خروجی مورد انتظار | فقط دستورات ایمن و رایج |
-
-**قوانین سخت برای کارت یادگیری:**
-- عنوان باید خودکفا باشد (بدون نیاز به خواندن درس).
-- body_fa باید کامل و مستقل باشد.
-- هیچ کارت خالی یا template-مانند مجاز نیست.
-- هر کارت حداقل یک `related_lessons` داشته باشد.
-- برای فصل‌های جدید: فقط difficulty = مبتدی یا متوسط.
-- از تکرار عین متن درس خودداری کنید؛ کارت باید خلاصه یا زاویه متفاوت باشد.
-
 ---
 
-## Scenario (Break/Fix)
+## Learning Card / Flashcard (کارت یادگیری + مرور فاصله‌دار)
+
+برای فلش‌کارت و مرور فاصله‌دار طراحی شده است. برنامه باید بتواند پاسخ کاربر و زمان مرور بعدی را ثبت کند.
 
 ```json
 {
-  "uid": "scenario:ch01:s001",
-  "code": "CH01-S001",
-  "title_fa": "...", "title_en": "...",
+  "uid": "note:ch01:cpu:concept:001",
+  "type": "concept|tip|gotcha|checklist|command_card|definition|difference|port|protocol",
+  "title_fa": "عنوان کوتاه و خودکفا (≤ ۶۰ کاراکتر)",
+  "front_fa": "سوال یا مفهومی که کاربر می‌بیند (برای فلش‌کارت)",
+  "back_fa": "پاسخ کامل و مستقل",
+  "body_fa": "توضیح تکمیلی (اختیاری، برای نمایش غنی‌تر)",
+  "related_lessons": ["lesson:ch01:cpu:001"],
+  "tags": ["cpu", "cache"],
+  "chapter_order": 1,
   "difficulty": "مبتدی|متوسط",
-  "business_context": "...",
-  "incident": "...",
-  "symptoms": [], "tasks": [], "hints": [],
-  "solution": "...", "verification": [],
-  "skills_required": [], "estimated_hours": 1–3,
-  "vendors": [], "related_chapters": [],
-  "lab_environment": "...",
-  "safety_note": "فقط محیط آزمایشگاهی مجاز",
-  "scripts": [], "diagrams": []
+  "spaced_repetition": {
+    "ease_factor_default": 2.5,
+    "interval_days_default": 1
+  },
+  "source_status": "review_required"
 }
 ```
 
-(برای محتوای جدید level حذف یا flat شود.)
+**قوانین کیفیت کارت:**
+- `front_fa` و `back_fa` الزامی برای فلش‌کارت واقعی.
+- عنوان و front خودکفا باشند.
+- تکرار عین متن درس ممنوع؛ کارت باید زاویه خلاصه یا متفاوت داشته باشد.
+- فقط مبتدی یا متوسط.
 
 ---
 
-## Packet Journey / Diagram / Script
+## Question + Answer (آزمون و ارزیابی)
 
-همان ساختار قبلی حفظ می‌شود. برای محتوای جدید `level` را flat یا حذف کنید.
+سوال و پاسخ همیشه جدا هستند.
+
+**questions.json:**
+```json
+{
+  "uid": "q:ch01:cpu:001",
+  "lesson_uid": "lesson:ch01:cpu:001",
+  "type": "multiple_choice|true_false|short_answer|scenario",
+  "question_fa": "...",
+  "options": ["الف", "ب", "ج", "د"],
+  "difficulty": "مبتدی|متوسط",
+  "tags": [],
+  "chapter_order": 1
+}
+```
+
+**answer_key.json:**
+```json
+{
+  "uid": "q:ch01:cpu:001",
+  "correct": "ب",
+  "explanation_fa": "توضیح کامل چرا این جواب درست است و بقیه غلط‌اند",
+  "related_lesson": "lesson:ch01:cpu:001"
+}
+```
 
 ---
 
-## قوانین کلی جدید (اجباری از ۲۰۲۶-۱۰-۲۰)
+## Lab / Scenario (تمرین و مهارت عملی)
 
-1. محتوای جدید فقط مبتدی + متوسط.
-2. هر مبحث فقط یک درس اصلی (نه ۵ سطح).
-3. کارت‌های یادگیری با کیفیت بالا و مستقل.
-4. سوال و پاسخ همیشه جدا.
-5. uid پایدار حفظ شود تا پیشرفت کاربر و Sync نشکند.
-6. full_content واقعی و عمیق باشد، نه template تکراری.
+```json
+{
+  "uid": "lab:ch01:cpu:001",
+  "title_fa": "...",
+  "difficulty": "مبتدی|متوسط",
+  "objective": "...",
+  "initial_state": "وضعیت اولیه محیط",
+  "required_commands": [],
+  "steps": [],
+  "expected_result": "...",
+  "verification_steps": [],
+  "common_errors": [ { "error": "...", "cause": "...", "fix": "..." } ],
+  "safety_note": "فقط محیط آزمایشگاهی مجاز",
+  "related_lesson": "lesson:ch01:cpu:001"
+}
+```
+
+---
+
+## Commands (مرجع دستورات داخل درس و فصل ۳۰)
+
+```json
+{
+  "uid": "cmd:ch01:linux:lscpu",
+  "vendor_or_os": "linux",
+  "command": "lscpu",
+  "parameters": "...",
+  "sample_output": "...",
+  "use_case": "...",
+  "related_lessons": [],
+  "chapter_order": 1
+}
+```
+
+فصل ۳۰ فقط دستورات است (دسته‌بندی‌شده و قابل جست‌وجو).
+
+---
+
+## قوانین تولید محتوا
+
+- هر درس کوچک و مستقل باشد تا در برنامه به صورت یک جلسه نمایش داده شود.
+- مثال‌ها، دستورات vendor-specific، سوالات و سناریوهای عیب‌یابی حتی اگر موضوع مشابه باشد، حفظ شوند.
+- متن‌های تکراری توضیحی ادغام شوند.
+- نسخه و تفاوت‌های فنی مهم مخلوط نشوند.
+- full_content حداقل ۱۸۰۰ کاراکتر و غنی باشد.
+
+این Schema از این لحظه بیس تمام تولید محتوا در شاخه `feature/29-chapter-flat-structure` است.
