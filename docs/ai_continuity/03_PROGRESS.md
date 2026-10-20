@@ -1,57 +1,42 @@
 # 03 — PROGRESS (Single Source of Truth)
 
 **Last updated by:** Grok — 2026-10-20  
-**Overall status:** ساختار ۳۰ فصلی Flat تأیید و شروع شده. مهاجرت فصل ۱ در جریان است.
+**Overall status:** بیس رسمی ۹ بخشی + فلش‌کارت با مرور فاصله‌دار قفل شد. اولین بسته کامل درس فصل ۱ آماده است.
 
 ---
 
-## وضعیت فعلی ساختار جدید (۳۰ فصل Flat)
+## بیس قطعی محتوا (تأیید کاربر)
 
-| مورد | وضعیت |
-|------|--------|
-| نقشه نهایی ۳۰ فصلی | تأیید شده (`MEGA_CHAPTER_MAP.md`) |
-| شاخه کاری | `feature/29-chapter-flat-structure` |
-| Schema محتوا (Lesson + Learning Card) | به‌روز شد (نسخه Flat) |
-| فصل ۱ — درس اول (CPU) | شروع شد — کیفیت بالا، تک‌سطحی |
-| فصل ۱ — کارت‌های یادگیری | ۵ کارت با کیفیت (concept, tip, gotcha, checklist, command_card) |
-| بقیه فصل‌ها | pending |
+هر مبحث باید این اجزا را داشته باشد:
 
----
-
-## کارهای انجام‌شده در این به‌روزرسانی (۲۰۲۶-۱۰-۲۰)
-
-1. به‌روزرسانی `02_CONTENT_SCHEMA.md` برای ساختار Flat:
-   - حذف الزام L0–L4 برای محتوای جدید
-   - تعریف دقیق و سخت‌گیرانه **Learning Card** (concept / tip / gotcha / checklist / command_card)
-   - قوانین کیفیت برای کارت‌ها
-
-2. شروع مهاجرت فصل ۱:
-   - فایل `tools/chapters/1/lessons/flat_lessons_ch01.json` با اولین درس کامل (CPU از صفر تا انتخاب سازمانی)
-   - فایل `tools/chapters/1/notes/learning_cards_ch01.json` با ۵ کارت یادگیری باکیفیت و مستقل
-
-3. قوانین محتوا: فقط مبتدی + متوسط، یک سطح در هر مبحث، همه مطالب داخل فصل.
+1. آموزش نظری
+2. نکات کلیدی
+3. مثال‌های تشریحی
+4. جداول مرجع
+5. دستورات عملی
+6. سناریوهای عملی (Lab)
+7. عیب‌یابی
+8. پرسش‌وپاسخ (سوال و پاسخ جدا)
+9. محتوای یادگیری (فلش‌کارت با front/back + spaced repetition، آزمون، تمرین)
 
 ---
 
-## قوانین فعال Learning Card (از این لحظه)
+## وضعیت فصل ۱ (مبانی IT و سخت‌افزار)
 
-- عنوان خودکفا و حداکثر ۶۰ کاراکتر
-- body کامل و مستقل از درس
-- حداقل یک related_lessons
-- فقط difficulty مبتدی یا متوسط
-- هیچ کارت خالی یا template مجاز نیست
-- نوع‌ها: concept | tip | gotcha | checklist | command_card
-
----
-
-## مراحل بعدی فوری
-
-1. ادامه درس‌های فصل ۱ (مادربرد، RAM، Storage پایه، اسمبل، BIOS/UEFI، سرور سخت‌افزاری) با همان کیفیت تک‌سطحی.
-2. اتصال loaderها به فایل‌های flat جدید.
-3. به‌روزرسانی Android و Windows برای نمایش تک‌سطحی + کارت‌های یادگیری.
+| جزء | فایل | وضعیت |
+|-----|------|--------|
+| درس کامل (۹ بخشی) | `lessons/flat_lessons_ch01.json` | آماده (CPU) |
+| فلش‌کارت / Learning Cards | `notes/learning_cards_ch01.json` | ۶ کارت با front/back + spaced_repetition |
+| سوالات | `questions/questions_flat_ch01.json` | ۵ سوال |
+| پاسخ‌نامه | `answers/answer_key_flat_ch01.json` | ۵ پاسخ + توضیح |
+| Lab عملی | `labs/labs_flat_ch01.json` | ۱ لاب کامل |
 
 ---
 
-## یادداشت سازگاری
+## مراحل بعدی
 
-درس‌ها و محتوای قدیمی با سطح L0–L4 فعلاً حفظ می‌شوند تا مهاجرت کامل شود و پیشرفت کاربران نشکند.
+1. ادامه درس‌های فصل ۱ (مادربرد، RAM، Storage، اسمبل، BIOS/UEFI، سرور سخت‌افزاری) با همین قالب کامل.
+2. اتصال loaderها و اپ (Android/Windows) به فایل‌های flat جدید و پشتیبانی از front/back فلش‌کارت و spaced repetition.
+3. مهاجرت تدریجی بقیه فصل‌ها.
+
+Schema رسمی: `docs/ai_continuity/02_CONTENT_SCHEMA.md`
