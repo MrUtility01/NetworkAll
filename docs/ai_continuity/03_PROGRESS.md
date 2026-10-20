@@ -1,60 +1,45 @@
 # 03 — PROGRESS (Single Source of Truth)
 
 **Last updated by:** Grok — 2026-10-20  
-**Overall status:** مورد ۱ (جداسازی داده‌ها) و مورد ۲ (Import کاربر) با دقت کامل تعریف و نمونه‌سازی شد.
+**Overall status:** منطق Import سمت سرور (ویندوز) کامل پیاده‌سازی و به app متصل شد.
 
 ---
 
-## مورد ۱ — جداسازی کامل داده‌ها ✅
+## Import سمت سرور (ویندوز) ✅
 
-سند رسمی: `docs/DATA_SEPARATION_AND_IMPORT.md`
+| جزء | فایل | وضعیت |
+|-----|------|--------|
+| موتور اعتبارسنجی + Import | `server/core/import_pack.py` | آماده |
+| API Routes | `server/import_routes.py` | آماده |
+| اتصال به app | `server/app.py` | متصل |
+| جداول دیتابیس | content_notes, content_questions, content_answers, content_commands, content_labs, imported_packs | ساخته می‌شوند |
+| نمونه بسته | `tools/import_samples/sample_cpu_extra/` | آماده |
 
-| نوع داده | جداسازی | محل محتوا | محل پیشرفت کاربر |
-|----------|---------|-----------|------------------|
-| درس | کامل | tools/chapters/N/lessons/ | user_lesson_progress |
-| سؤال | کامل | questions/ | user_quiz_attempts |
-| پاسخ | کامل و جدا از سؤال | answers/ | — |
-| فلش‌کارت | کامل (front/back) | notes/ | user_card_reviews |
-| دستور | کامل | commands/ + فصل ۳۰ | — |
-| آزمایشگاه | کامل | labs/ | user_lab_progress |
-| پیشرفت کاربر | کاملاً جدا | — | دیتابیس محلی |
-
-قوانین سخت جداسازی و جداول پیشنهادی دیتابیس پیشرفت در سند ثبت شده است.
-
----
-
-## مورد ۲ — سیستم Import توسط کاربر ✅
-
-- فرمت بسته: `.nacp` (ZIP با ساختار مشخص)
-- `manifest.json` اجباری با قوانین اعتبارسنجی سخت
-- حالت‌های `merge` و `new_chapter`
-- محل ذخیره بسته‌های کاربر جدا از محتوای اصلی Git
-- نمونه کامل آماده در:
+### APIهای فعال
 
 ```
-tools/import_samples/sample_cpu_extra/
+POST   /api/import/pack          ← آپلود و وارد کردن .nacp / .zip
+POST   /api/import/validate      ← فقط اعتبارسنجی
+GET    /api/import/packs         ← فهرست بسته‌های واردشده
+DELETE /api/import/packs/<id>    ← حذف ثبت بسته
 ```
 
-شامل: ۱ درس + ۳ فلش‌کارت + ۲ سؤال + ۲ پاسخ + ۱ دستور
+### رفتار
+
+- اعتبارسنجی سخت (manifest، uid یکتا، front/back فلش‌کارت، تطابق سوال/پاسخ، محدودیت حجم)
+- حالت `merge` → اضافه به فصل موجود
+- حالت `new_chapter` → ساخت فصل جدید
+- ذخیره بسته در `server/data/user_packs/`
+- جداول جدا برای notes / questions / answers / commands / labs
 
 ---
 
-## وضعیت کلی پروژه در این شاخه
+## وضعیت کلی
 
 | بخش | وضعیت |
 |-----|--------|
-| ساختار ۳۰ فصلی Flat | قفل شده |
-| قالب ۹ بخشی درس | قفل شده |
-| جداسازی داده‌ها | کامل و مستند |
-| سیستم Import | کامل و نمونه‌سازی شده |
-| نمونه درس CPU (فصل ۱) | آماده |
-| RTL + کارت + مرور فصل | مرحله بعدی UI |
-
----
-
-## مرحله بعدی پیشنهادی
-
-پیاده‌سازی لایه UI/Loader برای:
-1. خواندن بسته‌های Import
-2. پشتیبانی RTL
-3. نمایش کارت‌ها و مرور فصل
+| جداسازی داده‌ها | کامل |
+| سیستم Import (طراحی + نمونه) | کامل |
+| منطق Import سمت سرور | کامل |
+| RTL + کارت + مرور فصل (UI) | مرحله بعدی |
+| Import سمت اندروید | بعد از UI |
