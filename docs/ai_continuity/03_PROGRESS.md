@@ -1,56 +1,57 @@
 # 03 — PROGRESS (Single Source of Truth)
 
-**Last updated by:** ChatGPT — 2026-10-15  
-**Overall status:** Chapter richness policy registered; full 68-chapter evidence audit is **pending**. Do not treat the earlier preliminary inventory as a completed validation.
+**Last updated by:** Grok — 2026-10-20  
+**Overall status:** ساختار ۳۰ فصلی Flat تأیید و شروع شده. مهاجرت فصل ۱ در جریان است.
 
 ---
 
-## Active chapter policy
+## وضعیت فعلی ساختار جدید (۳۰ فصل Flat)
 
-- Chapters 1–67 default to **فوق‌حرفه‌ای**.
-- Target text/structured content: **2 MiB per chapter**.
-- Media cap: **5 MiB per chapter**, accounted separately.
-- Per chapter: **100 independent examples, 150 independent troubleshooting scenarios, 100 exam questions**, with answer keys stored separately.
-- Chapter 68 exception: **خبره**, 5 MiB text/structured target, media cap 5 MiB separately, same example/scenario/question counts, explanations not required.
-- File size is not scientific quality. Duplicate/template-only records do not count toward quotas.
+| مورد | وضعیت |
+|------|--------|
+| نقشه نهایی ۳۰ فصلی | تأیید شده (`MEGA_CHAPTER_MAP.md`) |
+| شاخه کاری | `feature/29-chapter-flat-structure` |
+| Schema محتوا (Lesson + Learning Card) | به‌روز شد (نسخه Flat) |
+| فصل ۱ — درس اول (CPU) | شروع شد — کیفیت بالا، تک‌سطحی |
+| فصل ۱ — کارت‌های یادگیری | ۵ کارت با کیفیت (concept, tip, gotcha, checklist, command_card) |
+| بقیه فصل‌ها | pending |
 
-## Verified changes in this update
+---
 
-- Registered canonical policy and Chapter 68 exception in `CHAPTER_RICHNESS_AUDIT.md`.
-- Updated agent onboarding and project hard constraints so future agents must read and follow the policy.
-- Rewrote next actions around an evidence-backed 68-row inventory and Android/Windows parity.
-- This update records policy only; it does **not** assert that all chapters have been audited, enriched, or validated.
+## کارهای انجام‌شده در این به‌روزرسانی (۲۰۲۶-۱۰-۲۰)
 
-## Audit work still required
+1. به‌روزرسانی `02_CONTENT_SCHEMA.md` برای ساختار Flat:
+   - حذف الزام L0–L4 برای محتوای جدید
+   - تعریف دقیق و سخت‌گیرانه **Learning Card** (concept / tip / gotcha / checklist / command_card)
+   - قوانین کیفیت برای کارت‌ها
 
-1. Establish exact canonical title and content paths for all 68 chapters.
-2. Measure per-chapter text/structured bytes and media bytes separately, including Android compressed asset and Windows runtime/database footprint where measurable.
-3. Count records and unique IDs for lessons/examples/scenarios/questions; validate answer-key mapping.
-4. Detect exact and near duplicates; inspect scientific coverage and practical depth.
-5. Validate schema and test Android + Windows ingestion/display/build.
-6. Publish evidence, counts, defects and status for every chapter.
+2. شروع مهاجرت فصل ۱:
+   - فایل `tools/chapters/1/lessons/flat_lessons_ch01.json` با اولین درس کامل (CPU از صفر تا انتخاب سازمانی)
+   - فایل `tools/chapters/1/notes/learning_cards_ch01.json` با ۵ کارت یادگیری باکیفیت و مستقل
 
-## Architecture references
+3. قوانین محتوا: فقط مبتدی + متوسط، یک سطح در هر مبحث، همه مطالب داخل فصل.
 
-- `docs/CONTENT_ARCHITECTURE.md`
-- `docs/ai_continuity/01_PROJECT_RULES.md`
-- `docs/ai_continuity/CHAPTER_RICHNESS_AUDIT.md`
+---
 
-## Previously reported inventory (preliminary; re-check before relying on it)
+## قوانین فعال Learning Card (از این لحظه)
 
-The older audit noted 5185 lessons in the Android index and large dedicated packs for several topics. Those observations are not equivalent to 68-chapter validation. The exact title map, per-chapter byte counts, duplicate counts and Windows parity still need evidence.
+- عنوان خودکفا و حداکثر ۶۰ کاراکتر
+- body کامل و مستقل از درس
+- حداقل یک related_lessons
+- فقط difficulty مبتدی یا متوسط
+- هیچ کارت خالی یا template مجاز نیست
+- نوع‌ها: concept | tip | gotcha | checklist | command_card
 
+---
 
-## Chapter 68 — additive enrichment wave 9 / wave 4 (2026-10-18)
+## مراحل بعدی فوری
 
-- Added `tools/chapters/68/commands/sources/encyclopedia/commands_multi_technology_wave9.json`: 99 command/operational references, 3 for each of 33 tracked technology domains. All records remain `review_required` pending vendor/version-specific syntax review.
-- Added/extended structured source packs `lessons_wave4.json`, `examples_wave4.json`, `labs_wave4.json`, `questions_wave4.json`, and `answer_key_wave4.json`. Current file-level validation found 72 records per pack, unique UIDs within each file, and all 33 technology IDs represented. Question UIDs are intended to map to answer-key UIDs and must be verified by the CI/runtime path.
-- Connected wave 9 to `scripts/merge_content_packs_into_android.py` and `tools/chapters/68/authoring/audit_coverage.py`. Updated chapter README and manifest with wave references.
-- JSON parsing and file-level UID/technology coverage were checked by reading the committed files. **The coverage audit has not yet been executed against the updated branch, and Android/Windows build/runtime validation is not yet confirmed.** The old `coverage_report.json` must not be treated as post-wave-9 evidence until regenerated by the audit script/CI.
+1. ادامه درس‌های فصل ۱ (مادربرد، RAM، Storage پایه، اسمبل، BIOS/UEFI، سرور سخت‌افزاری) با همان کیفیت تک‌سطحی.
+2. اتصال loaderها به فایل‌های flat جدید.
+3. به‌روزرسانی Android و Windows برای نمایش تک‌سطحی + کارت‌های یادگیری.
 
+---
 
-## Chapter 68 — targeted wave 10 (2026-10-18)
+## یادداشت سازگاری
 
-- Added 60 additive command references across 12 underfilled domains: VoIP, VMware ESXi, SSH, TCP diagnostics, FTP, FTPS, SFTP, Zabbix, Wireshark/TShark, Juniper Junos, Aruba AOS-CX, and Proxmox VE.
-- Wired wave 10 into `audit_coverage.py` and the chapter manifest. All records remain `review_required`; the new wave does not imply that per-domain quotas are met.
-- The repository coverage report still requires a fresh run of the audit script on the updated branch. This chat environment cannot execute the repository's Python script or inspect the resulting Actions job, so no successful audit/build is claimed.
+درس‌ها و محتوای قدیمی با سطح L0–L4 فعلاً حفظ می‌شوند تا مهاجرت کامل شود و پیشرفت کاربران نشکند.
