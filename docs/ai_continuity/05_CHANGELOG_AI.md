@@ -2,6 +2,26 @@
 
 ---
 
+## [2026-10-20] — Grok
+
+### Done
+- User confirmed final structure:
+  - ۳۰ فصل (سخت‌افزار + ۲۹ فصل قبلی)
+  - فقط سطح مبتدی + متوسط
+  - هر مبحث فقط **یک سطح** (بدون L0–L4 و بدون سطح پیشرفته جدا)
+  - تمام مطالب داخل همان فصل
+- Updated `docs/ai_continuity/MEGA_CHAPTER_MAP.md` to final 30-chapter flat version.
+- Created branch `feature/29-chapter-flat-structure`.
+- Added `tools/chapters/INDEX_30_FLAT_FA.md`.
+- Migration will start from Chapter 1 (مبانی IT و سخت‌افزار).
+
+### Next
+1. Create placeholder structure for new chapters 1–30 under tools/chapters/ (or packs).
+2. Migrate content of old chapters 1–5 into new Chapter 1 (flat, beginner+intermediate).
+3. Update full_curriculum.py / chapter_loader / Android & Windows to support 30 chapters and single-level lessons.
+
+---
+
 ## [2026-10-18] — Grok
 
 ### Done
