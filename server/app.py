@@ -108,7 +108,7 @@ def extract_token() -> str:
     t = request.headers.get("X-NetEnc-Token", "") or ""
     if t:
         return t.strip()
-    t = request.cookies.get("netenc_token") or request.args.get("token") or ""
+    t = request.cookies.get("netenc_token") or ""
     return (t or "").strip()
 
 
